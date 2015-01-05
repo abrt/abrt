@@ -6,17 +6,20 @@
 # aurisc4 <aurisc4@gmail.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-12-12 14:29+0100\n"
-"PO-Revision-Date: 2014-12-12 13:30+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
-"Language-Team: Lithuanian (http://www.transifex.com/projects/p/fedora-abrt/language/lt/)\n"
+"POT-Creation-Date: 2015-01-05 07:16-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-12-12 08:30-0500\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"Language-Team: Lithuanian (http://www.transifex.com/projects/p/fedora-abrt/"
+"language/lt/)\n"
 "Language: lt\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"(n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Zanata 3.5.1\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
@@ -71,10 +74,11 @@ msgstr "Aptikta problema"
 msgid "A problem in the %s package has been detected"
 msgstr "Aptikta problema %s pakete"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:429
 #, c-format
 msgid "%s and the diagnostic data has been submitted"
-msgstr ""
+msgstr "%s ir diagnostikos duomenys buvo pateikti"
 
 #: ../src/applet/applet.c:589 ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
@@ -89,7 +93,9 @@ msgstr "Nepavyksta užverti pranešimo: %s"
 
 #: ../src/applet/applet.c:706
 msgid ""
-"You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
+"You are going to mute notifications of a particular problem. You will never "
+"see a notification bubble for this problem again, however, ABRT will be "
+"detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
 msgstr ""
@@ -101,11 +107,14 @@ msgstr "Įspėjimas"
 #: ../src/applet/applet.c:834
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
-msgstr "Pranešimų vietos įtaisas, kuris praneša naudotojams apie ABRT aptiktas problemas"
+msgstr ""
+"Pranešimų vietos įtaisas, kuris praneša naudotojams apie ABRT aptiktas "
+"problemas"
 
 #: ../src/applet/applet.c:850
 msgid "translator-credits"
-msgstr "išvertė:\nAurimas Černius <aurisc4@gmail.com>"
+msgstr "išvertė:\n"
+"Aurimas Černius <aurisc4@gmail.com>"
 
 #: ../src/applet/applet.c:858
 msgid "_Quit"
@@ -128,6 +137,7 @@ msgid "Ignore forever"
 msgstr "Visada nepaisyti"
 
 #. Problem has been 'autoreported' and is considered as KNOWN
+#. 
 #: ../src/applet/applet.c:991 ../src/applet/applet.c:1006
 msgid "Open"
 msgstr "Atverti"
@@ -142,6 +152,7 @@ msgstr "Kilo žinoma problema"
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
+#. 
 #: ../src/applet/applet.c:1015 ../src/applet/applet.c:1050
 msgid "Report"
 msgstr "Pranešti"
@@ -184,14 +195,19 @@ msgstr "Nepavyksta įjungti neblokuojančios veiksenos gio kanalui: %s"
 msgid ""
 "Failed to open connection to session manager: '%s', notification may "
 "reappear on the next login"
-msgstr "Nepavyko prisijungti prie seanso valdyklės: „%s“, pranešimas gali pasirodyti kitą kartą prisijungus"
+msgstr ""
+"Nepavyko prisijungti prie seanso valdyklės: „%s“, pranešimas gali pasirodyti "
+"kitą kartą prisijungus"
 
 #: ../src/applet/applet.c:1635
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
-msgstr "& [-v] [DIR]...\n\nĮtaisas, kuris praneša naudotojui, kai ABRT aptinka naują problemą\n"
+msgstr ""
+"& [-v] [DIR]...\n"
+"\n"
+"Įtaisas, kuris praneša naudotojui, kai ABRT aptinka naują problemą\n"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
@@ -212,10 +228,9 @@ msgstr ""
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
-"space consuming operation. ABRT provides a service which generates the stack"
-" trace from the coredump but you have to upload the coredump to this "
-"service. With this option disabled ABRT will upload the coredump without "
-"asking."
+"space consuming operation. ABRT provides a service which generates the stack "
+"trace from the coredump but you have to upload the coredump to this service. "
+"With this option disabled ABRT will upload the coredump without asking."
 msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
@@ -229,15 +244,15 @@ msgstr ""
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
-"uses uReports  for fast global duplicate detection. In default configuration"
-" uReport is sent at beginning of reporting process. With this option enabled"
-" uReports are sent automatically immediately after problem detection."
+"uses uReports  for fast global duplicate detection. In default configuration "
+"uReport is sent at beginning of reporting process. With this option enabled "
+"uReports are sent automatically immediately after problem detection."
 msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
-"With this option enabled reporting process started by click on Report button"
-" in problem notification bubble will be interrupted after uReport is sent. "
+"With this option enabled reporting process started by click on Report button "
+"in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
 
@@ -302,7 +317,10 @@ msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
-msgstr "& [-v] [-c KONFFAILAS] -d KAT\n\nUžklausti paketų duomenų bazės ir įrašyti paketo ir komponento pavadinimus"
+msgstr ""
+"& [-v] [-c KONFFAILAS] -d KAT\n"
+"\n"
+"Užklausti paketų duomenų bazės ir įrašyti paketo ir komponento pavadinimus"
 
 #: ../src/daemon/abrt-action-save-package-data.c:394
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
@@ -365,7 +383,9 @@ msgstr "Nepavyksta prieiti problemos pakeitimui"
 
 #: ../src/dbus/abrt-dbus.c:461
 msgid "Chowning directory failed. Check system logs for more details."
-msgstr "Nepavyko pakeisti aplanko savininko. Daugiau informacijos rasite sistemos žurnaluose."
+msgstr ""
+"Nepavyko pakeisti aplanko savininko. Daugiau informacijos rasite sistemos "
+"žurnaluose."
 
 #: ../src/dbus/abrt-dbus.c:559
 #, c-format
@@ -391,7 +411,9 @@ msgstr "Nepavyksta ištrinti elemento „%s“ iš problemų katalogo „%s“"
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
-msgstr "Vardas „%s“ buvo prarastas, patikrinkite, ar neveikia kita tarnyba su šiuo vardu.\n"
+msgstr ""
+"Vardas „%s“ buvo prarastas, patikrinkite, ar neveikia kita tarnyba su šiuo "
+"vardu.\n"
 
 #: ../src/dbus/abrt-dbus.c:790 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:499
@@ -405,11 +427,16 @@ msgstr "Šią programą reikia paleisti root naudotojo teisėmis."
 #: ../src/daemon/abrtd.c:451
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
-"detected while computer is shutting down or user is logging out. In order to"
-" provide valuable problem reports, ABRT will not allow you to submit this "
-"problem. If you have time and want to help the developers in their effort to"
-" sort out this problem, please contact them directly."
-msgstr "Problemos duomenys nepilni. Taip dažniausiai atsitinka, kai problema yra aptikta išjungiant kompiuterį arba naudotojui atsijungiant. Siekiant pateikti vertingus pranešimus apie klaidas, ABRT jums neleis pranešti apie šią klaidą. Jei turite laiko ir norite padėti kūrėjams išspręsti šią problemą, susisiekite su jais tiesiogiai."
+"detected while computer is shutting down or user is logging out. In order to "
+"provide valuable problem reports, ABRT will not allow you to submit this "
+"problem. If you have time and want to help the developers in their effort to "
+"sort out this problem, please contact them directly."
+msgstr ""
+"Problemos duomenys nepilni. Taip dažniausiai atsitinka, kai problema yra "
+"aptikta išjungiant kompiuterį arba naudotojui atsijungiant. Siekiant "
+"pateikti vertingus pranešimus apie klaidas, ABRT jums neleis pranešti apie "
+"šią klaidą. Jei turite laiko ir norite padėti kūrėjams išspręsti šią "
+"problemą, susisiekite su jais tiesiogiai."
 
 #: ../src/daemon/abrtd.c:497
 msgid "Do not daemonize"
@@ -446,7 +473,15 @@ msgid ""
 "\n"
 "If UPLOAD_DIRECTORY is not provided, uses a value of\n"
 "WatchCrashdumpArchiveDir option from abrt.conf"
-msgstr "& [-vs] [-w NUM] [-c MiB] [NUSIUNTIMO_KATALOGAS]\n\n\nStebi NUSIUNTIMO_KATALOGĄ ir išpakuoja atsiunčiamus archyvus į abrt.conf\nnurodytą DumpLocation\n\nJei NUSIUNTIMO_KATALOGAS nenurodytas, naudojamas abrt.conf parametras\nWatchCrashdumpArchiveDir"
+msgstr ""
+"& [-vs] [-w NUM] [-c MiB] [NUSIUNTIMO_KATALOGAS]\n"
+"\n"
+"\n"
+"Stebi NUSIUNTIMO_KATALOGĄ ir išpakuoja atsiunčiamus archyvus į abrt.conf\n"
+"nurodytą DumpLocation\n"
+"\n"
+"Jei NUSIUNTIMO_KATALOGAS nenurodytas, naudojamas abrt.conf parametras\n"
+"WatchCrashdumpArchiveDir"
 
 #: ../src/daemon/abrt-upload-watch.c:281
 msgid "Daemize"
@@ -460,17 +495,73 @@ msgstr "Darbininkų skaičius. Numatyta "
 msgid "Maximal cache size in MiB. Default is "
 msgstr "Didžiausias podėlio dydis MiB. Numatyta "
 
-#: ../src/daemon/abrt-auto-reporting.c:81
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/daemon/abrt-auto-reporting.c:176
 msgid "& [ "
+msgstr "& [ "
+
+#: ../src/daemon/abrt-auto-reporting.c:213
+msgid "Turns the authentication off"
 msgstr ""
 
-#: ../src/daemon/abrt-auto-reporting.c:113
+#: ../src/daemon/abrt-auto-reporting.c:214
+msgid "Red Hat Support user name"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:215
+msgid "Red Hat Support password, if not given, a prompt for it will be issued"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:216
+msgid "uReport SSL certificate paths or certificate type"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:227
+msgid "You also need to specify --username for --password"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:233
+msgid "You can use either --username or --certificate"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:239
+msgid "You can use either --username or --anonymous"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:245
+msgid "You can use either --anonymous or --certificate"
+msgstr ""
+
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/daemon/abrt-auto-reporting.c:251
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "Neteisingas argumentų skaičius"
 
-#: ../src/daemon/abrt-auto-reporting.c:138
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/daemon/abrt-auto-reporting.c:270
 #, c-format
 msgid "Unknown option value: '%s'\n"
+msgstr "Nežinoma parametro vertė: „%s“\n"
+
+#: ../src/daemon/abrt-auto-reporting.c:305
+msgid "Password:"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:308
+msgid "Cannot continue without password\n"
+msgstr ""
+
+#. Print only the part before ':' of a string like "username:password"
+#: ../src/daemon/abrt-auto-reporting.c:347
+msgid "HTTP Authenticated auto reporting"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:349
+msgid "SSL Client Authenticated auto reporting"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:351
+msgid "anonymous auto reporting"
 msgstr ""
 
 #: ../src/daemon/abrt-handle-upload.in:69
@@ -590,7 +681,9 @@ msgstr "Nepavyko sukurti laikinojo failo „%s“"
 msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
 "problems '%s'"
-msgstr "Nepavyko įrašyti į „%s“. Problema „%s“ nebus pašalinta iš nepaisomų problemų „%s“"
+msgstr ""
+"Nepavyko įrašyti į „%s“. Problema „%s“ nebus pašalinta iš nepaisomų problemų "
+"„%s“"
 
 #. Something nefarious happened
 #: ../src/lib/ignored_problems.c:264
@@ -604,11 +697,17 @@ msgid ""
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
-msgstr "& [parinktys] -d KAT\n\nAnalizuoja C/C++ pėdsaką, generuoja dublikato maišos reikšmę, pėdsako\nreitingą ir identifikuoja lūžusią funkciją problemos kataloge KAT"
+msgstr ""
+"& [parinktys] -d KAT\n"
+"\n"
+"Analizuoja C/C++ pėdsaką, generuoja dublikato maišos reikšmę, pėdsako\n"
+"reitingą ir identifikuoja lūžusią funkciją problemos kataloge KAT"
 
+#. 
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -623,7 +722,10 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
-msgstr "& [-v] -d KAT\n\nSuskaičiuoja ir įrašo pagrindo išklotinės UUID į problemos katalogą KAT"
+msgstr ""
+"& [-v] -d KAT\n"
+"\n"
+"Suskaičiuoja ir įrašo pagrindo išklotinės UUID į problemos katalogą KAT"
 
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
@@ -649,14 +751,20 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
-msgstr "& [-v] -d KAT\n\nSuskaičiuoja ir įrašo oops problemos katalogo KAT UUID ir DUPHASH"
+msgstr ""
+"& [-v] -d KAT\n"
+"\n"
+"Suskaičiuoja ir įrašo oops problemos katalogo KAT UUID ir DUPHASH"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:73
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
-msgstr "& [-v] -d KAT\n\nSuskaičiuoja ir įrašo xorg problemos katalogo KAT UUID ir DUPHASH"
+msgstr ""
+"& [-v] -d KAT\n"
+"\n"
+"Suskaičiuoja ir įrašo xorg problemos katalogo KAT UUID ir DUPHASH"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:113
 #, c-format
@@ -668,7 +776,10 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
-msgstr "& [-v] -d KAT\n\nSuskaičiuoja ir įrašo python lūžimų išklotinių UUID ir DUPHASH"
+msgstr ""
+"& [-v] -d KAT\n"
+"\n"
+"Suskaičiuoja ir įrašo python lūžimų išklotinių UUID ir DUPHASH"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:52
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
@@ -683,10 +794,10 @@ msgid "Extracting the oops text from core"
 msgstr "Išgaunamas oops tekstas iš išklotinės"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
-msgid ""
-"Can't process {0}:\n"
+msgid "Can't process {0}:\n"
 "{1}"
-msgstr "Nepavyksta apdoroti {0}:\n{1}"
+msgstr "Nepavyksta apdoroti {0}:\n"
+"{1}"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "Can't extract the oops message: '{0}'"
@@ -707,7 +818,11 @@ msgid ""
 "& [options] -d DIR\n"
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
-msgstr "& [parinktys] -d KAT\n\nAnalizuoja pagrindo išklotinę problemos kataloge KAT, generuoja ir įrašo pėdsaką"
+msgstr ""
+"& [parinktys] -d KAT\n"
+"\n"
+"Analizuoja pagrindo išklotinę problemos kataloge KAT, generuoja ir įrašo "
+"pėdsaką"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
@@ -719,6 +834,7 @@ msgstr "Išjungti gdb, jei ji veikia daugiau nei NUM sekundžių"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -729,7 +845,10 @@ msgid ""
 "& [-v] [-r] -d DIR\n"
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
-msgstr "& [-v] [-r] -d KAT\n\nSukuria išklotinės lygio pėdsaką iš išklotinės ar atitinkamos programos"
+msgstr ""
+"& [-v] [-r] -d KAT\n"
+"\n"
+"Sukuria išklotinės lygio pėdsaką iš išklotinės ar atitinkamos programos"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
@@ -753,11 +872,13 @@ msgstr "Klaida: %s"
 msgid "Exiting on user command"
 msgstr "Išeinamas dėl naudotojo komandos"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:88
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH]...]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
@@ -767,13 +888,33 @@ msgid ""
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
 "    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
 "    -e,--exact  Download only specified files\n"
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
 msgstr ""
+"Naudojimas: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH[:PATH]...]\n"
+"\n"
+"Įdiegia derinimo informaciją visiems build-ids iš BUILD_IDS_FILE\n"
+"į CACHEDIR, naudojant TMPDIR kaip laikinąją vietą.\n"
+"Seni failai iš CACHEDIR yra trinami iki jo dydis yra mažesnis nei SIZE.\n"
+"\n"
+"    -v          Būti išsamiu\n"
+"    -y          Neinteraktyvi veiksena, atakyti „Taip“ į visus klausimus\n"
+"    --ids       Numatyta: build_ids\n"
+"    --tmpdir    Numatyta: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
+"    --cache     Numatyta: /var/cache/abrt-di\n"
+"    --size_mb   Numatyta: 4096\n"
+"    -e,--exact  Parsiųsti tik nurodytus failus\n"
+"    --repo      Šablonas, naudojamas ieškant saugyklose.\n"
+"                Numatyta: *debug*\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:169
 msgid "Can't open {0}: {1}"
@@ -781,15 +922,19 @@ msgstr "Nepavyko atverti {0}: {1}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:206
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
-msgstr "Pagrindo išklotinės nurodo {0} derinimo informacijos failus, {1} iš jų neįdiegti"
+msgstr ""
+"Pagrindo išklotinės nurodo {0} derinimo informacijos failus, {1} iš jų "
+"neįdiegti"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:209
 msgid "{0} of debuginfo files are not installed"
-msgstr ""
+msgstr "{0} neįdiegtų derinimo informacijos failų"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:223
 msgid "Missing requested file: {0}"
-msgstr ""
+msgstr "Trūksta prašomo failo: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:228
 msgid "Missing debuginfo file: {0}"
@@ -804,21 +949,32 @@ msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
-msgstr "Nusiųsti pagrindo išklotinę? (Ji gali turėti asmeninių duomenų). Jei atsakysite „Ne“, steko pėdsakas bus generuojamas vietoje. (Tai gali parsiųsti daug duomenų)."
+msgstr ""
+"Nusiųsti pagrindo išklotinę? (Ji gali turėti asmeninių duomenų). Jei "
+"atsakysite „Ne“, steko pėdsakas bus generuojamas vietoje. (Tai gali "
+"parsiųsti daug duomenų)."
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
-msgstr "Ar norite generuoti steko pėdsaką vietoje? (Tai gali parsiųsti daug duomenų, bet pranešimo negalima tęsti be steko pėdsako)."
+msgstr ""
+"Ar norite generuoti steko pėdsaką vietoje? (Tai gali parsiųsti daug duomenų, "
+"bet pranešimo negalima tęsti be steko pėdsako)."
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
+"SIZE.\n"
 "FILEs are preserved (never deleted)."
-msgstr "& [-v] [-d DYDIS:KAT]... [-f DYDIS:KAT]... [-p KAT] [FAILAS]...\n\nIštrina problemų katalogus (-d) arba failus (-f) kataloguose iki jie tampa mažesni nei DYDIS.\nFAILAS(-ai) yra išsaugomas (niekada netrinamas)."
+msgstr ""
+"& [-v] [-d DYDIS:KAT]... [-f DYDIS:KAT]... [-p KAT] [FAILAS]...\n"
+"\n"
+"Ištrina problemų katalogus (-d) arba failus (-f) kataloguose iki jie tampa "
+"mažesni nei DYDIS.\n"
+"FAILAS(-ai) yra išsaugomas (niekada netrinamas)."
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
@@ -960,7 +1116,9 @@ msgstr "Šuolis į neteisingą adresą"
 #: ../src/plugins/abrt-gdb-exploitable:674
 msgid ""
 "Access past the end of mapped file, invalid address, unaligned access, etc"
-msgstr "Priėjimas už failo atmintyje pabaigos, netinkamu adresu, nelygiuota prieiga ir t.t."
+msgstr ""
+"Priėjimas už failo atmintyje pabaigos, netinkamu adresu, nelygiuota prieiga "
+"ir t.t."
 
 #: ../src/plugins/abrt-gdb-exploitable:693
 msgid "Can't get signal no and do exploitability analysis\n"
@@ -987,30 +1145,42 @@ msgid ""
 "& [-vs] [-F STR]... FILE PROG [ARGS]\n"
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
-msgstr "& [-vs] [-F STR]... FAILAS PROG [ARG]\n\nStebėti žurnalo failą FAILAS, paleisti PROG, kei jis paauga arba yra pakeičiamas"
+msgstr ""
+"& [-vs] [-F STR]... FAILAS PROG [ARG]\n"
+"\n"
+"Stebėti žurnalo failą FAILAS, paleisti PROG, kei jis paauga arba yra "
+"pakeičiamas"
 
 #: ../src/plugins/abrt-watch-log.c:154
 msgid "Don't run PROG if STRs aren't found"
 msgstr "Nepaleisti PROG, jei STR nerasta"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:125
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
 msgstr ""
+"Dėl blogo BIOS kilo branduolio problema. Deja, tokių problemų branduolio "
+"prižiūrėtojai negali pataisyti."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:130
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
 msgstr ""
+"Kilo branduolio problema, bet jūsų aparatinė įranga yra nepalaikoma, tad "
+"branduolio prižiūrėtojai negali pataisyti šios problemos."
 
 #: ../src/plugins/abrt-dump-oops.c:145
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
-msgstr "Kilo branduolio problema, bet jūsų branduolys buvo pakeistas (požymiai:%s). Branduolio prižiūrėtojai negali diagnozuoti pakeistų pranešimų."
+msgstr ""
+"Kilo branduolio problema, bet jūsų branduolys buvo pakeistas (požymiai:%s). "
+"Branduolio prižiūrėtojai negali diagnozuoti pakeistų pranešimų."
 
 #: ../src/plugins/abrt-dump-oops.c:153
 #, c-format
@@ -1022,7 +1192,10 @@ msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
-msgstr "& [-vusoxm] [-d DIR]/[-D] [FILE]\n\nIšgauti oops iš FILE (arba standartinės įvesties)"
+msgstr ""
+"& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"Išgauti oops iš FILE (arba standartinės įvesties)"
 
 #: ../src/plugins/abrt-dump-oops.c:274
 msgid "Print found oopses on standard output"
@@ -1030,6 +1203,7 @@ msgstr "Atspausdinti rastus oops į standartinėje išvestyje"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
+#. 
 #: ../src/plugins/abrt-dump-oops.c:278
 msgid "Create new problem directory in DIR for every oops found"
 msgstr "Sukurti naują problemos katalogą KAT kataloge kiekvienai rastai oops"
@@ -1072,7 +1246,10 @@ msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
-msgstr "& [-vsoxm] [-d KAT]/[-D] [FAILAS]\n\nIšgauti Xorg lūžimą iš FAILO (arba standartinės įvesties)"
+msgstr ""
+"& [-vsoxm] [-d KAT]/[-D] [FAILAS]\n"
+"\n"
+"Išgauti Xorg lūžimą iš FAILO (arba standartinės įvesties)"
 
 #: ../src/plugins/abrt-dump-xorg.c:245
 msgid "Print found crash data on standard output"
@@ -1080,16 +1257,20 @@ msgstr "Atspausdinti rastus lūžimo duomenis standartinėje išvestyje"
 
 #: ../src/plugins/abrt-dump-xorg.c:246
 msgid "Create problem directory in DIR for every crash found"
-msgstr "Sukurti naują problemos katalogą KAT kataloge kiekvienam rastam lūžimui"
+msgstr ""
+"Sukurti naują problemos katalogą KAT kataloge kiekvienam rastam lūžimui"
 
 #: ../src/plugins/abrt-retrace-client.c:70
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
-msgstr "Pertrasavimo serveris negali būti naudojamas, nes nes lūžimas yra per didelis. Mėginkite vietinį pertrasavimą."
+msgstr ""
+"Pertrasavimo serveris negali būti naudojamas, nes nes lūžimas yra per "
+"didelis. Mėginkite vietinį pertrasavimą."
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
+#. 
 #: ../src/plugins/abrt-retrace-client.c:103
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
@@ -1112,10 +1293,10 @@ msgstr "Nepavyko išsiųsti %d ilgio HTTP antraštės: NSS klaida %d"
 #: ../src/plugins/abrt-retrace-client.c:1001
 #: ../src/plugins/abrt-retrace-client.c:1060
 #, c-format
-msgid ""
-"Unexpected HTTP response from server: %d\n"
+msgid "Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr "Nelauktas HTTP atsakas iš serverio: %d\n%s"
+msgstr "Nelauktas HTTP atsakas iš serverio: %d\n"
+"%s"
 
 #: ../src/plugins/abrt-retrace-client.c:232
 #: ../src/plugins/abrt-retrace-client.c:745
@@ -1124,14 +1305,17 @@ msgstr "Nelauktas HTTP atsakas iš serverio: %d\n%s"
 #: ../src/plugins/abrt-retrace-client.c:982
 #: ../src/plugins/abrt-retrace-client.c:1052
 msgid "Invalid response from server: missing HTTP message body."
-msgstr "Netinkamas atsakas iš serverio: trūksta HTTP pranešimo pagrindinės dalies."
+msgstr ""
+"Netinkamas atsakas iš serverio: trūksta HTTP pranešimo pagrindinės dalies."
 
 #: ../src/plugins/abrt-retrace-client.c:424
 #, c-format
 msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official '%s' repositories?"
-msgstr "Trasavimo serveris negali apdoroti paketo „%s.%s“.\nAr jis yra oficialių „%s“ saugyklų dalis?"
+msgstr ""
+"Trasavimo serveris negali apdoroti paketo „%s.%s“.\n"
+"Ar jis yra oficialių „%s“ saugyklų dalis?"
 
 #: ../src/plugins/abrt-retrace-client.c:444
 msgid "Querying server settings"
@@ -1156,7 +1340,9 @@ msgstr "„%s“ turi būti įprastinis failas pertrasavimo serveriui naudoti."
 msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
-msgstr "Jūsų lūžimo dydis yra %lld baitų, bet pertrasavimo serveris priima tik ne didesnius %lld baitų lūžimus."
+msgstr ""
+"Jūsų lūžimo dydis yra %lld baitų, bet pertrasavimo serveris priima tik ne "
+"didesnius %lld baitų lūžimus."
 
 #: ../src/plugins/abrt-retrace-client.c:534
 msgid "The server does not support xz-compressed tarballs."
@@ -1184,7 +1370,9 @@ msgstr "Ruošiamasi archyvo nusiuntimui"
 msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
-msgstr "Jūsų archyvo dydis yra %lld baitų, bet pertrasavimo serveris priima tik ne didesnius nei %lld baitų archyvus."
+msgstr ""
+"Jūsų archyvo dydis yra %lld baitų, bet pertrasavimo serveris priima tik ne "
+"didesnius nei %lld baitų archyvus."
 
 #: ../src/plugins/abrt-retrace-client.c:629
 #, c-format
@@ -1227,13 +1415,17 @@ msgstr "Sėkmingai nusiųsta"
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
-msgstr "Jūsų problemų katalogas yra sugadintas ir pertrasavimo serveris negali jo apdoroti."
+msgstr ""
+"Jūsų problemų katalogas yra sugadintas ir pertrasavimo serveris negali jo "
+"apdoroti."
 
 #: ../src/plugins/abrt-retrace-client.c:759
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
-msgstr "Archyvas turi blogų failų (tokių, kaip simbolinės nuorodos) ir todėl negali būti apdorotas."
+msgstr ""
+"Archyvas turi blogų failų (tokių, kaip simbolinės nuorodos) ir todėl negali "
+"būti apdorotas."
 
 #: ../src/plugins/abrt-retrace-client.c:772
 msgid "Invalid response from server: missing X-Task-Id."
@@ -1249,10 +1441,10 @@ msgstr "Pradėtas pertrasavimo darbas"
 
 #: ../src/plugins/abrt-retrace-client.c:798
 #, c-format
-msgid ""
-"Task Id: %s\n"
+msgid "Task Id: %s\n"
 "Task Password: %s\n"
-msgstr "Užduoties Id: %s\nUžduoties slaptažodis: %s\n"
+msgstr "Užduoties Id: %s\n"
+"Užduoties slaptažodis: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:856
 msgid "Invalid response from server: missing X-Task-Status."
@@ -1260,10 +1452,10 @@ msgstr "Netinkamas atsakas iš serverio: trūksta X-Task-Status."
 
 #: ../src/plugins/abrt-retrace-client.c:868
 #, c-format
-msgid ""
-"Task Status: %s\n"
+msgid "Task Status: %s\n"
 "%s\n"
-msgstr "Užduoties būsena: %s\n%s\n"
+msgstr "Užduoties būsena: %s\n"
+"%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:899
 #: ../src/plugins/abrt-retrace-client.c:973
@@ -1276,7 +1468,9 @@ msgstr "Nepavyko išsiųsti %d ilgio HTTP antraštės: NSS klaida %d."
 msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
-msgstr "Pertrasavimas nepavyko. Bandykite vėliau ir praneškite apie problemą, jei jis neišnyks."
+msgstr ""
+"Pertrasavimas nepavyko. Bandykite vėliau ir praneškite apie problemą, jei "
+"jis neišnyks."
 
 #: ../src/plugins/abrt-retrace-client.c:1207
 msgid "log to syslog"
@@ -1290,7 +1484,9 @@ msgstr "leisti nesaugius prisijungimus prie pertrasavimo serverio"
 msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
-msgstr "netikrinti, ar pertrasavimo serveris gali apdoroti pateiktą paketą prieš jį nusiunčiant"
+msgstr ""
+"netikrinti, ar pertrasavimo serveris gali apdoroti pateiktą paketą prieš jį "
+"nusiunčiant"
 
 #: ../src/plugins/abrt-retrace-client.c:1214
 msgid "retrace server URL"
@@ -1322,7 +1518,8 @@ msgstr "Delsa užklausimo veiksmams"
 
 #: ../src/plugins/abrt-retrace-client.c:1227
 msgid "(debug) do not delete temporary archive created from dump dir in "
-msgstr "(derinimas) netrinti laikinojo archyvo, sukurto iš išklotinės katalogo "
+msgstr ""
+"(derinimas) netrinti laikinojo archyvo, sukurto iš išklotinės katalogo "
 
 #: ../src/plugins/abrt-retrace-client.c:1229
 msgid "For status, backtrace, and log operations"
@@ -1340,7 +1537,9 @@ msgstr "jūsų užduoties slaptažodis serveryje"
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch/exploitable"
-msgstr "abrt-retrace-client <veiksmas> [parametrai]\nVeiksmai: create/status/backtrace/log/batch/exploitable"
+msgstr ""
+"abrt-retrace-client <veiksmas> [parametrai]\n"
+"Veiksmai: create/status/backtrace/log/batch/exploitable"
 
 #: ../src/plugins/abrt-retrace-client.c:1282
 #: ../src/plugins/abrt-retrace-client.c:1288
@@ -1372,14 +1571,19 @@ msgstr "Vietinė GNU derintuvė"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr "Parsiųsti derinimo informacijos paketus ir sukurti pėdsaką vietoje naudojant GDB"
+msgstr ""
+"Parsiųsti derinimo informacijos paketus ir sukurti pėdsaką vietoje naudojant "
+"GDB"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
-msgstr "Reikia parsiųsti derinimo informacijos paketus, o tai gali ilgai užtrukti ir užimti vietos diske. Tačiau, skirtingai nuo RetraceServer, nesiunčia pagrindo išklotinės į nutolusį kompiuterį."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
+msgstr ""
+"Reikia parsiųsti derinimo informacijos paketus, o tai gali ilgai užtrukti ir "
+"užimti vietos diske. Tačiau, skirtingai nuo RetraceServer, nesiunčia "
+"pagrindo išklotinės į nutolusį kompiuterį."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
@@ -1387,12 +1591,17 @@ msgstr "Siųsti pagrindo išklotinę į nutolusį serverį analizei"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. "
-"Pros: no need for debuginfo downloads. Retrace server's database of "
-"debuginfos is more complete. Retrace server may generate better backtraces. "
-"Cons: coredump you upload contains all the data from the crashed program, "
-"including your private data, if any."
-msgstr "Nusiunčia pagrindo išklotinę į serverį, kuris sukuria pėdsaką ir jį įvykdo. Privalumai: nereikia parsiųsti derinimo informacijos. Pertrasavimo serverio derinimo informacijos duomenų bazė yra pilnesnė. Pertrasavimo serveris gali sugeneruoti geresnius pėdsakus. Trūkumai: pagrindo išklotinės turi visus lūžusios programos duomenis, įskaitant privačius."
+"Uploads coredump to a server, which generates backtrace and returns it. Pros:"
+" no need for debuginfo downloads. Retrace server's database of debuginfos is "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
+"private data, if any."
+msgstr ""
+"Nusiunčia pagrindo išklotinę į serverį, kuris sukuria pėdsaką ir jį įvykdo. "
+"Privalumai: nereikia parsiųsti derinimo informacijos. Pertrasavimo serverio "
+"derinimo informacijos duomenų bazė yra pilnesnė. Pertrasavimo serveris gali "
+"sugeneruoti geresnius pėdsakus. Trūkumai: pagrindo išklotinės turi visus "
+"lūžusios programos duomenis, įskaitant privačius."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 #: ../src/plugins/analyze_CCpp.xml.in.h:3
@@ -1417,10 +1626,13 @@ msgstr "Ar naudoti nesaugų ryšį"
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 #: ../src/plugins/analyze_CCpp.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
-msgstr "Parašykite „insecure“ nesaugiems prisijungimams leisti &lt;a href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;(įspėjimas)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
+"&gt;(warning)&lt;/a&gt;"
+msgstr ""
+"Parašykite „insecure“ nesaugiems prisijungimams leisti &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
+"&gt;(įspėjimas)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
@@ -1434,7 +1646,9 @@ msgstr "Įrašyti atitinkamas eilutes iš ~/.xsession-errors failo"
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
-msgstr "Perskaito ~/.xsession-errors failą ir įrašo eilutes, kurios turi programos pavadinimą. Rezultatas įrašomas kaip „xsession_errors“ elementas."
+msgstr ""
+"Perskaito ~/.xsession-errors failą ir įrašo eilutes, kurios turi programos "
+"pavadinimą. Rezultatas įrašomas kaip „xsession_errors“ elementas."
 
 #: ../src/plugins/https-utils.c:62
 msgid "An error occurred on the server side."
@@ -1467,7 +1681,9 @@ msgstr "Liudijimas yra pasirašytas nepatikimo išdavėjo: „%s“."
 #: ../src/plugins/https-utils.c:103
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
-msgstr "Liudijimo subjekto pavadinimas „%s“ neatitinka tikslo serverio pavadinimo „%s“."
+msgstr ""
+"Liudijimo subjekto pavadinimas „%s“ neatitinka tikslo serverio pavadinimo "
+"„%s“."
 
 #: ../src/plugins/https-utils.c:107
 msgid "Remote certificate has expired."
@@ -1592,7 +1808,11 @@ msgid ""
 "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
 "\n"
 "Search for updates on bodhi server"
-msgstr "& [-v] [-r[LEIDIMAS]] (-b ID1[,ID2,...] | PAK-PAVADINIMAS) [PAK-PAVADINIMAS]... \n\nIeškoti atnaujinimų bodhi serveryje"
+msgstr ""
+"& [-v] [-r[LEIDIMAS]] (-b ID1[,ID2,...] | PAK-PAVADINIMAS) [PAK-PAVADINIMAS]."
+".. \n"
+"\n"
+"Ieškoti atnaujinimų bodhi serveryje"
 
 #: ../src/plugins/bodhi.c:434
 msgid "Searching for updates"
@@ -1610,16 +1830,22 @@ msgstr "Vietinė paketo versija yra naujesnė nei prieinama atnaujinimuose"
 #: ../src/plugins/bodhi.c:486
 #, c-format
 msgid ""
-"An update exists which might fix your problem. You can install it by "
-"running: %s. Do you want to continue with reporting the bug?"
-msgstr "Yra atnaujinimas, kuris gali pataisyti jūsų problemą. Galite jį įdiegti paleidę: %s. Ar tikrai norite tęsti ir pranešti apie klaidą?"
+"An update exists which might fix your problem. You can install it by running:"
+" %s. Do you want to continue with reporting the bug?"
+msgstr ""
+"Yra atnaujinimas, kuris gali pataisyti jūsų problemą. Galite jį įdiegti "
+"paleidę: %s. Ar tikrai norite tęsti ir pranešti apie klaidą?"
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
 msgid ""
 "& [-v] [-od] FILE...\n"
 "\n"
 "Scans files for split oops message. Can print and/or delete them."
-msgstr "& [-v] [-od] FILE...\n\nIeško failų padalintų oops pranešimams. Gali atspausdinti arba ištrinti juos."
+msgstr ""
+"& [-v] [-od] FILE...\n"
+"\n"
+"Ieško failų padalintų oops pranešimams. Gali atspausdinti arba ištrinti juos."
+""
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:97
 msgid "Print found oopses"
@@ -1676,9 +1902,10 @@ msgstr ""
 msgid "& list [options] [DIR]..."
 msgstr "& list [parinktys] [KAT]..."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/list.c:188
 msgid "List only not-reported problems"
-msgstr ""
+msgstr "Išvardinti tik nepraneštas problemas"
 
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:190 ../src/cli/list.c:243
@@ -1693,12 +1920,17 @@ msgstr "Išvardinti tik problemas, kurios naujesnės nei nurodyta laiko žyma"
 msgid "List only the problems older than specified timestamp"
 msgstr "Išvardinti tik problemas, kurios senesnės nei nurodyta laiko žymo"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/list.c:224
 #, c-format
 msgid ""
-"The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
+"The Autoreporting feature is disabled. Please consider enabling it by "
+"issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
 msgstr ""
+"Automatinio pranešimo savybė išjungta. Galite ją įjungti įvykdę root "
+"teisėmis\n"
+"„abrt-auto-reporting enabled“\n"
 
 #: ../src/cli/list.c:235
 msgid "& info [options] DIR..."
@@ -1728,7 +1960,9 @@ msgstr "Atspausdinti tik problemas, naujesnes nei nurodyta laiko žyma"
 #: ../src/cli/status.c:104
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
-msgstr "ABRT aptiko %u problemą(as). Daugiau informacijos gausite įvykdę: abrt-cli list%s\n"
+msgstr ""
+"ABRT aptiko %u problemą(as). Daugiau informacijos gausite įvykdę: abrt-cli "
+"list%s\n"
 
 #: ../src/cli/report.c:28
 msgid "& report [options] DIR..."
@@ -1773,7 +2007,9 @@ msgstr ""
 msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
-msgstr "Siųsti pagrindo išklotinę į nutolusį pertrasavimo serverį analizei arba atlikti vietinę analizę, jei nuotolinė analizė nepavyksta"
+msgstr ""
+"Siųsti pagrindo išklotinę į nutolusį pertrasavimo serverį analizei arba "
+"atlikti vietinę analizę, jei nuotolinė analizė nepavyksta"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
 msgid ""
@@ -1781,10 +2017,18 @@ msgid ""
 "user doens't want to upload his coredump to anywhere the event performs "
 "local analysis. Local analysis is run event if remote analysis fails. Pros: "
 "no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump"
-" you upload contains all the data from the crashed program, including your "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
 "private data, if any."
-msgstr "Nusiunčia pagrindo išklotinę į serverį, kuris sugeneruoja pėdsaką ir jį įvykdo. Jei naudotojas nenori niekur nusiųsti savo pagrindo išklotinės, įvykis vykdo vietinę analizę. Vietinės analizės įvykis vykdomas, jei nuotolinė analizė nepavyksta. Privalumai: nereikia parsiųsti derinimo informacijos. Pertrasavimo serverio duomenų bazė yra pilnesnė. Pertrasavimo serveris gali sugeneruoti geresnius pėdsakus. Trūkumai: jūsų siunčiama pagrindo išklotinė turi visus lūžusios programos duomenis, įskaitant jūsų privačius duomenis."
+msgstr ""
+"Nusiunčia pagrindo išklotinę į serverį, kuris sugeneruoja pėdsaką ir jį "
+"įvykdo. Jei naudotojas nenori niekur nusiųsti savo pagrindo išklotinės, "
+"įvykis vykdo vietinę analizę. Vietinės analizės įvykis vykdomas, jei "
+"nuotolinė analizė nepavyksta. Privalumai: nereikia parsiųsti derinimo "
+"informacijos. Pertrasavimo serverio duomenų bazė yra pilnesnė. Pertrasavimo "
+"serveris gali sugeneruoti geresnius pėdsakus. Trūkumai: jūsų siunčiama "
+"pagrindo išklotinė turi visus lūžusios programos duomenis, įskaitant jūsų "
+"privačius duomenis."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -1793,13 +2037,17 @@ msgstr "Analizuoti VM pagrindą"
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
 msgid ""
 "Install kernel debuginfo packages, generate kernel log and oops message"
-msgstr "Įdiegti branduolio derinimo informacijos paketus, generuoti branduolio žurnalą ir oops pranešimą"
+msgstr ""
+"Įdiegti branduolio derinimo informacijos paketus, generuoti branduolio "
+"žurnalą ir oops pranešimą"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
 "Needs to install kernel debuginfo packages, which might take significant "
 "time, and take up disk space."
-msgstr "Reikia įdiegti branduolio derinimo informacijos paketus, tai gali ilgai užtrukti ir užimti daug disko vietos."
+msgstr ""
+"Reikia įdiegti branduolio derinimo informacijos paketus, tai gali ilgai "
+"užtrukti ir užimti daug disko vietos."
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
@@ -1813,7 +2061,9 @@ msgstr "Įrašyti konfigūraciją iš programos GConf katalogo"
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
-msgstr "Įvykdo gconftool-2 --recursive-list /apps/programa ir įrašo kaip 'gconf_subtree' elementą."
+msgstr ""
+"Įvykdo gconftool-2 --recursive-list /apps/programa ir įrašo kaip "
+"'gconf_subtree' elementą."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
@@ -1827,7 +2077,9 @@ msgstr "Įrašyti /etc/vimrc ir /etc/gvimrc"
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
-msgstr "Patikrina, ar /etc yra vimrc ir gvimrc failai ir juos įrašo atitinkamai kaip system_vimrc ir system_gvimrc."
+msgstr ""
+"Patikrina, ar /etc yra vimrc ir gvimrc failai ir juos įrašo atitinkamai kaip "
+"system_vimrc ir system_gvimrc."
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid "Collect yours vim configuration files"
@@ -1839,9 +2091,11 @@ msgstr "Įrašyti .vimrc ir gvimrc iš jūsų namų katalogo"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
-msgstr "Patikrina, ar jūsų namų kataloge yra .vimrc ir .gvimrc bei juos įrašo atitinkamai kaip user_vimrc ir user_gvimrc."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
+msgstr ""
+"Patikrina, ar jūsų namų kataloge yra .vimrc ir .gvimrc bei juos įrašo "
+"atitinkamai kaip user_vimrc ir user_gvimrc."
 
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"

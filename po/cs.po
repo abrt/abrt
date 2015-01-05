@@ -10,17 +10,19 @@
 # zdenek <chmelarz@gmail.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-12-12 14:29+0100\n"
-"PO-Revision-Date: 2014-12-12 13:30+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
-"Language-Team: Czech (http://www.transifex.com/projects/p/fedora-abrt/language/cs/)\n"
+"POT-Creation-Date: 2015-01-05 07:16-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-12-12 08:30-0500\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"Language-Team: Czech (http://www.transifex.com/projects/p/fedora-abrt/"
+"language/cs/)\n"
 "Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Zanata 3.5.1\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
@@ -93,7 +95,9 @@ msgstr "Nemohu zavřít oznámení: %s"
 
 #: ../src/applet/applet.c:706
 msgid ""
-"You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
+"You are going to mute notifications of a particular problem. You will never "
+"see a notification bubble for this problem again, however, ABRT will be "
+"detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
 msgstr ""
@@ -109,7 +113,11 @@ msgstr "Applet upozorňující uživatele na chyby nalezené démonem ABRT"
 
 #: ../src/applet/applet.c:850
 msgid "translator-credits"
-msgstr "Jiří Moskovčák <jmoskovc@redhat.com>\nRadek Vokál <rvokal@redhat.com>\nNikola Pajkovsky <npajkovs@redhat.com>\nPetr Písař <ppisar@redhat.com>"
+msgstr ""
+"Jiří Moskovčák <jmoskovc@redhat.com>\n"
+"Radek Vokál <rvokal@redhat.com>\n"
+"Nikola Pajkovsky <npajkovs@redhat.com>\n"
+"Petr Písař <ppisar@redhat.com>"
 
 #: ../src/applet/applet.c:858
 msgid "_Quit"
@@ -132,6 +140,7 @@ msgid "Ignore forever"
 msgstr ""
 
 #. Problem has been 'autoreported' and is considered as KNOWN
+#. 
 #: ../src/applet/applet.c:991 ../src/applet/applet.c:1006
 msgid "Open"
 msgstr "Otevřít"
@@ -146,6 +155,7 @@ msgstr "Vyskytl se známý problém"
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
+#. 
 #: ../src/applet/applet.c:1015 ../src/applet/applet.c:1050
 msgid "Report"
 msgstr "Nahlásit"
@@ -195,7 +205,10 @@ msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
-msgstr "& [-v] [DIR]...\n\nApplet, který uživatele upozorní, když ABRT detekuje nový problém\n"
+msgstr ""
+"& [-v] [DIR]...\n"
+"\n"
+"Applet, který uživatele upozorní, když ABRT detekuje nový problém\n"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
@@ -216,10 +229,9 @@ msgstr ""
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
-"space consuming operation. ABRT provides a service which generates the stack"
-" trace from the coredump but you have to upload the coredump to this "
-"service. With this option disabled ABRT will upload the coredump without "
-"asking."
+"space consuming operation. ABRT provides a service which generates the stack "
+"trace from the coredump but you have to upload the coredump to this service. "
+"With this option disabled ABRT will upload the coredump without asking."
 msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
@@ -233,15 +245,15 @@ msgstr ""
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
-"uses uReports  for fast global duplicate detection. In default configuration"
-" uReport is sent at beginning of reporting process. With this option enabled"
-" uReports are sent automatically immediately after problem detection."
+"uses uReports  for fast global duplicate detection. In default configuration "
+"uReport is sent at beginning of reporting process. With this option enabled "
+"uReports are sent automatically immediately after problem detection."
 msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
-"With this option enabled reporting process started by click on Report button"
-" in problem notification bubble will be interrupted after uReport is sent. "
+"With this option enabled reporting process started by click on Report button "
+"in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
 
@@ -306,7 +318,10 @@ msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
-msgstr "& [-v] [-c CONFFILE] -d DIR\n\nDotáže databázi balíčků a uloží jméno balíčku a komponenty"
+msgstr ""
+"& [-v] [-c CONFFILE] -d DIR\n"
+"\n"
+"Dotáže databázi balíčků a uloží jméno balíčku a komponenty"
 
 #: ../src/daemon/abrt-action-save-package-data.c:394
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
@@ -369,7 +384,9 @@ msgstr "Nemohu zpřístupnit problém ke změně"
 
 #: ../src/dbus/abrt-dbus.c:461
 msgid "Chowning directory failed. Check system logs for more details."
-msgstr "Změna vlastníka adresáře selhala. Zkontrolujte logy systému pro více informací."
+msgstr ""
+"Změna vlastníka adresáře selhala. Zkontrolujte logy systému pro více "
+"informací."
 
 #: ../src/dbus/abrt-dbus.c:559
 #, c-format
@@ -395,7 +412,9 @@ msgstr "Nemohu smazat prvek '%s' z adresáře problému '%s'"
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
-msgstr "Jméno '%s' bylo ztraceno, zkontrolujte prosím, zda-li jiná služba vlastnící toto jméno neběží.\n"
+msgstr ""
+"Jméno '%s' bylo ztraceno, zkontrolujte prosím, zda-li jiná služba vlastnící "
+"toto jméno neběží.\n"
 
 #: ../src/dbus/abrt-dbus.c:790 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:499
@@ -409,10 +428,10 @@ msgstr "Tento program musí být spuštěn pod root uživatelem."
 #: ../src/daemon/abrtd.c:451
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
-"detected while computer is shutting down or user is logging out. In order to"
-" provide valuable problem reports, ABRT will not allow you to submit this "
-"problem. If you have time and want to help the developers in their effort to"
-" sort out this problem, please contact them directly."
+"detected while computer is shutting down or user is logging out. In order to "
+"provide valuable problem reports, ABRT will not allow you to submit this "
+"problem. If you have time and want to help the developers in their effort to "
+"sort out this problem, please contact them directly."
 msgstr ""
 
 #: ../src/daemon/abrtd.c:497
@@ -464,17 +483,70 @@ msgstr ""
 msgid "Maximal cache size in MiB. Default is "
 msgstr ""
 
-#: ../src/daemon/abrt-auto-reporting.c:81
+#: ../src/daemon/abrt-auto-reporting.c:176
 msgid "& [ "
 msgstr ""
 
-#: ../src/daemon/abrt-auto-reporting.c:113
+#: ../src/daemon/abrt-auto-reporting.c:213
+msgid "Turns the authentication off"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:214
+msgid "Red Hat Support user name"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:215
+msgid "Red Hat Support password, if not given, a prompt for it will be issued"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:216
+msgid "uReport SSL certificate paths or certificate type"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:227
+msgid "You also need to specify --username for --password"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:233
+msgid "You can use either --username or --certificate"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:239
+msgid "You can use either --username or --anonymous"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:245
+msgid "You can use either --anonymous or --certificate"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:251
 msgid "Invalid number of arguments"
 msgstr ""
 
-#: ../src/daemon/abrt-auto-reporting.c:138
+#: ../src/daemon/abrt-auto-reporting.c:270
 #, c-format
 msgid "Unknown option value: '%s'\n"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:305
+msgid "Password:"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:308
+msgid "Cannot continue without password\n"
+msgstr ""
+
+#. Print only the part before ':' of a string like "username:password"
+#: ../src/daemon/abrt-auto-reporting.c:347
+msgid "HTTP Authenticated auto reporting"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:349
+msgid "SSL Client Authenticated auto reporting"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:351
+msgid "anonymous auto reporting"
 msgstr ""
 
 #: ../src/daemon/abrt-handle-upload.in:69
@@ -594,7 +666,9 @@ msgstr "Nemohu vytvořit dočasný soubor '%s'"
 msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
 "problems '%s'"
-msgstr "Nemohu zapisovat do '%s'. Problém '%s' nebude odstraněn z ignorovaných problémů '%s'"
+msgstr ""
+"Nemohu zapisovat do '%s'. Problém '%s' nebude odstraněn z ignorovaných "
+"problémů '%s'"
 
 #. Something nefarious happened
 #: ../src/lib/ignored_problems.c:264
@@ -608,11 +682,18 @@ msgid ""
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
-msgstr "& [volby] -d DIR\n\nAnalyzuje výpis volání, generuje duplikát výběru sdělení, hodnotí výpis volání\na identifikuje funkci selhání z adresáře problému DIR"
+msgstr ""
+"& [volby] -d DIR\n"
+"\n"
+"Analyzuje výpis volání, generuje duplikát výběru sdělení, hodnotí výpis "
+"volání\n"
+"a identifikuje funkci selhání z adresáře problému DIR"
 
+#. 
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -627,7 +708,10 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
-msgstr "& [-v] -d DIR\n\nVypočítá a uloží UUID obrazu paměti v adresáři problému DIR"
+msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Vypočítá a uloží UUID obrazu paměti v adresáři problému DIR"
 
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
@@ -653,14 +737,20 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
-msgstr "& [-v] -d DIR\n\nVypočítá a uloží UUID a DUPHASH pro adresář problému oops DIR"
+msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Vypočítá a uloží UUID a DUPHASH pro adresář problému oops DIR"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:73
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
-msgstr "& [-v] -d DIR\n\nVypočítá a uloží UUID a DUPHASH pro adresář problému xorg DIR"
+msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Vypočítá a uloží UUID a DUPHASH pro adresář problému xorg DIR"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:113
 #, c-format
@@ -672,7 +762,9 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
-msgstr "& [-v] -d DIR\n\nSpočítá a uloží UUID a DUPHASH výpisu pádu pythonu"
+msgstr "& [-v] -d DIR\n"
+"\n"
+"Spočítá a uloží UUID a DUPHASH výpisu pádu pythonu"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:52
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
@@ -687,8 +779,7 @@ msgid "Extracting the oops text from core"
 msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
-msgid ""
-"Can't process {0}:\n"
+msgid "Can't process {0}:\n"
 "{1}"
 msgstr ""
 
@@ -711,7 +802,11 @@ msgid ""
 "& [options] -d DIR\n"
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
-msgstr "& [volby] -d DIR\n\nAnalyzuje obraz paměti v adresáři problému DIR, generuje a uloží výpis volání"
+msgstr ""
+"& [volby] -d DIR\n"
+"\n"
+"Analyzuje obraz paměti v adresáři problému DIR, generuje a uloží výpis "
+"volání"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
@@ -723,6 +818,7 @@ msgstr "Zabít gdb, jestliže poběží déle než POČET sekund"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -761,7 +857,8 @@ msgstr "Činnost ukončena na příkaz uživatele"
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH]...]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
@@ -771,7 +868,8 @@ msgid ""
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
 "    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
 "    -e,--exact  Download only specified files\n"
@@ -785,7 +883,9 @@ msgstr "Nelze otevřít {0}: {1}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:206
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
-msgstr "Obraz paměti odkazuje na {0} souborů ladicích údajů, {1} z nich nejsou nainstalovány"
+msgstr ""
+"Obraz paměti odkazuje na {0} souborů ladicích údajů, {1} z nich nejsou "
+"nainstalovány"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:209
 msgid "{0} of debuginfo files are not installed"
@@ -808,21 +908,33 @@ msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
-msgstr "Souhlasíte s odesláním obrazu paměti? (ten může obsahovat citlivá data). Pokud bude vaše odpověď 'Ne', zásobník volání se vygeneruje lokálně. (to může mít za následek stažení velkého množství dat)."
+msgstr ""
+"Souhlasíte s odesláním obrazu paměti? (ten může obsahovat citlivá data). "
+"Pokud bude vaše odpověď 'Ne', zásobník volání se vygeneruje lokálně. (to "
+"může mít za následek stažení velkého množství dat)."
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
-msgstr "Přejete si vygenerovat lokální zásobník volání? (to může mít za následek stažení velkého množství dat, ale report problému nemůže bez zásobníku volání pokračovat)."
+msgstr ""
+"Přejete si vygenerovat lokální zásobník volání? (to může mít za následek "
+"stažení velkého množství dat, ale report problému nemůže bez zásobníku "
+"volání pokračovat)."
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
+"SIZE.\n"
 "FILEs are preserved (never deleted)."
-msgstr "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n\nMaže adresáře (-d) nebo soubory (-f) problému v DIR dokud jsou menší než SIZE.\nFILE je zachován (nesmazán)."
+msgstr ""
+"& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
+"\n"
+"Maže adresáře (-d) nebo soubory (-f) problému v DIR dokud jsou menší než "
+"SIZE.\n"
+"FILE je zachován (nesmazán)."
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
@@ -991,7 +1103,10 @@ msgid ""
 "& [-vs] [-F STR]... FILE PROG [ARGS]\n"
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
-msgstr "& [-vs] [-F STR]... FILE PROG [ARGS]\n\nSleduje soubor logů FILE, spustí PROG pokud soubor roste nebo je nahrazen"
+msgstr ""
+"& [-vs] [-F STR]... FILE PROG [ARGS]\n"
+"\n"
+"Sleduje soubor logů FILE, spustí PROG pokud soubor roste nebo je nahrazen"
 
 #: ../src/plugins/abrt-watch-log.c:154
 msgid "Don't run PROG if STRs aren't found"
@@ -1014,7 +1129,9 @@ msgstr ""
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
-msgstr "Vyskytl se problém s jádrem, ale vaše jádro bylo modifikováno (parametry:%s). Správci jádra nejsou schopni diagnostikovat modifikované reporty."
+msgstr ""
+"Vyskytl se problém s jádrem, ale vaše jádro bylo modifikováno (parametry:%s)."
+" Správci jádra nejsou schopni diagnostikovat modifikované reporty."
 
 #: ../src/plugins/abrt-dump-oops.c:153
 #, c-format
@@ -1034,13 +1151,15 @@ msgstr "Nalezené stížnosti vypíše na standardní výstup"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
+#. 
 #: ../src/plugins/abrt-dump-oops.c:278
 msgid "Create new problem directory in DIR for every oops found"
 msgstr "Vytvoř nový adresář problému v DIR pro každý nalezený oops"
 
 #: ../src/plugins/abrt-dump-oops.c:279 ../src/plugins/abrt-dump-xorg.c:247
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
-msgstr "Stejné jako -d DumpLocation, DumpLocation je specifikováno v abrt.conf"
+msgstr ""
+"Stejné jako -d DumpLocation, DumpLocation je specifikováno v abrt.conf"
 
 #: ../src/plugins/abrt-dump-oops.c:280
 msgid "Save the extracted information in PROBLEM"
@@ -1076,7 +1195,10 @@ msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
-msgstr "& [-vsoxm] [-d DIR]/[-D] [FILE]\n\nExtrahuje pád Xorg ze souboru FILE (nebo standardního vstupu)"
+msgstr ""
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"Extrahuje pád Xorg ze souboru FILE (nebo standardního vstupu)"
 
 #: ../src/plugins/abrt-dump-xorg.c:245
 msgid "Print found crash data on standard output"
@@ -1090,10 +1212,13 @@ msgstr "Vytvoř adresář problému v DIR pro každý nalezený pád"
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
-msgstr "Stopovací server nemůže být využit, protože je záznam příliš velký. Zkuste použít lokální stopování."
+msgstr ""
+"Stopovací server nemůže být využit, protože je záznam příliš velký. Zkuste "
+"použít lokální stopování."
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
+#. 
 #: ../src/plugins/abrt-retrace-client.c:103
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
@@ -1116,10 +1241,10 @@ msgstr "Selhalo odeslání hlavičky délky %d: NSS chyba %d"
 #: ../src/plugins/abrt-retrace-client.c:1001
 #: ../src/plugins/abrt-retrace-client.c:1060
 #, c-format
-msgid ""
-"Unexpected HTTP response from server: %d\n"
+msgid "Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr "Neočekávaná HTTP odpověd od serveru: %d\n%s"
+msgstr "Neočekávaná HTTP odpověd od serveru: %d\n"
+"%s"
 
 #: ../src/plugins/abrt-retrace-client.c:232
 #: ../src/plugins/abrt-retrace-client.c:745
@@ -1153,14 +1278,18 @@ msgstr "Server odmítl požadavek."
 #: ../src/plugins/abrt-retrace-client.c:500
 #, c-format
 msgid "'%s' must be a regular file in order to use Retrace server."
-msgstr "'%s' musí být regulérním souborem tak, aby se použil server pro zpětné stopování."
+msgstr ""
+"'%s' musí být regulérním souborem tak, aby se použil server pro zpětné "
+"stopování."
 
 #: ../src/plugins/abrt-retrace-client.c:514
 #, c-format
 msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
-msgstr "Velikost záznamu selhání je %lld bajtů, avšak stopovací server akceptuje záznamy do velikosti %lld bajtů."
+msgstr ""
+"Velikost záznamu selhání je %lld bajtů, avšak stopovací server akceptuje "
+"záznamy do velikosti %lld bajtů."
 
 #: ../src/plugins/abrt-retrace-client.c:534
 msgid "The server does not support xz-compressed tarballs."
@@ -1188,7 +1317,9 @@ msgstr "Příprava archivu pro odeslání"
 msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
-msgstr "Velikost archivu je %lld bajtů, ale stopovací server akceptuje maximálně %lld bajtů."
+msgstr ""
+"Velikost archivu je %lld bajtů, ale stopovací server akceptuje maximálně "
+"%lld bajtů."
 
 #: ../src/plugins/abrt-retrace-client.c:629
 #, c-format
@@ -1207,7 +1338,8 @@ msgstr "Odesílání %d megabajtů\n"
 #: ../src/plugins/abrt-retrace-client.c:675
 #, c-format
 msgid "Uploading %lld bytes\n"
-msgstr "Odesílání %lld bajtů\n\n"
+msgstr "Odesílání %lld bajtů\n"
+"\n"
 
 #: ../src/plugins/abrt-retrace-client.c:699
 #, c-format
@@ -1231,13 +1363,16 @@ msgstr "Uspěšně nahráno"
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
-msgstr "Váš adresář problémů je poškozený and nemůže být zpracován retrace serverem."
+msgstr ""
+"Váš adresář problémů je poškozený and nemůže být zpracován retrace serverem."
 
 #: ../src/plugins/abrt-retrace-client.c:759
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
-msgstr "Archiv obsahuje špatné soubory (mohou to být symbolické odkazy), takže nemůže být zpracován."
+msgstr ""
+"Archiv obsahuje špatné soubory (mohou to být symbolické odkazy), takže "
+"nemůže být zpracován."
 
 #: ../src/plugins/abrt-retrace-client.c:772
 msgid "Invalid response from server: missing X-Task-Id."
@@ -1253,10 +1388,10 @@ msgstr "Stopovací úloha spuštěna"
 
 #: ../src/plugins/abrt-retrace-client.c:798
 #, c-format
-msgid ""
-"Task Id: %s\n"
+msgid "Task Id: %s\n"
 "Task Password: %s\n"
-msgstr "Task Id: %s\nTask Password: %s\n"
+msgstr "Task Id: %s\n"
+"Task Password: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:856
 msgid "Invalid response from server: missing X-Task-Status."
@@ -1264,10 +1399,10 @@ msgstr "Neplatná odpověď serveru: chybí X-Task-Status."
 
 #: ../src/plugins/abrt-retrace-client.c:868
 #, c-format
-msgid ""
-"Task Status: %s\n"
+msgid "Task Status: %s\n"
 "%s\n"
-msgstr "Task Status: %s\n%s\n"
+msgstr "Task Status: %s\n"
+"%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:899
 #: ../src/plugins/abrt-retrace-client.c:973
@@ -1280,7 +1415,9 @@ msgstr "Selhalo odeslání HTTP hlavičky délky %d: NSS chyba %d."
 msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
-msgstr "Stopování skončilo chybou. Opakujte akci později. Pokud problém přetrvá, nahlašte jej prosím."
+msgstr ""
+"Stopování skončilo chybou. Opakujte akci později. Pokud problém přetrvá, "
+"nahlašte jej prosím."
 
 #: ../src/plugins/abrt-retrace-client.c:1207
 msgid "log to syslog"
@@ -1294,7 +1431,9 @@ msgstr "povolit nezabezpečené připojení k retrace serveru"
 msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
-msgstr "Nezjišťuj zda-li je stopovací server schopen zprocesovat dané balíčky před odesláním archívu."
+msgstr ""
+"Nezjišťuj zda-li je stopovací server schopen zprocesovat dané balíčky před "
+"odesláním archívu."
 
 #: ../src/plugins/abrt-retrace-client.c:1214
 msgid "retrace server URL"
@@ -1376,14 +1515,18 @@ msgstr "Lokální GNU Debugger"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr "Stahování balíčku debuginfo a lokální generování backtrace za použití GDB"
+msgstr ""
+"Stahování balíčku debuginfo a lokální generování backtrace za použití GDB"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
-msgstr "Potřebuje stáhnout balíčky s ladicími údaji, což může trvat značnou dobu a zabrat jistý prostor na disku. Avšak, na rozdíl od RetraceServeru, neodesílá obrazy paměti na vzdálené stroje."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
+msgstr ""
+"Potřebuje stáhnout balíčky s ladicími údaji, což může trvat značnou dobu a "
+"zabrat jistý prostor na disku. Avšak, na rozdíl od RetraceServeru, neodesílá "
+"obrazy paměti na vzdálené stroje."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
@@ -1391,12 +1534,18 @@ msgstr "Odešle obraz paměti k analýze na vzdálený retrace server"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. "
-"Pros: no need for debuginfo downloads. Retrace server's database of "
-"debuginfos is more complete. Retrace server may generate better backtraces. "
-"Cons: coredump you upload contains all the data from the crashed program, "
-"including your private data, if any."
-msgstr "Nahraje obraz paměti na server, který vytvoří výpis volání a vrátí jej. Výhody: Netřeba stahovat balíčky s ladicími údaji. Databáze retrace serveru již obsahuje většinu těchto balíčků. Retrace server může vytvořit lepší výpis volání.Nevýhody: obraz paměti, který nahrajete na server, obsahuje všechny údaje z havarovaného programu včetně soukromých údajů, byly-li přítomny."
+"Uploads coredump to a server, which generates backtrace and returns it. Pros:"
+" no need for debuginfo downloads. Retrace server's database of debuginfos is "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
+"private data, if any."
+msgstr ""
+"Nahraje obraz paměti na server, který vytvoří výpis volání a vrátí jej. "
+"Výhody: Netřeba stahovat balíčky s ladicími údaji. Databáze retrace serveru "
+"již obsahuje většinu těchto balíčků. Retrace server může vytvořit lepší "
+"výpis volání.Nevýhody: obraz paměti, který nahrajete na server, obsahuje "
+"všechny údaje z havarovaného programu včetně soukromých údajů, byly-li "
+"přítomny."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 #: ../src/plugins/analyze_CCpp.xml.in.h:3
@@ -1421,10 +1570,13 @@ msgstr "Použít nezabezpečeného připojení?"
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 #: ../src/plugins/analyze_CCpp.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
-msgstr "K povolení nezabezpečeného spojení použijte pole <a href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" >Nezabezpečený</a>"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
+"&gt;(warning)&lt;/a&gt;"
+msgstr ""
+"K povolení nezabezpečeného spojení použijte pole <a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
+">Nezabezpečený</a>"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
@@ -1438,7 +1590,9 @@ msgstr "Uložit relevantní řádky ze souboru ~/.xsession-errors"
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
-msgstr "Prohlédnout soubor ~/.xsession-errors a uložit řádky, které obsahují jméno spustitelného souboru. Výsledek je uložen jako položka 'xsession_errors'."
+msgstr ""
+"Prohlédnout soubor ~/.xsession-errors a uložit řádky, které obsahují jméno "
+"spustitelného souboru. Výsledek je uložen jako položka 'xsession_errors'."
 
 #: ../src/plugins/https-utils.c:62
 msgid "An error occurred on the server side."
@@ -1596,7 +1750,10 @@ msgid ""
 "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
 "\n"
 "Search for updates on bodhi server"
-msgstr "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]...\n\nHledej aktualizace na serveru bodhi"
+msgstr ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]...\n"
+"\n"
+"Hledej aktualizace na serveru bodhi"
 
 #: ../src/plugins/bodhi.c:434
 msgid "Searching for updates"
@@ -1614,9 +1771,11 @@ msgstr "Lokální verze balíčku je novější než verze dostupná v aktualiza
 #: ../src/plugins/bodhi.c:486
 #, c-format
 msgid ""
-"An update exists which might fix your problem. You can install it by "
-"running: %s. Do you want to continue with reporting the bug?"
-msgstr "Existuje aktualizace, která by mohla opravit váš problém. Můžete ji nainstalovat spuštěním: %s. Přejete si pokračovat s reportováním problému?"
+"An update exists which might fix your problem. You can install it by running:"
+" %s. Do you want to continue with reporting the bug?"
+msgstr ""
+"Existuje aktualizace, která by mohla opravit váš problém. Můžete ji "
+"nainstalovat spuštěním: %s. Přejete si pokračovat s reportováním problému?"
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
 msgid ""
@@ -1700,7 +1859,8 @@ msgstr ""
 #: ../src/cli/list.c:224
 #, c-format
 msgid ""
-"The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
+"The Autoreporting feature is disabled. Please consider enabling it by "
+"issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
 msgstr ""
 
@@ -1777,7 +1937,9 @@ msgstr ""
 msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
-msgstr "Odešle obraz paměti k analýze na vzdálený retrace server, nebo spustí lokální analýzu pokud vzdálená analýza selže"
+msgstr ""
+"Odešle obraz paměti k analýze na vzdálený retrace server, nebo spustí "
+"lokální analýzu pokud vzdálená analýza selže"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
 msgid ""
@@ -1785,10 +1947,17 @@ msgid ""
 "user doens't want to upload his coredump to anywhere the event performs "
 "local analysis. Local analysis is run event if remote analysis fails. Pros: "
 "no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump"
-" you upload contains all the data from the crashed program, including your "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
 "private data, if any."
-msgstr "Odesílá obraz paměti na server, který vygeneruje backtrace a vrátí jej. Pokud si uživatel nepřeje odeslat svůj obraz paměti, událost provede lokální analýzu. Lokální analýza probíhá i v případě selhání vzdálené analýzy. Klady: Odpadá nutnost stahovat ladící údaje. Databáze ladících údajů je mnohem více kompletní přímo na serveru pro zpětné stopování. Ten je schopen generovat lepší backtrace. Zápory: odeslaný obraz paměti obsahuje všechna data selhaného programu včetně vašich soukromých dat, pokud zde nějaká jsou."
+msgstr ""
+"Odesílá obraz paměti na server, který vygeneruje backtrace a vrátí jej. "
+"Pokud si uživatel nepřeje odeslat svůj obraz paměti, událost provede lokální "
+"analýzu. Lokální analýza probíhá i v případě selhání vzdálené analýzy. Klady:"
+" Odpadá nutnost stahovat ladící údaje. Databáze ladících údajů je mnohem "
+"více kompletní přímo na serveru pro zpětné stopování. Ten je schopen "
+"generovat lepší backtrace. Zápory: odeslaný obraz paměti obsahuje všechna "
+"data selhaného programu včetně vašich soukromých dat, pokud zde nějaká jsou."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -1797,13 +1966,16 @@ msgstr "Analyzovat jádro VM"
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
 msgid ""
 "Install kernel debuginfo packages, generate kernel log and oops message"
-msgstr "Nainstalujte balíček kernel debuginfo a vygenerujte kernel log a oops zprávu"
+msgstr ""
+"Nainstalujte balíček kernel debuginfo a vygenerujte kernel log a oops zprávu"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
 "Needs to install kernel debuginfo packages, which might take significant "
 "time, and take up disk space."
-msgstr "Je třeba nainstalovat ladící balíčky jádra, což může chvíli trvat a zabere část místa na pevném disku."
+msgstr ""
+"Je třeba nainstalovat ladící balíčky jádra, což může chvíli trvat a zabere "
+"část místa na pevném disku."
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
@@ -1817,7 +1989,9 @@ msgstr "Uložit konfiguraci z adresáře aplikace GConf"
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
-msgstr "Spustí gconftool-2 --recursive-list /apps/executable a uloží jako element 'gconf_subtree'."
+msgstr ""
+"Spustí gconftool-2 --recursive-list /apps/executable a uloží jako element "
+"'gconf_subtree'."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
@@ -1831,7 +2005,9 @@ msgstr "Uložit /etc/vimrc a /etc/gvimrc"
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
-msgstr "Zkontroluje existenci souborů \"vimrc\" a \"gvimrc\" v adresáři \"/etc\" a uloží je jako \"system_vimrc\" resp. \"system_gvimrc\""
+msgstr ""
+"Zkontroluje existenci souborů \"vimrc\" a \"gvimrc\" v adresáři \"/etc\" a "
+"uloží je jako \"system_vimrc\" resp. \"system_gvimrc\""
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid "Collect yours vim configuration files"
@@ -1843,9 +2019,11 @@ msgstr "Ulož \".vimrc\" a \".gvimrc\" z domácího adresáře"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
-msgstr "Zkontroluje existenci souborů \".vimrc\" a \".gvimrc\" v domácím adresáři a uloží je jako \"user_vimrc\" resp. \"user_gvimrc\""
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
+msgstr ""
+"Zkontroluje existenci souborů \".vimrc\" a \".gvimrc\" v domácím adresáři a "
+"uloží je jako \"user_vimrc\" resp. \"user_gvimrc\""
 
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"

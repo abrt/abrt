@@ -5,218 +5,277 @@
 # Translators:
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-12-12 14:29+0100\n"
-"PO-Revision-Date: 2014-12-12 13:30+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
-"Language-Team: Thai (http://www.transifex.com/projects/p/fedora-abrt/language/th/)\n"
+"POT-Creation-Date: 2015-01-05 07:16-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-12-12 08:30-0500\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"Language-Team: Thai (http://www.transifex.com/projects/p/fedora-abrt/"
+"language/th/)\n"
 "Language: th\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Zanata 3.5.1\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
-msgstr ""
+msgstr "เครื่องมือรายงานปัญหาอัตโนมัติ"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/abrt-applet.desktop.in.h:2
 msgid "ABRT notification applet"
-msgstr ""
+msgstr "Applet การแจ้งเตือน ABRT"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:130
 msgid ""
 "The report which will be sent does not contain any security sensitive data. "
 "Therefore it is not necessary to bother you next time and require any "
 "further action by you. \n"
 msgstr ""
+"รายงานซึ่งจะถูกส่งไม่มีข้อมูลที่สำคัญในการรักษาความปลอดภัย ดังนั้น "
+"จึงไม่จำเป็นต้องรบกวนคุณในครั้งต่อไป และไม่ต้องดำเนินการใด ๆ\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:136
 msgid "Do you want to enable automatically submitted crash reports?"
-msgstr ""
+msgstr "คุณต้องการเปิดใช้การรายงานปัญหาที่รายงานแล้วโดยอัตโนมัติหรือไม่?"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:141
 msgid "Do you want to enable automatically submitted anonymous crash reports?"
 msgstr ""
+"คุณต้องการเปิดใช้การรายงานปัญหาที่รายงานจากผู้ไม่มีชื่อแล้วโดยอัตโนมัติหรือไม่?"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. The NetworkManager DBus service is not available.
 #: ../src/applet/applet.c:243
 #, c-format
 msgid "Can't connect to NetworkManager over DBus: %s"
-msgstr ""
+msgstr "ไม่สามารถเชื่อมต่อไปยัง NetworkManager เหนือ DBus: %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:267
 #, c-format
 msgid "Can't determine network status via NetworkManager: %s"
-msgstr ""
+msgstr "ไม่สามารถตรวจสอบสถานะเครือข่ายผ่าน NetworkManager: %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:342
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr ""
+msgstr "ไม่สามารถเป็นเจ้าของ '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:350
 #, c-format
 msgid "Can't open directory for writing '%s'"
-msgstr ""
+msgstr "ไม่สามารถเปิดไดเรกทอรีสำหรับการเขียน '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:417
 msgid "A problem has been detected"
-msgstr ""
+msgstr "พบปัญหา"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:419
 #, c-format
 msgid "A problem in the %s package has been detected"
-msgstr ""
+msgstr "พบปัญหาในแพกเกจ %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:429
 #, c-format
 msgid "%s and the diagnostic data has been submitted"
-msgstr ""
+msgstr "%s และข้อมูลการวินิจฉัยถูกส่งแล้ว"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:589 ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
 #, c-format
 msgid "Can't execute '%s'"
-msgstr ""
+msgstr "ไม่สามารถดำเนินการคำสั่ง '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:668 ../src/applet/applet.c:744
 #, c-format
 msgid "Can't close notification: %s"
-msgstr ""
+msgstr "ไม่สามารถปิดการแจ้งเตือน: %s"
 
 #: ../src/applet/applet.c:706
 msgid ""
-"You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
+"You are going to mute notifications of a particular problem. You will never "
+"see a notification bubble for this problem again, however, ABRT will be "
+"detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:784 ../src/applet/applet.c:786
 msgid "Warning"
-msgstr ""
+msgstr "คำเตือน"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:834
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
+"Applet พื้นที่การแจ้งเตือนที่เตือนผู้ใช้งานต่าง ๆ เรื่องปัญหาที่ ABRT พบ"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:850
 msgid "translator-credits"
-msgstr ""
+msgstr "translator-credits"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:858
 msgid "_Quit"
-msgstr ""
+msgstr "_ออก"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:860
 msgid "Hide"
-msgstr ""
+msgstr "ซ่อน"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:862
 msgid "_About"
-msgstr ""
+msgstr "_เกี่ยวกับ"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:930
 msgid "Problem detected"
-msgstr ""
+msgstr "พบปัญหาโปรแกรม"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:980
 msgid "Ignore forever"
-msgstr ""
+msgstr "ละเว้นตลอด"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Problem has been 'autoreported' and is considered as KNOWN
+#. 
 #: ../src/applet/applet.c:991 ../src/applet/applet.c:1006
 msgid "Open"
-msgstr ""
+msgstr "เปิด"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:996
 msgid "The Problem has already been Reported"
-msgstr ""
+msgstr "ปัญหาถูกรายงานไปแล้ว"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:996
 msgid "A Known Problem has Occurred"
-msgstr ""
+msgstr "มีปัญหาที่รู้จักเกิดขึ้น"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
+#. 
 #: ../src/applet/applet.c:1015 ../src/applet/applet.c:1050
 msgid "Report"
-msgstr ""
+msgstr "รายงาน"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1020
 msgid "A Problem has Occurred"
-msgstr ""
+msgstr "มีปัญหาเกิดขึ้น"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1046
 msgid "A Problem has been Reported"
-msgstr ""
+msgstr "ปัญหาถูกรายงานแล้ว"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1054
 msgid "A New Problem has Occurred"
-msgstr ""
+msgstr "มีปัญหาใหม่เกิดขึ้น"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1064
 #, c-format
 msgid "Can't show notification: %s"
-msgstr ""
+msgstr "ไม่สามารถแสดงการแจ้งเตือน: %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. TODO: Terminate child's process?
 #: ../src/applet/applet.c:1098 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr ""
+msgstr "ไม่สามารถอ่านจาก gio channel: '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1182
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr ""
+msgstr "ไม่สามารถตั้งการเข้ารหัสบน gio channel: %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1186
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr ""
+msgstr "ไม่สามารถเปิด nonblocking mode ให้ gio channel: %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1494
 #, c-format
 msgid ""
 "Failed to open connection to session manager: '%s', notification may "
 "reappear on the next login"
 msgstr ""
+"การเปิดการเชื่อมต่อไปยังตัวจัดการวาระล้มเหลว: '%s' "
+"การแจ้งเตือนจะปรากฏขึ้นอีกครั้งหลังจากที่คุณเข้าระบบครั้งต่อไป"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1635
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr ""
+"& [-v] [DIR]...\n"
+"\n"
+"Applet ซึ่งเตือนผู้ใช้เมื่อพบปัญหาใหม่ถูกตรวจพบโดย ABRT\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr ""
+msgstr "ถามก่อนขโมยข้อมูลในไดเรกทอรี"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
-msgstr ""
+msgstr "ส่ง uReport อัตโนมัติ"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
-msgstr ""
+msgstr "การรายงานที่สั้น"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
-msgstr ""
+msgstr "การรายงานที่สั้นแบบเงียบๆ"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
-"space consuming operation. ABRT provides a service which generates the stack"
-" trace from the coredump but you have to upload the coredump to this "
-"service. With this option disabled ABRT will upload the coredump without "
-"asking."
+"space consuming operation. ABRT provides a service which generates the stack "
+"trace from the coredump but you have to upload the coredump to this service. "
+"With this option disabled ABRT will upload the coredump without asking."
 msgstr ""
+"แฟ้ม coredump เป็นสิ่งที่จำเป็นสำหรับการสร้าง stack trace "
+"ซึ่งเป็นเวลาและการดำเนินการการใช้พื้นที่ ABRT จะใหบริการโดยการสร้าง stack "
+"trace จาก coredump แต่คุณต้องอัปโหลด coredump บนบริการนี้ก่อน "
+"ด้วยทางเลือกนี้ การปิดใช้งาน ABRT จะอัปโหลด coredump โดยไม่ถามก่อน"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
 "ABRT stores problem data in directories. Whenever ABRT needs writable "
@@ -224,31 +283,48 @@ msgid ""
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
 msgstr ""
+"ABRT เก็บข้อมูลของปัญหาไว้ในไดเรกทอรี เมื่อใดก็ตามที่ ABRT "
+"ต้องใช้ไดเรกทอรีที่เขียนได้ "
+"ไดเรกทอรีจะถูกย้ายที่ตั้งจากระบบไปยังไดเรกทอรีหลักของคุณ ด้วยทางเลือกนี้ "
+"การปิดใช้งาน ABRT จะย้ายไดเรกทอรีปัญหาโดยไม่ถามก่อน"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
-"uses uReports  for fast global duplicate detection. In default configuration"
-" uReport is sent at beginning of reporting process. With this option enabled"
-" uReports are sent automatically immediately after problem detection."
+"uses uReports  for fast global duplicate detection. In default configuration "
+"uReport is sent at beginning of reporting process. With this option enabled "
+"uReports are sent automatically immediately after problem detection."
 msgstr ""
+"uReport เป็นรายละเอียดปัญหาที่สั้นและไม่บอกชื่อ ซึ่ง ABRT ใช้ uReport "
+"สำหรับการตรวจปัญหาจากทั่วโลกที่เร็วขึ้น ในค่ากำหนดเริ่มต้น uReport "
+"จะถูกส่งเมื่อตอนต้นของการประมวลผลการรายงาน ด้วยทางเลือกนี้ uReport "
+"จะถูกส่งทันทีโดยอัตโนมัติหลังพบปัญหา"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
-"With this option enabled reporting process started by click on Report button"
-" in problem notification bubble will be interrupted after uReport is sent. "
+"With this option enabled reporting process started by click on Report button "
+"in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
+"ด้วยทางเลือกนี้ การประมวลผลการรายงาน หากเปิดใช้แล้ว จะเริ่มต้นโดยการคลิกปุ่ม "
+"รายงาน ในฟองการแจ้งเตือนปัญหาจะถูกขัดจังหวะหลังจากที่ uReport ถูกส่งแล้ว "
+"คุณสามารถใช้ตัวเรียกดูปัญหาค่าเริ่มต้นเพื่อทำรายงานสมบูรณ์ได้เสมอ"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
+"ด้วยทางเลือกนี้ ABRT ที่เปิดใช้งานแล้วจะไม่แจ้งเตือนปัญหาที่รายงานแล้ว "
+"มีผลก็ต่อเมื่อการรายงานสั้นถูกเปิดใช้งาน"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid "Ask before uploading coredump"
-msgstr ""
+msgstr "ถามก่อนอัปโหลด coredump"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid ""
@@ -256,53 +332,69 @@ msgid ""
 "access if possibly sensitive data are dected."
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Request private ticket for sensitive information"
-msgstr ""
+msgstr "ขอตั๋วส่วนตัวสำหรับข้อมูลสำคัญ"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid "Notify incomplete problems"
-msgstr ""
+msgstr "เตือนปัญหาที่ยังไม่สมบูรณ์"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
 msgstr ""
+"ปัญหาที่ไม่สมบูรณ์จะถูกพบขณะปิดเครื่องหรือออกจากระบบ "
+"ในการจัดทำรายงานปัญหาที่มีค่า ABRT จะไม่อนุญาตให้คุณส่งรายงานปัญหาเหล่านี้"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Close"
-msgstr ""
+msgstr "_ปิด"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/system-config-abrt.c:84
 msgid "_Defaults"
-msgstr ""
+msgstr "_ค่าเริ่มต้น"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/system-config-abrt.c:112
 #: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
-msgstr ""
+msgstr "การกำหนดการรายงานปัญหา"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
-msgstr ""
+msgstr "เกี่ยวกับ System Config ABRT"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/main.c:105
 msgid "About"
-msgstr ""
+msgstr "เกี่ยวกับ"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/main.c:106
 msgid "Quit"
-msgstr ""
+msgstr "ออก"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-action-save-package-data.c:382
 msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
 msgstr ""
+"& [-v] [-c CONFFILE] -d DIR\n"
+"\n"
+"สอบถามฐานข้อมูลแพกเกจ แล้วบันทึกแพกเกจรวมทั้งชื่อคอมโพเนนต์ด้วย"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-action-save-package-data.c:394
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
 #: ../src/plugins/abrt-action-analyze-c.c:78
@@ -312,129 +404,162 @@ msgstr ""
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
 msgid "Problem directory"
-msgstr ""
+msgstr "ไดเรกทอรีปัญหา"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-action-save-package-data.c:395
 msgid "Configuration file"
-msgstr ""
+msgstr "แฟ้มค่ากำหนด"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-server.c:786 ../src/dbus/abrt-dbus.c:781
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:484
 msgid "& [options]"
-msgstr ""
+msgstr "& [options]"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-server.c:797
 msgid "Use NUM as client uid"
-msgstr ""
+msgstr "ใช้ NUM เป็น client uid"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:273
 #: ../src/plugins/abrt-dump-xorg.c:244
 msgid "Log to syslog"
-msgstr ""
+msgstr "บันทึกไปที่ปูมระบบ"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-server.c:799 ../src/daemon/abrtd.c:500
 msgid "Add program names to log"
-msgstr ""
+msgstr "เพิ่มชื่อโปรแกรมที่ต้องการบันทึก"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:123
 msgid "Unknown error"
-msgstr ""
+msgstr "ข้อผิดพลาดที่ไม่รู้จัก"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:188
 #, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr ""
+msgstr "'%s' ไม่ใช่ไดเรกทอรีปัญหาที่ถูกต้อง"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:223
 #, c-format
 msgid "'%s' element can't be modified"
-msgstr ""
+msgstr "element '%s' แก้ไม่ได้"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:244 ../src/dbus/abrt-dbus.c:446
 #: ../src/dbus/abrt-dbus.c:498 ../src/dbus/abrt-configuration.c:618
 #: ../src/dbus/abrt-configuration.c:683
 #, c-format
 msgid "Not Authorized"
-msgstr ""
+msgstr "ไม่มีตัวตน"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:256
 msgid "Can't access the problem for modification"
-msgstr ""
+msgstr "ไม่สามารถเข้าถึงปัญหาเพื่อแก้ไข"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:461
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
+"การ Chowning directory ล้มเหลว กรุณาตรวจสอบปูมระบบสำหรับข้อมูลเพิ่มเติม"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:559
 #, c-format
 msgid "'%s' is not a valid element name"
-msgstr ""
+msgstr "'%s' ไม่ใช่ชื่อ element ที่ถูกต้อง"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:580
 #, c-format
 msgid "Can't get size of '%s'"
-msgstr ""
+msgstr "ไม่สามารถรับขนาด '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:595
 msgid "No problem space left"
-msgstr ""
+msgstr "ไม่มีพื้นที่ว่างเหลือสำหรับปัญหา"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:627
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr ""
+msgstr "ไม่สามารถลบ element '%s' จากไดเรกทอรีปัญหา '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:763 ../src/dbus/abrt-configuration.c:983
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr ""
+"ชื่อ '%s' หายไปแล้ว กรุณาตรวจสอบ หากบริการอื่นที่เป็นเจ้าของชื่อไม่ทำงาน\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:790 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:499
 msgid "Exit after NUM seconds of inactivity"
-msgstr ""
+msgstr "ออกหลังจากไม่ใช้งาน NUM วินาที"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:808 ../src/dbus/abrt-configuration.c:1021
 msgid "This program must be run as root."
-msgstr ""
+msgstr "โปรแกรมนี้ต้องเรียกใช้ในฐานะผู้ดูแลระบบ"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrtd.c:451
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
-"detected while computer is shutting down or user is logging out. In order to"
-" provide valuable problem reports, ABRT will not allow you to submit this "
-"problem. If you have time and want to help the developers in their effort to"
-" sort out this problem, please contact them directly."
+"detected while computer is shutting down or user is logging out. In order to "
+"provide valuable problem reports, ABRT will not allow you to submit this "
+"problem. If you have time and want to help the developers in their effort to "
+"sort out this problem, please contact them directly."
 msgstr ""
+"ข้อมูลปัญหาไม่สมบูรณ์ "
+"นี่อาจเกิดเป็นประจำเมื่อตรวจพบปัญหาขณะปิดเครื่องหรือออกจากระบบ "
+"ในการจัดทำรายงานปัญหาที่มีค่า ABRT จะไม่อนุญาตให้คุณส่งรายงานปัญหาเหล่านี้ "
+"หากคุณมีเวลา และอยากช่วยนักพัฒนาในความพยายามของพวกเขาที่จะเรียงลำดับปัญหานี้ "
+"ให้ติดต่อพวกเขาโดยตรง"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrtd.c:497
 msgid "Do not daemonize"
-msgstr ""
+msgstr "อย่าทำงานแบบภูติ"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrtd.c:498
 msgid "Log to syslog even with -d"
-msgstr ""
+msgstr "บันทึกไปที่ปูมระบบแม้แต่ -d"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-handle-event.c:388
 msgid "& [-v -i] -e|--event EVENT DIR..."
-msgstr ""
+msgstr "& [-v -i] -e|--event EVENT DIR..."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-handle-event.c:396
 msgid "Run EVENT on DIR"
-msgstr ""
+msgstr "เรียกใช้ EVENT บน DIR"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-handle-event.c:397
 msgid "Communicate directly to the user"
-msgstr ""
+msgstr "สื่อสารกับผู้ใช้โดยตรง"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
-msgstr ""
+msgstr "ไม่มีใครว่างแล้วละ กำลังละเว้นแฟ้มเก็บถาวร '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
 "& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
@@ -446,30 +571,97 @@ msgid ""
 "If UPLOAD_DIRECTORY is not provided, uses a value of\n"
 "WatchCrashdumpArchiveDir option from abrt.conf"
 msgstr ""
+"& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
+"\n"
+"\n"
+"เฝ้าดู UPLOAD_DIRECTORY และแกะแฟ้มเก็บถาวรลงใน DumpLocation\n"
+"ที่ระบุไว้ใน abrt.conf\n"
+"\n"
+"หาก UPLOAD_DIRECTORY ไม่ได้ถูกให้ไว้ ให้ใช้ค่าของตัวเลือก "
+"WatchCrashdumpArchiveDir จาก abrt.conf"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-upload-watch.c:281
 msgid "Daemize"
-msgstr ""
+msgstr "Daemize"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr ""
+msgstr "จำนวนคนงานที่ทำงานพร้อมกัน ค่าเริ่มต้นคือ"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr ""
+msgstr "จำนวนสูงสุดของจำนวนเมกะไบต์ของแคช ค่าเริ่มต้นคือ"
 
-#: ../src/daemon/abrt-auto-reporting.c:81
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/daemon/abrt-auto-reporting.c:176
 msgid "& [ "
+msgstr "& [ "
+
+#: ../src/daemon/abrt-auto-reporting.c:213
+msgid "Turns the authentication off"
 msgstr ""
 
-#: ../src/daemon/abrt-auto-reporting.c:113
+#: ../src/daemon/abrt-auto-reporting.c:214
+msgid "Red Hat Support user name"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:215
+msgid "Red Hat Support password, if not given, a prompt for it will be issued"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:216
+msgid "uReport SSL certificate paths or certificate type"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:227
+msgid "You also need to specify --username for --password"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:233
+msgid "You can use either --username or --certificate"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:239
+msgid "You can use either --username or --anonymous"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:245
+msgid "You can use either --anonymous or --certificate"
+msgstr ""
+
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/daemon/abrt-auto-reporting.c:251
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "จำนวนอาร์กิวเมนต์ไม่ถูกต้อง"
 
-#: ../src/daemon/abrt-auto-reporting.c:138
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/daemon/abrt-auto-reporting.c:270
 #, c-format
 msgid "Unknown option value: '%s'\n"
+msgstr "ไม่รู้ค่าของตัวเลือก: '%s'\n"
+
+#: ../src/daemon/abrt-auto-reporting.c:305
+msgid "Password:"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:308
+msgid "Cannot continue without password\n"
+msgstr ""
+
+#. Print only the part before ':' of a string like "username:password"
+#: ../src/daemon/abrt-auto-reporting.c:347
+msgid "HTTP Authenticated auto reporting"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:349
+msgid "SSL Client Authenticated auto reporting"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:351
+msgid "anonymous auto reporting"
 msgstr ""
 
 #: ../src/daemon/abrt-handle-upload.in:69
@@ -549,54 +741,66 @@ msgstr ""
 msgid "'{0}' processed successfully"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
 msgid "Generating backtrace"
-msgstr ""
+msgstr "กำลังสร้าง backtrace"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/lib/problem_api_dbus.c:42
 #, c-format
 msgid "Can't connect to system DBus: %s"
-msgstr ""
+msgstr "ไม่สามารถเชื่อมต่อไปยัง DBus ระบบ: %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/lib/problem_api_dbus.c:68
 #, c-format
 msgid "Can't chown '%s': %s"
-msgstr ""
+msgstr "ไม่สามารถทำการ chown '%s': '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/lib/problem_api_dbus.c:97
 #, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr ""
+msgstr "การลบไดเรกทอรีปัญหาล้มเหลว: %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/lib/problem_api_dbus.c:133
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
-msgstr ""
+msgstr "ไม่สามารถรับข้อมูลปัญหาจาก abrt-dbus: %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/lib/problem_api_dbus.c:169
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
-msgstr ""
+msgstr "ไม่สามารถรับรายการปัญหาจาก abrt-dbus: %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/lib/ignored_problems.c:233
 #, c-format
 msgid "Can't create temporary file '%s'"
-msgstr ""
+msgstr "ไม่สามารถสร้างแฟ้มชั่วคราว '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/lib/ignored_problems.c:250
 #, c-format
 msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
 "problems '%s'"
 msgstr ""
+"ไม่สามารถ เขียน ให้ '%s' ปัญหา '%s' จะไม่ถูกลบออกจากรายการปัญหาที่ถูกละทิ้ง "
+"'%s'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Something nefarious happened
 #: ../src/lib/ignored_problems.c:264
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
-msgstr ""
+msgstr "ไม่สามารถเปลี่ยนชื่อ '%s' จาก '%s' และลบปัญหา '%s' ล้มเหลว"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-backtrace.c:41
 msgid ""
 "& [options] -d DIR\n"
@@ -604,25 +808,37 @@ msgid ""
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
 msgstr ""
+"& [options] -d DIR\n"
+"\n"
+"วิเคราะห์ C/C++ backtrace, สร้างแฮชซ้ำ, backtrace rating,\n"
+"และระบุการทำงานผิดพลาดในไดเรกทอรีปัญหา DIR"
 
+# translation auto-copied from project abrt, version master, document abrt
+#. 
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "การวิเคราะห์ Backtrace ล้มเหลวสำหรับ %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-backtrace.c:146
 msgid "Crash thread not found"
-msgstr ""
+msgstr "ไม่พบ Crash thread"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-c.c:67
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"คำนวณและบันทึกค่า UUID ของ coredump ในไดเรกทอรีปัญหา DIR"
 
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
@@ -643,120 +859,160 @@ msgstr ""
 msgid "COREFILE is not specified"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"คำนวณและบันทึกค่า UUID และ DUPHASH สำหรับ oops problem directory DIR"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-xorg.c:73
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"คำนวณและบันทึกค่า UUID และ DUPHASH สำหรับ xorg problem directory DIR"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-xorg.c:113
 #, c-format
 msgid "Module '%s' was loaded - won't report this crash"
-msgstr ""
+msgstr "โมดูล '%s' ถูกโหลดแล้ว - ไม่ต้องรายงานปัญหานี้"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-python.c:36
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"คำนวณและบันทึกค่า UUID และ DUPHASH ของ python crash dumps"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:52
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
-msgstr ""
+msgstr "วิธีใช้งาน: {0} [-v[v]] [--core=VMCORE]"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:79
 msgid "File {0} doesn't exist"
-msgstr ""
+msgstr "ไม่มีแฟ้ม {0}"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:82
 msgid "Extracting the oops text from core"
-msgstr ""
+msgstr "กำลังแยกข้อความ oops จาก core"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
-msgid ""
-"Can't process {0}:\n"
+msgid "Can't process {0}:\n"
 "{1}"
-msgstr ""
+msgstr "ไม่สามารถประมวลผล {0}:\n"
+"{1}"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "Can't extract the oops message: '{0}'"
-msgstr ""
+msgstr "ไม่สามารถแยกข้อความ oops: '{0}'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:98
 msgid "Oops text extracted successfully"
-msgstr ""
+msgstr "แยกข้อความ Oops สำเร็จ"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
-msgstr ""
+msgstr "ปูมของเคอร์เนลบ่งชี้ว่าพบปัญหาฮาร์ดแวร์\n"
+"นี่อาจจะไม่ใช่ปัญหาซอฟต์แวร์\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
 "& [options] -d DIR\n"
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
 msgstr ""
+"& [options] -d DIR\n"
+"\n"
+"วิเคราะห์ coredump ในไดเรกทอรีปัญหา DIR, สร้างและบันทึก backtrace"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
-msgstr ""
+msgstr "ไดเรกทอรี debuginfo เพิ่มเติม"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-backtrace.c:57
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr ""
+msgstr "ฆ่า gdb หากถูกเรียกมากกว่า NUM วินาที"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr ""
+msgstr "Backtrace ได้สร้างและบันทึกแล้ว เป็นจำนวน %u ไบต์"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:40
 msgid ""
 "& [-v] [-r] -d DIR\n"
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
 msgstr ""
+"& [-v] [-r] -d DIR\n"
+"\n"
+"สร้าง coredump-level backtrace จาก core dump และ corresponding binary"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
-msgstr ""
+msgstr "อย่า hash ลายนิ้วมือ"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
 msgid "Generating core_backtrace"
-msgstr ""
+msgstr "กำลังสร้าง core_backtrace"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:81
 msgid "Error: GDB did not return any data"
-msgstr ""
+msgstr "ข้อผิดพลาด: GDB ไม่ตอบข้อมูลใด"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:95
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "ข้อผิดพลาด: %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:51
 msgid "Exiting on user command"
-msgstr ""
+msgstr "การเลิกทำตามคำสั่งของผู้ใช้งาน"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:88
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH]...]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
@@ -766,70 +1022,112 @@ msgid ""
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
 "    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
 "    -e,--exact  Download only specified files\n"
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
 msgstr ""
+"วิธีใช้งาน: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH[:PATH]...]\n"
+"\n"
+"ติดตั้ง debuginfos สำหรับ build-ids ทั้งหมดที่อยู่ในรายการ BUILD_IDS_FILE\n"
+"ไปยัง CACHEDIR โดยใช้ TMPDIR เป็น temporary staging area.\n"
+"แฟ้มเก่าใน CACHEDIR จะถูกลบจนกว่ามันจะมีขนาดเล็กกว่า SIZE.\n"
+"\n"
+"    -v          Be verbose\n"
+"    -y          Noninteractive, assume 'Yes' to all questions\n"
+"    --ids       Default: build_ids\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
+"    --cache     Default: /var/cache/abrt-di\n"
+"    --size_mb   Default: 4096\n"
+"    -e,--exact  Download only specified files\n"
+"    --repo      Pattern to use when searching for repos.\n"
+"                Default: *debug*\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:169
 msgid "Can't open {0}: {1}"
-msgstr ""
+msgstr "ไม่สามารถเปิด {0}: {1}"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:206
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr ""
+"Coredump references {0} debuginfo files, {1} ของพวกมันไม่ได้ถูกติดตั้ง"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:209
 msgid "{0} of debuginfo files are not installed"
-msgstr ""
+msgstr "{0} ของแฟ้ม debuginfo ไม่ได้ถูกติดตั้ง"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:223
 msgid "Missing requested file: {0}"
-msgstr ""
+msgstr "แฟ้มที่ขอไว้หายไป: {0}"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:228
 msgid "Missing debuginfo file: {0}"
-msgstr ""
+msgstr "แฟ้ม debuginfo หายไป: {0}"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:231
 msgid "All debuginfo files are available"
-msgstr ""
+msgstr "แฟ้ม debuginfo ทั้งหมดมีให้ใช้งาน"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
 msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
 msgstr ""
+"ตกลงจะอัปโหลด core dump หรือไม่? (อาจมีข้อมูลสำคัญ) หากคุณตอบ 'ไม่' stack "
+"trace จะถูกสร้างอยู่ในเครื่อง (อาจจะต้องดาวน์โหลดข้อมูลขนาดใหญ่หลวง)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
 msgstr ""
+"คุณต้องการสร้าง stack trace บนเครื่องหรือไม่? "
+"(อาจดาวน์โหลดข้อมูลขนาดใหญ่หลวง แต่จะรายงานไม่ได้ หากไม่มี stack trace)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
+"SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
+"& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
+"\n"
+"ลบไดเรกทอรีปัญหา (-d) หรือแฟ้ม (-f) ใน DIRs จนกว่าจะมีขนาดเล็กกว่า SIZE.\n"
+"FILEs จะถูกสงวนไว้ (ไม่ลบ)."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
-msgstr ""
+msgstr "ลบไดเรกทอรีปัญหาที่ว่าง"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-trim-files.c:237
 msgid "Delete files inside this directory"
-msgstr ""
+msgstr "ลบแฟ้มที่อยู่ในไดเรกทอรีนี้"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-trim-files.c:238
 msgid "Preserve this directory"
-msgstr ""
+msgstr "สงวนไดเรกททอรีนี้"
 
 #: ../src/plugins/abrt-action-ureport:59
 #, c-format
@@ -863,77 +1161,93 @@ msgstr ""
 msgid "reporter-ureport failed with exit code %d"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
-msgstr ""
+msgstr "สัญญาณที่ถูกส่งจากโค้ดของ userspace"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:533
 msgid "Signal sent by timer/IO/async event"
-msgstr ""
+msgstr "สัญญาณที่ถูกส่งจาก timer/IO/async event"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:541
 msgid "Signal has siginfo.si_code = SI_USER"
-msgstr ""
+msgstr "สัญญาณที่มี siginfo.si_code = SI_USER"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:544
 msgid "Signal due to write to closed pipe"
-msgstr ""
+msgstr "สัญญาณท่ี่มาจากการเขียนไปยัง closed pipe"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:550
 #: ../src/plugins/abrt-gdb-exploitable:575
 msgid "Signal sent by keyboard"
-msgstr ""
+msgstr "สัญญาณที่ส่งจากแป้นพิมพ์"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:554
 #: ../src/plugins/abrt-gdb-exploitable:579
 msgid "Job control signal sent by kernel"
-msgstr ""
+msgstr "สัญญาณควบคุมงานที่ถูกส่งโดยเคอร์เนล"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:558
 #: ../src/plugins/abrt-gdb-exploitable:587
 msgid "Signal sent by window resize"
-msgstr ""
+msgstr "สัญญาณที่ถูกส่งจากการปรับขนาดหน้าต่าง"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:562
 #: ../src/plugins/abrt-gdb-exploitable:591
 msgid "Signal sent by alarm(N) expiration"
-msgstr ""
+msgstr "สัญญาณที่ถูกส่งจาก alarm(N) expiration"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:583
 msgid "Signal due to write to broken pipe"
-msgstr ""
+msgstr "สัญญาณที่มาจากการเขียนไปยัง broken pipe"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:607
 msgid "ABRT signal (abort() was called?)"
-msgstr ""
+msgstr "สัญญาณ ABRT (ได้เรียกคำสั่ง abort() หรือยัง?)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:616
 msgid "XCPU signal (over CPU time limit)"
-msgstr ""
+msgstr "สัญญาณ XCPU (เวลาจำกัดของ over CPU)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:620
 msgid "XFSZ signal (over file size limit)"
-msgstr ""
+msgstr "สัญญาณ XFSZ (ขนาดจำกัดของ over file)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:624
 msgid "TRAP signal (can be a bug in a debugger/tracer)"
-msgstr ""
+msgstr "สัญญาณ TRAP (อาจเป็นปัญหาใน debugger/tracer ได้)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:628
 msgid "SYS signal (unknown syscall was called?)"
-msgstr ""
+msgstr "สัญญาณ SYS (ได้เรียก syscall ที่ไม่รู้จักแล้วหรือยัง?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:633
 msgid "Arithmetic exception"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:637
 msgid "Division by zero"
-msgstr ""
+msgstr "ใช้ศูนย์เป็นตัวหาร"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:641
 msgid "Illegal instruction (jump to a random address?)"
-msgstr ""
+msgstr "การกระทำผิดกฎหมาย (ได้ข้ามไป random address หรือเปล่า?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:647
 msgid "Non-crash related signal"
@@ -943,18 +1257,20 @@ msgstr ""
 msgid "Stack overflow"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:656
 msgid "Write to an invalid address"
-msgstr ""
+msgstr "เขียนไปยังที่อยู่ที่ไม่ถูกต้อง"
 
 #: ../src/plugins/abrt-gdb-exploitable:660
 msgid "Subroutine return to an invalid address (corrupted stack?)"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:666
 #: ../src/plugins/abrt-gdb-exploitable:670
 msgid "Jump to an invalid address"
-msgstr ""
+msgstr "ข้ามไปที่อยู่ที่ไม่ถูกต้อง"
 
 #: ../src/plugins/abrt-gdb-exploitable:674
 msgid ""
@@ -973,113 +1289,148 @@ msgstr ""
 msgid "Exploitable rating (0-9 scale): "
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:709
 msgid "Current instruction: "
-msgstr ""
+msgstr "วิธีปฏิบัติปัจจุบัน:"
 
 #: ../src/plugins/abrt-gdb-exploitable:711
 msgid "Exploitability analysis came up empty\n"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-watch-log.c:142
 msgid ""
 "& [-vs] [-F STR]... FILE PROG [ARGS]\n"
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
 msgstr ""
+"& [-vs] [-F STR]... FILE PROG [ARGS]\n"
+"\n"
+"ให้ดู FILE เรียก PROG เมื่อมันงอกขึ้นมา หรือถูกแทนที่"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-watch-log.c:154
 msgid "Don't run PROG if STRs aren't found"
-msgstr ""
+msgstr "อย่าเรียก PROG หากไม่พบ STRs"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:125
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
 msgstr ""
+"เกิดปัญหากับเคอร์เนลเพราะ BIOS เสียหาย น่าเสียดายจัง "
+"ปัญหาบางประการไม่สามารถซ่อมได้โดยผู้เชี่ยวชาญด้านเคอร์เนล"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:130
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
 msgstr ""
+"เกิดปัญหากับเคอร์เนล แต่ฮาร์ดแวร์ของคุณไม่ถูกรองรับ ดังนั้น "
+"ผู้เชี่ยวชาญด้านเคอร์เนลจะแก้ปัญหานี้ไม่ได้"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:145
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
+"เกิดปัญหากับเคอร์เนล แต่เคอร์เนลของคุณเสีย (flags:%s) ดังนั้น "
+"ผู้เชี่ยวชาญด้านเคอร์เนลจะวิเคราะห์การรายงานส่วนที่เสียหายไม่ได้"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:153
 #, c-format
 msgid " Tainted modules: %s."
-msgstr ""
+msgstr "โมดูลที่เสีย: %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:254
 msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr ""
+"& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"แยก oops จาก FILE (หรือการป้อนมาตรฐาน)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:274
 msgid "Print found oopses on standard output"
-msgstr ""
+msgstr "Print พบ oopses บนการป้อนมาตรฐาน"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
+#. 
 #: ../src/plugins/abrt-dump-oops.c:278
 msgid "Create new problem directory in DIR for every oops found"
-msgstr ""
+msgstr "สร้างไดเรกทอรีปัญหาใหม่ใน DIR สำหรับทุก oops ที่พบ"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:279 ../src/plugins/abrt-dump-xorg.c:247
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
-msgstr ""
+msgstr "เหมือนกับ -d DumpLocation DumpLocation ถูกระบุใน abrt.conf"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:280
 msgid "Save the extracted information in PROBLEM"
-msgstr ""
+msgstr "บันทึกข้อมูลที่แยกแล้วใน PROBLEM"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:281 ../src/plugins/abrt-dump-xorg.c:248
 msgid "Make the problem directory world readable"
-msgstr ""
+msgstr "ทำให้อ่านโลกของไดเรกทอรีปัญหาได้"
 
 #: ../src/plugins/abrt-dump-oops.c:282
 msgid "Throttle problem directory creation to 1 per second"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:283 ../src/plugins/abrt-dump-xorg.c:249
 msgid "Print search string(s) to stdout and exit"
-msgstr ""
+msgstr "Print ค้นหา string(s) เพื่อ stdout แล้ว exit"
 
 #: ../src/plugins/abrt-dump-oops.c:311
 msgid "Failed to compile regex"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:402
 msgid "Can't update the problem: more than one oops found"
-msgstr ""
+msgstr "ไม่สามารถปรับปรุงปัญหาได้: พบ oops มากกว่าหนึ่ง"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:421
 #, c-format
 msgid "Sleeping for %d seconds"
-msgstr ""
+msgstr "หลับเป็นเวลา %d วินาที"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-xorg.c:237
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
 msgstr ""
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"แยก Xorg crash จาก FILE (หรือการป้อนมาตรฐาน)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-xorg.c:245
 msgid "Print found crash data on standard output"
-msgstr ""
+msgstr "Print พบ crash data บนการป้อนมาตรฐาน"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-xorg.c:246
 msgid "Create problem directory in DIR for every crash found"
-msgstr ""
+msgstr "สร้างไดเรกทอรีปัญหาใน DIR สำหรับทุก crash ที่พบ"
 
 #: ../src/plugins/abrt-retrace-client.c:70
 msgid ""
@@ -1087,21 +1438,24 @@ msgid ""
 "retracing."
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
+#. 
 #: ../src/plugins/abrt-retrace-client.c:103
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
 msgid "Can't create temporary file in "
-msgstr ""
+msgstr "ไม่สามารถสร้างแฟ้มชั่วคราวเข้าไป"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:211
 #: ../src/plugins/abrt-retrace-client.c:398
 #: ../src/plugins/abrt-retrace-client.c:666
 #: ../src/plugins/abrt-retrace-client.c:832
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr ""
+msgstr "การส่ง HTTP header ในความยาว %d ล้มเหลว: NSS error %d"
 
 #: ../src/plugins/abrt-retrace-client.c:223
 #: ../src/plugins/abrt-retrace-client.c:412
@@ -1111,8 +1465,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:1001
 #: ../src/plugins/abrt-retrace-client.c:1060
 #, c-format
-msgid ""
-"Unexpected HTTP response from server: %d\n"
+msgid "Unexpected HTTP response from server: %d\n"
 "%s"
 msgstr ""
 
@@ -1248,8 +1601,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:798
 #, c-format
-msgid ""
-"Task Id: %s\n"
+msgid "Task Id: %s\n"
 "Task Password: %s\n"
 msgstr ""
 
@@ -1259,8 +1611,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:868
 #, c-format
-msgid ""
-"Task Status: %s\n"
+msgid "Task Status: %s\n"
 "%s\n"
 msgstr ""
 
@@ -1376,8 +1727,8 @@ msgstr ""
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
@@ -1386,11 +1737,11 @@ msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. "
-"Pros: no need for debuginfo downloads. Retrace server's database of "
-"debuginfos is more complete. Retrace server may generate better backtraces. "
-"Cons: coredump you upload contains all the data from the crashed program, "
-"including your private data, if any."
+"Uploads coredump to a server, which generates backtrace and returns it. Pros:"
+" no need for debuginfo downloads. Retrace server's database of debuginfos is "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
+"private data, if any."
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
@@ -1416,9 +1767,9 @@ msgstr ""
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 #: ../src/plugins/analyze_CCpp.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
+"&gt;(warning)&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
@@ -1609,8 +1960,8 @@ msgstr ""
 #: ../src/plugins/bodhi.c:486
 #, c-format
 msgid ""
-"An update exists which might fix your problem. You can install it by "
-"running: %s. Do you want to continue with reporting the bug?"
+"An update exists which might fix your problem. You can install it by running:"
+" %s. Do you want to continue with reporting the bug?"
 msgstr ""
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
@@ -1695,7 +2046,8 @@ msgstr ""
 #: ../src/cli/list.c:224
 #, c-format
 msgid ""
-"The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
+"The Autoreporting feature is disabled. Please consider enabling it by "
+"issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
 msgstr ""
 
@@ -1780,8 +2132,8 @@ msgid ""
 "user doens't want to upload his coredump to anywhere the event performs "
 "local analysis. Local analysis is run event if remote analysis fails. Pros: "
 "no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump"
-" you upload contains all the data from the crashed program, including your "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
 
@@ -1838,8 +2190,8 @@ msgstr ""
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 
 #: ../src/plugins/post_report.xml.in.h:1

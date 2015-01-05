@@ -6,24 +6,29 @@
 # Chester Cheng <ccheng@redhat.com>, 2012,2014
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
 # Terry Chuang <tchuang@redhat.com>, 2014
+# Chester Cheng <ccheng@redhat.com>, 2015. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-12-12 14:29+0100\n"
-"PO-Revision-Date: 2014-12-23 06:50+0000\n"
-"Last-Translator: Terry Chuang <tchuang@redhat.com>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/fedora-abrt/language/zh_TW/)\n"
+"POT-Creation-Date: 2015-01-05 07:16-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_TW\n"
+"PO-Revision-Date: 2015-01-06 01:13-0500\n"
+"Last-Translator: Chester Cheng <ccheng@redhat.com>\n"
+"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/fedora-"
+"abrt/language/zh_TW/)\n"
+"Language: zh-TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Zanata 3.5.1\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "自動臭蟲回報工具"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/abrt-applet.desktop.in.h:2
 msgid "ABRT notification applet"
 msgstr "ABRT 通知面板程式"
@@ -43,31 +48,37 @@ msgstr "您是否希望啟用自動提交的當機回報？"
 msgid "Do you want to enable automatically submitted anonymous crash reports?"
 msgstr "您是否希望啟用自動提交的匿名當機回報？"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. The NetworkManager DBus service is not available.
 #: ../src/applet/applet.c:243
 #, c-format
 msgid "Can't connect to NetworkManager over DBus: %s"
 msgstr "無法透過 DBus 連接至 NetworkManager：%s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:267
 #, c-format
 msgid "Can't determine network status via NetworkManager: %s"
 msgstr "無法透過 NetworkManager 判定網路狀態：%s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:342
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "無法掌握「%s」的擁有權"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:350
 #, c-format
 msgid "Can't open directory for writing '%s'"
 msgstr "無法開啟目錄以寫入「%s」"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:417
 msgid "A problem has been detected"
 msgstr "已偵測到問題"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:419
 #, c-format
 msgid "A problem in the %s package has been detected"
@@ -78,12 +89,14 @@ msgstr "已偵測到 %s 軟體包發生問題"
 msgid "%s and the diagnostic data has been submitted"
 msgstr "%s 和診斷資料已提交"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:589 ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
 #, c-format
 msgid "Can't execute '%s'"
 msgstr "無法執行「%s」"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:668 ../src/applet/applet.c:744
 #, c-format
 msgid "Can't close notification: %s"
@@ -91,96 +104,126 @@ msgstr "無法關閉通知：%s"
 
 #: ../src/applet/applet.c:706
 msgid ""
-"You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
+"You are going to mute notifications of a particular problem. You will never "
+"see a notification bubble for this problem again, however, ABRT will be "
+"detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
-msgstr "您正要將特定問題的通知消音。您將不再看見此問題的浮出式氣泡通知；然而，ABRT 仍會偵測此問題，而您也可以從 ABRT 的圖形使用介面中回報它\n\n您想要繼續嗎？"
+msgstr ""
+"您正要將特定問題的通知消音。您將不再看見此問題的浮出式氣泡通知；然而，ABRT 仍會偵測此問題，而您也可以從 ABRT 的圖形使用介面中回報它\n"
+"\n"
+"您想要繼續嗎？"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:784 ../src/applet/applet.c:786
 msgid "Warning"
 msgstr "警告"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:834
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "會通知使用者有關於 ABRT 所發現的問題的通知區域面板程式"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:850
 msgid "translator-credits"
-msgstr "Eunju Kim <eukim@redhat.com>, 2009.\nTerry Chuang <tchuang@redhat.com>, 2009, 2010.\nCheng-Chia Tseng <pswo10680@gmail.com>, 2011, 2012."
+msgstr ""
+"Eunju Kim <eukim@redhat.com>, 2009.\n"
+"Terry Chuang <tchuang@redhat.com>, 2009, 2010.\n"
+"Cheng-Chia Tseng <pswo10680@gmail.com>, 2011, 2012."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:858
 msgid "_Quit"
 msgstr "退出(_Q)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:860
 msgid "Hide"
 msgstr "隱藏"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:862
 msgid "_About"
 msgstr "關於(_A)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:930
 msgid "Problem detected"
 msgstr "偵測到的問題"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:980
 msgid "Ignore forever"
 msgstr "永遠忽略"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Problem has been 'autoreported' and is considered as KNOWN
+#. 
 #: ../src/applet/applet.c:991 ../src/applet/applet.c:1006
 msgid "Open"
 msgstr "開啟"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:996
 msgid "The Problem has already been Reported"
 msgstr "此問題已被回報過"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:996
 msgid "A Known Problem has Occurred"
 msgstr "遭遇已知問題"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
+#. 
 #: ../src/applet/applet.c:1015 ../src/applet/applet.c:1050
 msgid "Report"
 msgstr "回報"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1020
 msgid "A Problem has Occurred"
 msgstr "遭遇到問題"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1046
 msgid "A Problem has been Reported"
 msgstr "已回報問題"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1054
 msgid "A New Problem has Occurred"
 msgstr "遭遇新問題"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1064
 #, c-format
 msgid "Can't show notification: %s"
 msgstr "無法顯示通知：%s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. TODO: Terminate child's process?
 #: ../src/applet/applet.c:1098 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "無法從 gio 通道讀取：「%s」"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1182
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "無法設定 gio 通道上的編碼：%s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1186
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "無法為 gio 通道啟動不阻擋模式：%s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1494
 #, c-format
 msgid ""
@@ -188,67 +231,85 @@ msgid ""
 "reappear on the next login"
 msgstr "無法開啟與作業階段管理員的連線：「%s」，通知可能會在下次登入時再次出現"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1635
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
-msgstr "& [-v] [DIR]...\n\n新問題被 ABRT 偵測到時通知使用者的面板程式\n"
+msgstr "& [-v] [DIR]...\n"
+"\n"
+"新問題被 ABRT 偵測到時通知使用者的面板程式\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
 msgstr "在佔用目錄前詢問"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
 msgstr "自動傳送 uReport"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
 msgstr "簡短回報"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
 msgstr "靜默簡短回報"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
-"space consuming operation. ABRT provides a service which generates the stack"
-" trace from the coredump but you have to upload the coredump to this "
-"service. With this option disabled ABRT will upload the coredump without "
-"asking."
-msgstr "需要有核心傾印檔案才能生成堆疊追蹤資訊，而這個動作既費時又費空間。ABRT 提供以核心傾印生成堆疊追蹤資訊的服務，但您必須將核心傾印檔上傳到此服務中。停用此選項後，ABRT 不須詢問就會上傳核心傾印檔案。"
+"space consuming operation. ABRT provides a service which generates the stack "
+"trace from the coredump but you have to upload the coredump to this service. "
+"With this option disabled ABRT will upload the coredump without asking."
+msgstr ""
+"需要有核心傾印檔案才能生成堆疊追蹤資訊，而這個動作既費時又費空間。ABRT "
+"提供以核心傾印生成堆疊追蹤資訊的服務，但您必須將核心傾印檔上傳到此服務中。停用此選項後，ABRT 不須詢問就會上傳核心傾印檔案。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
 "ABRT stores problem data in directories. Whenever ABRT needs writable "
 "directory, the directory is moved from the system location to your home "
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
-msgstr "ABRT 會將問題資料儲存在目錄中。每當 ABRT 需要可寫入的目錄，該目錄則會從系統位置移動到您的家目錄去。停用此選項後，ABRT 不須詢問便會移動問題目錄。"
+msgstr ""
+"ABRT 會將問題資料儲存在目錄中。每當 ABRT 需要可寫入的目錄，該目錄則會從系統位置移動到您的家目錄去。停用此選項後，ABRT "
+"不須詢問便會移動問題目錄。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
-"uses uReports  for fast global duplicate detection. In default configuration"
-" uReport is sent at beginning of reporting process. With this option enabled"
-" uReports are sent automatically immediately after problem detection."
-msgstr "uReport 是簡短且完全匿名的問題描述。ABRT 使用 uReport 以快速偵測全域是否有重複問題。預設組態下，uReport 會在回報過程的開頭送出。啟用此選項後，在偵測到問題當下會立即送出 uReport。"
+"uses uReports  for fast global duplicate detection. In default configuration "
+"uReport is sent at beginning of reporting process. With this option enabled "
+"uReports are sent automatically immediately after problem detection."
+msgstr ""
+"uReport 是簡短且完全匿名的問題描述。ABRT 使用 uReport 以快速偵測全域是否有重複問題。預設組態下，uReport "
+"會在回報過程的開頭送出。啟用此選項後，在偵測到問題當下會立即送出 uReport。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
-"With this option enabled reporting process started by click on Report button"
-" in problem notification bubble will be interrupted after uReport is sent. "
+"With this option enabled reporting process started by click on Report button "
+"in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr "啟用此選向後，在問題通知氣泡中點按「回報」按鈕而展開的回報程序會在 uReport 送出後中斷。您仍可以用預設的問題瀏覽器回報完整報告。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr " 啟用此選項後，ABRT 永遠不會顯示問題回報通知。僅在啟用簡短回報時生效。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid "Ask before uploading coredump"
 msgstr "在上傳核心傾印前詢問意願"
@@ -259,14 +320,17 @@ msgid ""
 "access if possibly sensitive data are dected."
 msgstr " 若啟用此選項，當 ABRT 偵測到敏感資訊時總會以限制存取方式建立臭蟲回報。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Request private ticket for sensitive information"
 msgstr "內含敏感訊息故申請隱私請票"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid "Notify incomplete problems"
 msgstr "通知不完整的問題"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
@@ -274,38 +338,48 @@ msgid ""
 "allow you to submit these problems."
 msgstr "資料不完整的問題通常在電腦關機動作之時，或是使用者正在登出時被偵測到。為了提供有價值的問題回報，ABRT 不會允許您提交此類問題報告。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Close"
 msgstr "關閉(_C)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/system-config-abrt.c:84
 msgid "_Defaults"
 msgstr "預設值(_D)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/system-config-abrt.c:112
 #: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
 msgstr "問題回報組態"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
 msgstr "關於系統組態 ABRT"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/main.c:105
 msgid "About"
 msgstr "關於"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/main.c:106
 msgid "Quit"
 msgstr "退出"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-action-save-package-data.c:382
 msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
-msgstr "& [-v] [-c CONFFILE] -d DIR\n\n查詢軟體包資料庫，並儲存軟體包與元件名稱"
+msgstr "& [-v] [-c CONFFILE] -d DIR\n"
+"\n"
+"查詢軟體包資料庫，並儲存軟體包與元件名稱"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-action-save-package-data.c:394
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
 #: ../src/plugins/abrt-action-analyze-c.c:78
@@ -317,43 +391,52 @@ msgstr "& [-v] [-c CONFFILE] -d DIR\n\n查詢軟體包資料庫，並儲存軟�
 msgid "Problem directory"
 msgstr "問題目錄"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-action-save-package-data.c:395
 msgid "Configuration file"
 msgstr "組態檔"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-server.c:786 ../src/dbus/abrt-dbus.c:781
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:484
 msgid "& [options]"
 msgstr "& [選項]"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-server.c:797
 msgid "Use NUM as client uid"
 msgstr "使用 NUM 作為客戶端 UID"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:273
 #: ../src/plugins/abrt-dump-xorg.c:244
 msgid "Log to syslog"
 msgstr "紀錄至 syslog"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-server.c:799 ../src/daemon/abrtd.c:500
 msgid "Add program names to log"
 msgstr "加入程式名稱至紀錄檔"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:123
 msgid "Unknown error"
 msgstr "未知錯誤"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:188
 #, c-format
 msgid "'%s' is not a valid problem directory"
 msgstr "「%s」不是有效的問題目錄"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:223
 #, c-format
 msgid "'%s' element can't be modified"
 msgstr "無法修改「%s」元素"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:244 ../src/dbus/abrt-dbus.c:446
 #: ../src/dbus/abrt-dbus.c:498 ../src/dbus/abrt-configuration.c:618
 #: ../src/dbus/abrt-configuration.c:683
@@ -361,33 +444,40 @@ msgstr "無法修改「%s」元素"
 msgid "Not Authorized"
 msgstr "未授權"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:256
 msgid "Can't access the problem for modification"
 msgstr "無法存取問題以修改"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:461
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr "目錄擁有者變更失敗。請檢查紀錄檔瞭解更多細節。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:559
 #, c-format
 msgid "'%s' is not a valid element name"
 msgstr "「%s」不是有效的元素名稱"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:580
 #, c-format
 msgid "Can't get size of '%s'"
 msgstr "無法取得「%s」的大小"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:595
 msgid "No problem space left"
 msgstr "無剩餘問題空間"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:627
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
 msgstr "無法從問題目錄「%2$s」刪除「%1$s」元素"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:763 ../src/dbus/abrt-configuration.c:983
 #, c-format
 msgid ""
@@ -395,49 +485,61 @@ msgid ""
 "is not running.\n"
 msgstr "「%s」名稱已遺失，請確認其他擁有該名稱的服務並未執行中。\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:790 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:499
 msgid "Exit after NUM seconds of inactivity"
 msgstr "在停止使用 NUM 秒後離開"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/dbus/abrt-dbus.c:808 ../src/dbus/abrt-configuration.c:1021
 msgid "This program must be run as root."
 msgstr "此程式必須以 root 身份執行。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrtd.c:451
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
-"detected while computer is shutting down or user is logging out. In order to"
-" provide valuable problem reports, ABRT will not allow you to submit this "
-"problem. If you have time and want to help the developers in their effort to"
-" sort out this problem, please contact them directly."
-msgstr "問題資料並不完整。這通常發生在電腦關機動作之時，或是使用者正在登出之時偵測到問題。為了提供有價值的問題回報，ABRT 不會允許您提交此種問題報告。若您有時間，且也想幫助開發者來處理此問題，請直接聯繫開發者。"
+"detected while computer is shutting down or user is logging out. In order to "
+"provide valuable problem reports, ABRT will not allow you to submit this "
+"problem. If you have time and want to help the developers in their effort to "
+"sort out this problem, please contact them directly."
+msgstr ""
+"問題資料並不完整。這通常發生在電腦關機動作之時，或是使用者正在登出之時偵測到問題。為了提供有價值的問題回報，ABRT "
+"不會允許您提交此種問題報告。若您有時間，且也想幫助開發者來處理此問題，請直接聯繫開發者。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrtd.c:497
 msgid "Do not daemonize"
 msgstr "不要在幕後運行"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrtd.c:498
 msgid "Log to syslog even with -d"
 msgstr "即使加上 -d 參數也紀錄至 syslog"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-handle-event.c:388
 msgid "& [-v -i] -e|--event EVENT DIR..."
 msgstr "& [-v -i] -e|--event EVENT DIR..."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-handle-event.c:396
 msgid "Run EVENT on DIR"
 msgstr "於 DIR 執行 EVENT"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-handle-event.c:397
 msgid "Communicate directly to the user"
 msgstr "直接與使用者溝通"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
 msgstr "無工作器可用，緩衝也塞滿。略過「%s」封存"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
 "& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
@@ -448,32 +550,97 @@ msgid ""
 "\n"
 "If UPLOAD_DIRECTORY is not provided, uses a value of\n"
 "WatchCrashdumpArchiveDir option from abrt.conf"
-msgstr "& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n\n\n監視 UPLOAD_DIRECTORY，並將傳入的封存檔解開放入 abrt.conf \n中指定的 DumpLocation\n\n如果沒有提供 UPLOAD_DIRECTORY 位置，則使用 abrt.conf 中\nWatchCrashdumpArchiveDir 選項的其中一值"
+msgstr ""
+"& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
+"\n"
+"\n"
+"監視 UPLOAD_DIRECTORY，並將傳入的封存檔解開放入 abrt.conf \n"
+"中指定的 DumpLocation\n"
+"\n"
+"如果沒有提供 UPLOAD_DIRECTORY 位置，則使用 abrt.conf 中\n"
+"WatchCrashdumpArchiveDir 選項的其中一值"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-upload-watch.c:281
 msgid "Daemize"
 msgstr "幕後處理"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
 msgstr "同時工作序數量。預設為 "
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
 msgstr "最大快取大小，單位為 MiB。預設為 "
 
-#: ../src/daemon/abrt-auto-reporting.c:81
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/daemon/abrt-auto-reporting.c:176
 msgid "& [ "
 msgstr "& [ "
 
-#: ../src/daemon/abrt-auto-reporting.c:113
+#: ../src/daemon/abrt-auto-reporting.c:213
+msgid "Turns the authentication off"
+msgstr "關閉身份認證"
+
+#: ../src/daemon/abrt-auto-reporting.c:214
+msgid "Red Hat Support user name"
+msgstr "Red Hat Support 使用者名稱"
+
+#: ../src/daemon/abrt-auto-reporting.c:215
+msgid "Red Hat Support password, if not given, a prompt for it will be issued"
+msgstr "Red Hat Support 密碼；如果未提供密碼，將會發出提示"
+
+#: ../src/daemon/abrt-auto-reporting.c:216
+msgid "uReport SSL certificate paths or certificate type"
+msgstr "uReport SSL 憑證路徑或憑證類型"
+
+#: ../src/daemon/abrt-auto-reporting.c:227
+msgid "You also need to specify --username for --password"
+msgstr "使用 --password 時必須指定 --username"
+
+#: ../src/daemon/abrt-auto-reporting.c:233
+msgid "You can use either --username or --certificate"
+msgstr "您可以使用 --username 或 --certificate"
+
+#: ../src/daemon/abrt-auto-reporting.c:239
+msgid "You can use either --username or --anonymous"
+msgstr "您可以使用 --username 或 --anonymous"
+
+#: ../src/daemon/abrt-auto-reporting.c:245
+msgid "You can use either --anonymous or --certificate"
+msgstr "您可以使用 --anonymous 或 --certificate"
+
+#: ../src/daemon/abrt-auto-reporting.c:251
 msgid "Invalid number of arguments"
 msgstr "引數數量無效"
 
-#: ../src/daemon/abrt-auto-reporting.c:138
+#: ../src/daemon/abrt-auto-reporting.c:270
 #, c-format
 msgid "Unknown option value: '%s'\n"
 msgstr "選項值不明：「%s」\n"
+
+#: ../src/daemon/abrt-auto-reporting.c:305
+msgid "Password:"
+msgstr "密碼："
+
+#: ../src/daemon/abrt-auto-reporting.c:308
+msgid "Cannot continue without password\n"
+msgstr "沒有密碼無法繼續\n"
+
+#. Print only the part before ':' of a string like "username:password"
+#: ../src/daemon/abrt-auto-reporting.c:347
+msgid "HTTP Authenticated auto reporting"
+msgstr "HTTP 身份認證自動回報"
+
+#: ../src/daemon/abrt-auto-reporting.c:349
+msgid "SSL Client Authenticated auto reporting"
+msgstr "SSL 用戶端身份憑證自動回報"
+
+#: ../src/daemon/abrt-auto-reporting.c:351
+msgid "anonymous auto reporting"
+msgstr "匿名自動回報"
 
 #: ../src/daemon/abrt-handle-upload.in:69
 #, c-format
@@ -485,7 +652,14 @@ msgid ""
 "   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n"
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
-msgstr "用法：%s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n\n   -v             - 詳盡\n   -d             - 刪除上傳的封存檔\n   ABRT_SPOOL_DIR - 有效之上傳過的封存檔解開後所放置的目錄\n   UPLOAD_DIR     - 上傳過的封存檔之儲存目錄\n   FILENAME       - 上傳過的封存檔名稱\n"
+msgstr ""
+"用法：%s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
+"\n"
+"   -v             - 詳盡\n"
+"   -d             - 刪除上傳的封存檔\n"
+"   ABRT_SPOOL_DIR - 有效之上傳過的封存檔解開後所放置的目錄\n"
+"   UPLOAD_DIR     - 上傳過的封存檔之儲存目錄\n"
+"   FILENAME       - 上傳過的封存檔名稱\n"
 
 #: ../src/daemon/abrt-handle-upload.in:105
 #: ../src/daemon/abrt-handle-upload.in:108
@@ -552,41 +726,49 @@ msgstr "無法解開「{0}」"
 msgid "'{0}' processed successfully"
 msgstr "「{0}」處理成功"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
 msgid "Generating backtrace"
 msgstr "正在產生追蹤資訊"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/lib/problem_api_dbus.c:42
 #, c-format
 msgid "Can't connect to system DBus: %s"
 msgstr "無法連接至系統 DBus：%s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/lib/problem_api_dbus.c:68
 #, c-format
 msgid "Can't chown '%s': %s"
 msgstr "無法 chown 「%s」：%s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/lib/problem_api_dbus.c:97
 #, c-format
 msgid "Deleting problem directory failed: %s"
 msgstr "刪除問題目錄失敗：%s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/lib/problem_api_dbus.c:133
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
 msgstr "無法從 abrt-dbus 取得問題資料：%s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/lib/problem_api_dbus.c:169
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
 msgstr "無法從 abrt-dbus 取得問題清單：%s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/lib/ignored_problems.c:233
 #, c-format
 msgid "Can't create temporary file '%s'"
 msgstr "無法建立暫存檔「%s」"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/lib/ignored_problems.c:250
 #, c-format
 msgid ""
@@ -594,38 +776,50 @@ msgid ""
 "problems '%s'"
 msgstr "無法寫入「%s」。問題「%s」不會從忽略的問題「%s」中移除"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Something nefarious happened
 #: ../src/lib/ignored_problems.c:264
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
 msgstr "無法將「%s」重新命名為「%s」。無法移除問題「%s」"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-backtrace.c:41
 msgid ""
 "& [options] -d DIR\n"
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
-msgstr "& [選項] -d DIR\n\n在問題目錄 DIR 內分析 C/C++ 追蹤資訊、產生複本雜湊、\n追蹤資料評等、辨識當機函式"
+msgstr "& [選項] -d DIR\n"
+"\n"
+"在問題目錄 DIR 內分析 C/C++ 追蹤資訊、產生複本雜湊、\n"
+"追蹤資料評等、辨識當機函式"
 
+# translation auto-copied from project abrt, version master, document abrt
+#. 
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "%s 的追蹤解析失敗"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-backtrace.c:146
 msgid "Crash thread not found"
 msgstr "沒有找到崩潰執行序"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-c.c:67
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
-msgstr "& [-v] -d DIR\n\n在問題目錄 DIR 內計算並儲存的核心傾印其 UUID"
+msgstr "& [-v] -d DIR\n"
+"\n"
+"在問題目錄 DIR 內計算並儲存的核心傾印其 UUID"
 
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
@@ -646,54 +840,70 @@ msgstr "用法：%s [-v] [-o OUTFILE] -c COREFILE"
 msgid "COREFILE is not specified"
 msgstr "未指定 COREFILE"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
-msgstr "& [-v] -d DIR\n\n為 oops 問題目錄 DIR 計算並儲存 UUID 與 DUPHASH"
+msgstr "& [-v] -d DIR\n"
+"\n"
+"為 oops 問題目錄 DIR 計算並儲存 UUID 與 DUPHASH"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-xorg.c:73
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
-msgstr "& [-v] -d DIR\n\n為 xorg 問題目錄 DIR 計算並儲存 UUID 與 DUPHASH"
+msgstr "& [-v] -d DIR\n"
+"\n"
+"為 xorg 問題目錄 DIR 計算並儲存 UUID 與 DUPHASH"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-xorg.c:113
 #, c-format
 msgid "Module '%s' was loaded - won't report this crash"
 msgstr "已載入「%s」模組 - 不會回報此當機資訊"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-python.c:36
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
-msgstr "&  [-v] -d DIR\n\n計算並儲存 python 當掉傾印的 UUID 與 DUPHASH"
+msgstr "&  [-v] -d DIR\n"
+"\n"
+"計算並儲存 python 當掉傾印的 UUID 與 DUPHASH"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:52
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
 msgstr "用法：{0} [-v[v]] [--core=VMCORE]"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:79
 msgid "File {0} doesn't exist"
 msgstr "檔案 {0} 不存在"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:82
 msgid "Extracting the oops text from core"
 msgstr "從核心抽出 oops 內文"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
-msgid ""
-"Can't process {0}:\n"
+msgid "Can't process {0}:\n"
 "{1}"
-msgstr "無法處理 {0}：\n{1}"
+msgstr "無法處理 {0}：\n"
+"{1}"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "Can't extract the oops message: '{0}'"
 msgstr "無法抽出 oops 訊息：「{0}」"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:98
 msgid "Oops text extracted successfully"
 msgstr "Oops 內文已成功抽出"
@@ -702,55 +912,71 @@ msgstr "Oops 內文已成功抽出"
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
-msgstr "Kernel 日誌顯示已偵測到硬體錯誤。\n這很可能不是軟體上的錯誤。\n"
+msgstr "Kernel 日誌顯示已偵測到硬體錯誤。\n"
+"這很可能不是軟體上的錯誤。\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
 "& [options] -d DIR\n"
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
-msgstr "& [選項] -d DIR\n\n分析問題目錄 DIR 內的核心傾印，產生並儲存追蹤資訊"
+msgstr "& [選項] -d DIR\n"
+"\n"
+"分析問題目錄 DIR 內的核心傾印，產生並儲存追蹤資訊"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
 msgstr "額外 debuginfo 目錄"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-backtrace.c:57
 msgid "Kill gdb if it runs for more than NUM seconds"
 msgstr "若 gdb 執行超過 NUM 秒就終止它"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
 msgstr "追蹤資訊已產生並儲存，計 %u 位元組"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:40
 msgid ""
 "& [-v] [-r] -d DIR\n"
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
-msgstr "& [-v] [-r] -d DIR\n\n從核心傾印與相對應的二進位檔建立 coredump-level 追蹤資料"
+msgstr "& [-v] [-r] -d DIR\n"
+"\n"
+"從核心傾印與相對應的二進位檔建立 coredump-level 追蹤資料"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
 msgstr "不要製作雜湊指紋"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
 msgid "Generating core_backtrace"
 msgstr "正在 core_backtrace..."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:81
 msgid "Error: GDB did not return any data"
 msgstr "錯誤：GDB 未傳回任何資料"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:95
 #, c-format
 msgid "Error: %s"
 msgstr "錯誤：%s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:51
 msgid "Exiting on user command"
 msgstr "正在離開使用者指令"
@@ -759,7 +985,8 @@ msgstr "正在離開使用者指令"
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH]...]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
@@ -769,18 +996,40 @@ msgid ""
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
 "    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
 "    -e,--exact  Download only specified files\n"
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
-msgstr "使用方法: %s [-vy] [--ids=BUILD_IDS_FILE]\n       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n       [-e, --exact=PATH[:PATH]...]\n\nInstalls debuginfos for all build-ids listed in BUILD_IDS_FILE\nto CACHEDIR, using TMPDIR as temporary staging area.\nOld files in CACHEDIR are deleted until it is smaller than SIZE.\n\n    -v          Be verbose\n    -y          Noninteractive, assume 'Yes' to all questions\n    --ids       Default: build_ids\n    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n    --cache     Default: /var/cache/abrt-di\n    --size_mb   Default: 4096\n    -e,--exact  Download only specified files\n    --repo      Pattern to use when searching for repos.\n                Default: *debug*\n"
+msgstr ""
+"使用方法: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH[:PATH]...]\n"
+"\n"
+"Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
+"to CACHEDIR, using TMPDIR as temporary staging area.\n"
+"Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
+"\n"
+"    -v          Be verbose\n"
+"    -y          Noninteractive, assume 'Yes' to all questions\n"
+"    --ids       Default: build_ids\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
+"    --cache     Default: /var/cache/abrt-di\n"
+"    --size_mb   Default: 4096\n"
+"    -e,--exact  Download only specified files\n"
+"    --repo      Pattern to use when searching for repos.\n"
+"                Default: *debug*\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:169
 msgid "Can't open {0}: {1}"
 msgstr "無法開啟 {0}：{1}"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:206
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr "核心傾印參照 {0} 份 debuginfo 檔，其中的 {1} 份尚未安裝"
@@ -793,14 +1042,17 @@ msgstr "{0} 個debuginfo 檔案尚未安裝"
 msgid "Missing requested file: {0}"
 msgstr "請求的檔案遺失：{0}"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:228
 msgid "Missing debuginfo file: {0}"
 msgstr "遺失 debuginfo 檔：{0}"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:231
 msgid "All debuginfo files are available"
 msgstr "所有的 debuginfo 檔案皆可用"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
 msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
@@ -808,28 +1060,38 @@ msgid ""
 "amount of data)."
 msgstr "確定要上傳核心傾印？(它可能包含敏感資料)。若您的答案為「否」，將會在本地建立堆疊追蹤。(這可能需要下載大量資料)。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
 msgstr "您想要在本機上生成堆疊追蹤嗎？(這可能需要下載巨量資料，不過報告若無堆疊追蹤便無法繼續。)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
+"SIZE.\n"
 "FILEs are preserved (never deleted)."
-msgstr "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n\n刪除於 DIRs 目錄中的問題目錄 (-d) 或檔案 (-f)，直到它們小於 SIZE。\nFILEs 會被保留 (永不刪除)。"
+msgstr ""
+"& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
+"\n"
+"刪除於 DIRs 目錄中的問題目錄 (-d) 或檔案 (-f)，直到它們小於 SIZE。\n"
+"FILEs 會被保留 (永不刪除)。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
 msgstr "刪除整個問題目錄"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-trim-files.c:237
 msgid "Delete files inside this directory"
 msgstr "刪除此目錄內的檔案"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-trim-files.c:238
 msgid "Preserve this directory"
 msgstr "保留這個目錄"
@@ -866,131 +1128,163 @@ msgstr "uReport 已經送出，不再傳送"
 msgid "reporter-ureport failed with exit code %d"
 msgstr "reporter-ureport 作業失敗，離開碼為 %d"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
 msgstr "訊號由使用者空間代碼傳送"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:533
 msgid "Signal sent by timer/IO/async event"
 msgstr "訊號由 timer/IO/async 事件傳送"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:541
 msgid "Signal has siginfo.si_code = SI_USER"
 msgstr "訊號有 siginfo.si_code = SI_USER"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:544
 msgid "Signal due to write to closed pipe"
 msgstr "訊號截止以寫入關閉的導管"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:550
 #: ../src/plugins/abrt-gdb-exploitable:575
 msgid "Signal sent by keyboard"
 msgstr "訊號由鍵盤傳送"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:554
 #: ../src/plugins/abrt-gdb-exploitable:579
 msgid "Job control signal sent by kernel"
 msgstr "內核傳送的工作控制訊號"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:558
 #: ../src/plugins/abrt-gdb-exploitable:587
 msgid "Signal sent by window resize"
 msgstr "視窗重新調整大小傳送的訊號"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:562
 #: ../src/plugins/abrt-gdb-exploitable:591
 msgid "Signal sent by alarm(N) expiration"
 msgstr "alarm(N) 過期傳送的訊號"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:583
 msgid "Signal due to write to broken pipe"
 msgstr "訊號截止以寫入損壞的導管"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:607
 msgid "ABRT signal (abort() was called?)"
 msgstr "ABRT 訊號 (abort() 被呼叫？)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:616
 msgid "XCPU signal (over CPU time limit)"
 msgstr "XCPU 訊號 (超過 CPU 時限)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:620
 msgid "XFSZ signal (over file size limit)"
 msgstr "XFSZ 訊號 (超過檔案大小限制)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:624
 msgid "TRAP signal (can be a bug in a debugger/tracer)"
 msgstr "TRAP 訊號 (可能是除錯器或追蹤器的臭蟲)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:628
 msgid "SYS signal (unknown syscall was called?)"
 msgstr "SYS 訊號 (未知的 syscall 被呼叫？)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:633
 msgid "Arithmetic exception"
 msgstr "數學例外"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:637
 msgid "Division by zero"
 msgstr "除以零"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:641
 msgid "Illegal instruction (jump to a random address?)"
 msgstr "無效指示 (跳入隨機位址？)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:647
 msgid "Non-crash related signal"
 msgstr "無崩潰相關訊號"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:652
 msgid "Stack overflow"
 msgstr "堆疊溢位"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:656
 msgid "Write to an invalid address"
 msgstr "寫入無效的位址"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:660
 msgid "Subroutine return to an invalid address (corrupted stack?)"
 msgstr "副常式回傳無效的位址 (堆疊損毀？)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:666
 #: ../src/plugins/abrt-gdb-exploitable:670
 msgid "Jump to an invalid address"
 msgstr "跳入無效的位址"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:674
 msgid ""
 "Access past the end of mapped file, invalid address, unaligned access, etc"
 msgstr "存取已通過映射檔案的結尾、無效的位址、無對齊的存取..."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:693
 msgid "Can't get signal no and do exploitability analysis\n"
 msgstr "無法取得訊號編號，無法執行可利用性分析\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Likely crash reason: "
 msgstr "可能的崩潰原因："
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:707
 msgid "Exploitable rating (0-9 scale): "
 msgstr "可利用等級 (0-9 規模)："
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:709
 msgid "Current instruction: "
 msgstr "目前指令："
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:711
 msgid "Exploitability analysis came up empty\n"
 msgstr "可利用性分析結果為空\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-watch-log.c:142
 msgid ""
 "& [-vs] [-F STR]... FILE PROG [ARGS]\n"
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
-msgstr "& [-vs] [-F STR]... FILE PROG [ARGS]\n\n監看記錄檔 FILE，當該檔案變大或被取代時執行 PROG"
+msgstr "& [-vs] [-F STR]... FILE PROG [ARGS]\n"
+"\n"
+"監看記錄檔 FILE，當該檔案變大或被取代時執行 PROG"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-watch-log.c:154
 msgid "Don't run PROG if STRs aren't found"
 msgstr "若找不到 STR 時則不要執行 PROG"
@@ -1007,6 +1301,7 @@ msgid ""
 "kernel maintainers are unable to fix this problem."
 msgstr "發生了一項 kernel 問題，不過您的硬體不受到支援，因此 kernel 維護人員無法修正此問題。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:145
 #, c-format
 msgid ""
@@ -1014,44 +1309,56 @@ msgid ""
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr "遭遇一項內核問題，但您的內核已經損壞 (旗標：%s)。內核維護者無法診斷損壞的回報有什麼問題。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:153
 #, c-format
 msgid " Tainted modules: %s."
 msgstr "損壞的模組：%s。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:254
 msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
-msgstr "& [-vusoxm] [-d DIR]/[-D] [FILE]\n\n從 FILE (或標準輸入) 抽出 oops"
+msgstr "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"從 FILE (或標準輸入) 抽出 oops"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:274
 msgid "Print found oopses on standard output"
 msgstr "列印找到的 oops 於標準輸出上"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
+#. 
 #: ../src/plugins/abrt-dump-oops.c:278
 msgid "Create new problem directory in DIR for every oops found"
 msgstr "在 DIR 內為每個找到的 oops 建立新的問題目錄"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:279 ../src/plugins/abrt-dump-xorg.c:247
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "與 -d DumpLocation 相同，DumpLocation 於 abrt.conf 內指定"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:280
 msgid "Save the extracted information in PROBLEM"
 msgstr "將抽出的資訊存入 PROBLEM 中"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:281 ../src/plugins/abrt-dump-xorg.c:248
 msgid "Make the problem directory world readable"
 msgstr "讓問題目錄全世界都可以讀取"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:282
 msgid "Throttle problem directory creation to 1 per second"
 msgstr "節制問題目錄的建立速度為每秒 1 個"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:283 ../src/plugins/abrt-dump-xorg.c:249
 msgid "Print search string(s) to stdout and exit"
 msgstr "將搜尋字串列印在 stdout 上並離開"
@@ -1060,44 +1367,55 @@ msgstr "將搜尋字串列印在 stdout 上並離開"
 msgid "Failed to compile regex"
 msgstr "無法編譯 regex"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:402
 msgid "Can't update the problem: more than one oops found"
 msgstr "無法更新問題：找到超過一份 oops"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:421
 #, c-format
 msgid "Sleeping for %d seconds"
 msgstr "正睡眠 %d 秒"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-xorg.c:237
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
-msgstr "& [-vsoxm] [-d DIR]/[-D] [FILE]\n\n從 FILE (或標準輸出) 抽出 Xorg 當機資訊"
+msgstr "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"從 FILE (或標準輸出) 抽出 Xorg 當機資訊"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-xorg.c:245
 msgid "Print found crash data on standard output"
 msgstr "將找到的崩潰資料列印在標準輸出上"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-xorg.c:246
 msgid "Create problem directory in DIR for every crash found"
 msgstr "在 DIR 內為每個找到的當機資料建立問題目錄"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:70
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
 msgstr "回追伺服器無法使用，因為當掉資訊過大。請嘗試本地端回追處理。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
+#. 
 #: ../src/plugins/abrt-retrace-client.c:103
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
 msgid "Can't create temporary file in "
 msgstr "無法建立暫存檔於"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:211
 #: ../src/plugins/abrt-retrace-client.c:398
 #: ../src/plugins/abrt-retrace-client.c:666
@@ -1106,6 +1424,7 @@ msgstr "無法建立暫存檔於"
 msgid "Failed to send HTTP header of length %d: NSS error %d"
 msgstr "無法傳送長度 %d 的 HTTP 標頭：NSS 錯誤 %d"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:223
 #: ../src/plugins/abrt-retrace-client.c:412
 #: ../src/plugins/abrt-retrace-client.c:765
@@ -1114,11 +1433,12 @@ msgstr "無法傳送長度 %d 的 HTTP 標頭：NSS 錯誤 %d"
 #: ../src/plugins/abrt-retrace-client.c:1001
 #: ../src/plugins/abrt-retrace-client.c:1060
 #, c-format
-msgid ""
-"Unexpected HTTP response from server: %d\n"
+msgid "Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr "來自伺服器的未預期回應：%d\n%s"
+msgstr "來自伺服器的未預期回應：%d\n"
+"%s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:232
 #: ../src/plugins/abrt-retrace-client.c:745
 #: ../src/plugins/abrt-retrace-client.c:841
@@ -1128,25 +1448,31 @@ msgstr "來自伺服器的未預期回應：%d\n%s"
 msgid "Invalid response from server: missing HTTP message body."
 msgstr "來自伺服器的回應無效：遺失 HTTP 訊息本文。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:424
 #, c-format
 msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official '%s' repositories?"
-msgstr "回追伺服器無法處理軟體包「%s.%s」。\n該軟體包是否來自官方「%s」軟體庫？"
+msgstr "回追伺服器無法處理軟體包「%s.%s」。\n"
+"該軟體包是否來自官方「%s」軟體庫？"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:444
 msgid "Querying server settings"
 msgstr "正在查詢伺服器設定值"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:452
 msgid "The server is fully occupied. Try again later."
 msgstr "伺服器目前完全被佔線。請稍候重試。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:453
 msgid "The server denied your request."
 msgstr "伺服器已拒絕您的請求。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:484
 #: ../src/plugins/abrt-retrace-client.c:500
 #, c-format
@@ -1160,23 +1486,28 @@ msgid ""
 "crashes smaller or equal to %lld bytes."
 msgstr "您的當掉資訊大小為 %lld 位元組，但是回追伺服器僅接受小於或等於 %lld 位元組的當掉資訊。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:534
 msgid "The server does not support xz-compressed tarballs."
 msgstr "伺服器不支援 xz 壓縮版 tarball。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:571
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
 msgstr "回追伺服器不支援「%s」發行版。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:575
 msgid "The server is not able to handle your request."
 msgstr "伺服器無法處理您的請求。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:594
 msgid "Unknown package sent to Retrace server."
 msgstr "傳送給回追伺服器的軟體包不明。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:603
 msgid "Preparing an archive to upload"
 msgstr "正在準備要上傳的封存檔"
@@ -1193,6 +1524,7 @@ msgstr "您的封存檔大小為 %lld 位元組，但是回追伺服器僅接受
 msgid "You are going to upload %d megabytes. Continue?"
 msgstr "您即將上傳 %d MB 的資料。是否繼續？"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:638
 msgid "Cancelled by user"
 msgstr "使用者已取消"
@@ -1207,66 +1539,79 @@ msgstr "正在上傳 %d  MB\n"
 msgid "Uploading %lld bytes\n"
 msgstr "正在上傳 %lld  位元組\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:699
 #, c-format
 msgid "Uploading %d%%\n"
 msgstr "正在上傳 %d%%\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:711
 msgid "Failed to read from a pipe"
 msgstr "無法從 pipe 讀取"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:724
 #, c-format
 msgid "Failed to send data: NSS error %d (%s): %s"
 msgstr "無法傳送資料：NSS 錯誤 %d (%s)：%s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:735
 msgid "Upload successful"
 msgstr "上傳成功"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:757
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
 msgstr "您的問題目錄已損毀，無法被回追伺服器處理。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:759
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
 msgstr "封存檔包含惡意檔案 (像是 symlinks) 因此無法處理。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:772
 msgid "Invalid response from server: missing X-Task-Id."
 msgstr "來自伺服器的回應無效：遺失 X-Task-Id。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:778
 msgid "Invalid response from server: missing X-Task-Password."
 msgstr "來自伺服器的回應無效：遺失 X-Task-Password。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:785
 msgid "Retrace job started"
 msgstr "回追工作已開始"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:798
 #, c-format
-msgid ""
-"Task Id: %s\n"
+msgid "Task Id: %s\n"
 "Task Password: %s\n"
-msgstr "工作事項 Id：%s\n工作事項密碼：%s\n"
+msgstr "工作事項 Id：%s\n"
+"工作事項密碼：%s\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:856
 msgid "Invalid response from server: missing X-Task-Status."
 msgstr "來自伺服器的無效回應：遺失 X-Task-Status。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:868
 #, c-format
-msgid ""
-"Task Status: %s\n"
+msgid "Task Status: %s\n"
 "%s\n"
-msgstr "作業狀態：%s\n%s\n"
+msgstr "作業狀態：%s\n"
+"%s\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:899
 #: ../src/plugins/abrt-retrace-client.c:973
 #: ../src/plugins/abrt-retrace-client.c:1043
@@ -1274,81 +1619,101 @@ msgstr "作業狀態：%s\n%s\n"
 msgid "Failed to send HTTP header of length %d: NSS error %d."
 msgstr "無法傳送長度 %d 的 HTTP 標頭：NSS 錯誤 %d。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1160
 msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
 msgstr "回追失敗。請稍候重試，若這個問題持續發生，請回報此議題。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1207
 msgid "log to syslog"
 msgstr "紀錄至 syslog"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1209
 msgid "allow insecure connection to retrace server"
 msgstr "允許連接至回追伺服器的不安全連線"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1211
 msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
 msgstr "在上傳封存檔之前，不要檢查回追伺服器是否可以處理給定的軟體包"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1214
 msgid "retrace server URL"
 msgstr "回追伺服器網址"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1216
 msgid "retrace server port"
 msgstr "回追伺服器連接埠"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1218
 msgid "(debug) show received HTTP headers"
 msgstr "(除錯) 顯示接收的 HTTP 標頭"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1219
 msgid "For create and batch operations"
 msgstr "建立與批次操作"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1221
 msgid "read data from ABRT problem directory"
 msgstr "從 ABRT 問題目錄讀取資料"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1223
 msgid "read data from coredump"
 msgstr "從核心傾印讀取資料"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1225
 msgid "Delay for polling operations"
 msgstr "為投票操作而延遲"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1227
 msgid "(debug) do not delete temporary archive created from dump dir in "
 msgstr "(除錯) 不要從此目錄內的傾印目錄刪除已建立的暫存封存檔："
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1229
 msgid "For status, backtrace, and log operations"
 msgstr "狀態、追蹤、紀錄等操作"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1231
 msgid "id of your task on server"
 msgstr "伺服器上您工作事項的 id"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1233
 msgid "password of your task on server"
 msgstr "伺服器上您工作事項的密碼"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1237
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch/exploitable"
-msgstr "abrt-retrace-client <操作> [選項]\n操作項：create/status/backtrace/log/batch/exploitable"
+msgstr ""
+"abrt-retrace-client <操作> [選項]\n"
+"操作項：create/status/backtrace/log/batch/exploitable"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1282
 #: ../src/plugins/abrt-retrace-client.c:1288
 msgid "Either problem directory or coredump is needed."
 msgstr "需要問題目錄或者是核心傾印。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1294
 #: ../src/plugins/abrt-retrace-client.c:1302
 #: ../src/plugins/abrt-retrace-client.c:1310
@@ -1356,6 +1721,7 @@ msgstr "需要問題目錄或者是核心傾印。"
 msgid "Task id is needed."
 msgstr "需要工作事項 id。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1296
 #: ../src/plugins/abrt-retrace-client.c:1304
 #: ../src/plugins/abrt-retrace-client.c:1312
@@ -1363,152 +1729,188 @@ msgstr "需要工作事項 id。"
 msgid "Task password is needed."
 msgstr "需要工作事項密碼。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1324
 #, c-format
 msgid "Unknown operation: %s."
 msgstr "未知操作：%s。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
 msgstr "本地端 GNU 除錯器"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgstr "下載 debuginfo 軟體包並透過本地端的 GDB 產生追蹤資訊"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
-msgstr "需要下載 debuginfo 軟體包，並且可能會花上一段時間以及消耗一些磁碟空間。然而，這不像 RetraceServer，所以不會傳送核心傾印資料至遠端機器。"
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
+msgstr ""
+"需要下載 debuginfo 軟體包，並且可能會花上一段時間以及消耗一些磁碟空間。然而，這不像 "
+"RetraceServer，所以不會傳送核心傾印資料至遠端機器。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
 msgstr "傳送核心傾印至遠端回追伺服器來分析"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. "
-"Pros: no need for debuginfo downloads. Retrace server's database of "
-"debuginfos is more complete. Retrace server may generate better backtraces. "
-"Cons: coredump you upload contains all the data from the crashed program, "
-"including your private data, if any."
-msgstr "上傳核心傾印資料至伺服器，該伺服器會產生回追資料並回傳。優點：不需要下載 debuginfo 軟體包、回追伺服器資料庫中的 debuginfo 比較完整、回追伺服器可能會產生比較良好的追蹤資料。缺點：您需要上傳核心傾印檔案，該檔案包含當掉程式的所有資料，包括您的私人資料 (如果有的話)。"
+"Uploads coredump to a server, which generates backtrace and returns it. Pros:"
+" no need for debuginfo downloads. Retrace server's database of debuginfos is "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
+"private data, if any."
+msgstr ""
+"上傳核心傾印資料至伺服器，該伺服器會產生回追資料並回傳。優點：不需要下載 debuginfo 軟體包、回追伺服器資料庫中的 debuginfo "
+"比較完整、回追伺服器可能會產生比較良好的追蹤資料。缺點：您需要上傳核心傾印檔案，該檔案包含當掉程式的所有資料，包括您的私人資料 (如果有的話)。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 #: ../src/plugins/analyze_CCpp.xml.in.h:3
 msgid "Retrace server URL"
 msgstr "回追伺服器網址"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 #: ../src/plugins/analyze_CCpp.xml.in.h:4
 msgid "Address of the retrace server"
 msgstr "回追伺服器的位址"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:5
 #: ../src/plugins/analyze_CCpp.xml.in.h:5
 msgid "Insecure"
 msgstr "不安全"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 #: ../src/plugins/analyze_CCpp.xml.in.h:6
 msgid "Whether or not to use insecure connection"
 msgstr "是否使用不安全的連線"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 #: ../src/plugins/analyze_CCpp.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
-msgstr "寫入「insecure」來允許不安全的連線 &lt;a href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
+"&gt;(warning)&lt;/a&gt;"
+msgstr ""
+"寫入「insecure」來允許不安全的連線 &lt;a href=\"https://fedorahosted.org/abrt/wiki/"
+"AbrtRetraceServerInsecureConnection\" &gt;(warning)&lt;/a&gt;"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
 msgstr "收集 .xsession-errors"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
 msgstr "從 ~/.xsession-error 檔案儲存相關的紀錄列"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/collect_xsession_errors.xml.in.h:3
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
 msgstr "掃描 ~/.xsession-errors 檔案並儲存那些包含執行檔名稱的紀錄列。結果會以「xsession_errors」元素儲存。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:62
 msgid "An error occurred on the server side."
 msgstr "伺服器端遭遇錯誤。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:65
 #, c-format
 msgid "A server-side error occurred on '%s'"
 msgstr "在「%s」上遭遇伺服器端錯誤"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:74
 msgid "An error occurred while connecting to the server"
 msgstr "當連接至伺服器時遭遇錯誤"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:77
 #, c-format
 msgid "An error occurred while connecting to '%s'"
 msgstr "當連接至「%s」時遭遇錯誤"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:97
 #, c-format
 msgid "Issuer certificate is invalid: '%s'."
 msgstr "發行單位憑證無效：「%s」。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:100
 #, c-format
 msgid "Certificate is signed by an untrusted issuer: '%s'."
 msgstr "憑證由未受信任的發行單位簽署：「%s」。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:103
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
 msgstr "憑證主體名稱「%s」不符合目標主機名稱「%s」。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:107
 msgid "Remote certificate has expired."
 msgstr "遠端憑證已經過期。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:110
 #, c-format
 msgid "Certificate issuer is not recognized: '%s'."
 msgstr "憑證發行單位無法辨識：「%s」。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:113
 #, c-format
 msgid "Bad certificate received. Subject '%s', issuer '%s'."
 msgstr "接收到不良憑證。主體「%s」，發行單位「%s」。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:149
 #, c-format
 msgid "Failed to get slot 'PEM Token #0': %d."
 msgstr "無法取得 slot「PEM Token #0」：%d。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:182
 #, c-format
 msgid "Can't resolve host name '%s'. NSS error %d."
 msgstr "無法解析主機名稱「%s」。NSS 錯誤 %d。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Host exists, but has neither IPv4 nor IPv6??
 #: ../src/plugins/https-utils.c:203
 #, c-format
 msgid "Can't resolve host name '%s'."
 msgstr "無法解析主機名稱「%s」。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:210
 msgid "Failed to set socket blocking mode."
 msgstr "無法設定 socket 阻擋模式。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:213
 msgid "Failed to wrap TCP socket by SSL."
 msgstr "無法透過 SSL 包裝 TCP socket。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:215
 msgid "Failed to enable client handshake to SSL socket."
 msgstr "無法啟用對於 SSL socket 的客戶端握手。"
@@ -1521,141 +1923,177 @@ msgstr "無法啟用 SSL3。"
 msgid "Failed to enable TLS."
 msgstr "無法啟用 TLS。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:224
 msgid "Failed to set URL to SSL socket."
 msgstr "無法設定網址為 SSL socket。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:233
 #, c-format
 msgid "Can't connect to '%s'"
 msgstr "無法連接至「%s」"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:241
 msgid "Failed to set certificate hook."
 msgstr "無法設定憑證 hook。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:247
 msgid "Failed to set handshake callback."
 msgstr "無法設定握手回呼。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:251
 msgid "Failed to reset handshake."
 msgstr "無法重設握手。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:258
 #, c-format
 msgid "Failed to complete SSL handshake: NSS error %d."
 msgstr "無法完成 SSL 握手：NSS 錯誤 %d。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:267
 msgid "Failed to close SSL socket."
 msgstr "無法關閉 SSL socket。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:332
 #, c-format
 msgid "Malformed HTTP response header: '%s'"
 msgstr "格式不良的 HTTP 回應標頭：「%s」"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:369
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
 msgstr "資料接收失敗：NSS 錯誤 %d。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:398
 msgid "Malformed chunked response."
 msgstr "格式不良的 chunked 回應。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:423
 msgid "Failed to initialize NSS."
 msgstr "無法初始化 NSS。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:429
 msgid "Failed to initialize security module."
 msgstr "無法初始化安全模組。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:444
 msgid "Failed to shutdown NSS."
 msgstr "無法關閉 NSS。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/bodhi.c:375
 msgid "List of bug ids"
 msgstr "臭蟲 ID 清單"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/bodhi.c:376
 msgid "Specify a bodhi server url"
 msgstr "指定 bodhi 伺服器 URL"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/bodhi.c:377
 msgid "Specify a release"
 msgstr "指定發行版"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/bodhi.c:382
 msgid ""
 "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
 "\n"
 "Search for updates on bodhi server"
-msgstr "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n\n在 bodhi 伺服器上搜尋是否有可用更新"
+msgstr ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"\n"
+"在 bodhi 伺服器上搜尋是否有可用更新"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/bodhi.c:434
 msgid "Searching for updates"
 msgstr "搜尋是否有更新"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/bodhi.c:440
 msgid "No updates for this package found"
 msgstr "找不到此軟體包的更新"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. strbuf_free(q);
 #: ../src/plugins/bodhi.c:469
 msgid "Local version of the package is newer than available updates"
 msgstr "本地端的軟體包版本比可用更新的版本還新"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/bodhi.c:486
 #, c-format
 msgid ""
-"An update exists which might fix your problem. You can install it by "
-"running: %s. Do you want to continue with reporting the bug?"
+"An update exists which might fix your problem. You can install it by running:"
+" %s. Do you want to continue with reporting the bug?"
 msgstr "目前有個更新可用，或許它能修正您的問題。您可以藉由執行此動作來安裝它：%s。您想要繼續回報臭蟲嗎？"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
 msgid ""
 "& [-v] [-od] FILE...\n"
 "\n"
 "Scans files for split oops message. Can print and/or delete them."
-msgstr "& [-v] [-od] FILE...\n\n為分割的 oops 訊息掃描檔案。可以列印與/或刪除它們。"
+msgstr "& [-v] [-od] FILE...\n"
+"\n"
+"為分割的 oops 訊息掃描檔案。可以列印與/或刪除它們。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/hooks/abrt-merge-pstoreoops.c:97
 msgid "Print found oopses"
 msgstr "列印找到的 oops"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/hooks/abrt-merge-pstoreoops.c:98
 msgid "Delete files with found oopses"
 msgstr "刪除找到的 oops 其檔案"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/abrt-cli-core.c:91
 #, c-format
 msgid "'%s' identifies more than one problem directory"
 msgstr "「%s」辨識出一個以上的問題目錄"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/abrt-cli.c:144
 msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
 msgstr "用法：abrt-cli [--version] COMMAND [DIR]..."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/abrt-cli.c:148
 msgid "List problems [in DIRs]"
 msgstr "列出 [DIRs 中] 的問題"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/abrt-cli.c:149
 msgid "Remove problem directory DIR"
 msgstr "從問題目錄 DIR 移除檔案"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/abrt-cli.c:150
 msgid "Analyze and report problem data in DIR"
 msgstr "在 DIR 內分析並回報問題資料"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/abrt-cli.c:151
 msgid "Print information about DIR"
 msgstr "列印有關 DIR 的資訊"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/abrt-cli.c:152
 msgid "Print the count of the recent crashes"
 msgstr "列印最近程式崩潰的數目"
@@ -1664,6 +2102,7 @@ msgstr "列印最近程式崩潰的數目"
 msgid "Process multiple problems"
 msgstr "處理多項問題"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "請見 'abrt-cli COMMAND --help' 以瞭解更多資訊"
@@ -1674,23 +2113,28 @@ msgid ""
 "%sRun 'abrt-cli report %s' for creating a case in Red Hat Customer Portal\n"
 msgstr "%s執行 'abrt-cli report %s' 以在 Red Hat 客戶入口網站中建立案例\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/list.c:179
 msgid "& list [options] [DIR]..."
 msgstr "& list [選項] [DIR]..."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/list.c:188
 msgid "List only not-reported problems"
 msgstr "僅列出尚未回報的問題"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:190 ../src/cli/list.c:243
 msgid "Show detailed report"
 msgstr "顯示詳細的回報"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/list.c:191
 msgid "List only the problems more recent than specified timestamp"
 msgstr "僅列出比指定的時間戳記更近期的問題"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/list.c:192
 msgid "List only the problems older than specified timestamp"
 msgstr "僅列出比指定的時間戳記更之前的問題"
@@ -1698,35 +2142,45 @@ msgstr "僅列出比指定的時間戳記更之前的問題"
 #: ../src/cli/list.c:224
 #, c-format
 msgid ""
-"The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
+"The Autoreporting feature is disabled. Please consider enabling it by "
+"issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
-msgstr "Autoreporting 功能已停用。請考慮以擁有 root 權限的使用者\n身份，透過「abrt-auto-reporting enabled」 來啟用它\n"
+msgstr ""
+"Autoreporting 功能已停用。請考慮以擁有 root 權限的使用者\n"
+"身份，透過「abrt-auto-reporting enabled」 來啟用它\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/list.c:235
 msgid "& info [options] DIR..."
 msgstr "& info [選項] DIR..."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/list.c:244
 msgid "Text larger than this will be shown abridged"
 msgstr "大於此的文字會刪減顯示"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/list.c:264
 #, c-format
 msgid "No such problem directory '%s'"
 msgstr "沒有這個問題目錄「%s」"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/status.c:70
 msgid "& status [DIR]..."
 msgstr "& status [DIR]..."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/status.c:78
 msgid "Print only the problem count without any message"
 msgstr "僅列印問題數目而不帶任何訊息"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/status.c:79
 msgid "Print only the problems more recent than specified timestamp"
 msgstr "僅列印比指定的時間戳記更近期的問題"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/status.c:104
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
@@ -1771,6 +2225,7 @@ msgstr "若不用 --since 引數，則會在所有偵測到的問題之間迭代
 msgid "Selects only problems detected after timestamp"
 msgstr "僅選取時間戳記之後的問題"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
@@ -1783,76 +2238,95 @@ msgid ""
 "user doens't want to upload his coredump to anywhere the event performs "
 "local analysis. Local analysis is run event if remote analysis fails. Pros: "
 "no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump"
-" you upload contains all the data from the crashed program, including your "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
 "private data, if any."
-msgstr "上傳核心傾印資料至伺服器，該伺服器會產生回追資料並回傳。如果使用者此刻不想上傳核心傾印資料至其他地方，事件會改以本地端分析執行。優點：不需要下載 debuginfo 軟體包、回追伺服器資料庫中的 debuginfo 比較完整、回追伺服器可能會產生比較良好的追蹤資料。缺點：您需要上傳核心傾印檔案，該檔案包含當掉程式的所有資料，包括您的私人資料 (如果有的話)。"
+msgstr ""
+"上傳核心傾印資料至伺服器，該伺服器會產生回追資料並回傳。如果使用者此刻不想上傳核心傾印資料至其他地方，事件會改以本地端分析執行。優點：不需要下載 "
+"debuginfo 軟體包、回追伺服器資料庫中的 debuginfo "
+"比較完整、回追伺服器可能會產生比較良好的追蹤資料。缺點：您需要上傳核心傾印檔案，該檔案包含當掉程式的所有資料，包括您的私人資料 (如果有的話)。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
 msgstr "分析 VM 核心"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
 msgid ""
 "Install kernel debuginfo packages, generate kernel log and oops message"
 msgstr "安裝內核 debuginfo 軟體包，產生內核紀錄與 oops 訊息"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
 "Needs to install kernel debuginfo packages, which might take significant "
 "time, and take up disk space."
 msgstr "需要安裝內核 debuginfo 軟體包，並且可能會花上一段長時間以及消耗磁碟空間。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
 msgstr "收集 GConf 組態"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/collect_GConf.xml.in.h:2
 msgid "Save configuration from application's GConf directory"
 msgstr "從應用程式的 GConf 目錄儲存組態"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/collect_GConf.xml.in.h:3
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
-msgstr "執行 gconftool-2 --recursive-list /apps/executable 並儲存為「gconf_subtree」元素。"
+msgstr ""
+"執行 gconftool-2 --recursive-list /apps/executable 並儲存為「gconf_subtree」元素。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
 msgstr "收集系統域 vim 組態檔"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/collect_vimrc_system.xml.in.h:2
 msgid "Save /etc/vimrc and /etc/gvimrc"
 msgstr "儲存 /etc/vimrc 與 /etc/gvimrc"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/collect_vimrc_system.xml.in.h:3
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
 msgstr "檢查 /etc 內是否有 vimrc 與 gvimrc，並將它們個別儲存為 system_vimrc 與 system_gvimrc。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid "Collect yours vim configuration files"
 msgstr "收集您的 vim 組態檔"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/collect_vimrc_user.xml.in.h:2
 msgid "Save .vimrc and .gvimrc from your home directory"
 msgstr "從您的家目錄儲存 .vimrc 與 .gvimrc"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
 msgstr "檢查您的家目錄是否有 .vimrc 與 .gvimrc，並將它們個別儲存為 user_vimrc 與 user_gvimrc。"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"
 msgstr "張貼回報"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/post_report.xml.in.h:2
 msgid "Executed after the reporting is finished"
 msgstr "在回報完成後執行"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/post_report.xml.in.h:3
 msgid "Used for updating of the databases"
 msgstr "用於資料庫的更新"

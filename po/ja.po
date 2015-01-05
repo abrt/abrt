@@ -12,19 +12,22 @@
 # noriko <noriko@fedoraproject.org>, 2014
 # noriko <noriko@fedoraproject.org>, 2010,2012-2013
 # carrotsoft <www.carrotsoft@gmail.com>, 2011-2012
+# Noriko Mizumoto <noriko@redhat.com>, 2015. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-12-12 14:29+0100\n"
-"PO-Revision-Date: 2014-12-16 09:16+0000\n"
-"Last-Translator: noriko <noriko@fedoraproject.org>\n"
-"Language-Team: Japanese (http://www.transifex.com/projects/p/fedora-abrt/language/ja/)\n"
+"POT-Creation-Date: 2015-01-05 07:16-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-01-08 11:11-0500\n"
+"Last-Translator: Noriko Mizumoto <noriko@redhat.com>\n"
+"Language-Team: Japanese (http://www.transifex.com/projects/p/fedora-abrt/"
+"language/ja/)\n"
 "Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Zanata 3.5.1\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
@@ -97,10 +100,16 @@ msgstr "通知を閉じることができません: %s"
 
 #: ../src/applet/applet.c:706
 msgid ""
-"You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
+"You are going to mute notifications of a particular problem. You will never "
+"see a notification bubble for this problem again, however, ABRT will be "
+"detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
-msgstr "特定の問題の通知を無音にします。この問題では通知ポップアップが表示されませんが、ABRT はこれを検出し、ABRT GUI からこれを報告することができます。\n\n続けますか?"
+msgstr ""
+"特定の問題の通知を無音にします。この問題では通知ポップアップが表示されませんが、ABRT はこれを検出し、ABRT GUI "
+"からこれを報告することができます。\n"
+"\n"
+"続けますか?"
 
 #: ../src/applet/applet.c:784 ../src/applet/applet.c:786
 msgid "Warning"
@@ -113,7 +122,10 @@ msgstr "ABRT によって検出された問題をユーザーに通知するた�
 
 #: ../src/applet/applet.c:850
 msgid "translator-credits"
-msgstr "Casey Jones <nahareport@yahoo.com>\nHajime Taira <htaira@redhat.com>\nNoriko Mizumoto <noriko@fedoraproject.org>"
+msgstr ""
+"Casey Jones <nahareport@yahoo.com>\n"
+"Hajime Taira <htaira@redhat.com>\n"
+"Noriko Mizumoto <noriko@fedoraproject.org>"
 
 #: ../src/applet/applet.c:858
 msgid "_Quit"
@@ -136,6 +148,7 @@ msgid "Ignore forever"
 msgstr "永久に無視"
 
 #. Problem has been 'autoreported' and is considered as KNOWN
+#. 
 #: ../src/applet/applet.c:991 ../src/applet/applet.c:1006
 msgid "Open"
 msgstr "開く"
@@ -150,6 +163,7 @@ msgstr "既知の問題が発生しました"
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
+#. 
 #: ../src/applet/applet.c:1015 ../src/applet/applet.c:1050
 msgid "Report"
 msgstr "報告する"
@@ -199,7 +213,9 @@ msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
-msgstr "& [-v] [DIR]...\n\n新しい問題が ABRT で検出されるとユーザーに通知するアプレットです\n"
+msgstr "& [-v] [DIR]...\n"
+"\n"
+"新しい問題が ABRT で検出されるとユーザーに通知するアプレットです\n"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
@@ -220,11 +236,13 @@ msgstr "サイレントの短縮形レポート"
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
-"space consuming operation. ABRT provides a service which generates the stack"
-" trace from the coredump but you have to upload the coredump to this "
-"service. With this option disabled ABRT will upload the coredump without "
-"asking."
-msgstr "coredump ファイルは、時間がかかりスペースを消費する操作であるスタックトレースの生成に必要です。ABRT は、coredump からスタックトレースを生成するサービスを提供しますが、coredump をこのサービスにアップロードする必要があります。このオプションを無効にすると、ABRT は尋ねることなく coredump をアップロードします。"
+"space consuming operation. ABRT provides a service which generates the stack "
+"trace from the coredump but you have to upload the coredump to this service. "
+"With this option disabled ABRT will upload the coredump without asking."
+msgstr ""
+"coredump ファイルは、時間がかかりスペースを消費する操作であるスタックトレースの生成に必要です。ABRT は、coredump "
+"からスタックトレースを生成するサービスを提供しますが、coredump "
+"をこのサービスにアップロードする必要があります。このオプションを無効にすると、ABRT は尋ねることなく coredump をアップロードします。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -232,22 +250,30 @@ msgid ""
 "directory, the directory is moved from the system location to your home "
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
-msgstr "ABRT は、問題のデータをディレクトリに保存します。ABRT が書き込み可能なディレクトリを必要とする時は常に、このディレクトリはシステムからユーザーのホームディレクトリに移動されます。このオプションを無効にすると、ABRT は尋ねることなく問題のディレクトリを移動します。"
+msgstr ""
+"ABRT は、問題のデータをディレクトリに保存します。ABRT "
+"が書き込み可能なディレクトリを必要とする時は常に、このディレクトリはシステムからユーザーのホームディレクトリに移動されます。このオプションを無効にすると、ABRT "
+"は尋ねることなく問題のディレクトリを移動します。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
-"uses uReports  for fast global duplicate detection. In default configuration"
-" uReport is sent at beginning of reporting process. With this option enabled"
-" uReports are sent automatically immediately after problem detection."
-msgstr "uReport は、問題を説明したもので、簡潔で完全に匿名のものです。ABRT は uReport を使用して、グローバルな重複を素早く検出します。デフォルト設定では、uReport はレポーティングプロセスの最初に送信されます。このオプションを有効にすると、問題の検出後に直ちに uReport が自動的に送信されます。"
+"uses uReports  for fast global duplicate detection. In default configuration "
+"uReport is sent at beginning of reporting process. With this option enabled "
+"uReports are sent automatically immediately after problem detection."
+msgstr ""
+"uReport は、問題を説明したもので、簡潔で完全に匿名のものです。ABRT は uReport "
+"を使用して、グローバルな重複を素早く検出します。デフォルト設定では、uReport "
+"はレポーティングプロセスの最初に送信されます。このオプションを有効にすると、問題の検出後に直ちに uReport が自動的に送信されます。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
-"With this option enabled reporting process started by click on Report button"
-" in problem notification bubble will be interrupted after uReport is sent. "
+"With this option enabled reporting process started by click on Report button "
+"in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
-msgstr "このオプションを有効にすると、問題通知のポップアップ内のレポートボタンをクリックして開始されたレポーティングプロセスは、uReport の送信後に中断されます。デフォルトの問題ブラウザを使った完全なレポート作成は、常に可能です。"
+msgstr ""
+"このオプションを有効にすると、問題通知のポップアップ内のレポートボタンをクリックして開始されたレポーティングプロセスは、uReport "
+"の送信後に中断されます。デフォルトの問題ブラウザを使った完全なレポート作成は、常に可能です。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
@@ -278,7 +304,9 @@ msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
-msgstr "コンピューターのシャットダウン中またはユーザーのログアウト中に完了していない問題が検出されました。価値のある問題レポートを提出するため、ABRT はユーザーによるこれらの問題の提出を許可しません。"
+msgstr ""
+"コンピューターのシャットダウン中またはユーザーのログアウト中に完了していない問題が検出されました。価値のある問題レポートを提出するため、ABRT "
+"はユーザーによるこれらの問題の提出を許可しません。"
 
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Close"
@@ -310,7 +338,10 @@ msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
-msgstr "& [-v] [-c CONFFILE] -d DIR\n\nパッケージのデータベースに問い合わせを行い、 パッケージとコンポーネント名を保存します"
+msgstr ""
+"& [-v] [-c CONFFILE] -d DIR\n"
+"\n"
+"パッケージのデータベースに問い合わせを行い、 パッケージとコンポーネント名を保存します"
 
 #: ../src/daemon/abrt-action-save-package-data.c:394
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
@@ -413,11 +444,13 @@ msgstr "このプログラムは root で実行しなければなりません"
 #: ../src/daemon/abrtd.c:451
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
-"detected while computer is shutting down or user is logging out. In order to"
-" provide valuable problem reports, ABRT will not allow you to submit this "
-"problem. If you have time and want to help the developers in their effort to"
-" sort out this problem, please contact them directly."
-msgstr "問題データは不完全なデータです。コンピューターのシャットダウン中やユーザーのログアウト中に問題が検出されると、こうしたことが発生します。役に立たない問題レポートは提出されないよう、ABRT によりこの問題の送信は許可されません。この問題を解決するため時間をとって開発者にご協力頂ける場合は、開発者に直接ご連絡ください。"
+"detected while computer is shutting down or user is logging out. In order to "
+"provide valuable problem reports, ABRT will not allow you to submit this "
+"problem. If you have time and want to help the developers in their effort to "
+"sort out this problem, please contact them directly."
+msgstr ""
+"問題データは不完全なデータです。コンピューターのシャットダウン中やユーザーのログアウト中に問題が検出されると、こうしたことが発生します。役に立たない問題レポートは提出されないよう、ABRT "
+"によりこの問題の送信は許可されません。この問題を解決するため時間をとって開発者にご協力頂ける場合は、開発者に直接ご連絡ください。"
 
 #: ../src/daemon/abrtd.c:497
 msgid "Do not daemonize"
@@ -454,7 +487,15 @@ msgid ""
 "\n"
 "If UPLOAD_DIRECTORY is not provided, uses a value of\n"
 "WatchCrashdumpArchiveDir option from abrt.conf"
-msgstr "& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n\n\nUPLOAD_DIRECTORY をウォッチし、abrt.conf で指定された \nDumpLocation に格納されたアーカイブを展開します。\n\nUPLOAD_DIRECTORY が指定されていない場合、\nabrt.conf の WatchCrashdumpArchiveDir オプションの値を使用します。"
+msgstr ""
+"& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
+"\n"
+"\n"
+"UPLOAD_DIRECTORY をウォッチし、abrt.conf で指定された \n"
+"DumpLocation に格納されたアーカイブを展開します。\n"
+"\n"
+"UPLOAD_DIRECTORY が指定されていない場合、\n"
+"abrt.conf の WatchCrashdumpArchiveDir オプションの値を使用します。"
 
 #: ../src/daemon/abrt-upload-watch.c:281
 msgid "Daemize"
@@ -468,18 +509,71 @@ msgstr "同時実行ワーカー数。規定値は次のとおりです。"
 msgid "Maximal cache size in MiB. Default is "
 msgstr "MiB 単位の最大キャッシュ容量。規定値は次のとおりです。"
 
-#: ../src/daemon/abrt-auto-reporting.c:81
+#: ../src/daemon/abrt-auto-reporting.c:176
 msgid "& [ "
 msgstr "& [ "
 
-#: ../src/daemon/abrt-auto-reporting.c:113
+#: ../src/daemon/abrt-auto-reporting.c:213
+msgid "Turns the authentication off"
+msgstr "認証をオフにする"
+
+#: ../src/daemon/abrt-auto-reporting.c:214
+msgid "Red Hat Support user name"
+msgstr "Red Hat サポートユーザー名"
+
+#: ../src/daemon/abrt-auto-reporting.c:215
+msgid "Red Hat Support password, if not given, a prompt for it will be issued"
+msgstr "Red Hat Support パスワード、入力しないとあとで入力が求められます"
+
+#: ../src/daemon/abrt-auto-reporting.c:216
+msgid "uReport SSL certificate paths or certificate type"
+msgstr "uReport SSL 証明書パスまたは証明書タイプ"
+
+#: ../src/daemon/abrt-auto-reporting.c:227
+msgid "You also need to specify --username for --password"
+msgstr "--password には --username も指定してください"
+
+#: ../src/daemon/abrt-auto-reporting.c:233
+msgid "You can use either --username or --certificate"
+msgstr "--username または --certificate のいずれかを使用します"
+
+#: ../src/daemon/abrt-auto-reporting.c:239
+msgid "You can use either --username or --anonymous"
+msgstr "--username または --anonymous のいずれかを使用します"
+
+#: ../src/daemon/abrt-auto-reporting.c:245
+msgid "You can use either --anonymous or --certificate"
+msgstr "--anonymous または --certificate のいずれかを使用します"
+
+#: ../src/daemon/abrt-auto-reporting.c:251
 msgid "Invalid number of arguments"
 msgstr "引数の数が無効な数です"
 
-#: ../src/daemon/abrt-auto-reporting.c:138
+#: ../src/daemon/abrt-auto-reporting.c:270
 #, c-format
 msgid "Unknown option value: '%s'\n"
 msgstr "不明なオプション値です: '%s'\n"
+
+#: ../src/daemon/abrt-auto-reporting.c:305
+msgid "Password:"
+msgstr "パスワード:"
+
+#: ../src/daemon/abrt-auto-reporting.c:308
+msgid "Cannot continue without password\n"
+msgstr "パスワードを入力しないと先に進めません\n"
+
+#. Print only the part before ':' of a string like "username:password"
+#: ../src/daemon/abrt-auto-reporting.c:347
+msgid "HTTP Authenticated auto reporting"
+msgstr "HTTP 認証の自動報告"
+
+#: ../src/daemon/abrt-auto-reporting.c:349
+msgid "SSL Client Authenticated auto reporting"
+msgstr "SSL クライアント認証の自動報告"
+
+#: ../src/daemon/abrt-auto-reporting.c:351
+msgid "anonymous auto reporting"
+msgstr "anonymous 自動報告"
 
 #: ../src/daemon/abrt-handle-upload.in:69
 #, c-format
@@ -491,7 +585,14 @@ msgid ""
 "   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n"
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
-msgstr "使い方: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n\n   -v             - 冗長表示にする\n   -d             - アップロード済みのアーカイブを削除する\n   ABRT_SPOOL_DIR - アップロード済みの有効なアーカイブが解凍されるディレクトリ\n   UPLOAD_DIR     - アップロード済みアーカイブが保存されるディレクトリ\n   FILENAME       - アップロード済みアーカイブファイル名\n"
+msgstr ""
+"使い方: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
+"\n"
+"   -v             - 冗長表示にする\n"
+"   -d             - アップロード済みのアーカイブを削除する\n"
+"   ABRT_SPOOL_DIR - アップロード済みの有効なアーカイブが解凍されるディレクトリ\n"
+"   UPLOAD_DIR     - アップロード済みアーカイブが保存されるディレクトリ\n"
+"   FILENAME       - アップロード済みアーカイブファイル名\n"
 
 #: ../src/daemon/abrt-handle-upload.in:105
 #: ../src/daemon/abrt-handle-upload.in:108
@@ -612,11 +713,18 @@ msgid ""
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
-msgstr "& [オプション] -d DIR\n\nC/C++ バックトレースを分析し、重複ハッシュ、バックトレース\nレーティングを生成、DIR 問題ディレクトリ内のクラッシュ関数を\n識別します"
+msgstr ""
+"& [オプション] -d DIR\n"
+"\n"
+"C/C++ バックトレースを分析し、重複ハッシュ、バックトレース\n"
+"レーティングを生成、DIR 問題ディレクトリ内のクラッシュ関数を\n"
+"識別します"
 
+#. 
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -631,7 +739,10 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
-msgstr "& [-v] -d DIR\n\nDIR 問題ディレクトリ内のコアダンプの UUID を算出して保存\nします"
+msgstr "& [-v] -d DIR\n"
+"\n"
+"DIR 問題ディレクトリ内のコアダンプの UUID を算出して保存\n"
+"します"
 
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
@@ -657,14 +768,19 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
-msgstr "& [-vs] -d DIR\n\noops 問題ディレクトリ DIR の UUID と DUPHASH を算出して\n保存します"
+msgstr "& [-vs] -d DIR\n"
+"\n"
+"oops 問題ディレクトリ DIR の UUID と DUPHASH を算出して\n"
+"保存します"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:73
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
-msgstr "& [-v] -d DIR\n\nxorg 問題ディレクトリ DIR の UUID と DUPHASH を算出して保存します"
+msgstr "& [-v] -d DIR\n"
+"\n"
+"xorg 問題ディレクトリ DIR の UUID と DUPHASH を算出して保存します"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:113
 #, c-format
@@ -676,7 +792,10 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
-msgstr "& [-v] -d DIR\n\npython クラッシュダンプの UUID と DUPHASH を算出して保存\nします"
+msgstr "& [-v] -d DIR\n"
+"\n"
+"python クラッシュダンプの UUID と DUPHASH を算出して保存\n"
+"します"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:52
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
@@ -691,10 +810,10 @@ msgid "Extracting the oops text from core"
 msgstr "core からウップステキストを抽出します"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
-msgid ""
-"Can't process {0}:\n"
+msgid "Can't process {0}:\n"
 "{1}"
-msgstr "{0} を処理できません:\n{1}"
+msgstr "{0} を処理できません:\n"
+"{1}"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "Can't extract the oops message: '{0}'"
@@ -708,14 +827,18 @@ msgstr "ウップステキストが正常に抽出されました"
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
-msgstr "カーネルログではハードウェア関連のエラーが検出されたことが示されているため、\nこれはおそらくソフトウェアに関する問題ではないでしょう。\n"
+msgstr "カーネルログではハードウェア関連のエラーが検出されたことが示されているため、\n"
+"これはおそらくソフトウェアに関する問題ではないでしょう。\n"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
 "& [options] -d DIR\n"
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
-msgstr "& [オプション] -d DIR\n\nDIR 問題ディレクトリ内のコアダンプを分析し、バックトレースを\n生成して保存します"
+msgstr "& [オプション] -d DIR\n"
+"\n"
+"DIR 問題ディレクトリ内のコアダンプを分析し、バックトレースを\n"
+"生成して保存します"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
@@ -727,6 +850,7 @@ msgstr "gdb が NUM 秒以上実行している場合は gdb を終了します"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -737,7 +861,9 @@ msgid ""
 "& [-v] [-r] -d DIR\n"
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
-msgstr "& [-v] [-r] -d DIR\n\n該当バイナリとコアダンプからコアダンプレベルのバックトレースを作成します"
+msgstr "& [-v] [-r] -d DIR\n"
+"\n"
+"該当バイナリとコアダンプからコアダンプレベルのバックトレースを作成します"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
@@ -765,7 +891,8 @@ msgstr "ユーザーからのコマンドで終了しています"
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH]...]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
@@ -775,13 +902,32 @@ msgid ""
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
 "    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
 "    -e,--exact  Download only specified files\n"
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
-msgstr "使い方: %s [-vy] [--ids=BUILD_IDS_FILE]\n[--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n[-e, --exact=PATH[:PATH]...]\n\nBUILD_IDS_FILE に記載されている全 build-id の debuginfo を CACHEDIR に\nインストールします。TMPDIR を一時的なステージングエリアに使用します。\nCACHEDIR の大きさが SIZE に減少するまで CACHEDIR 内の古いファイルが削除されます。\n\n-v          冗長表示にする\n-y          非インテラクティブ、すべての質問に「はい」と答える\n--ids       デフォルト: build_ids\n--tmpdir    デフォルト: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n--cache     デフォルト: /var/cache/abrt-di\n--size_mb   デフォルト: 4096\n-e,--exact  指定したファイルのみダウンロードする\n--repo      リポジトリの検索時に使用するパターン\nデフォルト: *debug*\n"
+msgstr ""
+"使い方: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+"[--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--"
+"size_mb=SIZE]\n"
+"[-e, --exact=PATH[:PATH]...]\n"
+"\n"
+"BUILD_IDS_FILE に記載されている全 build-id の debuginfo を CACHEDIR に\n"
+"インストールします。TMPDIR を一時的なステージングエリアに使用します。\n"
+"CACHEDIR の大きさが SIZE に減少するまで CACHEDIR 内の古いファイルが削除されます。\n"
+"\n"
+"-v          冗長表示にする\n"
+"-y          非インテラクティブ、すべての質問に「はい」と答える\n"
+"--ids       デフォルト: build_ids\n"
+"--tmpdir    デフォルト: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"--cache     デフォルト: /var/cache/abrt-di\n"
+"--size_mb   デフォルト: 4096\n"
+"-e,--exact  指定したファイルのみダウンロードする\n"
+"--repo      リポジトリの検索時に使用するパターン\n"
+"デフォルト: *debug*\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:169
 msgid "Can't open {0}: {1}"
@@ -812,21 +958,30 @@ msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
-msgstr "コアダンプをアップロードしてもよいですか (これには機密情報が含まれている可能性があります) ?「いいえ」の場合にはスタックトレースがローカルに生成されます (これにより大量のデータがダウンロードされる可能性があります)。"
+msgstr ""
+"コアダンプをアップロードしてもよいですか (これには機密情報が含まれている可能性があります) "
+"?「いいえ」の場合にはスタックトレースがローカルに生成されます (これにより大量のデータがダウンロードされる可能性があります)。"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
-msgstr "スタックトレースをローカルに生成しますか? (これにより大量のデータがダウンロードされる可能性がありますが、スタックトレースがなくては報告を続行することができません。)"
+msgstr ""
+"スタックトレースをローカルに生成しますか? "
+"(これにより大量のデータがダウンロードされる可能性がありますが、スタックトレースがなくては報告を続行することができません。)"
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
+"SIZE.\n"
 "FILEs are preserved (never deleted)."
-msgstr "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n\nDIR のサイズが SIZE 未満になるまで DIR 内の問題ディレクトリ (-d) または問題ファイル (-f) を削除します。\nFILE については維持されます (削除しないようにします)。"
+msgstr ""
+"& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
+"\n"
+"DIR のサイズが SIZE 未満になるまで DIR 内の問題ディレクトリ (-d) または問題ファイル (-f) を削除します。\n"
+"FILE については維持されます (削除しないようにします)。"
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
@@ -995,7 +1150,10 @@ msgid ""
 "& [-vs] [-F STR]... FILE PROG [ARGS]\n"
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
-msgstr "& [-vs] [-F STR]... FILE PROG [ARGS]\n\nFILE ログファイルを監視し、ファイルサイズが増大した場合またはファイルが置換された場合には PROG を実行します"
+msgstr ""
+"& [-vs] [-F STR]... FILE PROG [ARGS]\n"
+"\n"
+"FILE ログファイルを監視し、ファイルサイズが増大した場合またはファイルが置換された場合には PROG を実行します"
 
 #: ../src/plugins/abrt-watch-log.c:154
 msgid "Don't run PROG if STRs aren't found"
@@ -1018,7 +1176,8 @@ msgstr "カーネル関連の問題が発生しましたが、お使いのハー
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
-msgstr "カーネル関連の問題が発生しましたが、カーネル自体が破損しています (フラグ:%s)。破損したレポートの診断はカーネルメンテナーでは行なえません。"
+msgstr ""
+"カーネル関連の問題が発生しましたが、カーネル自体が破損しています (フラグ:%s)。破損したレポートの診断はカーネルメンテナーでは行なえません。"
 
 #: ../src/plugins/abrt-dump-oops.c:153
 #, c-format
@@ -1030,7 +1189,9 @@ msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
-msgstr "& [-vusoxm] [-d DIR]/[-D] [FILE]\n\nFILE (または標準入力) から oops を抽出します"
+msgstr "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"FILE (または標準入力) から oops を抽出します"
 
 #: ../src/plugins/abrt-dump-oops.c:274
 msgid "Print found oopses on standard output"
@@ -1038,6 +1199,7 @@ msgstr "見つけた oops を標準出力に表示します"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
+#. 
 #: ../src/plugins/abrt-dump-oops.c:278
 msgid "Create new problem directory in DIR for every oops found"
 msgstr "検出される oops ごと DIR 内に新規の問題ディレクトリを作成します"
@@ -1080,7 +1242,9 @@ msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
-msgstr "& [-vsoxm] [-d DIR]/[-D] [FILE]\n\nFILE (または標準入力) から Xorg クラッシュを抽出します"
+msgstr "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"FILE (または標準入力) から Xorg クラッシュを抽出します"
 
 #: ../src/plugins/abrt-dump-xorg.c:245
 msgid "Print found crash data on standard output"
@@ -1098,6 +1262,7 @@ msgstr "クラッシュが大きすぎるため、リトレースサーバーが
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
+#. 
 #: ../src/plugins/abrt-retrace-client.c:103
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
@@ -1120,10 +1285,10 @@ msgstr "長さ %d の HTTP ヘッダーの送信に失敗しました: NSS エ�
 #: ../src/plugins/abrt-retrace-client.c:1001
 #: ../src/plugins/abrt-retrace-client.c:1060
 #, c-format
-msgid ""
-"Unexpected HTTP response from server: %d\n"
+msgid "Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr "サーバーからの予期しない HTTP 応答です: %d \n%s"
+msgstr "サーバーからの予期しない HTTP 応答です: %d \n"
+"%s"
 
 #: ../src/plugins/abrt-retrace-client.c:232
 #: ../src/plugins/abrt-retrace-client.c:745
@@ -1139,7 +1304,8 @@ msgstr "サーバーからの無効な応答です: HTTP メッセージの本�
 msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official '%s' repositories?"
-msgstr "リトレースサーバーでパッケージ「'%s.%s」の処理ができません。\nこのパッケージは正式な「%s」レポジトリの一部ですか？"
+msgstr "リトレースサーバーでパッケージ「'%s.%s」の処理ができません。\n"
+"このパッケージは正式な「%s」レポジトリの一部ですか？"
 
 #: ../src/plugins/abrt-retrace-client.c:444
 msgid "Querying server settings"
@@ -1164,7 +1330,8 @@ msgstr "Retrace サーバーを使用するには '%s' が普通のファイル�
 msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
-msgstr "クラッシュサイズは %lld バイトですが、リトレースサーバーで受け取れるクラッシュサイズは %lld バイトか、それ以下のサイズになります。"
+msgstr ""
+"クラッシュサイズは %lld バイトですが、リトレースサーバーで受け取れるクラッシュサイズは %lld バイトか、それ以下のサイズになります。"
 
 #: ../src/plugins/abrt-retrace-client.c:534
 msgid "The server does not support xz-compressed tarballs."
@@ -1192,7 +1359,8 @@ msgstr "アップロードするアーカイブを準備中"
 msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
-msgstr "アーカイブのサイズは %lld バイトですが、リトレースサーバーで受け取れるクラッシュサイズは %lld バイトか、それ以下のサイズになります。"
+msgstr ""
+"アーカイブのサイズは %lld バイトですが、リトレースサーバーで受け取れるクラッシュサイズは %lld バイトか、それ以下のサイズになります。"
 
 #: ../src/plugins/abrt-retrace-client.c:629
 #, c-format
@@ -1257,10 +1425,10 @@ msgstr "リトレースジョブが開始されました"
 
 #: ../src/plugins/abrt-retrace-client.c:798
 #, c-format
-msgid ""
-"Task Id: %s\n"
+msgid "Task Id: %s\n"
 "Task Password: %s\n"
-msgstr "タスク Id: %s\nタスクパスワード: %s\n"
+msgstr "タスク Id: %s\n"
+"タスクパスワード: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:856
 msgid "Invalid response from server: missing X-Task-Status."
@@ -1268,10 +1436,10 @@ msgstr "サーバーからの無効な応答です: X-Task-Status がありま�
 
 #: ../src/plugins/abrt-retrace-client.c:868
 #, c-format
-msgid ""
-"Task Status: %s\n"
+msgid "Task Status: %s\n"
 "%s\n"
-msgstr "タスクの状態: %s\n%s\n"
+msgstr "タスクの状態: %s\n"
+"%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:899
 #: ../src/plugins/abrt-retrace-client.c:973
@@ -1348,7 +1516,9 @@ msgstr "サーバー上でのユーザータスクのパスワード"
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch/exploitable"
-msgstr "abrt-retrace-client <operation> [オプション]\n処理: create/status/backtrace/log/batch/exploitable"
+msgstr ""
+"abrt-retrace-client <operation> [オプション]\n"
+"処理: create/status/backtrace/log/batch/exploitable"
 
 #: ../src/plugins/abrt-retrace-client.c:1282
 #: ../src/plugins/abrt-retrace-client.c:1288
@@ -1385,9 +1555,11 @@ msgstr "debuginfo パッケージをダウンロードし、GDB を使用して�
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
-msgstr "debuginfo パッケージをダウンロードする必要があります。これにはかなりの時間とディスク領域を要する場合があります。ただし、リトレースサーバーとは異なり、コアダンプをリモートマシンに送信することはありません。"
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
+msgstr ""
+"debuginfo "
+"パッケージをダウンロードする必要があります。これにはかなりの時間とディスク領域を要する場合があります。ただし、リトレースサーバーとは異なり、コアダンプをリモートマシンに送信することはありません。"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
@@ -1395,12 +1567,15 @@ msgstr "コアダンプを分析のためリモートのリトレースサーバ
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. "
-"Pros: no need for debuginfo downloads. Retrace server's database of "
-"debuginfos is more complete. Retrace server may generate better backtraces. "
-"Cons: coredump you upload contains all the data from the crashed program, "
-"including your private data, if any."
-msgstr "コアダンプをサーバーにアップロードします。これによりバックトレースが生成され返されます。debuginfo をダウンロードする必要がない点が利点となります。リトレースサーバーの debaguinfo データベースの方がより完全なデータベースとなるため、リトレースサーバーの方がより適切なバックトレースを生成することができます。一方、アップロードするコアダンプにはクラッシュしたプログラムの全データが含まれるため、プライベートデータがある場合には、そのデータも含まれることになります。"
+"Uploads coredump to a server, which generates backtrace and returns it. Pros:"
+" no need for debuginfo downloads. Retrace server's database of debuginfos is "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
+"private data, if any."
+msgstr ""
+"コアダンプをサーバーにアップロードします。これによりバックトレースが生成され返されます。debuginfo "
+"をダウンロードする必要がない点が利点となります。リトレースサーバーの debaguinfo "
+"データベースの方がより完全なデータベースとなるため、リトレースサーバーの方がより適切なバックトレースを生成することができます。一方、アップロードするコアダンプにはクラッシュしたプログラムの全データが含まれるため、プライベートデータがある場合には、そのデータも含まれることになります。"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 #: ../src/plugins/analyze_CCpp.xml.in.h:3
@@ -1425,10 +1600,12 @@ msgstr "安全ではない接続を使用する、または使用しない"
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 #: ../src/plugins/analyze_CCpp.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
-msgstr "安全ではない接続を許可する場合は「insecure」と記述します &lt;a href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;(警告)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
+"&gt;(warning)&lt;/a&gt;"
+msgstr ""
+"安全ではない接続を許可する場合は「insecure」と記述します &lt;a href=\"https://fedorahosted.org/abrt/"
+"wiki/AbrtRetraceServerInsecureConnection\" &gt;(警告)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
@@ -1442,7 +1619,9 @@ msgstr "~/.xsession-errors ファイルから関連した行を保存する"
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
-msgstr "~/.xsession-errors ファイルをスキャンして、実行ファイル名を含んだ行を保存します。結果が「xsession_errors」エレメントとして保存されます。"
+msgstr ""
+"~/.xsession-errors "
+"ファイルをスキャンして、実行ファイル名を含んだ行を保存します。結果が「xsession_errors」エレメントとして保存されます。"
 
 #: ../src/plugins/https-utils.c:62
 msgid "An error occurred on the server side."
@@ -1600,7 +1779,10 @@ msgid ""
 "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
 "\n"
 "Search for updates on bodhi server"
-msgstr "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n\nbodhi サーバー上で更新を検索します"
+msgstr ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"\n"
+"bodhi サーバー上で更新を検索します"
 
 #: ../src/plugins/bodhi.c:434
 msgid "Searching for updates"
@@ -1618,8 +1800,8 @@ msgstr "このパッケージは、利用可能な更新よりローカルバー
 #: ../src/plugins/bodhi.c:486
 #, c-format
 msgid ""
-"An update exists which might fix your problem. You can install it by "
-"running: %s. Do you want to continue with reporting the bug?"
+"An update exists which might fix your problem. You can install it by running:"
+" %s. Do you want to continue with reporting the bug?"
 msgstr "問題を修正できる可能性のある更新があります。 %s を実行すると更新をインストールすることができます。バグの報告を続行しますか?"
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
@@ -1627,7 +1809,10 @@ msgid ""
 "& [-v] [-od] FILE...\n"
 "\n"
 "Scans files for split oops message. Can print and/or delete them."
-msgstr "& [-v] [-od] FILE...\n\nファイルをスキャンして分離した oops メッセージを探します。メッセージの表示、削除が可能です。"
+msgstr ""
+"& [-v] [-od] FILE...\n"
+"\n"
+"ファイルをスキャンして分離した oops メッセージを探します。メッセージの表示、削除が可能です。"
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:97
 msgid "Print found oopses"
@@ -1704,9 +1889,12 @@ msgstr "指定したタイムスタンプよりも古い問題のみを表示し
 #: ../src/cli/list.c:224
 #, c-format
 msgid ""
-"The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
+"The Autoreporting feature is disabled. Please consider enabling it by "
+"issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
-msgstr "自動報告機能は無効になっています。root の特権を持つユーザーで\n'abrt-auto-reporting enabled' を発行し、この機能を有効にすることを検討してみてください\n"
+msgstr ""
+"自動報告機能は無効になっています。root の特権を持つユーザーで\n"
+"'abrt-auto-reporting enabled' を発行し、この機能を有効にすることを検討してみてください\n"
 
 #: ../src/cli/list.c:235
 msgid "& info [options] DIR..."
@@ -1789,10 +1977,14 @@ msgid ""
 "user doens't want to upload his coredump to anywhere the event performs "
 "local analysis. Local analysis is run event if remote analysis fails. Pros: "
 "no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump"
-" you upload contains all the data from the crashed program, including your "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
 "private data, if any."
-msgstr "コアダンプをサーバーにアップロードします。これによりバックトレースが生成され返されます。コアダンプをどこにもアップロードしたくない場合、 ローカルの分析が行われます。リモートの分析に失敗した場合にもローカルの分析が実行されます。debuginfo をダウンロードする必要がない点が利点となります。リトレースサーバーの debaguinfo データベースの方がより完全なデータベースとなるため、リトレースサーバーの方がより適切なバックトレースを生成することができます。一方、アップロードするコアダンプにはクラッシュしたプログラムの全データが含まれるため、プライベートデータがある場合には、そのデータも含まれることになります。"
+msgstr ""
+"コアダンプをサーバーにアップロードします。これによりバックトレースが生成され返されます。コアダンプをどこにもアップロードしたくない場合、 "
+"ローカルの分析が行われます。リモートの分析に失敗した場合にもローカルの分析が実行されます。debuginfo "
+"をダウンロードする必要がない点が利点となります。リトレースサーバーの debaguinfo "
+"データベースの方がより完全なデータベースとなるため、リトレースサーバーの方がより適切なバックトレースを生成することができます。一方、アップロードするコアダンプにはクラッシュしたプログラムの全データが含まれるため、プライベートデータがある場合には、そのデータも含まれることになります。"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -1807,7 +1999,8 @@ msgstr "カーネル debuginfo パッケージをインストールしてカー�
 msgid ""
 "Needs to install kernel debuginfo packages, which might take significant "
 "time, and take up disk space."
-msgstr "カーネル debuginfo パッケージをインストールする必要があります。インストールにはかなりの時間とディスク領域を要する場合があります。"
+msgstr ""
+"カーネル debuginfo パッケージをインストールする必要があります。インストールにはかなりの時間とディスク領域を要する場合があります。"
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
@@ -1821,7 +2014,9 @@ msgstr "アプリケーションの GConf ディレクトリから設定を保�
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
-msgstr "gconftool-2 --recursive-list /apps/executable を実行して、「gconf_subtree」エレメントとして保存します"
+msgstr ""
+"gconftool-2 --recursive-list /apps/executable "
+"を実行して、「gconf_subtree」エレメントとして保存します"
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
@@ -1835,7 +2030,9 @@ msgstr "/etc/vimrc と /etc/gvimrc を保存する"
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
-msgstr "/etc 内に vimrc ファイルと gvimrc ファイルがあるか確認し、それぞれ system_vimrc と system_gvimrc として保存します。"
+msgstr ""
+"/etc 内に vimrc ファイルと gvimrc ファイルがあるか確認し、それぞれ system_vimrc と system_gvimrc "
+"として保存します。"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid "Collect yours vim configuration files"
@@ -1847,9 +2044,10 @@ msgstr "ホームディレクトリの .vimrc と .gvimrc を保存します"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
-msgstr "ホームディレクトリ内に .vimrc と .gvimrc があるか確認し、それぞれ user_vimrc と user_gvimrc として保存します。"
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
+msgstr ""
+"ホームディレクトリ内に .vimrc と .gvimrc があるか確認し、それぞれ user_vimrc と user_gvimrc として保存します。"
 
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"

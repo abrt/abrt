@@ -11,17 +11,19 @@
 # Robin Mehdee <robin@ankur.org.bd>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-12-12 14:29+0100\n"
-"PO-Revision-Date: 2014-12-12 13:30+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
-"Language-Team: Bengali (http://www.transifex.com/projects/p/fedora-abrt/language/bn/)\n"
+"POT-Creation-Date: 2015-01-05 07:16-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-12-12 08:30-0500\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"Language-Team: Bengali (http://www.transifex.com/projects/p/fedora-abrt/"
+"language/bn/)\n"
 "Language: bn\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Zanata 3.5.1\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
@@ -94,7 +96,9 @@ msgstr ""
 
 #: ../src/applet/applet.c:706
 msgid ""
-"You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
+"You are going to mute notifications of a particular problem. You will never "
+"see a notification bubble for this problem again, however, ABRT will be "
+"detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
 msgstr ""
@@ -106,7 +110,9 @@ msgstr "সতর্কবার্তা"
 #: ../src/applet/applet.c:834
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
-msgstr "ABRT দ্বারা সনাক্ত করা সমস্যা সম্বন্ধে ব্যবহারকারীদেরকে সূচিত করার উদ্দেশ্যে, বিজ্ঞপ্তিস্থলে ব্যবহারযোগ্য অ্যাপ্লেট"
+msgstr ""
+"ABRT দ্বারা সনাক্ত করা সমস্যা সম্বন্ধে ব্যবহারকারীদেরকে সূচিত করার "
+"উদ্দেশ্যে, বিজ্ঞপ্তিস্থলে ব্যবহারযোগ্য অ্যাপ্লেট"
 
 #: ../src/applet/applet.c:850
 msgid "translator-credits"
@@ -133,6 +139,7 @@ msgid "Ignore forever"
 msgstr ""
 
 #. Problem has been 'autoreported' and is considered as KNOWN
+#. 
 #: ../src/applet/applet.c:991 ../src/applet/applet.c:1006
 msgid "Open"
 msgstr ""
@@ -147,6 +154,7 @@ msgstr ""
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
+#. 
 #: ../src/applet/applet.c:1015 ../src/applet/applet.c:1050
 msgid "Report"
 msgstr "রিপোর্ট"
@@ -196,7 +204,11 @@ msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
-msgstr "& [-v] [DIR]...\n\nABRT দ্বারা নতুন সমস্যা সনাক্ত করা হলে ব্যবহারকারীদের সূচিত করতে ব্যবহৃত অ্যাপ্লেট\n"
+msgstr ""
+"& [-v] [DIR]...\n"
+"\n"
+"ABRT দ্বারা নতুন সমস্যা সনাক্ত করা হলে ব্যবহারকারীদের সূচিত করতে ব্যবহৃত "
+"অ্যাপ্লেট\n"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
@@ -217,10 +229,9 @@ msgstr ""
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
-"space consuming operation. ABRT provides a service which generates the stack"
-" trace from the coredump but you have to upload the coredump to this "
-"service. With this option disabled ABRT will upload the coredump without "
-"asking."
+"space consuming operation. ABRT provides a service which generates the stack "
+"trace from the coredump but you have to upload the coredump to this service. "
+"With this option disabled ABRT will upload the coredump without asking."
 msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
@@ -234,15 +245,15 @@ msgstr ""
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
-"uses uReports  for fast global duplicate detection. In default configuration"
-" uReport is sent at beginning of reporting process. With this option enabled"
-" uReports are sent automatically immediately after problem detection."
+"uses uReports  for fast global duplicate detection. In default configuration "
+"uReport is sent at beginning of reporting process. With this option enabled "
+"uReports are sent automatically immediately after problem detection."
 msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
-"With this option enabled reporting process started by click on Report button"
-" in problem notification bubble will be interrupted after uReport is sent. "
+"With this option enabled reporting process started by click on Report button "
+"in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
 
@@ -307,7 +318,10 @@ msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
-msgstr "& [-v] [-c CONFFILE] -d DIR\n\nপ্যাকেজের ডাটাবেস সন্ধান করুন ও প্যাকেজ ও সামগ্রীর নাম সংরক্ষণ করুন"
+msgstr ""
+"& [-v] [-c CONFFILE] -d DIR\n"
+"\n"
+"প্যাকেজের ডাটাবেস সন্ধান করুন ও প্যাকেজ ও সামগ্রীর নাম সংরক্ষণ করুন"
 
 #: ../src/daemon/abrt-action-save-package-data.c:394
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
@@ -410,10 +424,10 @@ msgstr ""
 #: ../src/daemon/abrtd.c:451
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
-"detected while computer is shutting down or user is logging out. In order to"
-" provide valuable problem reports, ABRT will not allow you to submit this "
-"problem. If you have time and want to help the developers in their effort to"
-" sort out this problem, please contact them directly."
+"detected while computer is shutting down or user is logging out. In order to "
+"provide valuable problem reports, ABRT will not allow you to submit this "
+"problem. If you have time and want to help the developers in their effort to "
+"sort out this problem, please contact them directly."
 msgstr ""
 
 #: ../src/daemon/abrtd.c:497
@@ -465,17 +479,70 @@ msgstr ""
 msgid "Maximal cache size in MiB. Default is "
 msgstr ""
 
-#: ../src/daemon/abrt-auto-reporting.c:81
+#: ../src/daemon/abrt-auto-reporting.c:176
 msgid "& [ "
 msgstr ""
 
-#: ../src/daemon/abrt-auto-reporting.c:113
+#: ../src/daemon/abrt-auto-reporting.c:213
+msgid "Turns the authentication off"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:214
+msgid "Red Hat Support user name"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:215
+msgid "Red Hat Support password, if not given, a prompt for it will be issued"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:216
+msgid "uReport SSL certificate paths or certificate type"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:227
+msgid "You also need to specify --username for --password"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:233
+msgid "You can use either --username or --certificate"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:239
+msgid "You can use either --username or --anonymous"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:245
+msgid "You can use either --anonymous or --certificate"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:251
 msgid "Invalid number of arguments"
 msgstr ""
 
-#: ../src/daemon/abrt-auto-reporting.c:138
+#: ../src/daemon/abrt-auto-reporting.c:270
 #, c-format
 msgid "Unknown option value: '%s'\n"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:305
+msgid "Password:"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:308
+msgid "Cannot continue without password\n"
+msgstr ""
+
+#. Print only the part before ':' of a string like "username:password"
+#: ../src/daemon/abrt-auto-reporting.c:347
+msgid "HTTP Authenticated auto reporting"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:349
+msgid "SSL Client Authenticated auto reporting"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:351
+msgid "anonymous auto reporting"
 msgstr ""
 
 #: ../src/daemon/abrt-handle-upload.in:69
@@ -609,11 +676,17 @@ msgid ""
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
-msgstr "& [options] -d DIR\n\nAnalyzes C/C++ backtrace, generates duplication hash, backtrace rating,\nand identifies crash function in problem directory DIR"
+msgstr ""
+"& [options] -d DIR\n"
+"\n"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
+"and identifies crash function in problem directory DIR"
 
+#. 
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -628,7 +701,10 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
-msgstr "& [-v] -d DIR\n\nসমস্যাযুক্ত ডিরেক্টরি DIR-র মধ্যে coredump-র UUID গণনা করে সংরক্ষণ করা হয়"
+msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"সমস্যাযুক্ত ডিরেক্টরি DIR-র মধ্যে coredump-র UUID গণনা করে সংরক্ষণ করা হয়"
 
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
@@ -673,7 +749,10 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
-msgstr "& [-v] -d DIR\n\nPython ক্র্যাশ ডাম্পের UUID ও DUPHASH গণনা করে সংরক্ষণ করা হয়"
+msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Python ক্র্যাশ ডাম্পের UUID ও DUPHASH গণনা করে সংরক্ষণ করা হয়"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:52
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
@@ -688,8 +767,7 @@ msgid "Extracting the oops text from core"
 msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
-msgid ""
-"Can't process {0}:\n"
+msgid "Can't process {0}:\n"
 "{1}"
 msgstr ""
 
@@ -712,7 +790,11 @@ msgid ""
 "& [options] -d DIR\n"
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
-msgstr "& [options] -d DIR\n\nসমস্যায়ুক্ত ডিরেক্টরি DIR-র মধ্যে coredump বিশ্লেষণ করে backtrace প্রস্তুত করে সংরক্ষণ করা হয়"
+msgstr ""
+"& [options] -d DIR\n"
+"\n"
+"সমস্যায়ুক্ত ডিরেক্টরি DIR-র মধ্যে coredump বিশ্লেষণ করে backtrace প্রস্তুত "
+"করে সংরক্ষণ করা হয়"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
@@ -724,6 +806,7 @@ msgstr "NUM সেকেন্ডের বেশি সময় ধরে gdb চ
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -762,7 +845,8 @@ msgstr "ব্যবহারকারী দ্বারা উল্লিখ�
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH]...]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
@@ -772,7 +856,8 @@ msgid ""
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
 "    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
 "    -e,--exact  Download only specified files\n"
@@ -786,7 +871,9 @@ msgstr "{0} খুলতে ব্যর্থ: {1}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:206
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
-msgstr "Coredump দ্বারা {0} debuginfo ফাইলগুলি অনুধাবন করা হয়, এর মধ্যে {1}-টি ইনস্টল করা হয়নি"
+msgstr ""
+"Coredump দ্বারা {0} debuginfo ফাইলগুলি অনুধাবন করা হয়, এর মধ্যে {1}-টি "
+"ইনস্টল করা হয়নি"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:209
 msgid "{0} of debuginfo files are not installed"
@@ -821,9 +908,15 @@ msgstr ""
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
+"SIZE.\n"
 "FILEs are preserved (never deleted)."
-msgstr "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n\nDeletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\nFILEs are preserved (never deleted)."
+msgstr ""
+"& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
+"\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
+"SIZE.\n"
+"FILEs are preserved (never deleted)."
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
@@ -1015,7 +1108,9 @@ msgstr ""
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
-msgstr "কার্নেলে সমস্যা দেখা দিয়েছে, কিন্তু আপনার কার্নেল চিহ্নযুক্ত (flags:%s) হয়েছে। কার্নেল রক্ষণাবেক্ষণকারী চিহ্নযুক্ত রিপোর্টের সমাধান করতে অক্ষম।"
+msgstr ""
+"কার্নেলে সমস্যা দেখা দিয়েছে, কিন্তু আপনার কার্নেল চিহ্নযুক্ত (flags:%s) "
+"হয়েছে। কার্নেল রক্ষণাবেক্ষণকারী চিহ্নযুক্ত রিপোর্টের সমাধান করতে অক্ষম।"
 
 #: ../src/plugins/abrt-dump-oops.c:153
 #, c-format
@@ -1035,13 +1130,16 @@ msgstr "প্রমিত আউটপুটের মধ্যে print দ্
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
+#. 
 #: ../src/plugins/abrt-dump-oops.c:278
 msgid "Create new problem directory in DIR for every oops found"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-oops.c:279 ../src/plugins/abrt-dump-xorg.c:247
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
-msgstr "-d DumpLocation -র অনুরূপ, abrt.conf ফাইলের মধ্যে DumpLocation উল্লেখ করা হয়"
+msgstr ""
+"-d DumpLocation -র অনুরূপ, abrt.conf ফাইলের মধ্যে DumpLocation উল্লেখ করা "
+"হয়"
 
 #: ../src/plugins/abrt-dump-oops.c:280
 msgid "Save the extracted information in PROBLEM"
@@ -1091,10 +1189,13 @@ msgstr ""
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
-msgstr "বিপর্যয়ের পরিমাণ অত্যন্ত বড় হওয়ার ফলে Retrace সার্ভার ব্যবহার করা সম্ভব নয়।  স্থানীয় অবস্থান থেকে retrace করার প্রচেষ্টা করুন।"
+msgstr ""
+"বিপর্যয়ের পরিমাণ অত্যন্ত বড় হওয়ার ফলে Retrace সার্ভার ব্যবহার করা সম্ভব "
+"নয়।  স্থানীয় অবস্থান থেকে retrace করার প্রচেষ্টা করুন।"
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
+#. 
 #: ../src/plugins/abrt-retrace-client.c:103
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
@@ -1117,10 +1218,10 @@ msgstr "%d দৈর্ঘ্যের HTTP হেডার পাঠাতে �
 #: ../src/plugins/abrt-retrace-client.c:1001
 #: ../src/plugins/abrt-retrace-client.c:1060
 #, c-format
-msgid ""
-"Unexpected HTTP response from server: %d\n"
+msgid "Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr "সার্ভার থেকে অপ্রত্যাশিত HTTP উত্তর পাওয়া গিয়েছে: %d\n%s"
+msgstr "সার্ভার থেকে অপ্রত্যাশিত HTTP উত্তর পাওয়া গিয়েছে: %d\n"
+"%s"
 
 #: ../src/plugins/abrt-retrace-client.c:232
 #: ../src/plugins/abrt-retrace-client.c:745
@@ -1144,7 +1245,8 @@ msgstr "সার্ভারের বৈশিষ্ট্য অনুসন�
 
 #: ../src/plugins/abrt-retrace-client.c:452
 msgid "The server is fully occupied. Try again later."
-msgstr "সার্ভার সম্পূর্ণরূপে ব্যবহৃত হচ্ছে। পরে কোনো সময় পুনরায় প্রয়াস করুন।"
+msgstr ""
+"সার্ভার সম্পূর্ণরূপে ব্যবহৃত হচ্ছে। পরে কোনো সময় পুনরায় প্রয়াস করুন।"
 
 #: ../src/plugins/abrt-retrace-client.c:453
 msgid "The server denied your request."
@@ -1161,7 +1263,9 @@ msgstr ""
 msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
-msgstr "বিপর্যয়ের মাপ %lld বাইট, কিন্তু রি-ট্রেস সার্ভার দ্বারা শুধুমাত্র %lld বাইট অথবা এর থেকে কম মাপের বিপর্যয়ের তথ্য গ্রহণ করা হয়।"
+msgstr ""
+"বিপর্যয়ের মাপ %lld বাইট, কিন্তু রি-ট্রেস সার্ভার দ্বারা শুধুমাত্র %lld বাইট "
+"অথবা এর থেকে কম মাপের বিপর্যয়ের তথ্য গ্রহণ করা হয়।"
 
 #: ../src/plugins/abrt-retrace-client.c:534
 msgid "The server does not support xz-compressed tarballs."
@@ -1189,7 +1293,9 @@ msgstr "আপলোড করার জন্য আর্কাইভ প্�
 msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
-msgstr "আর্কাইভের মাপ %lld বাইট, কিন্তু রি-ট্রেস সার্ভার দ্বারা শুধুমাত্র %lld বাইট অথবা এর থেকে কম মাপের আর্কাইভ গ্রহণ করা হয়।"
+msgstr ""
+"আর্কাইভের মাপ %lld বাইট, কিন্তু রি-ট্রেস সার্ভার দ্বারা শুধুমাত্র %lld বাইট "
+"অথবা এর থেকে কম মাপের আর্কাইভ গ্রহণ করা হয়।"
 
 #: ../src/plugins/abrt-retrace-client.c:629
 #, c-format
@@ -1232,13 +1338,17 @@ msgstr "সাফল্যের সাথে আপলোড করা হয�
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
-msgstr "সমস্যাযুক্ত ডিরেক্টরিটি বর্তমানে ক্ষতিগ্রস্ত ও Retrace সার্ভার দ্বারা প্রক্রিয়াভুক্ত করা সম্ভব নয়।"
+msgstr ""
+"সমস্যাযুক্ত ডিরেক্টরিটি বর্তমানে ক্ষতিগ্রস্ত ও Retrace সার্ভার দ্বারা "
+"প্রক্রিয়াভুক্ত করা সম্ভব নয়।"
 
 #: ../src/plugins/abrt-retrace-client.c:759
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
-msgstr "আর্কাইভের মধ্যে ত্রুটিপূর্ণ ফাইল (যেমন সিম-লিংক উপস্থিত রয়েছে) এবং তা প্রক্রিয়াভুক্ত করা সম্ভব নয়।"
+msgstr ""
+"আর্কাইভের মধ্যে ত্রুটিপূর্ণ ফাইল (যেমন সিম-লিংক উপস্থিত রয়েছে) এবং তা "
+"প্রক্রিয়াভুক্ত করা সম্ভব নয়।"
 
 #: ../src/plugins/abrt-retrace-client.c:772
 msgid "Invalid response from server: missing X-Task-Id."
@@ -1254,10 +1364,10 @@ msgstr "Retrace-র কাজ আরম্ভ করা হয়েছে"
 
 #: ../src/plugins/abrt-retrace-client.c:798
 #, c-format
-msgid ""
-"Task Id: %s\n"
+msgid "Task Id: %s\n"
 "Task Password: %s\n"
-msgstr "কাজের Id: %s\nকাজের পাসওয়ার্ড: %s\n"
+msgstr "কাজের Id: %s\n"
+"কাজের পাসওয়ার্ড: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:856
 msgid "Invalid response from server: missing X-Task-Status."
@@ -1265,10 +1375,10 @@ msgstr "সার্ভার থেকে প্রাপ্ত উত্তর
 
 #: ../src/plugins/abrt-retrace-client.c:868
 #, c-format
-msgid ""
-"Task Status: %s\n"
+msgid "Task Status: %s\n"
 "%s\n"
-msgstr "কাজের অবস্থা: %s\n%s\n"
+msgstr "কাজের অবস্থা: %s\n"
+"%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:899
 #: ../src/plugins/abrt-retrace-client.c:973
@@ -1281,7 +1391,9 @@ msgstr "%d দৈর্ঘ্যের HTTP হেডার প্রাপ্�
 msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
-msgstr "Retrace করতে ব্যর্থ। পরে পুনরায় প্রচেষ্টা করুন ও সমস্যা দেখা দিলে এই সম্পর্কে সূচিত করুন।"
+msgstr ""
+"Retrace করতে ব্যর্থ। পরে পুনরায় প্রচেষ্টা করুন ও সমস্যা দেখা দিলে এই "
+"সম্পর্কে সূচিত করুন।"
 
 #: ../src/plugins/abrt-retrace-client.c:1207
 msgid "log to syslog"
@@ -1289,7 +1401,8 @@ msgstr "syslog-এ লগ করা হবে"
 
 #: ../src/plugins/abrt-retrace-client.c:1209
 msgid "allow insecure connection to retrace server"
-msgstr "retrace সার্ভারের জন্য অসুরক্ষিত সংযোগ ব্যবহারের অনুমতি প্রদান করা হবে"
+msgstr ""
+"retrace সার্ভারের জন্য অসুরক্ষিত সংযোগ ব্যবহারের অনুমতি প্রদান করা হবে"
 
 #: ../src/plugins/abrt-retrace-client.c:1211
 msgid ""
@@ -1377,14 +1490,19 @@ msgstr "স্থানীয় GNU ডিবাগার"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr "debuginfo প্যাকেজ ডাউনলোড করুন ও GDB সহযোগে স্থানীয় অবস্থানে ব্যাক-ট্রেস প্রস্তুত করুন"
+msgstr ""
+"debuginfo প্যাকেজ ডাউনলোড করুন ও GDB সহযোগে স্থানীয় অবস্থানে ব্যাক-ট্রেস "
+"প্রস্তুত করুন"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
-msgstr "এই ক্ষেত্রে debuginfo প্যাকেজ ডাউনলোড করা আবশ্যক। এটি করতে অনেক সময় ব্যয় হবে ও ডিস্কের অনেক স্থান ব্যবহার করা হবে। কিন্তু, RetraceServer-র মত এটি দূরবর্তী মেশিনে coredump পাঠায় না।"
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
+msgstr ""
+"এই ক্ষেত্রে debuginfo প্যাকেজ ডাউনলোড করা আবশ্যক। এটি করতে অনেক সময় ব্যয় হবে "
+"ও ডিস্কের অনেক স্থান ব্যবহার করা হবে। কিন্তু, RetraceServer-র মত এটি "
+"দূরবর্তী মেশিনে coredump পাঠায় না।"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
@@ -1392,12 +1510,17 @@ msgstr "বিশ্লেষণের জন্য retrace সার্ভা�
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. "
-"Pros: no need for debuginfo downloads. Retrace server's database of "
-"debuginfos is more complete. Retrace server may generate better backtraces. "
-"Cons: coredump you upload contains all the data from the crashed program, "
-"including your private data, if any."
-msgstr "সার্ভারের মধ্যে coredump আপলোড করে এবং সার্ভারে ব্যাক-ট্রেস প্রস্তুত করে ফেরৎ দেওয়া হয়।সুবিধা: debuginfo ডাউনলোড করার প্রয়োজন নেই। রি-ট্রেস সার্ভারের ডাটাবেস অনেক বেশি পরিপূর্ণ ও সার্ভার থেকে উন্নত ব্যাক-ট্রেস প্রাপ্ত হবে।অসুবিধা: আপলোড করা coredump-র মধ্যে গোপনীয় তথ্য সহ বিপর্যস্ত প্রোগ্রামের সকল তথ্য অন্তর্ভুক্ত করা হয়।"
+"Uploads coredump to a server, which generates backtrace and returns it. Pros:"
+" no need for debuginfo downloads. Retrace server's database of debuginfos is "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
+"private data, if any."
+msgstr ""
+"সার্ভারের মধ্যে coredump আপলোড করে এবং সার্ভারে ব্যাক-ট্রেস প্রস্তুত করে "
+"ফেরৎ দেওয়া হয়।সুবিধা: debuginfo ডাউনলোড করার প্রয়োজন নেই। রি-ট্রেস সার্ভারের "
+"ডাটাবেস অনেক বেশি পরিপূর্ণ ও সার্ভার থেকে উন্নত ব্যাক-ট্রেস প্রাপ্ত "
+"হবে।অসুবিধা: আপলোড করা coredump-র মধ্যে গোপনীয় তথ্য সহ বিপর্যস্ত প্রোগ্রামের "
+"সকল তথ্য অন্তর্ভুক্ত করা হয়।"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 #: ../src/plugins/analyze_CCpp.xml.in.h:3
@@ -1422,10 +1545,13 @@ msgstr "অসুরক্ষিত সংযোগ ব্যবহার কর
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 #: ../src/plugins/analyze_CCpp.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
-msgstr "অসুরক্ষিত সংযোগ ব্যবহারের অনুমোদন প্রদান করার জন্য \"insecure\" লিখুন &lt;a href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
+"&gt;(warning)&lt;/a&gt;"
+msgstr ""
+"অসুরক্ষিত সংযোগ ব্যবহারের অনুমোদন প্রদান করার জন্য \"insecure\" লিখুন &lt;a "
+"href=\"https://fedorahosted.org/abrt/wiki/"
+"AbrtRetraceServerInsecureConnection\" &gt;(warning)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
@@ -1439,7 +1565,10 @@ msgstr "~/.xsession-errors ফাইলের প্রযোজ্য পংক
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
-msgstr "~/.xsession-errors ফাইলের মধ্যে অনুসন্ধান করে ও এক্সেকিউটেবলের নাম সহ পংক্তিগুলিকে সংরক্ষণ করে। 'xsession_errors' এলিমেন্টের মধ্যে ফলাফল সংরক্ষণ করা হয়।"
+msgstr ""
+"~/.xsession-errors ফাইলের মধ্যে অনুসন্ধান করে ও এক্সেকিউটেবলের নাম সহ "
+"পংক্তিগুলিকে সংরক্ষণ করে। 'xsession_errors' এলিমেন্টের মধ্যে ফলাফল সংরক্ষণ "
+"করা হয়।"
 
 #: ../src/plugins/https-utils.c:62
 msgid "An error occurred on the server side."
@@ -1472,7 +1601,8 @@ msgstr "অবিশ্বস্ত জারীকারী দ্বারা 
 #: ../src/plugins/https-utils.c:103
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
-msgstr "সার্টিফিকেটের উদ্দিষ্টের নাম '%s'-র সাথে উদ্দিষ্ট হোস্টের নাম '%s' মিলছে না।"
+msgstr ""
+"সার্টিফিকেটের উদ্দিষ্টের নাম '%s'-র সাথে উদ্দিষ্ট হোস্টের নাম '%s' মিলছে না।"
 
 #: ../src/plugins/https-utils.c:107
 msgid "Remote certificate has expired."
@@ -1615,8 +1745,8 @@ msgstr ""
 #: ../src/plugins/bodhi.c:486
 #, c-format
 msgid ""
-"An update exists which might fix your problem. You can install it by "
-"running: %s. Do you want to continue with reporting the bug?"
+"An update exists which might fix your problem. You can install it by running:"
+" %s. Do you want to continue with reporting the bug?"
 msgstr ""
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
@@ -1701,7 +1831,8 @@ msgstr ""
 #: ../src/cli/list.c:224
 #, c-format
 msgid ""
-"The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
+"The Autoreporting feature is disabled. Please consider enabling it by "
+"issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
 msgstr ""
 
@@ -1786,8 +1917,8 @@ msgid ""
 "user doens't want to upload his coredump to anywhere the event performs "
 "local analysis. Local analysis is run event if remote analysis fails. Pros: "
 "no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump"
-" you upload contains all the data from the crashed program, including your "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
 
@@ -1798,13 +1929,17 @@ msgstr "VM core বিশ্লেষণ করুন"
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
 msgid ""
 "Install kernel debuginfo packages, generate kernel log and oops message"
-msgstr "Kernel debuginfo প্যাকেজগুলি ইনস্টল করে, kernel লগ ও oops বার্তা প্রস্তুত করা হয়"
+msgstr ""
+"Kernel debuginfo প্যাকেজগুলি ইনস্টল করে, kernel লগ ও oops বার্তা প্রস্তুত "
+"করা হয়"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
 "Needs to install kernel debuginfo packages, which might take significant "
 "time, and take up disk space."
-msgstr "Kernel debuginfo প্যাকেজগুলি ইনস্টল করা প্রয়োজন এবং এর জন্য বেশ কিছু পরিমাণ সময় ব্যয় হবে ও ডিস্কের অনেক স্থানও দখল করা হবে।"
+msgstr ""
+"Kernel debuginfo প্যাকেজগুলি ইনস্টল করা প্রয়োজন এবং এর জন্য বেশ কিছু পরিমাণ "
+"সময় ব্যয় হবে ও ডিস্কের অনেক স্থানও দখল করা হবে।"
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
@@ -1818,7 +1953,9 @@ msgstr "অ্যাপ্লিকেশনের GConf ডিরেক্ট�
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
-msgstr "gconftool-2 --recursive-list /apps/executable সঞ্চালনা করে 'gconf_subtree' এলিমেন্ট রূপে এটি সংরক্ষণ করা হয়।"
+msgstr ""
+"gconftool-2 --recursive-list /apps/executable সঞ্চালনা করে 'gconf_subtree' "
+"এলিমেন্ট রূপে এটি সংরক্ষণ করা হয়।"
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
@@ -1832,7 +1969,9 @@ msgstr "/etc/vimrc ও /etc/gvimrc সংগ্রহ করুন"
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
-msgstr "/etc-র মধ্যে vimrc ও gvimrc ফাইলগুলি উপস্থিত রয়েছে কিনা তা যাচাই করা হয় ও যথাক্রমে system_vimrc ও system_gvimrc নামে তা সংরক্ষণ করা হয়।"
+msgstr ""
+"/etc-র মধ্যে vimrc ও gvimrc ফাইলগুলি উপস্থিত রয়েছে কিনা তা যাচাই করা হয় ও "
+"যথাক্রমে system_vimrc ও system_gvimrc নামে তা সংরক্ষণ করা হয়।"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid "Collect yours vim configuration files"
@@ -1844,9 +1983,12 @@ msgstr "নিজের ব্যক্তিগত ডিরেক্টরি�
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
-msgstr "ব্যবহারকারীর ব্যক্তিগত ডিরেক্টরির মধ্যে .vimrc ও .gvimrc ফাইলগুলি উপস্থিত রয়েছে কিনা তা যাচাই করা হয় ও যথাক্রমে user_vimrc ও user_gvimrc নামে তা সংরক্ষণ করা হয়।"
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
+msgstr ""
+"ব্যবহারকারীর ব্যক্তিগত ডিরেক্টরির মধ্যে .vimrc ও .gvimrc ফাইলগুলি উপস্থিত "
+"রয়েছে কিনা তা যাচাই করা হয় ও যথাক্রমে user_vimrc ও user_gvimrc নামে তা "
+"সংরক্ষণ করা হয়।"
 
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"

@@ -8,17 +8,19 @@
 # Ville Skyttä <ville.skytta@iki.fi>, 2011
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-12-12 14:29+0100\n"
-"PO-Revision-Date: 2014-12-12 13:30+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
-"Language-Team: Finnish (http://www.transifex.com/projects/p/fedora-abrt/language/fi/)\n"
+"POT-Creation-Date: 2015-01-05 07:16-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-12-12 08:30-0500\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"Language-Team: Finnish (http://www.transifex.com/projects/p/fedora-abrt/"
+"language/fi/)\n"
 "Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Zanata 3.5.1\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
@@ -91,7 +93,9 @@ msgstr ""
 
 #: ../src/applet/applet.c:706
 msgid ""
-"You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
+"You are going to mute notifications of a particular problem. You will never "
+"see a notification bubble for this problem again, however, ABRT will be "
+"detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
 msgstr ""
@@ -103,7 +107,8 @@ msgstr "Varoitus"
 #: ../src/applet/applet.c:834
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
-msgstr "Ilmoitusalueen kuvake, joka kertoo käyttäjälle ABRT:n huomaamista ongelmista"
+msgstr ""
+"Ilmoitusalueen kuvake, joka kertoo käyttäjälle ABRT:n huomaamista ongelmista"
 
 #: ../src/applet/applet.c:850
 msgid "translator-credits"
@@ -130,6 +135,7 @@ msgid "Ignore forever"
 msgstr ""
 
 #. Problem has been 'autoreported' and is considered as KNOWN
+#. 
 #: ../src/applet/applet.c:991 ../src/applet/applet.c:1006
 msgid "Open"
 msgstr "Avaa"
@@ -144,6 +150,7 @@ msgstr "Tapahtui tunnettu ongelma"
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
+#. 
 #: ../src/applet/applet.c:1015 ../src/applet/applet.c:1050
 msgid "Report"
 msgstr "Ilmoita"
@@ -193,7 +200,11 @@ msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
-msgstr "& [-v] [HAK]...\n\nOhjelma, joka huomauttaa käyttäjälle uusista ABRT:n havaitsemista ongelmista\n"
+msgstr ""
+"& [-v] [HAK]...\n"
+"\n"
+"Ohjelma, joka huomauttaa käyttäjälle uusista ABRT:n havaitsemista "
+"ongelmista\n"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
@@ -214,10 +225,9 @@ msgstr ""
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
-"space consuming operation. ABRT provides a service which generates the stack"
-" trace from the coredump but you have to upload the coredump to this "
-"service. With this option disabled ABRT will upload the coredump without "
-"asking."
+"space consuming operation. ABRT provides a service which generates the stack "
+"trace from the coredump but you have to upload the coredump to this service. "
+"With this option disabled ABRT will upload the coredump without asking."
 msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
@@ -231,15 +241,15 @@ msgstr ""
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
-"uses uReports  for fast global duplicate detection. In default configuration"
-" uReport is sent at beginning of reporting process. With this option enabled"
-" uReports are sent automatically immediately after problem detection."
+"uses uReports  for fast global duplicate detection. In default configuration "
+"uReport is sent at beginning of reporting process. With this option enabled "
+"uReports are sent automatically immediately after problem detection."
 msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
-"With this option enabled reporting process started by click on Report button"
-" in problem notification bubble will be interrupted after uReport is sent. "
+"With this option enabled reporting process started by click on Report button "
+"in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
 
@@ -304,7 +314,10 @@ msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
-msgstr "& [-v] [-c ASETUSTIEDOSTO] -d HAK\n\nKysele pakettitietokantaa ja tallenna paketin ja komponentin nimi"
+msgstr ""
+"& [-v] [-c ASETUSTIEDOSTO] -d HAK\n"
+"\n"
+"Kysele pakettitietokantaa ja tallenna paketin ja komponentin nimi"
 
 #: ../src/daemon/abrt-action-save-package-data.c:394
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
@@ -407,10 +420,10 @@ msgstr "Tämä ohjelma täytyy suorittaa pääkäyttäjänä."
 #: ../src/daemon/abrtd.c:451
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
-"detected while computer is shutting down or user is logging out. In order to"
-" provide valuable problem reports, ABRT will not allow you to submit this "
-"problem. If you have time and want to help the developers in their effort to"
-" sort out this problem, please contact them directly."
+"detected while computer is shutting down or user is logging out. In order to "
+"provide valuable problem reports, ABRT will not allow you to submit this "
+"problem. If you have time and want to help the developers in their effort to "
+"sort out this problem, please contact them directly."
 msgstr ""
 
 #: ../src/daemon/abrtd.c:497
@@ -462,17 +475,70 @@ msgstr ""
 msgid "Maximal cache size in MiB. Default is "
 msgstr ""
 
-#: ../src/daemon/abrt-auto-reporting.c:81
+#: ../src/daemon/abrt-auto-reporting.c:176
 msgid "& [ "
 msgstr ""
 
-#: ../src/daemon/abrt-auto-reporting.c:113
+#: ../src/daemon/abrt-auto-reporting.c:213
+msgid "Turns the authentication off"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:214
+msgid "Red Hat Support user name"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:215
+msgid "Red Hat Support password, if not given, a prompt for it will be issued"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:216
+msgid "uReport SSL certificate paths or certificate type"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:227
+msgid "You also need to specify --username for --password"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:233
+msgid "You can use either --username or --certificate"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:239
+msgid "You can use either --username or --anonymous"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:245
+msgid "You can use either --anonymous or --certificate"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:251
 msgid "Invalid number of arguments"
 msgstr ""
 
-#: ../src/daemon/abrt-auto-reporting.c:138
+#: ../src/daemon/abrt-auto-reporting.c:270
 #, c-format
 msgid "Unknown option value: '%s'\n"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:305
+msgid "Password:"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:308
+msgid "Cannot continue without password\n"
+msgstr ""
+
+#. Print only the part before ':' of a string like "username:password"
+#: ../src/daemon/abrt-auto-reporting.c:347
+msgid "HTTP Authenticated auto reporting"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:349
+msgid "SSL Client Authenticated auto reporting"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:351
+msgid "anonymous auto reporting"
 msgstr ""
 
 #: ../src/daemon/abrt-handle-upload.in:69
@@ -608,9 +674,11 @@ msgid ""
 "and identifies crash function in problem directory DIR"
 msgstr ""
 
+#. 
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -685,8 +753,7 @@ msgid "Extracting the oops text from core"
 msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
-msgid ""
-"Can't process {0}:\n"
+msgid "Can't process {0}:\n"
 "{1}"
 msgstr ""
 
@@ -721,6 +788,7 @@ msgstr "Tapa gdb, jos sitä on suoritettu enemmän kuin NUM sekuntia"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -759,7 +827,8 @@ msgstr "Lopetetaan, käyttäjä antoi lopetuskomennon"
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH]...]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
@@ -769,7 +838,8 @@ msgid ""
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
 "    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
 "    -e,--exact  Download only specified files\n"
@@ -783,7 +853,8 @@ msgstr "Ei voida avata {0}: {1}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:206
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
-msgstr "Muistivedos viittaa {0} debuginfo-tiedostoon, {1} niistä ei ole asennettuna"
+msgstr ""
+"Muistivedos viittaa {0} debuginfo-tiedostoon, {1} niistä ei ole asennettuna"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:209
 msgid "{0} of debuginfo files are not installed"
@@ -818,7 +889,8 @@ msgstr ""
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
+"SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
 
@@ -1012,7 +1084,10 @@ msgstr ""
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
-msgstr "Tapahtui ytimen ongelma, mutta järjestelmän ydin on tärvelty (tainted, liput: %s). Ytimen ylläpitäjät eivät pysty tutkimaan tärvellyistä ytimistä tehtyjä raportteja."
+msgstr ""
+"Tapahtui ytimen ongelma, mutta järjestelmän ydin on tärvelty (tainted, liput:"
+" %s). Ytimen ylläpitäjät eivät pysty tutkimaan tärvellyistä ytimistä tehtyjä "
+"raportteja."
 
 #: ../src/plugins/abrt-dump-oops.c:153
 #, c-format
@@ -1032,13 +1107,15 @@ msgstr "Tulosta löydetyt oopsit vakiotulosteeseen"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
+#. 
 #: ../src/plugins/abrt-dump-oops.c:278
 msgid "Create new problem directory in DIR for every oops found"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-oops.c:279 ../src/plugins/abrt-dump-xorg.c:247
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
-msgstr "Sama kuin -d DumpLocation, DumpLocation on määritetty tiedostossa abrt.conf"
+msgstr ""
+"Sama kuin -d DumpLocation, DumpLocation on määritetty tiedostossa abrt.conf"
 
 #: ../src/plugins/abrt-dump-oops.c:280
 msgid "Save the extracted information in PROBLEM"
@@ -1088,10 +1165,13 @@ msgstr ""
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
-msgstr "Uudelleenjäljityspalvelinta ei voida käyttää, koska kaatumistiedot ovat liian suuret. Yritä paikallista uudelleenjäljitystä."
+msgstr ""
+"Uudelleenjäljityspalvelinta ei voida käyttää, koska kaatumistiedot ovat "
+"liian suuret. Yritä paikallista uudelleenjäljitystä."
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
+#. 
 #: ../src/plugins/abrt-retrace-client.c:103
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
@@ -1114,10 +1194,10 @@ msgstr "HTTP-otsakkeen (pituus %d) lähetys epäonnistui: NSS-virhe %d"
 #: ../src/plugins/abrt-retrace-client.c:1001
 #: ../src/plugins/abrt-retrace-client.c:1060
 #, c-format
-msgid ""
-"Unexpected HTTP response from server: %d\n"
+msgid "Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr "Odottamaton HTTP-vastaus palvelimelta: %d\n%s"
+msgstr "Odottamaton HTTP-vastaus palvelimelta: %d\n"
+"%s"
 
 #: ../src/plugins/abrt-retrace-client.c:232
 #: ../src/plugins/abrt-retrace-client.c:745
@@ -1158,7 +1238,9 @@ msgstr ""
 msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
-msgstr "Kaatumisen koko on %lld tavua, mutta uudelleenjäljiyspalvelin hyväksyy vain kaatumisia, joiden koko on enintään %lld tavua."
+msgstr ""
+"Kaatumisen koko on %lld tavua, mutta uudelleenjäljiyspalvelin hyväksyy vain "
+"kaatumisia, joiden koko on enintään %lld tavua."
 
 #: ../src/plugins/abrt-retrace-client.c:534
 msgid "The server does not support xz-compressed tarballs."
@@ -1186,7 +1268,9 @@ msgstr "Valmistellaan arkiston lähettämistä"
 msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
-msgstr "Arkiston koko on %lld tavua, mutta uudelleenjäljiyspalvelin hyväksyy vain arkistoja, joiden koko on enintään %lld tavua."
+msgstr ""
+"Arkiston koko on %lld tavua, mutta uudelleenjäljiyspalvelin hyväksyy vain "
+"arkistoja, joiden koko on enintään %lld tavua."
 
 #: ../src/plugins/abrt-retrace-client.c:629
 #, c-format
@@ -1229,13 +1313,17 @@ msgstr "Lähetys onnistui"
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
-msgstr "Ongelmahakemisto on vioittunut eikä uudelleenjäljityspalvelin voi käsitellä sitä."
+msgstr ""
+"Ongelmahakemisto on vioittunut eikä uudelleenjäljityspalvelin voi käsitellä "
+"sitä."
 
 #: ../src/plugins/abrt-retrace-client.c:759
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
-msgstr "Paketti sisältää vahingollisia tiedostoja kuten symbolisia linkkejä eikä sitä voida käsitellä."
+msgstr ""
+"Paketti sisältää vahingollisia tiedostoja kuten symbolisia linkkejä eikä "
+"sitä voida käsitellä."
 
 #: ../src/plugins/abrt-retrace-client.c:772
 msgid "Invalid response from server: missing X-Task-Id."
@@ -1251,10 +1339,10 @@ msgstr "Uudelleenjäljitystyö on aloitettu"
 
 #: ../src/plugins/abrt-retrace-client.c:798
 #, c-format
-msgid ""
-"Task Id: %s\n"
+msgid "Task Id: %s\n"
 "Task Password: %s\n"
-msgstr "Tehtävän tunnus: %s\nTehtävän salasana: %s\n"
+msgstr "Tehtävän tunnus: %s\n"
+"Tehtävän salasana: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:856
 msgid "Invalid response from server: missing X-Task-Status."
@@ -1262,10 +1350,10 @@ msgstr "Virheellinen vastaus palvelimelta: puuttuva X-Task-Status."
 
 #: ../src/plugins/abrt-retrace-client.c:868
 #, c-format
-msgid ""
-"Task Status: %s\n"
+msgid "Task Status: %s\n"
 "%s\n"
-msgstr "Tehtävän tila: %s\n%s\n"
+msgstr "Tehtävän tila: %s\n"
+"%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:899
 #: ../src/plugins/abrt-retrace-client.c:973
@@ -1278,7 +1366,9 @@ msgstr "HTTP-otsakkeen (pituus %d) lähetys epäonnistui: NSS-virhe %d."
 msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
-msgstr "Uudelleenjäljitys epäonnistui, yritä myöhemmin uudelleen. Jos ongelma ei poistu, tee siitä raportti."
+msgstr ""
+"Uudelleenjäljitys epäonnistui, yritä myöhemmin uudelleen. Jos ongelma ei "
+"poistu, tee siitä raportti."
 
 #: ../src/plugins/abrt-retrace-client.c:1207
 msgid "log to syslog"
@@ -1374,14 +1464,18 @@ msgstr "Paikallinen GNU-virheenjäljitin"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr "Lataa debuginfo-paketit ja luo pinolistaus paikallisesti GDB:tä käyttäen"
+msgstr ""
+"Lataa debuginfo-paketit ja luo pinolistaus paikallisesti GDB:tä käyttäen"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
-msgstr "Debuginfo-paketit on ladattava paikallisesti, mikä saattaa viedä paljon aikaa ja levytilaa. Ei kuitenkaan lähetä muistivedosta etäkoneille, toisin kuin RetraceServer."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
+msgstr ""
+"Debuginfo-paketit on ladattava paikallisesti, mikä saattaa viedä paljon "
+"aikaa ja levytilaa. Ei kuitenkaan lähetä muistivedosta etäkoneille, toisin "
+"kuin RetraceServer."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
@@ -1389,12 +1483,17 @@ msgstr "Lähetä muistivedos etäpalvelimelle analysointavaksi"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. "
-"Pros: no need for debuginfo downloads. Retrace server's database of "
-"debuginfos is more complete. Retrace server may generate better backtraces. "
-"Cons: coredump you upload contains all the data from the crashed program, "
-"including your private data, if any."
-msgstr "Lähettää muistivedoksen palvelimelle, joka luo pinolistauksen ja palauttaa sen. Hyödyt: debuginfo-tiedostoja ei tarvitse ladata. Palvelimen debuginfo-tietokanta on kattavampi. Palvelin saattaa luoda parempia pinolistauksia. Haitat: lähetettävä muistivedos sisältää kaikki kaatuneen ohjelman tiedot, myös mahdolliset yksityiset tiedot."
+"Uploads coredump to a server, which generates backtrace and returns it. Pros:"
+" no need for debuginfo downloads. Retrace server's database of debuginfos is "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
+"private data, if any."
+msgstr ""
+"Lähettää muistivedoksen palvelimelle, joka luo pinolistauksen ja palauttaa "
+"sen. Hyödyt: debuginfo-tiedostoja ei tarvitse ladata. Palvelimen debuginfo-"
+"tietokanta on kattavampi. Palvelin saattaa luoda parempia pinolistauksia. "
+"Haitat: lähetettävä muistivedos sisältää kaikki kaatuneen ohjelman tiedot, "
+"myös mahdolliset yksityiset tiedot."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 #: ../src/plugins/analyze_CCpp.xml.in.h:3
@@ -1419,10 +1518,13 @@ msgstr "Käytetäänkö suojaamatonta yhteyttä"
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 #: ../src/plugins/analyze_CCpp.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
-msgstr "Kirjoita ”insecure” suojaamattoman yhteyden sallimiseksi &lt;https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection&gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
+"&gt;(warning)&lt;/a&gt;"
+msgstr ""
+"Kirjoita ”insecure” suojaamattoman yhteyden sallimiseksi &lt;https://"
+"fedorahosted.org/abrt/wiki/"
+"AbrtRetraceServerInsecureConnection&gt;(warning)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
@@ -1436,7 +1538,10 @@ msgstr "Tallenna tärkeät rivit tiedostosta ~/.xsession-errors"
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
-msgstr "Tutkii tiedoston ~/.xsession-errors ja tallentaa rivit, jotka sisältävät suoritettavan tiedoston nimen. Tulos tallennetaan ”xsession_errors”-elementtinä."
+msgstr ""
+"Tutkii tiedoston ~/.xsession-errors ja tallentaa rivit, jotka sisältävät "
+"suoritettavan tiedoston nimen. Tulos tallennetaan ”xsession_errors”-"
+"elementtinä."
 
 #: ../src/plugins/https-utils.c:62
 msgid "An error occurred on the server side."
@@ -1612,8 +1717,8 @@ msgstr ""
 #: ../src/plugins/bodhi.c:486
 #, c-format
 msgid ""
-"An update exists which might fix your problem. You can install it by "
-"running: %s. Do you want to continue with reporting the bug?"
+"An update exists which might fix your problem. You can install it by running:"
+" %s. Do you want to continue with reporting the bug?"
 msgstr ""
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
@@ -1698,7 +1803,8 @@ msgstr ""
 #: ../src/cli/list.c:224
 #, c-format
 msgid ""
-"The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
+"The Autoreporting feature is disabled. Please consider enabling it by "
+"issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
 msgstr ""
 
@@ -1783,8 +1889,8 @@ msgid ""
 "user doens't want to upload his coredump to anywhere the event performs "
 "local analysis. Local analysis is run event if remote analysis fails. Pros: "
 "no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump"
-" you upload contains all the data from the crashed program, including your "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
 
@@ -1801,7 +1907,9 @@ msgstr "Asenna debuginfo-paketit, luo ytimen loki ja oops-viesti"
 msgid ""
 "Needs to install kernel debuginfo packages, which might take significant "
 "time, and take up disk space."
-msgstr "Ytimen debuginfo-paketit on asennettava, tämä saattaa viedä paljon aikaa ja levytilaa"
+msgstr ""
+"Ytimen debuginfo-paketit on asennettava, tämä saattaa viedä paljon aikaa ja "
+"levytilaa"
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
@@ -1815,7 +1923,9 @@ msgstr "Tallenna asetukset ohjelman GConf-hakemistosta"
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
-msgstr "Suorittaa gconftool-2 --recursive-list /apps/ohjelma ja tallentaa sen ”gconf_subtree”-elementtinä."
+msgstr ""
+"Suorittaa gconftool-2 --recursive-list /apps/ohjelma ja tallentaa sen "
+"”gconf_subtree”-elementtinä."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
@@ -1829,7 +1939,9 @@ msgstr "Tallenna /etc/vimrc ja /etc/gvimrc"
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
-msgstr "Tarkistaa onko /etc-hakemistossa vimrc- ja gvimrc-tiedostot ja tallentaa ne system_vimrc- ja system_gvimrc-nimillä."
+msgstr ""
+"Tarkistaa onko /etc-hakemistossa vimrc- ja gvimrc-tiedostot ja tallentaa ne "
+"system_vimrc- ja system_gvimrc-nimillä."
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid "Collect yours vim configuration files"
@@ -1841,9 +1953,11 @@ msgstr "Tallenna kotihakemiston .vimrc- ja .gvimrc-tiedostot"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
-msgstr "Tarkistaa onko kotihakemistossa .vimrc- ja .gvimrc-tiedostot ja tallentaa ne user_vimrc- ja user_gvimrc-nimillä."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
+msgstr ""
+"Tarkistaa onko kotihakemistossa .vimrc- ja .gvimrc-tiedostot ja tallentaa ne "
+"user_vimrc- ja user_gvimrc-nimillä."
 
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"

@@ -6,25 +6,29 @@
 # Nik Kalach <nik.kalach@inbox.ru>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-12-12 14:29+0100\n"
-"PO-Revision-Date: 2014-12-12 13:30+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
-"Language-Team: Interlingua (http://www.transifex.com/projects/p/fedora-abrt/language/ia/)\n"
+"POT-Creation-Date: 2015-01-05 07:16-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-12-12 08:30-0500\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"Language-Team: Interlingua (http://www.transifex.com/projects/p/fedora-abrt/"
+"language/ia/)\n"
 "Language: ia\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Zanata 3.5.1\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
-msgstr ""
+msgstr "Instrumento pro reportage automatic de defectos"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/abrt-applet.desktop.in.h:2
 msgid "ABRT notification applet"
-msgstr ""
+msgstr "Mini-application de notification ABRT"
 
 #: ../src/applet/applet.c:130
 msgid ""
@@ -76,11 +80,12 @@ msgstr ""
 msgid "%s and the diagnostic data has been submitted"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:589 ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
 #, c-format
 msgid "Can't execute '%s'"
-msgstr ""
+msgstr "Impossibile executar '%s'"
 
 #: ../src/applet/applet.c:668 ../src/applet/applet.c:744
 #, c-format
@@ -89,19 +94,25 @@ msgstr ""
 
 #: ../src/applet/applet.c:706
 msgid ""
-"You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
+"You are going to mute notifications of a particular problem. You will never "
+"see a notification bubble for this problem again, however, ABRT will be "
+"detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:784 ../src/applet/applet.c:786
 msgid "Warning"
-msgstr ""
+msgstr "Advertimento"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:834
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
+"Mini-application pro le area de notification que signala al usator le "
+"problemas detegite per ARBT"
 
 #: ../src/applet/applet.c:850
 msgid "translator-credits"
@@ -128,6 +139,7 @@ msgid "Ignore forever"
 msgstr ""
 
 #. Problem has been 'autoreported' and is considered as KNOWN
+#. 
 #: ../src/applet/applet.c:991 ../src/applet/applet.c:1006
 msgid "Open"
 msgstr ""
@@ -142,13 +154,15 @@ msgstr ""
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
+#. 
 #: ../src/applet/applet.c:1015 ../src/applet/applet.c:1050
 msgid "Report"
 msgstr "Reportar"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1020
 msgid "A Problem has Occurred"
-msgstr ""
+msgstr "Un problema ha occurrite"
 
 #: ../src/applet/applet.c:1046
 msgid "A Problem has been Reported"
@@ -212,10 +226,9 @@ msgstr ""
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
-"space consuming operation. ABRT provides a service which generates the stack"
-" trace from the coredump but you have to upload the coredump to this "
-"service. With this option disabled ABRT will upload the coredump without "
-"asking."
+"space consuming operation. ABRT provides a service which generates the stack "
+"trace from the coredump but you have to upload the coredump to this service. "
+"With this option disabled ABRT will upload the coredump without asking."
 msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
@@ -229,15 +242,15 @@ msgstr ""
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
-"uses uReports  for fast global duplicate detection. In default configuration"
-" uReport is sent at beginning of reporting process. With this option enabled"
-" uReports are sent automatically immediately after problem detection."
+"uses uReports  for fast global duplicate detection. In default configuration "
+"uReport is sent at beginning of reporting process. With this option enabled "
+"uReports are sent automatically immediately after problem detection."
 msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
-"With this option enabled reporting process started by click on Report button"
-" in problem notification bubble will be interrupted after uReport is sent. "
+"With this option enabled reporting process started by click on Report button "
+"in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
 
@@ -315,9 +328,10 @@ msgstr ""
 msgid "Problem directory"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-action-save-package-data.c:395
 msgid "Configuration file"
-msgstr ""
+msgstr "File de configuration"
 
 #: ../src/daemon/abrt-server.c:786 ../src/dbus/abrt-dbus.c:781
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:484
@@ -328,15 +342,17 @@ msgstr ""
 msgid "Use NUM as client uid"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:273
 #: ../src/plugins/abrt-dump-xorg.c:244
 msgid "Log to syslog"
-msgstr ""
+msgstr "Registrar in syslog"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-server.c:799 ../src/daemon/abrtd.c:500
 msgid "Add program names to log"
-msgstr ""
+msgstr "Adder nomines de programma in registro"
 
 #: ../src/dbus/abrt-dbus.c:123
 msgid "Unknown error"
@@ -405,19 +421,21 @@ msgstr ""
 #: ../src/daemon/abrtd.c:451
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
-"detected while computer is shutting down or user is logging out. In order to"
-" provide valuable problem reports, ABRT will not allow you to submit this "
-"problem. If you have time and want to help the developers in their effort to"
-" sort out this problem, please contact them directly."
+"detected while computer is shutting down or user is logging out. In order to "
+"provide valuable problem reports, ABRT will not allow you to submit this "
+"problem. If you have time and want to help the developers in their effort to "
+"sort out this problem, please contact them directly."
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrtd.c:497
 msgid "Do not daemonize"
-msgstr ""
+msgstr "Non lancear como demone"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrtd.c:498
 msgid "Log to syslog even with -d"
-msgstr ""
+msgstr "Registrar in syslog mesmo con -d"
 
 #: ../src/daemon/abrt-handle-event.c:388
 msgid "& [-v -i] -e|--event EVENT DIR..."
@@ -460,17 +478,70 @@ msgstr ""
 msgid "Maximal cache size in MiB. Default is "
 msgstr ""
 
-#: ../src/daemon/abrt-auto-reporting.c:81
+#: ../src/daemon/abrt-auto-reporting.c:176
 msgid "& [ "
 msgstr ""
 
-#: ../src/daemon/abrt-auto-reporting.c:113
+#: ../src/daemon/abrt-auto-reporting.c:213
+msgid "Turns the authentication off"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:214
+msgid "Red Hat Support user name"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:215
+msgid "Red Hat Support password, if not given, a prompt for it will be issued"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:216
+msgid "uReport SSL certificate paths or certificate type"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:227
+msgid "You also need to specify --username for --password"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:233
+msgid "You can use either --username or --certificate"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:239
+msgid "You can use either --username or --anonymous"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:245
+msgid "You can use either --anonymous or --certificate"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:251
 msgid "Invalid number of arguments"
 msgstr ""
 
-#: ../src/daemon/abrt-auto-reporting.c:138
+#: ../src/daemon/abrt-auto-reporting.c:270
 #, c-format
 msgid "Unknown option value: '%s'\n"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:305
+msgid "Password:"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:308
+msgid "Cannot continue without password\n"
+msgstr ""
+
+#. Print only the part before ':' of a string like "username:password"
+#: ../src/daemon/abrt-auto-reporting.c:347
+msgid "HTTP Authenticated auto reporting"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:349
+msgid "SSL Client Authenticated auto reporting"
+msgstr ""
+
+#: ../src/daemon/abrt-auto-reporting.c:351
+msgid "anonymous auto reporting"
 msgstr ""
 
 #: ../src/daemon/abrt-handle-upload.in:69
@@ -606,13 +677,16 @@ msgid ""
 "and identifies crash function in problem directory DIR"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
+#. 
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "Error durante le analyse del retraciamento de %s"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:146
 msgid "Crash thread not found"
@@ -683,8 +757,7 @@ msgid "Extracting the oops text from core"
 msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
-msgid ""
-"Can't process {0}:\n"
+msgid "Can't process {0}:\n"
 "{1}"
 msgstr ""
 
@@ -709,20 +782,24 @@ msgid ""
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
-msgstr ""
+msgstr "Directorios debuginfo additional"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-backtrace.c:57
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr ""
+msgstr "Terminar gdb si execution dura plus de NUM secundas"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr ""
+msgstr "Le retraciamento es generate e salveguardate, %u bytes"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:40
 msgid ""
@@ -749,15 +826,17 @@ msgstr ""
 msgid "Error: %s"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:51
 msgid "Exiting on user command"
-msgstr ""
+msgstr "Exito al commando del usator"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:88
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH]...]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
@@ -767,7 +846,8 @@ msgid ""
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
 "    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
 "    -e,--exact  Download only specified files\n"
@@ -816,7 +896,8 @@ msgstr ""
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
+"SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
 
@@ -1024,19 +1105,24 @@ msgid ""
 "Extract oops from FILE (or standard input)"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:274
 msgid "Print found oopses on standard output"
-msgstr ""
+msgstr "Imprimer le \"oops\" trovate sur output standard"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
+#. 
 #: ../src/plugins/abrt-dump-oops.c:278
 msgid "Create new problem directory in DIR for every oops found"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:279 ../src/plugins/abrt-dump-xorg.c:247
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
+"Identic a \"-d locodelinstantaneo\"; le loco del instantaneo es specificate "
+"in abrt.conf"
 
 #: ../src/plugins/abrt-dump-oops.c:280
 msgid "Save the extracted information in PROBLEM"
@@ -1082,20 +1168,25 @@ msgstr ""
 msgid "Create problem directory in DIR for every crash found"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:70
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
 msgstr ""
+"Le servitor de retraciamento non pote esser usate perque le instantaneo del "
+"programma fallite es troppo grande. Essaya un retraciamento local."
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
+#. 
 #: ../src/plugins/abrt-retrace-client.c:103
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
 msgid "Can't create temporary file in "
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:211
 #: ../src/plugins/abrt-retrace-client.c:398
 #: ../src/plugins/abrt-retrace-client.c:666
@@ -1103,7 +1194,9 @@ msgstr ""
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d"
 msgstr ""
+"Error durante le invio de un capite HTTP con longitude %d: error NSS %d"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:223
 #: ../src/plugins/abrt-retrace-client.c:412
 #: ../src/plugins/abrt-retrace-client.c:765
@@ -1112,11 +1205,12 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:1001
 #: ../src/plugins/abrt-retrace-client.c:1060
 #, c-format
-msgid ""
-"Unexpected HTTP response from server: %d\n"
+msgid "Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr ""
+msgstr "Responsa HTTP inexpectate del servitor: %d\n"
+"%s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:232
 #: ../src/plugins/abrt-retrace-client.c:745
 #: ../src/plugins/abrt-retrace-client.c:841
@@ -1124,7 +1218,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:982
 #: ../src/plugins/abrt-retrace-client.c:1052
 msgid "Invalid response from server: missing HTTP message body."
-msgstr ""
+msgstr "Responsa invalide del servitor: le corpore del message HTTP manca."
 
 #: ../src/plugins/abrt-retrace-client.c:424
 #, c-format
@@ -1133,17 +1227,20 @@ msgid ""
 "Is it a part of official '%s' repositories?"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:444
 msgid "Querying server settings"
-msgstr ""
+msgstr "Consulta le configuration del servitor"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:452
 msgid "The server is fully occupied. Try again later."
-msgstr ""
+msgstr "Le servitor es totalmente occupate. Reproba plus tarde."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:453
 msgid "The server denied your request."
-msgstr ""
+msgstr "Le servitor ha refusate tu requesta."
 
 #: ../src/plugins/abrt-retrace-client.c:484
 #: ../src/plugins/abrt-retrace-client.c:500
@@ -1158,26 +1255,30 @@ msgid ""
 "crashes smaller or equal to %lld bytes."
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:534
 msgid "The server does not support xz-compressed tarballs."
-msgstr ""
+msgstr "Le servitor non supporta le archivos tar comprimite con xz."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:571
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
-msgstr ""
+msgstr "Le edition '%s' non es supportate per le servitor de retraciamento."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:575
 msgid "The server is not able to handle your request."
-msgstr ""
+msgstr "Le servitor non es capace de tractar tu requesta."
 
 #: ../src/plugins/abrt-retrace-client.c:594
 msgid "Unknown package sent to Retrace server."
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:603
 msgid "Preparing an archive to upload"
-msgstr ""
+msgstr "Archivo incargabile in preparation"
 
 #: ../src/plugins/abrt-retrace-client.c:616
 #, c-format
@@ -1191,9 +1292,10 @@ msgstr ""
 msgid "You are going to upload %d megabytes. Continue?"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:638
 msgid "Cancelled by user"
-msgstr ""
+msgstr "Cancellate per usator"
 
 #: ../src/plugins/abrt-retrace-client.c:673
 #, c-format
@@ -1205,86 +1307,108 @@ msgstr ""
 msgid "Uploading %lld bytes\n"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:699
 #, c-format
 msgid "Uploading %d%%\n"
-msgstr ""
+msgstr "Incarga %d%%\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:711
 msgid "Failed to read from a pipe"
-msgstr ""
+msgstr "Error durante le lectura ab un tubo"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:724
 #, c-format
 msgid "Failed to send data: NSS error %d (%s): %s"
-msgstr ""
+msgstr "Error durante le invio de datos: error NSS %d (%s): %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:735
 msgid "Upload successful"
-msgstr ""
+msgstr "Incargamento succedite"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:757
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
 msgstr ""
+"Le directorio de problemas es corrumpite e non pote esser tractate per le "
+"servitor de retraciamento."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:759
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
 msgstr ""
+"Le archivo contine files malitiose (p.ex. ligamines symbolic) e dunque non "
+"pote esser tractate."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:772
 msgid "Invalid response from server: missing X-Task-Id."
-msgstr ""
+msgstr "Responsa invalide del servitor: manca X-Task-Id."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:778
 msgid "Invalid response from server: missing X-Task-Password."
-msgstr ""
+msgstr "Responsa invalide del servitor: manca X-Task-Password."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:785
 msgid "Retrace job started"
-msgstr ""
+msgstr "Action de retraciamento comenciate"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:798
 #, c-format
-msgid ""
-"Task Id: %s\n"
+msgid "Task Id: %s\n"
 "Task Password: %s\n"
-msgstr ""
+msgstr "ID del action: %s\n"
+"Contrasigno del action: %s\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:856
 msgid "Invalid response from server: missing X-Task-Status."
-msgstr ""
+msgstr "Responsa invalide del servitor: manca X-Task-Status."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:868
 #, c-format
-msgid ""
-"Task Status: %s\n"
+msgid "Task Status: %s\n"
 "%s\n"
-msgstr ""
+msgstr "Stato del action: %s\n"
+"%s\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:899
 #: ../src/plugins/abrt-retrace-client.c:973
 #: ../src/plugins/abrt-retrace-client.c:1043
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr ""
+msgstr "Fallimento de inviar un capite HTTP de longitude %d: error NSS %d."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1160
 msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
 msgstr ""
+"Le retraciamento ha fallite. Reproba plus tarde. Si le problema persiste, "
+"reporta lo, per favor."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1207
 msgid "log to syslog"
-msgstr ""
+msgstr "registrar in syslog"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1209
 msgid "allow insecure connection to retrace server"
-msgstr ""
+msgstr "permitter un connexion insecur a un servitor de retraciamento"
 
 #: ../src/plugins/abrt-retrace-client.c:1211
 msgid ""
@@ -1292,49 +1416,58 @@ msgid ""
 "uploading the archive"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1214
 msgid "retrace server URL"
-msgstr ""
+msgstr "URL del servitor de retraciamento"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1216
 msgid "retrace server port"
-msgstr ""
+msgstr "porto del servitor de retraciamento"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1218
 msgid "(debug) show received HTTP headers"
-msgstr ""
+msgstr "(debug) monstrar le capites HTTP recipite"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1219
 msgid "For create and batch operations"
-msgstr ""
+msgstr "Pro le operationes de creation e de tractamento per lotes"
 
 #: ../src/plugins/abrt-retrace-client.c:1221
 msgid "read data from ABRT problem directory"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1223
 msgid "read data from coredump"
-msgstr ""
+msgstr "leger datos ab un instantaneo de memoria"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1225
 msgid "Delay for polling operations"
-msgstr ""
+msgstr "Retardo pro operationes de polling"
 
 #: ../src/plugins/abrt-retrace-client.c:1227
 msgid "(debug) do not delete temporary archive created from dump dir in "
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1229
 msgid "For status, backtrace, and log operations"
-msgstr ""
+msgstr "Pro operationes de stato, retraciamento e registro"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1231
 msgid "id of your task on server"
-msgstr ""
+msgstr "ID de tu action in le servitor"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1233
 msgid "password of your task on server"
-msgstr ""
+msgstr "contrasigno de tu action in le servitor"
 
 #: ../src/plugins/abrt-retrace-client.c:1237
 msgid ""
@@ -1347,62 +1480,83 @@ msgstr ""
 msgid "Either problem directory or coredump is needed."
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1294
 #: ../src/plugins/abrt-retrace-client.c:1302
 #: ../src/plugins/abrt-retrace-client.c:1310
 #: ../src/plugins/abrt-retrace-client.c:1318
 msgid "Task id is needed."
-msgstr ""
+msgstr "Le ID del action es necessari."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1296
 #: ../src/plugins/abrt-retrace-client.c:1304
 #: ../src/plugins/abrt-retrace-client.c:1312
 #: ../src/plugins/abrt-retrace-client.c:1320
 msgid "Task password is needed."
-msgstr ""
+msgstr "Le contrasigno del action es necessari."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1324
 #, c-format
 msgid "Unknown operation: %s."
-msgstr ""
+msgstr "Operation incognite: %s."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
-msgstr ""
+msgstr "Debugger GNU local"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgstr ""
+"Discargar pacchettos debuginfo e generar retraciamento localmente con GDB"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
 msgstr ""
+"Es necessari discargar le pacchettos debuginfo, lo que pote prender multe "
+"tempore e occupar spatio sur disco. Nonobstante, contrarimente a "
+"RetraceServer, non invia un instantaneo del memoria a alcun machina remote."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
 msgstr ""
+"Inviar le instantaneo del memoria al servitor de retraciamento pro analyse"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. "
-"Pros: no need for debuginfo downloads. Retrace server's database of "
-"debuginfos is more complete. Retrace server may generate better backtraces. "
-"Cons: coredump you upload contains all the data from the crashed program, "
-"including your private data, if any."
+"Uploads coredump to a server, which generates backtrace and returns it. Pros:"
+" no need for debuginfo downloads. Retrace server's database of debuginfos is "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
+"private data, if any."
 msgstr ""
+"Invia le instantaneo del memoria a un servitor, le qual genera le "
+"retraciamento e lo reinvia. Avantages: non es necessari discargar debuginfo; "
+"le information debuginfo sur le servitor de retraciamento es plus complete; "
+"le servitor pote generar melior retraciamentos. Disavantages: le instantaneo "
+"del memoria que tu invia contine tote le datos del programma fallite, "
+"incluse tu datos private, si existe."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 #: ../src/plugins/analyze_CCpp.xml.in.h:3
 msgid "Retrace server URL"
-msgstr ""
+msgstr "URL del servitor de retraciamento"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 #: ../src/plugins/analyze_CCpp.xml.in.h:4
 msgid "Address of the retrace server"
-msgstr ""
+msgstr "Adresse del servitor de retraciamento"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:5
 #: ../src/plugins/analyze_CCpp.xml.in.h:5
@@ -1417,24 +1571,29 @@ msgstr ""
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 #: ../src/plugins/analyze_CCpp.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
+"&gt;(warning)&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
-msgstr ""
+msgstr "Salveguardar le lineas pertinente del file ~/.xsession-errors"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/collect_xsession_errors.xml.in.h:3
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
 msgstr ""
+"Percurre le file ~/.xsession-errors e salveguarda le lineas que contine le "
+"nomine del executabile. Le resultato es salveguardate como elemento "
+"'xsession_errors'."
 
 #: ../src/plugins/https-utils.c:62
 msgid "An error occurred on the server side."
@@ -1454,34 +1613,42 @@ msgstr ""
 msgid "An error occurred while connecting to '%s'"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:97
 #, c-format
 msgid "Issuer certificate is invalid: '%s'."
-msgstr ""
+msgstr "Le certificato de emissor non es valide: '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:100
 #, c-format
 msgid "Certificate is signed by an untrusted issuer: '%s'."
-msgstr ""
+msgstr "Le certificato es signate per un emissor non approbate: '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:103
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
 msgstr ""
+"Le nomine del subjecto del certificato '%s' non corresponde al nomine del "
+"machina de destination '%s'."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:107
 msgid "Remote certificate has expired."
-msgstr ""
+msgstr "Le certificato remote ha expirate."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:110
 #, c-format
 msgid "Certificate issuer is not recognized: '%s'."
-msgstr ""
+msgstr "Le emissor del certificato non es recognoscite: '%s'."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:113
 #, c-format
 msgid "Bad certificate received. Subject '%s', issuer '%s'."
-msgstr ""
+msgstr "Mal certificato recipite. Subjecto '%s', emissor '%s'."
 
 #: ../src/plugins/https-utils.c:149
 #, c-format
@@ -1499,17 +1666,20 @@ msgstr ""
 msgid "Can't resolve host name '%s'."
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:210
 msgid "Failed to set socket blocking mode."
-msgstr ""
+msgstr "Fallimento de mitter le socket in modo blocante."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:213
 msgid "Failed to wrap TCP socket by SSL."
-msgstr ""
+msgstr "Fallimento de incapsular le socket TCP in SSL."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:215
 msgid "Failed to enable client handshake to SSL socket."
-msgstr ""
+msgstr "Fallimento de negotiar un connexion del cliente al socket SSL."
 
 #: ../src/plugins/https-utils.c:220
 msgid "Failed to enable SSL3."
@@ -1519,61 +1689,70 @@ msgstr ""
 msgid "Failed to enable TLS."
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:224
 msgid "Failed to set URL to SSL socket."
-msgstr ""
+msgstr "Fallimento de definir le adresse URL del socket SSL."
 
 #: ../src/plugins/https-utils.c:233
 #, c-format
 msgid "Can't connect to '%s'"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:241
 msgid "Failed to set certificate hook."
-msgstr ""
+msgstr "Fallimento de fixar le hook del certificato."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:247
 msgid "Failed to set handshake callback."
-msgstr ""
+msgstr "Fallimento de fixar le appello de retorno del negotiation initial."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:251
 msgid "Failed to reset handshake."
-msgstr ""
+msgstr "Fallimento de reinitialisar le negotiation initial."
 
 #: ../src/plugins/https-utils.c:258
 #, c-format
 msgid "Failed to complete SSL handshake: NSS error %d."
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:267
 msgid "Failed to close SSL socket."
-msgstr ""
+msgstr "Fallimento de clauder le socket SSL."
 
 #: ../src/plugins/https-utils.c:332
 #, c-format
 msgid "Malformed HTTP response header: '%s'"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:369
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
-msgstr ""
+msgstr "Fallimento de reception de datos: error NSS %d."
 
 #: ../src/plugins/https-utils.c:398
 msgid "Malformed chunked response."
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:423
 msgid "Failed to initialize NSS."
-msgstr ""
+msgstr "Fallimento de initialisar NSS."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:429
 msgid "Failed to initialize security module."
-msgstr ""
+msgstr "Fallimento de initialisar le modulo de securitate."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/https-utils.c:444
 msgid "Failed to shutdown NSS."
-msgstr ""
+msgstr "Fallimento de arrestar NSS."
 
 #: ../src/plugins/bodhi.c:375
 msgid "List of bug ids"
@@ -1610,8 +1789,8 @@ msgstr ""
 #: ../src/plugins/bodhi.c:486
 #, c-format
 msgid ""
-"An update exists which might fix your problem. You can install it by "
-"running: %s. Do you want to continue with reporting the bug?"
+"An update exists which might fix your problem. You can install it by running:"
+" %s. Do you want to continue with reporting the bug?"
 msgstr ""
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
@@ -1680,10 +1859,11 @@ msgstr ""
 msgid "List only not-reported problems"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:190 ../src/cli/list.c:243
 msgid "Show detailed report"
-msgstr ""
+msgstr "Monstrar un reporto detaliate"
 
 #: ../src/cli/list.c:191
 msgid "List only the problems more recent than specified timestamp"
@@ -1696,7 +1876,8 @@ msgstr ""
 #: ../src/cli/list.c:224
 #, c-format
 msgid ""
-"The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
+"The Autoreporting feature is disabled. Please consider enabling it by "
+"issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
 msgstr ""
 
@@ -1781,14 +1962,15 @@ msgid ""
 "user doens't want to upload his coredump to anywhere the event performs "
 "local analysis. Local analysis is run event if remote analysis fails. Pros: "
 "no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump"
-" you upload contains all the data from the crashed program, including your "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
-msgstr ""
+msgstr "Analysar le instantaneo de memoria virtual"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
 msgid ""
@@ -1839,8 +2021,8 @@ msgstr ""
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 
 #: ../src/plugins/post_report.xml.in.h:1
