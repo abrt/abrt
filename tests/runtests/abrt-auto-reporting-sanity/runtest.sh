@@ -93,7 +93,7 @@ rlJournalStart
 
     rlPhaseStartTest "various argument types"
         OLD="enabled"
-        for arg in disabled EnAbLeD dIsAblEd enabled no Yes nO yes 0 1
+        for arg in disabled EnAbLeD dIsAblEd enabled no Yes nO yes 0 1 off on
         do
             rlRun "abrt-auto-reporting $arg"
 
@@ -106,12 +106,35 @@ rlJournalStart
 
             OLD=$CONF_VALUE
         done
-    rpPhaseEnd
+    rlPhaseEnd
+
+    rlPhaseStartTest "turn SSL Auth on"
+        rlRun "abrt-auto-reporting --certificate rhsm"
+
+        rlAssertGrep "^SSLClientAuth = rhsm$" /etc/libreport/plugins/ureport.conf
+    rlPhaseEnd
+
+    rlPhaseStartTest "turn HTTP Auth on"
+        rlRun "abrt-auto-reporting --username rhn-username --password rhn-password"
+
+        rlAssertGrep "^HTTPAuth = rhts-credentials$" /etc/libreport/plugins/ureport.conf
+        rlAssertGrep "^Login = rhn-username$" /etc/libreport/plugins/rhtsupport.conf
+        rlAssertGrep "^Password = rhn-password$" /etc/libreport/plugins/rhtsupport.conf
+    rlPhaseEnd
+
+    rlPhaseStartTest "turn the Auth off"
+        rlRun "abrt-auto-reporting --anonymous"
+
+        rlAssertNotGrep "^SSLClientAuth" /etc/libreport/plugins/ureport.conf
+        rlAssertNotGrep "^HTTPAuth" /etc/libreport/plugins/ureport.conf
+    rlPhaseEnd
 
     rlPhaseStartCleanup
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd
+
     rlJournalPrintText
+
 rlJournalEnd
 
