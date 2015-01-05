@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-10-13 17:42+0200\n"
-"PO-Revision-Date: 2014-10-21 00:19+0000\n"
-"Last-Translator: hpeters <hpeters@redhat.com>\n"
+"POT-Creation-Date: 2014-12-12 14:29+0100\n"
+"PO-Revision-Date: 2014-12-12 13:30+0000\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/fedora-abrt/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -61,141 +61,141 @@ msgstr "Keine Verbindung mit NetworkManager über DBus: %s"
 msgid "Can't determine network status via NetworkManager: %s"
 msgstr "Netzwerkstatus kann über NetworkManager nicht bestimmt werden: %s"
 
-#: ../src/applet/applet.c:386
+#: ../src/applet/applet.c:342
+#, c-format
+msgid "Can't take ownership of '%s'"
+msgstr "Eigentumsrechte von »%s« können nicht geändert werden."
+
+#: ../src/applet/applet.c:350
+#, c-format
+msgid "Can't open directory for writing '%s'"
+msgstr "Verzeichnis kann nicht mit Schreibrechten geöffnet werden - »%s«"
+
+#: ../src/applet/applet.c:417
 msgid "A problem has been detected"
 msgstr "Es wurde ein Absturz entdeckt"
 
-#: ../src/applet/applet.c:388
+#: ../src/applet/applet.c:419
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "In Paket %s wurde ein Absturz entdeckt"
 
-#: ../src/applet/applet.c:398
+#: ../src/applet/applet.c:429
 #, c-format
 msgid "%s and the diagnostic data has been submitted"
 msgstr "%s und die Diagnostikdaten wurden übertragen"
 
-#: ../src/applet/applet.c:558 ../src/plugins/abrt-retrace-client.c:131
+#: ../src/applet/applet.c:589 ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
 #, c-format
 msgid "Can't execute '%s'"
 msgstr "»%s« kann nicht ausgeführt werden"
 
-#: ../src/applet/applet.c:632 ../src/applet/applet.c:708
+#: ../src/applet/applet.c:668 ../src/applet/applet.c:744
 #, c-format
 msgid "Can't close notification: %s"
 msgstr "Benachrichtigung kann nicht geschlossen werden: %s"
 
-#: ../src/applet/applet.c:670
+#: ../src/applet/applet.c:706
 msgid ""
 "You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
 msgstr "Sie sind im Begriff, Benachrichtigungen für ein bestimmtes Problem zu unterdrücken. Sie werden in Zukunft keine Benachrichtigungen für dieses Problem erhalten, ABRT wird es jedoch weiterhin aufzeichnen und Sie haben die Möglichkeit, das Problem über die ABRT-Oberfläche zu berichten.\n\nMöchten Sie fortfahren?"
 
-#: ../src/applet/applet.c:748 ../src/applet/applet.c:750
+#: ../src/applet/applet.c:784 ../src/applet/applet.c:786
 msgid "Warning"
 msgstr "Warnung"
 
-#: ../src/applet/applet.c:798
+#: ../src/applet/applet.c:834
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "Info-Applet, das Benutzer über die von ABRT entdeckten Probleme benachrichtigt"
 
-#: ../src/applet/applet.c:814
+#: ../src/applet/applet.c:850
 msgid "translator-credits"
 msgstr "Mario Blättermann\nFabian Affolter\nRoman Spirgi"
 
-#: ../src/applet/applet.c:822
+#: ../src/applet/applet.c:858
 msgid "_Quit"
 msgstr "_Quit"
 
-#: ../src/applet/applet.c:824
+#: ../src/applet/applet.c:860
 msgid "Hide"
 msgstr "Ausblenden"
 
-#: ../src/applet/applet.c:826
+#: ../src/applet/applet.c:862
 msgid "_About"
 msgstr "_About"
 
-#: ../src/applet/applet.c:894
+#: ../src/applet/applet.c:930
 msgid "Problem detected"
 msgstr "Fehler festgestellt"
 
-#: ../src/applet/applet.c:944
+#: ../src/applet/applet.c:980
 msgid "Ignore forever"
 msgstr "Für immer ignorieren"
 
 #. Problem has been 'autoreported' and is considered as KNOWN
-#: ../src/applet/applet.c:955 ../src/applet/applet.c:970
+#: ../src/applet/applet.c:991 ../src/applet/applet.c:1006
 msgid "Open"
 msgstr "Öffnen"
 
-#: ../src/applet/applet.c:960
+#: ../src/applet/applet.c:996
 msgid "The Problem has already been Reported"
 msgstr "Dieser Fehler wurde bereits gemeldet"
 
-#: ../src/applet/applet.c:960
+#: ../src/applet/applet.c:996
 msgid "A Known Problem has Occurred"
 msgstr "Ein bekannter Fehler ist aufgetreten"
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
-#: ../src/applet/applet.c:979 ../src/applet/applet.c:1014
+#: ../src/applet/applet.c:1015 ../src/applet/applet.c:1050
 msgid "Report"
 msgstr "Melden"
 
-#: ../src/applet/applet.c:984
+#: ../src/applet/applet.c:1020
 msgid "A Problem has Occurred"
 msgstr "Ein Fehler ist aufgetreten"
 
-#: ../src/applet/applet.c:1010
+#: ../src/applet/applet.c:1046
 msgid "A Problem has been Reported"
 msgstr "Ein Fehler wurde gemeldet"
 
-#: ../src/applet/applet.c:1018
+#: ../src/applet/applet.c:1054
 msgid "A New Problem has Occurred"
 msgstr "Ein neues Problem ist aufgetreten"
 
-#: ../src/applet/applet.c:1028
+#: ../src/applet/applet.c:1064
 #, c-format
 msgid "Can't show notification: %s"
 msgstr "Benachrichtigung kann nicht angezeigt werden: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:1062 ../src/daemon/abrt-upload-watch.c:168
+#: ../src/applet/applet.c:1098 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "Von gio channel kann nicht gelesen werden: »%s«"
 
-#: ../src/applet/applet.c:1146
+#: ../src/applet/applet.c:1182
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "Verschlüsselung kann auf gio channel nicht gesetzt werden: %s"
 
-#: ../src/applet/applet.c:1150
+#: ../src/applet/applet.c:1186
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "Nichtblockier-Modus kann für gio channel nicht gesetzt werden: %s"
 
-#: ../src/applet/applet.c:1184
-#, c-format
-msgid "Can't take ownership of '%s'"
-msgstr "Eigentumsrechte von »%s« können nicht geändert werden."
-
-#: ../src/applet/applet.c:1193
-#, c-format
-msgid "Can't open directory for writing '%s'"
-msgstr "Verzeichnis kann nicht mit Schreibrechten geöffnet werden - »%s«"
-
-#: ../src/applet/applet.c:1476
+#: ../src/applet/applet.c:1494
 #, c-format
 msgid ""
 "Failed to open connection to session manager: '%s', notification may "
 "reappear on the next login"
 msgstr "Es konnte keine Verbindung mit dem Sitzungsmanager aufgebaut werden: '%s', eine Benachrichtigung wird beim nächsten anmelden angezeigt"
 
-#: ../src/applet/applet.c:1617
+#: ../src/applet/applet.c:1635
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -1674,6 +1674,12 @@ msgstr "Mehrere Fehler verarbeiten"
 #: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "Siehe 'abrt-cli COMMAND --help' für weitere Informationen"
+
+#: ../src/cli/list.c:127
+#, c-format
+msgid ""
+"%sRun 'abrt-cli report %s' for creating a case in Red Hat Customer Portal\n"
+msgstr ""
 
 #: ../src/cli/list.c:179
 msgid "& list [options] [DIR]..."

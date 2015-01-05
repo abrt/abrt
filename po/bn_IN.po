@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-10-13 17:42+0200\n"
-"PO-Revision-Date: 2014-10-17 10:24+0000\n"
+"POT-Creation-Date: 2014-12-12 14:29+0100\n"
+"PO-Revision-Date: 2014-12-16 04:54+0000\n"
 "Last-Translator: Saibal Ray\n"
 "Language-Team: Bengali (India) (http://www.transifex.com/projects/p/fedora-abrt/language/bn_IN/)\n"
 "MIME-Version: 1.0\n"
@@ -56,141 +56,141 @@ msgstr "DBus-র মাধ্যমে NetworkManager-র সাথে সংয
 msgid "Can't determine network status via NetworkManager: %s"
 msgstr "NetworkManager-র মাধ্যমে নেটওয়ার্ক নির্ধারণ করা সম্ভব নয়: %s"
 
-#: ../src/applet/applet.c:386
+#: ../src/applet/applet.c:342
+#, c-format
+msgid "Can't take ownership of '%s'"
+msgstr "'%s'-র মালিকানা গ্রহণ করা সম্ভব নয়"
+
+#: ../src/applet/applet.c:350
+#, c-format
+msgid "Can't open directory for writing '%s'"
+msgstr "'%s' লেখার জন্য ডিরেক্টরি খোলা যায় না"
+
+#: ../src/applet/applet.c:417
 msgid "A problem has been detected"
 msgstr "একটি সমস্যা সনাক্ত হয়েছে"
 
-#: ../src/applet/applet.c:388
+#: ../src/applet/applet.c:419
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "%s প্যাকেজের মধ্যে একটি বিপর্যয় সনাক্ত করা হয়েছে"
 
-#: ../src/applet/applet.c:398
+#: ../src/applet/applet.c:429
 #, c-format
 msgid "%s and the diagnostic data has been submitted"
 msgstr "%s এবং ডায়গনস্টিক ডেটা জমা দেওয়া হয়েছে"
 
-#: ../src/applet/applet.c:558 ../src/plugins/abrt-retrace-client.c:131
+#: ../src/applet/applet.c:589 ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
 #, c-format
 msgid "Can't execute '%s'"
 msgstr "'%s' সঞ্চালন করতে ব্যর্থ"
 
-#: ../src/applet/applet.c:632 ../src/applet/applet.c:708
+#: ../src/applet/applet.c:668 ../src/applet/applet.c:744
 #, c-format
 msgid "Can't close notification: %s"
 msgstr "সূচনাবার্তা বন্ধ করতে ব্যর্থ: %s"
 
-#: ../src/applet/applet.c:670
+#: ../src/applet/applet.c:706
 msgid ""
 "You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
 msgstr "অাপনি একটি নির্দিষ্ট সমস্যার বিজ্ঞপ্তি নীরব করতে চলেছেন। অাপনি অার এই সমস্যার জন্য বিজ্ঞপ্তি দেখতে পাবেন না, তবে, ABRT এটি সনাক্ত করবে এবং অাপনি তা ABRT GUI থেকে রিপোর্ট করতে পারবেন।\n\nঅাপনি কি জারি রাখতে চান?"
 
-#: ../src/applet/applet.c:748 ../src/applet/applet.c:750
+#: ../src/applet/applet.c:784 ../src/applet/applet.c:786
 msgid "Warning"
 msgstr "সতর্কবার্তা"
 
-#: ../src/applet/applet.c:798
+#: ../src/applet/applet.c:834
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT দ্বারা সনাক্ত করা সমস্যা সম্বন্ধে ব্যবহারকারীদেরকে সূচিত করার উদ্দেশ্যে, বিজ্ঞপ্তিস্থলে ব্যবহারযোগ্য অ্যাপ্লেট"
 
-#: ../src/applet/applet.c:814
+#: ../src/applet/applet.c:850
 msgid "translator-credits"
 msgstr "রুণা ভট্টাচার্য্য"
 
-#: ../src/applet/applet.c:822
+#: ../src/applet/applet.c:858
 msgid "_Quit"
 msgstr "প্রস্থান করুন (_Q)"
 
-#: ../src/applet/applet.c:824
+#: ../src/applet/applet.c:860
 msgid "Hide"
 msgstr "আড়াল করুন"
 
-#: ../src/applet/applet.c:826
+#: ../src/applet/applet.c:862
 msgid "_About"
 msgstr "সম্বন্ধে (_A)"
 
-#: ../src/applet/applet.c:894
+#: ../src/applet/applet.c:930
 msgid "Problem detected"
 msgstr "সমস্যা সনাক্ত হয়েছে"
 
-#: ../src/applet/applet.c:944
+#: ../src/applet/applet.c:980
 msgid "Ignore forever"
 msgstr "সবসময়ের জন্য উপেক্ষা করুন"
 
 #. Problem has been 'autoreported' and is considered as KNOWN
-#: ../src/applet/applet.c:955 ../src/applet/applet.c:970
+#: ../src/applet/applet.c:991 ../src/applet/applet.c:1006
 msgid "Open"
 msgstr "খুলুন"
 
-#: ../src/applet/applet.c:960
+#: ../src/applet/applet.c:996
 msgid "The Problem has already been Reported"
 msgstr "সমস্যার কথা ইতিমধ্যেই জানানো হয়েছে"
 
-#: ../src/applet/applet.c:960
+#: ../src/applet/applet.c:996
 msgid "A Known Problem has Occurred"
 msgstr "একটি জ্ঞাত সমস্যা দেখা দিয়েছে"
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
-#: ../src/applet/applet.c:979 ../src/applet/applet.c:1014
+#: ../src/applet/applet.c:1015 ../src/applet/applet.c:1050
 msgid "Report"
 msgstr "রিপোর্ট"
 
-#: ../src/applet/applet.c:984
+#: ../src/applet/applet.c:1020
 msgid "A Problem has Occurred"
 msgstr "একটি সমস্যা দেখা দিয়েছে"
 
-#: ../src/applet/applet.c:1010
+#: ../src/applet/applet.c:1046
 msgid "A Problem has been Reported"
 msgstr "একটি সমস্যার কথা জানানো হয়েছে"
 
-#: ../src/applet/applet.c:1018
+#: ../src/applet/applet.c:1054
 msgid "A New Problem has Occurred"
 msgstr "একটি নতুন সমস্যা দেখা দিয়েছে"
 
-#: ../src/applet/applet.c:1028
+#: ../src/applet/applet.c:1064
 #, c-format
 msgid "Can't show notification: %s"
 msgstr "সূচনাবার্তা প্রদর্শন করতে ব্যর্থ: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:1062 ../src/daemon/abrt-upload-watch.c:168
+#: ../src/applet/applet.c:1098 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "gio চ্যানেল থেকে পড়তে ব্যর্থ: '%s'"
 
-#: ../src/applet/applet.c:1146
+#: ../src/applet/applet.c:1182
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "gio চ্যানেলের জন্য এনকোডিং নির্ধারণ করতে ব্যর্থ: %s"
 
-#: ../src/applet/applet.c:1150
+#: ../src/applet/applet.c:1186
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "gio চ্যানেলের জন্য nonblocking মোড সক্রিয় করতে ব্যর্থ: %s"
 
-#: ../src/applet/applet.c:1184
-#, c-format
-msgid "Can't take ownership of '%s'"
-msgstr "'%s'-র মালিকানা গ্রহণ করা সম্ভব নয়"
-
-#: ../src/applet/applet.c:1193
-#, c-format
-msgid "Can't open directory for writing '%s'"
-msgstr "'%s' লেখার জন্য ডিরেক্টরি খোলা যায় না"
-
-#: ../src/applet/applet.c:1476
+#: ../src/applet/applet.c:1494
 #, c-format
 msgid ""
 "Failed to open connection to session manager: '%s', notification may "
 "reappear on the next login"
 msgstr "সেশন পরিচালকর সংযোগ খুলতে ব্যর্থ: '%s', পরবর্তী লগ-ইনে বিজ্ঞপ্তি অাবার উপস্থিত হতে পারে"
 
-#: ../src/applet/applet.c:1617
+#: ../src/applet/applet.c:1635
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -1669,6 +1669,12 @@ msgstr "একাধিক সমস্যাগুলি প্রক্রি�
 #: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "অধিক বিবরণের জন্য 'abrt-cli COMMAND --help' দেখুন"
+
+#: ../src/cli/list.c:127
+#, c-format
+msgid ""
+"%sRun 'abrt-cli report %s' for creating a case in Red Hat Customer Portal\n"
+msgstr "%sRed Hat গ্রাহক পোর্টালে একটি কেস তৈরি করতে 'abrt-cli report %s' চালনা করুন\n"
 
 #: ../src/cli/list.c:179
 msgid "& list [options] [DIR]..."

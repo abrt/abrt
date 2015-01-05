@@ -238,7 +238,7 @@ ABRT_PARSE_WITH([bodhi]))
 
 if test -z "$NO_BODHI"
 then
-PKG_CHECK_MODULES([JSON_C], [json])
+PKG_CHECK_MODULES([JSON_C], [json-c])
 PKG_CHECK_MODULES([LIBREPORT_WEB], [libreport-web])
 AM_CONDITIONAL(BUILD_BODHI, true)
 else

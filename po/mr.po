@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-10-13 17:42+0200\n"
-"PO-Revision-Date: 2014-10-16 05:25+0000\n"
+"POT-Creation-Date: 2014-12-12 14:29+0100\n"
+"PO-Revision-Date: 2014-12-15 02:31+0000\n"
 "Last-Translator: sandeeps <sshedmak@redhat.com>\n"
 "Language-Team: Marathi (http://www.transifex.com/projects/p/fedora-abrt/language/mr/)\n"
 "MIME-Version: 1.0\n"
@@ -53,141 +53,141 @@ msgstr "डिबस: %s वरील नेटवर्कमॅनेजरश
 msgid "Can't determine network status via NetworkManager: %s"
 msgstr "नेटवर्कमॅनेजर: %s तर्फे नेटवर्क स्थिती ओळखणे अशक्य"
 
-#: ../src/applet/applet.c:386
+#: ../src/applet/applet.c:342
+#, c-format
+msgid "Can't take ownership of '%s'"
+msgstr "'%s' ची मालकी प्राप्त करणे अशक्य"
+
+#: ../src/applet/applet.c:350
+#, c-format
+msgid "Can't open directory for writing '%s'"
+msgstr "'%s' लिहण्याकरीता डिरेक्ट्रि उघडणे अशक्य"
+
+#: ../src/applet/applet.c:417
 msgid "A problem has been detected"
 msgstr "अडचण आढळली"
 
-#: ../src/applet/applet.c:388
+#: ../src/applet/applet.c:419
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "%s संकुलमध्ये अडचण आढळली"
 
-#: ../src/applet/applet.c:398
+#: ../src/applet/applet.c:429
 #, c-format
 msgid "%s and the diagnostic data has been submitted"
 msgstr "%s आणि विश्लेषीत माहिती सादर केली आहे"
 
-#: ../src/applet/applet.c:558 ../src/plugins/abrt-retrace-client.c:131
+#: ../src/applet/applet.c:589 ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
 #, c-format
 msgid "Can't execute '%s'"
 msgstr "'%s' चालवणे अशक्य"
 
-#: ../src/applet/applet.c:632 ../src/applet/applet.c:708
+#: ../src/applet/applet.c:668 ../src/applet/applet.c:744
 #, c-format
 msgid "Can't close notification: %s"
 msgstr "सूचना: %s बंद करणे अशक्य"
 
-#: ../src/applet/applet.c:670
+#: ../src/applet/applet.c:706
 msgid ""
 "You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
 msgstr "ठराविक अडचणींच्या सूचना तुम्ही बंद करणार आहात. या अडचणीकरिता तुम्हाला सूचना पटल पुन्हा आढळणार नाही, तरी, ABRT ला ते आढळेल आणि त्यास ABRT GUI मार्फत कळविणे शक्य होईल.\n\nतुम्हाला पुढे जायचे?"
 
-#: ../src/applet/applet.c:748 ../src/applet/applet.c:750
+#: ../src/applet/applet.c:784 ../src/applet/applet.c:786
 msgid "Warning"
 msgstr "सावधानता"
 
-#: ../src/applet/applet.c:798
+#: ../src/applet/applet.c:834
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "सूचना क्षेत्र ॲप्लेट जे वापरकर्त्याला ABRT द्वारे आढळलेल्या अडचणींविषयी अवगत करते"
 
-#: ../src/applet/applet.c:814
+#: ../src/applet/applet.c:850
 msgid "translator-credits"
 msgstr "संदिप शेडमाके <sshedmak@redhat.com>, 2010, 2011."
 
-#: ../src/applet/applet.c:822
+#: ../src/applet/applet.c:858
 msgid "_Quit"
 msgstr "बाहेर पडा (_Q)"
 
-#: ../src/applet/applet.c:824
+#: ../src/applet/applet.c:860
 msgid "Hide"
 msgstr "लपवा"
 
-#: ../src/applet/applet.c:826
+#: ../src/applet/applet.c:862
 msgid "_About"
 msgstr "विषयी (_A)"
 
-#: ../src/applet/applet.c:894
+#: ../src/applet/applet.c:930
 msgid "Problem detected"
 msgstr "अडचण आढळली"
 
-#: ../src/applet/applet.c:944
+#: ../src/applet/applet.c:980
 msgid "Ignore forever"
 msgstr "नेहमीकरिता दुर्लक्ष करा"
 
 #. Problem has been 'autoreported' and is considered as KNOWN
-#: ../src/applet/applet.c:955 ../src/applet/applet.c:970
+#: ../src/applet/applet.c:991 ../src/applet/applet.c:1006
 msgid "Open"
 msgstr "उघडा"
 
-#: ../src/applet/applet.c:960
+#: ../src/applet/applet.c:996
 msgid "The Problem has already been Reported"
 msgstr "अडचण आधीच कळवले गेले आहे"
 
-#: ../src/applet/applet.c:960
+#: ../src/applet/applet.c:996
 msgid "A Known Problem has Occurred"
 msgstr "परिचीत अडचण आढळली"
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
-#: ../src/applet/applet.c:979 ../src/applet/applet.c:1014
+#: ../src/applet/applet.c:1015 ../src/applet/applet.c:1050
 msgid "Report"
 msgstr "रिपोर्ट"
 
-#: ../src/applet/applet.c:984
+#: ../src/applet/applet.c:1020
 msgid "A Problem has Occurred"
 msgstr "अडचण निर्माण झाली"
 
-#: ../src/applet/applet.c:1010
+#: ../src/applet/applet.c:1046
 msgid "A Problem has been Reported"
 msgstr "अडचण कळवली"
 
-#: ../src/applet/applet.c:1018
+#: ../src/applet/applet.c:1054
 msgid "A New Problem has Occurred"
 msgstr "नवीन अडचण आढळली"
 
-#: ../src/applet/applet.c:1028
+#: ../src/applet/applet.c:1064
 #, c-format
 msgid "Can't show notification: %s"
 msgstr "सूचना: %s दाखवणे अशक्य"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:1062 ../src/daemon/abrt-upload-watch.c:168
+#: ../src/applet/applet.c:1098 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "gio वाहिनी: '%s' पासून वाचणे अशक्य"
 
-#: ../src/applet/applet.c:1146
+#: ../src/applet/applet.c:1182
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "gio वाहिनी: %s वरील एंकोडिंग सेट करणे अशक्य"
 
-#: ../src/applet/applet.c:1150
+#: ../src/applet/applet.c:1186
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "gio वाहिनी: %s करीता नॉनब्लॉकिंग मोड सुरू करणे अशक्य"
 
-#: ../src/applet/applet.c:1184
-#, c-format
-msgid "Can't take ownership of '%s'"
-msgstr "'%s' ची मालकी प्राप्त करणे अशक्य"
-
-#: ../src/applet/applet.c:1193
-#, c-format
-msgid "Can't open directory for writing '%s'"
-msgstr "'%s' लिहण्याकरीता डिरेक्ट्रि उघडणे अशक्य"
-
-#: ../src/applet/applet.c:1476
+#: ../src/applet/applet.c:1494
 #, c-format
 msgid ""
 "Failed to open connection to session manager: '%s', notification may "
 "reappear on the next login"
 msgstr "सत्र व्यवस्थापक: '%s' सह जोडणी उघडण्यास अपयशी, पुढील प्रवेशवेळी सूचना पुन्हा आढळेल"
 
-#: ../src/applet/applet.c:1617
+#: ../src/applet/applet.c:1635
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -1049,7 +1049,7 @@ msgstr "प्रॉब्लेम डिरेक्ट्री जग वा
 
 #: ../src/plugins/abrt-dump-oops.c:282
 msgid "Throttle problem directory creation to 1 per second"
-msgstr "प्रति १ सेकंदकरिता थ्रॉटल अडचण डिरेक्ट्रीचे निर्माण"
+msgstr "प्रति 1 सेकंदकरिता थ्रॉटल अडचण डिरेक्ट्रीचे निर्माण"
 
 #: ../src/plugins/abrt-dump-oops.c:283 ../src/plugins/abrt-dump-xorg.c:249
 msgid "Print search string(s) to stdout and exit"
@@ -1666,6 +1666,12 @@ msgstr "बहु अडणी विश्लेषीत करा"
 #: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "अधिक माहितीकरीता 'abrt-cli COMMAND --help' पहा"
+
+#: ../src/cli/list.c:127
+#, c-format
+msgid ""
+"%sRun 'abrt-cli report %s' for creating a case in Red Hat Customer Portal\n"
+msgstr "Red Hat Customer Portal अंतर्गत घटना निर्माण करण्यासाठी %sरन 'abrt-cli report %s'\n"
 
 #: ../src/cli/list.c:179
 msgid "& list [options] [DIR]..."

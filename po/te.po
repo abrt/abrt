@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-10-13 17:42+0200\n"
-"PO-Revision-Date: 2014-10-16 09:36+0000\n"
+"POT-Creation-Date: 2014-12-12 14:29+0100\n"
+"PO-Revision-Date: 2014-12-17 07:24+0000\n"
 "Last-Translator: Krishnababu Krothapalli <krisnababu@gmail.com>\n"
 "Language-Team: Telugu (http://www.transifex.com/projects/p/fedora-abrt/language/te/)\n"
 "MIME-Version: 1.0\n"
@@ -56,141 +56,141 @@ msgstr "DBus నందు నెట్వర్కుమేనేజర్‌న
 msgid "Can't determine network status via NetworkManager: %s"
 msgstr "నెట్వర్కుమేనేజర్ ద్వారా నెట్వర్కు స్థితిని నిర్ణయించలేదు: %s"
 
-#: ../src/applet/applet.c:386
+#: ../src/applet/applet.c:342
+#, c-format
+msgid "Can't take ownership of '%s'"
+msgstr "'%s' పై అజమాయిషీ తీసుకోలేదు"
+
+#: ../src/applet/applet.c:350
+#, c-format
+msgid "Can't open directory for writing '%s'"
+msgstr "'%s' వ్రాయుట కొరకు డైరెక్టరీ తెరువలేదు"
+
+#: ../src/applet/applet.c:417
 msgid "A problem has been detected"
 msgstr "ఒక సమస్య గుర్తించబడింది"
 
-#: ../src/applet/applet.c:388
+#: ../src/applet/applet.c:419
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "ప్యాకేజీ %s నందు వొక సమస్య గుర్తించబడింది"
 
-#: ../src/applet/applet.c:398
+#: ../src/applet/applet.c:429
 #, c-format
 msgid "%s and the diagnostic data has been submitted"
 msgstr "%s మరియు డయాగ్నిస్టిక్ దత్తాంశం సమర్పించబడెను"
 
-#: ../src/applet/applet.c:558 ../src/plugins/abrt-retrace-client.c:131
+#: ../src/applet/applet.c:589 ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
 #, c-format
 msgid "Can't execute '%s'"
 msgstr "'%s' యెగ్జిక్యూట్ చేయలేదు"
 
-#: ../src/applet/applet.c:632 ../src/applet/applet.c:708
+#: ../src/applet/applet.c:668 ../src/applet/applet.c:744
 #, c-format
 msgid "Can't close notification: %s"
 msgstr "ప్రకటనను మూయలేదు: %s"
 
-#: ../src/applet/applet.c:670
+#: ../src/applet/applet.c:706
 msgid ""
 "You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
 msgstr "మీరు ఫలానా సమస్యకు చెందిన ప్రకటనలను రాకుండా చేయబోతున్నారు. మీరు ఇకపై ఈ సమస్యకు సంబందించి ప్రకటనను చూడబోరు, ఏమైనప్పటికీ, ABRT దానిని గుర్తించగలదు మరియు మీరు దానిని ABRT GUI నుండి నివేదించగల్గుతారు.\n\nమీరు కొనసాగాలని అనుకుంటున్నారా?"
 
-#: ../src/applet/applet.c:748 ../src/applet/applet.c:750
+#: ../src/applet/applet.c:784 ../src/applet/applet.c:786
 msgid "Warning"
 msgstr "హెచ్చరిక"
 
-#: ../src/applet/applet.c:798
+#: ../src/applet/applet.c:834
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT చేత గుర్తించబడిన సమస్యల గురించి వినియోగదారికి తెలుపుటకు నోటిఫికేషన్ ప్రాంతపు ఆప్లెట్"
 
-#: ../src/applet/applet.c:814
+#: ../src/applet/applet.c:850
 msgid "translator-credits"
 msgstr "కృష్ణబాబు క్రొత్తపల్లి <kkrothap@redhat.com> 2009,2010."
 
-#: ../src/applet/applet.c:822
+#: ../src/applet/applet.c:858
 msgid "_Quit"
 msgstr "నిష్క్రమించు (_Q)"
 
-#: ../src/applet/applet.c:824
+#: ../src/applet/applet.c:860
 msgid "Hide"
 msgstr "మరుగునవుంచుము"
 
-#: ../src/applet/applet.c:826
+#: ../src/applet/applet.c:862
 msgid "_About"
 msgstr "గురించి (_A)"
 
-#: ../src/applet/applet.c:894
+#: ../src/applet/applet.c:930
 msgid "Problem detected"
 msgstr "సమస్య గుర్తించబడింది"
 
-#: ../src/applet/applet.c:944
+#: ../src/applet/applet.c:980
 msgid "Ignore forever"
 msgstr "ఎప్పటికీ విస్మరించు"
 
 #. Problem has been 'autoreported' and is considered as KNOWN
-#: ../src/applet/applet.c:955 ../src/applet/applet.c:970
+#: ../src/applet/applet.c:991 ../src/applet/applet.c:1006
 msgid "Open"
 msgstr "తెరుచు"
 
-#: ../src/applet/applet.c:960
+#: ../src/applet/applet.c:996
 msgid "The Problem has already been Reported"
 msgstr "సమస్య ఇప్పటికే నివేదించబడెను"
 
-#: ../src/applet/applet.c:960
+#: ../src/applet/applet.c:996
 msgid "A Known Problem has Occurred"
 msgstr "తెలిసిన సమస్య యెదురైనది"
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
-#: ../src/applet/applet.c:979 ../src/applet/applet.c:1014
+#: ../src/applet/applet.c:1015 ../src/applet/applet.c:1050
 msgid "Report"
 msgstr "నివేదించు"
 
-#: ../src/applet/applet.c:984
+#: ../src/applet/applet.c:1020
 msgid "A Problem has Occurred"
 msgstr "ఒక సమస్య యెదురైంది"
 
-#: ../src/applet/applet.c:1010
+#: ../src/applet/applet.c:1046
 msgid "A Problem has been Reported"
 msgstr "ఒక సమస్య నివేదించబడింది"
 
-#: ../src/applet/applet.c:1018
+#: ../src/applet/applet.c:1054
 msgid "A New Problem has Occurred"
 msgstr "కొత్త సమస్య యెదురైనది"
 
-#: ../src/applet/applet.c:1028
+#: ../src/applet/applet.c:1064
 #, c-format
 msgid "Can't show notification: %s"
 msgstr "ప్రకటనను చూపలేదు: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:1062 ../src/daemon/abrt-upload-watch.c:168
+#: ../src/applet/applet.c:1098 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "gio చానల్‌నుండి చదువలేదు: '%s'"
 
-#: ../src/applet/applet.c:1146
+#: ../src/applet/applet.c:1182
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "gio చానల్ నందు యెన్కోడింగ్ అమర్చలేదు: %s"
 
-#: ../src/applet/applet.c:1150
+#: ../src/applet/applet.c:1186
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "gio చానల్ కొరకు నాన్‌బ్లాకింగ్ రీతిని ఆన్ చేయలేదు: %s"
 
-#: ../src/applet/applet.c:1184
-#, c-format
-msgid "Can't take ownership of '%s'"
-msgstr "'%s' పై అజమాయిషీ తీసుకోలేదు"
-
-#: ../src/applet/applet.c:1193
-#, c-format
-msgid "Can't open directory for writing '%s'"
-msgstr "'%s' వ్రాయుట కొరకు డైరెక్టరీ తెరువలేదు"
-
-#: ../src/applet/applet.c:1476
+#: ../src/applet/applet.c:1494
 #, c-format
 msgid ""
 "Failed to open connection to session manager: '%s', notification may "
 "reappear on the next login"
 msgstr "సెషన్ నిర్వాహికకు అనుసంధానం తెరుచుటకు విఫలమైంది: '%s', తరువాతి లాగిన్ పైన ప్రకటన తిరిగికనిపించవచ్చు"
 
-#: ../src/applet/applet.c:1617
+#: ../src/applet/applet.c:1635
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -1669,6 +1669,12 @@ msgstr "పలు సమస్యలను ప్రోసెస్‌చేయ�
 #: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "అదనపు సమాచారం కొరకు 'abrt-cli COMMAND --help' చూడండి"
+
+#: ../src/cli/list.c:127
+#, c-format
+msgid ""
+"%sRun 'abrt-cli report %s' for creating a case in Red Hat Customer Portal\n"
+msgstr "Red Hat వినియోగదారి పోర్టల్ నందు ఒక కేస్ గురించి తెలపడానికి %s 'abrt-cli report %s' నడుపవలెను\n"
 
 #: ../src/cli/list.c:179
 msgid "& list [options] [DIR]..."
