@@ -604,6 +604,8 @@ int main(int argc, char** argv)
                         G_IO_IN | G_IO_PRI | G_IO_HUP,
                         handle_signal_cb);
 
+    guint name_id = 0;
+
     /* Mark the territory */
     log_notice("Creating pid file");
     if (create_pidfile() != 0)
@@ -625,11 +627,21 @@ int main(int argc, char** argv)
     /* Only now we want signal pipe to work */
     s_signal_pipe_write = s_signal_pipe[1];
 
+    /* Own a name on D-Bus */
+    name_id = g_bus_own_name (G_BUS_TYPE_SYSTEM,
+                              "org.freedesktop.problems.daemon",
+                              G_BUS_NAME_OWNER_FLAGS_NONE,
+                              NULL, NULL, NULL,
+                              NULL, NULL);
+
     /* Enter the event loop */
     log_debug("Init complete, entering main loop");
     run_main_loop(pMainloop);
 
  cleanup:
+    if (name_id > 0)
+        g_bus_unown_name (name_id);
+
     /* Error or INT/TERM. Clean up, in reverse order.
      * Take care to not undo things we did not do.
      */
