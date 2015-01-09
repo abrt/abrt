@@ -50,6 +50,8 @@ const char *const REPORTING_STATES[8][2] = {
 static int
 set_abrt_reporting(map_string_t *conf, const char *opt_value)
 {
+    assert(opt_value != NULL || !"BUG: invalid auto-reporting state");
+
     const char *const def_value = REPORTING_STATES[0][1];
     const char *const cur_value = get_map_string_item_or_NULL(conf, OPTION_NAME);
 
@@ -356,7 +358,13 @@ int main(int argc, char *argv[])
         goto finito;
     }
 
-    exit_code = set_abrt_reporting(conf, opt_value) ? EXIT_SUCCESS : EXIT_FAILURE;
+    if (opt_value == NULL)
+    {   /* calm coverity: see 'if (argc ...)' statements above. 0 exits, >1 fails, 1 sets opt_value */
+        error_msg("BUG: invalid command line arguments");
+        exit_code = EXIT_FAILURE;
+    }
+    else
+        exit_code = set_abrt_reporting(conf, opt_value) ? EXIT_SUCCESS : EXIT_FAILURE;
 
     if (exit_code == EXIT_FAILURE)
     {
