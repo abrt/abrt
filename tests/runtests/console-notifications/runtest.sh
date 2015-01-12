@@ -35,7 +35,7 @@ LNPATH="$HOME/$RELPATH"
 
 rlJournalStart
     rlPhaseStartSetup
-        rlAssertExists /etc/profile.d/abrt-console-notification.sh
+        rlAssertExists /etc/profile.d/abrt-console-notification.sh || rlDie "Nothing to test - install abrt-console-notifications first"
 
         TmpDir=$(mktemp -d)
         pushd $TmpDir
