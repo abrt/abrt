@@ -35,6 +35,8 @@ LNPATH="$HOME/$RELPATH"
 
 rlJournalStart
     rlPhaseStartSetup
+        rlAssertExists /etc/profile.d/abrt-console-notification.sh
+
         TmpDir=$(mktemp -d)
         pushd $TmpDir
 
