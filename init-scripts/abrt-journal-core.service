@@ -1,0 +1,12 @@
+[Unit]
+Description=Creates ABRT problems from coredumpctl messages
+After=abrtd.service
+Requisite=abrtd.service
+Conflicts=abrt-ccpp.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/abrt-dump-journal-core -D -T -f -e
+
+[Install]
+WantedBy=multi-user.target
