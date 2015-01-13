@@ -67,9 +67,15 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.auth_status(self.wfile)
 
     def auth_status(self, fh=sys.stdout):
+        fh.write('NOAUTH\n')
+        fh.flush()
+
+
+class SSLAuthHandler(Handler):
+    def auth_status(self, fh=sys.stdout):
         cert = self.request.getpeercert()
         if not cert:
-            fh.write('NOAUTH\n')
+            Handler.auth_status(self)
         else:
             # "which is a fairly poorly-formed subject field"
             for item in cert['subject']:
@@ -82,24 +88,74 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
         fh.flush()
 
 
+class HttpAuthHandler(Handler):
+    def __init__(self, address, handler, arg):
+        Handler.__init__(self, address, handler, arg)
+        self._auth_status = 'Bug: barely initialized'
+
+    def do_AUTHHEAD(self):
+         self.send_response(401)
+         self.send_header('WWW-Authenticate', 'Basic realm=\"Test\"')
+         self.send_header('Content-type', 'text/html')
+         self.end_headers()
+
+    def do_AUTH(self, protected_method):
+        if self.headers.getheader('Authorization') == None:
+            self.do_AUTHHEAD()
+            self._auth_status = 'prompted for credentials'
+            return False
+        #key "ureport:password"
+        elif self.headers.getheader('Authorization') == 'Basic ' + 'dXJlcG9ydDpwYXNzd29yZA==':
+            self._auth_status = 'HTTPAUTH OK'
+            protected_method(self)
+            return True
+        else:
+            self.do_AUTHHEAD()
+            self._auth_status = 'invalid credentials'
+            return False
+
+    def do_POST(self):
+        if not self.do_AUTH(Handler.do_POST):
+            self.auth_status()
+
+    def do_GET(self):
+        if not self.do_AUTH(Handler.do_GET):
+            self.auth_status(self.wfile)
+
+    def auth_status(self, fh=sys.stdout):
+        fh.write(self._auth_status)
+        fh.write('\n')
+        fh.flush()
+
+
 if __name__ == '__main__':
     try:
         reqs = { 'none': ssl.CERT_NONE,
                  'optional': ssl.CERT_OPTIONAL,
-                 'required': ssl.CERT_REQUIRED }[sys.argv[1]]
+                 'required': ssl.CERT_REQUIRED,
+                 'http_required' : ssl.CERT_NONE + ssl.CERT_OPTIONAL + ssl.CERT_REQUIRED
+                  }[sys.argv[1]]
     except (KeyError, IndexError):
-        sys.exit('Usage: {0} <none|optional|required>'.format(sys.argv[0]))
-
-    ca_certs = None if reqs == ssl.CERT_NONE else 'cert/ca_cert.pem'
+        sys.exit('Usage: {0} <none|optional|required,http_required>'.format(sys.argv[0]))
 
     PORT = 12345
     print "Serving at port", PORT
 
-    httpd = BaseHTTPServer.HTTPServer(("", PORT), Handler)
+    if reqs == ssl.CERT_NONE:
+        httpd = BaseHTTPServer.HTTPServer(("", PORT), Handler)
+    elif reqs == ssl.CERT_OPTIONAL or reqs == ssl.CERT_REQUIRED:
+        httpd = BaseHTTPServer.HTTPServer(("", PORT), SSLAuthHandler)
+    elif reqs == ssl.CERT_NONE + ssl.CERT_OPTIONAL + ssl.CERT_REQUIRED:
+        httpd = BaseHTTPServer.HTTPServer(("", PORT), HttpAuthHandler)
+    else:
+        raise Exception('BUG in Server AUTH type configuration')
+
+    ca_certs = None if reqs == ssl.CERT_NONE else 'cert/ca_cert.pem'
     httpd.socket = ssl.wrap_socket(httpd.socket,
             server_side=True,
             certfile='cert/server_cert.pem',
             keyfile='cert/server_key.pem',
             ca_certs=ca_certs,
             cert_reqs=reqs)
+
     httpd.serve_forever()
