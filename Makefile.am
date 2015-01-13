@@ -48,6 +48,7 @@ check-local:
 if HAVE_SYSTEMD
     dist_systemdsystemunit_DATA = init-scripts/abrtd.service \
                                   init-scripts/abrt-ccpp.service \
+                                  init-scripts/abrt-journal-core.service \
                                   init-scripts/abrt-oops.service \
                                   init-scripts/abrt-xorg.service \
                                   init-scripts/abrt-pstoreoops.service \
