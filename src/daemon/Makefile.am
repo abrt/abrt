@@ -119,6 +119,9 @@ dist_daemonconf_DATA = \
 defaultdaemonconfdir = $(DEFAULT_CONF_DIR)
 dist_defaultdaemonconf_DATA = $(dist_daemonconf_DATA)
 
+dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/
+dist_dbusabrtconf_DATA = org.freedesktop.problems.daemon.conf
+
 EXTRA_DIST = abrt-handle-upload.in
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
