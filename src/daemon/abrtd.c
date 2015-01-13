@@ -20,6 +20,7 @@
 # include <locale.h>
 #endif
 #include <sys/un.h>
+#include <glib-unix.h>
 
 #include "abrt_glib.h"
 #include "abrt-inotify.h"
@@ -50,24 +51,25 @@
  * - new socket connection
  */
 static volatile sig_atomic_t s_sig_caught;
-static int s_signal_pipe[2];
-static int s_signal_pipe_write = -1;
-static unsigned s_timeout;
-static bool s_exiting;
+static int s_timeout;
+static int s_timeout_src;
+static GMainLoop *s_main_loop;
 
 static GIOChannel *channel_socket = NULL;
 static guint channel_id_socket = 0;
 static int child_count = 0;
 
 /* Helpers */
-static guint add_watch_or_die(GIOChannel *channel, unsigned condition, GIOFunc func)
+static guint add_watch_or_die_full(GIOChannel *channel, unsigned condition, GIOFunc func, gpointer user_data)
 {
     errno = 0;
-    guint r = g_io_add_watch(channel, (GIOCondition)condition, func, NULL);
+    guint r = g_io_add_watch(channel, (GIOCondition)condition, func, user_data);
     if (!r)
         perror_msg_and_die("g_io_add_watch failed");
     return r;
 }
+
+#define add_watch_or_die(channel, condition, func) add_watch_or_die_full(channel, condition, func, NULL)
 
 static void increment_child_count(void)
 {
@@ -81,6 +83,23 @@ static void increment_child_count(void)
         channel_id_socket = 0;
     }
 }
+
+static void start_idle_timeout(void)
+{
+    if (child_count > 0)
+        return;
+
+    s_timeout_src = g_timeout_add_seconds(s_timeout, (GSourceFunc)g_main_loop_quit, s_main_loop);
+}
+
+static void kill_idle_timeout(void)
+{
+    if (s_timeout_src != 0)
+        g_source_remove(s_timeout_src);
+
+    s_timeout_src = 0;
+}
+
 
 static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpointer ptr_unused);
 
@@ -98,11 +117,14 @@ static void decrement_child_count(void)
 /* Callback called by glib main loop when a client connects to ABRT's socket. */
 static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpointer ptr_unused)
 {
+    kill_idle_timeout();
+    load_abrt_conf();
+
     int socket = accept(g_io_channel_unix_get_fd(source), NULL, NULL);
     if (socket == -1)
     {
         perror_msg("accept");
-        return TRUE;
+        goto server_socket_finitio;
     }
 
     log_notice("New client connected");
@@ -112,7 +134,7 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
     {
         perror_msg("fork");
         close(socket);
-        return TRUE;
+        goto server_socket_finitio;
     }
     if (pid == 0) /* child */
     {
@@ -132,29 +154,22 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
     /* parent */
     increment_child_count();
     close(socket);
+
+server_socket_finitio:
+    start_idle_timeout();
     return TRUE;
 }
 
 /* Signal pipe handler */
-static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
+static gboolean handle_signal_chld_cb(gpointer ptr_unused)
 {
-    uint8_t signo;
-    gsize len = 0;
-    g_io_channel_read_chars(gio, (void*) &signo, 1, &len, NULL);
-    if (len == 1)
-    {
-        /* we did receive a signal */
-        log_debug("Got signal %d through signal pipe", signo);
-        if (signo != SIGCHLD)
-            s_exiting = 1;
-        else
-        {
-            while (safe_waitpid(-1, NULL, WNOHANG) > 0)
-            {
-                decrement_child_count();
-            }
-        }
-    }
+    /* Just to be sure. */
+    kill_idle_timeout();
+
+    while (safe_waitpid(-1, NULL, WNOHANG) > 0)
+        decrement_child_count();
+
+    start_idle_timeout();
     return TRUE; /* "please don't remove this event" */
 }
 
@@ -192,6 +207,8 @@ static void sanitize_dump_dir_rights(void)
 
 static void handle_inotify_cb(struct abrt_inotify_watch *watch, struct inotify_event *event, gpointer ptr_unused)
 {
+    kill_idle_timeout();
+
 /* We no longer need a name of event */
 #if 0
         const char *name = NULL;
@@ -204,6 +221,8 @@ static void handle_inotify_cb(struct abrt_inotify_watch *watch, struct inotify_e
         if (event->mask & IN_DELETE_SELF || event->mask & IN_MOVE_SELF)
         {
             log_warning("Recreating deleted dump location '%s'", g_settings_dump_location);
+
+            load_abrt_conf();
 
             sanitize_dump_dir_rights();
             abrt_inotify_watch_reset(watch, g_settings_dump_location, IN_DUMP_LOCATION_FLAGS);
@@ -226,60 +245,8 @@ static void handle_inotify_cb(struct abrt_inotify_watch *watch, struct inotify_e
         log("Directory '%s' creation detected", name);
         ...
 #endif
-}
 
-
-/* Run main loop with idle timeout.
- * Basically, almost like glib's g_main_run(loop)
- */
-static void run_main_loop(GMainLoop* loop)
-{
-    time_t cur_time = time(NULL);
-    GMainContext *context = g_main_loop_get_context(loop);
-    int fds_size = 0;
-    GPollFD *fds = NULL;
-
-    while (!s_exiting)
-    {
-        gboolean some_ready;
-        gint max_priority;
-        gint timeout;
-        gint nfds;
-
-        some_ready = g_main_context_prepare(context, &max_priority);
-        if (some_ready)
-            g_main_context_dispatch(context);
-
-        while (1)
-        {
-            nfds = g_main_context_query(context, max_priority, &timeout, fds, fds_size);
-            if (nfds <= fds_size)
-                break;
-            fds_size = nfds + 16; /* +16: optimizing realloc frequency */
-            fds = (GPollFD *)xrealloc(fds, fds_size * sizeof(fds[0]));
-        }
-
-        if (s_timeout != 0)
-            alarm(s_timeout);
-        g_poll(fds, nfds, timeout);
-        if (s_timeout != 0)
-            alarm(0);
-
-        time_t new_time = time(NULL);
-        if (cur_time != new_time)
-        {
-            cur_time = new_time;
-            load_abrt_conf();
-//TODO: react to changes in g_settings_sWatchCrashdumpArchiveDir
-        }
-
-        some_ready = g_main_context_check(context, max_priority, fds, nfds);
-        if (some_ready)
-            g_main_context_dispatch(context);
-    }
-
-    free(fds);
-    g_main_context_unref(context);
+    start_idle_timeout();
 }
 
 /* Initializes the dump socket, usually in /var/run directory
@@ -303,6 +270,7 @@ static void dumpsocket_init(void)
         perror_msg_and_die("chmod '%s'", SOCKET_FILE);
 
     channel_socket = abrt_gio_channel_unix_new(socketfd);
+    g_io_channel_set_buffered(channel_socket, FALSE);
 
     channel_id_socket = add_watch_or_die(channel_socket, G_IO_IN | G_IO_PRI | G_IO_HUP, server_socket_cb);
 }
@@ -380,12 +348,7 @@ static void handle_signal(int signo)
     // Enable for debugging only, malloc/printf are unsafe in signal handlers
     //log_debug("Got signal %d", signo);
 
-    uint8_t sig_caught;
-    s_sig_caught = sig_caught = signo;
-    /* Using local copy of s_sig_caught so that concurrent signal
-     * won't change it under us */
-    if (s_signal_pipe_write >= 0)
-        IGNORE_RESULT(write(s_signal_pipe_write, &sig_caught, 1));
+    s_sig_caught = signo;
 
     errno = save_errno;
 }
@@ -523,22 +486,10 @@ int main(int argc, char** argv)
     if (opts & OPT_s)
         start_logging();
 
-    xpipe(s_signal_pipe);
-    close_on_exec_on(s_signal_pipe[0]);
-    close_on_exec_on(s_signal_pipe[1]);
-    ndelay_on(s_signal_pipe[0]); /* I/O should not block - */
-    ndelay_on(s_signal_pipe[1]); /* especially writes! they happen in signal handler! */
-    signal(SIGTERM, handle_signal);
-    signal(SIGINT,  handle_signal);
-    signal(SIGCHLD, handle_signal);
-    if (s_timeout != 0)
-        signal(SIGALRM, handle_signal);
-
     GMainLoop* pMainloop = NULL;
-    GIOChannel* channel_signal = NULL;
-    guint channel_id_signal_event = 0;
     bool pidfile_created = false;
     struct abrt_inotify_watch *aiw = NULL;
+    int ret = 1;
 
     /* Initialization */
     log_notice("Loading settings");
@@ -555,6 +506,10 @@ int main(int argc, char** argv)
     /* Daemonize unless -d */
     if (!(opts & OPT_d))
     {
+        signal(SIGTERM, handle_signal);
+        signal(SIGINT,  handle_signal);
+        signal(SIGCHLD, handle_signal);
+
         /* forking to background */
         fflush(NULL); /* paranoia */
         pid_t pid = fork();
@@ -591,18 +546,16 @@ int main(int argc, char** argv)
     log_notice("Creating glib main loop");
     pMainloop = g_main_loop_new(NULL, FALSE);
 
+    g_unix_signal_add(SIGTERM, (GSourceFunc)g_main_loop_quit, pMainloop);
+    g_unix_signal_add(SIGINT,  (GSourceFunc)g_main_loop_quit, pMainloop);
+
+    g_unix_signal_add(SIGCHLD, (GSourceFunc)handle_signal_chld_cb, pMainloop);
+
     /* Watching 'g_settings_dump_location' for delete self
      * because hooks expects that the dump location exists if abrtd is running
      */
     aiw = abrt_inotify_watch_init(g_settings_dump_location,
-            IN_DUMP_LOCATION_FLAGS, handle_inotify_cb, /*user data*/NULL);
-
-    /* Add an event source which waits for INT/TERM signal */
-    log_notice("Adding signal pipe watch to glib main loop");
-    channel_signal = abrt_gio_channel_unix_new(s_signal_pipe[0]);
-    channel_id_signal_event = add_watch_or_die(channel_signal,
-                        G_IO_IN | G_IO_PRI | G_IO_HUP,
-                        handle_signal_cb);
+            IN_DUMP_LOCATION_FLAGS, handle_inotify_cb, pMainloop);
 
     guint name_id = 0;
 
@@ -624,9 +577,6 @@ int main(int argc, char** argv)
             start_logging();
     }
 
-    /* Only now we want signal pipe to work */
-    s_signal_pipe_write = s_signal_pipe[1];
-
     /* Own a name on D-Bus */
     name_id = g_bus_own_name (G_BUS_TYPE_SYSTEM,
                               "org.freedesktop.problems.daemon",
@@ -634,9 +584,24 @@ int main(int argc, char** argv)
                               NULL, NULL, NULL,
                               NULL, NULL);
 
+    start_idle_timeout();
+
     /* Enter the event loop */
     log_debug("Init complete, entering main loop");
-    run_main_loop(pMainloop);
+    g_main_loop_run(pMainloop);
+
+    ret = 0;
+    /* Jump to exit */
+    goto cleanup;
+
+
+ init_error:
+    /* Initialization error */
+    error_msg("Error while initializing daemon");
+    /* Inform parent that initialization failed */
+    if (!(opts & OPT_d))
+        kill(parent_pid, SIGINT);
+
 
  cleanup:
     if (name_id > 0)
@@ -649,11 +614,6 @@ int main(int argc, char** argv)
     if (pidfile_created)
         unlink(VAR_RUN_PIDFILE);
 
-    if (channel_id_signal_event > 0)
-        g_source_remove(channel_id_signal_event);
-    if (channel_signal)
-        g_io_channel_unref(channel_signal);
-
     abrt_inotify_watch_destroy(aiw);
 
     if (pMainloop)
@@ -662,22 +622,6 @@ int main(int argc, char** argv)
     free_abrt_conf_data();
 
     /* Exiting */
-    if (s_sig_caught && s_sig_caught != SIGALRM && s_sig_caught != SIGCHLD)
-    {
-        /* We use TERM to stop abrtd, so not printing out error message. */
-        if (s_sig_caught != SIGTERM)
-            error_msg("Got signal %d, exiting", s_sig_caught);
-
-        signal(s_sig_caught, SIG_DFL);
-        raise(s_sig_caught);
-    }
-    error_msg_and_die("Exiting");
-
- init_error:
-    /* Initialization error */
-    error_msg("Error while initializing daemon");
-    /* Inform parent that initialization failed */
-    if (!(opts & OPT_d))
-        kill(parent_pid, SIGINT);
-    goto cleanup;
+    log_notice("Exiting");
+    return ret;
 }
