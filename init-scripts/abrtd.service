@@ -6,6 +6,8 @@ Description=ABRT Automated Bug Reporting Tool
 After=livesys.service
 
 [Service]
+Type=dbus
+BusName=org.freedesktop.problems.daemon
 ExecStart=/usr/sbin/abrtd -d -s
 
 [Install]
