@@ -111,7 +111,7 @@ rlJournalStart
         rlAssertGrep "AUTH ureport-reporter-cn" server_log
     rlPhaseEnd
 
-    rlPhaseStartTest "Settings"
+    rlPhaseStartTest "SSL Settings"
         # setting the certificate from configuration file
         CFG=/etc/libreport/plugins/ureport.conf
         mv $CFG conf_backup
@@ -172,6 +172,81 @@ rlJournalStart
         if test -d entitlement_backup; then
             rlRun "mv entitlement_backup $RHSM_DIR"
         fi
+    rlPhaseEnd
+
+    rlPhaseStartTest "HTTP Auth"
+        # server: http auth required, client: auth disabled
+        run_reporter http_required "" 1
+        rlAssertGrep "prompted for credentials" server_log
+
+        # server: http auth required, client: invalid credentials
+        run_reporter http_required "-h invalid:invalid" 1
+        rlAssertGrep "invalid credentials" server_log
+
+        # server: http auth required, client: valid credentials
+        run_reporter http_required "-h ureport:password" 70
+        rlAssertGrep "HTTPAUTH OK" server_log
+    rlPhaseEnd
+
+    rlPhaseStartTest "HTTP Auth rhts-credentials"
+
+        CFG=/etc/libreport/plugins/rhtsupport.conf
+        mv $CFG ${CFG}_bck
+        augtool set /files${CFG}/Login "ureport"
+        augtool set /files${CFG}/Password "password"
+
+        # server: http auth required, client: rhts-credentials
+        run_reporter http_required "-h rhts-credentials" 70
+        rlAssertGrep "HTTPAUTH OK" server_log
+
+        mv ${CFG}_bck ${CFG}
+    rlPhaseEnd
+
+    rlPhaseStartTest "HTTP Auth Settings"
+        # setting the http credentials for the configuration file
+        CFG=/etc/libreport/plugins/ureport.conf
+        mv $CFG ${CFG}_bck
+
+        RHTS_CFG=/etc/libreport/plugins/rhtsupport.conf
+        mv $RHTS_CFG ${RHTS_CFG}_bck
+
+        augtool set /files${CFG}/HTTPAuth "ureport:password"
+
+        rlLog "Login and password in the ureport conf"
+        run_reporter http_required "" 70
+        rlAssertGrep "HTTPAUTH OK" server_log
+
+        augtool set /files${CFG}/HTTPAuth "rhts-credentials"
+        augtool set /files${RHTS_CFG}/Login "ureport"
+        augtool set /files${RHTS_CFG}/Password "password"
+
+        rlLog "Login and password in the rhts conf"
+        run_reporter http_required "" 70
+        rlAssertGrep "HTTPAUTH OK" server_log
+
+        # environment variables
+        cp ${CFG}_bck ${CFG}
+
+        uReport_HTTPAuth="ureport:password"
+        export uReport_HTTPAuth
+
+        rlLog "Login and password in the environment variable"
+        run_reporter http_required "" 70
+        rlAssertGrep "HTTPAUTH OK" server_log
+
+        export -n uReport_HTTPAuth
+
+        uReport_HTTPAuth="rhts-credentials"
+        export uReport_HTTPAuth
+
+        rlLog "'rhts-credentials' in the environment variable"
+        run_reporter http_required "" 70
+        rlAssertGrep "HTTPAUTH OK" server_log
+
+        export -n uReport_HTTPAuth
+
+        mv ${RHTS_CFG}_bck ${RHTS_CFG}
+        mv ${CFG}_bck ${CFG}
     rlPhaseEnd
 
     rlPhaseStartCleanup
