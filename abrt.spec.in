@@ -692,6 +692,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-watch-log
 %{_bindir}/abrt-action-analyze-python
 %{_bindir}/abrt-action-analyze-xorg
+%config(noreplace) %{_sysconfdir}/dbus-1/system.d/org.freedesktop.problems.daemon.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
 %{_datadir}/%{name}/conf.d/abrt.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-action-save-package-data.conf
