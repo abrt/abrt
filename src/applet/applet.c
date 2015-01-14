@@ -46,11 +46,6 @@
 enum
 {
     /*
-     * with this flag show_problem_notification() shows only the old ABRT icon
-     */
-    SHOW_ICON_ONLY = 1 << 0,
-
-    /*
      * show autoreport button on notification
      */
     JUST_DETECTED_PROBLEM = 1 << 1,
@@ -58,8 +53,6 @@ enum
 
 
 static GNetworkMonitor *netmon;
-static GtkStatusIcon *ap_status_icon;
-static GtkWidget *ap_menu;
 static char **s_dirs;
 static GList *g_deferred_crash_queue;
 static guint g_deferred_timeout;
@@ -444,14 +437,6 @@ static void fork_exec_gui(const char *problem_id)
     new_dir_exists(/* new dirs list */ NULL);
 }
 
-static void hide_icon(void)
-{
-    if (ap_status_icon == NULL)
-        return;
-
-    gtk_status_icon_set_visible(ap_status_icon, false);
-}
-
 static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *event_name, int *fdp)
 {
     char *args[7];
@@ -523,8 +508,6 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
         g_error_free(err);
     }
 
-    hide_icon();
-
     problem_info_t *pi = (problem_info_t *)user_data;
     if (problem_info_get_dir(pi))
     {
@@ -570,7 +553,6 @@ static void action_ignore(NotifyNotification *notification, gchar *action, gpoin
         error_msg("%s", err->message);
         g_error_free(err);
     }
-    hide_icon();
 }
 
 static void action_known(NotifyNotification *notification, gchar *action, gpointer user_data)
@@ -590,22 +572,6 @@ static void action_known(NotifyNotification *notification, gchar *action, gpoint
     {
         error_msg(_("Can't close notification: %s"), err->message);
         g_error_free(err);
-    }
-
-    hide_icon();
-}
-
-static void on_menu_popup_cb(GtkStatusIcon *status_icon,
-                        guint          button,
-                        guint          activate_time,
-                        gpointer       user_data)
-{
-    if (ap_menu != NULL)
-    {
-        gtk_menu_popup(GTK_MENU(ap_menu),
-                NULL, NULL,
-                gtk_status_icon_position_menu,
-                status_icon, button, activate_time);
     }
 }
 
@@ -648,137 +614,10 @@ static NotifyNotification *new_warn_notification(bool persistence)
     return notification;
 }
 
-static void on_about_cb(GtkMenuItem *menuitem, gpointer dialog)
-{
-    if (dialog)
-    {
-        gtk_dialog_run(GTK_DIALOG(dialog));
-        gtk_widget_hide(GTK_WIDGET(dialog));
-    }
-}
-
-static GtkWidget *create_about_dialog(void)
-{
-    const char *copyright_str = "Copyright © 2009 Red Hat, Inc\nCopyright © 2010 Red Hat, Inc";
-    const char *license_str = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version."
-                         "\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details."
-                         "\n\nYou should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.";
-
-    const char *website_url = "https://fedorahosted.org/abrt/";
-    const char *authors[] = {"Anton Arapov <aarapov@redhat.com>",
-                     "Karel Klic <kklic@redhat.com>",
-                     "Jiri Moskovcak <jmoskovc@redhat.com>",
-                     "Nikola Pajkovsky <npajkovs@redhat.com>",
-                     "Zdenek Prikryl <zprikryl@redhat.com>",
-                     "Denys Vlasenko <dvlasenk@redhat.com>",
-                     NULL};
-
-    const char *artists[] = {"Patrick Connelly <pcon@fedoraproject.org>",
-                             "Lapo Calamandrei",
-                             "Jakub Steinar <jsteiner@redhat.com>",
-                                NULL};
-
-    const char *comments = _("Notification area applet that notifies users about "
-                               "issues detected by ABRT");
-    GtkWidget *about_d = gtk_about_dialog_new();
-    if (about_d)
-    {
-        gtk_window_set_default_icon_name("abrt");
-        gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(about_d), VERSION);
-        gtk_about_dialog_set_logo_icon_name(GTK_ABOUT_DIALOG(about_d), "abrt");
-        gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(about_d), comments);
-        gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(about_d), "ABRT");
-        gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(about_d), copyright_str);
-        gtk_about_dialog_set_license(GTK_ABOUT_DIALOG(about_d), license_str);
-        gtk_about_dialog_set_wrap_license(GTK_ABOUT_DIALOG(about_d),true);
-        gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(about_d), website_url);
-        gtk_about_dialog_set_authors(GTK_ABOUT_DIALOG(about_d), authors);
-        gtk_about_dialog_set_artists(GTK_ABOUT_DIALOG(about_d), artists);
-        gtk_about_dialog_set_translator_credits(GTK_ABOUT_DIALOG(about_d), _("translator-credits"));
-    }
-    return about_d;
-}
-
-static GtkWidget *create_menu(void)
-{
-    GtkWidget *menu = gtk_menu_new();
-    GtkWidget *b_quit = gtk_menu_item_new_with_mnemonic(_("_Quit"));
-    g_signal_connect(b_quit, "activate", gtk_main_quit, NULL);
-    GtkWidget *b_hide = gtk_menu_item_new_with_label(_("Hide"));
-    g_signal_connect(b_hide, "activate", G_CALLBACK(hide_icon), NULL);
-    GtkWidget *b_about = gtk_menu_item_new_with_mnemonic(_("_About"));
-    GtkWidget *about_dialog = create_about_dialog();
-    g_signal_connect(b_about, "activate", G_CALLBACK(on_about_cb), about_dialog);
-    GtkWidget *separator = gtk_separator_menu_item_new();
-
-    gtk_menu_shell_append(GTK_MENU_SHELL(menu), b_hide);
-    gtk_widget_show(b_hide);
-    gtk_menu_shell_append(GTK_MENU_SHELL(menu), b_about);
-    gtk_widget_show(b_about);
-    gtk_menu_shell_append(GTK_MENU_SHELL(menu), separator);
-    gtk_widget_show(separator);
-    gtk_menu_shell_append(GTK_MENU_SHELL(menu), b_quit);
-    gtk_widget_show(b_quit);
-
-    return menu;
-}
-
-static void on_applet_activate_cb(GtkStatusIcon *status_icon, gpointer user_data)
-{
-    fork_exec_gui(g_last_notified_problem_id);
-    hide_icon();
-}
-
-static GtkStatusIcon *create_status_icon(void)
-{
-     GtkStatusIcon *icn = gtk_status_icon_new_from_icon_name("abrt");
-
-     g_signal_connect(G_OBJECT(icn), "activate", G_CALLBACK(on_applet_activate_cb), NULL);
-     g_signal_connect(G_OBJECT(icn), "popup_menu", G_CALLBACK(on_menu_popup_cb), NULL);
-
-     return icn;
-}
-
-static void show_icon(const char *tooltip)
-{
-    if (ap_status_icon == NULL)
-    {
-        ap_status_icon = create_status_icon();
-        ap_menu = create_menu();
-    }
-
-    gtk_status_icon_set_tooltip_text(ap_status_icon, tooltip);
-    gtk_status_icon_set_visible(ap_status_icon, true);
-}
-
-static gboolean server_has_persistence(void)
-{
-#if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR >= 6)
-    GList *caps = notify_get_server_caps();
-    if (caps == NULL)
-    {
-        error_msg("Failed to receive server caps");
-        return FALSE;
-    }
-
-    GList *l = g_list_find_custom(caps, "persistence", (GCompareFunc)strcmp);
-
-    list_free_with_free(caps);
-    log_notice("notify server %s support pesistence", l ? "DOES" : "DOESN'T");
-    return (l != NULL);
-#else
-    return FALSE;
-#endif
-}
-
 static void notify_problem_list(GList *problems, int flags)
 {
-    bool persistence_supported = false;
-    if (notify_is_initted() || notify_init(_("Problem detected")))
-        persistence_supported = server_has_persistence();
-    else
-        /* show icon and don't try to show notify if initialization of libnotify failed */
-        flags |= SHOW_ICON_ONLY;
+    if (!notify_is_initted())
+        notify_init(_("Problem detected"));
 
     GList *last_item = g_list_last(problems);
     if (last_item == NULL)
@@ -790,20 +629,6 @@ static void notify_problem_list(GList *problems, int flags)
     problem_info_t *last_problem = (problem_info_t *)last_item->data;
     free(g_last_notified_problem_id);
     g_last_notified_problem_id = xstrdup(problem_info_get_dir(last_problem));
-
-    if (!persistence_supported || flags & SHOW_ICON_ONLY)
-    {
-        /* Use a message of the last one */
-        char *message = build_message(last_problem);
-        show_icon(message);
-        free(message);
-    }
-
-    if (flags & SHOW_ICON_ONLY)
-    {
-        g_list_free_full(problems, (GDestroyNotify)problem_info_free);
-        return;
-    }
 
     char *notify_body = NULL;
     for (GList *iter = problems; iter; iter = g_list_next(iter))
@@ -817,11 +642,9 @@ static void notify_problem_list(GList *problems, int flags)
 
         /* Don't show persistent notification (let notification bubble expire
          * and disappear in few seconds) with ShortenedReporting mode enabled
-         * and already announced problem. And of course show persistent bubble
-         * only if the persistence is supported.
+         * and already announced problem.
          */
-        const bool persistent_notification = (persistence_supported
-            && !(is_shortened_reporting_enabled() && pi->was_announced));
+        const bool persistent_notification = (!(is_shortened_reporting_enabled() && pi->was_announced));
 
         NotifyNotification *notification = new_warn_notification(persistent_notification);
         notify_notification_add_action(notification, "IGNORE", _("Ignore forever"),
@@ -1152,14 +975,13 @@ static void Crash(GVariant *parameters)
     static char* last_package_name = NULL;
     static char *last_problem_dir = NULL;
     time_t cur_time = time(NULL);
-    int flags = 0;
     if (last_package_name && strcmp(last_package_name, package_name) == 0
      && last_problem_dir && strcmp(last_problem_dir, dir) == 0
      && (unsigned)(cur_time - last_time) < 2 * 60 * 60
     ) {
         /* log_msg doesn't show in .xsession_errors */
         error_msg("repeated problem in %s, not showing the notification", package_name);
-        flags |= SHOW_ICON_ONLY;
+        return;
     }
     else
     {
@@ -1179,7 +1001,7 @@ static void Crash(GVariant *parameters)
     if (package_name != NULL && package_name[0] != '\0')
         problem_data_add_text_noteditable(pi->problem_data, FILENAME_COMPONENT, package_name);
     pi->foreign = foreign_problem;
-    show_problem_notification(pi, flags);
+    show_problem_notification(pi, 0);
 }
 
 static void handle_message(GDBusConnection *connection,
