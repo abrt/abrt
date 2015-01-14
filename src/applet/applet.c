@@ -20,6 +20,7 @@
 # include <locale.h>
 #endif
 
+#include <gio/gdesktopappinfo.h>
 #define GDK_DISABLE_DEPRECATION_WARNINGS
 /* https://bugzilla.gnome.org/show_bug.cgi?id=734826 */
 #include <gtk/gtk.h>
@@ -384,50 +385,20 @@ static void new_dir_exists(GList **new_dirs)
 
 static void fork_exec_gui(const char *problem_id)
 {
-    fflush(NULL); /* paranoia */
-    pid_t pid = fork();
-    if (pid < 0)
-    {
-        perror_msg("fork");
-        goto record_dirs;
-    }
+    GAppInfo *app;
+    GError *error = NULL;
+    char *cmd;
 
-    if (pid == 0)
-    {
-        /* child */
-        /* double fork to avoid GUI zombies */
-        pid_t grand_child = fork();
-        if (grand_child != 0)
-        {
-            /* child */
-            if (grand_child < 0)
-                perror_msg("fork");
-            _exit(0);
-        }
+    cmd = g_strdup_printf ("gnome-abrt -p %s", problem_id);
+    app = g_app_info_create_from_commandline (cmd, "gnome-abrt",
+                                              G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION,
+                                              &error);
+    if (!app)
+        error_msg_and_die("Cannot find gnome-abrt");
 
-        // pass s_[] as DIR param(s) to 'gui executable'
-        char *gui_args[4];
-        char **pp = gui_args;
-        *pp++ = (char *)GUI_EXECUTABLE;
-        if (problem_id != NULL)
-        {
-            *pp++ = (char *)"-p";
-            *pp++ = (char *)problem_id;
-        }
-        *pp = NULL;
+    if (!g_app_info_launch(G_APP_INFO(app), NULL, NULL, &error))
+        perror_msg_and_die("Could not launch gnome-abrt: %s", error->message);
 
-        /* grandchild */
-        execv(BIN_DIR"/"GUI_EXECUTABLE, gui_args);
-        /* Did not find 'gui executable' in installation directory. Oh well */
-        /* Trying to find it in PATH */
-        execvp(GUI_EXECUTABLE, gui_args);
-        perror_msg_and_die(_("Can't execute '%s'"), GUI_EXECUTABLE);
-    }
-
-    /* parent */
-    safe_waitpid(pid, /* status */ NULL, /* options */ 0);
-
- record_dirs:
     /* Scan dirs and save new $XDG_CACHE_HOME/abrt/applet_dirlist.
      * (Otherwise, after a crash, next time applet is started,
      * it will show alert icon even if we did click on it
