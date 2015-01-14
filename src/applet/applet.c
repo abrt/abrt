@@ -91,7 +91,13 @@ static bool get_configured_bool_or_default(const char *opt_name, bool def)
 
 static bool is_autoreporting_enabled(void)
 {
-    return get_configured_bool_or_default("AutoreportingEnabled", g_settings_autoreporting);
+    GSettings *settings;
+    gboolean ret;
+
+    settings = g_settings_new ("org.gnome.desktop.privacy");
+    ret = g_settings_get_boolean (settings, "report-technical-problems");
+    g_object_unref (settings);
+    return ret;
 }
 
 static bool is_ureport_auth_enabled(void)
