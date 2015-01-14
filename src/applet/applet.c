@@ -1112,32 +1112,18 @@ static void show_problem_notification(problem_info_t *pi, int flags)
     show_problem_list_notification(problems, flags);
 }
 
-static void Crash(DBusMessage* signal)
+static void Crash(GVariant *parameters)
 {
+    const char *package_name, *dir, *uid_str, *uuid, *duphash;
+
     log_debug("Crash recorded");
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(signal, &in_iter);
 
-#define DBUS_ARG_VAR(varname, retval) \
-    const char* varname = NULL; \
-    if (load_charp(&in_iter, &varname) != retval) \
-    { \
-        error_msg("dbus signal %s: parameter '%s' type mismatch", __func__, #varname); \
-        return; \
-    } \
-
-    /* 1st param: package */
-    DBUS_ARG_VAR(package_name, ABRT_DBUS_MORE_FIELDS);
-    /* 2nd param: dir */
-    DBUS_ARG_VAR(dir, ABRT_DBUS_MORE_FIELDS);
-    /* 3rd param: uid_str */
-    DBUS_ARG_VAR(uid_str, ABRT_DBUS_MORE_FIELDS);
-    /* 4th param: uuid */
-    DBUS_ARG_VAR(uuid, ABRT_DBUS_MORE_FIELDS);
-    /* 5th param: duphash */
-    DBUS_ARG_VAR(duphash, ABRT_DBUS_LAST_FIELD);
-
-#undef DBUS_ARG_VAR
+    g_variant_get (parameters, "(&s&s&s&s&s)",
+                   &package_name,
+                   &dir,
+                   &uid_str,
+                   &uuid,
+                   &duphash);
 
     bool foreign_problem = false;
     if (uid_str[0] != '\0')
@@ -1196,23 +1182,19 @@ static void Crash(DBusMessage* signal)
     show_problem_notification(pi, flags);
 }
 
-static DBusHandlerResult handle_message(DBusConnection* conn, DBusMessage* msg, void* user_data)
+static void handle_message(GDBusConnection *connection,
+                           const gchar     *sender_name,
+                           const gchar     *object_path,
+                           const gchar     *interface_name,
+                           const gchar     *signal_name,
+                           GVariant        *parameters,
+                           gpointer         user_data)
 {
-    const char* member = dbus_message_get_member(msg);
+    g_debug ("Received signal: sender_name: %s, object_path: %s, "
+             "interface_name: %s, signal_name: %s",
+             sender_name, object_path, interface_name, signal_name);
 
-    log_notice("%s(member:'%s')", __func__, member);
-
-    int type = dbus_message_get_type(msg);
-    if (type != DBUS_MESSAGE_TYPE_SIGNAL)
-    {
-        log("The message is not a signal. ignoring");
-        return DBUS_HANDLER_RESULT_HANDLED;
-    }
-
-    if (strcmp(member, "Crash") == 0)
-        Crash(msg);
-
-    return DBUS_HANDLER_RESULT_HANDLED;
+    Crash(parameters);
 }
 
 //TODO: move to abrt_dbus.cpp
@@ -1288,23 +1270,30 @@ int main(int argc, char** argv)
     }
     s_dirs = argv;
 
-    /* Initialize our (dbus_abrt) machinery: hook _system_ dbus to glib main loop.
-     * (session bus is left to be handled by libnotify, see below) */
-    DBusError err;
-    dbus_error_init(&err);
-    DBusConnection* system_conn = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
-    die_if_dbus_error(system_conn == NULL, &err, "Can't connect to system dbus");
-    attach_dbus_conn_to_glib_main_loop(system_conn, NULL, NULL);
-    if (!dbus_connection_add_filter(system_conn, handle_message, NULL, NULL))
-        error_msg_and_die("Can't add dbus filter");
-    //signal sender=:1.73 -> path=/org/freedesktop/problems; interface=org.freedesktop.problems; member=Crash
-    //   string "coreutils-7.2-3.fc11"
-    //   string "0"
-    dbus_bus_add_match(system_conn, "type='signal',path='"ABRT_DBUS_OBJECT"'", &err);
-    die_if_dbus_error(false, &err, "Can't add dbus match");
+    /* Initialize our (dbus_abrt) machinery by filtering
+     * for signals:
+     *     signal sender=:1.73 -> path=/org/freedesktop/problems; interface=org.freedesktop.problems; member=Crash
+     *       string "coreutils-7.2-3.fc11"
+     *       string "0"
+     */
+    GError *error = NULL;
+    GDBusConnection *system_conn = g_bus_get_sync (G_BUS_TYPE_SYSTEM,
+                                                   NULL, &error);
+    if (system_conn == NULL)
+        perror_msg_and_die("Can't connect to system dbus: %s", error->message);
+    guint filter_id = g_dbus_connection_signal_subscribe(system_conn,
+                                                         NULL,
+                                                         "org.freedesktop.problems",
+                                                         "Crash",
+                                                         "/org/freedesktop/problems",
+                                                         NULL,
+                                                         G_DBUS_SIGNAL_FLAGS_NONE,
+                                                         handle_message,
+                                                         NULL, NULL);
 
     /* dbus_abrt cannot handle more than one bus, and we don't really need to.
      * The only thing we want to do is to announce ourself on session dbus */
+    DBusError err;
     DBusConnection* session_conn = dbus_bus_get(DBUS_BUS_SESSION, &err);
     die_if_dbus_error(session_conn == NULL, &err, "Can't connect to session dbus");
     int r = dbus_bus_request_name(session_conn,
@@ -1312,14 +1301,6 @@ int main(int argc, char** argv)
         /* flags */ DBUS_NAME_FLAG_DO_NOT_QUEUE, &err);
     die_if_dbus_error(r != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER, &err,
         "Problem connecting to dbus, or applet is already running");
-
-    /* dbus_bus_request_name can already read some data. Thus while dbus fd hasn't
-     * any data anymore, dbus library can buffer a message or two.
-     * If we don't do this, the data won't be processed until next dbus data arrives.
-     */
-    int cnt = 10;
-    while (dbus_connection_dispatch(system_conn) != DBUS_DISPATCH_COMPLETE && --cnt)
-        continue;
 
     /* If some new dirs appeared since our last run, let user know it */
     GList *new_dirs = NULL;
@@ -1411,6 +1392,8 @@ next:
     /* Enter main loop
      */
     gtk_main();
+
+    g_dbus_connection_signal_unsubscribe(system_conn, filter_id);
 
     ignored_problems_free(g_ignore_set);
 
