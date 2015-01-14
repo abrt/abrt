@@ -10,8 +10,6 @@ abrt_applet_CPPFLAGS = \
     -DLIBEXEC_DIR=\"$(libexecdir)\" \
     -DICON_DIR=\"${datadir}/abrt/icons/hicolor/48x48/status\" \
     -DLIBREPORT_PLUGINS_CONF_DIR=\"$(LIBREPORT_PLUGINS_CONF_DIR)\" \
-    $(XICE_CFLAGS) \
-    $(XSMP_CFLAGS) \
     $(GTK_CFLAGS) \
     $(DBUS_CFLAGS) \
     $(LIBREPORT_GTK_CFLAGS) \
@@ -26,8 +24,6 @@ abrt_applet_LDADD = \
     -labrt_dbus \
     -lglib-2.0 \
     -lgthread-2.0 \
-    $(XICE_LIBS) \
-    $(XSMP_LIBS) \
     $(DBUS_LIBS) \
     $(LIBNOTIFY_LIBS) \
     $(GTK_LIBS)

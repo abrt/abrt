@@ -19,8 +19,6 @@
 #if HAVE_LOCALE_H
 # include <locale.h>
 #endif
-#include <X11/Xlib.h>
-#include <X11/SM/SMlib.h>
 
 #define GDK_DISABLE_DEPRECATION_WARNINGS
 /* https://bugzilla.gnome.org/show_bug.cgi?id=734826 */
@@ -1231,174 +1229,6 @@ static void die_if_dbus_error(bool error_flag, DBusError* err, const char* msg)
     error_msg_and_die("%s", msg);
 }
 
-/*
- * XSMP client
- */
-static void
-cb_smc_save_yourself(SmcConn smc_conn, SmPointer client_data, gint save_type,
-                          gboolean shutdown, gint interact_style, gboolean fast)
-{
-    /* http://lesstif.sourceforge.net/doc/super-ux/g1ae04e/chap12.html#12.4.1.1 */
-    /* Since we do not save any state, we can declare that we succeeded (True) */
-    SmcSaveYourselfDone(smc_conn, True);
-}
-
-static void
-cb_smc_die(SmcConn smc_conn, SmPointer client_data)
-{
-    /* The session manager sends a Die message to a client when it wants it to
-     * die. The client should respond by calling SmcCloseConnection.
-     *
-     * http://lesstif.sourceforge.net/doc/super-ux/g1ae04e/chap12.html#12.4.1.2
-     *
-     * The reasons will most likely be NULL if resignation is expected by the
-     * client.
-     *
-     * http://lesstif.sourceforge.net/doc/super-ux/g1ae04e/chap12.html#12.4.2
-     */
-    SmcCloseConnection(smc_conn, 0 /* The number of reason messages */,
-                       NULL /* The reasons for closing the connection */);
-
-    gtk_main_quit();
-}
-
-static void
-cb_smc_save_complete(SmcConn smc_conn, SmPointer client_data)
-{
-    /* No action needed */
-}
-
-static void
-cb_smc_shutdown_cancelled(SmcConn smc_conn, SmPointer client_data)
-{
-    /* Since we do not save any state, we can declare that we succeeded (True) */
-    SmcSaveYourselfDone(smc_conn, True);
-}
-
-static gboolean
-cb_ice_process_messages(GIOChannel *gio, GIOCondition condition, gpointer user_data)
-{
-    /* May return an error but we don't care, it isn't our problem */
-    IceConn ice_conn = (IceConn)user_data;
-    IceProcessMessages(ice_conn, NULL /* Indicates if a reply is being waited for */,
-                       NULL /* If set to True on return, a reply is ready */);
-
-    return TRUE; /* do not remove this source */
-}
-
-/*
- * We do not need to save any special state, we just want to be notified about
- * session death.
- */
-static void
-xsmp_client_connect(void)
-{
-    SmcCallbacks callbacks;
-    memset(&callbacks, 0, sizeof(callbacks));
-    callbacks.die.callback = cb_smc_die;
-    callbacks.save_yourself.callback = cb_smc_save_yourself;
-    callbacks.save_complete.callback = cb_smc_save_complete;
-    callbacks.shutdown_cancelled.callback = cb_smc_shutdown_cancelled;
-    char error_buf[256];
-    char *client_id;
-
-    SmcConn conn = SmcOpenConnection(NULL /* SESSION_MANAGER env variable */,
-            NULL /* share ICE connection */, SmProtoMajor, SmProtoMinor,
-            SmcSaveYourselfProcMask | SmcDieProcMask |
-            SmcSaveCompleteProcMask | SmcShutdownCancelledProcMask,
-            &callbacks, NULL /* previous client id */,
-            &client_id, sizeof(error_buf), error_buf);
-
-    if (!conn)
-    {
-        log(_("Failed to open connection to session manager: '%s', "
-              "notification may reappear on the next login"), error_buf);
-        return;
-    }
-
-    free(client_id);
-
-    /* These 4 properties are required, however we do not need a special
-     * handling neither for restart nor for clone, because we just need to
-     * update seen problems list at exit.
-     *
-     * http://www.x.org/releases/X11R7.7/doc/libSM/xsmp.html#Predefined_Properties
-     */
-    SmProp prop_program, prop_user, prop_restart_cmd, prop_clone_cmd;
-    SmProp *prop_list[4];
-    SmPropValue val_program, val_user;
-    prop_program.name = (char *)SmProgram;
-    prop_program.type = (char *)SmARRAY8;
-    val_program.value = (char *)"abrt-applet";
-    val_program.length = (int)strlen(val_program.value);
-    prop_program.num_vals = 1;
-    prop_program.vals = &val_program;
-    prop_list[0] = &prop_program;
-
-    prop_user.name = (char *)SmUserID;
-    prop_user.type = (char *)SmARRAY8;
-
-    char userid_string[256];
-    uid_t uid = getuid();
-    struct passwd * pwd;
-    if ((pwd = getpwuid(uid)) != NULL)
-        snprintf(userid_string, sizeof(userid_string), "%s", pwd->pw_name);
-    else
-        snprintf(userid_string, sizeof(userid_string), "%d", uid);
-
-    val_user.value = (char *)userid_string;
-    val_user.length = (int) strlen(val_user.value);
-    prop_user.num_vals = 1;
-    prop_user.vals = &val_user;
-    prop_list[1] = &prop_user;
-
-    prop_restart_cmd.name = (char *)SmRestartCommand;
-    prop_restart_cmd.type = (char *)SmARRAY8;
-    prop_restart_cmd.num_vals = 1;
-    /* Use Program property */
-    prop_restart_cmd.vals = &val_program;
-    prop_list[2] = &prop_restart_cmd;
-
-    prop_clone_cmd.name = (char *)SmCloneCommand;
-    prop_clone_cmd.type = (char *)SmARRAY8;
-    prop_clone_cmd.num_vals = 1;
-    /* Use Program property */
-    prop_clone_cmd.vals = &val_program;
-    prop_list[3] = &prop_clone_cmd;
-
-    SmcSetProperties(conn, 4 /* number of properties */, prop_list);
-
-    /* The X Session Management Protocol is layered on top of the Inter-Client
-     * Exchange (ICE) Protocol.
-     *
-     * http://lesstif.sourceforge.net/doc/super-ux/g1ae04e/chap12.html#12.2
-     */
-    IceConn ice_conn = SmcGetIceConnection(conn);
-    gint fd = IceConnectionNumber(ice_conn);
-
-    /* Make sure we don't pass on these file descriptors to an
-     * exec'd child process.
-     */
-    const int fd_flags = fcntl(fd, F_GETFD, 0);
-    if (fd_flags < 0)
-        perror_msg_and_die("fcntl(IceConnectionNumber, F_GETFD, 0)");
-    else if (fcntl(fd, F_SETFD, fd_flags | FD_CLOEXEC) < 0)
-        perror_msg_and_die("fcntl(IceConnectionNumber, + FD_CLOEXEC, 0)");
-
-    /* When a client detects that there is data to read on an ICE connection,
-     * it should call the IceProcessMessages function.
-     *
-     * http://lesstif.sourceforge.net/doc/super-ux/g1ae04e/chap12.html#12.2
-     */
-    GIOChannel *channel = g_io_channel_unix_new(fd);
-    g_io_add_watch(channel, G_IO_ERR | G_IO_HUP | G_IO_IN,
-                   cb_ice_process_messages, (gpointer)ice_conn);
-    g_io_channel_unref(channel);
-}
-/*
- * XSMP client finito
- */
-
 int main(int argc, char** argv)
 {
     /* I18n */
@@ -1577,10 +1407,6 @@ next:
      * settings, releases notify resources, releases dbus resources and updates
      * the seen list.
      */
-
-    /* Register a handler quiting from gtk main loop on X Session death.
-     */
-    xsmp_client_connect();
 
     /* Enter main loop
      */

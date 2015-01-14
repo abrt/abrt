@@ -147,8 +147,6 @@ Requires: %{name} = %{version}-%{release}
 Requires: %{name}-dbus = %{version}-%{release}
 Requires: gnome-abrt
 BuildRequires: libreport-gtk-devel >= %{libreport_ver}
-BuildRequires: libICE-devel
-BuildRequires: libSM-devel
 # we used to have abrt-applet, now abrt-gui includes it:
 Provides: abrt-applet = %{version}-%{release}
 Obsoletes: abrt-applet < 0.0.5
