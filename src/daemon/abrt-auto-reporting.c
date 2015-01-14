@@ -204,7 +204,7 @@ int main(int argc, char *argv[])
         OPT_c = 1 << 4,
     };
 
-    bool anonymous = false;
+    int anonymous = 0;
     const char *username = NULL;
     const char *password = NULL;
     const char *certificate = NULL;
