@@ -1,0 +1,27 @@
+HTTP/1.1 200 OK
+Date: Wed, 14 Jan 2015 08:50:07 GMT
+Server: Apache/2.4.10 (Fedora) PHP/5.6.3
+X-Powered-By: PHP/5.6.3
+Set-Cookie: PHPSESSID=tq25vlcb178go69v81olmibrm6; path=/; HttpOnly
+Cache-Control: private, max-age=10800, pre-check=10800
+Last-Modified: Mon, 24 Nov 2014 11:23:27 GMT
+Connection: close
+Content-Length: 4450
+Content-Type: text/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://futureware.biz/mantisconnect" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><SOAP-ENV:Body><ns1:mc_issue_getResponse><return xsi:type="ns1:IssueData"><id xsi:type="xsd:integer">99</id><view_state xsi:type="ns1:ObjectRef"><id xsi:type="xsd:integer">10</id><name xsi:type="xsd:string">public</name></view_state><last_updated xsi:type="xsd:dateTime">2015-01-14T19:52:40+01:00</last_updated><project xsi:type="ns1:ObjectRef"><id xsi:type="xsd:integer">1</id><name xsi:type="xsd:string">test</name></project><category xsi:type="xsd:string">will-crash</category><priority xsi:type="ns1:ObjectRef"><id xsi:type="xsd:integer">30</id><name xsi:type="xsd:string">normal</name></priority><severity xsi:type="ns1:ObjectRef"><id xsi:type="xsd:integer">50</id><name xsi:type="xsd:string">minor</name></severity><status xsi:type="ns1:ObjectRef"><id xsi:type="xsd:integer">10</id><name xsi:type="xsd:string">new</name></status><reporter xsi:type="ns1:AccountData"><id xsi:type="xsd:integer">1</id><name xsi:type="xsd:string">administrator</name><email xsi:type="xsd:string">root@localhost</email></reporter><summary xsi:type="xsd:string">wer</summary><reproducibility xsi:type="ns1:ObjectRef"><id xsi:type="xsd:integer">70</id><name xsi:type="xsd:string">have not tried</name></reproducibility><date_submitted xsi:type="xsd:dateTime">2015-01-14T09:29:23+01:00</date_submitted><sponsorship_total xsi:type="xsd:integer">0</sponsorship_total><projection xsi:type="ns1:ObjectRef"><id xsi:type="xsd:integer">10</id><name xsi:type="xsd:string">none</name></projection><eta xsi:type="ns1:ObjectRef"><id xsi:type="xsd:integer">10</id><name xsi:type="xsd:string">none</name></eta><resolution xsi:type="ns1:ObjectRef"><id xsi:type="xsd:integer">10</id><name xsi:type="xsd:string">open</name></resolution><description xsi:type="xsd:string">wer</description><attachments SOAP-ENC:arrayType="ns1:AttachmentData[0]" xsi:type="SOAP-ENC:Array"/><notes SOAP-ENC:arrayType="ns1:IssueNoteData[1]" xsi:type="SOAP-ENC:Array"><item xsi:type="ns1:IssueNoteData"><id xsi:type="xsd:integer">37</id><reporter xsi:type="ns1:AccountData"><id xsi:type="xsd:integer">1</id><name xsi:type="xsd:string">administrator</name><email xsi:type="xsd:string">root@localhost</email></reporter><text xsi:type="xsd:string">Another user experienced a similar problem:&#13;
+&#13;
+i am second comment&#13;
+&#13;
+reporter:       libreport-2.3.0.59.gb561.dirty&#13;
+backtrace_rating: 1&#13;
+cmdline:        urxvtd -q -o -f&#13;
+crash_function: rxvt_term::selection_delimit_word&#13;
+executable:     /usr/bin/urxvtd&#13;
+kernel:         2.6.38.8-35.fc15.x86_64&#13;
+package:        rxvt-unicode-9.12-2.fc15&#13;
+reason:         Process /usr/bin/urxvtd was killed by signal 11 (SIGSEGV)&#13;
+type:           CCpp&#13;
+uid:            502&#13;
+xsession_errors:</text><view_state xsi:type="ns1:ObjectRef"><id xsi:type="xsd:integer">10</id><name xsi:type="xsd:string">public</name></view_state><date_submitted xsi:type="xsd:dateTime">2015-01-14T19:52:40+01:00</date_submitted><last_modified xsi:type="xsd:dateTime">2015-01-14T19:52:40+01:00</last_modified><time_tracking xsi:type="xsd:integer">0</time_tracking><note_type xsi:type="xsd:integer">0</note_type><note_attr xsi:type="xsd:string"></note_attr></item></notes><custom_fields SOAP-ENC:arrayType="ns1:CustomFieldValueForIssueData[2]" xsi:type="SOAP-ENC:Array"><item xsi:type="ns1:CustomFieldValueForIssueData"><field xsi:type="ns1:ObjectRef"><id xsi:type="xsd:integer">1</id><name xsi:type="xsd:string">abrt_hash</name></field><value xsi:type="xsd:string">bbfe66399cc9cb8ba647414e33c5d1e4ad82b511</value></item><item xsi:type="ns1:CustomFieldValueForIssueData"><field xsi:type="ns1:ObjectRef"><id xsi:type="xsd:integer">2</id><name xsi:type="xsd:string">URL</name></field><value xsi:type="xsd:string"></value></item></custom_fields><due_date xsi:nil="true" xsi:type="xsd:dateTime"/><monitors SOAP-ENC:arrayType="ns1:AccountData[0]" xsi:type="SOAP-ENC:Array"/><sticky xsi:type="xsd:boolean">false</sticky><tags SOAP-ENC:arrayType="ns1:ObjectRef[0]" xsi:type="SOAP-ENC:Array"/></return></ns1:mc_issue_getResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>
