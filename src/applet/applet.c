@@ -38,14 +38,6 @@
 #include "libabrt.h"
 #include "problem_api.h"
 
-/* NetworkManager DBus configuration */
-#define NM_DBUS_SERVICE "org.freedesktop.NetworkManager"
-#define NM_DBUS_PATH  "/org/freedesktop/NetworkManager"
-#define NM_DBUS_INTERFACE "org.freedesktop.NetworkManager"
-#define NM_STATE_CONNECTED_LOCAL 50
-#define NM_STATE_CONNECTED_SITE 60
-#define NM_STATE_CONNECTED_GLOBAL 70
-
 /* libnotify action keys */
 #define A_KNOWN_OPEN_GUI "OPEN"
 #define A_REPORT_REPORT "REPORT"
@@ -67,7 +59,7 @@ enum
 };
 
 
-static GDBusConnection *g_system_bus;
+static GNetworkMonitor *netmon;
 static GtkStatusIcon *ap_status_icon;
 static GtkWidget *ap_menu;
 static char **s_dirs;
@@ -182,99 +174,11 @@ static bool is_notification_of_incomplete_problems_enabled(void)
     return get_configured_bool_or_default("NotifyIncompleteProblems", 0);
 }
 
-/*
- * Converts a NM state value stored in GVariant to boolean.
- *
- * Returns true if a state means connected.
- *
- * Sinks the args variant.
- */
-static bool nm_state_is_connected(GVariant *args)
-{
-    GVariant *value = g_variant_get_child_value(args, 0);
-
-    if (g_variant_is_of_type(value, G_VARIANT_TYPE_VARIANT))
-    {
-        GVariant *tmp = g_variant_get_child_value(value, 0);
-        g_variant_unref(value);
-        value = tmp;
-    }
-
-    int state = g_variant_get_uint32 (value);
-
-    g_variant_unref(value);
-    g_variant_unref(args);
-
-    return state == NM_STATE_CONNECTED_GLOBAL
-           || state == NM_STATE_CONNECTED_LOCAL
-           || state == NM_STATE_CONNECTED_SITE;
-}
-
-/*
- * The function tries to get network state from NetworkManager over DBus
- * call. If NetworkManager DBus service is not available the function returns
- * true which means that network is enabled and up.
- *
- * Function must return true on any error, otherwise user won't be notified
- * about new problems. Because if network is not enabled, new problems are
- * pushed to the deferred queue. The deferred queue is processed immediately
- * after network becomes enabled. In case where NetworkManager is broken or not
- * available, notification about network state doesn't work thus the deferred
- * queue won't be ever processed.
- */
 static bool is_networking_enabled(void)
 {
-    GError *error = NULL;
-
-    /* Create a D-Bus proxy to get the object properties from the NM Manager
-     * object.
-     */
-    const int flags = G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES
-                      | G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS;
-
-    GDBusProxy *props_proxy = g_dbus_proxy_new_sync(g_system_bus,
-                                flags,
-                                NULL /* GDBusInterfaceInfo */,
-                                NM_DBUS_SERVICE,
-                                NM_DBUS_PATH,
-                                DBUS_INTERFACE_PROPERTIES,
-                                NULL /* GCancellable */,
-                                &error);
-
-    if (!props_proxy)
-    {
-        /* The NetworkManager DBus service is not available. */
-        error_msg (_("Can't connect to NetworkManager over DBus: %s"), error->message);
-        g_error_free (error);
-
-        /* Consider network state as connected. */
-        return true;
-    }
-
-    /* Get the State property from the NM Manager object */
-    GVariant *const value = g_dbus_proxy_call_sync (props_proxy,
-                                "Get",
-                                 g_variant_new("(ss)", NM_DBUS_INTERFACE, "State"),
-                                 G_DBUS_PROXY_FLAGS_NONE,
-                                 -1   /* timeout: use proxy default */,
-                                 NULL /* GCancellable */,
-                                 &error);
-
-    /* Consider network state as connected if any error occurs */
-    bool ret = true;
-
-    if (!error)
-        /* Convert the state value and sink the variable */
-        ret = nm_state_is_connected(value);
-    else
-    {
-        error_msg (_("Can't determine network status via NetworkManager: %s"), error->message);
-        g_error_free (error);
-    }
-
-    g_object_unref(props_proxy);
-
-    return ret;
+    if (!g_network_monitor_get_network_available(netmon))
+        return FALSE;
+    return g_network_monitor_get_connectivity(netmon) == G_NETWORK_CONNECTIVITY_FULL;
 }
 
 static void show_problem_list_notification(GList *problems, int flags);
@@ -288,14 +192,12 @@ static gboolean process_deferred_queue_timeout_fn(GList *queue)
     return FALSE;
 }
 
-static void on_nm_state_changed(GDBusConnection *connection, const gchar *sender_name,
-                                const gchar *object_path, const gchar *interface_name,
-                                const gchar *signal_name, GVariant *parameters,
-                                gpointer user_data)
+static void connectivity_changed_cb(GObject    *gobject,
+                                    GParamSpec *pspec,
+                                    gpointer    user_data)
 {
-    g_variant_ref(parameters);
-
-    if (nm_state_is_connected(parameters))
+    if (g_network_monitor_get_network_available(netmon) &&
+        g_network_monitor_get_connectivity(netmon) == G_NETWORK_CONNECTIVITY_FULL)
     {
         if (g_deferred_timeout)
             g_source_remove(g_deferred_timeout);
@@ -1616,27 +1518,12 @@ int main(int argc, char** argv)
 
     glib_init();
 
-    /* Monitor 'StateChanged' signal on 'org.freedesktop.NetworkManager' interface */
-    GError *error = NULL;
-    g_system_bus = g_bus_get_sync(G_BUS_TYPE_SYSTEM, NULL, &error);
-
-    if (g_system_bus == NULL)
-    {
-        error_msg("Error creating D-Bus proxy: %s\n", error->message);
-        g_error_free(error);
-        return -1;
-    }
-
-    const guint signal_ret = g_dbus_connection_signal_subscribe(g_system_bus,
-                                                        NM_DBUS_SERVICE,
-                                                        NM_DBUS_INTERFACE,
-                                                        "StateChanged",
-                                                        NM_DBUS_PATH,
-                                                        /* arg0 */ NULL,
-                                                        G_DBUS_SIGNAL_FLAGS_NONE,
-                                                        on_nm_state_changed,
-                                                        /* user_data */ NULL,
-                                                        /* user_data_free_func */ NULL);
+    /* Monitor NetworkManager state */
+    netmon = g_network_monitor_get_default ();
+    g_signal_connect (G_OBJECT (netmon), "notify::connectivity",
+                      G_CALLBACK (connectivity_changed_cb), NULL);
+    g_signal_connect (G_OBJECT (netmon), "notify::network-available",
+                      G_CALLBACK (connectivity_changed_cb), NULL);
 
     g_set_prgname("abrt");
     gtk_init(&argc, &argv);
@@ -1863,9 +1750,6 @@ next:
      *
      * save_user_settings();
      */
-
-    g_dbus_connection_signal_unsubscribe(g_system_bus, signal_ret);
-    g_object_unref(g_system_bus);
 
     free(g_last_notified_problem_id);
 
