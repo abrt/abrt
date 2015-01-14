@@ -1472,21 +1472,6 @@ int main(int argc, char** argv)
 #endif
 
     abrt_init(argv);
-    /* Glib 2.31:
-     * Major changes to threading and synchronisation
-     * - threading is now always enabled in GLib
-     * - support for custom thread implementations (including our own internal
-     * - support for errorcheck mutexes) has been removed
-     */
-#if (GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 31)
-    //can't use log(), because g_verbose is not set yet
-    /* Need to be thread safe */
-    g_thread_init(NULL);
-    gdk_threads_init();
-    gdk_threads_enter();
-#endif
-
-    glib_init();
 
     /* Monitor NetworkManager state */
     netmon = g_network_monitor_get_default ();
@@ -1665,10 +1650,6 @@ next:
     gtk_main();
 
     ignored_problems_free(g_ignore_set);
-
-#if (GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 31)
-    gdk_threads_leave();
-#endif
 
     /* new_dir_exists() is called for each notification and if user clicks on
      * the abrt icon. Those calls cover 99.97% of detected crashes
