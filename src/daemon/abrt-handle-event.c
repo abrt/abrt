@@ -30,7 +30,7 @@
 static char *uid = NULL;
 static char *uuid = NULL;
 static struct sr_stacktrace *corebt = NULL;
-static char *analyzer = NULL;
+static char *type = NULL;
 static char *executable = NULL;
 static char *crash_dump_dup_name = NULL;
 
@@ -39,7 +39,7 @@ static void dup_corebt_fini(void);
 static char* load_backtrace(const struct dump_dir *dd)
 {
     const char *filename = FILENAME_BACKTRACE;
-    if (strcmp(analyzer, "CCpp") == 0)
+    if (strcmp(type, "CCpp") == 0)
     {
         filename = FILENAME_CORE_BACKTRACE;
     }
@@ -62,7 +62,7 @@ static int core_backtrace_is_duplicate(struct sr_stacktrace *bt1,
 
     int result;
     char *error_message;
-    struct sr_stacktrace *bt2 = sr_stacktrace_parse(sr_abrt_type_from_analyzer(analyzer),
+    struct sr_stacktrace *bt2 = sr_stacktrace_parse(sr_abrt_type_from_type(type),
                                                     bt2_text, &error_message);
     if (bt2 == NULL)
     {
@@ -162,11 +162,11 @@ static void dup_corebt_init(const struct dump_dir *dd)
     if (!corebt_text)
         return; /* no backtrace */
 
-    enum sr_report_type report_type = sr_abrt_type_from_analyzer(analyzer);
+    enum sr_report_type report_type = sr_abrt_type_from_type(type);
     if (report_type == SR_REPORT_INVALID)
     {
-        log_notice("Can't load stacktrace because of unsupported analyzer: %s",
-                  analyzer);
+        log_notice("Can't load stacktrace because of unsupported type: %s",
+                  type);
         return;
     }
 
@@ -237,8 +237,8 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
     struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
     if (!dd)
         return 0; /* wtf? (error, but will be handled elsewhere later) */
-    free(analyzer);
-    analyzer = dd_load_text(dd, FILENAME_ANALYZER);
+    free(type);
+    type = dd_load_text(dd, FILENAME_TYPE);
     free(executable);
     executable = dd_load_text_ext(dd, FILENAME_EXECUTABLE, DD_FAIL_QUIETLY_ENOENT);
     dup_uuid_init(dd);
@@ -276,7 +276,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
         if (!dump_dir_name2)
             continue;
 
-        char *dd_uid = NULL, *dd_analyzer = NULL;
+        char *dd_uid = NULL, *dd_type = NULL;
         char *dd_executable = NULL;
 
         if (strcmp(dump_dir_name, dump_dir_name2) == 0)
@@ -298,8 +298,8 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
         }
 
         /* different crash types are not duplicates */
-        dd_analyzer = dd_load_text_ext(dd, FILENAME_ANALYZER, DD_FAIL_QUIETLY_ENOENT);
-        if (strcmp(analyzer, dd_analyzer))
+        dd_type = dd_load_text_ext(dd, FILENAME_TYPE, DD_FAIL_QUIETLY_ENOENT);
+        if (strcmp(type, dd_type))
         {
             goto next;
         }
@@ -327,7 +327,7 @@ next:
         free(dump_dir_name2);
         dd_close(dd);
         free(dd_uid);
-        free(dd_analyzer);
+        free(dd_type);
     }
     closedir(dir);
 

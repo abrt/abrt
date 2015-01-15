@@ -143,7 +143,7 @@ def create_abrtd_info(dest):
     dest - path to the vmcore directory
     """
 
-    write_to_file(os.path.join(dest, 'analyzer'), 'vmcore')
+    write_to_file(os.path.join(dest, 'analyzer'), 'abrt-vmcore')
     write_to_file(os.path.join(dest, 'type'), 'vmcore')
     write_to_file(os.path.join(dest, 'component'), 'kernel')
     write_to_file(os.path.join(dest, 'time'), str(time.time()).split('.')[0])

@@ -22,6 +22,7 @@
 
 #define MAX_SCAN_BLOCK  (4*1024*1024)
 #define READ_AHEAD          (10*1024)
+#define ABRT_DUMP_OOPS_ANALYZER "abrt-oops"
 
 static void scan_syslog_file(GList **oops_list, int fd)
 {
@@ -188,7 +189,8 @@ int main(int argc, char **argv)
         }
     }
     else
-        errors = abrt_oops_process_list(oops_list, dump_location, oops_utils_flags);
+        errors = abrt_oops_process_list(oops_list, dump_location,
+                                        ABRT_DUMP_OOPS_ANALYZER, oops_utils_flags);
 
     list_free_with_free(oops_list);
     //oops_list = NULL;
