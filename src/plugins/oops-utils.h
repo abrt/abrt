@@ -35,8 +35,8 @@ enum {
 
 int g_abrt_oops_sleep_woke_up_on_signal;
 
-int abrt_oops_process_list(GList *oops_list, const char *dump_location, int flags);
-unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location, int flags);
+int abrt_oops_process_list(GList *oops_list, const char *dump_location, const char *analyzer, int flags);
+unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location, const char *analyzer, int flags);
 void abrt_oops_save_data_in_dump_dir(struct dump_dir *dd, char *oops, const char *proc_modules);
 int abrt_oops_signaled_sleep(int seconds);
 char *abrt_oops_string_filter_regex(void);

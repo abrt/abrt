@@ -21,6 +21,8 @@
 /* Limit number of buffered lines */
 #define ABRT_JOURNAL_MAX_READ_LINES (1024 * 1024)
 
+#define ABRT_JOURNAL_KOOPS_ANALYZER "abrt-journal-koops"
+
 /*
  * Koops extractor
  */
@@ -92,7 +94,9 @@ static void abrt_journal_watch_extract_kernel_oops(abrt_journal_watch_t *watch, 
     }
 
     GList *oopses = abrt_journal_extract_kernel_oops(journal);
-    abrt_oops_process_list(oopses, conf->dump_location, conf->oops_utils_flags);
+    abrt_oops_process_list(oopses, conf->dump_location,
+                           ABRT_JOURNAL_KOOPS_ANALYZER, conf->oops_utils_flags);
+
     g_list_free_full(oopses, (GDestroyNotify)free);
 
     /* Skip stuff which appeared while processing oops as it is not necessary */
@@ -292,7 +296,8 @@ int main(int argc, char *argv[])
         abrt_journal_next(journal);
 
         GList *oopses = abrt_journal_extract_kernel_oops(journal);
-        const int errors = abrt_oops_process_list(oopses, dump_location, oops_utils_flags);
+        const int errors = abrt_oops_process_list(oopses, dump_location,
+                                                  ABRT_JOURNAL_KOOPS_ANALYZER, oops_utils_flags);
         g_list_free_full(oopses, (GDestroyNotify)free);
 
         return errors;

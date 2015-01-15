@@ -216,16 +216,16 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     if (!dd)
         return 1;
 
-    char *analyzer = dd_load_text(dd, FILENAME_ANALYZER);
-    if (!strcmp(analyzer, "Kerneloops"))
+    char *type = dd_load_text(dd, FILENAME_TYPE);
+    if (!strcmp(type, "Kerneloops"))
     {
         dd_save_text(dd, FILENAME_PACKAGE, "kernel");
         dd_save_text(dd, FILENAME_COMPONENT, "kernel");
         dd_close(dd);
-        free(analyzer);
+        free(type);
         return 0;
     }
-    free(analyzer);
+    free(type);
 
     char *cmdline = NULL;
     char *executable = NULL;

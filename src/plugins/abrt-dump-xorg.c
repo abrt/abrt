@@ -94,7 +94,7 @@ static void save_bt_to_dump_dir(const char *bt, const char *exe, const char *rea
     {
         dd_create_basic_files(dd, /*uid:*/ my_euid, NULL);
         dd_save_text(dd, FILENAME_ABRT_VERSION, VERSION);
-        dd_save_text(dd, FILENAME_ANALYZER, "xorg");
+        dd_save_text(dd, FILENAME_ANALYZER, "abrt-xorg");
         dd_save_text(dd, FILENAME_TYPE, "xorg");
         dd_save_text(dd, FILENAME_REASON, reason);
         dd_save_text(dd, FILENAME_BACKTRACE, bt);
