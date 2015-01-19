@@ -40,6 +40,14 @@ int abrt_journal_get_field(abrt_journal_t *journal,
                            const void **value,
                            size_t *value_len);
 
+int abrt_journal_get_int_field(abrt_journal_t *journal,
+                               const char *field,
+                               int *value);
+
+int abrt_journal_get_unsigned_field(abrt_journal_t *journal,
+                                    const char *field,
+                                    unsigned *value);
+
 /* Returns allocated memory if value is NULL; otherwise makes copy of journald
  * field to memory pointed by value arg. */
 char *abrt_journal_get_string_field(abrt_journal_t *journal,
