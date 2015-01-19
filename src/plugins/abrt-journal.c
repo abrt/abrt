@@ -89,6 +89,69 @@ int abrt_journal_get_field(abrt_journal_t *journal, const char *field, const voi
         return r;
     }
 
+    const size_t pfx_len = strlen(field) + 1;
+    if (*value_len < pfx_len)
+    {
+        error_msg("Invalid data format from journal: field data are not prefixed with field name");
+        return -EINVAL;
+    }
+
+    *value = *value + pfx_len;
+    *value_len -= pfx_len;
+
+    return 0;
+}
+
+static int abrt_journal_get_integer(abrt_journal_t *journal, const char *field, long min, long max, long *value)
+{
+    char buffer[sizeof(int)*3 + 2];
+    const char *data;
+    size_t data_len;
+
+    const int r = abrt_journal_get_field(journal, field, (const void **)&data, &data_len);
+    if (r < 0)
+        return r;
+
+    if (data_len >= sizeof(buffer))
+    {
+        log_notice("Journald field '%s' is not a number: too long", field);
+        return -EINVAL;
+    }
+
+    strncpy(buffer, data, data_len);
+    buffer[data_len] = '\0';
+
+    errno = 0;
+    char *e = NULL;
+    *value = strtol(buffer, &e, 10);
+    if (errno || buffer == e || *e != '\0' || *value < min || *value > max)
+    {
+        log_notice("Journald field '%s' is not a number: '%s'", field, buffer);
+        return -EINVAL;
+    }
+
+    return 0;
+}
+
+int abrt_journal_get_int_field(abrt_journal_t *journal, const char *field, int *value)
+{
+    long v;
+    int r = abrt_journal_get_integer(journal, field, INT_MIN, INT_MAX, &v);
+    if (r != 0)
+        return r;
+
+    *value = (int)v;
+    return 0;
+}
+
+int abrt_journal_get_unsigned_field(abrt_journal_t *journal, const char *field, unsigned *value)
+{
+    long v;
+    int r = abrt_journal_get_integer(journal, field, 0, UINT_MAX, &v);
+    if (r != 0)
+        return r;
+
+    *value = (unsigned)v;
     return 0;
 }
 
@@ -98,26 +161,15 @@ char *abrt_journal_get_string_field(abrt_journal_t *journal, const char *field, 
     const char *data;
     const int r = abrt_journal_get_field(journal, field, (const void **)&data, &data_len);
     if (r < 0)
-    {
-        log_notice("Cannot read journal data");
         return NULL;
-    }
 
-    const size_t pfx_len = strlen(field) + 1;
-    if (data_len < pfx_len)
-    {
-        error_msg("Invalid data format from journal: field data are not prefixed with field name");
-        return NULL;
-    }
-
-    const size_t len = data_len - pfx_len;
     if (value == NULL)
-        return xstrndup(data + pfx_len, len);
+        return xstrndup(data, data_len);
     /*else*/
 
-    strncpy(value, data + pfx_len, len);
+    strncpy(value, data, data_len);
     /* journal data are not NULL terminated strings, so terminate the string */
-    value[len] = '\0';
+    value[data_len] = '\0';
     return value;
 }
 
