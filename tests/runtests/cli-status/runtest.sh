@@ -60,7 +60,7 @@ rlJournalStart
         sleep 2 #just to make sure that SINCE > time of the previous crash
         SINCE=`date +%s`
 
-        generate_python_segfault
+        generate_python_exception
         get_crash_path
         wait_for_hooks
 
