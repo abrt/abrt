@@ -78,6 +78,25 @@ static ignored_problems_t *g_ignore_set;
 /* Used only for selection of the last notified problem if a user clicks on the systray icon */
 static char *g_last_notified_problem_id;
 
+static bool is_gsettings_supported()
+{
+    char *dname = NULL;
+
+    dname = getenv("XDG_CURRENT_DESKTOP");
+    if (dname != NULL && strcmp(dname, "GNOME") == 0)
+        return true;
+
+    dname = getenv("XDG_SESSION_DESKTOP");
+    if (dname != NULL && strcmp(dname, "gnome") == 0)
+        return true;
+
+    dname = getenv("DESKTOP_SESSION");
+    if (dname != NULL && strcasestr("gnome", dname) != NULL)
+        return true;
+
+    return false;
+}
+
 static bool get_configured_bool_or_default(const char *opt_name, bool def)
 {
     /* User config always takes precedence */
@@ -91,6 +110,17 @@ static bool get_configured_bool_or_default(const char *opt_name, bool def)
 
 static bool is_autoreporting_enabled(void)
 {
+    if (is_gsettings_supported())
+    {
+        GSettings *settings;
+        gboolean ret;
+
+        settings = g_settings_new ("org.gnome.desktop.privacy");
+        ret = g_settings_get_boolean (settings, "report-technical-problems");
+        g_object_unref (settings);
+        return ret;
+    }
+
     return get_configured_bool_or_default("AutoreportingEnabled", g_settings_autoreporting);
 }
 
@@ -124,6 +154,10 @@ static const char *get_autoreport_event_name(void)
 
 static void ask_start_autoreporting()
 {
+    /* Do not ask if the privacy settings are supported by the current desktop */
+    if (is_gsettings_supported())
+        return;
+
     struct strbuf *question = strbuf_new();
     question = strbuf_append_str(question,
          _("The report which will be sent does not contain any security sensitive data. "
