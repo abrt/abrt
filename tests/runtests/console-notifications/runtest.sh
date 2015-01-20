@@ -180,6 +180,22 @@ rlJournalStart
         rlAssertGrep "$CANARY" $LOG_NAME
     rlPhaseEnd
 
+    rlPhaseStartTest "time out"
+        # Use PID 1 that always exist :)
+        rlRun "ln -sf 1 $crash_PATH/.lock"
+
+        rlLog "ABRT emits a warning due to time out of abrt-cli status"
+        CANARY="CANARY_$(date +%s)_LIVES"
+        sh -l -i -c "echo $CANARY" >$LOG_NAME 2>&1
+
+        # ABRT worked as expected
+        rlAssertGrep "'abrt-cli status' timed out" $LOG_NAME
+        # ABRT didn't break login
+        rlAssertGrep "$CANARY" $LOG_NAME
+
+        rlRun "rm $crash_PATH/.lock"
+    rlPhaseEnd
+
     rlPhaseStartCleanup
         rlBundleLogs "console_notifications" *.log
         popd # TmpDir
