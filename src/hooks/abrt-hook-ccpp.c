@@ -630,7 +630,8 @@ int main(int argc, char** argv)
         IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
 
         strcpy(dest_base, FILENAME_OPEN_FDS);
-        if (dump_fd_info(dest_filename, source_filename, source_base_ofs))
+        strcpy(source_filename + source_base_ofs, "fd");
+        if (dump_fd_info(dest_filename, source_filename) == 0)
             IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
 
         free(dest_filename);
