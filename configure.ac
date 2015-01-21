@@ -104,6 +104,24 @@ AC_PATH_PROG([PYTHON3_CONFIG], [python3-config], [no])
     [exit 1]
 [fi]
 
+AC_PATH_PROG([PYTHON_SPHINX], [sphinx-build], [no])
+[if test "$PYTHON_SPHINX" = "no"]
+[then]
+    [echo "The sphinx-build program was not found in the search path. Please ensure"]
+    [echo "that it is installed and its directory is included in the search path."]
+    [echo "Then run configure again before attempting to build libreport."]
+    [exit 1]
+[fi]
+
+AC_PATH_PROG([PYTHON_NOSE], [nosetests], [no])
+[if test "$PYTHON_NOSE" = "no"]
+[then]
+    [echo "The nosetests program was not found in the search path. Please ensure"]
+    [echo "that it is installed and its directory is included in the search path."]
+    [echo "Then run configure again before attempting to build libreport."]
+    [exit 1]
+[fi]
+
 PYTHON_CFLAGS=`python-config --cflags 2> /dev/null`
 PYTHON_LIBS=`python-config --libs 2> /dev/null`
 
