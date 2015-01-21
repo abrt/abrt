@@ -326,7 +326,7 @@ static void new_dir_exists(GList **new_dirs)
          * DIR2      - Current dir list has new element. IOW: new dir exists!
          *             Advance only current dirlist ptr.
          *      DIR3 - Only old list has element. Advance only old ptr.
-         * DIR4 ==== - Old list ended, cuurent one didn't. New dir exists!
+         * DIR4 ==== - Old list ended, current one didn't. New dir exists!
          * ====
          */
         GList *l1 = dirlist = g_list_sort(dirlist, (GCompareFunc)strcmp);
