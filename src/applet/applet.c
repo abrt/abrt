@@ -116,7 +116,7 @@ static gboolean process_deferred_queue_timeout_fn(GList *queue)
     show_problem_list_notification(queue, /* process these crashes as new crashes */ 0);
 
     /* Remove this timeout fn from the main loop*/
-    return FALSE;
+    return G_SOURCE_REMOVE;
 }
 
 static void connectivity_changed_cb(GObject    *gobject,
