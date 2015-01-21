@@ -11,7 +11,6 @@ abrt_applet_CPPFLAGS = \
     -DICON_DIR=\"${datadir}/abrt/icons/hicolor/48x48/status\" \
     -DLIBREPORT_PLUGINS_CONF_DIR=\"$(LIBREPORT_PLUGINS_CONF_DIR)\" \
     $(GTK_CFLAGS) \
-    $(DBUS_CFLAGS) \
     $(LIBREPORT_GTK_CFLAGS) \
     -D_GNU_SOURCE
 #    -I/usr/include/glib-2.0
@@ -24,7 +23,6 @@ abrt_applet_LDADD = \
     -labrt_dbus \
     -lglib-2.0 \
     -lgthread-2.0 \
-    $(DBUS_LIBS) \
     $(LIBNOTIFY_LIBS) \
     $(GTK_LIBS)
 

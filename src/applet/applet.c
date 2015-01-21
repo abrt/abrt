@@ -25,9 +25,6 @@
 #include <gtk/gtk.h>
 
 #include <libnotify/notify.h>
-#include <dbus/dbus-shared.h>
-#include <dbus/dbus-glib.h>
-#include <dbus/dbus-glib-lowlevel.h>
 #include <glib.h>
 
 #include <libreport/internal_abrt_dbus.h>
@@ -1019,111 +1016,11 @@ static void handle_message(GDBusConnection *connection,
     Crash(parameters);
 }
 
-//TODO: move to abrt_dbus.cpp
-static void die_if_dbus_error(bool error_flag, DBusError* err, const char* msg)
+static void
+name_acquired_handler (GDBusConnection *connection,
+                       const gchar *name,
+                       gpointer user_data)
 {
-    if (dbus_error_is_set(err))
-    {
-        error_msg("dbus error: %s", err->message);
-        /*dbus_error_free(&err); - why bother, we will exit in a microsecond */
-        error_flag = true;
-    }
-    if (!error_flag)
-        return;
-    error_msg_and_die("%s", msg);
-}
-
-int main(int argc, char** argv)
-{
-    /* I18n */
-    setlocale(LC_ALL, "");
-#if ENABLE_NLS
-    bindtextdomain(PACKAGE, LOCALEDIR);
-    textdomain(PACKAGE);
-#endif
-
-    abrt_init(argv);
-
-    /* Monitor NetworkManager state */
-    netmon = g_network_monitor_get_default ();
-    g_signal_connect (G_OBJECT (netmon), "notify::connectivity",
-                      G_CALLBACK (connectivity_changed_cb), NULL);
-    g_signal_connect (G_OBJECT (netmon), "notify::network-available",
-                      G_CALLBACK (connectivity_changed_cb), NULL);
-
-    g_set_prgname("abrt");
-    gtk_init(&argc, &argv);
-
-    /* Can't keep these strings/structs static: _() doesn't support that */
-    const char *program_usage_string = _(
-        "& [-v] [DIR]...\n"
-        "\n"
-        "Applet which notifies user when new problems are detected by ABRT\n"
-    );
-    enum {
-        OPT_v = 1 << 0,
-    };
-    /* Keep enum above and order of options below in sync! */
-    struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
-        OPT_END()
-    };
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
-
-    migrate_to_xdg_dirs();
-
-    export_abrt_envvars(0);
-    msg_prefix = g_progname;
-
-    load_abrt_conf();
-    load_event_config_data();
-    load_user_settings("abrt-applet");
-
-    const char *default_dirs[] = {
-        g_settings_dump_location,
-        NULL,
-        NULL,
-    };
-    argv += optind;
-    if (!argv[0])
-    {
-        default_dirs[1] = concat_path_file(g_get_user_cache_dir(), "abrt/spool");
-        argv = (char**)default_dirs;
-    }
-    s_dirs = argv;
-
-    /* Initialize our (dbus_abrt) machinery by filtering
-     * for signals:
-     *     signal sender=:1.73 -> path=/org/freedesktop/problems; interface=org.freedesktop.problems; member=Crash
-     *       string "coreutils-7.2-3.fc11"
-     *       string "0"
-     */
-    GError *error = NULL;
-    GDBusConnection *system_conn = g_bus_get_sync (G_BUS_TYPE_SYSTEM,
-                                                   NULL, &error);
-    if (system_conn == NULL)
-        perror_msg_and_die("Can't connect to system dbus: %s", error->message);
-    guint filter_id = g_dbus_connection_signal_subscribe(system_conn,
-                                                         NULL,
-                                                         "org.freedesktop.problems",
-                                                         "Crash",
-                                                         "/org/freedesktop/problems",
-                                                         NULL,
-                                                         G_DBUS_SIGNAL_FLAGS_NONE,
-                                                         handle_message,
-                                                         NULL, NULL);
-
-    /* dbus_abrt cannot handle more than one bus, and we don't really need to.
-     * The only thing we want to do is to announce ourself on session dbus */
-    DBusError err;
-    DBusConnection* session_conn = dbus_bus_get(DBUS_BUS_SESSION, &err);
-    die_if_dbus_error(session_conn == NULL, &err, "Can't connect to session dbus");
-    int r = dbus_bus_request_name(session_conn,
-        ABRT_DBUS_NAME".applet",
-        /* flags */ DBUS_NAME_FLAG_DO_NOT_QUEUE, &err);
-    die_if_dbus_error(r != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER, &err,
-        "Problem connecting to dbus, or applet is already running");
-
     /* If some new dirs appeared since our last run, let user know it */
     GList *new_dirs = NULL;
     GList *notify_list = NULL;
@@ -1211,9 +1108,112 @@ next:
      * the seen list.
      */
 
+}
+
+static void
+name_lost_handler (GDBusConnection *connection,
+                   const gchar *name,
+                   gpointer user_data)
+{
+  if (connection == NULL)
+    error_msg_and_die("Problem connecting to dbus");
+
+  gtk_main_quit ();
+}
+
+int main(int argc, char** argv)
+{
+    /* I18n */
+    setlocale(LC_ALL, "");
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
+
+    abrt_init(argv);
+
+    /* Monitor NetworkManager state */
+    netmon = g_network_monitor_get_default ();
+    g_signal_connect (G_OBJECT (netmon), "notify::connectivity",
+                      G_CALLBACK (connectivity_changed_cb), NULL);
+    g_signal_connect (G_OBJECT (netmon), "notify::network-available",
+                      G_CALLBACK (connectivity_changed_cb), NULL);
+
+    g_set_prgname("abrt");
+    gtk_init(&argc, &argv);
+
+    /* Can't keep these strings/structs static: _() doesn't support that */
+    const char *program_usage_string = _(
+        "& [-v] [DIR]...\n"
+        "\n"
+        "Applet which notifies user when new problems are detected by ABRT\n"
+    );
+    enum {
+        OPT_v = 1 << 0,
+    };
+    /* Keep enum above and order of options below in sync! */
+    struct options program_options[] = {
+        OPT__VERBOSE(&g_verbose),
+        OPT_END()
+    };
+    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+
+    migrate_to_xdg_dirs();
+
+    export_abrt_envvars(0);
+    msg_prefix = g_progname;
+
+    load_abrt_conf();
+    load_event_config_data();
+    load_user_settings("abrt-applet");
+
+    const char *default_dirs[] = {
+        g_settings_dump_location,
+        NULL,
+        NULL,
+    };
+    argv += optind;
+    if (!argv[0])
+    {
+        default_dirs[1] = concat_path_file(g_get_user_cache_dir(), "abrt/spool");
+        argv = (char**)default_dirs;
+    }
+    s_dirs = argv;
+
+    /* Initialize our (dbus_abrt) machinery by filtering
+     * for signals:
+     *     signal sender=:1.73 -> path=/org/freedesktop/problems; interface=org.freedesktop.problems; member=Crash
+     *       string "coreutils-7.2-3.fc11"
+     *       string "0"
+     */
+    GError *error = NULL;
+    GDBusConnection *system_conn = g_bus_get_sync (G_BUS_TYPE_SYSTEM,
+                                                   NULL, &error);
+    if (system_conn == NULL)
+        perror_msg_and_die("Can't connect to system dbus: %s", error->message);
+    guint filter_id = g_dbus_connection_signal_subscribe(system_conn,
+                                                         NULL,
+                                                         "org.freedesktop.problems",
+                                                         "Crash",
+                                                         "/org/freedesktop/problems",
+                                                         NULL,
+                                                         G_DBUS_SIGNAL_FLAGS_NONE,
+                                                         handle_message,
+                                                         NULL, NULL);
+
+    guint name_own_id = g_bus_own_name (G_BUS_TYPE_SESSION,
+                                        ABRT_DBUS_NAME".applet",
+                                        G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT | G_BUS_NAME_OWNER_FLAGS_REPLACE,
+                                        NULL,
+                                        name_acquired_handler,
+                                        name_lost_handler,
+                                        NULL, NULL);
+
     /* Enter main loop
      */
     gtk_main();
+
+    g_bus_unown_name (name_own_id);
 
     g_dbus_connection_signal_unsubscribe(system_conn, filter_id);
 
