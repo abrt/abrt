@@ -26,29 +26,12 @@
 #include <satyr/utils.h>
 #endif /* ENABLE_DUMP_TIME_UNWIND */
 
-#define  DUMP_SUID_UNSAFE 1
-#define  DUMP_SUID_SAFE 2
-
 
 /* I want to use -Werror, but gcc-4.4 throws a curveball:
  * "warning: ignoring return value of 'ftruncate', declared with attribute warn_unused_result"
  * and (void) cast is not enough to shut it up! Oh God...
  */
 #define IGNORE_RESULT(func_call) do { if (func_call) /* nothing */; } while (0)
-
-static char* malloc_readlink(const char *linkname)
-{
-    char buf[PATH_MAX + 1];
-    int len;
-
-    len = readlink(linkname, buf, sizeof(buf)-1);
-    if (len >= 0)
-    {
-        buf[len] = '\0';
-        return xstrdup(buf);
-    }
-    return NULL;
-}
 
 /* Custom version of copyfd_xyz,
  * one which is able to write into two descriptors at once.
@@ -170,102 +153,6 @@ static char *core_basename = (char*) "core";
  * or $PWD/core_basename.
  */
 static char *full_core_basename;
-
-
-static char* get_executable(pid_t pid, int *fd_p)
-{
-    char buf[sizeof("/proc/%lu/exe") + sizeof(long)*3];
-
-    sprintf(buf, "/proc/%lu/exe", (long)pid);
-    if (fd_p)
-        *fd_p = open(buf, O_RDONLY); /* might fail and return -1, it's ok */
-    char *executable = malloc_readlink(buf);
-    if (!executable)
-        return NULL;
-    /* find and cut off " (deleted)" from the path */
-    char *deleted = executable + strlen(executable) - strlen(" (deleted)");
-    if (deleted > executable && strcmp(deleted, " (deleted)") == 0)
-    {
-        *deleted = '\0';
-        log_info("File '%s' seems to be deleted", executable);
-    }
-    /* find and cut off prelink suffixes from the path */
-    char *prelink = executable + strlen(executable) - strlen(".#prelink#.XXXXXX");
-    if (prelink > executable && strncmp(prelink, ".#prelink#.", strlen(".#prelink#.")) == 0)
-    {
-        log_info("File '%s' seems to be a prelink temporary file", executable);
-        *prelink = '\0';
-    }
-    return executable;
-}
-
-static char* get_cwd(pid_t pid)
-{
-    char buf[sizeof("/proc/%lu/cwd") + sizeof(long)*3];
-    sprintf(buf, "/proc/%lu/cwd", (long)pid);
-    return malloc_readlink(buf);
-}
-
-static char* get_rootdir(pid_t pid)
-{
-    char buf[sizeof("/proc/%lu/root") + sizeof(long)*3];
-    sprintf(buf, "/proc/%lu/root", (long)pid);
-    return malloc_readlink(buf);
-}
-
-static int get_fsuid(char *proc_pid_status)
-{
-    int real, euid, saved;
-    /* if we fail to parse the uid, then make it root only readable to be safe */
-    int fs_uid = 0;
-
-    char *line = proc_pid_status; /* never NULL */
-    for (;;)
-    {
-        if (strncmp(line, "Uid", 3) == 0)
-        {
-            int n = sscanf(line, "Uid:\t%d\t%d\t%d\t%d\n", &real, &euid, &saved, &fs_uid);
-            if (n != 4)
-            {
-                perror_msg_and_die("Can't parse Uid: line");
-            }
-            break;
-        }
-        line = strchr(line, '\n');
-        if (!line)
-            break;
-        line++;
-    }
-
-    return fs_uid;
-}
-
-static int dump_suid_policy()
-{
-    /*
-     - values are:
-       0 - don't dump suided programs - in this case the hook is not called by kernel
-       1 - create coredump readable by fs_uid
-       2 - create coredump readable by root only
-    */
-    int c;
-    int suid_dump_policy = 0;
-    const char *filename = "/proc/sys/fs/suid_dumpable";
-    FILE *f  = fopen(filename, "r");
-    if (!f)
-    {
-        log("Can't open %s", filename);
-        return suid_dump_policy;
-    }
-
-    c = fgetc(f);
-    fclose(f);
-    if (c != EOF)
-        suid_dump_policy = c - '0';
-
-    //log("suid dump policy is: %i", suid_dump_policy);
-    return suid_dump_policy;
-}
 
 static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_values)
 {
@@ -400,42 +287,6 @@ static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_valu
     return user_core_fd;
 }
 
-static bool dump_fd_info(const char *dest_filename, char *source_filename, int source_base_ofs)
-{
-    FILE *fp = fopen(dest_filename, "w");
-    if (!fp)
-        return false;
-
-    unsigned fd = 0;
-    while (fd <= 99999) /* paranoia check */
-    {
-        sprintf(source_filename + source_base_ofs, "fd/%u", fd);
-        char *name = malloc_readlink(source_filename);
-        if (!name)
-            break;
-        fprintf(fp, "%u:%s\n", fd, name);
-        free(name);
-
-        sprintf(source_filename + source_base_ofs, "fdinfo/%u", fd);
-        fd++;
-        FILE *in = fopen(source_filename, "r");
-        if (!in)
-            continue;
-        char buf[128];
-        while (fgets(buf, sizeof(buf)-1, in))
-        {
-            /* in case the line is not terminated, terminate it */
-            char *eol = strchrnul(buf, '\n');
-            eol[0] = '\n';
-            eol[1] = '\0';
-            fputs(buf, fp);
-        }
-        fclose(in);
-    }
-    fclose(fp);
-    return true;
-}
-
 /* Like xopen, but on error, unlocks and deletes dd and user core */
 static int create_or_die(const char *filename, int user_core_fd)
 {
@@ -511,6 +362,34 @@ static int test_configuration(bool setting_SaveFullCore, bool setting_CreateCore
     }
 
     return 0;
+}
+
+int save_crashing_binary(pid_t pid, const char *dest_path, uid_t uid, gid_t gid)
+{
+    char buf[sizeof("/proc/%lu/exe") + sizeof(long)*3];
+
+    sprintf(buf, "/proc/%lu/exe", (long)pid);
+    int src_fd_binary = open(buf, O_RDONLY); /* might fail and return -1, it's ok */
+    if (src_fd_binary < 0)
+    {
+        log_notice("Failed to open an image of crashing binary");
+        return 0;
+    }
+
+    int dst_fd = open(dest_path, O_WRONLY | O_CREAT | O_TRUNC, DEFAULT_DUMP_DIR_MODE);
+    if (dst_fd < 0)
+    {
+        log_notice("Failed to create file '%s'", dest_path);
+        close(src_fd_binary);
+        return -1;
+    }
+
+    IGNORE_RESULT(fchown(dst_fd, uid, gid));
+
+    off_t sz = copyfd_eof(src_fd_binary, dst_fd, COPYFD_SPARSE);
+    close(src_fd_binary);
+
+    return fsync(dst_fd) != 0 || close(dst_fd) != 0 || sz < 0;
 }
 
 int main(int argc, char** argv)
@@ -612,8 +491,7 @@ int main(int argc, char** argv)
 
     char path[PATH_MAX];
 
-    int src_fd_binary = -1;
-    char *executable = get_executable(pid, setting_SaveBinaryImage ? &src_fd_binary : NULL);
+    char *executable = get_executable(pid);
     if (executable && strstr(executable, "/abrt-hook-ccpp"))
     {
         error_msg_and_die("PID %lu is '%s', not dumping it to avoid recursion",
@@ -628,6 +506,9 @@ int main(int argc, char** argv)
 
     uid_t fsuid = uid;
     uid_t tmp_fsuid = get_fsuid(proc_pid_status);
+    if (tmp_fsuid < 0)
+        perror_msg_and_die("Can't parse 'Uid: line' in /proc/%lu/status", (long)pid);
+
     int suid_policy = dump_suid_policy();
     if (tmp_fsuid != uid)
     {
@@ -653,23 +534,8 @@ int main(int argc, char** argv)
     }
 
     const char *signame = NULL;
-    switch (signal_no)
-    {
-        case SIGILL : signame = "ILL" ; break;
-        case SIGFPE : signame = "FPE" ; break;
-        case SIGSEGV: signame = "SEGV"; break;
-        case SIGBUS : signame = "BUS" ; break; //Bus error (bad memory access)
-        case SIGABRT: signame = "ABRT"; break; //usually when abort() was called
-    // We have real-world reports from users who see buggy programs
-    // dying with SIGTRAP, uncommented it too:
-        case SIGTRAP: signame = "TRAP"; break; //Trace/breakpoint trap
-    // These usually aren't caused by bugs:
-      //case SIGQUIT: signame = "QUIT"; break; //Quit from keyboard
-      //case SIGSYS : signame = "SYS" ; break; //Bad argument to routine (SVr4)
-      //case SIGXCPU: signame = "XCPU"; break; //CPU time limit exceeded (4.2BSD)
-      //case SIGXFSZ: signame = "XFSZ"; break; //File size limit exceeded (4.2BSD)
-        default: return create_user_core(user_core_fd, pid, ulimit_c); // not a signal we care about
-    }
+    if (!signal_is_fatal(signal_no, &signame))
+        return create_user_core(user_core_fd, pid, ulimit_c); // not a signal we care about
 
     if (!daemon_is_ok())
     {
@@ -764,12 +630,13 @@ int main(int argc, char** argv)
         IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
 
         strcpy(dest_base, FILENAME_OPEN_FDS);
-        if (dump_fd_info(dest_filename, source_filename, source_base_ofs))
+        strcpy(source_filename + source_base_ofs, "fd");
+        if (dump_fd_info(dest_filename, source_filename) == 0)
             IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
 
         free(dest_filename);
 
-        dd_save_text(dd, FILENAME_ANALYZER, "CCpp");
+        dd_save_text(dd, FILENAME_ANALYZER, "abrt-ccpp");
         dd_save_text(dd, FILENAME_TYPE, "CCpp");
         dd_save_text(dd, FILENAME_EXECUTABLE, executable);
         dd_save_text(dd, FILENAME_PID, pid_str);
@@ -805,16 +672,16 @@ int main(int argc, char** argv)
 
         dd_save_text(dd, FILENAME_ABRT_VERSION, VERSION);
 
-        if (src_fd_binary > 0)
+        if (setting_SaveBinaryImage)
         {
             strcpy(path + path_len, "/"FILENAME_BINARY);
-            int dst_fd = create_or_die(path, user_core_fd);
-            off_t sz = copyfd_eof(src_fd_binary, dst_fd, COPYFD_SPARSE);
-            if (fsync(dst_fd) != 0 || close(dst_fd) != 0 || sz < 0)
+
+            if (save_crashing_binary(pid, path, dd->dd_uid, dd->dd_gid))
             {
-                dd_delete(dd); error_msg_and_die("Error saving '%s'", path);
+                error_msg("Error saving '%s'", path);
+
+                goto error_exit;
             }
-            close(src_fd_binary);
         }
 
         off_t core_size = 0;
@@ -837,15 +704,12 @@ int main(int argc, char** argv)
             if (fsync(abrt_core_fd) != 0 || close(abrt_core_fd) != 0 || core_size < 0)
             {
                 unlink(path);
-                dd_delete(dd);
-                if (user_core_fd >= 0)
-                {
-                    xchdir(user_pwd);
-                    unlink(core_basename);
-                }
+
                 /* copyfd_sparse logs the error including errno string,
                  * but it does not log file name */
-                error_msg_and_die("Error writing '%s'", path);
+                error_msg("Error writing '%s'", path);
+
+                goto error_exit;
             }
             if (user_core_fd >= 0
                 /* error writing user coredump? */
@@ -864,6 +728,13 @@ int main(int argc, char** argv)
             /* User core is created even if WriteFullCore is off. */
             create_user_core(user_core_fd, pid, ulimit_c);
         }
+
+        /* User core is either written or closed */
+        user_core_fd = -1;
+
+        /*
+         * ! No other errors should cause removal of the user core !
+         */
 
         /* Save JVM crash log if it exists. (JVM's coredump per se
          * is nearly useless for JVM developers)
@@ -891,8 +762,9 @@ int main(int argc, char** argv)
                 off_t sz = copyfd_eof(src_fd, dst_fd, COPYFD_SPARSE);
                 if (close(dst_fd) != 0 || sz < 0)
                 {
-                    dd_delete(dd);
-                    error_msg_and_die("Error saving '%s'", path);
+                    error_msg("Error saving '%s'", path);
+
+                    goto error_exit;
                 }
                 close(src_fd);
             }
@@ -909,6 +781,8 @@ int main(int argc, char** argv)
          * Classic deadlock.
          */
         dd_close(dd);
+        dd = NULL;
+
         path[path_len] = '\0'; /* path now contains only directory name */
         char *newpath = xstrndup(path, path_len - (sizeof(".new")-1));
         if (rename(path, newpath) == 0)
@@ -938,4 +812,16 @@ int main(int argc, char** argv)
 
     /* We didn't create abrt dump, but may need to create compat coredump */
     return create_user_core(user_core_fd, pid, ulimit_c);
+
+error_exit:
+    if (dd)
+        dd_delete(dd);
+
+    if (user_core_fd >= 0)
+    {
+        xchdir(user_pwd);
+        unlink(core_basename);
+    }
+
+    xfunc_die();
 }

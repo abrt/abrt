@@ -29,3 +29,9 @@
  stored data, but it's not guaranteed)
  */
 char *problem_data_save(problem_data_t *pd);
+
+#define  DUMP_SUID_UNSAFE 1
+#define  DUMP_SUID_SAFE 2
+
+int dump_suid_policy();
+int signal_is_fatal(int signal_no, const char **name);

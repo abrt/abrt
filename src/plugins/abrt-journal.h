@@ -40,6 +40,14 @@ int abrt_journal_get_field(abrt_journal_t *journal,
                            const void **value,
                            size_t *value_len);
 
+int abrt_journal_get_int_field(abrt_journal_t *journal,
+                               const char *field,
+                               int *value);
+
+int abrt_journal_get_unsigned_field(abrt_journal_t *journal,
+                                    const char *field,
+                                    unsigned *value);
+
 /* Returns allocated memory if value is NULL; otherwise makes copy of journald
  * field to memory pointed by value arg. */
 char *abrt_journal_get_string_field(abrt_journal_t *journal,
@@ -55,6 +63,12 @@ int abrt_journal_set_cursor(abrt_journal_t *journal, const char *cursor);
 int abrt_journal_seek_tail(abrt_journal_t *journal);
 
 int abrt_journal_next(abrt_journal_t *journal);
+
+int abrt_journal_save_current_position(abrt_journal_t *journal,
+                                       const char *file_name);
+
+int abrt_journal_restore_position(abrt_journal_t *journal,
+                                  const char *file_name);
 
 /*
  * A systemd-journal listener which waits for new messages a loop and notifies

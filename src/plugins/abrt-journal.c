@@ -29,6 +29,8 @@
  */
 #define JOURNALD_MAX_FIELD_SIZE (64*1024)
 
+#define ABRT_JOURNAL_WATCH_STATE_FILE_MODE 0600
+#define ABRT_JOURNAL_WATCH_STATE_FILE_MAX_SZ (4 * 1024)
 
 struct abrt_journal
 {
@@ -87,6 +89,69 @@ int abrt_journal_get_field(abrt_journal_t *journal, const char *field, const voi
         return r;
     }
 
+    const size_t pfx_len = strlen(field) + 1;
+    if (*value_len < pfx_len)
+    {
+        error_msg("Invalid data format from journal: field data are not prefixed with field name");
+        return -EINVAL;
+    }
+
+    *value = *value + pfx_len;
+    *value_len -= pfx_len;
+
+    return 0;
+}
+
+static int abrt_journal_get_integer(abrt_journal_t *journal, const char *field, long min, long max, long *value)
+{
+    char buffer[sizeof(int)*3 + 2];
+    const char *data;
+    size_t data_len;
+
+    const int r = abrt_journal_get_field(journal, field, (const void **)&data, &data_len);
+    if (r < 0)
+        return r;
+
+    if (data_len >= sizeof(buffer))
+    {
+        log_notice("Journald field '%s' is not a number: too long", field);
+        return -EINVAL;
+    }
+
+    strncpy(buffer, data, data_len);
+    buffer[data_len] = '\0';
+
+    errno = 0;
+    char *e = NULL;
+    *value = strtol(buffer, &e, 10);
+    if (errno || buffer == e || *e != '\0' || *value < min || *value > max)
+    {
+        log_notice("Journald field '%s' is not a number: '%s'", field, buffer);
+        return -EINVAL;
+    }
+
+    return 0;
+}
+
+int abrt_journal_get_int_field(abrt_journal_t *journal, const char *field, int *value)
+{
+    long v;
+    int r = abrt_journal_get_integer(journal, field, INT_MIN, INT_MAX, &v);
+    if (r != 0)
+        return r;
+
+    *value = (int)v;
+    return 0;
+}
+
+int abrt_journal_get_unsigned_field(abrt_journal_t *journal, const char *field, unsigned *value)
+{
+    long v;
+    int r = abrt_journal_get_integer(journal, field, 0, UINT_MAX, &v);
+    if (r != 0)
+        return r;
+
+    *value = (unsigned)v;
     return 0;
 }
 
@@ -96,26 +161,15 @@ char *abrt_journal_get_string_field(abrt_journal_t *journal, const char *field, 
     const char *data;
     const int r = abrt_journal_get_field(journal, field, (const void **)&data, &data_len);
     if (r < 0)
-    {
-        log_notice("Cannot read journal data");
         return NULL;
-    }
 
-    const size_t pfx_len = strlen(field) + 1;
-    if (data_len < pfx_len)
-    {
-        error_msg("Invalid data format from journal: field data are not prefixed with field name");
-        return NULL;
-    }
-
-    const size_t len = data_len - pfx_len;
     if (value == NULL)
-        return xstrndup(data + pfx_len, len);
+        return xstrndup(data, data_len);
     /*else*/
 
-    strncpy(value, data + pfx_len, len);
+    strncpy(value, data, data_len);
     /* journal data are not NULL terminated strings, so terminate the string */
-    value[len] = '\0';
+    value[data_len] = '\0';
     return value;
 }
 
@@ -169,6 +223,94 @@ int abrt_journal_next(abrt_journal_t *journal)
     if (r < 0)
         log_notice("Failed to iterate to next entry: %s", strerror(-r));
     return r;
+}
+
+int abrt_journal_save_current_position(abrt_journal_t *journal, const char *file_name)
+{
+    char *crsr = NULL;
+    const int r = abrt_journal_get_cursor(journal, &crsr);
+
+    if (r < 0)
+    {
+        /* abrt_journal_set_cursor() prints error message in verbose mode */
+        error_msg(_("Cannot save journal watch's position"));
+        return r;
+    }
+
+    int state_fd = open(file_name,
+            O_WRONLY | O_CREAT | O_TRUNC | O_NOFOLLOW,
+            ABRT_JOURNAL_WATCH_STATE_FILE_MODE);
+
+    if (state_fd < 0)
+    {
+        perror_msg(_("Cannot save journal watch's position: open('%s')"), file_name);
+        return -1;
+    }
+
+    full_write_str(state_fd, crsr);
+    close(state_fd);
+
+    free(crsr);
+    return 0;
+}
+
+int abrt_journal_restore_position(abrt_journal_t *journal, const char *file_name)
+{
+    struct stat buf;
+    if (lstat(file_name, &buf) < 0)
+    {
+        if (errno == ENOENT)
+            /* Only notice because this is expected */
+            log_notice(_("Not restoring journal watch's position: file '%s' does not exist"), file_name);
+        else
+            perror_msg(_("Cannot restore journal watch's position form file '%s'"), file_name);
+
+        return -errno;
+    }
+
+    if (!(buf.st_mode & S_IFREG))
+    {
+        error_msg(_("Cannot restore journal watch's position: path '%s' is not regular file"), file_name);
+        return -EMEDIUMTYPE;
+    }
+
+    if (buf.st_size > ABRT_JOURNAL_WATCH_STATE_FILE_MAX_SZ)
+    {
+        error_msg(_("Cannot restore journal watch's position: file '%s' exceeds %dB size limit"),
+                file_name, ABRT_JOURNAL_WATCH_STATE_FILE_MAX_SZ);
+        return -EFBIG;
+    }
+
+    int state_fd = open(file_name, O_RDONLY | O_NOFOLLOW);
+    if (state_fd < 0)
+    {
+        perror_msg(_("Cannot restore journal watch's position: open('%s')"), file_name);
+        return -errno;
+    }
+
+    char *crsr = xmalloc(buf.st_size + 1);
+
+    const int sz = full_read(state_fd, crsr, buf.st_size);
+    if (sz != buf.st_size)
+    {
+        error_msg(_("Cannot restore journal watch's position: cannot read entire file '%s'"), file_name);
+        close(state_fd);
+        return -errno;
+    }
+
+    crsr[sz] = '\0';
+    close(state_fd);
+
+    const int r = abrt_journal_set_cursor(journal, crsr);
+    if (r < 0)
+    {
+        /* abrt_journal_set_cursor() prints error message in verbose mode */
+        error_msg(_("Failed to move the journal to a cursor from file '%s'"), file_name);
+        return r;
+    }
+
+    free(crsr);
+    return 0;
 }
 
 /*

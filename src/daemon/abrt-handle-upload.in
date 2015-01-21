@@ -176,7 +176,7 @@ if __name__ == "__main__":
         # The archive can contain either plain dump files
         # or one or more complete problem data directories.
         # Checking second possibility first.
-        if os.path.exists(tempdir+"/analyzer") and os.path.exists(tempdir+"/time"):
+        if (os.path.exists(tempdir+"/analyzer") or os.path.exists(tempdir+"/type")) and os.path.exists(tempdir+"/time"):
             write_str_to(tempdir+"/remote", "1")
             shutil.move(tempdir, abrt_dir)
             problem.notify_new_path(abrt_dir+"/"+os.path.basename(tempdir))
