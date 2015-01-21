@@ -42,7 +42,7 @@ class Problem(object):
     of the specific problem classes.
 
     '''
-    def __init__(self, typ, reason):
+    def __init__(self, typ, reason, analyzer=None):
         self._data = dict()
         self._dirty_data = dict()
         self._persisted = False
@@ -50,7 +50,8 @@ class Problem(object):
         self._probdir = None
 
         self.type = typ
-        self.analyzer = typ
+        if analyzer is None:
+            self.analyzer = typ
         self.reason = reason
         self._proxy = proxies.get_proxy()
 

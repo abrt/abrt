@@ -17,7 +17,7 @@
 #include "oops-utils.h"
 #include "libabrt.h"
 
-int abrt_oops_process_list(GList *oops_list, const char *dump_location, int flags)
+int abrt_oops_process_list(GList *oops_list, const char *dump_location, const char *analyzer, int flags)
 {
     unsigned errors = 0;
 
@@ -42,7 +42,7 @@ int abrt_oops_process_list(GList *oops_list, const char *dump_location, int flag
         if (dump_location != NULL)
         {
             log("Creating problem directories");
-            errors = abrt_oops_create_dump_dirs(oops_list, dump_location, flags);
+            errors = abrt_oops_create_dump_dirs(oops_list, dump_location, analyzer, flags);
             if (errors)
                 log("%d errors while dumping oopses", errors);
             /*
@@ -78,7 +78,7 @@ int abrt_oops_process_list(GList *oops_list, const char *dump_location, int flag
 }
 
 /* returns number of errors */
-unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location, int flags)
+unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location, const char *analyzer, int flags)
 {
     const int oops_cnt = g_list_length(oops_list);
     unsigned countdown = ABRT_OOPS_MAX_DUMPED_COUNT; /* do not report hundreds of oopses */
@@ -117,7 +117,7 @@ unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location,
             dd_create_basic_files(dd, /*uid:*/ my_euid, NULL);
             abrt_oops_save_data_in_dump_dir(dd, (char*)g_list_nth_data(oops_list, idx++), proc_modules);
             dd_save_text(dd, FILENAME_ABRT_VERSION, VERSION);
-            dd_save_text(dd, FILENAME_ANALYZER, "Kerneloops");
+            dd_save_text(dd, FILENAME_ANALYZER, "abrt-oops");
             dd_save_text(dd, FILENAME_TYPE, "Kerneloops");
             if (cmdline_str)
                 dd_save_text(dd, FILENAME_CMDLINE, cmdline_str);

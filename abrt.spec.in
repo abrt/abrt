@@ -546,6 +546,7 @@ exit 0
 # so 2.x fails when it tries to extract debuginfo there..
 chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %systemd_post abrt-ccpp.service
+%systemd_post abrt-journal-core.service
 
 %post addon-kerneloops
 %systemd_post abrt-oops.service
@@ -569,6 +570,7 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 
 %preun addon-ccpp
 %systemd_preun abrt-ccpp.service
+%systemd_preun abrt-journal-core.service
 
 %preun addon-kerneloops
 %systemd_preun abrt-oops.service
@@ -592,6 +594,7 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 
 %postun addon-ccpp
 %systemd_postun_with_restart abrt-ccpp.service
+%systemd_postun_with_restart abrt-journal-core.service
 
 %postun addon-kerneloops
 %systemd_postun_with_restart abrt-oops.service
@@ -783,6 +786,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
 %if %{with systemd}
 %{_unitdir}/abrt-ccpp.service
+%{_unitdir}/abrt-journal-core.service
 %else
 %{_initrddir}/abrt-ccpp
 %endif
@@ -803,6 +807,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-action-list-dsos
 %{_bindir}/abrt-action-perform-ccpp-analysis
 %{_bindir}/abrt-action-analyze-ccpp-local
+%{_bindir}/abrt-dump-journal-core
 %{_sbindir}/abrt-install-ccpp-hook
 %config(noreplace) %{_sysconfdir}/libreport/events.d/ccpp_event.conf
 %{_mandir}/man5/ccpp_event.conf.5.gz
