@@ -429,7 +429,7 @@ static void fork_exec_gui(const char *problem_id)
 
  record_dirs:
     /* Scan dirs and save new $XDG_CACHE_HOME/abrt/applet_dirlist.
-     * (Oterwise, after a crash, next time applet is started,
+     * (Otherwise, after a crash, next time applet is started,
      * it will show alert icon even if we did click on it
      * "in previous life"). We ignore function return value.
      */
@@ -580,7 +580,7 @@ static void on_notify_close(NotifyNotification *notification, gpointer user_data
     g_object_unref(notification);
 
     /* Scan dirs and save new $XDG_CACHE_HOME/abrt/applet_dirlist.
-     * (Oterwise, after a crash, next time applet is started,
+     * (Otherwise, after a crash, next time applet is started,
      * it will show alert icon even if we did click on it
      * "in previous life"). We ignore finction return value.
      */
