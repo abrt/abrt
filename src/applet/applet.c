@@ -40,6 +40,8 @@
 
 #define GUI_EXECUTABLE "gnome-abrt"
 
+#define NOTIFICATION_ICON_NAME "face-sad-symbolic"
+
 enum
 {
     /*
@@ -589,15 +591,10 @@ static NotifyNotification *new_warn_notification(bool persistence)
 {
     NotifyNotification *notification;
 
-    notification = notify_notification_new(_("Warning"), NULL, NULL);
+    notification = notify_notification_new(_("Warning"), NULL, NOTIFICATION_ICON_NAME);
 
     g_signal_connect(notification, "closed", G_CALLBACK(on_notify_close), NULL);
 
-    GdkPixbuf *pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(),
-                "abrt", 48, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
-
-    if (pixbuf)
-        notify_notification_set_icon_from_pixbuf(notification, pixbuf);
     notify_notification_set_urgency(notification, NOTIFY_URGENCY_NORMAL);
     notify_notification_set_timeout(notification, persistence ? NOTIFY_EXPIRES_NEVER
                                                               : NOTIFY_EXPIRES_DEFAULT);
@@ -656,7 +653,7 @@ static void notify_problem_list(GList *problems, int flags)
 
             notify_notification_update(notification, pi->was_announced ?
                     _("The Problem has already been Reported") : _("A Known Problem has Occurred"),
-                    notify_body, NULL);
+                    notify_body, NOTIFICATION_ICON_NAME);
         }
         else
         {
@@ -679,7 +676,7 @@ static void notify_problem_list(GList *problems, int flags)
                             pi, NULL);
                 }
 
-                notify_notification_update(notification, _("A Problem has Occurred"), notify_body, NULL);
+                notify_notification_update(notification, _("A Problem has Occurred"), notify_body, NOTIFICATION_ICON_NAME);
             }
             else
             {   /* Problem has been 'autoreported' and is considered as UNKNOWN
@@ -705,7 +702,7 @@ static void notify_problem_list(GList *problems, int flags)
                         goto next_problem_to_notify;
                     }
 
-                    notify_notification_update(notification, _("A Problem has been Reported"), notify_body, NULL);
+                    notify_notification_update(notification, _("A Problem has been Reported"), notify_body, NOTIFICATION_ICON_NAME);
                 }
                 else
                 {
@@ -713,7 +710,7 @@ static void notify_problem_list(GList *problems, int flags)
                             NOTIFY_ACTION_CALLBACK(action_report),
                             pi, NULL);
 
-                    notify_notification_update(notification, _("A New Problem has Occurred"), notify_body, NULL);
+                    notify_notification_update(notification, _("A New Problem has Occurred"), notify_body, NOTIFICATION_ICON_NAME);
                 }
             }
         }
