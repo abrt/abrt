@@ -299,6 +299,7 @@ static void new_dir_exists(GList **new_dirs)
     char **pp = s_dirs;
     while (*pp)
     {
+        log_notice("Looking for crashes in %s", *pp);
         dirlist = add_dirs_to_dirlist(dirlist, *pp);
         pp++;
     }
