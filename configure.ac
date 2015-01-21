@@ -91,7 +91,7 @@ AC_PATH_PROG([PYTHON_CONFIG], [python-config], [no])
 [then]
     [echo "The python-config program was not found in the search path. Please ensure"]
     [echo "that it is installed and its directory is included in the search path."]
-    [echo "Then run configure again before attempting to build libreport."]
+    [echo "Then run configure again before attempting to build ABRT."]
     [exit 1]
 [fi]
 
@@ -100,7 +100,7 @@ AC_PATH_PROG([PYTHON3_CONFIG], [python3-config], [no])
 [then]
     [echo "The python3-config program was not found in the search path. Please ensure"]
     [echo "that it is installed and its directory is included in the search path."]
-    [echo "Then run configure again before attempting to build libreport."]
+    [echo "Then run configure again before attempting to build ABRT."]
     [exit 1]
 [fi]
 
@@ -109,7 +109,7 @@ AC_PATH_PROG([PYTHON_SPHINX], [sphinx-build], [no])
 [then]
     [echo "The sphinx-build program was not found in the search path. Please ensure"]
     [echo "that it is installed and its directory is included in the search path."]
-    [echo "Then run configure again before attempting to build libreport."]
+    [echo "Then run configure again before attempting to build ABRT."]
     [exit 1]
 [fi]
 
@@ -118,7 +118,7 @@ AC_PATH_PROG([PYTHON_NOSE], [nosetests], [no])
 [then]
     [echo "The nosetests program was not found in the search path. Please ensure"]
     [echo "that it is installed and its directory is included in the search path."]
-    [echo "Then run configure again before attempting to build libreport."]
+    [echo "Then run configure again before attempting to build ABRT."]
     [exit 1]
 [fi]
 
