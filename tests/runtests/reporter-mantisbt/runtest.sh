@@ -55,7 +55,10 @@ rlJournalStart
     # search by duphash
     # API new method for searching in MantisBT by duphas
     rlPhaseStartTest "search by duphash"
-         ./pyserve login_correct search_two_issues &> server_log &
+         ./pyserve \
+             login_correct \
+             project_get_id_from_name \
+             search_two_issues &> server_log &
 
         sleep 1
         rlRun "reporter-mantisbt -vvv -h bbfe66399cc9cb8ba647414e33c5d1e4ad82b511 -c mantisbt.conf &> client_log"
@@ -76,6 +79,7 @@ rlJournalStart
 
         # not contain
         rlAssertNotGrep "Status: new open http://localhost:12345/view.php?id=99" client_log
+        rlAssertNotGrep "<int>323795</int>" client_log
 
         rm -f problem_dir/reported_to
     rlPhaseEnd
@@ -84,6 +88,7 @@ rlJournalStart
     rlPhaseStartTest "attach files to issue (issue ID is specified)"
          ./pyserve \
                 $QUERIES_DIR/login_correct \
+                $QUERIES_DIR/project_get_id_from_name \
                 $QUERIES_DIR/attachment \
                 &> server_log &
         sleep 1
@@ -109,6 +114,7 @@ rlJournalStart
 
         # not contain
         rlAssertNotGrep "Status: new open http://localhost:12345/view.php?id=99" client_log
+        rlAssertNotGrep "<int>323795</int>" client_log
 
         rm -f problem_dir/reported_to
     rlPhaseEnd
@@ -118,6 +124,7 @@ rlJournalStart
     rlPhaseStartTest "attach files to issue (issue ID is not specified)"
          ./pyserve \
                 $QUERIES_DIR/login_correct \
+                $QUERIES_DIR/project_get_id_from_name \
                 $QUERIES_DIR/attachment \
                 &> server_log &
 
@@ -142,6 +149,7 @@ rlJournalStart
 
         # not contain
         rlAssertNotGrep "Status: new open http://localhost:12345/view.php?id=99" client_log
+        rlAssertNotGrep "<int>323795</int>" client_log #dummy
 
         rm -f problem_dir/reported_to
     rlPhaseEnd
@@ -150,8 +158,10 @@ rlJournalStart
     rlPhaseStartTest "force reporting"
          ./pyserve \
                 $QUERIES_DIR/login_correct \
+                $QUERIES_DIR/project_get_id_from_name \
                 $QUERIES_DIR/search_two_issues \
                 $QUERIES_DIR/search_no_issue \
+                $QUERIES_DIR/get_custom_fields \
                 $QUERIES_DIR/create \
                 $QUERIES_DIR/attachment \
                 $QUERIES_DIR/attachment \
@@ -193,6 +203,9 @@ rlJournalStart
         rlAssertGrep "Creating a new issue" client_log
         rlAssertGrep "<ns1:mc_issue_addResponse><return xsi:type=\"xsd:integer\">7</return>" client_log
 
+        # not contain
+        rlAssertNotGrep "<int>323795</int>" client_log #dummy
+
         rm -f problem_dir/reported_to
     rlPhaseEnd
 
@@ -200,8 +213,10 @@ rlJournalStart
     rlPhaseStartTest "create an issue (only potential duplicate issues exist)"
          ./pyserve \
                 $QUERIES_DIR/login_correct \
+                $QUERIES_DIR/project_get_id_from_name \
                 $QUERIES_DIR/search_two_issues \
                 $QUERIES_DIR/search_no_issue \
+                $QUERIES_DIR/get_custom_fields \
                 $QUERIES_DIR/create \
                 $QUERIES_DIR/attachment \
                 $QUERIES_DIR/attachment \
@@ -245,6 +260,9 @@ rlJournalStart
 
         rlAssertGrep "Status: new http://localhost:12345/view.php?id=7" client_log
 
+        # not contain
+        rlAssertNotGrep "<int>323795</int>" client_log #dummy
+
         rm -f problem_dir/reported_to
     rlPhaseEnd
 
@@ -252,7 +270,9 @@ rlJournalStart
     rlPhaseStartTest "create an issue (no potential duplicate issues exist)"
          ./pyserve \
                 $QUERIES_DIR/login_correct \
+                $QUERIES_DIR/project_get_id_from_name \
                 $QUERIES_DIR/search_no_issue \
+                $QUERIES_DIR/get_custom_fields \
                 $QUERIES_DIR/create \
                 $QUERIES_DIR/attachment \
                 $QUERIES_DIR/attachment \
@@ -284,6 +304,7 @@ rlJournalStart
         rlAssertGrep "<ns1:mc_issue_addResponse><return xsi:type=\"xsd:integer\">7</return>" client_log
 
         rlAssertGrep "Status: new http://localhost:12345/view.php?id=7" client_log
+        rlAssertNotGrep "<int>323795</int>" client_log #dummy
 
         rm -f problem_dir/reported_to
     rlPhaseEnd
@@ -292,6 +313,7 @@ rlJournalStart
     rlPhaseStartTest "duplicate issue exist (comment doesn't exist)"
          ./pyserve \
                 $QUERIES_DIR/login_correct \
+                $QUERIES_DIR/project_get_id_from_name \
                 $QUERIES_DIR/search_two_issues \
                 $QUERIES_DIR/search_one_issue \
                 $QUERIES_DIR/get_issue \
@@ -326,6 +348,9 @@ rlJournalStart
 
         rlAssertGrep "Status: new open http://localhost:12345/view.php?id=99" client_log
 
+        # not contain
+        rlAssertNotGrep "<int>323795</int>" client_log #dummy
+
         rm -f problem_dir/reported_to
     rlPhaseEnd
 
@@ -333,6 +358,7 @@ rlJournalStart
     rlPhaseStartTest "duplicate issue exist (comment doesn't exist)"
          ./pyserve \
                 $QUERIES_DIR/login_correct \
+                $QUERIES_DIR/project_get_id_from_name \
                 $QUERIES_DIR/search_two_issues \
                 $QUERIES_DIR/search_one_issue \
                 $QUERIES_DIR/get_issue_closed_as_duplicate \
@@ -371,6 +397,7 @@ rlJournalStart
         rlAssertGrep "Status: new open http://localhost:12345/view.php?id=101" client_log
         # not contain
         rlAssertNotGrep "Status: new open http://localhost:12345/view.php?id=99" client_log
+        rlAssertNotGrep "<int>323795</int>" client_log #dummy
 
         rm -f problem_dir/reported_to
         rm -f problem_dir/comment
@@ -381,6 +408,7 @@ rlJournalStart
     rlPhaseStartTest "duplicate issue exist (comment file exists, isn't duplicate, attach backtrace)"
          ./pyserve \
                 $QUERIES_DIR/login_correct \
+                $QUERIES_DIR/project_get_id_from_name \
                 $QUERIES_DIR/search_two_issues \
                 $QUERIES_DIR/search_one_issue \
                 $QUERIES_DIR/get_issue \
@@ -424,6 +452,9 @@ rlJournalStart
 
         rlAssertGrep "Status: new open http://localhost:12345/view.php?id=99" client_log
 
+        # not contain
+        rlAssertNotGrep "<int>323795</int>" client_log #dummy
+
         rm -f problem_dir/reported_to
         rm -f problem_dir/comment
     rlPhaseEnd
@@ -432,6 +463,7 @@ rlJournalStart
     rlPhaseStartTest "duplicate issue exist (comment file exists, is duplicate)"
          ./pyserve \
                 $QUERIES_DIR/login_correct \
+                $QUERIES_DIR/project_get_id_from_name \
                 $QUERIES_DIR/search_two_issues \
                 $QUERIES_DIR/search_one_issue \
                 $QUERIES_DIR/get_issue_dup_comment_rating_1 \
@@ -473,6 +505,7 @@ rlJournalStart
         rlAssertNotGrep "<return xsi:type=\"xsd:integer\">4</return></ns1:mc_issue_attachment_addResponse>" client_log
 
         rlAssertGrep "Status: new open http://localhost:12345/view.php?id=99" client_log
+        rlAssertNotGrep "<int>323795</int>" client_log #dummy
 
         rm -f problem_dir/reported_to
         rm -f problem_dir/comment
@@ -481,6 +514,7 @@ rlJournalStart
     rlPhaseStartTest "duplicate issue exist (comment file exists, isn't duplicate, the same backtrace rating)"
          ./pyserve \
                 $QUERIES_DIR/login_correct \
+                $QUERIES_DIR/project_get_id_from_name \
                 $QUERIES_DIR/search_two_issues \
                 $QUERIES_DIR/search_one_issue \
                 $QUERIES_DIR/get_issue_comment_rating_1 \
@@ -513,9 +547,8 @@ rlJournalStart
         rlAssertGrep "MantisBT has 2 reports with duphash 'bbfe66399cc9cb8ba647414e33c5d1e4ad82b511' including cross-version ones" client_log
         rlAssertGrep "<return SOAP-ENC:arrayType=\"ns1:IssueData\[2\]\" xsi:type=\"SOAP-ENC:Array\">" client_log
         rlAssertGrep "MantisBT has 1 reports with duphash 'bbfe66399cc9cb8ba647414e33c5d1e4ad82b511'" client_log
+        rlAssertGrep "Status: new open http://localhost:12345/view.php?id=99" client_log
 
-        # not contain
-        rlAssertNotGrep "<return SOAP-ENC:arrayType=\"ns1:IssueData\[0\]\" xsi:type=\"SOAP-ENC:Array\">" client_log 
 
         rlAssertGrep "<ns1:mc_issue_getResponse><return xsi:type=\"ns1:IssueData\"><id xsi:type=\"xsd:integer\">99</id>" client_log
         rlAssertGrep "<name xsi:type=\"xsd:string\">new</name></status>" client_log
@@ -524,11 +557,12 @@ rlJournalStart
         rlAssertGrep "Adding new comment to issue 99" client_log
 
         # not contain
+        rlAssertNotGrep "<return SOAP-ENC:arrayType=\"ns1:IssueData\[0\]\" xsi:type=\"SOAP-ENC:Array\">" client_log 
         rlAssertNotGrep "Attaching better backtrace" client_log
         rlAsserNottGrep "Found the same comment in the issue history, not adding a new one" client_log
         rlAssertNotGrep "<return xsi:type=\"xsd:integer\">4</return></ns1:mc_issue_attachment_addResponse>" client_log
+        rlAssertNotGrep "<int>323795</int>" client_log #dummy
 
-        rlAssertGrep "Status: new open http://localhost:12345/view.php?id=99" client_log
 
         rm -f problem_dir/reported_to
         rm -f problem_dir/comment
@@ -537,6 +571,7 @@ rlJournalStart
     rlPhaseStartTest "duplicate issue exist (comment file exists, isn't duplicate, better backtrace rating)"
          ./pyserve \
                 $QUERIES_DIR/login_correct \
+                $QUERIES_DIR/project_get_id_from_name \
                 $QUERIES_DIR/search_two_issues \
                 $QUERIES_DIR/search_one_issue \
                 $QUERIES_DIR/get_issue_comment_rating_1 \
@@ -585,6 +620,7 @@ rlJournalStart
 
         # not contain
         rlAsserNottGrep "Found the same comment in the issue history, not adding a new one" client_log
+        rlAssertNotGrep "<int>323795</int>" client_log #dummy
 
         rm -f problem_dir/reported_to
         rm -f problem_dir/comment
