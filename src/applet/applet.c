@@ -129,9 +129,8 @@ static void connectivity_changed_cb(GObject    *gobject,
         if (g_deferred_timeout)
             g_source_remove(g_deferred_timeout);
 
-        g_deferred_timeout = g_timeout_add(30 * 1000 /* give NM 30s to configure network */,
-                                           (GSourceFunc)process_deferred_queue_timeout_fn,
-                                           g_deferred_crash_queue);
+        g_deferred_timeout = g_idle_add ((GSourceFunc)process_deferred_queue_timeout_fn,
+                                         g_deferred_crash_queue);
     }
 }
 
