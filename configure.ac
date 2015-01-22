@@ -62,12 +62,6 @@ if test -z "$PYTHON"; then
     exit 1
 fi
 
-AC_PATH_PROG([PYTHON3], [python3], [no])
-if test -z "$PYTHON3"; then
-    echo "*** Essential program python3 not found" 1>&2
-    exit 1
-fi
-
 AC_PATH_PROG([ASCIIDOC], [asciidoc], [no])
 [if test "$ASCIIDOC" = "no"]
 [then]
@@ -95,54 +89,97 @@ AC_PATH_PROG([PYTHON_CONFIG], [python-config], [no])
     [exit 1]
 [fi]
 
-AC_PATH_PROG([PYTHON3_CONFIG], [python3-config], [no])
-[if test "$PYTHON3_CONFIG" = "no"]
+AC_ARG_WITH(python3,
+AS_HELP_STRING([--with-python3],[build Python3 support (default is YES)]),
+ABRT_PARSE_WITH([python3]))
+
+[if test -z "$NO_PYTHON3"]
 [then]
-    [echo "The python3-config program was not found in the search path. Please ensure"]
-    [echo "that it is installed and its directory is included in the search path."]
-    [echo "Then run configure again before attempting to build ABRT."]
-    [exit 1]
+    AM_CONDITIONAL(BUILD_PYTHON3, true)
+    AC_PATH_PROG([PYTHON3], [python3], [no])
+    [if test "$PYTHON3" == "no"]
+    [then]
+        [echo "The python3 program was not found in the search path. Please ensure"]
+        [echo "that it is installed and its directory is included in the search path or"]
+        [echo "pass --without-python3 to ./configure."]
+        [echo "Then run configure again before attempting to build ABRT."]
+        [exit 1]
+    [fi]
+
+    AC_PATH_PROG([PYTHON3_CONFIG], [python3-config], [no])
+    [if test "$PYTHON3_CONFIG" = "no"]
+    [then]
+        [echo "The python3-config program was not found in the search path. Please ensure"]
+        [echo "that it is installed and its directory is included in the search path or"]
+        [echo "pass --without-python3 to ./configure."]
+        [echo "Then run configure again before attempting to build ABRT."]
+        [exit 1]
+    [fi]
+
+    PYTHON3_CFLAGS=`python3-config --cflags 2> /dev/null`
+    PYTHON3_LIBS=`python3-config --libs 2> /dev/null`
+
+    AC_SUBST([PYTHON3_PREFIX], ['${prefix}'])
+    AC_SUBST([PYTHON3_EXEC_PREFIX], ['${exec_prefix}'])
+
+    PYTHON3_DIR=`$PYTHON3 -c "import distutils.sysconfig; \
+        print(distutils.sysconfig.get_python_lib(0,0,prefix='$PYTHON3_PREFIX'))"`
+    PYTHON3_EXECDIR=`$PYTHON3 -c "import distutils.sysconfig; \
+        print(distutils.sysconfig.get_python_lib(1,0,prefix='$PYTHON3_EXEC_PREFIX'))"`
+
+    AC_SUBST(PYTHON3_CFLAGS)
+    AC_SUBST(PYTHON3_LIBS)
+    AC_SUBST(python3dir, $PYTHON3_DIR)
+    AC_SUBST(py3execdir, $PYTHON3_EXECDIR)
+[else]
+    AM_CONDITIONAL(BUILD_PYTHON3, false)
 [fi]
 
-AC_PATH_PROG([PYTHON_SPHINX], [sphinx-build], [no])
-[if test "$PYTHON_SPHINX" = "no"]
+AC_ARG_WITH(pythondoc,
+AS_HELP_STRING([--with-pythondoc],[build Python documentation (default is YES)]),
+ABRT_PARSE_WITH([pythondoc]))
+
+[if test -z "$NO_PYTHONDOC"]
 [then]
-    [echo "The sphinx-build program was not found in the search path. Please ensure"]
-    [echo "that it is installed and its directory is included in the search path."]
-    [echo "Then run configure again before attempting to build ABRT."]
-    [exit 1]
+    AM_CONDITIONAL(HAVE_PYTHON_SPHINX, true)
+    AC_PATH_PROG([PYTHON_SPHINX], [sphinx-build], [no])
+    [if test "$PYTHON_SPHINX" = "no"]
+    [then]
+        [echo "The sphinx-build program was not found in the search path. Please ensure"]
+        [echo "that it is installed and its directory is included in the search path or"]
+        [echo "pass --without-pythondoc to ./configure."]
+        [echo "Then run configure again before attempting to build ABRT."]
+        [exit 1]
+    [fi]
+[else]
+    AM_CONDITIONAL(HAVE_PYTHON_SPHINX, false)
 [fi]
 
-AC_PATH_PROG([PYTHON_NOSE], [nosetests], [no])
-[if test "$PYTHON_NOSE" = "no"]
+AC_ARG_WITH(pythontests,
+AS_HELP_STRING([--with-pythontests],[run python tests (default is YES)]),
+ABRT_PARSE_WITH([pythontests]))
+
+[if test -z "$NO_PYTHONTESTS"]
 [then]
-    [echo "The nosetests program was not found in the search path. Please ensure"]
-    [echo "that it is installed and its directory is included in the search path."]
-    [echo "Then run configure again before attempting to build ABRT."]
-    [exit 1]
+    AM_CONDITIONAL(HAVE_PYTHON_NOSE, true)
+    AC_PATH_PROG([PYTHON_NOSE], [nosetests], [no])
+    [if test "$PYTHON_NOSE" = "no"]
+    [then]
+        [echo "The nosetests program was not found in the search path. Please ensure"]
+        [echo "that it is installed and its directory is included in the search path or"]
+        [echo "pass --without-pythontests to ./configure."]
+        [echo "Then run configure again before attempting to build ABRT."]
+        [exit 1]
+    [fi]
+[else]
+    AM_CONDITIONAL(HAVE_PYTHON_NOSE, false)
 [fi]
 
 PYTHON_CFLAGS=`python-config --cflags 2> /dev/null`
 PYTHON_LIBS=`python-config --libs 2> /dev/null`
 
-PYTHON3_CFLAGS=`python3-config --cflags 2> /dev/null`
-PYTHON3_LIBS=`python3-config --libs 2> /dev/null`
-
-AC_SUBST([PYTHON3_PREFIX], ['${prefix}'])
-AC_SUBST([PYTHON3_EXEC_PREFIX], ['${exec_prefix}'])
-
-PYTHON3_DIR=`$PYTHON3 -c "import distutils.sysconfig; \
-    print(distutils.sysconfig.get_python_lib(0,0,prefix='$PYTHON3_PREFIX'))"`
-PYTHON3_EXECDIR=`$PYTHON3 -c "import distutils.sysconfig; \
-    print(distutils.sysconfig.get_python_lib(1,0,prefix='$PYTHON3_EXEC_PREFIX'))"`
-
 AC_SUBST(PYTHON_CFLAGS)
 AC_SUBST(PYTHON_LIBS)
-
-AC_SUBST(PYTHON3_CFLAGS)
-AC_SUBST(PYTHON3_LIBS)
-AC_SUBST(python3dir, $PYTHON3_DIR)
-AC_SUBST(py3execdir, $PYTHON3_EXECDIR)
 
 PKG_CHECK_MODULES([XICE], [ice])
 PKG_CHECK_MODULES([XSMP], [sm])

@@ -1,16 +1,11 @@
 PYFILES= __init__.py exception.py proxies.py tools.py watch.py config.py
 
 problem_PYTHON = $(PYFILES)
-problem3_PYTHON = $(PYFILES)
 
 problemdir = $(pyexecdir)/problem
-problem3dir = $(py3execdir)/problem
 
 pyabrtdir = $(problemdir)
 pyabrt_LTLIBRARIES = _pyabrt.la
-
-py3abrtdir = $(problem3dir)
-py3abrt_LTLIBRARIES = _py3abrt.la
 
 PYEXTFILES = pyabrtmodule.c pyabrt.c common.h
 PYEXTCPPFLAGS = \
@@ -36,6 +31,14 @@ _pyabrt_la_LIBADD = \
     ../../lib/libabrt.la
     $(PYTHON2_LIBS)
 
+if BUILD_PYTHON3
+problem3_PYTHON = $(PYFILES)
+
+problem3dir = $(py3execdir)/problem
+
+py3abrtdir = $(problem3dir)
+py3abrt_LTLIBRARIES = _py3abrt.la
+
 _py3abrt_la_SOURCES = $(PYEXTFILES)
 _py3abrt_la_CPPFLAGS = \
     $(PYEXTCPPFLAGS) \
@@ -46,6 +49,7 @@ _py3abrt_la_LDFLAGS = \
 _py3abrt_la_LIBADD = \
     ../../lib/libabrt.la \
     $(PYTHON3_LIBS)
+endif
 
 config.py: config.py.in
 	sed -e s,\@DEFAULT_DUMP_LOCATION\@,$(DEFAULT_DUMP_LOCATION),g \

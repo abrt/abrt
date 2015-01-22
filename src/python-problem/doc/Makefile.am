@@ -162,8 +162,12 @@ EXTRA_DIST = \
 	properties.rst \
 	usage.rst
 
-man5_MANS = _build/man/abrt-python.5 _build/man/abrt-python3.5
+man5_MANS = _build/man/abrt-python.5
 
 _build/man/abrt-python.5: problem-config man
+
+if BUILD_PYTHON3
+man5_MANS += _build/man/abrt-python3.5
 _build/man/abrt-python3.5: problem-config man
 	cp _build/man/abrt-python.5 _build/man/abrt-python3.5
+endif

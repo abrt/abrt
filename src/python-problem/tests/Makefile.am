@@ -3,6 +3,7 @@ check_SCRIPTS = $(TESTS)
 
 EXTRA_DIST = $(check_SCRIPTS) util.py base.py
 
+if BUILD_PYTHON3
 check-local:
 	echo "Running tests with python3"; \
 	exc=0; \
@@ -10,3 +11,4 @@ check-local:
 		python3 $$test || exc=1; \
 	done; \
 	exit $$exc
+endif
