@@ -181,8 +181,12 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "time out"
+        LOG_NAME="timeout.log"
+
         # Use PID 1 that always exist :)
         rlRun "ln -sf 1 $crash_PATH/.lock"
+
+        (sleep 15; killall abrt-cli > killall.log 2>&1) &
 
         rlLog "ABRT emits a warning due to time out of abrt-cli status"
         CANARY="CANARY_$(date +%s)_LIVES"
@@ -192,6 +196,9 @@ rlJournalStart
         rlAssertGrep "'abrt-cli status' timed out" $LOG_NAME
         # ABRT didn't break login
         rlAssertGrep "$CANARY" $LOG_NAME
+
+        sleep 6
+        rlAssertGrep "abrt-cli: no process found" killall.log
 
         rlRun "rm $crash_PATH/.lock"
     rlPhaseEnd
