@@ -415,6 +415,8 @@ static void fork_exec_gui(const char *problem_id)
     app = g_app_info_create_from_commandline (cmd, GUI_EXECUTABLE,
                                               G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION,
                                               &error);
+    g_free(cmd);
+
     if (!app)
         error_msg_and_die("Cannot find " GUI_EXECUTABLE);
 
