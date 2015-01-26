@@ -35,6 +35,8 @@ FILENAME_PACKAGE = "package"
 FILENAME_UID = "uid"
 FILENAME_UUID = "uuid"
 FILENAME_DUPHASH = "duphash"
+FILENAME_EXECUTABLE = "executable"
+FILENAME_CMDLINE = "cmdline"
 
 
 def run_autoreport(problem_data, event_name):
@@ -99,7 +101,8 @@ def emit_crash_dbus_signal(problem_data):
         # member is a Boolean flag which is True if the element is required
         arguments = ((FILENAME_PACKAGE, True), (CD_DUMPDIR, True),
                 (FILENAME_UID, False), (FILENAME_UUID, False),
-                (FILENAME_DUPHASH, False))
+                (FILENAME_DUPHASH, False), (FILENAME_EXECUTABLE, False),
+                (FILENAME_CMDLINE, False))
 
         for elem in arguments:
             itm = problem_data.get(elem[0])
