@@ -59,6 +59,7 @@ static guint g_deferred_timeout;
 static ignored_problems_t *g_ignore_set;
 /* Used only for selection of the last notified problem if a user clicks on the systray icon */
 static char *g_last_notified_problem_id;
+static bool g_gnome_abrt_available;
 
 static bool get_configured_bool_or_default(const char *opt_name, bool def)
 {
@@ -381,6 +382,27 @@ static void new_dir_exists(GList **new_dirs)
         list_free_with_free(old_dirlist);
     }
     list_free_with_free(dirlist);
+}
+
+static bool is_gnome_abrt_available(void)
+{
+    GAppInfo *app;
+    GError *error = NULL;
+    bool ret = TRUE;
+
+    app = g_app_info_create_from_commandline (GUI_EXECUTABLE, GUI_EXECUTABLE,
+                                              G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION,
+                                              &error);
+    if (!app)
+    {
+        log_debug("Cannot find " GUI_EXECUTABLE ": %s", error->message);
+        g_error_free(error);
+        ret = FALSE;
+    }
+
+    g_clear_object(&app);
+
+    return ret;
 }
 
 static void fork_exec_gui(const char *problem_id)
@@ -1171,6 +1193,8 @@ int main(int argc, char** argv)
                                         name_acquired_handler,
                                         name_lost_handler,
                                         NULL, NULL);
+
+    g_gnome_abrt_available = is_gnome_abrt_available();
 
     /* Enter main loop
      */
