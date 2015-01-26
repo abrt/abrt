@@ -389,15 +389,15 @@ static void fork_exec_gui(const char *problem_id)
     GError *error = NULL;
     char *cmd;
 
-    cmd = g_strdup_printf ("gnome-abrt -p %s", problem_id);
-    app = g_app_info_create_from_commandline (cmd, "gnome-abrt",
+    cmd = g_strdup_printf (GUI_EXECUTABLE " -p %s", problem_id);
+    app = g_app_info_create_from_commandline (cmd, GUI_EXECUTABLE,
                                               G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION,
                                               &error);
     if (!app)
-        error_msg_and_die("Cannot find gnome-abrt");
+        error_msg_and_die("Cannot find " GUI_EXECUTABLE);
 
     if (!g_app_info_launch(G_APP_INFO(app), NULL, NULL, &error))
-        perror_msg_and_die("Could not launch gnome-abrt: %s", error->message);
+        perror_msg_and_die("Could not launch " GUI_EXECUTABLE ": %s", error->message);
 
     /* Scan dirs and save new $XDG_CACHE_HOME/abrt/applet_dirlist.
      * (Otherwise, after a crash, next time applet is started,
