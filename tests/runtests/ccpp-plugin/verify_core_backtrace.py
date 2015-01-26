@@ -40,6 +40,8 @@ for (i, frame) in enumerate(trace):
     assert isinstance(frame['build_id'], unicode)
     assert isinstance(frame['build_id_offset'], int)
     assert isinstance(frame['file_name'], unicode)
-    assert (os.path.basename(core_backtrace['executable']) in frame['file_name'] or 'libwillcrash' in frame['file_name'])
+    assert (os.path.basename(core_backtrace['executable']) in frame['file_name']
+        or 'libwillcrash' in frame['file_name']
+        or 'libc' in frame['file_name'])
 
 print 'OK'
