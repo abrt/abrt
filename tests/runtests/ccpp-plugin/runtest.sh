@@ -50,6 +50,8 @@ rlJournalStart
         wait_for_hooks
         get_crash_path
 
+        ARCHITECTURE=$(rlGetPrimaryArch)
+
         ls $crash_PATH > crash_dir_ls
 
         rlAssertExists "$crash_PATH/uuid"
@@ -59,7 +61,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "core_backtrace contents"
-        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace 2>&1 > verify_result" 0
+        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace $ARCHITECTURE 2>&1 > verify_result" 0
     rlPhaseEnd
 
     rlPhaseStartCleanup
@@ -73,7 +75,7 @@ rlJournalStart
         get_crash_path
 
         rlAssertExists "$crash_PATH/core_backtrace"
-        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace 2>&1 > verify_result_overflow" 0
+        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace $ARCHITECTURE 2>&1 > verify_result_overflow" 0
         rlRun "./verify_core_backtrace_length.py $crash_PATH/core_backtrace 2>&1 > verify_result_len_overflow" 0
     rlPhaseEnd
 

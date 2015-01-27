@@ -4,6 +4,8 @@ import json
 import sys
 import os
 
+arch = sys.argv[2]
+
 expected = {
 '/usr/bin/will_segfault' : [
     'crash',
@@ -17,6 +19,9 @@ expected = {
     'main'
     ]
 }
+
+if arch == 'ppc64':
+    expected['/usr/bin/will_segfault'].append('generic_start_main.isra.0')
 
 with open(sys.argv[1], 'r') as fh:
     core_backtrace = json.load(fh)
