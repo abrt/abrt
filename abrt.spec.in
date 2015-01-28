@@ -67,7 +67,6 @@ BuildRequires: gtk3-devel
 BuildRequires: glib2-devel >= 2.43
 BuildRequires: rpm-devel >= 4.6
 BuildRequires: desktop-file-utils
-BuildRequires: gsettings-desktop-schemas >= 3.15
 BuildRequires: libnotify-devel
 #why? BuildRequires: file-devel
 BuildRequires: python-devel
@@ -147,7 +146,9 @@ Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-dbus = %{version}-%{release}
 Requires: gnome-abrt
+Requires: gsettings-desktop-schemas >= 3.15
 BuildRequires: libreport-gtk-devel >= %{libreport_ver}
+BuildRequires: gsettings-desktop-schemas-devel >= 3.15
 # we used to have abrt-applet, now abrt-gui includes it:
 Provides: abrt-applet = %{version}-%{release}
 Obsoletes: abrt-applet < 0.0.5
