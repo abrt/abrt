@@ -66,8 +66,9 @@ rlJournalStart
 
         rlAssertGrep "<ns3:mc_login><ns3:username xsi:type=\"ns2:string\">test</ns3:username>" server_log
         rlAssertGrep "<ns3:password xsi:type=\"ns2:string\">password</ns3:password></ns3:mc_login>" server_log
-        rlAssertGrep "<ns3:mc_search_issues>" server_log
-        rlAssertGrep "\"abrt_hash\":\"bbfe66399cc9cb8ba647414e33c5d1e4ad82b511\"" server_log
+        rlAssertGrep "<ns3:mc_filter_search_issues>" server_log
+        rlAssertGrep "<ns3:field xsi:type=\"ns3:ObjectRef\"><ns3:name xsi:type=\"ns2:string\">abrt_hash</ns3:name>" server_log
+        rlAssertGrep "bbfe66399cc9cb8ba647414e33c5d1e4ad82b511</ns3:item>" server_log
 
         rlAssertGrep "<SOAP-ENV:Body><ns1:mc_loginResponse>" client_log
         rlAssertGrep "<id xsi:type=\"xsd:integer\">2</id>" client_log
@@ -176,7 +177,7 @@ rlJournalStart
 
         #request
         rlAssertGrep "<ns1:Body><ns3:mc_login><ns3:username xsi:type=\"ns2:string\">test</ns3:username>" server_log
-        rlAssertGrep "<ns3:mc_search_issues>" server_log
+        rlAssertGrep "<ns3:mc_filter_search_issues>" server_log
         rlAssertGrep "<ns3:mc_issue_add>" server_log
         rlAssertGrep "<ns3:name xsi:type=\"ns2:string\">proj</ns3:name>" server_log
         rlAssertGrep "<ns3:view_state xsi:type=\"ns3:ObjectRef\"><ns3:name xsi:type=\"ns2:string\">public</ns3:name></ns3:view_state>" server_log
@@ -231,7 +232,7 @@ rlJournalStart
 
         #request
         rlAssertGrep "<ns1:Body><ns3:mc_login><ns3:username xsi:type=\"ns2:string\">test</ns3:username>" server_log
-        rlAssertGrep "<ns3:mc_search_issues>" server_log
+        rlAssertGrep "<ns3:mc_filter_search_issues>" server_log
         rlAssertGrep "<ns3:mc_issue_add>" server_log
         rlAssertGrep "<ns3:name xsi:type=\"ns2:string\">proj</ns3:name>" server_log
         rlAssertGrep "<ns3:view_state xsi:type=\"ns3:ObjectRef\"><ns3:name xsi:type=\"ns2:string\">public</ns3:name></ns3:view_state>" server_log
@@ -284,7 +285,7 @@ rlJournalStart
 
         #request
         rlAssertGrep "<ns3:mc_login>" server_log
-        rlAssertGrep "<ns3:mc_search_issues>" server_log
+        rlAssertGrep "<ns3:mc_filter_search_issues>" server_log
         rlAssertGrep "<ns3:mc_issue_add>" server_log
         rlAssertGrep "<ns3:mc_issue_attachment_add>" server_log
 
@@ -327,7 +328,7 @@ rlJournalStart
 
         # request
         rlAssertGrep "<ns3:mc_login>" server_log
-        rlAssertGrep "<ns3:mc_search_issues>" server_log
+        rlAssertGrep "<ns3:mc_filter_search_issues>" server_log
         rlAssertGrep "<ns3:mc_issue_get>" server_log
         rlAssertGrep "<ns3:issue_id xsi:type=\"ns2:integer\">99</ns3:issue_id></ns3:mc_issue_get>" server_log
 
@@ -371,7 +372,7 @@ rlJournalStart
 
         # request
         rlAssertGrep "<ns3:mc_login>" server_log
-        rlAssertGrep "<ns3:mc_search_issues>" server_log
+        rlAssertGrep "<ns3:mc_filter_search_issues>" server_log
         rlAssertGrep "<ns3:mc_issue_get>" server_log
         rlAssertGrep "<ns3:issue_id xsi:type=\"ns2:integer\">99</ns3:issue_id></ns3:mc_issue_get>" server_log
 
@@ -425,7 +426,7 @@ rlJournalStart
 
         # request
         rlAssertGrep "<ns3:mc_login>" server_log
-        rlAssertGrep "<ns3:mc_search_issues>" server_log
+        rlAssertGrep "<ns3:mc_filter_search_issues>" server_log
         rlAssertGrep "<ns3:mc_issue_get>" server_log
         rlAssertGrep "<ns3:issue_id xsi:type=\"ns2:integer\">99</ns3:issue_id></ns3:mc_issue_get>" server_log
         rlAssertGrep "<ns3:mc_issue_note_add>" server_log
@@ -478,7 +479,7 @@ rlJournalStart
 
         # request
         rlAssertGrep "<ns3:mc_login>" server_log
-        rlAssertGrep "<ns3:mc_search_issues>" server_log
+        rlAssertGrep "<ns3:mc_filter_search_issues>" server_log
         rlAssertGrep "<ns3:mc_issue_get>" server_log
         rlAssertGrep "<ns3:issue_id xsi:type=\"ns2:integer\">99</ns3:issue_id></ns3:mc_issue_get>" server_log
 
@@ -530,7 +531,7 @@ rlJournalStart
 
         # request
         rlAssertGrep "<ns3:mc_login>" server_log
-        rlAssertGrep "<ns3:mc_search_issues>" server_log
+        rlAssertGrep "<ns3:mc_filter_search_issues>" server_log
         rlAssertGrep "<ns3:mc_issue_get>" server_log
         rlAssertGrep "<ns3:issue_id xsi:type=\"ns2:integer\">99</ns3:issue_id></ns3:mc_issue_get>" server_log
         rlAssertGrep "<ns3:mc_issue_note_add>" server_log
@@ -589,7 +590,7 @@ rlJournalStart
 
         # request
         rlAssertGrep "<ns3:mc_login>" server_log
-        rlAssertGrep "<ns3:mc_search_issues>" server_log
+        rlAssertGrep "<ns3:mc_filter_search_issues>" server_log
         rlAssertGrep "<ns3:mc_issue_get>" server_log
         rlAssertGrep "<ns3:issue_id xsi:type=\"ns2:integer\">99</ns3:issue_id></ns3:mc_issue_get>" server_log
         rlAssertGrep "<ns3:mc_issue_note_add>" server_log
