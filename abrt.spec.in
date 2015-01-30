@@ -291,7 +291,7 @@ Requires: abrt-addon-ccpp
 Requires: abrt-addon-python
 Requires: abrt-addon-xorg
 %if 0%{?rhel}
-Requires: libreport-rhel >= %{libreport_ver}
+Requires: libreport-centos >= %{libreport_ver}
 Requires: libreport-plugin-rhtsupport >= %{libreport_ver}
 %else
 Requires: abrt-retrace-client
@@ -332,7 +332,7 @@ Requires: gdb >= 7.6.1-63
 Requires: abrt-gui
 Requires: gnome-abrt
 %if 0%{?rhel}
-Requires: libreport-rhel >= %{libreport_ver}
+Requires: libreport-centos >= %{libreport_ver}
 Requires: libreport-plugin-rhtsupport >= %{libreport_ver}
 %else
 Requires: abrt-retrace-client
