@@ -159,10 +159,8 @@ Group: System Environment/Libraries
 Requires: cpio
 Requires: gdb >= 7.6.1-63
 Requires: elfutils
-%if 0%{!?rhel:1}
 # abrt-action-perform-ccpp-analysis wants to run analyze_RetraceServer:
 Requires: %{name}-retrace-client
-%endif
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-libs = %{version}-%{release}
 Requires: libreport-python
