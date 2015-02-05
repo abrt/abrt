@@ -70,6 +70,7 @@ if __name__ == "__main__":
     exact_fls = False
     missing = None
     repo_pattern = "*debug*"
+    pkgmgr = None
 
     # localization
     init_gettext()
@@ -85,7 +86,7 @@ if __name__ == "__main__":
     # ____________________________________________________________________________________ 7
     # ______01234567890123456789012345678901234567890123456789012345678901234567890123456789
     help_text = _(
-            "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+            "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
             "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
             "       [-e, --exact=PATH[:PATH]...]\n"
             "\n"
@@ -93,12 +94,15 @@ if __name__ == "__main__":
             "to CACHEDIR, using TMPDIR as temporary staging area.\n"
             "Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
             "\n"
+            "Reads configuration from /etc/abrt/plugins/CCpp.conf\n"
+            "\n"
             "    -v          Be verbose\n"
             "    -y          Noninteractive, assume 'Yes' to all questions\n"
             "    --ids       Default: build_ids\n"
             "    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
             "    --cache     Default: /var/cache/abrt-di\n"
             "    --size_mb   Default: 4096\n"
+            "    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
             "    -e,--exact  Download only specified files\n"
             "    --repo      Pattern to use when searching for repos.\n"
             "                Default: *debug*\n"
@@ -108,7 +112,7 @@ if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:], "vyhe",
                 ["help", "ids=", "cache=", "size_mb=", "tmpdir=", "keeprpms",
-                 "exact=", "repo="])
+                 "exact=", "repo=", "pkgmgr="])
     except getopt.GetoptError as err:
         print(err) # prints something like "option -a not recognized"
         exit(RETURN_FAILURE)
@@ -140,6 +144,8 @@ if __name__ == "__main__":
             exact_fls = True
         elif opt == "--repo":
             repo_pattern = arg
+        elif opt == "--pkgmgr":
+            pkgmgr = arg
 
     set_verbosity(verbose)
 
@@ -208,10 +214,30 @@ if __name__ == "__main__":
             # Only --exact FILE[:FILE2]... was specified
             print(_("{0} of debuginfo files are not installed").format(len(missing)))
 
+        if pkgmgr is None:
+            try:
+                conf = problem.load_plugin_conf_file("CCpp.conf")
+            except OSError as ex:
+                sys.stderr.write("{0}".format(str(ex)))
+                sys.exit(RETURN_FAILURE)
+
+            pkgmgr = conf.get("PackageManager", "dnf").lower()
+
+        download_class = None
+        if pkgmgr == "dnf":
+            from reportclient.dnfdebuginfo import DNFDebugInfoDownload
+            download_class = DNFDebugInfoDownload
+        elif pkgmgr == "yum":
+            from reportclient.yumdebuginfo import YumDebugInfoDownload
+            download_class = YumDebugInfoDownload
+        else:
+            sys.stderr.write(_("Invalid configuration of CCpp addon, unsupported Package manager: '%s'") % (pkgmgr))
+            sys.exit(RETURN_FAILURE)
+
         # TODO: should we pass keep_rpms=keeprpms to DebugInfoDownload here??
-        downloader = DebugInfoDownload(cache=cachedirs[0], tmp=tmpdir,
-                                       noninteractive=noninteractive,
-                                       repo_pattern=repo_pattern)
+        downloader = download_class(cache=cachedirs[0], tmp=tmpdir,
+                                    noninteractive=noninteractive,
+                                    repo_pattern=repo_pattern)
         try:
             result = downloader.download(missing, download_exact_files=exact_fls)
         except Exception as ex:
