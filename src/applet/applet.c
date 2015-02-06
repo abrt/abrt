@@ -195,7 +195,7 @@ static bool problem_info_ensure_writable(problem_info_t *pi)
 
 static problem_info_t *problem_info_new(const char *dir)
 {
-    problem_info_t *pi = xzalloc(sizeof(*pi));
+    problem_info_t *pi = g_new0(problem_info_t, 1);
     pi->problem_data = problem_data_new();
     problem_info_set_dir(pi, dir);
     return pi;
@@ -207,7 +207,7 @@ static void problem_info_free(problem_info_t *pi)
         return;
 
     problem_data_free(pi->problem_data);
-    free(pi);
+    g_free(pi);
 }
 
 static void run_event_async(problem_info_t *pi, const char *event_name, int flags);
@@ -228,7 +228,7 @@ struct event_processing_state
 
 static struct event_processing_state *new_event_processing_state(void)
 {
-    struct event_processing_state *p = xzalloc(sizeof(*p));
+    struct event_processing_state *p = g_new0(struct event_processing_state, 1);
     p->child_pid = -1;
     p->child_stdout_fd = -1;
     p->cmd_output = strbuf_new();
@@ -241,7 +241,7 @@ static void free_event_processing_state(struct event_processing_state *p)
         return;
 
     strbuf_free(p->cmd_output);
-    free(p);
+    g_free(p);
 }
 
 static char *build_message(problem_info_t *pi)
