@@ -142,6 +142,9 @@ static void connectivity_changed_cb(GObject    *gobject,
 typedef struct problem_info {
     problem_data_t *problem_data;
     bool foreign;
+    guint count;
+    bool is_packaged;
+    char *command_line;
     bool known;
     bool incomplete;
     bool reported;
@@ -208,6 +211,7 @@ static void problem_info_free(problem_info_t *pi)
         return;
 
     problem_data_free(pi->problem_data);
+    g_free(pi->command_line);
     g_free(pi);
 }
 
@@ -920,6 +924,13 @@ static void Crash(GVariant *parameters)
     if (foreign_problem && !g_user_is_admin)
         return;
 
+    struct dump_dir *dd = dd_opendir(dir, DD_OPEN_READONLY);
+    char *command_line = dd_load_text_ext(dd, FILENAME_CMDLINE, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    char *count_str = dd_load_text_ext(dd, FILENAME_COUNT, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    guint count = count_str ? atoi(count_str) : 1;
+    g_free(count_str);
+    dd_close(dd);
+
     /*
      * Can't append dir to the seen list because of directory stealing
      *
@@ -940,6 +951,7 @@ static void Crash(GVariant *parameters)
     ) {
         /* log_msg doesn't show in .xsession_errors */
         error_msg("repeated problem in %s, not showing the notification", package_name);
+        free(command_line);
         return;
     }
     else
@@ -960,6 +972,10 @@ static void Crash(GVariant *parameters)
     if (package_name != NULL && package_name[0] != '\0')
         problem_data_add_text_noteditable(pi->problem_data, FILENAME_COMPONENT, package_name);
     pi->foreign = foreign_problem;
+    pi->count = count;
+    pi->is_packaged = (package_name != NULL);
+    pi->command_line = g_strdup(command_line);
+    free(command_line);
     show_problem_notification(pi, 0);
 }
 
