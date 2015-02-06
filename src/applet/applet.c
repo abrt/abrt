@@ -25,6 +25,7 @@
 /* https://bugzilla.gnome.org/show_bug.cgi?id=734826 */
 #include <gtk/gtk.h>
 
+#include <polkit/polkit.h>
 #include <libnotify/notify.h>
 #include <glib.h>
 
@@ -59,6 +60,7 @@ static guint g_deferred_timeout;
 /* Used only for selection of the last notified problem if a user clicks on the systray icon */
 static char *g_last_notified_problem_id;
 static bool g_gnome_abrt_available;
+static bool g_user_is_admin;
 
 static bool get_configured_bool_or_default(const char *opt_name, bool def)
 {
@@ -400,6 +402,22 @@ static bool is_gnome_abrt_available(void)
     }
 
     g_clear_object(&app);
+
+    return ret;
+}
+
+static bool is_user_admin(void)
+{
+    GError *error = NULL;
+    bool ret = false;
+    GPermission *perm = polkit_permission_new_sync ("org.freedesktop.problems.getall",
+                                                    NULL, NULL, &error);
+    if (!perm)
+        perror_msg_and_die("Can't get Polkit configuration: %s", error->message);
+
+    ret = g_permission_get_allowed (perm);
+
+    g_object_unref (perm);
 
     return ret;
 }
@@ -898,6 +916,10 @@ static void Crash(GVariant *parameters)
         }
     }
 
+    /* Non-admins shouldn't see other people's crashes */
+    if (foreign_problem && !g_user_is_admin)
+        return;
+
     /*
      * Can't append dir to the seen list because of directory stealing
      *
@@ -1147,6 +1169,8 @@ int main(int argc, char** argv)
                                         name_acquired_handler,
                                         name_lost_handler,
                                         NULL, NULL);
+
+    g_user_is_admin = is_user_admin();
 
     g_gnome_abrt_available = is_gnome_abrt_available();
 
