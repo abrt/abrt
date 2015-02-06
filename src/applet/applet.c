@@ -250,19 +250,19 @@ static char *build_message(problem_info_t *pi)
 
     char *msg = NULL;
     if (package_name == NULL || package_name[0] == '\0')
-        msg = xasprintf(_("A problem has been detected"));
+        msg = g_strdup(_("A problem has been detected"));
     else
-        msg = xasprintf(_("A problem in the %s package has been detected"), package_name);
+        msg = g_strdup_printf(_("A problem in the %s package has been detected"), package_name);
 
     if (pi->incomplete)
     {
         const char *not_reportable = problem_data_get_content_or_NULL(pi->problem_data, FILENAME_NOT_REPORTABLE);
         log_notice("%s", not_reportable);
         if (not_reportable)
-            msg = xasprintf("%s\n\n%s", msg, not_reportable);
+            msg = g_strdup_printf("%s\n\n%s", msg, not_reportable);
     }
     else if (pi->reported)
-        msg = xasprintf(_("%s and the diagnostic data has been submitted"), msg);
+        msg = g_strdup_printf(_("%s and the diagnostic data has been submitted"), msg);
 
     return msg;
 }
@@ -451,7 +451,7 @@ static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *ev
     /* WTF? We use 'abrt-handle-event -i' but here we export REPORT_CLIENT_NONINTERACTIVE */
     /* - Exactly, REPORT_CLIENT_NONINTERACTIVE causes that abrt-handle-event in */
     /* interactive mode replies with empty responses to all event's questions. */
-    env_vec[0] = xstrdup("REPORT_CLIENT_NONINTERACTIVE=1");
+    env_vec[0] = g_strdup("REPORT_CLIENT_NONINTERACTIVE=1");
     env_vec[1] = NULL;
 
     pid_t child = fork_execv_on_steroids(flags, args, fdp ? pipeout : NULL,
@@ -460,7 +460,7 @@ static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *ev
     if (fdp)
         *fdp = pipeout[0];
 
-    free(env_vec[0]);
+    g_free(env_vec[0]);
 
     return child;
 }
@@ -611,8 +611,8 @@ static void notify_problem_list(GList *problems, int flags)
     }
 
     problem_info_t *last_problem = (problem_info_t *)last_item->data;
-    free(g_last_notified_problem_id);
-    g_last_notified_problem_id = xstrdup(problem_info_get_dir(last_problem));
+    g_free(g_last_notified_problem_id);
+    g_last_notified_problem_id = g_strdup(problem_info_get_dir(last_problem));
 
     for (GList *iter = problems; iter; iter = g_list_next(iter))
     {
@@ -721,7 +721,7 @@ static void notify_problem_list(GList *problems, int flags)
         }
 
 next_problem_to_notify:
-        free(notify_body);
+        g_free(notify_body);
     }
 
     g_list_free(problems);
@@ -970,10 +970,10 @@ static void Crash(GVariant *parameters)
     else
     {
         last_time = cur_time;
-        free(last_package_name);
-        last_package_name = xstrdup(package_name);
-        free(last_problem_dir);
-        last_problem_dir = xstrdup(dir);
+        g_free(last_package_name);
+        last_package_name = g_strdup(package_name);
+        g_free(last_problem_dir);
+        last_problem_dir = g_strdup(dir);
     }
 
 
@@ -1241,7 +1241,7 @@ int main(int argc, char** argv)
      * save_user_settings();
      */
 
-    free(g_last_notified_problem_id);
+    g_free(g_last_notified_problem_id);
 
     return 0;
 }
