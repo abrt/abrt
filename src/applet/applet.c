@@ -56,7 +56,6 @@ static GNetworkMonitor *netmon;
 static char **s_dirs;
 static GList *g_deferred_crash_queue;
 static guint g_deferred_timeout;
-static ignored_problems_t *g_ignore_set;
 /* Used only for selection of the last notified problem if a user clicks on the systray icon */
 static char *g_last_notified_problem_id;
 static bool g_gnome_abrt_available;
@@ -522,33 +521,6 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
         problem_info_free(pi);
 }
 
-static void action_ignore(NotifyNotification *notification, gchar *action, gpointer user_data)
-{
-    problem_info_t *pi = (problem_info_t *)user_data;
-
-    const char *const message = _(
-            "You are going to mute notifications of a particular problem. " \
-            "You will never see a notification bubble for this problem again, " \
-            "however, ABRT will be detecting it and you will be able " \
-            "to report it from ABRT GUI." \
-            "\n\n" \
-            "Do you want to continue?");
-
-    if (run_ask_yes_no_yesforever_dialog("AskIgnoreForever", message, NULL))
-    {
-        log_debug("Ignoring problem '%s'", problem_info_get_dir(pi));
-        ignored_problems_add_problem_data(g_ignore_set, pi->problem_data);
-    }
-
-    GError *err = NULL;
-    notify_notification_close(notification, &err);
-    if (err != NULL)
-    {
-        error_msg("%s", err->message);
-        g_error_free(err);
-    }
-}
-
 static void action_known(NotifyNotification *notification, gchar *action, gpointer user_data)
 {
     log_debug("Handle known action '%s'!", action);
@@ -615,17 +587,8 @@ static void notify_problem_list(GList *problems, int flags)
         char *notify_body = NULL;
 
         problem_info_t *pi = iter->data;
-        if (ignored_problems_contains_problem_data(g_ignore_set, pi->problem_data))
-        {   /* In case of shortened reporting, show the problem notification only once. */
-            problem_info_free(pi);
-            continue;
-        }
 
         NotifyNotification *notification = new_warn_notification();
-        notify_notification_add_action(notification, "IGNORE", _("Ignore forever"),
-                NOTIFY_ACTION_CALLBACK(action_ignore),
-                pi, NULL);
-
         notify_body = build_message(pi);
 
         pi->was_announced = true;
@@ -1067,8 +1030,6 @@ next:
         new_dirs = g_list_next(new_dirs);
     }
 
-    g_ignore_set = ignored_problems_new(concat_path_file(g_get_user_cache_dir(), "abrt/ignored_problems"));
-
     if (notify_list)
         show_problem_list_notification(notify_list, /* show icon and notify */ 0);
 
@@ -1196,8 +1157,6 @@ int main(int argc, char** argv)
     g_bus_unown_name (name_own_id);
 
     g_dbus_connection_signal_unsubscribe(system_conn, filter_id);
-
-    ignored_problems_free(g_ignore_set);
 
     /* new_dir_exists() is called for each notification and if user clicks on
      * the abrt icon. Those calls cover 99.97% of detected crashes
