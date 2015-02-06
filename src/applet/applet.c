@@ -614,9 +614,10 @@ static void notify_problem_list(GList *problems, int flags)
     free(g_last_notified_problem_id);
     g_last_notified_problem_id = xstrdup(problem_info_get_dir(last_problem));
 
-    char *notify_body = NULL;
     for (GList *iter = problems; iter; iter = g_list_next(iter))
     {
+        char *notify_body = NULL;
+
         problem_info_t *pi = iter->data;
         if (ignored_problems_contains_problem_data(g_ignore_set, pi->problem_data))
         {   /* In case of shortened reporting, show the problem notification only once. */
@@ -721,7 +722,6 @@ static void notify_problem_list(GList *problems, int flags)
 
 next_problem_to_notify:
         free(notify_body);
-        notify_body = NULL;
     }
 
     g_list_free(problems);
