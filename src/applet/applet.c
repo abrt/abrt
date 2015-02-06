@@ -600,9 +600,6 @@ static NotifyNotification *new_warn_notification(bool persistence)
 
 static void notify_problem_list(GList *problems, int flags)
 {
-    if (!notify_is_initted())
-        notify_init(_("Problem detected"));
-
     GList *last_item = g_list_last(problems);
     if (last_item == NULL)
     {
@@ -1118,6 +1115,7 @@ int main(int argc, char** argv)
 #endif
 
     abrt_init(argv);
+    notify_init("Problem detected");
 
     /* Monitor NetworkManager state */
     netmon = g_network_monitor_get_default ();
