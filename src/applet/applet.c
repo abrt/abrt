@@ -582,7 +582,7 @@ static void on_notify_close(NotifyNotification *notification, gpointer user_data
     new_dir_exists(/* new dirs list */ NULL);
 }
 
-static NotifyNotification *new_warn_notification(bool persistence)
+static NotifyNotification *new_warn_notification(void)
 {
     NotifyNotification *notification;
 
@@ -591,8 +591,7 @@ static NotifyNotification *new_warn_notification(bool persistence)
     g_signal_connect(notification, "closed", G_CALLBACK(on_notify_close), NULL);
 
     notify_notification_set_urgency(notification, NOTIFY_URGENCY_NORMAL);
-    notify_notification_set_timeout(notification, persistence ? NOTIFY_EXPIRES_NEVER
-                                                              : NOTIFY_EXPIRES_DEFAULT);
+    notify_notification_set_timeout(notification, NOTIFY_EXPIRES_DEFAULT);
     notify_notification_set_hint(notification, "desktop-entry", g_variant_new_string("abrt-applet"));
 
     return notification;
@@ -622,13 +621,7 @@ static void notify_problem_list(GList *problems, int flags)
             continue;
         }
 
-        /* Don't show persistent notification (let notification bubble expire
-         * and disappear in few seconds) with ShortenedReporting mode enabled
-         * and already announced problem.
-         */
-        const bool persistent_notification = (!(is_shortened_reporting_enabled() && pi->was_announced));
-
-        NotifyNotification *notification = new_warn_notification(persistent_notification);
+        NotifyNotification *notification = new_warn_notification();
         notify_notification_add_action(notification, "IGNORE", _("Ignore forever"),
                 NOTIFY_ACTION_CALLBACK(action_ignore),
                 pi, NULL);
