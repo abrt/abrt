@@ -140,12 +140,13 @@ static struct dump_dir *dd;
  * %t - UNIX time of dump
  * %e - executable filename
  * %i - crash thread tid
+ * %P - global pid
  * %% - output one "%"
  */
 /* Hook must be installed with exactly the same sequence of %c specifiers.
  * Last one, %h, may be omitted (we can find it out).
  */
-static const char percent_specifiers[] = "%scpugtei";
+static const char percent_specifiers[] = "%scpugtePi";
 static char *core_basename = (char*) "core";
 /*
  * Used for error messages only.
@@ -437,9 +438,9 @@ int main(int argc, char** argv)
 
     if (argc < 8)
     {
-        /* percent specifier:         %s   %c              %p  %u  %g  %t   %e          %i */
-        /* argv:                  [0] [1]  [2]             [3] [4] [5] [6]  [7]         [8]*/
-        error_msg_and_die("Usage: %s SIGNO CORE_SIZE_LIMIT PID UID GID TIME BINARY_NAME [TID]", argv[0]);
+        /* percent specifier:         %s   %c              %p  %u  %g  %t   %e          %P         %i*/
+        /* argv:                  [0] [1]  [2]             [3] [4] [5] [6]  [7]         [8]        [9]*/
+        error_msg_and_die("Usage: %s SIGNO CORE_SIZE_LIMIT PID UID GID TIME BINARY_NAME GLOBAL_PID [TID]", argv[0]);
     }
 
     /* Not needed on 2.6.30.
@@ -467,9 +468,9 @@ int main(int argc, char** argv)
         ulimit_c = ~((off_t)1 << (sizeof(off_t)*8-1));
     }
     const char *pid_str = argv[3];
-    pid_t pid = xatoi_positive(argv[3]);
+    pid_t local_pid = xatoi_positive(argv[3]);
     uid_t uid = xatoi_positive(argv[4]);
-    if (errno || pid <= 0)
+    if (errno || local_pid <= 0)
     {
         perror_msg_and_die("PID '%s' or limit '%s' is bogus", argv[3], argv[2]);
     }
@@ -482,9 +483,11 @@ int main(int argc, char** argv)
         else
             free(s);
     }
+    const char *global_pid_str = argv[8];
+    pid_t pid = xatoi_positive(argv[8]);
 
     pid_t tid = 0;
-    if (argv[8])
+    if (argv[9])
     {
         tid = xatoi_positive(argv[8]);
     }
@@ -599,13 +602,17 @@ int main(int argc, char** argv)
     dd = dd_create(path, fsuid, DEFAULT_DUMP_DIR_MODE);
     if (dd)
     {
-        char *rootdir = get_rootdir(pid);
-
-        dd_create_basic_files(dd, fsuid, (rootdir && strcmp(rootdir, "/") != 0) ? rootdir : NULL);
-
         char source_filename[sizeof("/proc/%lu/somewhat_long_name") + sizeof(long)*3];
-        int source_base_ofs = sprintf(source_filename, "/proc/%lu/smaps", (long)pid);
-        source_base_ofs -= strlen("smaps");
+        int source_base_ofs = sprintf(source_filename, "/proc/%lu/root", (long)pid);
+        source_base_ofs -= strlen("root");
+
+        /* What's wrong on using /proc/[pid]/root every time ?*/
+        /* It creates os_info_in_root_dir for all crashes. */
+        char *rootdir = process_has_own_root(pid) ? get_rootdir(pid) : NULL;
+        /* Yes, test 'rootdir' but use 'source_filename' because 'rootdir' can
+         * be '/' for a process with own namespace. 'source_filename' is /proc/[pid]/root. */
+        dd_create_basic_files(dd, fsuid, (rootdir != NULL) ? source_filename : NULL);
+
         char *dest_filename = concat_path_file(dd->dd_dirname, "also_somewhat_longish_name");
         char *dest_base = strrchr(dest_filename, '/') + 1;
 
@@ -629,25 +636,71 @@ int main(int argc, char** argv)
         copy_file(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE);
         IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
 
+        strcpy(source_filename + source_base_ofs, "mountinfo");
+        strcpy(dest_base, FILENAME_MOUNTINFO);
+        copy_file(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE);
+        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+
         strcpy(dest_base, FILENAME_OPEN_FDS);
         strcpy(source_filename + source_base_ofs, "fd");
         if (dump_fd_info(dest_filename, source_filename) == 0)
             IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
 
+        strcpy(dest_base, FILENAME_NAMESPACES);
+        if (dump_namespace_diff(dest_filename, 1, pid))
+            IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+
         free(dest_filename);
+
+        char *tmp = NULL;
+        get_env_variable(pid, "container", &tmp);
+        if (tmp != NULL)
+        {
+            dd_save_text(dd, FILENAME_CONTAINER, tmp);
+            free(tmp);
+            tmp = NULL;
+        }
+
+        get_env_variable(pid, "container_uuid", &tmp);
+        if (tmp != NULL)
+        {
+            dd_save_text(dd, FILENAME_CONTAINER_UUID, tmp);
+            free(tmp);
+        }
+
+        /* There's no need to compare mount namespaces and search for '/' in
+         * mountifo.  Comparison of inodes of '/proc/[pid]/root' and '/' works
+         * fine. If those inodes do not equal each other, we have to verify
+         * that '/proc/[pid]/root' is not a symlink to a chroot.
+         */
+        const int containerized = (rootdir != NULL && strcmp(rootdir, "/") == 0);
+        if (containerized)
+        {
+            log_debug("Process %d is considered to be containerized", pid);
+            pid_t container_pid;
+            if (get_pid_of_container(pid, &container_pid) == 0)
+            {
+                char *container_cmdline = get_cmdline(container_pid);
+                dd_save_text(dd, FILENAME_CONTAINER_CMDLINE, container_cmdline);
+                free(container_cmdline);
+            }
+        }
 
         dd_save_text(dd, FILENAME_ANALYZER, "abrt-ccpp");
         dd_save_text(dd, FILENAME_TYPE, "CCpp");
         dd_save_text(dd, FILENAME_EXECUTABLE, executable);
         dd_save_text(dd, FILENAME_PID, pid_str);
+        dd_save_text(dd, FILENAME_GLOBAL_PID, global_pid_str);
         dd_save_text(dd, FILENAME_PROC_PID_STATUS, proc_pid_status);
         if (user_pwd)
             dd_save_text(dd, FILENAME_PWD, user_pwd);
+
         if (rootdir)
         {
             if (strcmp(rootdir, "/") != 0)
                 dd_save_text(dd, FILENAME_ROOTDIR, rootdir);
         }
+        free(rootdir);
 
         char *reason = xasprintf("%s killed by SIG%s",
                                  last_slash, signame ? signame : signal_str);
@@ -806,7 +859,6 @@ int main(int argc, char** argv)
             trim_problem_dirs(g_settings_dump_location, maxsize * (double)(1024*1024), path);
         }
 
-        free(rootdir);
         return 0;
     }
 
