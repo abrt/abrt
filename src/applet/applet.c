@@ -972,10 +972,7 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
         pi->reported = 1;
 
         log_debug("fast report finished successfully");
-        if (pi->known || !(state->flags & REPORT_UNKNOWN_PROBLEM_IMMEDIATELY))
-            notify_problem(pi);
-        else
-            run_report_from_applet(pi);
+        notify_problem(pi);
     }
     else
     {
