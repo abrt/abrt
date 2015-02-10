@@ -38,7 +38,7 @@
 /* libnotify action keys */
 #define A_KNOWN_OPEN_GUI "OPEN"
 #define A_REPORT_REPORT "REPORT"
-#define A_REPORT_AUTOREPORT "AUTOREPORT"
+#define A_RESTART_APPLICATION "RESTART"
 
 #define GUI_EXECUTABLE "gnome-abrt"
 
@@ -633,6 +633,13 @@ create_app_from_cmdline (const char *cmdline)
     return app;
 }
 
+static gboolean
+is_app_running (GAppInfo *app)
+{
+    /* FIXME ask gnome-shell about that */
+    return FALSE;
+}
+
 static void fork_exec_gui(const char *problem_id)
 {
     GAppInfo *app;
@@ -740,6 +747,32 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
         problem_info_free(pi);
 }
 
+static void action_restart(NotifyNotification *notification, gchar *action, gpointer user_data)
+{
+    GAppInfo *app;
+    log_debug("Restarting an application!");
+    /* must be closed before ask_yes_no dialog run */
+    GError *err = NULL;
+    notify_notification_close(notification, &err);
+    if (err != NULL)
+    {
+        error_msg(_("Can't close notification: %s"), err->message);
+        g_error_free(err);
+    }
+
+    problem_info_t *pi = (problem_info_t *)user_data;
+    app = create_app_from_cmdline (pi->command_line);
+    g_assert (app);
+
+    if (!g_app_info_launch(G_APP_INFO(app), NULL, NULL, &err))
+    {
+        perror_msg("Could not launch '%s': %s",
+                   g_desktop_app_info_get_filename (G_DESKTOP_APP_INFO (app)),
+                   err->message);
+    }
+    g_object_unref (app);
+}
+
 static void action_known(NotifyNotification *notification, gchar *action, gpointer user_data)
 {
     log_debug("Handle known action '%s'!", action);
@@ -773,11 +806,11 @@ static void on_notify_close(NotifyNotification *notification, gpointer user_data
     new_dir_exists(/* new dirs list */ NULL);
 }
 
-static NotifyNotification *new_warn_notification(void)
+static NotifyNotification *new_warn_notification(const char *body)
 {
     NotifyNotification *notification;
 
-    notification = notify_notification_new(_("Warning"), NULL, NOTIFICATION_ICON_NAME);
+    notification = notify_notification_new(_("Oops!"), body, NOTIFICATION_ICON_NAME);
 
     g_signal_connect(notification, "closed", G_CALLBACK(on_notify_close), NULL);
 
@@ -786,6 +819,24 @@ static NotifyNotification *new_warn_notification(void)
     notify_notification_set_hint(notification, "desktop-entry", g_variant_new_string("abrt-applet"));
 
     return notification;
+}
+
+static void
+add_send_a_report_button (NotifyNotification *notification,
+                          problem_info_t     *pi)
+{
+    notify_notification_add_action(notification, A_REPORT_REPORT, _("Report"),
+            NOTIFY_ACTION_CALLBACK(action_report),
+            pi, NULL);
+}
+
+static void
+add_restart_app_button (NotifyNotification *notification,
+                        problem_info_t     *pi)
+{
+    notify_notification_add_action(notification, A_RESTART_APPLICATION, _("Restart"),
+            NOTIFY_ACTION_CALLBACK(action_restart),
+            pi, NULL);
 }
 
 static void notify_problem_list(GList *problems, int flags)
@@ -801,87 +852,130 @@ static void notify_problem_list(GList *problems, int flags)
     g_free(g_last_notified_problem_id);
     g_last_notified_problem_id = g_strdup(problem_info_get_dir(last_problem));
 
+    /* For the whole system, we'll need to know:
+     * - Whether automatic reporting is enabled or not
+     * - Whether the network is available
+     */
+    gboolean auto_reporting = is_autoreporting_enabled();
+    gboolean network_available = is_networking_enabled();
+
     for (GList *iter = problems; iter; iter = g_list_next(iter))
     {
         char *notify_body = NULL;
+        GAppInfo *app;
 
         problem_info_t *pi = iter->data;
 
-        NotifyNotification *notification = new_warn_notification();
-        notify_body = build_message(pi);
+        app = create_app_from_cmdline (pi->command_line);
+
+        /* For each problem we'll need to know:
+         * - Whether or not the crash happened in an “app”
+         * - Whether the app is packaged (in Fedora) or not
+         * - Whether the app is back up and running
+         * - Whether the user is the one for which the app crashed
+         * - Whether the problem has already been reported on this machine
+         */
+        gboolean is_app = (app != NULL);
+        gboolean is_packaged = pi->is_packaged;
+        gboolean is_running_again = is_app_running(app);
+        gboolean is_current_user = !pi->foreign;
+        gboolean already_reported = (pi->count > 1);
+
+        gboolean report_button = FALSE;
+        gboolean restart_button = FALSE;
+
+        if (is_app)
+        {
+            if (auto_reporting)
+            {
+                if (is_packaged) {
+                    if (network_available)
+                    {
+                        notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. The problem has been automatically reported."),
+                                                       g_app_info_get_display_name (app));
+                    }
+                    else
+                    {
+                        notify_body = g_strdup_printf (_("We’re sorry, it looks like %s crashed. The problem will be reported when the internet is available."),
+                                                       g_app_info_get_display_name (app));
+                    }
+                }
+                else if (!already_reported)
+                {
+                    notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. Please contact the developer if you want to report the issue."),
+                                                   g_app_info_get_display_name (app));
+                }
+            }
+            else
+            {
+                if (is_packaged)
+                {
+                    notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. If you'd like to help resolve the issue, please send a report."),
+                                                   g_app_info_get_display_name (app));
+                    report_button = TRUE;
+                }
+                else if (!already_reported)
+                {
+                    notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. Please contact the developer if you want to report the issue."),
+                                                   g_app_info_get_display_name (app));
+                }
+            }
+            if (is_current_user && !is_running_again)
+                restart_button = TRUE;
+        } else {
+            if (!already_reported)
+            {
+                if (auto_reporting && is_packaged)
+                {
+                    if (network_available)
+                    {
+                        notify_body = g_strdup (_("We're sorry, it looks like a problem occurred in a component. The problem has been automatically reported."));
+                    }
+                    else
+                    {
+                        notify_body = g_strdup (_("We're sorry, it looks like a problem occurred in a component. The problem will be reported when the internet is available."));
+                    }
+                }
+                else if (!auto_reporting)
+                {
+                    notify_body = g_strdup (_("We're sorry, it looks like a problem occurred. If you'd like to help resolve the issue, please send a report."));
+                    report_button = TRUE;
+                }
+                else
+                {
+                    char *binary = get_argv0 (pi->command_line);
+                    notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. Please contact the developer if you want to report the issue."),
+                                                   binary);
+                    g_free (binary);
+                }
+            }
+        }
+
+        if (!notify_body)
+        {
+#define BOOL_AS_STR(x)  x ? "true" : "false"
+            log_debug ("Not showing a notification, as we have no message to show:");
+            log_debug ("auto reporting:    %s", BOOL_AS_STR(auto_reporting));
+            log_debug ("network available: %s", BOOL_AS_STR(network_available));
+            log_debug ("is app:            %s", BOOL_AS_STR(is_app));
+            log_debug ("is packaged:       %s", BOOL_AS_STR(is_packaged));
+            log_debug ("is running again:  %s", BOOL_AS_STR(is_running_again));
+            log_debug ("is current user:   %s", BOOL_AS_STR(is_current_user));
+            log_debug ("already reported:  %s", BOOL_AS_STR(already_reported));
+
+            g_object_unref (app);
+            continue;
+        }
+
+        NotifyNotification *notification = new_warn_notification(notify_body);
+        g_free(notify_body);
 
         pi->was_announced = true;
 
-        if (pi->known)
-        {   /* Problem has been 'autoreported' and is considered as KNOWN
-             */
-            notify_notification_add_action(notification, A_KNOWN_OPEN_GUI, _("Open"),
-                    NOTIFY_ACTION_CALLBACK(action_known),
-                    pi, NULL);
-
-            notify_notification_update(notification, pi->was_announced ?
-                    _("The Problem has already been Reported") : _("A Known Problem has Occurred"),
-                    notify_body, NOTIFICATION_ICON_NAME);
-        }
-        else
-        {
-            if (flags & JUST_DETECTED_PROBLEM)
-            {   /* Problem cannot be 'autoreported' because its data are incomplete
-                 */
-                if (pi->incomplete)
-                {
-                    notify_notification_add_action(notification, A_KNOWN_OPEN_GUI, _("Open"),
-                            NOTIFY_ACTION_CALLBACK(action_known),
-                            pi, NULL);
-                }
-                else
-                {
-                   /* Problem has not yet been 'autoreported' and can be
-                    * 'autoreported' on user request.
-                    */
-                    notify_notification_add_action(notification, A_REPORT_AUTOREPORT, _("Report"),
-                            NOTIFY_ACTION_CALLBACK(action_report),
-                            pi, NULL);
-                }
-
-                notify_notification_update(notification, _("A Problem has Occurred"), notify_body, NOTIFICATION_ICON_NAME);
-            }
-            else
-            {   /* Problem has been 'autoreported' and is considered as UNKNOWN
-                 *
-                 * In case of shortened reporting don't scare (confuse, bother)
-                 * user with the 'Report' button and simply announce that some
-                 * problem has been reported.
-                 *
-                 * Otherwise let user decide if he wants to start the standard
-                 * reporting process of a new problem by clicking on the
-                 * 'Report' button.
-                 */
-                if (is_shortened_reporting_enabled())
-                {
-                    /* Users dislike "useless" notification of reported
-                     * problems allowing only to disable future notifications
-                     * of the same problem.
-                     */
-                    if (is_silent_shortened_reporting_enabled())
-                    {
-                        problem_info_free(pi);
-                        g_object_unref(notification);
-                        goto next_problem_to_notify;
-                    }
-
-                    notify_notification_update(notification, _("A Problem has been Reported"), notify_body, NOTIFICATION_ICON_NAME);
-                }
-                else
-                {
-                    notify_notification_add_action(notification, A_REPORT_REPORT, _("Report"),
-                            NOTIFY_ACTION_CALLBACK(action_report),
-                            pi, NULL);
-
-                    notify_notification_update(notification, _("A New Problem has Occurred"), notify_body, NOTIFICATION_ICON_NAME);
-                }
-            }
-        }
+        if (report_button)
+            add_send_a_report_button (notification, pi);
+        if (restart_button)
+            add_restart_app_button (notification, pi);
 
         GError *err = NULL;
         log_debug("Showing a notification");
@@ -891,9 +985,6 @@ static void notify_problem_list(GList *problems, int flags)
             error_msg(_("Can't show notification: %s"), err->message);
             g_error_free(err);
         }
-
-next_problem_to_notify:
-        g_free(notify_body);
     }
 
     g_list_free(problems);
