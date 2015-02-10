@@ -44,15 +44,6 @@
 
 #define NOTIFICATION_ICON_NAME "face-sad-symbolic"
 
-enum
-{
-    /*
-     * show autoreport button on notification
-     */
-    JUST_DETECTED_PROBLEM = 1 << 1,
-};
-
-
 static GNetworkMonitor *netmon;
 static char **s_dirs;
 static GList *g_deferred_crash_queue;
@@ -839,7 +830,7 @@ add_restart_app_button (NotifyNotification *notification,
             pi, NULL);
 }
 
-static void notify_problem_list(GList *problems, int flags)
+static void notify_problem_list(GList *problems)
 {
     GList *last_item = g_list_last(problems);
     if (last_item == NULL)
@@ -993,7 +984,7 @@ static void notify_problem_list(GList *problems, int flags)
 static void notify_problem(problem_info_t *pi)
 {
     GList *problems = g_list_append(NULL, pi);
-    notify_problem_list(problems, /* show icon and notify, don't show autoreport and don't use anon report*/ 0);
+    notify_problem_list(problems);
 }
 
 /* Event-processing child output handler */
@@ -1170,7 +1161,7 @@ static void show_problem_list_notification(GList *problems, int flags)
      *  - the whole list otherwise
      */
     if (problems)
-        notify_problem_list(problems, flags | JUST_DETECTED_PROBLEM);
+        notify_problem_list(problems);
 }
 
 static void show_problem_notification(problem_info_t *pi, int flags)
