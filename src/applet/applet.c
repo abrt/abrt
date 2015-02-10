@@ -717,7 +717,7 @@ static void run_report_from_applet(problem_info_t *pi)
     safe_waitpid(pid, /* status */ NULL, /* options */ 0);
 }
 
-//this action should open the reporter dialog directly, without showing the main window
+//this action should open gnome-abrt
 static void action_report(NotifyNotification *notification, gchar *action, gpointer user_data)
 {
     log_debug("Reporting a problem!");
@@ -733,18 +733,8 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
     problem_info_t *pi = (problem_info_t *)user_data;
     if (problem_info_get_dir(pi))
     {
-        if (strcmp(A_REPORT_REPORT, action) == 0)
-        {
-            run_report_from_applet(pi);
-            problem_info_free(pi);
-        }
-        else
-        {
-            /* if shortened reporting is configured don't start reporting process
-             * when problem is unknown (just show notification) */
-            run_event_async(pi, get_autoreport_event_name(),
-                is_shortened_reporting_enabled() ? 0 : REPORT_UNKNOWN_PROBLEM_IMMEDIATELY);
-        }
+        fork_exec_gui(problem_info_get_dir(pi));
+        problem_info_free(pi);
     }
     else
         problem_info_free(pi);
