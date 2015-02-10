@@ -36,7 +36,6 @@
 #include "problem_api.h"
 
 /* libnotify action keys */
-#define A_KNOWN_OPEN_GUI "OPEN"
 #define A_REPORT_REPORT "REPORT"
 #define A_RESTART_APPLICATION "RESTART"
 
@@ -80,16 +79,6 @@ static const char *get_autoreport_event_name(void)
     load_user_settings("abrt-applet");
     const char *configured = get_user_setting("AutoreportingEvent");
     return configured ? configured : g_settings_autoreporting_event;
-}
-
-static bool is_shortened_reporting_enabled()
-{
-    return get_configured_bool_or_default("ShortenedReporting", g_settings_shortenedreporting);
-}
-
-static bool is_silent_shortened_reporting_enabled(void)
-{
-    return get_configured_bool_or_default("SilentShortenedReporting", 0);
 }
 
 static bool is_notification_of_incomplete_problems_enabled(void)
@@ -238,29 +227,6 @@ static void free_event_processing_state(struct event_processing_state *p)
 
     strbuf_free(p->cmd_output);
     g_free(p);
-}
-
-static char *build_message(problem_info_t *pi)
-{
-    char *package_name = problem_data_get_content_or_NULL(pi->problem_data, FILENAME_COMPONENT);
-
-    char *msg = NULL;
-    if (package_name == NULL || package_name[0] == '\0')
-        msg = g_strdup(_("A problem has been detected"));
-    else
-        msg = g_strdup_printf(_("A problem in the %s package has been detected"), package_name);
-
-    if (pi->incomplete)
-    {
-        const char *not_reportable = problem_data_get_content_or_NULL(pi->problem_data, FILENAME_NOT_REPORTABLE);
-        log_notice("%s", not_reportable);
-        if (not_reportable)
-            msg = g_strdup_printf("%s\n\n%s", msg, not_reportable);
-    }
-    else if (pi->reported)
-        msg = g_strdup_printf(_("%s and the diagnostic data has been submitted"), msg);
-
-    return msg;
 }
 
 static GList *add_dirs_to_dirlist(GList *dirlist, const char *dirname)
@@ -691,30 +657,6 @@ static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *ev
     return child;
 }
 
-static void run_report_from_applet(problem_info_t *pi)
-{
-    if (!problem_info_ensure_writable(pi))
-        return;
-
-    const char *dirname = problem_info_get_dir(pi);
-
-    fflush(NULL); /* paranoia */
-    pid_t pid = fork();
-    if (pid < 0)
-    {
-        perror_msg("fork");
-        return;
-    }
-    if (pid == 0)
-    {
-        /* child */
-        /* prevent zombies - another fork inside: */
-        spawn_event_handler_child(dirname, "report-gui", NULL);
-        _exit(0);
-    }
-    safe_waitpid(pid, /* status */ NULL, /* options */ 0);
-}
-
 //this action should open gnome-abrt
 static void action_report(NotifyNotification *notification, gchar *action, gpointer user_data)
 {
@@ -762,26 +704,6 @@ static void action_restart(NotifyNotification *notification, gchar *action, gpoi
                    err->message);
     }
     g_object_unref (app);
-}
-
-static void action_known(NotifyNotification *notification, gchar *action, gpointer user_data)
-{
-    log_debug("Handle known action '%s'!", action);
-    problem_info_t *pi = (problem_info_t *)user_data;
-
-    if (strcmp(A_KNOWN_OPEN_GUI, action) == 0)
-        fork_exec_gui(problem_info_get_dir(pi));
-    else
-        /* This should not happen; otherwise it's a bug */
-        error_msg("%s:%d %s(): BUG Unknown action '%s'", __FILE__, __LINE__, __func__, action);
-
-    GError *err = NULL;
-    notify_notification_close(notification, &err);
-    if (err != NULL)
-    {
-        error_msg(_("Can't close notification: %s"), err->message);
-        g_error_free(err);
-    }
 }
 
 static void on_notify_close(NotifyNotification *notification, gpointer user_data)
