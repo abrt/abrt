@@ -1136,32 +1136,6 @@ static void Crash(GVariant *parameters)
      *
      */
 
-    /* If this problem seems to be repeating, do not annoy user with popup dialog.
-     * (The icon in the tray is not suppressed)
-     */
-    static time_t last_time = 0;
-    static char* last_package_name = NULL;
-    static char *last_problem_dir = NULL;
-    time_t cur_time = time(NULL);
-    if (last_package_name && strcmp(last_package_name, package_name) == 0
-     && last_problem_dir && strcmp(last_problem_dir, dir) == 0
-     && (unsigned)(cur_time - last_time) < 2 * 60 * 60
-    ) {
-        /* log_msg doesn't show in .xsession_errors */
-        error_msg("repeated problem in %s, not showing the notification", package_name);
-        free(command_line);
-        return;
-    }
-    else
-    {
-        last_time = cur_time;
-        g_free(last_package_name);
-        last_package_name = g_strdup(package_name);
-        g_free(last_problem_dir);
-        last_problem_dir = g_strdup(dir);
-    }
-
-
     problem_info_t *pi = problem_info_new(dir);
     if (uuid != NULL && uuid[0] != '\0')
         problem_data_add_text_noteditable(pi->problem_data, FILENAME_UUID, uuid);
