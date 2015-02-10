@@ -876,7 +876,7 @@ static void notify_problem_list(GList *problems)
             log_debug ("is current user:   %s", BOOL_AS_STR(is_current_user));
             log_debug ("already reported:  %s", BOOL_AS_STR(already_reported));
 
-            g_object_unref (app);
+            g_clear_object (&app);
             continue;
         }
 
