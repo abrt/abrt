@@ -52,17 +52,6 @@ static char *g_last_notified_problem_id;
 static bool g_gnome_abrt_available;
 static bool g_user_is_admin;
 
-static bool get_configured_bool_or_default(const char *opt_name, bool def)
-{
-    /* User config always takes precedence */
-    load_user_settings("abrt-applet");
-    const char *configured = get_user_setting(opt_name);
-    if (configured)
-        return string_to_bool(configured);
-
-    return def;
-}
-
 static bool is_autoreporting_enabled(void)
 {
     GSettings *settings;
@@ -79,11 +68,6 @@ static const char *get_autoreport_event_name(void)
     load_user_settings("abrt-applet");
     const char *configured = get_user_setting("AutoreportingEvent");
     return configured ? configured : g_settings_autoreporting_event;
-}
-
-static bool is_notification_of_incomplete_problems_enabled(void)
-{
-    return get_configured_bool_or_default("NotifyIncompleteProblems", 0);
 }
 
 static bool is_networking_enabled(void)
@@ -126,7 +110,6 @@ typedef struct problem_info {
     bool is_packaged;
     char *command_line;
     bool known;
-    bool incomplete;
     bool reported;
     bool was_announced;
     bool is_writable;
@@ -1067,7 +1050,7 @@ static void show_problem_list_notification(GList *problems, int flags)
             problem_info_t *data = (problem_info_t *)iter->data;
             GList *next = g_list_next(iter);
 
-            if (!data->foreign && !data->incomplete)
+            if (!data->foreign)
             {
                 run_event_async((problem_info_t *)iter->data, get_autoreport_event_name(), /* don't automatically report */ 0);
                 problems = g_list_delete_link(problems, iter);
@@ -1181,8 +1164,6 @@ name_acquired_handler (GDBusConnection *connection,
     /* Age limit = now - 3 days */
     const unsigned long min_born_time = (unsigned long)(time_before_ndays(3));
 
-    const bool notify_incomplete = is_notification_of_incomplete_problems_enabled();
-
     while (new_dirs)
     {
         struct dump_dir *dd = dd_opendir((char *)new_dirs->data, DD_OPEN_READONLY);
@@ -1199,8 +1180,7 @@ name_acquired_handler (GDBusConnection *connection,
             goto next;
         }
 
-        const bool incomplete = !problem_dump_dir_is_complete(dd);
-        if (!notify_incomplete && incomplete)
+        if (!problem_dump_dir_is_complete(dd))
         {
             log_notice("Ignoring incomplete problem '%s'", (char *)new_dirs->data);
             goto next;
@@ -1219,8 +1199,6 @@ name_acquired_handler (GDBusConnection *connection,
                     problem_data_add_text_noteditable(pi->problem_data, elements[i], value);
                 free(value);
             }
-
-            pi->incomplete = incomplete;
 
             /* Can't be foreign because if the problem is foreign then the
              * dd_opendir() call failed few lines above and the problem is ignored.
