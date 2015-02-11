@@ -959,11 +959,8 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
     }
     else
     {
-        log_debug("fast report failed");
-        if (is_networking_enabled())
-            notify_problem(pi);
-        else
-            push_to_deferred_queue(pi);
+        log_debug("fast report failed, deferring");
+        push_to_deferred_queue(pi);
     }
 
     free_event_processing_state(state);
@@ -1047,8 +1044,17 @@ static void show_problem_list_notification(GList *problems)
 
             if (!pi->foreign || g_user_is_admin)
             {
-                run_event_async(pi, get_autoreport_event_name());
-                problems = g_list_delete_link(problems, iter);
+                if (is_networking_enabled ())
+                {
+                    run_event_async(pi, get_autoreport_event_name());
+                    problems = g_list_delete_link(problems, iter);
+                }
+                else
+                {
+                    /* Don't remove from the list, we'll tell the user
+                     * we'll report later, if it's not a dupe */
+                    push_to_deferred_queue(pi);
+                }
             }
 
             iter = next;
