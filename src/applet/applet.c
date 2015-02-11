@@ -752,8 +752,7 @@ add_restart_app_button (NotifyNotification *notification,
 
 static void notify_problem_list(GList *problems)
 {
-    GList *last_item = g_list_last(problems);
-    if (last_item == NULL)
+    if (problems == NULL)
     {
         log_debug("Not showing any notification bubble because the list of problems is empty.");
         return;
