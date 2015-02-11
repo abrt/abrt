@@ -78,11 +78,13 @@ static bool is_networking_enabled(void)
 }
 
 static void show_problem_list_notification(GList *problems);
+static void problem_info_unref(gpointer data);
 
 static gboolean process_deferred_queue_timeout_fn(GList *queue)
 {
     g_deferred_timeout = 0;
     show_problem_list_notification(queue);
+    g_list_free_full (queue, problem_info_unref);
 
     /* Remove this timeout fn from the main loop*/
     return G_SOURCE_REMOVE;
@@ -668,12 +670,8 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
 
     problem_info_t *pi = (problem_info_t *)user_data;
     if (problem_info_get_dir(pi))
-    {
         fork_exec_gui(problem_info_get_dir(pi));
-        problem_info_unref(pi);
-    }
-    else
-        problem_info_unref(pi);
+    problem_info_unref(pi);
 }
 
 static void action_restart(NotifyNotification *notification, gchar *action, gpointer user_data)
@@ -700,6 +698,7 @@ static void action_restart(NotifyNotification *notification, gchar *action, gpoi
                    err->message);
     }
     g_object_unref (app);
+    problem_info_unref(pi);
 }
 
 static void on_notify_close(NotifyNotification *notification, gpointer user_data)
@@ -739,7 +738,7 @@ add_send_a_report_button (NotifyNotification *notification,
 
     notify_notification_add_action(notification, A_REPORT_REPORT, _("Report"),
             NOTIFY_ACTION_CALLBACK(action_report),
-            pi, NULL);
+            problem_info_ref (pi), problem_info_unref);
 }
 
 static void
@@ -748,7 +747,7 @@ add_restart_app_button (NotifyNotification *notification,
 {
     notify_notification_add_action(notification, A_RESTART_APPLICATION, _("Restart"),
             NOTIFY_ACTION_CALLBACK(action_restart),
-            pi, NULL);
+            problem_info_ref (pi), problem_info_unref);
 }
 
 static void notify_problem_list(GList *problems)
@@ -779,7 +778,10 @@ static void notify_problem_list(GList *problems)
         problem_info_t *pi = iter->data;
 
         if (pi->was_announced)
+        {
+            problem_info_unref (pi);
             continue;
+        }
 
         app = create_app_from_cmdline (pi->command_line);
 
@@ -879,6 +881,7 @@ static void notify_problem_list(GList *problems)
             log_debug ("already reported:  %s", BOOL_AS_STR(already_reported));
 
             g_clear_object (&app);
+            problem_info_unref (pi);
             continue;
         }
 
@@ -900,6 +903,8 @@ static void notify_problem_list(GList *problems)
             error_msg(_("Can't show notification: %s"), err->message);
             g_error_free(err);
         }
+
+        problem_info_unref (pi);
     }
 
     g_list_free(problems);
@@ -1243,7 +1248,10 @@ next:
     }
 
     if (notify_list)
+    {
         show_problem_list_notification(notify_list);
+        g_list_free_full (notify_list, problem_info_unref);
+    }
 
     list_free_with_free(new_dirs);
 
