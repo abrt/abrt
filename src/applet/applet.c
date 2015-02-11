@@ -1045,7 +1045,7 @@ static void show_problem_list_notification(GList *problems)
             problem_info_t *pi = (problem_info_t *)iter->data;
             GList *next = g_list_next(iter);
 
-            if (!pi->foreign)
+            if (!pi->foreign || g_user_is_admin)
             {
                 run_event_async(pi, get_autoreport_event_name());
                 problems = g_list_delete_link(problems, iter);
