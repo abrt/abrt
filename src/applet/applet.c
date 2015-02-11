@@ -105,6 +105,7 @@ static void connectivity_changed_cb(GObject    *gobject,
 
 typedef struct problem_info {
     problem_data_t *problem_data;
+    int refcount;
     bool foreign;
     guint count;
     bool is_packaged;
@@ -163,19 +164,35 @@ static bool problem_info_ensure_writable(problem_info_t *pi)
 static problem_info_t *problem_info_new(const char *dir)
 {
     problem_info_t *pi = g_new0(problem_info_t, 1);
+    pi->refcount = 1;
     pi->problem_data = problem_data_new();
     problem_info_set_dir(pi, dir);
     return pi;
 }
 
-static void problem_info_free(problem_info_t *pi)
+static void problem_info_unref(gpointer data)
 {
-    if (pi == NULL)
+    problem_info_t *pi;
+
+    if (data == NULL)
+        return;
+
+    pi = data;
+    pi->refcount--;
+    if (pi->refcount > 0)
         return;
 
     problem_data_free(pi->problem_data);
     g_free(pi->command_line);
     g_free(pi);
+}
+
+static problem_info_t* problem_info_ref(problem_info_t *pi)
+{
+    g_return_val_if_fail (pi != NULL, NULL);
+
+    pi->refcount++;
+    return pi;
 }
 
 static void run_event_async(problem_info_t *pi, const char *event_name);
@@ -653,10 +670,10 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
     if (problem_info_get_dir(pi))
     {
         fork_exec_gui(problem_info_get_dir(pi));
-        problem_info_free(pi);
+        problem_info_unref(pi);
     }
     else
-        problem_info_free(pi);
+        problem_info_unref(pi);
 }
 
 static void action_restart(NotifyNotification *notification, gchar *action, gpointer user_data)
@@ -1021,7 +1038,7 @@ static void run_event_async(problem_info_t *pi, const char *event_name)
 {
     if (!problem_info_ensure_writable(pi))
     {
-        problem_info_free(pi);
+        problem_info_unref(pi);
         return;
     }
 
