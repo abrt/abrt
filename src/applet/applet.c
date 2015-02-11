@@ -32,6 +32,7 @@
 #include <libreport/internal_abrt_dbus.h>
 #include <libreport/event_config.h>
 #include <libreport/internal_libreport_gtk.h>
+#include <libreport/problem_utils.h>
 #include "libabrt.h"
 #include "problem_api.h"
 
@@ -379,216 +380,6 @@ static bool is_user_admin(void)
     return ret;
 }
 
-static char *
-get_argv0 (const char *cmdline)
-{
-    char *ret;
-    char **items;
-
-    items = g_strsplit (cmdline, " ", -1);
-    ret = g_strdup (items[0]);
-    g_strfreev (items);
-    return ret;
-}
-
-static void
-remove_quotes (char **args)
-{
-    guint i;
-
-    for (i = 0; args[i] != NULL; i++)
-    {
-        char **items;
-        char *str;
-
-        items = g_strsplit (args[i], "\"", -1);
-        str = g_strjoinv (NULL, items);
-        g_strfreev (items);
-
-        g_free (args[i]);
-        args[i] = str;
-    }
-}
-
-static gboolean
-_is_it_file_arg (const char *s)
-{
-    if (s == NULL)
-        return FALSE;
-    if (*s == '-')
-        return FALSE;
-    return TRUE;
-}
-
-static gboolean
-_is_it_url (const char *s)
-{
-    if (s == NULL)
-        return FALSE;
-    if (strstr (s, "://"))
-        return TRUE;
-    return FALSE;
-}
-
-static gboolean
-compare_args (char **cmdargs,
-          char **dcmdargs)
-{
-    guint cargi, dargi;
-    gboolean ret;
-
-    /* Start at 1, as we already compared the binaries */
-    cargi = dargi = 1;
-    while (dargi < g_strv_length(dcmdargs))
-    {
-        if (g_str_equal (dcmdargs[dargi], "%f"))
-        {
-            if (cargi >= g_strv_length(cmdargs) || _is_it_file_arg(cmdargs[cargi]))
-            {
-                return FALSE;
-            } else {
-                dargi++;
-                cargi++;
-            }
-        }
-        else if (g_str_equal (dcmdargs[dargi], "%F"))
-        {
-            if (cargi >= g_strv_length(cmdargs) || _is_it_file_arg(cmdargs[cargi]))
-                dargi++;
-            else
-                cargi++;
-        }
-        else if (g_str_equal (dcmdargs[dargi], "%u"))
-        {
-            if (cargi >= g_strv_length(cmdargs) ||
-                (!_is_it_url(cmdargs[cargi]) && !_is_it_file_arg(cmdargs[cargi])))
-            {
-                return FALSE;
-            }
-            else
-            {
-                cargi++;
-                dargi++;
-            }
-        }
-        else if (g_str_equal (dcmdargs[dargi], "%U"))
-        {
-            if (cargi >= g_strv_length(cmdargs) ||
-                (!_is_it_url(cmdargs[cargi]) && !_is_it_file_arg(cmdargs[cargi])))
-            {
-                dargi++;
-            }
-            else
-            {
-                cargi++;
-            }
-        }
-        else if (g_str_equal (dcmdargs[dargi], "%i"))
-        {
-            //logging.debug("Unsupported Exec key %i");
-            dargi++;
-            cargi += 2;
-        }
-        else if (g_str_equal (dcmdargs[dargi], "%c") ||
-                 g_str_equal (dcmdargs[dargi], "%k"))
-        {
-            //logging.debug("Unsupported Exec key %s", dcmdargs[dargi]);
-            dargi++;
-            cargi++;
-        }
-        else
-        {
-            if (cargi >= g_strv_length(cmdargs) || !g_str_equal (dcmdargs[dargi], cmdargs[cargi]))
-                return FALSE;
-            dargi++;
-            cargi++;
-        }
-    }
-
-    ret = (cargi == g_strv_length(cmdargs) && dargi == g_strv_length(dcmdargs));
-
-    return ret;
-}
-
-static gboolean
-compare_binaries (char *cmd,
-          const char *dcmd)
-{
-    char *basename, *dbasename;
-    gboolean ret = FALSE;
-
-    if (g_strcmp0 (cmd, dcmd) == 0)
-        return TRUE;
-
-    basename = g_path_get_basename (cmd);
-    dbasename = g_path_get_basename (dcmd);
-
-    if (g_strcmp0 (basename, dbasename) == 0)
-        ret = TRUE;
-
-    g_free (basename);
-    g_free (dbasename);
-
-    return ret;
-}
-
-static GAppInfo *
-create_app_from_cmdline (const char *cmdline)
-{
-    GAppInfo *app;
-    GList *apps, *l;
-    GList *shortlist;
-    char *binary;
-    char **cmdargs;
-
-    binary = get_argv0(cmdline);
-
-    apps = g_app_info_get_all ();
-    shortlist = NULL;
-    app = NULL;
-    for (l = apps; l != NULL; l = l->next)
-    {
-        GAppInfo *a = l->data;
-
-        if (!g_app_info_should_show(a))
-            continue;
-
-        if (!compare_binaries (binary, g_app_info_get_executable (a)))
-            continue;
-
-        shortlist = g_list_prepend (shortlist, a);
-    }
-
-    if (shortlist == NULL)
-    {
-        g_list_free_full (apps, g_object_unref);
-        return NULL;
-    }
-
-    cmdargs = g_strsplit (cmdline, " ", -1);
-    remove_quotes (cmdargs);
-
-    for (l = shortlist; l != NULL; l = l->next)
-    {
-        GAppInfo *a = l->data;
-        char **dcmdargs;
-
-        dcmdargs = g_strsplit (g_app_info_get_commandline (a), " ", -1);
-        remove_quotes (dcmdargs);
-
-        if (compare_args (cmdargs, dcmdargs))
-            app = g_object_ref (a);
-
-        g_strfreev (dcmdargs);
-        if (app != NULL)
-            break;
-    }
-
-    g_list_free (shortlist);
-    g_list_free_full (apps, g_object_unref);
-    return app;
-}
-
 static gboolean
 is_app_running (GAppInfo *app)
 {
@@ -689,7 +480,7 @@ static void action_restart(NotifyNotification *notification, gchar *action, gpoi
     }
 
     problem_info_t *pi = (problem_info_t *)user_data;
-    app = create_app_from_cmdline (pi->command_line);
+    app = problem_create_app_from_cmdline (pi->command_line);
     g_assert (app);
 
     if (!g_app_info_launch(G_APP_INFO(app), NULL, NULL, &err))
@@ -779,7 +570,7 @@ static void notify_problem_list(GList *problems)
             continue;
         }
 
-        app = create_app_from_cmdline (pi->command_line);
+        app = problem_create_app_from_cmdline (pi->command_line);
 
         /* For each problem we'll need to know:
          * - Whether or not the crash happened in an “app”
@@ -856,7 +647,7 @@ static void notify_problem_list(GList *problems)
                 }
                 else
                 {
-                    char *binary = get_argv0 (pi->command_line);
+                    char *binary = problem_get_argv0 (pi->command_line);
                     notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. Please contact the developer if you want to report the issue."),
                                                    binary);
                     g_free (binary);
