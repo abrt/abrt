@@ -758,6 +758,9 @@ static void notify_problem_list(GList *problems)
 
         problem_info_t *pi = iter->data;
 
+        if (pi->was_announced)
+            continue;
+
         app = create_app_from_cmdline (pi->command_line);
 
         /* For each problem we'll need to know:
