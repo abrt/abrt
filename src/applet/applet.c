@@ -560,7 +560,10 @@ create_app_from_cmdline (const char *cmdline)
     }
 
     if (shortlist == NULL)
+    {
+        g_list_free_full (apps, g_object_unref);
         return NULL;
+    }
 
     cmdargs = g_strsplit (cmdline, " ", -1);
     remove_quotes (cmdargs);
