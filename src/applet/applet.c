@@ -1042,12 +1042,12 @@ static void show_problem_list_notification(GList *problems)
         /* and skip foreign problems */
         for (GList *iter = problems; iter;)
         {
-            problem_info_t *data = (problem_info_t *)iter->data;
+            problem_info_t *pi = (problem_info_t *)iter->data;
             GList *next = g_list_next(iter);
 
-            if (!data->foreign)
+            if (!pi->foreign)
             {
-                run_event_async((problem_info_t *)iter->data, get_autoreport_event_name());
+                run_event_async(pi, get_autoreport_event_name());
                 problems = g_list_delete_link(problems, iter);
             }
 
