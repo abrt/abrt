@@ -717,6 +717,9 @@ static void
 add_send_a_report_button (NotifyNotification *notification,
                           problem_info_t     *pi)
 {
+    if (!g_gnome_abrt_available)
+        return;
+
     notify_notification_add_action(notification, A_REPORT_REPORT, _("Report"),
             NOTIFY_ACTION_CALLBACK(action_report),
             pi, NULL);
