@@ -47,8 +47,6 @@ static GNetworkMonitor *netmon;
 static char **s_dirs;
 static GList *g_deferred_crash_queue;
 static guint g_deferred_timeout;
-/* Used only for selection of the last notified problem if a user clicks on the systray icon */
-static char *g_last_notified_problem_id;
 static bool g_gnome_abrt_available;
 static bool g_user_is_admin;
 
@@ -758,10 +756,6 @@ static void notify_problem_list(GList *problems)
         return;
     }
 
-    problem_info_t *last_problem = (problem_info_t *)last_item->data;
-    g_free(g_last_notified_problem_id);
-    g_last_notified_problem_id = g_strdup(problem_info_get_dir(last_problem));
-
     /* For the whole system, we'll need to know:
      * - Whether automatic reporting is enabled or not
      * - Whether the network is available
@@ -1411,8 +1405,6 @@ int main(int argc, char** argv)
      *
      * save_user_settings();
      */
-
-    g_free(g_last_notified_problem_id);
 
     return 0;
 }
