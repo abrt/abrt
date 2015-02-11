@@ -159,6 +159,14 @@ Requires: abrt-gui-libs = %{version}-%{release}
 %description gui
 GTK+ wizard for convenient bug reporting.
 
+%package addon-coredump-helper
+Summary: %{name}'s /proc/sys/kernel/core_pattern helper
+Group: System Environment/Libraries
+Requires: abrt-libs = %{version}-%{release}
+
+%description addon-coredump-helper
+This package contains hook for C/C++ crashed programs.
+
 %package addon-ccpp
 Summary: %{name}'s C/C++ addon
 Group: System Environment/Libraries
@@ -170,12 +178,12 @@ Requires: elfutils
 Requires: %{name}-retrace-client
 %endif
 Requires: %{name} = %{version}-%{release}
+Requires: %{name}-addon-coredump-helper = %{version}-%{release}
 Requires: abrt-libs = %{version}-%{release}
 Requires: libreport-python
 
 %description addon-ccpp
-This package contains hook for C/C++ crashed programs and %{name}'s C/C++
-analyzer plugin.
+This package contains %{name}'s C/C++ analyzer plugin.
 
 %package addon-upload-watch
 Summary: %{name}'s upload addon
@@ -541,12 +549,14 @@ exit 0
 # $1 == 1 if install; 2 if upgrade
 %systemd_post abrtd.service
 
+%post addon-coredump-helper
+%systemd_post abrt-ccpp.service
+
 %post addon-ccpp
 # this is required for transition from 1.1.x to 2.x
 # because /cache/abrt-di/* was created under root with root:root
 # so 2.x fails when it tries to extract debuginfo there..
 chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
-%systemd_post abrt-ccpp.service
 %systemd_post abrt-journal-core.service
 
 %post addon-kerneloops
@@ -569,8 +579,10 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %preun
 %systemd_preun abrtd.service
 
-%preun addon-ccpp
+%preun addon-coredump-helper
 %systemd_preun abrt-ccpp.service
+
+%preun addon-ccpp
 %systemd_preun abrt-journal-core.service
 
 %preun addon-kerneloops
@@ -593,8 +605,10 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %postun
 %systemd_postun_with_restart abrtd.service
 
-%postun addon-ccpp
+%postun addon-coredump-helper
 %systemd_postun_with_restart abrt-ccpp.service
+
+%postun addon-ccpp
 %systemd_postun_with_restart abrt-journal-core.service
 
 %postun addon-kerneloops
@@ -637,8 +651,10 @@ fi
 abrtdir=$(grep "DumpLocation" /etc/abrt/abrt.conf | cut -d'=' -f2 | tr -d ' '); cd $abrtdir 2>/dev/null && for i in `find . -name "analyzer" 2>/dev/null`; do len=${#i};cp "$i" "${i:0:$len-9}/type"; done; for i in `find "$abrtdir" -mindepth 1 -maxdepth 1 -type d`; do chown `stat --format=%U:abrt $i` $i/*; done
 service abrtd condrestart >/dev/null 2>&1 || :
 
-%posttrans addon-ccpp
+%posttrans addon-coredump-helper
 service abrt-ccpp condrestart >/dev/null 2>&1 || :
+
+%posttrans addon-ccpp
 # Regenerate core_bactraces because of missing crash threads
 abrtdir=$(grep "DumpLocation" /etc/abrt/abrt.conf | cut -d'=' -f2 | tr -d ' ')
 if test -d "$abrtdir"; then
@@ -781,20 +797,23 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man1/abrt-applet.1*
 %{_mandir}/man1/system-config-abrt.1*
 
-%files addon-ccpp
+%files addon-coredump-helper
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
 %{_datadir}/%{name}/conf.d/plugins/CCpp.conf
 %{_mandir}/man5/abrt-CCpp.conf.5.gz
-%dir %attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
+%{_libexecdir}/abrt-hook-ccpp
 %if %{with systemd}
 %{_unitdir}/abrt-ccpp.service
-%{_unitdir}/abrt-journal-core.service
 %else
 %{_initrddir}/abrt-ccpp
 %endif
-%{_libexecdir}/abrt-hook-ccpp
+
+%files addon-ccpp
+%defattr(-,root,root,-)
+%dir %attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
 %{_libexecdir}/abrt-gdb-exploitable
+%{_unitdir}/abrt-journal-core.service
 
 # attr(6755) ~= SETUID|SETGID
 %attr(6755, abrt, abrt) %{_libexecdir}/abrt-action-install-debuginfo-to-abrt-cache
