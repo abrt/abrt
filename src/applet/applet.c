@@ -77,12 +77,12 @@ static bool is_networking_enabled(void)
     return g_network_monitor_get_connectivity(netmon) == G_NETWORK_CONNECTIVITY_FULL;
 }
 
-static void show_problem_list_notification(GList *problems, int flags);
+static void show_problem_list_notification(GList *problems);
 
 static gboolean process_deferred_queue_timeout_fn(GList *queue)
 {
     g_deferred_timeout = 0;
-    show_problem_list_notification(queue, /* process these crashes as new crashes */ 0);
+    show_problem_list_notification(queue);
 
     /* Remove this timeout fn from the main loop*/
     return G_SOURCE_REMOVE;
@@ -178,11 +178,7 @@ static void problem_info_free(problem_info_t *pi)
     g_free(pi);
 }
 
-static void run_event_async(problem_info_t *pi, const char *event_name, int flags);
-
-enum {
-    REPORT_UNKNOWN_PROBLEM_IMMEDIATELY = 1 << 0,
-};
+static void run_event_async(problem_info_t *pi, const char *event_name);
 
 struct event_processing_state
 {
@@ -1018,7 +1014,7 @@ static void export_event_configuration(const char *event_name)
     g_list_free(ex_env);
 }
 
-static void run_event_async(problem_info_t *pi, const char *event_name, int flags)
+static void run_event_async(problem_info_t *pi, const char *event_name)
 {
     if (!problem_info_ensure_writable(pi))
     {
@@ -1030,7 +1026,6 @@ static void run_event_async(problem_info_t *pi, const char *event_name, int flag
 
     struct event_processing_state *state = new_event_processing_state();
     state->pi = pi;
-    state->flags = flags;
 
     state->child_pid = spawn_event_handler_child(problem_info_get_dir(state->pi), event_name, &state->child_stdout_fd);
 
@@ -1039,7 +1034,7 @@ static void run_event_async(problem_info_t *pi, const char *event_name, int flag
                    handle_event_output_cb, state);
 }
 
-static void show_problem_list_notification(GList *problems, int flags)
+static void show_problem_list_notification(GList *problems)
 {
     if (is_autoreporting_enabled())
     {
@@ -1052,7 +1047,7 @@ static void show_problem_list_notification(GList *problems, int flags)
 
             if (!data->foreign)
             {
-                run_event_async((problem_info_t *)iter->data, get_autoreport_event_name(), /* don't automatically report */ 0);
+                run_event_async((problem_info_t *)iter->data, get_autoreport_event_name());
                 problems = g_list_delete_link(problems, iter);
             }
 
@@ -1069,10 +1064,10 @@ static void show_problem_list_notification(GList *problems, int flags)
         notify_problem_list(problems);
 }
 
-static void show_problem_notification(problem_info_t *pi, int flags)
+static void show_problem_notification(problem_info_t *pi)
 {
     GList *problems = g_list_append(NULL, pi);
-    show_problem_list_notification(problems, flags);
+    show_problem_list_notification(problems);
 }
 
 static void Crash(GVariant *parameters)
@@ -1131,7 +1126,7 @@ static void Crash(GVariant *parameters)
     pi->is_packaged = (package_name != NULL);
     pi->command_line = g_strdup(command_line);
     free(command_line);
-    show_problem_notification(pi, 0);
+    show_problem_notification(pi);
 }
 
 static void handle_message(GDBusConnection *connection,
@@ -1219,7 +1214,7 @@ next:
     }
 
     if (notify_list)
-        show_problem_list_notification(notify_list, /* show icon and notify */ 0);
+        show_problem_list_notification(notify_list);
 
     list_free_with_free(new_dirs);
 
