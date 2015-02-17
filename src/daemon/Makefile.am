@@ -7,7 +7,8 @@ bin_SCRIPTS = \
     abrt-handle-upload
 
 bin_PROGRAMS = \
-    abrt-action-save-package-data
+    abrt-action-save-package-data \
+    abrt-action-save-container-data
 
 sbin_PROGRAMS = \
     abrtd \
@@ -99,6 +100,19 @@ abrt_action_save_package_data_LDADD = \
     $(RPM_LIBS) \
     $(LIBREPORT_LIBS) \
     ../lib/libabrt.la
+
+abrt_action_save_container_data_SOURCES = \
+    abrt-action-save-container-data.c
+abrt_action_save_container_data_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    $(JSON_C_CFLAGS) \
+    -D_GNU_SOURCE
+abrt_action_save_container_data_LDADD = \
+    $(LIBREPORT_LIBS) \
+    $(JSON_C_LIBS)
 
 abrt_auto_reporting_SOURCES = \
     abrt-auto-reporting.c
