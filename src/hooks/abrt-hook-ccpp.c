@@ -415,6 +415,7 @@ int main(int argc, char** argv)
     bool setting_SaveBinaryImage;
     bool setting_SaveFullCore;
     bool setting_CreateCoreBacktrace;
+    bool setting_SaveContainerizedPackageData;
     {
         map_string_t *settings = new_map_string();
         load_abrt_plugin_conf_file("CCpp.conf", settings);
@@ -427,6 +428,8 @@ int main(int argc, char** argv)
         setting_SaveFullCore = value ? string_to_bool(value) : true;
         value = get_map_string_item_or_NULL(settings, "CreateCoreBacktrace");
         setting_CreateCoreBacktrace = value ? string_to_bool(value) : true;
+        value = get_map_string_item_or_NULL(settings, "SaveContainerizedPackageData");
+        setting_SaveContainerizedPackageData = value && string_to_bool(value);
         value = get_map_string_item_or_NULL(settings, "VerboseLog");
         if (value)
             g_verbose = xatoi_positive(value);
@@ -837,6 +840,24 @@ int main(int argc, char** argv)
         dd = NULL;
 
         path[path_len] = '\0'; /* path now contains only directory name */
+
+        if (setting_SaveContainerizedPackageData && containerized)
+        {
+            sprintf(source_filename, "/proc/%lu/root", (long)pid);
+
+            const char *cmd_args[6];
+            cmd_args[0] = BIN_DIR"/abrt-action-save-package-data";
+            cmd_args[1] = "-d";
+            cmd_args[2] = path;
+            cmd_args[3] = "-r";
+            cmd_args[4] = source_filename;
+            cmd_args[5] = NULL;
+
+            pid_t pid = fork_execv_on_steroids(0, (char **)cmd_args, NULL, NULL, path, 0);
+            int stat;
+            safe_waitpid(pid, &stat, 0);
+        }
+
         char *newpath = xstrndup(path, path_len - (sizeof(".new")-1));
         if (rename(path, newpath) == 0)
             strcpy(path, newpath);

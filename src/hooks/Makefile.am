@@ -28,6 +28,7 @@ abrt_hook_ccpp_SOURCES = \
 abrt_hook_ccpp_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
+    -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
