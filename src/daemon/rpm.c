@@ -173,6 +173,40 @@ error:
 }
 */
 
+static int rpm_query_file(rpmts *ts, rpmdbMatchIterator *iter, Header *header,
+        const char *filename, const char *rootdir_or_NULL)
+{
+    const char *queryname = filename;
+
+    *ts = rpmtsCreate();
+    if (rootdir_or_NULL)
+    {
+        if (rpmtsSetRootDir(*ts, rootdir_or_NULL) != 0)
+        {
+            rpmtsFree(*ts);
+            return -1;
+        }
+
+        unsigned len = strlen(rootdir_or_NULL);
+        /* remove 'chroot' prefix */
+        if (strncmp(filename, rootdir_or_NULL, len) == 0 && filename[len] == '/')
+            queryname += len;
+    }
+
+    *iter = rpmtsInitIterator(*ts, RPMTAG_BASENAMES, queryname, 0);
+    *header = rpmdbNextIterator(*iter);
+
+    if (!(*header) && rootdir_or_NULL)
+    {
+        rpmdbFreeIterator(*iter);
+        rpmtsFree(*ts);
+
+        return rpm_query_file(ts, iter, header, filename, NULL);
+    }
+
+    return 0;
+}
+
 char* rpm_get_component(const char *filename, const char *rootdir_or_NULL)
 {
     char *ret = NULL;
@@ -181,32 +215,11 @@ char* rpm_get_component(const char *filename, const char *rootdir_or_NULL)
     rpmdbMatchIterator iter;
     Header header;
 
-    ts = rpmtsCreate();
-    /* This loop executes once (normally) or twice (if we detect chroot) */
-    while (1)
-    {
-        iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, filename, 0);
-        header = rpmdbNextIterator(iter);
-        //log("%s: header('%s'):%p", __func__, filename, header);
-        if (header)
-            break;
+    if (rpm_query_file(&ts, &iter, &header, filename, rootdir_or_NULL) < 0)
+        return NULL;
 
-        if (!rootdir_or_NULL)
-            goto error;
-        unsigned len = strlen(rootdir_or_NULL);
-        if (strncmp(filename, rootdir_or_NULL, len) != 0 || filename[len] != '/')
-            goto error;
-
-        /* It is a chroot */
-        //log("%s: skipping '%s' pfx", __func__, rootdir_or_NULL);
-        rpmdbFreeIterator(iter);
-        rpmtsFree(ts);
-        ts = rpmtsCreate();
-        if (rpmtsSetRootDir(ts, rootdir_or_NULL) != 0)
-            goto error1;
-        filename += len;
-        rootdir_or_NULL = NULL;
-    }
+    if (!header)
+        goto error;
 
     const char *errmsg = NULL;
     srpm = headerFormat(header, "%{SOURCERPM}", &errmsg);
@@ -221,7 +234,6 @@ char* rpm_get_component(const char *filename, const char *rootdir_or_NULL)
 
  error:
     rpmdbFreeIterator(iter);
- error1:
     rpmtsFree(ts);
     return ret;
 }
@@ -254,34 +266,11 @@ struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_
 
     struct pkg_envra *p = NULL;
 
-    ts = rpmtsCreate();
-    /* This loop executes once (normally) or twice (if we detect chroot) */
-    while (1)
-    {
-        iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, filename, 0);
-        header = rpmdbNextIterator(iter);
-        //log("%s: header('%s'):%p", __func__, filename, header);
-        if (header)
-            break;
+    if (rpm_query_file(&ts, &iter, &header, filename, rootdir_or_NULL) < 0)
+        return NULL;
 
-        if (!rootdir_or_NULL)
-            goto error;
-        unsigned len = strlen(rootdir_or_NULL);
-        if (strncmp(filename, rootdir_or_NULL, len) != 0 || filename[len] != '/')
-            goto error;
-
-        /* It is a chroot */
-        //log("%s: skipping '%s' pfx", __func__, rootdir_or_NULL);
-        rpmdbFreeIterator(iter);
-        rpmtsFree(ts);
-        ts = rpmtsCreate();
-        if (rpmtsSetRootDir(ts, rootdir_or_NULL) != 0)
-            goto error1;
-        filename += len;
-        rootdir_or_NULL = NULL;
-    }
-
-
+    if (!header)
+        goto error;
 
     p = xzalloc(sizeof(*p));
     int r;
@@ -324,7 +313,6 @@ struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_
     free_pkg_envra(p);
 
     rpmdbFreeIterator(iter);
- error1:
     rpmtsFree(ts);
     return NULL;
 }
