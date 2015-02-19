@@ -26,36 +26,6 @@ static GList *settings_setBlackListedPkgs = NULL;
 static GList *settings_setBlackListedPaths = NULL;
 static bool   settings_bProcessUnpackaged = false;
 
-static GList *parse_list(const char* list)
-{
-    struct strbuf *item = strbuf_new();
-    GList *l = NULL;
-
-    char *trim_item = NULL;
-
-    for (unsigned ii = 0; list[ii]; ii++)
-    {
-        if (list[ii] == ',')
-        {
-            trim_item = strtrim(item->buf);
-            l = g_list_append(l, xstrdup(trim_item));
-            strbuf_clear(item);
-        }
-        else
-            strbuf_append_char(item, list[ii]);
-    }
-
-    if (item->len > 0)
-    {
-        trim_item = strtrim(item->buf);
-        l = g_list_append(l, xstrdup(trim_item));
-    }
-
-    strbuf_free(item);
-
-    return l;
-}
-
 static void ParseCommon(map_string_t *settings, const char *conf_filename)
 {
     const char *value;
