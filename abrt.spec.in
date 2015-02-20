@@ -51,8 +51,8 @@
     %define docdirversion -%{version}
 %endif
 
-%define libreport_ver 2.2.3
-%define satyr_ver 0.14
+%define libreport_ver 2.4.0
+%define satyr_ver 0.16
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
@@ -1026,6 +1026,126 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Fri Feb 20 2015 Jakub Filak <jfilak@redhat.com> 2.4.0-1
+- spec: factor out core_pattern helper from addon-ccpp
+- ccpp: standalone hook
+- ccpp: save package data from hook in case of crash in container
+- a-a-s-package-data: save data from artifical chroots
+- spec: install containers tools
+- containers: add utility collecting containers info
+- ccpp: add support for containers
+- spec: install the daemon's D-Bus configuration file
+- daemon: add configuration enabling our name on the System bus
+- daemon: get rid of own main loop
+- init: set Type of abrtd.service to dbus
+- applet: Use libreport's helper to find applications
+- applet: Remove unused build information
+- build: Fix pkg-config warning related to abrt.pc
+- applet: Fix a massive leak in the app detection code
+- applet: Remove left-over code from the systray icon
+- applet: Use the easy way to detect empty lists
+- applet: Fix a number of "problems" memory leaks
+- applet: Make problem_info_t refcounted
+- applet: If gnome-abrt isn't there, don't offer to report
+- applet: Fix multiple notifications for the same problem
+- applet: Always defer auto-reporting without a network
+- applet: Don't ignore foreign problems if an admin
+- applet: Rename problem variable to "pi"
+- applet: Remove unused "flags" parameters
+- applet: Completely ignore incomplete problems
+- applet: Don't ignore repeat problems in the same app
+- applet: Fix warning when crash doesn't happen in app
+- applet: Remove unused functions
+- applet: Remove unused flags
+- applet: Rewrite notifications
+- applet: Don't run full reports from the applet
+- applet: Simplify "report" action
+- applet: Add helper to guess .desktop for a cmdline
+- applet: Get more details from the crash report
+- applet: Ignore other people's problems for non-admins
+- applet: Remove handling of "ignored" crashes
+- applet: Remove specific persistent notifications handling
+- applet: Rename applet to match gnome-abrt
+- applet: Initialise libnotify on startup
+- applet: Use g_new0() instead of xzalloc()
+- applet: Use g_strdup_printf()/g_strdup()
+- applet: Move variable inside block where it's used
+- daemon: process unpackaged by default
+- spec: fix abrt-applet requires
+- applet: Fix memory leak in fork_exec_gui()
+- applet: Detect whether gnome-abrt is available
+- applet: Use GUI_EXECUTABLE macro
+- autogen: move configure to the default case
+- applet: Use GIO to launch gnome-abrt
+- applet: Fix typo in "Oterwise"
+- applet: Use symbolic icon instead of abrt's in notifications
+- applet: Add some debug to new_dir_exists()
+- applet: Require at least libnotify 0.7
+- applet: Fix typo in "cuurent"
+- applet: Don't defer sending out uReports
+- applet: Use G_SOURCE_REMOVE in timeout callback
+- spec: Bump required glib2 version
+- applet: Use g_bus_own_name() for single-instance
+- applet: Remove status icon
+- applet: Use GDBus to filter crash signals
+- applet: Remove XSMP support
+- build: Launch configure after autogen.sh
+- make: make some python depencies optional
+- configure: fix typos
+- configure: check for python-sphinx and nose
+- spec: add gsettings-desktop-schemas to the build requires
+- core: use updated dump_fd_info()
+- switch from 'analyzer' to 'type'
+- spec: install abrt-dump-journal-core stuff
+- init: add abrt-journal-core service
+- introduce abrt-dump-journal-core
+- applet: Remove the automatic crash reporting message dialog
+- applet: Remove pre-glib 2.32 code
+- applet: Remove pointless custom signal handling
+- applet: Use GNetworkMonitor instead of NM directly
+- applet: Use GSettings to check whether to send uReports
+- Rewrite journalctl invocations: replace grep/tail pipeline with journalctl builtins.
+- Don't slurp unbounded amounts of data when invoking journalctl. Fixes #887.
+- console-notifications: add timeout
+- cli-status: use will_python_exception
+- ccpp-hook: move utility functions to hooklib
+- ccpp-hook: move /proc/[pid]/ utils to libreport
+- abrt-journal: add functions for reading/saving journald state
+- Do not use 'bool' in OPT_BOOL() macro : it expects 'int'
+- daemon: Own a D-Bus name
+- zanata: add gettext mappings
+- auto-reporting: add options to specify auth type
+- translations: move from transifex to zanata
+- spec: add missing augeas dependency
+- Only analyze vulnerabilities when coredump present
+- abrt-install-ccpp-hook check configuration
+- UUID from core backtrace if coredump is missing
+- Create core backtrace in unwind hook
+- abrt-hook-ccpp: minor refactoring
+- vmcore: remove original vmcore file in the last step
+- vmcore: catch IOErrors and OSErrors
+- python: load the configuration from correct file
+- Remove garbage from ccpp_event.conf
+- spec: update the required gdb version
+- gdb: make gdb aware of the abrt's debuginfo dir
+- Revert "gdb: disable loading of auto-loaded files"
+- spec: update the URL
+- koops: improve 'reason' text for page faults
+- sos: use all valuable plugins
+- a-a-g-machine-id: do not print any error from the event handler
+- a-a-g-machine-id: omit trailing new-line for one-liners only
+- a-a-g-machine-id: suppress its failures in abrt_event.conf
+- a-a-g-machine-id: add systemd's machine id
+- applet: ensure writable dump directory before reporting
+- make ABRT quieter
+- journal-oops: use the length result of sd_journal_get_data()
+- console-notifications: skip non-interactive shells
+- applet: don't show duphash instead of component
+- ureport: attach contact email if configured
+- console-notifications: use return instead of exit
+- Translation updates
+- a-a-s-p-d: add firefox on the package blacklist
+
 * Fri Oct 03 2014 Jakub Filak <jfilak@redhat.com> 2.3.0-1
 - applet: confirm ignoring of notifications
 - spec: disable addon-vmcore on aarch64
