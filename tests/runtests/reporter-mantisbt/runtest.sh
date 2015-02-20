@@ -57,7 +57,6 @@ rlJournalStart
     rlPhaseStartTest "search by duphash"
          ./pyserve \
              login_correct \
-             project_get_id_from_name \
              search_two_issues &> server_log &
 
         sleep 1
