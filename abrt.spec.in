@@ -388,6 +388,16 @@ Provides: bug-buddy
 Virtual package to install all necessary packages for usage from desktop
 environment.
 
+%package atomic
+Summary: Package to make easy default installation on Atomic hosts.
+Group: Applications/System
+Requires: %{name}-addon-coredump-helper = %{version}-%{release}
+Conflicts: %{name}-addon-ccpp
+
+%description atomic
+Package to install all necessary packages for usage from Atomic
+hosts.
+
 %package dbus
 Summary: ABRT DBus service
 Group: Applications/System
@@ -550,14 +560,12 @@ exit 0
 # $1 == 1 if install; 2 if upgrade
 %systemd_post abrtd.service
 
-%post addon-coredump-helper
-%systemd_post abrt-ccpp.service
-
 %post addon-ccpp
 # this is required for transition from 1.1.x to 2.x
 # because /cache/abrt-di/* was created under root with root:root
 # so 2.x fails when it tries to extract debuginfo there..
 chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
+%systemd_post abrt-ccpp.service
 %systemd_post abrt-journal-core.service
 
 %post addon-kerneloops
@@ -580,10 +588,8 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %preun
 %systemd_preun abrtd.service
 
-%preun addon-coredump-helper
-%systemd_preun abrt-ccpp.service
-
 %preun addon-ccpp
+%systemd_preun abrt-ccpp.service
 %systemd_preun abrt-journal-core.service
 
 %preun addon-kerneloops
@@ -606,10 +612,8 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %postun
 %systemd_postun_with_restart abrtd.service
 
-%postun addon-coredump-helper
-%systemd_postun_with_restart abrt-ccpp.service
-
 %postun addon-ccpp
+%systemd_postun_with_restart abrt-ccpp.service
 %systemd_postun_with_restart abrt-journal-core.service
 
 %postun addon-kerneloops
@@ -633,6 +637,34 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 # update icon cache
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
+%post atomic
+if [ -f /etc/abrt/plugins/CCpp.conf ]; then
+    mv /etc/abrt/plugins/CCpp.conf /etc/abrt/plugins/CCpp.conf.rpmsave.atomic || exit 1;
+fi
+ln -sf /etc/abrt/plugins/CCpp_Atomic.conf /etc/abrt/plugins/CCpp.conf
+if [ -f /usr/share/abrt/conf.d/plugins/CCpp.conf ]; then
+    mv /usr/share/abrt/conf.d/plugins/CCpp.conf /usr/share/abrt/conf.d/plugins/CCpp.conf.rpmsave.atomic || exit 1;
+fi
+ln -sf /usr/share/abrt/conf.d/plugins/CCpp_Atomic.conf /usr/share/abrt/conf.d/plugins/CCpp.conf
+%systemd_post abrt-coredump-helper.service
+
+%preun atomic
+if [ -L /etc/abrt/plugins/CCpp.conf ]; then
+    rm /etc/abrt/plugins/CCpp.conf
+fi
+if [ -L /usr/share/abrt/conf.d/plugins/CCpp.conf ]; then
+    rm /usr/share/abrt/conf.d/plugins/CCpp.conf
+fi
+if [ -f /etc/abrt/plugins/CCpp.conf.rpmsave.atomic ]; then
+    mv /etc/abrt/plugins/CCpp.conf.rpmsave.atomic /etc/abrt/plugins/CCpp.conf || exit 1
+fi
+if [ -f  /usr/share/abrt/conf.d/plugins/CCpp.conf.rpmsave.atomic ]; then
+    mv /usr/share/abrt/conf.d/plugins/CCpp.conf.rpmsave.atomic /usr/share/abrt/conf.d/plugins/CCpp.conf || exit 1
+fi
+
+%postun atomic
+%systemd_postun_with_restart abrt-coredump-helper.service
+
 %post libs -p /sbin/ldconfig
 
 %postun libs -p /sbin/ldconfig
@@ -652,11 +684,9 @@ fi
 abrtdir=$(grep "DumpLocation" /etc/abrt/abrt.conf | cut -d'=' -f2 | tr -d ' '); cd $abrtdir 2>/dev/null && for i in `find . -name "analyzer" 2>/dev/null`; do len=${#i};cp "$i" "${i:0:$len-9}/type"; done; for i in `find "$abrtdir" -mindepth 1 -maxdepth 1 -type d`; do chown `stat --format=%U:abrt $i` $i/*; done
 service abrtd condrestart >/dev/null 2>&1 || :
 
-%posttrans addon-coredump-helper
-service abrt-ccpp condrestart >/dev/null 2>&1 || :
-
 %posttrans addon-ccpp
 # Regenerate core_bactraces because of missing crash threads
+service abrt-ccpp condrestart >/dev/null 2>&1 || :
 abrtdir=$(grep "DumpLocation" /etc/abrt/abrt.conf | cut -d'=' -f2 | tr -d ' ')
 if test -d "$abrtdir"; then
     for DD in `find "$abrtdir" -mindepth 1 -maxdepth 1 -type d`
@@ -715,8 +745,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-action-analyze-python
 %{_bindir}/abrt-action-analyze-xorg
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/org.freedesktop.problems.daemon.conf
-%config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
-%{_datadir}/%{name}/conf.d/abrt.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-action-save-package-data.conf
 %{_datadir}/%{name}/conf.d/abrt-action-save-package-data.conf
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/xorg.conf
@@ -736,11 +764,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %ghost %attr(0666, -, -) %{_localstatedir}/run/%{name}/abrt.socket
 %ghost %attr(0644, -, -) %{_localstatedir}/run/%{name}/abrtd.pid
 
-%dir %{_sysconfdir}/%{name}
-%dir %{_sysconfdir}/%{name}/plugins
-%dir %{_datadir}/%{name}
-%dir %{_datadir}/%{name}/conf.d
-%dir %{_datadir}/%{name}/conf.d/plugins
 %{_mandir}/man1/abrt-handle-upload.1.gz
 %{_mandir}/man1/abrt-server.1.gz
 %{_mandir}/man1/abrt-action-save-package-data.1.gz
@@ -749,16 +772,23 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man1/abrt-action-analyze-xorg.1.gz
 %{_mandir}/man1/abrt-auto-reporting.1.gz
 %{_mandir}/man8/abrtd.8.gz
-%{_mandir}/man5/abrt.conf.5.gz
 %{_mandir}/man5/abrt-action-save-package-data.conf.5.gz
 # {_mandir}/man5/pyhook.conf.5.gz
-
-# filesystem package should own /usr/share/augeas/lenses directory
-%{_datadir}/augeas/lenses/abrt.aug
 
 %files libs
 %defattr(-,root,root,-)
 %{_libdir}/libabrt.so.*
+%config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
+%{_datadir}/%{name}/conf.d/abrt.conf
+%{_mandir}/man5/abrt.conf.5.gz
+%dir %{_sysconfdir}/%{name}
+%dir %{_sysconfdir}/%{name}/plugins
+%dir %{_datadir}/%{name}
+%dir %{_datadir}/%{name}/conf.d
+%dir %{_datadir}/%{name}/conf.d/plugins
+
+# filesystem package should own /usr/share/augeas/lenses directory
+%{_datadir}/augeas/lenses/abrt.aug
 
 %files devel
 %defattr(-,root,root,-)
@@ -800,21 +830,22 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files addon-coredump-helper
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
-%{_datadir}/%{name}/conf.d/plugins/CCpp.conf
-%{_mandir}/man5/abrt-CCpp.conf.5.gz
 %{_libexecdir}/abrt-hook-ccpp
-%if %{with systemd}
-%{_unitdir}/abrt-ccpp.service
-%else
-%{_initrddir}/abrt-ccpp
-%endif
+%{_sbindir}/abrt-install-ccpp-hook
 
 %files addon-ccpp
 %defattr(-,root,root,-)
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
+%{_datadir}/%{name}/conf.d/plugins/CCpp.conf
+%{_mandir}/man5/abrt-CCpp.conf.5.gz
 %{_libexecdir}/abrt-gdb-exploitable
+%if %{with systemd}
+%{_unitdir}/abrt-ccpp.service
 %{_unitdir}/abrt-journal-core.service
+%else
+%{_initrddir}/abrt-ccpp
+%endif
 
 # attr(6755) ~= SETUID|SETGID
 %attr(6755, abrt, abrt) %{_libexecdir}/abrt-action-install-debuginfo-to-abrt-cache
@@ -831,7 +862,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-action-perform-ccpp-analysis
 %{_bindir}/abrt-action-analyze-ccpp-local
 %{_bindir}/abrt-dump-journal-core
-%{_sbindir}/abrt-install-ccpp-hook
 %config(noreplace) %{_sysconfdir}/libreport/events.d/ccpp_event.conf
 %{_mandir}/man5/ccpp_event.conf.5.gz
 %config(noreplace) %{_sysconfdir}/libreport/events.d/gconf_event.conf
@@ -976,6 +1006,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files desktop
 %defattr(-,root,root,-)
+
+%files atomic
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp_Atomic.conf
+%{_datadir}/%{name}/conf.d/plugins/CCpp_Atomic.conf
+%{_unitdir}/abrt-coredump-helper.service
 
 %if %{with bodhi}
 %files plugin-bodhi
