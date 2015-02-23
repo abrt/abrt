@@ -6,6 +6,7 @@ pluginsconfdir = $(PLUGINS_CONF_DIR)
 
 dist_pluginsconf_DATA = \
     CCpp.conf \
+    CCpp_Atomic.conf \
     python.conf \
     python3.conf \
     oops.conf
