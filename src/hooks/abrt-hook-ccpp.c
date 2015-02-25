@@ -557,6 +557,9 @@ int main(int argc, char** argv)
         return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
+    if (setting_StandaloneHook)
+        ensure_writable_dir(g_settings_dump_location, DEFAULT_DUMP_LOCATION_MODE, "abrt");
+
     if (g_settings_nMaxCrashReportsSize > 0)
     {
         /* If free space is less than 1/4 of MaxCrashReportsSize... */
