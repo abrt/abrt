@@ -729,7 +729,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/abrt_event.conf.5.gz
 %config(noreplace) %{_sysconfdir}/libreport/events.d/smart_event.conf
 %{_mandir}/man5/smart_event.conf.5.gz
-%dir %attr(0755, abrt, abrt) %{_localstatedir}/%{var_base_dir}/%{name}
+%dir %attr(0751, abrt, abrt) %{_localstatedir}/%{var_base_dir}/%{name}
 %dir %attr(0700, abrt, abrt) %{_localstatedir}/spool/%{name}-upload
 # abrtd runs as root
 %dir %attr(0755, root, root) %{_localstatedir}/run/%{name}
