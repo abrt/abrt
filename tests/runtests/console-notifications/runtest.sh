@@ -60,7 +60,7 @@ rlJournalStart
         rlAssertExists $LNPATH
 
         # ABRT worked as expected
-        rlAssertGrep "ABRT has detected .* problem(s). For more info run: abrt-cli list" $LOG_NAME
+        rlAssertGrep "ABRT has detected .* problem(s).*For more info run:.*abrt-cli list.*" $LOG_NAME
         # ABRT didn't break login
         rlAssertGrep "$CANARY" $LOG_NAME
     rlPhaseEnd
@@ -107,7 +107,7 @@ rlJournalStart
         rlAssertNotEquals "The time stamp file has been updated" "_$TN" "_$(cat $LNPATH)"
 
         # ABRT worked as expected
-        rlAssertGrep "ABRT has detected .* problem(s). For more info run: abrt-cli list --since $TS" $LOG_NAME
+        rlAssertGrep "ABRT has detected .* problem(s).*For more info run:.*abrt-cli list --since $TS.*" $LOG_NAME
         # ABRT didn't break login
         rlAssertGrep "$CANARY" $LOG_NAME
     rlPhaseEnd
@@ -168,7 +168,7 @@ rlJournalStart
 
         rlLog "Login as 'adm' user whose home is /var/adm and is not writable for him"
         CANARY="CANARY_$(date +%s)_LIVES"
-        su adm -s /usr/bin/sh -c "sh -l -i -c \"echo $CANARY\"" >$LOG_NAME 2>&1
+        su adm -s /bin/sh -c "sh -l -i -c \"echo $CANARY\"" >$LOG_NAME 2>&1
 
         rlAssertNotExists $LNPATH
 
@@ -198,7 +198,7 @@ rlJournalStart
         rlAssertGrep "$CANARY" $LOG_NAME
 
         sleep 6
-        rlAssertGrep "abrt-cli: no process found" killall.log
+        rlAssertGrep "abrt-cli: no process .*" killall.log
 
         rlRun "rm $crash_PATH/.lock"
     rlPhaseEnd

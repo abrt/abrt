@@ -12,6 +12,7 @@
 distro_specific/rhel6/dbus-message
 #socket-api
 abrtd-inotify-flood
+abrt-auto-reporting-sanity
 
 # - addons
 distro_specific/rhel6/ccpp-plugin
@@ -22,6 +23,8 @@ distro_specific/rhel6/python-addon
 
 # - tools tests
 distro_specific/rhel6/cli-sanity
+cli-status
+console-notifications
 check-hook-install
 distro_specific/rhel6/dumpoops
 #dumpxorg
@@ -36,7 +39,7 @@ distro_specific/rhel6/abrt-python
 #bugzilla-dupe-search
 #bugzilla-comment-format
 
-distro_specific/rhel6/rhts-test
+rhts-test
 
 mailx-reporting
 distro_specific/rhel6/localized-reporting
@@ -45,7 +48,9 @@ upload-scp
 upload-ftp
 upload-filename
 upload-handling
-#ureport
+ureport
+ureport-attachments
+abrt-action-ureport
 
 distro_specific/rhel6/blacklisted-package
 blacklisted-path

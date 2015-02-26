@@ -63,13 +63,14 @@ rlJournalStart
 
         kill %1
 
-        rlAssertGrep "Connecting to http://127.0.0.1:12345/faf/reports/new/" ureport.log
-        rlAssertGrep "Connecting to http://127.0.0.1:12345/faf/reports/attach/" ureport.log
+        rlAssertGrep "curl: About to connect() to 127.0.0.1 port 12345" ureport.log
+        rlAssertGrep "curl sent header: 'POST /faf/reports/new/ HTTP/1" ureport.log
+        rlAssertGrep "curl sent header: 'POST /faf/reports/attach/ HTTP/1" ureport.log
         rlAssertGrep "Attaching ContactEmail: abrt@email.com" ureport.log
-        lAssertGrep "{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"email\", \"data\": \"abrt@email.com\" }" ureport.log
+        rlAssertGrep "{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"email\", \"data\": \"abrt@email.com\" }" ureport.log
 
-        rlAssertGrep "127.0.0.1 - - \[.*\] \"POST /faf/reports/new/ HTTP/1.1\" 202 -" server.log
-        rlAssertGrep "127.0.0.1 - - \[.*\] \"POST /faf/reports/attach/ HTTP/1.1\" 202 -" server.log
+        rlAssertGrep ".* - - \[.*\] \"POST /faf/reports/new/ HTTP/1.1\" 202 -" server.log
+        rlAssertGrep ".* - - \[.*\] \"POST /faf/reports/attach/ HTTP/1.1\" 202 -" server.log
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
     rlPhaseEnd
@@ -84,29 +85,30 @@ rlJournalStart
         rlRun "augtool rm /files/etc/libreport/plugins/ureport.conf/ContactEmail" 0 "rm ContactEmail settings frim ureport.conf"
         rlRun "echo 0 > $crash_PATH/ureports_counter" 0 "set ureports_counter to 0"
 
-        ./fakefaf.py &> server.log &
+        ./fakefaf.py &> server2.log &
         sleep 1
 
         pushd $crash_PATH
-        /usr/libexec/abrt-action-ureport -vvv &> $TmpDir/ureport.log
+        /usr/libexec/abrt-action-ureport -vvv &> $TmpDir/ureport2.log
         popd # crash_PATH
 
         kill %1
 
-        rlAssertGrep "Connecting to http://127.0.0.1:12345/faf/reports/new/" ureport.log
+        rlAssertGrep "curl: About to connect() to 127.0.0.1 port 12345" ureport2.log
+        rlAssertGrep "curl sent header: 'POST /faf/reports/new/ HTTP/1" ureport2.log
 
-        rlAssertNotGrep "Attaching ContactEmail: abrt@email.com" ureport.log
-        lAssertNotGrep "Connecting to http://127.0.0.1:12345/faf/reports/attach/" ureport.log
-        lAssertNotGrep "{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"email\", \"data\": \"abrt@email.com\" }" ureport.log
+        rlAssertNotGrep "Attaching ContactEmail: abrt@email.com" ureport2.log
+        rlAssertNotGrep "curl sent header: 'POST /faf/reports/attach/ HTTP/1" ureport2.log
+        rlAssertNotGrep "{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"email\", \"data\": \"abrt@email.com\" }" ureport2.log
 
-        rlAssertGrep "127.0.0.1 - - \[.*\] \"POST /faf/reports/new/ HTTP/1.1\" 202 -" server.log
-        rlAssertNotGrep "127.0.0.1 - - \[.*\] \"POST /faf/reports/attach/ HTTP/1.1\" 202 -" server.log
+        rlAssertGrep ".* - - \[.*\] \"POST /faf/reports/new/ HTTP/1.1\" 202 -" server2.log
+        rlAssertNotGrep ".* - - \[.*\] \"POST /faf/reports/attach/ HTTP/1.1\" 202 -" server2.log
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
     rlPhaseEnd
 
 
     rlPhaseStartCleanup
-        rlBundleLogs abrt server* client*
+        rlBundleLogs abrt $(ls server* ureport*)
         popd # TmpDir
         rm -rf -- "$TmpDir"
     rlPhaseEnd
