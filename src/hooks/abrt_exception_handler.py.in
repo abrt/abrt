@@ -44,6 +44,7 @@ def write_dump(tb):
             s.sendall("PID=%s\0" % os.getpid())
             s.sendall("EXECUTABLE=%s\0" % executable)
             s.sendall("ANALYZER=Python\0")
+            s.sendall("TYPE=Python\0")
             s.sendall("BASENAME=pyhook\0")
             # This handler puts a short(er) crash descr in 1st line of the backtrace.
             # Example:

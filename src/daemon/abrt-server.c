@@ -81,6 +81,7 @@ static char *executable;
 static char *backtrace;
 /* "python", "ruby" etc. */
 static char *analyzer;
+static char *type;
 /* Directory base name: "pyhook", "ruby" etc. */
 static char *dir_basename;
 /* Crash reason.
@@ -117,6 +118,7 @@ static int create_debug_dump()
     dd_save_text(dd, "abrt_version", VERSION);
 
     dd_save_text(dd, FILENAME_ANALYZER, analyzer);
+    dd_save_text(dd, FILENAME_TYPE, type != NULL ? type : analyzer);
     dd_save_text(dd, FILENAME_EXECUTABLE, executable);
     dd_save_text(dd, FILENAME_BACKTRACE, backtrace);
     dd_save_text(dd, FILENAME_REASON, reason);
@@ -291,6 +293,7 @@ static void process_message(const char *message)
     HANDLE_INCOMING_STRING("BACKTRACE=", backtrace, MAX_BACKTRACE_SIZE, false, true);
     HANDLE_INCOMING_STRING("BASENAME=", dir_basename, 100, true, false);
     HANDLE_INCOMING_STRING("ANALYZER=", analyzer, 100, true, true);
+    HANDLE_INCOMING_STRING("TYPE=", type, 100, true, true);
     HANDLE_INCOMING_STRING("REASON=", reason, 512, false, true);
 
 #undef HANDLE_INCOMING_STRING
