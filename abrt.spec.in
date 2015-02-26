@@ -215,7 +215,7 @@ problems handled by ABRT in Python.
 
 %build
 autoconf
-%configure --with-systemdsystemunitdir=""
+%configure --with-systemdsystemunitdir="" --enable-native-unwinder
 CFLAGS="-fno-strict-aliasing"
 make %{?_smp_mflags}
 
