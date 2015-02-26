@@ -426,6 +426,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_sbindir}/abrt-server
 %{_libexecdir}/abrt-handle-event
 %{_bindir}/abrt-handle-upload
+%{_bindir}/abrt-action-notify
 %{_bindir}/abrt-action-save-package-data
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
 %{_datadir}/%{name}/conf.d/abrt.conf
@@ -448,6 +449,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{_datadir}/%{name}/conf.d
 %dir %{_datadir}/%{name}/conf.d/plugins
 %{_mandir}/man1/abrt-handle-upload.1.gz
+%{_mandir}/man1/abrt-action-notify.1.gz
 %{_mandir}/man1/abrt-server.1.gz
 %{_mandir}/man1/abrt-action-save-package-data.1.gz
 %{_mandir}/man8/abrtd.8.gz
