@@ -58,8 +58,7 @@ Obsoletes: abrt-plugin-runapp > 0.0.1
 Obsoletes: abrt-plugin-filetransfer > 0.0.1
 Obsoletes: abrt-plugin-sosreport > 0.0.1
 Requires: %{name}-python = %{version}-%{release}
-Requires(pre): %{shadow_utils}
-Requires: python-dbus
+Requires: dbus-python
 Requires: python-dmidecode
 Requires: libreport-plugin-ureport
 
