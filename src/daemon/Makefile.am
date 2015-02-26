@@ -109,7 +109,9 @@ dist_daemonconf_DATA = \
     gpg_keys
 
 defaultdaemonconfdir = $(DEFAULT_CONF_DIR)
-dist_defaultdaemonconf_DATA = $(dist_daemonconf_DATA)
+dist_defaultdaemonconf_DATA = \
+    abrt.conf \
+    abrt-action-save-package-data.conf
 
 comredhatabrtservicedir = ${datadir}/dbus-1/system-services
 dist_comredhatabrtservice_DATA = com.redhat.abrt.service
