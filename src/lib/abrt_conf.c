@@ -90,7 +90,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
         g_hash_table_remove(settings, "AutoreportingEvent");
     }
     else
-        g_settings_autoreporting_event = xstrdup("report_uReport");
+        g_settings_autoreporting_event = xstrdup("submit_uReport");
 
     GHashTableIter iter;
     const char *name;
