@@ -85,6 +85,25 @@ static char *get_last_line(const char* msg)
     return xstrndup(start, end - start);
 }
 
+int problem_is_reported(const char *reported_to)
+{
+    if (reported_to == NULL)
+        return 0;
+
+    const char *iter = reported_to;
+    while (*iter != '\0')
+    {
+        if (prefixcmp(iter, "ABRT Server:") != 0 && prefixcmp(iter, "uReport:") != 0)
+            return 1;
+
+        iter = strchrnul(iter, '\n');
+        if (*iter == '\n')
+            ++iter;
+    }
+
+    return 0;
+}
+
 static void add_directory_to_dirlist(const char *dirname)
 {
     /* Silently ignore *any* errors, not only EACCES.
@@ -148,7 +167,7 @@ static void add_directory_to_dirlist(const char *dirname)
     GtkListStore *list_store;
 
     char *subm_status = NULL;
-    if (msg)
+    if (problem_is_reported(msg))
     {
         list_store = s_reported_dumps_list_store;
         subm_status = get_last_line(msg);
