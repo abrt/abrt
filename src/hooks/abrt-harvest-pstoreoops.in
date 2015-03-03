@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     try:
         os.chdir(pstoredir)
-    except OSError, ex:
+    except OSError as ex:
         # silently ignore if the pstore doesn't exist, because that usually
         # means that we're on the system where pstore boot is not supported
         sys.stderr.write("Can't chdir to {0}: {1}".format(pstoredir, ex))

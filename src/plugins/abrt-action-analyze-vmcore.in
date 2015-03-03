@@ -52,22 +52,22 @@ if __name__ == "__main__":
     help_text = _("Usage: {0} [-v[v]] [--core=VMCORE]").format(PROGNAME)
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hvd", ["help", "core="])
-    except getopt.GetoptError, err:
+    except getopt.GetoptError as err:
         error_msg(str(err))  # prints something like "option -a not recognized"
         error_msg_and_die(help_text)
     usercache = False
 
     for opt, arg in opts:
         if opt in ("-h", "--help"):
-            print help_text
+            print(help_text)
             exit(0)
         elif opt == "-v":
             verbose += 1
         elif opt in ("-d"):
             try:
                 os.chdir(arg)
-            except OSError, ex:
-                print str(ex)
+            except OSError as ex:
+                print(ex)
                 sys.exit(RETURN_FAILURE)
 
     if not vmcore:
@@ -76,10 +76,10 @@ if __name__ == "__main__":
     set_verbosity(verbose)
 
     if not os.path.exists(vmcore):
-        print _("File {0} doesn't exist").format(vmcore)
+        print(_("File {0} doesn't exist").format(vmcore))
         sys.exit(RETURN_FAILURE)
 
-    print _("Extracting the oops text from core")
+    print(_("Extracting the oops text from core"))
     crash = Popen(["makedumpfile", "--dump-dmesg", "-f", vmcore, dmesg_log], stdout=PIPE, stderr=PIPE, bufsize=-1)
     out, err = crash.communicate()
 
@@ -92,8 +92,8 @@ if __name__ == "__main__":
     backtrace_file.close()
     ret = dump_oops.returncode
     if dump_oops.returncode != 0:
-        print _("Can't extract the oops message: '{0}'").format(err)
+        print(_("Can't extract the oops message: '{0}'").format(err))
         sys.exit(ret)
 
-    print _("Oops text extracted successfully")
+    print(_("Oops text extracted successfully"))
     sys.exit(ret)

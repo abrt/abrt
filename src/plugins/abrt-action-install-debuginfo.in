@@ -48,7 +48,7 @@ def sigterm_handler(signum, frame):
 
 def sigint_handler(signum, frame):
     clean_up()
-    print "\n", _("Exiting on user command")
+    print("\n{0}".format(_("Exiting on user command")))
     sys.stdout.flush()
     # ??! without "sys.", I am getting segv!
     sys.exit(RETURN_OK)
@@ -109,13 +109,13 @@ if __name__ == "__main__":
         opts, args = getopt.getopt(sys.argv[1:], "vyhe",
                 ["help", "ids=", "cache=", "size_mb=", "tmpdir=", "keeprpms",
                  "exact=", "repo="])
-    except getopt.GetoptError, err:
-        print str(err) # prints something like "option -a not recognized"
+    except getopt.GetoptError as err:
+        print(err) # prints something like "option -a not recognized"
         exit(RETURN_FAILURE)
 
     for opt, arg in opts:
         if opt in ("-h", "--help"):
-            print help_text
+            print(help_text)
             exit(0)
         elif opt == "-v":
             verbose += 1
@@ -147,7 +147,7 @@ if __name__ == "__main__":
         try:
             conf = problem.load_plugin_conf_file("CCpp.conf")
         except OSError as ex:
-            print str(ex)
+            print(ex)
         else:
             cachedirs = conf.get("DebuginfoLocation", None)
 
@@ -165,7 +165,7 @@ if __name__ == "__main__":
         if fbuild_ids != "-":
             try:
                 fin = open(fbuild_ids, "r")
-            except IOError, ex:
+            except IOError as ex:
                 error_msg_and_die(_("Can't open {0}: {1}").format(fbuild_ids, ex))
         for line in fin.readlines():
             b_ids.append(line.strip('\n'))
@@ -193,7 +193,7 @@ if __name__ == "__main__":
                 error_msg_and_die("Can't execute '%s'", "abrt-action-trim-files");
             if pid > 0:
                 os.waitpid(pid, 0);
-        except Exception, e:
+        except Exception as e:
             error_msg("Can't execute abrt-action-trim-files: %s", e);
 
         missing = filter_installed_debuginfos(b_ids, cachedirs)
@@ -203,10 +203,10 @@ if __name__ == "__main__":
     if missing:
         log2("%s", missing)
         if len(b_ids) > 0:
-            print _("Coredump references {0} debuginfo files, {1} of them are not installed").format(len(b_ids), len(missing))
+            print(_("Coredump references {0} debuginfo files, {1} of them are not installed").format(len(b_ids), len(missing)))
         else:
             # Only --exact FILE[:FILE2]... was specified
-            print _("{0} of debuginfo files are not installed").format(len(missing))
+            print(_("{0} of debuginfo files are not installed").format(len(missing)))
 
         # TODO: should we pass keep_rpms=keeprpms to DebugInfoDownload here??
         downloader = DebugInfoDownload(cache=cachedirs[0], tmp=tmpdir,
@@ -214,21 +214,21 @@ if __name__ == "__main__":
                                        repo_pattern=repo_pattern)
         try:
             result = downloader.download(missing, download_exact_files=exact_fls)
-        except Exception, ex:
+        except Exception as ex:
             error_msg_and_die("Can't download debuginfos: %s", ex)
 
         if exact_fls:
             for bid in missing:
                 if not os.path.isfile(bid):
-                    print _("Missing requested file: {0}").format(bid)
+                    print(_("Missing requested file: {0}").format(bid))
                     exact_file_missing = True
 
         missing = filter_installed_debuginfos(b_ids, cachedirs)
         for bid in missing:
-            print _("Missing debuginfo file: {0}").format(bid)
+            print(_("Missing debuginfo file: {0}").format(bid))
 
     if not missing and not exact_file_missing:
-        print _("All debuginfo files are available")
+        print(_("All debuginfo files are available"))
 
     if exact_file_missing:
         result = RETURN_FAILURE

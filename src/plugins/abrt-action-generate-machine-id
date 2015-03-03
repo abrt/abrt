@@ -133,7 +133,7 @@ def print_result(ids, outfile, prefixed):
     if len(ids) > 1:
         fmt += '\n'
 
-    for sd, mid in ids.iteritems():
+    for sd, mid in ids.items():
         outfile.write(fmt.format(sd,mid))
 
 
@@ -147,7 +147,7 @@ def print_generators(outfile=None):
     if outfile is None:
         outfile = sys.stdout
 
-    for sd in GENERATORS.iterkeys():
+    for sd in GENERATORS.keys():
         outfile.write("{0}\n".format(sd))
 
 
@@ -175,7 +175,7 @@ if __name__ == '__main__':
     if ARGS['generators']:
         requested_generators = ARGS['generators']
     else:
-        requested_generators = GENERATORS.keys()
+        requested_generators = list(GENERATORS.keys())
 
     machineids = generate_machine_id(requested_generators)
 
@@ -192,4 +192,4 @@ if __name__ == '__main__':
         if len(machineids) == 1:
             sys.stdout.write('\n')
 
-    sys.exit(len(requested_generators) - len(machineids.keys()))
+    sys.exit(len(requested_generators) - len(machineids))

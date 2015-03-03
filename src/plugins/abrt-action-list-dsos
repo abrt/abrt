@@ -20,7 +20,7 @@ def error_msg_and_die(s):
 def xopen(name, mode):
     try:
         r = open(name, mode)
-    except IOError, e:
+    except IOError as e:
         error_msg_and_die("Can't open '%s': %s" % (name, e))
     return r
 
@@ -37,7 +37,7 @@ def parse_maps(maps_path):
         files = [x[x.find('/'):].split()[0] for x in f.readlines() if x.find('/') > -1]
         # set() uniqifies the list of filenames
         return set(files)
-    except IOError, e:
+    except IOError as e:
         error_msg_and_die("Can't read '%s': %s" % (maps_path, e))
 
 if __name__ == "__main__":
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     help_text = ("Usage: %s [-o OUTFILE] -m PROC_PID_MAP_FILE") % progname
     try:
         opts, args = getopt.getopt(sys.argv[1:], "o:m:h", ["help"])
-    except getopt.GetoptError, err:
+    except getopt.GetoptError as err:
         error_msg(err) # prints something like "option -a not recognized"
         error_msg_and_die(help_text)
 
@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
     for opt, arg in opts:
         if opt in ("-h", "--help"):
-            print help_text
+            print(help_text)
             exit(0)
         #elif opt == "-v":
         #    verbose += 1
@@ -89,7 +89,7 @@ if __name__ == "__main__":
                                      h[rpm.RPMTAG_INSTALLTIME])
                                     )
 
-        except Exception, ex:
+        except Exception as ex:
             error_msg_and_die("Can't get the DSO list: %s" % ex)
 
         outfile.close()
