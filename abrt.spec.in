@@ -210,6 +210,7 @@ to the shell
 Summary: ABRT Python API
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
+Requires: %{name}-libs = %{version}-%{release}
 Requires: pygobject2
 BuildRequires: python-nose
 BuildRequires: python-sphinx
