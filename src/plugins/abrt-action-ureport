@@ -99,13 +99,13 @@ if __name__ == "__main__":
     help_text = _("Usage: %s [-v]") % progname
     try:
         opts, args = getopt.getopt(sys.argv[1:], "vh", ["help"])
-    except getopt.GetoptError, err:
+    except getopt.GetoptError as err:
         error_msg(err)  # prints something like "option -a not recognized"
         error_msg_and_die(help_text)
 
     for opt, arg in opts:
         if opt in ("-h", "--help"):
-            print help_text
+            print(help_text)
             sys.exit(0)
         if opt == "-v":
             verbose += 1
@@ -148,7 +148,7 @@ if __name__ == "__main__":
                 log(_("A bug was already filed about this problem:"))
                 bugs = sorted(bugs)
                 for bug in bugs:
-                    print bug
+                    print(bug)
                 sys.exit(70)  # EXIT_STOP_EVENT_RUN
             log1("Bug for '%s' not yet filed. Continuing.", dirname)
             sys.exit(0)

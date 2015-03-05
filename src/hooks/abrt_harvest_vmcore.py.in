@@ -127,12 +127,12 @@ def change_mode_rec(dest):
     dest - path to the directory
     """
 
-    os.chmod(dest, 0700)
+    os.chmod(dest, 0o700)
     for root, dirs, files in os.walk(dest):
         for i in dirs:
-            os.chmod(os.path.join(root, i), 0700)
+            os.chmod(os.path.join(root, i), 0o700)
         for i in files:
-            os.chmod(os.path.join(root, i), 0600)
+            os.chmod(os.path.join(root, i), 0o600)
 
 
 def create_abrtd_info(dest):
@@ -192,7 +192,7 @@ def harvest_vmcore():
         sys.exit(1)
 
     # Wait for abrtd to start. Give it at least 1 second to initialize.
-    for i in xrange(10):
+    for i in range(10):
         if i is 9:
             sys.exit(1)
         elif os.system('pidof abrtd >/dev/null'):
@@ -200,7 +200,7 @@ def harvest_vmcore():
         else:
             break
 
-    os.umask(077)
+    os.umask(0o077)
 
     # Check abrt config files for copy/move settings and
     try:

@@ -36,7 +36,7 @@ def handle_event(event_name, problem_dir):
     ret = state.run_event_on_dir_name(problem_dir, event_name)
 
     if ret == 0 and state.children_count == 0:
-        print "No actions are found for event '%s'" % event_name
+        print("No actions are found for event '%s'" % event_name)
         return RETURN_FAILURE
 
     return ret

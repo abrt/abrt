@@ -85,7 +85,7 @@ if __name__ == "__main__":
     delete_archive = False
     for opt, arg in opts:
         if opt in ("-h", "--help"):
-            print help_text
+            print(help_text)
             sys.exit(0)
         if opt == "-v":
             verbose += 1

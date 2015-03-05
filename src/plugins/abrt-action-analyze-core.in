@@ -38,7 +38,7 @@ def error_msg_and_die(s):
 def xopen(name, mode):
     try:
         r = open(name, mode)
-    except IOError, ex:
+    except IOError as ex:
         error_msg_and_die("Can't open '%s': %s" % (name, ex))
     return r
 
@@ -142,7 +142,7 @@ if __name__ == "__main__":
     help_text = _("Usage: %s [-v] [-o OUTFILE] -c COREFILE") % progname
     try:
         opts, args = getopt.getopt(sys.argv[1:], "vhc:o:", ["help", "core="])
-    except getopt.GetoptError, err:
+    except getopt.GetoptError as err:
         error_msg(err) # prints something like "option -a not recognized"
         error_msg_and_die(help_text)
 
@@ -151,7 +151,7 @@ if __name__ == "__main__":
 
     for opt, arg in opts:
         if opt in ("-h", "--help"):
-            print help_text
+            print(help_text)
             exit(0)
         elif opt == "-v":
             verbose += 1
@@ -172,7 +172,7 @@ if __name__ == "__main__":
         outfile = sys.stdout
         outname = opt_o
         # Make sure the file is readable for all
-        oldmask = os.umask(0002)
+        oldmask = os.umask(0o002)
         for bid in b_ids:
             if outname:
                 outfile = xopen(outname, "w")
@@ -180,7 +180,7 @@ if __name__ == "__main__":
             outfile.write("%s\n" % bid)
         outfile.close()
         os.umask(oldmask)
-    except IOError, e:
+    except IOError as e:
         if not opt_o:
             opt_o = "<stdout>"
         error_msg_and_die("Error writing to '%s': %s" % (opt_o, e))
