@@ -70,7 +70,7 @@ def extract_info_from_core(coredump_name):
     EXECUTABLE = 4
 
     log(_("Analyzing coredump '%s'") % coredump_name)
-    eu_unstrip_OUT = Popen(["eu-unstrip","--core=%s" % coredump_name, "-n"], stdout=PIPE, bufsize=-1).communicate()[0]
+    eu_unstrip_OUT = Popen(["eu-unstrip","--core=%s" % coredump_name, "-n"], stdout=PIPE, bufsize=-1, universal_newlines=True).communicate()[0]
     # parse eu_unstrip_OUT and return the list of build_ids
 
     # eu_unstrip_OUT = (

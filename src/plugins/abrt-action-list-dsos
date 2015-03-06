@@ -84,8 +84,8 @@ if __name__ == "__main__":
                             outname = None
                         outfile.write("%s %s (%s) %s\n" %
                                     (path,
-                                     h[rpm.RPMTAG_NEVRA],
-                                     h[rpm.RPMTAG_VENDOR],
+                                     h[rpm.RPMTAG_NEVRA].decode('utf-8'),
+                                     h[rpm.RPMTAG_VENDOR].decode('utf-8'),
                                      h[rpm.RPMTAG_INSTALLTIME])
                                     )
 
