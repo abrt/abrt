@@ -37,10 +37,10 @@ struct abrt_journal
     sd_journal *j;
 };
 
-int abrt_journal_new(abrt_journal_t **journal)
+static int abrt_journal_new_flags(abrt_journal_t **journal, int flags)
 {
     sd_journal *j;
-    const int r = sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
+    const int r = sd_journal_open(&j, flags);
     if (r < 0)
     {
         log_notice("Failed to open journal: %s", strerror(-r));
@@ -51,6 +51,16 @@ int abrt_journal_new(abrt_journal_t **journal)
     (*journal)->j = j;
 
     return 0;
+}
+
+int abrt_journal_new(abrt_journal_t **journal)
+{
+    return abrt_journal_new_flags(journal, SD_JOURNAL_LOCAL_ONLY);
+}
+
+int abrt_journal_new_merged(abrt_journal_t **journal)
+{
+    return abrt_journal_new_flags(journal, 0);
 }
 
 void abrt_journal_free(abrt_journal_t *journal)
