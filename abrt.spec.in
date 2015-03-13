@@ -1010,8 +1010,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files atomic
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp_Atomic.conf
-%{_datadir}/%{name}/conf.d/plugins/CCpp_Atomic.conf
 %{_unitdir}/abrt-coredump-helper.service
+%{_datadir}/%{name}/conf.d/plugins/CCpp_Atomic.conf
+%config(noreplace) %{_sysconfdir}/%{name}/abrt-action-save-package-data.conf
+%{_bindir}/abrt-action-save-package-data
+%{_mandir}/man1/abrt-action-save-package-data.1.gz
+%{_mandir}/man5/abrt-action-save-package-data.conf.5.gz
 
 %if %{with bodhi}
 %files plugin-bodhi
