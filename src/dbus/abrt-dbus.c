@@ -49,6 +49,10 @@ static const gchar introspection_xml[] =
   "      <arg type='s' name='problem_dir' direction='in'/>"
   "      <arg type='s' name='name' direction='in'/>"
   "    </method>"
+  "    <method name='GetProblemData'>"
+  "      <arg type='s' name='problem_dir' direction='in'/>"
+  "      <arg type='a{s(its)}' name='problem_data' direction='out'/>"
+  "    </method>"
   "    <method name='ChownProblemDir'>"
   "      <arg type='s' name='problem_dir' direction='in'/>"
   "    </method>"
@@ -545,6 +549,68 @@ static void handle_method_call(GDBusConnection *connection,
         return;
     }
 
+    if (g_strcmp0(method_name, "GetProblemData") == 0)
+    {
+        /* Parameter tuple is (s) */
+        const char *problem_id;
+
+        g_variant_get(parameters, "(&s)", &problem_id);
+
+        int ddstat = dump_dir_stat_for_uid(problem_id, caller_uid);
+        if ((ddstat & DD_STAT_ACCESSIBLE_BY_UID) == 0 &&
+                polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
+        {
+            log_notice("Unauthorized access : '%s'", problem_id);
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                              "org.freedesktop.problems.AuthFailure",
+                                              _("Not Authorized"));
+            return;
+        }
+
+        struct dump_dir *dd = dd_opendir(problem_id, DD_OPEN_READONLY);
+        if (dd == NULL)
+        {
+            log_notice("Can't access the problem '%s' for reading", problem_id);
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                    "org.freedesktop.problems.Failure",
+                                    _("Can't access the problem for reading"));
+            return;
+        }
+
+        problem_data_t *pd = create_problem_data_from_dump_dir(dd);
+        dd_close(dd);
+
+        GVariantBuilder *response_builder = g_variant_builder_new(G_VARIANT_TYPE_ARRAY);
+
+        GHashTableIter pd_iter;
+        char *element_name;
+        struct problem_item *element_info;
+        g_hash_table_iter_init(&pd_iter, pd);
+        while (g_hash_table_iter_next(&pd_iter, (void**)&element_name, (void**)&element_info))
+        {
+            unsigned long size = 0;
+            if (problem_item_get_size(element_info, &size) != 0)
+            {
+                log_notice("Can't get stat of : '%s'", element_info->content);
+                continue;
+            }
+
+            g_variant_builder_add(response_builder, "{s(its)}",
+                                                    element_name,
+                                                    element_info->flags,
+                                                    size,
+                                                    element_info->content);
+        }
+
+        GVariant *response = g_variant_new("(a{s(its)})", response_builder);
+        g_variant_builder_unref(response_builder);
+
+        problem_data_free(pd);
+
+        g_dbus_method_invocation_return_value(invocation, response);
+        return;
+    }
+
     if (g_strcmp0(method_name, "SetElement") == 0)
     {
         const char *problem_id;
@@ -813,8 +879,10 @@ int main(int argc, char *argv[])
     * the introspection data structures - so we just build
     * them from XML.
     */
-    introspection_data = g_dbus_node_info_new_for_xml(introspection_xml, NULL);
-    g_assert(introspection_data != NULL);
+    GError *err = NULL;
+    introspection_data = g_dbus_node_info_new_for_xml(introspection_xml, &err);
+    if (err != NULL)
+        error_msg_and_die("Invalid D-Bus interface: %s", err->message);
 
     owner_id = g_bus_own_name(G_BUS_TYPE_SYSTEM,
                              ABRT_DBUS_NAME,
