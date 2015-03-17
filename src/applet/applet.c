@@ -111,6 +111,8 @@ typedef struct problem_info {
     guint count;
     bool is_packaged;
     char *command_line;
+    char **envp;
+    pid_t pid;
     bool known;
     bool reported;
     bool was_announced;
@@ -185,6 +187,8 @@ static void problem_info_unref(gpointer data)
 
     problem_data_free(pi->problem_data);
     g_free(pi->command_line);
+    if (pi->envp)
+        g_strfreev(pi->envp);
     g_free(pi);
 }
 
@@ -570,7 +574,9 @@ static void notify_problem_list(GList *problems)
             continue;
         }
 
-        app = problem_create_app_from_cmdline (pi->command_line);
+        app = problem_create_app_from_env (pi->envp, pi->pid);
+        if (!app)
+            app = problem_create_app_from_cmdline (pi->command_line);
 
         /* For each problem we'll need to know:
          * - Whether or not the crash happened in an “app”
@@ -926,6 +932,8 @@ static void Crash(GVariant *parameters)
     char *count_str = dd_load_text_ext(dd, FILENAME_COUNT, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     guint count = count_str ? atoi(count_str) : 1;
     g_free(count_str);
+    char *env = dd_load_text_ext(dd, FILENAME_ENVIRON, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    char *pid = dd_load_text_ext(dd, FILENAME_PID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     dd_close(dd);
 
     /*
@@ -946,7 +954,11 @@ static void Crash(GVariant *parameters)
     pi->count = count;
     pi->is_packaged = (package_name != NULL);
     pi->command_line = g_strdup(command_line);
+    pi->envp = (env != NULL) ? g_strsplit (env, "\n", -1) : NULL;
+    pi->pid = (pid != NULL) ? atoi (pid) : -1;
     free(command_line);
+    free(env);
+    free(pid);
     show_problem_notification(pi);
 }
 
