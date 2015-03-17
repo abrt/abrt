@@ -18,6 +18,4 @@ else
     VN="$DEF_VER"
 fi
 
-sed -e "s/@@ABRT_VERSION@@/$VN/g" < abrt.spec.in > abrt.spec
-
 echo -n $VN > abrt-version

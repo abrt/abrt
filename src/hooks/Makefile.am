@@ -6,6 +6,7 @@ pluginsconfdir = $(PLUGINS_CONF_DIR)
 
 dist_pluginsconf_DATA = \
     CCpp.conf \
+    CCpp_Atomic.conf \
     python.conf \
     python3.conf \
     oops.conf
@@ -31,6 +32,7 @@ abrt_hook_ccpp_CPPFLAGS = \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    -DDEFAULT_DUMP_LOCATION_MODE=$(DEFAULT_DUMP_LOCATION_MODE) \
     -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \

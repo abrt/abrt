@@ -205,6 +205,7 @@ int main(int argc, char *argv[])
         OPT_c = 1 << 7,
         OPT_e = 1 << 8,
         OPT_f = 1 << 9,
+        OPT_a = 1 << 10,
     };
 
     char *cursor = NULL;
@@ -225,6 +226,7 @@ int main(int argc, char *argv[])
         OPT_STRING('c', NULL, &cursor, "CURSOR", _("Start reading systemd-journal from the CURSOR position")),
         OPT_BOOL(  'e', NULL, NULL, _("Start reading systemd-journal from the end")),
         OPT_BOOL(  'f', NULL, NULL, _("Follow systemd-journal from the last seen position (if available)")),
+        OPT_BOOL(  'a', NULL, NULL, _("Read journal files from all machines")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -266,7 +268,7 @@ int main(int argc, char *argv[])
     log_debug("Using journal match: '%s'", kernel_journal_filter[0]);
 
     abrt_journal_t *journal = NULL;
-    if (abrt_journal_new(&journal))
+    if (((opts & OPT_a) ? abrt_journal_new_merged : abrt_journal_new)(&journal))
         error_msg_and_die(_("Cannot open systemd-journal"));
 
     if (abrt_journal_set_journal_filter(journal, kernel_journal_filter) < 0)

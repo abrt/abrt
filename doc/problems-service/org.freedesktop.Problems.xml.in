@@ -253,6 +253,18 @@ for prblmid in problems.GetProblems():
                 </arg>
             </method>
 
+            <method name='GetProblemData'>"
+                <tp:docstring>Returns problem's data.</tp:docstring>
+
+                <arg type='s' name='problem_dir' direction='in'>
+                    <tp:docstring>An identifier of problem.</tp:docstring>
+                </arg>
+
+                <arg type='a{sits}' name='problem_data' direction='out'>
+                    <tp:docstring>A dictionary where keys are element names and values are triplets (element libreport flags, element size, element contents).</tp:docstring>
+                </arg>
+            </method>
+
             <method name='ChownProblemDir'>
                 <tp:docstring>Assures ownership of a specified problem for the caller.</tp:docstring>
 

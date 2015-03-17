@@ -6,6 +6,53 @@
 # in uReport).
 #
 
+function print_usage
+{
+    echo "Usage: abrt-action-save-package-data [OPTION]"
+    echo ""
+    echo "    -r, --root ROOT      use ROOT as top level directory"
+    echo "    -h, --help           Show this help message"
+}
+
+ROOT="/"
+
+while [ $# -gt 0 ];
+do
+    case "$1" in
+        "-r"|"--root")
+            if [ -z "$2" ]; then
+                >&2
+                echo "$1: requires argument"
+                print_usage
+                exit 1
+            fi
+
+            ROOT=$2
+            shift
+            ;;
+
+        "-h"|"--help")
+            echo "Save pkg_{name, arch, version, release} for kernel oopses."
+            echo ""
+            echo "These files are required by reporter-ureporter (mandatory"
+            echo "in uReport)."
+
+            print_usage
+            exit 0
+            ;;
+
+        *)
+            >&2
+            echo "$1: unknown option"
+            echo
+            print_usage
+            exit 1
+            ;;
+    esac
+
+    shift
+done
+
 if [ ! -f kernel ]; then
     echo "File 'kernel' containing kernel version not found in current directory"
     exit 1
@@ -14,7 +61,7 @@ fi
 echo "Looking for kernel package"
 kernel_version="$( sed 's/ .*//' kernel )"
 
-package="$( rpm -qf "/boot/vmlinuz-$kernel_version" )"
+package="$( rpm --root $ROOT -qf "/boot/vmlinuz-$kernel_version" )"
 if [ $? != 0 ]; then
         echo "Can't find kernel package corresponding to '$kernel_version'"
         echo "Can't record package version data (pkg_version, pkg_release, ...)."
@@ -22,10 +69,10 @@ if [ $? != 0 ]; then
 fi
 
 echo "Kernel package $package found"
-rpm -q --qf "%{name}\n" "$package" > pkg_name
-rpm -q --qf "%{arch}\n" "$package" > pkg_arch
-rpm -q --qf "%{version}\n" "$package" > pkg_version
-rpm -q --qf "%{release}\n" "$package" > pkg_release
-epoch="$( rpm -q --qf "%{epoch}" "$package" )"
+rpm --root $ROOT -q --qf "%{name}\n" "$package" > pkg_name
+rpm --root $ROOT -q --qf "%{arch}\n" "$package" > pkg_arch
+rpm --root $ROOT -q --qf "%{version}\n" "$package" > pkg_version
+rpm --root $ROOT -q --qf "%{release}\n" "$package" > pkg_release
+epoch="$( rpm --root $ROOT -q --qf "%{epoch}" "$package" )"
 test "$epoch" = "(none)"  && epoch=0
 echo "$epoch" > pkg_epoch

@@ -28,7 +28,15 @@ extern "C" {
 struct abrt_journal;
 typedef struct abrt_journal abrt_journal_t;
 
+/* Only journal files generated on the local machine and all journal file types
+ * will be opened.
+ */
 int abrt_journal_new(abrt_journal_t **journal);
+
+/* Journal files generated on ALL machines and all journal file types will be
+ * opened.
+ */
+int abrt_journal_new_merged(abrt_journal_t **journal);
 
 void abrt_journal_free(abrt_journal_t *journal);
 

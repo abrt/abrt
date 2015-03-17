@@ -19,7 +19,7 @@
 #include "libabrt.h"
 #include <json.h>
 
-void dump_docker_info(struct dump_dir *dd)
+void dump_docker_info(struct dump_dir *dd, const char *root_dir)
 {
     if (!dd_exist(dd, FILENAME_CONTAINER))
         dd_save_text(dd, FILENAME_CONTAINER, "docker");
@@ -64,9 +64,15 @@ void dump_docker_info(struct dump_dir *dd)
 
     dd_save_text(dd, FILENAME_CONTAINER_ID, container_id);
 
-    char *docker_inspect_cmdline = xasprintf("docker inspect %s", container_id);
+    char *docker_inspect_cmdline = NULL;
+    if (root_dir != NULL)
+        docker_inspect_cmdline = xasprintf("chroot %s /bin/sh -c \"docker inspect %s\"", root_dir, container_id);
+    else
+        docker_inspect_cmdline = xasprintf("docker inspect %s", container_id);
+
     log_debug("docker command: '%s'", docker_inspect_cmdline);
     char *output = run_in_shell_and_save_output(0, docker_inspect_cmdline, "/", NULL);
+
     free(docker_inspect_cmdline);
 
     if (output == NULL)
@@ -186,6 +192,7 @@ int main(int argc, char **argv)
     abrt_init(argv);
 
     const char *dump_dir_name = ".";
+    const char *root_dir = NULL;
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
@@ -201,6 +208,7 @@ int main(int argc, char **argv)
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR"     , _("Problem directory")),
+        OPT_STRING('r', NULL, &root_dir,      "ROOTDIR" , _("Root directory for running container commands")),
         OPT_END()
     };
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
@@ -216,7 +224,7 @@ int main(int argc, char **argv)
         error_msg_and_die("The crash didn't occur in container");
 
     if (strstr("/docker ", container_cmdline) == 0)
-        dump_docker_info(dd);
+        dump_docker_info(dd, root_dir);
     else if (strstr("/lxc-", container_cmdline) == 0)
         dump_lxc_info(dd, container_cmdline);
     else

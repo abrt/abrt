@@ -29,6 +29,7 @@ abrtd_CPPFLAGS = \
     -I$(srcdir)/../lib \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DLIBEXEC_DIR=\"$(libexecdir)\" \
+    -DDEFAULT_DUMP_LOCATION_MODE=$(DEFAULT_DUMP_LOCATION_MODE) \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
