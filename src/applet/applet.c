@@ -574,7 +574,7 @@ static void notify_problem_list(GList *problems)
             continue;
         }
 
-        app = problem_create_app_from_env (pi->envp, pi->pid);
+        app = problem_create_app_from_env ((const char **)pi->envp, pi->pid);
         if (!app)
             app = problem_create_app_from_cmdline (pi->command_line);
 
