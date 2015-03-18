@@ -1067,6 +1067,30 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Wed Mar 18 2015 Jakub Filak <jfilak@redhat.com> 2.5.0-1
+- applet: cast to correct type to fix a warrning
+- applet: Use new problem_create_app_from_env() helper
+- doc: add documentation for GetProblemData
+- dbus: add a new method GetProblemData
+- abrt_event: run save package data event even if component exists
+- a-a-s-container-data: add a new argument --root
+- spec: add a-a-s-package-data to abrt-atomic
+- a-a-s-kernel-data: add --root argument
+- journal-oops: add an argument similar to '--merge'
+- spec: let configure generate the spec file
+- ccpp: create the dump location from standalone hook
+- retrace-client: stop failing on SSL2
+- spec: changes for Atomic hosts
+- add stuff necessary for Project Atomic
+- Python 3 fixes
+- ccpp: add support for multiple pkg mngrs
+- Python 3 compatibility
+- Revert "dbus: Allow admins to load problems without a password"
+- dbus: Allow admins to load problems without a password
+- abrtd: Don't allow users to list problems "by hand"
+- spec: Don't allow users to list problems "by hand"
+- spec: abrt-python requires libreport-python to build
+
 * Fri Feb 20 2015 Jakub Filak <jfilak@redhat.com> 2.4.0-1
 - spec: factor out core_pattern helper from addon-ccpp
 - ccpp: standalone hook
