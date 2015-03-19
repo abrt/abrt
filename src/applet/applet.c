@@ -87,11 +87,17 @@ static bool is_networking_enabled(void)
 static void show_problem_list_notification(GList *problems);
 static void problem_info_unref(gpointer data);
 
-static gboolean process_deferred_queue_timeout_fn(GList *queue)
+static gboolean process_deferred_queue_timeout_fn(void)
 {
     g_deferred_timeout = 0;
-    show_problem_list_notification(queue);
-    g_list_free_full (queue, problem_info_unref);
+
+    GList *tmp = g_deferred_crash_queue;
+    g_deferred_crash_queue = NULL;
+
+    /* this function calls push_to_deferred_queue() which appends data to
+     * g_deferred_crash_queue but the function also modifies the argument
+     * so we must reset g_deferred_crash_queue before the call */
+    show_problem_list_notification(tmp);
 
     /* Remove this timeout fn from the main loop*/
     return G_SOURCE_REMOVE;
@@ -107,8 +113,7 @@ static void connectivity_changed_cb(GObject    *gobject,
         if (g_deferred_timeout)
             g_source_remove(g_deferred_timeout);
 
-        g_deferred_timeout = g_idle_add ((GSourceFunc)process_deferred_queue_timeout_fn,
-                                         g_deferred_crash_queue);
+        g_deferred_timeout = g_idle_add ((GSourceFunc)process_deferred_queue_timeout_fn, NULL);
     }
 }
 
@@ -583,6 +588,9 @@ add_restart_app_button (NotifyNotification *notification,
             problem_info_ref (pi), problem_info_unref);
 }
 
+/*
+ * Destroys the problems argument
+ */
 static void notify_problem_list(GList *problems)
 {
     if (problems == NULL)
@@ -890,6 +898,9 @@ static void run_event_async(problem_info_t *pi, const char *event_name)
                    handle_event_output_cb, state);
 }
 
+/*
+ * Destroys the problems argument
+ */
 static void show_problem_list_notification(GList *problems)
 {
     if (is_autoreporting_enabled())
@@ -1086,10 +1097,7 @@ next:
     }
 
     if (notify_list)
-    {
         show_problem_list_notification(notify_list);
-        g_list_free_full (notify_list, problem_info_unref);
-    }
 
     list_free_with_free(new_dirs);
 
