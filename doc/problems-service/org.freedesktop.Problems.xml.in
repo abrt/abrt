@@ -274,7 +274,7 @@ for prblmid in problems.GetProblems():
             </method>
 
             <method name='DeleteProblem'>
-                <tp:docstring>Deletes a specified problem.</tp:docstring>
+                <tp:docstring>Deletes specified problems. The problems are specified as array of problem_dir.</tp:docstring>
 
                 <arg type='as' name='problem_dir' direction='in'>
                     <tp:docstring>An identifier of problem to be deleted.</tp:docstring>
