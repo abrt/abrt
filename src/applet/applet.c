@@ -1245,6 +1245,8 @@ int main(int argc, char** argv)
      */
     new_dir_exists(/* new dirs list */ NULL);
 
+    g_object_unref(g_problems_proxy);
+
     if (notify_is_initted())
         notify_uninit();
 
