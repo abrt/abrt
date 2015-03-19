@@ -36,6 +36,14 @@
 #include "libabrt.h"
 #include "problem_api.h"
 
+/* 5s timeout*/
+#define ORG_FREEDESKTOP_PROBLEMS_CALL_DEFAULT_TIMEOUT 5000
+
+#define ORG_FREEDESKTOP_PROBLEMS_BUS "org.freedesktop.problems"
+#define ORG_FREEDESKTOP_PROBLEMS_OBJECT "/org/freedesktop/problems"
+#define ORG_FREEDESKTOP_PROBLEMS_INTERFACE "org.freedesktop.problems"
+#define ORG_FREEDESKTOP_PROBLEMS_NAMESPACE(member) "org.freedesktop.problems."member
+
 /* libnotify action keys */
 #define A_REPORT_REPORT "REPORT"
 #define A_RESTART_APPLICATION "RESTART"
@@ -44,8 +52,8 @@
 
 #define NOTIFICATION_ICON_NAME "face-sad-symbolic"
 
+static GDBusProxy *g_problems_proxy;
 static GNetworkMonitor *netmon;
-static char **s_dirs;
 static GList *g_deferred_crash_queue;
 static guint g_deferred_timeout;
 static bool g_gnome_abrt_available;
@@ -110,7 +118,6 @@ typedef struct problem_info {
     bool foreign;
     guint count;
     bool is_packaged;
-    char *command_line;
     char **envp;
     pid_t pid;
     bool known;
@@ -127,6 +134,11 @@ static void push_to_deferred_queue(problem_info_t *pi)
 static const char *problem_info_get_dir(problem_info_t *pi)
 {
     return problem_data_get_content_or_NULL(pi->problem_data, CD_DUMPDIR);
+}
+
+static const char *problem_info_get_command_line(problem_info_t *pi)
+{
+    return problem_data_get_content_or_NULL(pi->problem_data, FILENAME_CMDLINE);
 }
 
 static void problem_info_set_dir(problem_info_t *pi, const char *dir)
@@ -186,7 +198,6 @@ static void problem_info_unref(gpointer data)
         return;
 
     problem_data_free(pi->problem_data);
-    g_free(pi->command_line);
     if (pi->envp)
         g_strfreev(pi->envp);
     g_free(pi);
@@ -198,6 +209,57 @@ static problem_info_t* problem_info_ref(problem_info_t *pi)
 
     pi->refcount++;
     return pi;
+}
+
+static GVariant *dbus_call_sync(GDBusProxy *proxy, const gchar *method, GVariant *args)
+{
+    GError *error = NULL;
+    GVariant *const resp = g_dbus_proxy_call_sync(proxy,
+                                                  method,
+                                                  args,
+                                                  G_DBUS_PROXY_FLAGS_NONE,
+                                                  ORG_FREEDESKTOP_PROBLEMS_CALL_DEFAULT_TIMEOUT,
+                                                  /* GCancellable */ NULL,
+                                                  &error);
+    if (error)
+    {
+        error_msg(_("Can't call method '%s' over DBus on path '%s' interface '%s': %s"),
+                    method,
+                    g_dbus_proxy_get_object_path(proxy),
+                    g_dbus_proxy_get_interface_name(proxy),
+                    error->message);
+        g_error_free(error);
+        /* resp is NULL in this case */
+    }
+
+
+    return resp;
+}
+
+static int ofd_problems_get_problems(GList **problems)
+{
+    /* GetProblems ( IN , OUT as) */
+    GVariant *dbus_res = dbus_call_sync(g_problems_proxy, "GetProblems", NULL);
+
+    if (dbus_res == NULL)
+        return -1;
+
+    GVariant *resp = g_variant_get_child_value(dbus_res, 0);
+    g_variant_unref(dbus_res);
+
+    const gsize n_results = g_variant_n_children(resp);
+    for (gsize child = 0; child < n_results; ++child)
+    {
+        GVariant *const problem_id = g_variant_get_child_value(resp, child);
+
+        *problems = g_list_prepend(*problems, g_variant_dup_string(problem_id, NULL));
+
+        g_variant_unref(problem_id);
+    }
+
+    g_variant_unref(resp);
+
+    return 0;
 }
 
 static void run_event_async(problem_info_t *pi, const char *event_name);
@@ -230,29 +292,6 @@ static void free_event_processing_state(struct event_processing_state *p)
     g_free(p);
 }
 
-static GList *add_dirs_to_dirlist(GList *dirlist, const char *dirname)
-{
-    DIR *dir = opendir(dirname);
-    if (!dir)
-        return dirlist;
-
-    struct dirent *dent;
-    while ((dent = readdir(dir)) != NULL)
-    {
-        if (dot_or_dotdot(dent->d_name))
-            continue;
-        char *full_name = concat_path_file(dirname, dent->d_name);
-        struct stat statbuf;
-        if (lstat(full_name, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
-            dirlist = g_list_prepend(dirlist, full_name);
-        else
-            free(full_name);
-    }
-    closedir(dir);
-
-    return g_list_reverse(dirlist);
-}
-
 /* Compares the problem directories to list saved in
  * $XDG_CACHE_HOME/abrt/applet_dirlist and updates the applet_dirlist
  * with updated list.
@@ -263,12 +302,10 @@ static GList *add_dirs_to_dirlist(GList *dirlist, const char *dirname)
 static void new_dir_exists(GList **new_dirs)
 {
     GList *dirlist = NULL;
-    char **pp = s_dirs;
-    while (*pp)
+    if (ofd_problems_get_problems(&dirlist) != 0)
     {
-        log_notice("Looking for crashes in %s", *pp);
-        dirlist = add_dirs_to_dirlist(dirlist, *pp);
-        pp++;
+        error_msg(_("Failed to get the problem list from Problems D-Bus service."));
+        return;
     }
 
     const char *cachedir = g_get_user_cache_dir();
@@ -484,7 +521,7 @@ static void action_restart(NotifyNotification *notification, gchar *action, gpoi
     }
 
     problem_info_t *pi = (problem_info_t *)user_data;
-    app = problem_create_app_from_cmdline (pi->command_line);
+    app = problem_create_app_from_cmdline (problem_info_get_command_line(pi));
     g_assert (app);
 
     if (!g_app_info_launch(G_APP_INFO(app), NULL, NULL, &err))
@@ -575,8 +612,9 @@ static void notify_problem_list(GList *problems)
         }
 
         app = problem_create_app_from_env ((const char **)pi->envp, pi->pid);
+
         if (!app)
-            app = problem_create_app_from_cmdline (pi->command_line);
+            app = problem_create_app_from_cmdline (problem_info_get_command_line(pi));
 
         /* For each problem we'll need to know:
          * - Whether or not the crash happened in an “app”
@@ -653,7 +691,7 @@ static void notify_problem_list(GList *problems)
                 }
                 else
                 {
-                    char *binary = problem_get_argv0 (pi->command_line);
+                    char *binary = problem_get_argv0 (problem_info_get_command_line(pi));
                     notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. Please contact the developer if you want to report the issue."),
                                                    binary);
                     g_free (binary);
@@ -950,10 +988,11 @@ static void Crash(GVariant *parameters)
         problem_data_add_text_noteditable(pi->problem_data, FILENAME_DUPHASH, duphash);
     if (package_name != NULL && package_name[0] != '\0')
         problem_data_add_text_noteditable(pi->problem_data, FILENAME_COMPONENT, package_name);
+    if (command_line != NULL)
+        problem_data_add_text_noteditable(pi->problem_data, FILENAME_CMDLINE, command_line);
     pi->foreign = foreign_problem;
     pi->count = count;
     pi->is_packaged = (package_name != NULL);
-    pi->command_line = g_strdup(command_line);
     pi->envp = (env != NULL) ? g_strsplit (env, "\n", -1) : NULL;
     pi->pid = (pid != NULL) ? atoi (pid) : -1;
     free(command_line);
@@ -1017,7 +1056,7 @@ name_acquired_handler (GDBusConnection *connection,
         if (!dd_exist(dd, FILENAME_REPORTED_TO))
         {
             problem_info_t *pi = problem_info_new(new_dirs->data);
-            const char *elements[] = {FILENAME_UUID, FILENAME_DUPHASH, FILENAME_COMPONENT, FILENAME_NOT_REPORTABLE};
+            const char *elements[] = {FILENAME_UUID, FILENAME_DUPHASH, FILENAME_COMPONENT, FILENAME_NOT_REPORTABLE, FILENAME_CMDLINE};
 
             for (size_t i = 0; i < sizeof(elements)/sizeof(*elements); ++i)
             {
@@ -1125,19 +1164,6 @@ int main(int argc, char** argv)
     load_event_config_data();
     load_user_settings("abrt-applet");
 
-    const char *default_dirs[] = {
-        g_settings_dump_location,
-        NULL,
-        NULL,
-    };
-    argv += optind;
-    if (!argv[0])
-    {
-        default_dirs[1] = concat_path_file(g_get_user_cache_dir(), "abrt/spool");
-        argv = (char**)default_dirs;
-    }
-    s_dirs = argv;
-
     /* Initialize our (dbus_abrt) machinery by filtering
      * for signals:
      *     signal sender=:1.73 -> path=/org/freedesktop/problems; interface=org.freedesktop.problems; member=Crash
@@ -1151,13 +1177,26 @@ int main(int argc, char** argv)
         perror_msg_and_die("Can't connect to system dbus: %s", error->message);
     guint filter_id = g_dbus_connection_signal_subscribe(system_conn,
                                                          NULL,
-                                                         "org.freedesktop.problems",
+                                                         ORG_FREEDESKTOP_PROBLEMS_BUS,
                                                          "Crash",
-                                                         "/org/freedesktop/problems",
+                                                         ORG_FREEDESKTOP_PROBLEMS_OBJECT,
                                                          NULL,
                                                          G_DBUS_SIGNAL_FLAGS_NONE,
                                                          handle_message,
                                                          NULL, NULL);
+
+    g_problems_proxy = g_dbus_proxy_new_sync(system_conn,
+                                                    G_DBUS_PROXY_FLAGS_NONE,
+                                                    /* GDBusInterfaceInfo */ NULL,
+                                                    ORG_FREEDESKTOP_PROBLEMS_BUS,
+                                                    ORG_FREEDESKTOP_PROBLEMS_OBJECT,
+                                                    ORG_FREEDESKTOP_PROBLEMS_INTERFACE,
+                                                    /* GCancellable */ NULL,
+                                                    &error);
+    if (g_problems_proxy == NULL)
+        perror_msg_and_die(_("Can't connect ot DBus bus '"ORG_FREEDESKTOP_PROBLEMS_BUS \
+                             "' path '"ORG_FREEDESKTOP_PROBLEMS_OBJECT \
+                             "' interface '"ORG_FREEDESKTOP_PROBLEMS_INTERFACE"': %s"), error->message);
 
     guint name_own_id = g_bus_own_name (G_BUS_TYPE_SESSION,
                                         ABRT_DBUS_NAME".applet",
