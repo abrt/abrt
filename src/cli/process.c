@@ -152,18 +152,14 @@ int cmd_process(int argc, const char **argv)
     };
 
     parse_opts(argc, (char **)argv, program_options, program_usage_string);
-    argv += optind;
 
-    GList *D_list = get_problem_storages();
-
-    vector_of_problem_data_t *ci = fetch_crash_infos(D_list);
+    vector_of_problem_data_t *ci = fetch_crash_infos();
 
     g_ptr_array_sort_with_data(ci, &cmp_problem_data, (char *) FILENAME_LAST_OCCURRENCE);
 
     process_crashes(ci, opt_since);
 
     free_vector_of_problem_data(ci);
-    list_free_with_free(D_list);
 
     return 0;
 }

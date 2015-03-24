@@ -28,8 +28,10 @@ problem_data_t *get_problem_data(vector_of_problem_data_t *vector, unsigned i);
 
 void free_vector_of_problem_data(vector_of_problem_data_t *vector);
 vector_of_problem_data_t *new_vector_of_problem_data(void);
-vector_of_problem_data_t *fetch_crash_infos(GList *dir_list);
+vector_of_problem_data_t *fetch_crash_infos(void);
 
+/* Returns malloced string, or NULL if not found: */
+char *find_problem_by_hash(const char *hash, GList *problems);
 /* Returns malloced string, or NULL if not found: */
 char *hash2dirname(const char *hash);
 
