@@ -36,14 +36,6 @@
 #include "libabrt.h"
 #include "problem_api.h"
 
-/* 5s timeout*/
-#define ORG_FREEDESKTOP_PROBLEMS_CALL_DEFAULT_TIMEOUT 5000
-
-#define ORG_FREEDESKTOP_PROBLEMS_BUS "org.freedesktop.problems"
-#define ORG_FREEDESKTOP_PROBLEMS_OBJECT "/org/freedesktop/problems"
-#define ORG_FREEDESKTOP_PROBLEMS_INTERFACE "org.freedesktop.problems"
-#define ORG_FREEDESKTOP_PROBLEMS_NAMESPACE(member) "org.freedesktop.problems."member
-
 /* libnotify action keys */
 #define A_REPORT_REPORT "REPORT"
 #define A_RESTART_APPLICATION "RESTART"
@@ -52,7 +44,6 @@
 
 #define NOTIFICATION_ICON_NAME "face-sad-symbolic"
 
-static GDBusProxy *g_problems_proxy;
 static GNetworkMonitor *netmon;
 static GList *g_deferred_crash_queue;
 static guint g_deferred_timeout;
@@ -216,57 +207,6 @@ static problem_info_t* problem_info_ref(problem_info_t *pi)
     return pi;
 }
 
-static GVariant *dbus_call_sync(GDBusProxy *proxy, const gchar *method, GVariant *args)
-{
-    GError *error = NULL;
-    GVariant *const resp = g_dbus_proxy_call_sync(proxy,
-                                                  method,
-                                                  args,
-                                                  G_DBUS_PROXY_FLAGS_NONE,
-                                                  ORG_FREEDESKTOP_PROBLEMS_CALL_DEFAULT_TIMEOUT,
-                                                  /* GCancellable */ NULL,
-                                                  &error);
-    if (error)
-    {
-        error_msg(_("Can't call method '%s' over DBus on path '%s' interface '%s': %s"),
-                    method,
-                    g_dbus_proxy_get_object_path(proxy),
-                    g_dbus_proxy_get_interface_name(proxy),
-                    error->message);
-        g_error_free(error);
-        /* resp is NULL in this case */
-    }
-
-
-    return resp;
-}
-
-static int ofd_problems_get_problems(GList **problems)
-{
-    /* GetProblems ( IN , OUT as) */
-    GVariant *dbus_res = dbus_call_sync(g_problems_proxy, "GetProblems", NULL);
-
-    if (dbus_res == NULL)
-        return -1;
-
-    GVariant *resp = g_variant_get_child_value(dbus_res, 0);
-    g_variant_unref(dbus_res);
-
-    const gsize n_results = g_variant_n_children(resp);
-    for (gsize child = 0; child < n_results; ++child)
-    {
-        GVariant *const problem_id = g_variant_get_child_value(resp, child);
-
-        *problems = g_list_prepend(*problems, g_variant_dup_string(problem_id, NULL));
-
-        g_variant_unref(problem_id);
-    }
-
-    g_variant_unref(resp);
-
-    return 0;
-}
-
 static void run_event_async(problem_info_t *pi, const char *event_name);
 
 struct event_processing_state
@@ -306,12 +246,9 @@ static void free_event_processing_state(struct event_processing_state *p)
  */
 static void new_dir_exists(GList **new_dirs)
 {
-    GList *dirlist = NULL;
-    if (ofd_problems_get_problems(&dirlist) != 0)
-    {
-        error_msg(_("Failed to get the problem list from Problems D-Bus service."));
+    GList *dirlist = get_problems_over_dbus(/*don't authorize*/false);
+    if (dirlist == ERR_PTR)
         return;
-    }
 
     const char *cachedir = g_get_user_cache_dir();
     char *dirlist_name = concat_path_file(cachedir, "abrt");
@@ -1185,26 +1122,13 @@ int main(int argc, char** argv)
         perror_msg_and_die("Can't connect to system dbus: %s", error->message);
     guint filter_id = g_dbus_connection_signal_subscribe(system_conn,
                                                          NULL,
-                                                         ORG_FREEDESKTOP_PROBLEMS_BUS,
+                                                         ABRT_DBUS_NAME,
                                                          "Crash",
-                                                         ORG_FREEDESKTOP_PROBLEMS_OBJECT,
+                                                         ABRT_DBUS_OBJECT,
                                                          NULL,
                                                          G_DBUS_SIGNAL_FLAGS_NONE,
                                                          handle_message,
                                                          NULL, NULL);
-
-    g_problems_proxy = g_dbus_proxy_new_sync(system_conn,
-                                                    G_DBUS_PROXY_FLAGS_NONE,
-                                                    /* GDBusInterfaceInfo */ NULL,
-                                                    ORG_FREEDESKTOP_PROBLEMS_BUS,
-                                                    ORG_FREEDESKTOP_PROBLEMS_OBJECT,
-                                                    ORG_FREEDESKTOP_PROBLEMS_INTERFACE,
-                                                    /* GCancellable */ NULL,
-                                                    &error);
-    if (g_problems_proxy == NULL)
-        perror_msg_and_die(_("Can't connect ot DBus bus '"ORG_FREEDESKTOP_PROBLEMS_BUS \
-                             "' path '"ORG_FREEDESKTOP_PROBLEMS_OBJECT \
-                             "' interface '"ORG_FREEDESKTOP_PROBLEMS_INTERFACE"': %s"), error->message);
 
     guint name_own_id = g_bus_own_name (G_BUS_TYPE_SESSION,
                                         ABRT_DBUS_NAME".applet",
@@ -1244,8 +1168,6 @@ int main(int argc, char** argv)
      * crashes of abrt-applet
      */
     new_dir_exists(/* new dirs list */ NULL);
-
-    g_object_unref(g_problems_proxy);
 
     if (notify_is_initted())
         notify_uninit();
