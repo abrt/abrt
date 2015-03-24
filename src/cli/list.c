@@ -30,33 +30,28 @@
  *       ~/.abrt/spool and /var/tmp/abrt? needs more _meditation_.
  */
 
-static problem_data_t *load_problem_data(const char *dump_dir_name)
+static problem_data_t *load_problem_data(const char *problem_id)
 {
-    /* First, try loading by dirname */
-    int sv_logmode = logmode;
-    logmode = 0; /* suppress EPERM/EACCES errors in opendir */
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ DD_OPEN_READONLY);
-    logmode = sv_logmode;
+    char *name2 = NULL;
+
+    /* First, check if there is a problem with the passed id */
+    GList *problems = get_problems_over_dbus(/*don't authorize*/false);
+    GList *item = g_list_find_custom(problems, problem_id, (GCompareFunc)strcmp);
 
     /* (git requires at least 5 char hash prefix, we do the same) */
-    if (!dd && errno == ENOENT)
+    if (item == NULL)
     {
         /* Try loading by dirname hash */
-        char *name2 = hash2dirname(dump_dir_name);
-        if (name2)
-            dd = dd_opendir(name2, /*flags:*/ DD_OPEN_READONLY);
-        free(name2);
+        name2 = find_problem_by_hash(problem_id, problems);
+        if (name2 == NULL)
+            return NULL;
+
+        problem_id = name2;
     }
 
-    if (!dd)
-        return NULL;
+    problem_data_t *problem_data = get_full_problem_data_over_dbus(problem_id);
 
-    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
-    problem_data_add(problem_data, CD_DUMPDIR, dd->dd_dirname,
-                            CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE + CD_FLAG_LIST);
-    dd_close(dd);
-
-    return problem_data;
+    return (problem_data == ERR_PTR ? NULL : problem_data);
 }
 
 /** Prints basic information about a crash to stdout. */
@@ -127,7 +122,7 @@ static bool print_crash_list(vector_of_problem_data_t *crash_list, int detailed,
 int cmd_list(int argc, const char **argv)
 {
     const char *program_usage_string = _(
-        "& list [options] [DIR]..."
+        "& list [options]"
         );
 
     int opt_not_reported = 0;
@@ -145,15 +140,8 @@ int cmd_list(int argc, const char **argv)
     };
 
     parse_opts(argc, (char **)argv, program_options, program_usage_string);
-    argv += optind;
 
-    GList *D_list = NULL;
-    while (*argv)
-        D_list = g_list_append(D_list, xstrdup(*argv++));
-    if (!D_list)
-        D_list = get_problem_storages();
-
-    vector_of_problem_data_t *ci = fetch_crash_infos(D_list);
+    vector_of_problem_data_t *ci = fetch_crash_infos();
 
     g_ptr_array_sort_with_data(ci, &cmp_problem_data, (char *) FILENAME_LAST_OCCURRENCE);
 
@@ -163,7 +151,6 @@ int cmd_list(int argc, const char **argv)
     print_crash_list(ci, opt_detailed, opt_not_reported, opt_since, opt_until, CD_TEXT_ATT_SIZE_BZ);
 
     free_vector_of_problem_data(ci);
-    list_free_with_free(D_list);
 
 #if SUGGEST_AUTOREPORTING != 0
     load_abrt_conf();
