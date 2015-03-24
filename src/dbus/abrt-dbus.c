@@ -49,6 +49,11 @@ static const gchar introspection_xml[] =
   "      <arg type='s' name='problem_dir' direction='in'/>"
   "      <arg type='s' name='name' direction='in'/>"
   "    </method>"
+  "    <method name='TestElementExists'>"
+  "      <arg type='s' name='problem_dir' direction='in'/>"
+  "      <arg type='s' name='name' direction='in'/>"
+  "      <arg type='b' name='response' direction='out'/>"
+  "    </method>"
   "    <method name='GetProblemData'>"
   "      <arg type='s' name='problem_dir' direction='in'/>"
   "      <arg type='a{s(its)}' name='problem_data' direction='out'/>"
@@ -700,6 +705,45 @@ static void handle_method_call(GDBusConnection *connection,
 
 
         g_dbus_method_invocation_return_value(invocation, NULL);
+        return;
+    }
+
+    if (g_strcmp0(method_name, "TestElementExists") == 0)
+    {
+        const char *problem_id;
+        const char *element;
+
+        g_variant_get(parameters, "(&s&s)", &problem_id, &element);
+
+
+        struct dump_dir *dd = dd_opendir(problem_id, DD_OPEN_READONLY);
+        if (!dd)
+        {
+            log_notice("Can't access the problem '%s'", problem_id);
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                    "org.freedesktop.problems.Failure",
+                                    _("Can't access the problem"));
+            return;
+        }
+
+        int ddstat = dump_dir_stat_for_uid(problem_id, caller_uid);
+        if ((ddstat & DD_STAT_ACCESSIBLE_BY_UID) == 0 &&
+                polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
+        {
+            dd_close(dd);
+            log_notice("Unauthorized access : '%s'", problem_id);
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                              "org.freedesktop.problems.AuthFailure",
+                                              _("Not Authorized"));
+            return;
+        }
+
+        int ret = dd_exist(dd, element);
+        dd_close(dd);
+
+        GVariant *response = g_variant_new("(b)", ret);
+        g_dbus_method_invocation_return_value(invocation, response);
+
         return;
     }
 
