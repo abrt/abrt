@@ -155,6 +155,24 @@ void koops_print_suspicious_strings_filtered(const regex_t **filterout);
 int chown_dir_over_dbus(const char *problem_dir_path);
 
 /**
+  @brief Checks whether the given element name exists
+
+  Might require authorization
+
+  @return Positive number if such an element exist, 0 if doesn't and negative number if an error occurs.
+ */
+int test_exist_over_dbus(const char *problem_id, const char *element_name);
+
+/**
+  @ Returns value of the given element name
+
+  Might require authorization
+
+  @return malloced string or NULL if no such an element exists; ERR_PTR in case of any error.
+ */
+char *load_text_over_dbus(const char *problem_id, const char *element_name);
+
+/**
  @brief Delets multiple problems specified by their id (as returned from problem_data_save)
 
  @param problem_dir_paths List of problem ids
