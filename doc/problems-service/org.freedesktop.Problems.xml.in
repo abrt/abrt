@@ -253,6 +253,22 @@ for prblmid in problems.GetProblems():
                 </arg>
             </method>
 
+            <method name='TestElementExists'>
+                <tp:docstring>Checks whether the element exists.</tp:docstring>
+
+                <arg type='s' name='problem_dir' direction='in'>
+                    <tp:docstring>An identifier of problem.</tp:docstring>
+                </arg>
+
+                <arg type='s' name='name' direction='in'>
+                    <tp:docstring>A name of checked element.</tp:docstring>
+                </arg>
+
+                <arg type='b' name='response' direction='out'>
+                    <tp:docstring>True if the element exists; otherwise false.</tp:docstring>
+                </arg>
+            </method>
+
             <method name='GetProblemData'>"
                 <tp:docstring>Returns problem's data.</tp:docstring>
 
