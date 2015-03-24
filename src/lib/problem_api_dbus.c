@@ -227,3 +227,78 @@ problem_data_t *get_full_problem_data_over_dbus(const char *problem_dir_path)
 
     return pd;
 }
+
+int test_exist_over_dbus(const char *problem_id, const char *element_name)
+{
+    INITIALIZE_LIBABRT();
+
+    GDBusProxy *proxy = get_dbus_proxy();
+    if (!proxy)
+        return -1;
+
+    GError *error = NULL;
+    GVariant *result = g_dbus_proxy_call_sync(proxy,
+                                            "TestElementExists",
+                                            g_variant_new("(ss)", problem_id, element_name),
+                                            G_DBUS_CALL_FLAGS_NONE,
+                                            -1,
+                                            NULL,
+                                            &error);
+
+    if (error)
+    {
+        error_msg(_("Can't test whether the element exists over abrt-dbus: %s"), error->message);
+        g_error_free(error);
+        return -1;
+    }
+
+    gboolean retval;
+    g_variant_get(result, "(b)", &retval);
+    g_variant_unref(result);
+
+    return retval;
+}
+
+char *load_text_over_dbus(const char *problem_id, const char *element_name)
+{
+    INITIALIZE_LIBABRT();
+
+    GDBusProxy *proxy = get_dbus_proxy();
+    if (!proxy)
+        return ERR_PTR;
+
+    GVariantBuilder *builder = g_variant_builder_new(G_VARIANT_TYPE("as"));
+    g_variant_builder_add(builder, "s", element_name);
+    GVariant *params = g_variant_new("(sas)", problem_id, builder);
+    g_variant_builder_unref(builder);
+
+    GError *error = NULL;
+    GVariant *result = g_dbus_proxy_call_sync(proxy,
+                                            "GetInfo",
+                                            params,
+                                            G_DBUS_CALL_FLAGS_NONE,
+                                            -1,
+                                            NULL,
+                                            &error);
+
+    if (error)
+    {
+        error_msg(_("Can't get problem data from abrt-dbus: %s"), error->message);
+        g_error_free(error);
+        return ERR_PTR;
+    }
+
+    GVariant *values = g_variant_get_child_value(result, 0);
+    g_variant_unref(result);
+
+    char *retval = NULL;
+    if (g_variant_n_children(values) == 1)
+    {
+        GVariant *contents = g_variant_get_child_value(values, 0);
+        gchar *key;
+        g_variant_get(contents, "{&ss}", &key, &retval);
+    }
+
+    g_variant_unref(values);
+    return retval;
+}
