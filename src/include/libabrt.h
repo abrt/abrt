@@ -171,6 +171,13 @@ int delete_problem_dirs_over_dbus(const GList *problem_dir_paths);
 problem_data_t *get_problem_data_dbus(const char *problem_dir_path);
 
 /**
+  @brief Fetches full problem data for specified problem id
+
+  @return problem_data_t or ERR_PTR on failure
+*/
+problem_data_t *get_full_problem_data_over_dbus(const char *problem_dir_path);
+
+/**
   @brief Fetches all problems from problem database
 
   @param authorize If set to true will try to fetch even problems owned by other users (will require root authorization over policy kit)
