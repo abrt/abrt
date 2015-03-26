@@ -206,10 +206,12 @@ int main(int argc, char *argv[])
         OPT_e = 1 << 8,
         OPT_f = 1 << 9,
         OPT_a = 1 << 10,
+        OPT_J = 1 << 11,
     };
 
     char *cursor = NULL;
     char *dump_location = NULL;
+    char *journal_dir = NULL;
 
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -227,6 +229,7 @@ int main(int argc, char *argv[])
         OPT_BOOL(  'e', NULL, NULL, _("Start reading systemd-journal from the end")),
         OPT_BOOL(  'f', NULL, NULL, _("Follow systemd-journal from the last seen position (if available)")),
         OPT_BOOL(  'a', NULL, NULL, _("Read journal files from all machines")),
+        OPT_STRING('J', NULL, &journal_dir,  "PATH", _("Read all journal files from directory at PATH")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -268,8 +271,18 @@ int main(int argc, char *argv[])
     log_debug("Using journal match: '%s'", kernel_journal_filter[0]);
 
     abrt_journal_t *journal = NULL;
-    if (((opts & OPT_a) ? abrt_journal_new_merged : abrt_journal_new)(&journal))
-        error_msg_and_die(_("Cannot open systemd-journal"));
+    if ((opts & OPT_J))
+    {
+        log_debug("Using journal files from directory '%s'", journal_dir);
+
+        if (abrt_journal_open_directory(&journal, journal_dir))
+            error_msg_and_die(_("Cannot initialize systemd-journal in directory '%s'"), journal_dir);
+    }
+    else
+    {
+        if (((opts & OPT_a) ? abrt_journal_new_merged : abrt_journal_new)(&journal))
+            error_msg_and_die(_("Cannot open systemd-journal"));
+    }
 
     if (abrt_journal_set_journal_filter(journal, kernel_journal_filter) < 0)
         error_msg_and_die(_("Cannot filter systemd-journal to kernel data only"));
