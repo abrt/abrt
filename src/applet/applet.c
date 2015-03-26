@@ -692,7 +692,7 @@ static void notify_problem_list(GList *problems)
                         notify_body = g_strdup (_("We're sorry, it looks like a problem occurred in a component. The problem will be reported when the internet is available."));
                     }
                 }
-                else if (!auto_reporting)
+                else if (!auto_reporting && is_packaged)
                 {
                     notify_body = g_strdup (_("We're sorry, it looks like a problem occurred. If you'd like to help resolve the issue, please send a report."));
                     report_button = TRUE;
