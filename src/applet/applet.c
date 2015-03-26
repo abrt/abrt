@@ -644,7 +644,8 @@ static void notify_problem_list(GList *problems)
         {
             if (auto_reporting)
             {
-                if (is_packaged) {
+                if (is_packaged)
+                {
                     if (network_available)
                     {
                         notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. The problem has been automatically reported."),
