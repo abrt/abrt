@@ -60,5 +60,33 @@ rlJournalStart
         rlRun "rm -rf /var/crash/test" 0 "Removing vmcore from /var/crash/"
         rlRun "rm -rf ${ABRT_CONF_DUMP_LOCATION}/vmcore-test" 0 "Removing vmcore from the abrt dump location"
     rlPhaseEnd
+
+    rlPhaseStartTest "kdump's vmcore-dmesg.txt"
+        prepare
+
+        TEST_ID="test-dmesg"
+        rlRun "mkdir -p /var/crash/${TEST_ID}" 0 "Creating vmcore dir"
+        rlRun "echo ${TEST_ID} > /var/crash/${TEST_ID}/vmcore" 0 "Creating vmcore"
+        rlRun "cp -v vmcore-dmesg.txt /var/crash/${TEST_ID}/" 0 "Adding vmcore-dmesg.txt"
+
+        rlLogInfo "Restarting abrtd"
+        systemctl restart  abrtd.service
+
+        wait_for_hooks
+
+        rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-${TEST_ID}"
+        rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-${TEST_ID}/analyzer"
+        rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-${TEST_ID}/backtrace"
+        rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-${TEST_ID}/reason"
+        rlAssertGrep "BUG: unable to handle kernel paging request at" "${ABRT_CONF_DUMP_LOCATION}/vmcore-${TEST_ID}/reason"
+        for f in $REQUIRED_FILES; do
+                rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-${TEST_ID}/$f"
+        done
+    rlPhaseEnd
+
+    rlPhaseStartCleanup
+        rlRun "rm -rf /var/crash/test-dmesg" 0 "Removing vmcore from /var/crash/"
+        rlRun "rm -rf ${ABRT_CONF_DUMP_LOCATION}/vmcore-test-dmesg" 0 "Removing vmcore from the abrt dump location"
+    rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd
