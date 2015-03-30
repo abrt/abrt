@@ -19,6 +19,8 @@
 #include <satyr/stacktrace.h>
 #include <satyr/thread.h>
 
+#include <regex.h>
+
 #define _GNU_SOURCE 1 /* for strcasestr */
 #include "libabrt.h"
 
@@ -532,19 +534,41 @@ char *koops_extract_version(const char *linepointer)
      || strstr(linepointer, "REGS")
      || strstr(linepointer, "EFLAGS")
     ) {
-        char* start;
-        char* end;
-
-        start = strstr(linepointer, "2.6.");
-        if (!start)
-            start = strstr(linepointer, "3.");
-        if (start)
+        const char *regexp = "([0-9]+\\.[0-9]+\\.[0-9]+-[^ \\)]+)[ \\)]";
+        regex_t re;
+        int r = regcomp(&re, regexp, REG_EXTENDED);
+        if (r != 0)
         {
-            end = strchr(start, ')');
-            if (!end)
-                end = strchrnul(start, ' ');
-            return xstrndup(start, end-start);
+            char buf[LINE_MAX];
+            regerror(r, &re, buf, sizeof(buf));
+            error_msg("BUG: invalid kernel version regexp: %s", buf);
+            return NULL;
         }
+
+        regmatch_t matchptr[2];
+        r = regexec(&re, linepointer, 2, matchptr, 0);
+        if (r != 0)
+        {
+            if (r != REG_NOMATCH)
+            {
+                char buf[LINE_MAX];
+                regerror(r, &re, buf, sizeof(buf));
+                error_msg("BUG: kernel version regexp failed: %s", buf);
+            }
+            else
+            {
+                log_debug("A kernel version candidate line didn't match kernel oops regexp:");
+                log_debug("\t'%s'", linepointer);
+            }
+
+            regfree(&re);
+            return NULL;
+        }
+
+        char *ret = xstrndup(linepointer + matchptr[1].rm_so, matchptr[1].rm_eo - matchptr[1].rm_so);
+
+        regfree(&re);
+        return ret;
     }
 
     return NULL;
