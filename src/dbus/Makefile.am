@@ -47,6 +47,9 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 polkitconfdir = ${datadir}/polkit-1/actions
 dist_polkitconf_DATA = abrt_polkit.policy
 
+polkitrulesdir = ${datadir}/polkit-1/rules.d
+dist_polkitrules_DATA = org.freedesktop.problems.rules
+
 dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/
 dist_dbusabrtconf_DATA = dbus-abrt.conf
 
