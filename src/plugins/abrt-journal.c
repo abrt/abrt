@@ -63,6 +63,27 @@ int abrt_journal_new_merged(abrt_journal_t **journal)
     return abrt_journal_new_flags(journal, 0);
 }
 
+static int abrt_journal_open_directory_flags(abrt_journal_t **journal, const char *directory, int flags)
+{
+    sd_journal *j;
+    const int r = sd_journal_open_directory(&j, directory, flags);
+    if (r < 0)
+    {
+        log_notice("Failed to open journal directory ('%s'): %s", directory, strerror(-r));
+        return r;
+    }
+
+    *journal = xzalloc(sizeof(**journal));
+    (*journal)->j = j;
+
+    return 0;
+}
+
+int abrt_journal_open_directory(abrt_journal_t **journal, const char *directory)
+{
+    return abrt_journal_open_directory_flags(journal, directory, 0);
+}
+
 void abrt_journal_free(abrt_journal_t *journal)
 {
     sd_journal_close(journal->j);

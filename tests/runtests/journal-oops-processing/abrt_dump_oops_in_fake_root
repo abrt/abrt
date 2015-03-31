@@ -1,0 +1,87 @@
+#!/bin/bash
+NEWROOT=$1
+shift
+
+if [ -z "$NEWROOT" ]; then
+    echo "Pass new root dir"
+    exit 1
+fi
+
+if [ ! -d "$NEWROOT" -o "/" == "$NEWROOT" ]; then
+    echo "New root dir must be an absolute path to directory and not $NEWROOT"
+    exit 1
+fi
+
+#echo "Using fake root dir $NEWROOT"
+
+i=0
+cmd_args=("$@")
+while [ $i -lt $# ]; do
+    if [ "-J" == "${cmd_args[$i]}" ]; then
+        JOURNAL_DIR=${cmd_args[$((i+1))]}
+        break
+    fi
+
+    ((i++))
+done
+
+if [ -z "$JOURNAL_DIR" ]; then
+    echo "Pass new journal dir with -J"
+    exit 1
+fi
+
+#echo "Mounting /var/log/journal to $NEWROOT/$JOURNAL_DIR"
+
+cd $NEWROOT || exit 1
+
+ROOT_BIND_MOUNTS="boot dev etc proc run sys usr"
+USR_SYMLINKS="bin sbin lib lib64"
+VAR_BIND_MOUNTS="local lock run spool tmp lib"
+
+# Set up test environment
+mkdir -p $NEWROOT/$JOURNAL_DIR || exit 1
+mkdir -p $NEWROOT/tmp && mount -t tmpfs -o size=20m tmpfs $NEWROOT/tmp || exit 1
+
+for d in $ROOT_BIND_MOUNTS
+do
+    mkdir -p $NEWROOT/$d && mount -o bind /$d $NEWROOT/$d
+done
+
+mkdir -p $NEWROOT/var
+
+for d in $VAR_BIND_MOUNTS
+do
+    mkdir -p $NEWROOT/var/$d && mount -o bind /var/$d $NEWROOT/var/$d
+done
+
+for d in $USR_SYMLINKS
+do
+    ln -sf usr/$d $d
+done
+
+mount -o bind /var/log/journal $NEWROOT/$JOURNAL_DIR
+
+# Run abrt-dump-journal-oops
+chroot $NEWROOT abrt-dump-journal-oops $@
+
+# Clean test environment
+umount $NEWROOT/$JOURNAL_DIR && rmdir $NEWROOT/$JOURNAL_DIR
+
+for d in $USR_SYMLINKS
+do
+    rm $NEWROOT/$d
+done
+
+for d in $VAR_BIND_MOUNTS
+do
+    umount -f $NEWROOT/var/$d && rmdir $NEWROOT/var/$d
+done
+
+rmdir $NEWROOT/var
+
+for d in $ROOT_BIND_MOUNTS
+do
+    umount -f $NEWROOT/$d && rmdir $NEWROOT/$d
+done
+
+umount $NEWROOT/tmp && rmdir $NEWROOT/tmp

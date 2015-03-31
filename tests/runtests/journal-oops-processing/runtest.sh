@@ -34,6 +34,85 @@ ooPS_REQUIRED_FILES="kernel uuid duphash
 pkg_name pkg_arch pkg_epoch pkg_release pkg_version"
 EXAMPLES_PATH="../../../examples"
 
+function test_single_oops
+{
+    oops="$1"
+    shift
+    exe="$1"
+    shift
+    args=$@
+
+    if [ -z "$oops" ]; then
+        rlDie "Need an oops file as the first command line argument"
+    fi
+
+    rlLog "Kernel oops ${oops}"
+
+    if [ -z "$exe" ]; then
+        exe="abrt-dump-journal-oops"
+    fi
+
+    prepare
+
+    installed_kernel="$( rpm -q kernel | tail -n1 )"
+    kernel_version="$( rpm -q --qf "%{version}" $installed_kernel )"
+    sed -i "s/<KERNEL_VERSION>/$installed_kernel/g" $oops
+    sed -i "s/<KERNEL_VERSION>/$installed_kernel/g" ${oops/.test/.right}
+
+    rlRun "journalctl --flush"
+
+    rlRun "ABRT_DUMP_JOURNAL_OOPS_DEBUG_FILTER=\"SYSLOG_IDENTIFIER=abrt_test\" setsid ${exe} ${args} -vvv -f -xD -o >$oops.log 2>&1 &"
+    rlRun "ABRT_DUMPER_PID=$!"
+
+    rlRun "sleep 2"
+    rlRun "logger -t abrt_test -f $oops"
+    rlRun "journalctl --flush"
+
+    rlRun "sleep 2"
+
+    rlAssertGrep "Found oopses: 1" $oops".log"
+
+    wait_for_hooks
+    get_crash_path
+
+    ls $crash_PATH > crash_dir_ls
+
+    for f in $OOPS_REQUIRED_FILES; do
+        rlAssertExists "$crash_PATH/$f"
+    done
+
+    if [[ "$oops" == *not_reportable* ]]; then
+        rlAssertExists "$crash_PATH/not-reportable"
+    else
+        rlAssertNotExists "$crash_PATH/not-reportable"
+    fi
+
+    rlAssertGrep "kernel" "$crash_PATH/pkg_name"
+    rlAssertGrep "$kernel_version" "$crash_PATH/pkg_version"
+
+    rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+
+    # Kill the dumper with TERM to verify that it can store its state.
+    # Next time, the dumper should start following the journald from
+    # the last seen cursor.
+    rlRun "killall -TERM abrt-dump-journal-oops"
+    sleep 2
+
+    if [ -d /proc/$ABRT_DUMPER_PID ]; then
+        rlLogError "Failed to kill the abrt journal oops dumper"
+        rlRun "kill -TERM -$ABRT_DUMPER_PID"
+    fi
+
+    cat $oops".log" \
+        | grep -v "Version:" \
+        | grep -v "Found oopses:" \
+        | grep -v "abrt-dump-journal-oops:" \
+        > $oops".right.log"
+
+    rlRun "diff -u ${oops/.test/.right} ${oops}.right.log" 0 "The dumper copied oops data without any differences"
+}
+
+
 rlJournalStart
     rlPhaseStartSetup
         check_prior_crashes
@@ -119,6 +198,7 @@ rlJournalStart
             | grep -v "Version:" > \
             $TmpDir/oops_not_reportable_broken_bios.right
 
+        rlRun "cp abrt_dump_oops_in_fake_root $TmpDir"
         pushd $TmpDir
 
         rlRun "systemctl stop abrt-oops"
@@ -129,53 +209,15 @@ rlJournalStart
 
     rlPhaseStartTest OOPS
         for oops in oops*.test; do
-            prepare
+            test_single_oops ${oops}
+        done
+    rlPhaseEnd
 
-            installed_kernel="$( rpm -q kernel | tail -n1 )"
-            kernel_version="$( rpm -q --qf "%{version}" $installed_kernel )"
-            sed -i "s/<KERNEL_VERSION>/$installed_kernel/g" $oops
-            sed -i "s/<KERNEL_VERSION>/$installed_kernel/g" ${oops/.test/.right}
-
-            rlRun "ABRT_DUMP_JOURNAL_OOPS_DEBUG_FILTER=\"SYSLOG_IDENTIFIER=abrt_test\" abrt-dump-journal-oops -vvv -f -xD -o >$oops.log 2>&1 &"
-            rlRun "ABRT_DUMPER_PID=$!"
-            rlRun "logger -t abrt_test -f $oops"
-
-            rlRun "sleep 1"
-
-            rlAssertGrep "Found oopses: 1" $oops".log"
-
-            wait_for_hooks
-            get_crash_path
-
-            ls $crash_PATH > crash_dir_ls
-
-            for f in $OOPS_REQUIRED_FILES; do
-                rlAssertExists "$crash_PATH/$f"
-            done
-
-            if [[ "$oops" == *not_reportable* ]]; then
-                rlAssertExists "$crash_PATH/not-reportable"
-            else
-                rlAssertNotExists "$crash_PATH/not-reportable"
-            fi
-
-            rlAssertGrep "kernel" "$crash_PATH/pkg_name"
-            rlAssertGrep "$kernel_version" "$crash_PATH/pkg_version"
-
-            rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
-
-            # Kill the dumper with TERM to verify that it can store its state.
-            # Next time, the dumper should start following the journald from
-            # the last seen cursor.
-            rlRun "kill -TERM $ABRT_DUMPER_PID"
-
-            cat $oops".log" \
-                | grep -v "Version:" \
-                | grep -v "Found oopses:" \
-                | grep -v "abrt-dump-journal-oops:" \
-                > $oops".right.log"
-
-            rlRun "diff -u ${oops/.test/.right} ${oops}.right.log" 0 "The dumper copied oops data without any differences"
+    rlPhaseStartTest "Journals from a non-system directory"
+        for oops in oops*.test; do
+            rlRun "FakeRootDir=$(mktemp -d)"
+            test_single_oops ${oops} ./abrt_dump_oops_in_fake_root ${FakeRootDir} -J /var/myjournal
+            rlRun "rmdir ${FakeRootDir}"
         done
     rlPhaseEnd
 

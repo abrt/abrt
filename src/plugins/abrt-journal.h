@@ -38,6 +38,10 @@ int abrt_journal_new(abrt_journal_t **journal);
  */
 int abrt_journal_new_merged(abrt_journal_t **journal);
 
+/* Open a directory and merge all journal files placed there.
+ */
+int abrt_journal_open_directory(abrt_journal_t **journal, const char *directory);
+
 void abrt_journal_free(abrt_journal_t *journal);
 
 int abrt_journal_set_journal_filter(abrt_journal_t *journal,
