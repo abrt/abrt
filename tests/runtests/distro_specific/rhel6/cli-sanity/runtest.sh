@@ -33,6 +33,9 @@ PACKAGE="abrt"
 
 rlJournalStart
     rlPhaseStartSetup
+
+        LANG=""
+        export LANG
         check_prior_crashes
 
         TmpDir=$(mktemp -d)
@@ -55,13 +58,13 @@ rlJournalStart
         get_crash_path
         wait_for_hooks
 
-        rlRun "abrt-cli list | grep -i 'Executable'"
-        rlRun "abrt-cli list | grep -i 'Package'"
+        rlRun "abrt-cli list | grep -i 'executable'"
+        rlRun "abrt-cli list | grep -i 'package'"
     rlPhaseEnd
 
     rlPhaseStartTest "list -f" # list full
-        rlRun "abrt-cli list -f | grep -i 'Executable'"
-        rlRun "abrt-cli list -f | grep -i 'Package'"
+        rlRun "abrt-cli list -n | grep -i 'executable'"
+        rlRun "abrt-cli list -n | grep -i 'package'"
     rlPhaseEnd
 
     rlPhaseStartTest "report FAKEDIR"
@@ -77,9 +80,28 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "info DIR"
-        DIR=$(abrt-cli list -f | grep 'Directory' | head -n1 | awk '{ print $2 }')
+        DIR=$(abrt-cli list | grep 'Directory' | head -n1 | awk '{ print $2 }')
         rlRun "abrt-cli info $DIR"
         rlRun "abrt-cli info -d $DIR > info.out"
+    rlPhaseEnd
+
+    rlPhaseStartTest "list (after reporting)"
+        DIR=$(abrt-cli list | grep 'Directory' | head -n1 | awk '{ print $2 }')
+
+        # this should ensure that ABRT will consider the problem as reported
+        rlRun "reporter-print -r -d $DIR -o /dev/null"
+
+        rlRun "abrt-cli list | grep -i 'cmdline'"
+        rlRun "abrt-cli list | grep -i 'package'"
+
+        # this expects that reporter-print works and adds an URL to
+        # the output file to the problem's data
+        rlRun "abrt-cli list | grep -i 'file:///dev/null'"
+    rlPhaseEnd
+
+    rlPhaseStartTest "list -n (after reporting)" # list not-reported
+        BYTESNUM=$(abrt-cli list -n | wc -c)
+        rlAssert0 "No not-reported problem" "$BYTESNUM"
     rlPhaseEnd
 
     rlPhaseStartTest "info FAKEDIR"
@@ -92,7 +114,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "rm DIR"
-        DIR_DELETE=$(abrt-cli list -f | grep 'Directory' | head -n1 | awk '{ print $2 }')
+        DIR_DELETE=$(abrt-cli list | grep 'Directory' | head -n1 | awk '{ print $2 }')
         rlRun "abrt-cli rm $DIR_DELETE"
     rlPhaseEnd
 
