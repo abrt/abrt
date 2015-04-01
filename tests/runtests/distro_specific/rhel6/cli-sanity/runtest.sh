@@ -54,6 +54,8 @@ rlJournalStart
 
 
     rlPhaseStartTest "list"
+        prepare
+
         generate_crash
         get_crash_path
         wait_for_hooks
@@ -62,7 +64,7 @@ rlJournalStart
         rlRun "abrt-cli list | grep -i 'package'"
     rlPhaseEnd
 
-    rlPhaseStartTest "list -f" # list full
+    rlPhaseStartTest "list -n" # not reported only
         rlRun "abrt-cli list -n | grep -i 'executable'"
         rlRun "abrt-cli list -n | grep -i 'package'"
     rlPhaseEnd
@@ -72,7 +74,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "report DIR"
-        DIR=$(abrt-cli list -f | grep 'Directory' | head -n1 | awk '{ print $2 }')
+        DIR=$(abrt-cli list -n | grep 'Directory' | head -n1 | awk '{ print $2 }')
         echo -e "1\n" |  EDITOR="cat" abrt-cli report $DIR > output.out 2>&1
 
         rlAssertGrep "\-cmdline" output.out
