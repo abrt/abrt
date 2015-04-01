@@ -59,7 +59,7 @@ rlJournalStart
         wait_for_hooks
 
         rlAssertGreater "Second crash recorded" $(abrt-cli list | wc -l) 0
-        crash2_PATH="$(abrt-cli list -f | grep Directory \
+        crash2_PATH="$(abrt-cli list | grep Directory \
             | grep -v "$crash_PATH" \
             | awk '{ print $2 }' | tail -n1)"
         if [ ! -d "$crash2_PATH" ]; then

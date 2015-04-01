@@ -60,7 +60,7 @@ rlJournalStart
         ( sleep 1; killall -11 sleep) &
         strace sleep 3m 2>&1 > /dev/null
         wait_for_hooks
-        rlRun "abrt-cli list -f | grep strace" 1 "No strace in abrt-cli output"
+        rlRun "abrt-cli list | grep strace" 1 "No strace in abrt-cli output"
     rlPhaseEnd
 
     rlPhaseStartCleanup

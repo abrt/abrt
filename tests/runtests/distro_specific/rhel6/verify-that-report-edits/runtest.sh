@@ -43,8 +43,8 @@ rlJournalStart
         kill -SIGSEGV %1
         # Give post-create (if any) a bit of time to finish working:
         sleep 5
-        rlLog "abrt-cli: $(abrt-cli list -f)"
-        crash_PATH=$(abrt-cli list -f | grep Directory | tail -n1 | awk '{ print $2 }')
+        rlLog "abrt-cli: $(abrt-cli list)"
+        crash_PATH=$(abrt-cli list | grep Directory | tail -n1 | awk '{ print $2 }')
         if [ ! -d "$crash_PATH" ]; then
             rlDie "No crash dir generated, this shouldn't happen"
         fi
