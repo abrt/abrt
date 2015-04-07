@@ -92,14 +92,13 @@ def emit_crash_dbus_signal(problem_data):
     bus = None
     try:
         bus = dbus.SystemBus()
-        msg = dbus.lowlevel.SignalMessage("/org/freedesktop/problems",
-                "org.freedesktop.problems", "Crash")
+        msg = dbus.lowlevel.SignalMessage("/com/redhat/abrt",
+                "com.redhat.abrt", "Crash")
 
         # List of tuples where the first member is element name and the second
         # member is a Boolean flag which is True if the element is required
         arguments = ((FILENAME_PACKAGE, True), (CD_DUMPDIR, True),
-                (FILENAME_UID, False), (FILENAME_UUID, False),
-                (FILENAME_PACKAGE, False))
+                (FILENAME_UID, False))
 
         for elem in arguments:
             itm = problem_data.get(elem[0])
