@@ -91,9 +91,15 @@ rlJournalStart
         DIR=$(abrt-cli list | grep 'Directory' | head -n1 | awk '{ print $2 }')
 
         # this should ensure that ABRT will consider the problem as reported
-        rlRun "reporter-print -r -d $DIR -o /dev/null"
+        rlRun "reporter-print -r -d $DIR -o /dev/null &> print.log"
 
-        rlRun "abrt-cli list | grep -i 'cmdline'"
+        if ! cat $DIR/reported_to | grep -s "URL=file:///"; then
+            rlLog "Adding an artifical URL to 'reported_to' file"
+            rlAssertGrep "The report was stored to /dev/null" print.log
+            echo "file: URL=file:///dev/null" > $DIR/reported_to
+        fi
+
+        rlRun "abrt-cli list | grep -i 'executable'"
         rlRun "abrt-cli list | grep -i 'package'"
 
         # this expects that reporter-print works and adds an URL to
