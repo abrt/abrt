@@ -164,6 +164,15 @@ int chown_dir_over_dbus(const char *problem_dir_path);
 int test_exist_over_dbus(const char *problem_id, const char *element_name);
 
 /**
+  @brief Checks whether the problem corresponding to the given ID is complete
+
+  Might require authorization
+
+  @return Positive number if such the proble is complete, 0 if doesn't and negative number if an error occurs.
+ */
+int dbus_problem_is_complete(const char *problem_id);
+
+/**
   @ Returns value of the given element name
 
   Might require authorization
@@ -180,6 +189,13 @@ char *load_text_over_dbus(const char *problem_id, const char *element_name);
 */
 
 int delete_problem_dirs_over_dbus(const GList *problem_dir_paths);
+
+/**
+  @brief Fetches given problem elements for specified problem id
+
+  @return on failures returns non zero value and emits error message
+*/
+int fill_problem_data_over_dbus(const char *problem_dir_path, const char **elements, problem_data_t *problem_data);
 
 /**
   @brief Fetches problem information for specified problem id

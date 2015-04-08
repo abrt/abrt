@@ -120,6 +120,7 @@ typedef struct problem_info {
     bool reported;
     bool was_announced;
     bool is_writable;
+    int time;
 } problem_info_t;
 
 static void push_to_deferred_queue(problem_info_t *pi)
@@ -135,6 +136,59 @@ static const char *problem_info_get_dir(problem_info_t *pi)
 static const char *problem_info_get_command_line(problem_info_t *pi)
 {
     return problem_data_get_content_or_NULL(pi->problem_data, FILENAME_CMDLINE);
+}
+
+static int problem_info_get_time(problem_info_t *pi)
+{
+    if (pi->time == -1)
+    {
+        const char *time_str = problem_data_get_content_or_NULL(pi->problem_data, FILENAME_TIME);
+
+        if (time_str == NULL)
+            error_msg_and_die("BUG: Problem info has data without the element time");
+
+        pi->time = atoi(time_str);
+    }
+
+    return pi->time;
+}
+
+static const char **problem_info_get_env(problem_info_t *pi)
+{
+    if (pi->envp == NULL)
+    {
+        const char *env_str = problem_data_get_content_or_NULL(pi->problem_data, FILENAME_ENVIRON);
+        pi->envp = (env_str != NULL) ? g_strsplit (env_str, "\n", -1) : NULL;
+    }
+
+    return (const char **)pi->envp;
+}
+
+static int problem_info_get_pid(problem_info_t *pi)
+{
+    if (pi->pid == -1)
+    {
+        const char *pid_str = problem_data_get_content_or_NULL(pi->problem_data, FILENAME_PID);
+        pi->pid = (pid_str != NULL) ? atoi (pid_str) : -1;
+    }
+
+    return pi->pid;
+}
+
+static int problem_info_get_count(problem_info_t *pi)
+{
+    if (pi->count == -1)
+    {
+        const char *count_str = problem_data_get_content_or_NULL(pi->problem_data, FILENAME_COUNT);
+        pi->count = count_str ? atoi(count_str) : 1;
+    }
+
+    return pi->count;
+}
+
+static bool problem_info_is_reported(problem_info_t *pi)
+{
+    return problem_data_get_content_or_NULL(pi->problem_data, FILENAME_REPORTED_TO) != NULL;
 }
 
 static void problem_info_set_dir(problem_info_t *pi, const char *dir)
@@ -176,6 +230,9 @@ static problem_info_t *problem_info_new(const char *dir)
 {
     problem_info_t *pi = g_new0(problem_info_t, 1);
     pi->refcount = 1;
+    pi->time = -1;
+    pi->pid = -1;
+    pi->count = -1;
     pi->problem_data = problem_data_new();
     problem_info_set_dir(pi, dir);
     return pi;
@@ -194,8 +251,6 @@ static void problem_info_unref(gpointer data)
         return;
 
     problem_data_free(pi->problem_data);
-    if (pi->envp)
-        g_strfreev(pi->envp);
     g_free(pi);
 }
 
@@ -556,7 +611,7 @@ static void notify_problem_list(GList *problems)
             continue;
         }
 
-        app = problem_create_app_from_env ((const char **)pi->envp, pi->pid);
+        app = problem_create_app_from_env (problem_info_get_env(pi), problem_info_get_pid(pi));
 
         if (!app)
             app = problem_create_app_from_cmdline (problem_info_get_command_line(pi));
@@ -572,7 +627,7 @@ static void notify_problem_list(GList *problems)
         gboolean is_packaged = pi->is_packaged;
         gboolean is_running_again = is_app_running(app);
         gboolean is_current_user = !pi->foreign;
-        gboolean already_reported = (pi->count > 1);
+        gboolean already_reported = problem_info_get_count(pi) > 1;
 
         gboolean report_button = FALSE;
         gboolean restart_button = FALSE;
@@ -914,14 +969,22 @@ static void Crash(GVariant *parameters)
     if (foreign_problem && !g_user_is_admin)
         return;
 
-    struct dump_dir *dd = dd_opendir(dir, DD_OPEN_READONLY);
-    char *command_line = dd_load_text_ext(dd, FILENAME_CMDLINE, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-    char *count_str = dd_load_text_ext(dd, FILENAME_COUNT, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-    guint count = count_str ? atoi(count_str) : 1;
-    g_free(count_str);
-    char *env = dd_load_text_ext(dd, FILENAME_ENVIRON, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-    char *pid = dd_load_text_ext(dd, FILENAME_PID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-    dd_close(dd);
+    static const char *elements[] = {
+        FILENAME_CMDLINE,
+        FILENAME_COUNT,
+        FILENAME_UUID,
+        FILENAME_DUPHASH,
+        FILENAME_COMPONENT,
+        FILENAME_ENVIRON,
+        FILENAME_PID,
+        NULL,
+    };
+
+    problem_info_t *pi = problem_info_new(dir);
+    fill_problem_data_over_dbus(dir, elements, pi->problem_data);
+
+    pi->foreign = foreign_problem;
+    pi->is_packaged = (package_name != NULL);
 
     /*
      * Can't append dir to the seen list because of directory stealing
@@ -929,24 +992,6 @@ static void Crash(GVariant *parameters)
      * append_dirlist(dir);
      *
      */
-
-    problem_info_t *pi = problem_info_new(dir);
-    if (uuid != NULL && uuid[0] != '\0')
-        problem_data_add_text_noteditable(pi->problem_data, FILENAME_UUID, uuid);
-    if (duphash != NULL && duphash[0] != '\0')
-        problem_data_add_text_noteditable(pi->problem_data, FILENAME_DUPHASH, duphash);
-    if (package_name != NULL && package_name[0] != '\0')
-        problem_data_add_text_noteditable(pi->problem_data, FILENAME_COMPONENT, package_name);
-    if (command_line != NULL)
-        problem_data_add_text_noteditable(pi->problem_data, FILENAME_CMDLINE, command_line);
-    pi->foreign = foreign_problem;
-    pi->count = count;
-    pi->is_packaged = (package_name != NULL);
-    pi->envp = (env != NULL) ? g_strsplit (env, "\n", -1) : NULL;
-    pi->pid = (pid != NULL) ? atoi (pid) : -1;
-    free(command_line);
-    free(env);
-    free(pid);
     show_problem_notification(pi);
 }
 
@@ -970,6 +1015,19 @@ name_acquired_handler (GDBusConnection *connection,
                        const gchar *name,
                        gpointer user_data)
 {
+    static const char *elements[] = {
+        FILENAME_CMDLINE,
+        FILENAME_COUNT,
+        FILENAME_UUID,
+        FILENAME_DUPHASH,
+        FILENAME_COMPONENT,
+        FILENAME_UID,
+        FILENAME_TIME,
+        FILENAME_REPORTED_TO,
+        FILENAME_NOT_REPORTABLE,
+        NULL
+    };
+
     /* If some new dirs appeared since our last run, let user know it */
     GList *new_dirs = NULL;
     GList *notify_list = NULL;
@@ -980,58 +1038,45 @@ name_acquired_handler (GDBusConnection *connection,
     /* Age limit = now - 3 days */
     const unsigned long min_born_time = (unsigned long)(time_before_ndays(3));
 
-    while (new_dirs)
+    for ( ; new_dirs != NULL; new_dirs = g_list_next(new_dirs))
     {
-        struct dump_dir *dd = dd_opendir((char *)new_dirs->data, DD_OPEN_READONLY);
-        if (dd == NULL)
+        const char *problem_id = (const char *)new_dirs->data;
+        problem_info_t *pi = problem_info_new(problem_id);
+
+        if (fill_problem_data_over_dbus(problem_id, elements, pi->problem_data) != 0)
         {
-            log_notice("'%s' is not a dump dir - ignoring\n", (char *)new_dirs->data);
-            new_dirs = g_list_next(new_dirs);
+            log_notice("'%s' is not a dump dir - ignoring\n", problem_id);
+            problem_info_unref(pi);
             continue;
         }
 
-        if (dd->dd_time < min_born_time)
+        /* TODO: add a filter for only complete problems to GetProblems D-Bus method */
+        if (!dbus_problem_is_complete(problem_id))
         {
-            log_notice("Ignoring outdated problem '%s'", (char *)new_dirs->data);
-            goto next;
+            log_notice("Ignoring incomplete problem '%s'", problem_id);
+            problem_info_unref(pi);
+            continue;
         }
 
-        if (!problem_dump_dir_is_complete(dd))
+        /* TODO: add a filter for max-old reported problems to GetProblems D-Bus method */
+        if (problem_info_get_time(pi) < min_born_time)
         {
-            log_notice("Ignoring incomplete problem '%s'", (char *)new_dirs->data);
-            goto next;
+            log_notice("Ignoring outdated problem '%s'", problem_id);
+            problem_info_unref(pi);
+            continue;
         }
 
-        if (!dd_exist(dd, FILENAME_REPORTED_TO))
+        /* TODO: add a filter for not-yet reported problems to GetProblems D-Bus method */
+        if (problem_info_is_reported(pi))
         {
-            problem_info_t *pi = problem_info_new(new_dirs->data);
-            const char *elements[] = {FILENAME_UUID, FILENAME_DUPHASH, FILENAME_COMPONENT, FILENAME_NOT_REPORTABLE, FILENAME_CMDLINE};
-
-            for (size_t i = 0; i < sizeof(elements)/sizeof(*elements); ++i)
-            {
-                char * const value = dd_load_text_ext(dd, elements[i],
-                        DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-                if (value)
-                    problem_data_add_text_noteditable(pi->problem_data, elements[i], value);
-                free(value);
-            }
-
-            /* Can't be foreign because if the problem is foreign then the
-             * dd_opendir() call failed few lines above and the problem is ignored.
-             * */
-            pi->foreign = false;
-
-            notify_list = g_list_prepend(notify_list, pi);
-        }
-        else
-        {
-            log_notice("Ignoring already reported problem '%s'", (char *)new_dirs->data);
+            log_notice("Ignoring already reported problem '%s'", problem_id);
+            problem_info_unref(pi);
+            continue;
         }
 
-next:
-        dd_close(dd);
-
-        new_dirs = g_list_next(new_dirs);
+        /* Can't be foreig because new_dir_exists() returns only own problems */
+        pi->foreign = false;
+        notify_list = g_list_prepend(notify_list, pi);
     }
 
     if (notify_list)
