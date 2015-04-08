@@ -30,16 +30,25 @@ static unsigned int count_problem_dirs(unsigned long since)
     {
         const char *problem_id = (const char *)iter->data;
         if (test_exist_over_dbus(problem_id, FILENAME_REPORTED_TO))
+        {
+            log_debug("Not counting problem %s: already reported", problem_id);
             continue;
+        }
 
         char *time_str = load_text_over_dbus(problem_id, FILENAME_LAST_OCCURRENCE);
         if (time_str == NULL)
+        {
+            log_debug("Not counting problem %s: failed to get time element", problem_id);
             continue;
+        }
 
         long val = atol(time_str);
         free(time_str);
         if (val < since)
-            return 0;
+        {
+            log_debug("Not counting problem %s: older tham limit (%ld < %ld)", problem_id, val, since);
+            continue;
+        }
 
         count++;
     }
