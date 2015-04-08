@@ -111,7 +111,7 @@ rlJournalStart
         kill %1
 
         rlAssertGrep "Sending ABRT crash statistics data" client_create3
-        rlAssertGrep "curl: About to connect() to 127.0.0.1 port 12345" client_create3
+        rlAssertGrep "curl: Connected to 127.0.0.1 (127.0.0.1) port 12345 (#0)" client_create3
         rlAssertGrep "curl sent header: 'POST /rs/telemetry/abrt/reports/new/ HTTP/1" client_create3
 
         rlAssertGrep "Checking for hints" client_create3
@@ -154,7 +154,7 @@ rlJournalStart
         kill %1
 
         rlAssertGrep "Sending ABRT crash statistics data" client_create4
-        rlAssertGrep "curl: About to connect() to 127.0.0.1 port 12345" client_create4
+        rlAssertGrep "curl: Connected to 127.0.0.1 (127.0.0.1) port 12345 (#0)" client_create4
         rlAssertGrep "curl sent header: 'POST /rs/telemetry/abrt/reports/new/ HTTP/1" client_create4
 
         rlAssertGrep "Checking for hints" client_create4

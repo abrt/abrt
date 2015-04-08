@@ -63,7 +63,7 @@ rlJournalStart
 
         kill %1
 
-        rlAssertGrep "curl: About to connect() to 127.0.0.1 port 12345" ureport.log
+        rlAssertGrep "curl: Connected to 127.0.0.1 (127.0.0.1) port 12345 (#0)" ureport.log
         rlAssertGrep "curl sent header: 'POST /faf/reports/new/ HTTP/1" ureport.log
         rlAssertGrep "curl sent header: 'POST /faf/reports/attach/ HTTP/1" ureport.log
         rlAssertGrep "Attaching ContactEmail: abrt@email.com" ureport.log
@@ -94,7 +94,7 @@ rlJournalStart
 
         kill %1
 
-        rlAssertGrep "curl: About to connect() to 127.0.0.1 port 12345" ureport2.log
+        rlAssertGrep "curl: Connected to 127.0.0.1 (127.0.0.1) port 12345 (#0)" ureport2.log
         rlAssertGrep "curl sent header: 'POST /faf/reports/new/ HTTP/1" ureport2.log
 
         rlAssertNotGrep "Attaching ContactEmail: abrt@email.com" ureport2.log
