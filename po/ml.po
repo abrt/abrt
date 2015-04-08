@@ -5,220 +5,172 @@
 # Translators:
 # Ani Peter <apeter@redhat.com>, 2012-2013
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
+# Ani Peter <apeter@redhat.com>, 2015. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-10-06 13:44+0200\n"
-"PO-Revision-Date: 2014-10-06 11:45+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
-"Language-Team: Malayalam (http://www.transifex.com/projects/p/fedora-abrt/language/ml/)\n"
+"POT-Creation-Date: 2015-04-08 13:09+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-01-08 10:57-0500\n"
+"Last-Translator: Ani Peter <apeter@redhat.com>\n"
+"Language-Team: Malayalam (http://www.transifex.com/projects/p/fedora-abrt/"
+"language/ml/)\n"
 "Language: ml\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Zanata 3.5.1\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
-msgid "Automatic Bug Reporting Tool"
-msgstr "ഓട്ടോമാറ്റിക് ബഗ് രേഖപ്പെടുത്തല്‍ പ്രയോഗം"
+msgid "Problem Reporting"
+msgstr ""
 
 #: ../src/applet/abrt-applet.desktop.in.h:2
-msgid "ABRT notification applet"
-msgstr "എബിആര്‍ടി നോട്ടിഫിക്കേഷന്‍ ആപ്ലെറ്റ്"
-
-#: ../src/applet/applet.c:129
-msgid ""
-"The report which will be sent does not contain any security sensitive data. "
-"Therefore it is not necessary to bother you next time and require any "
-"further action by you. \n"
+msgid "View and report application crashes"
 msgstr ""
 
-#: ../src/applet/applet.c:135
-msgid "Do you want to enable automatically submitted crash reports?"
-msgstr ""
-
-#: ../src/applet/applet.c:140
-msgid "Do you want to enable automatically submitted anonymous crash reports?"
-msgstr ""
-
-#. The NetworkManager DBus service is not available.
-#: ../src/applet/applet.c:241
+#: ../src/applet/applet.c:157
 #, c-format
-msgid "Can't connect to NetworkManager over DBus: %s"
-msgstr "DBus-ല്‍ NetworkManager-ലേക്കു് കണക്ടു് ചെയ്യുവാന്‍ സാധ്യമല്ല: %s"
+msgid "Can't take ownership of '%s'"
+msgstr "'%s'-ന്റെ അവകാശം സ്വീകരിയ്ക്കുവാന്‍ സാധ്യമല്ല"
 
-#: ../src/applet/applet.c:265
+#: ../src/applet/applet.c:165
 #, c-format
-msgid "Can't determine network status via NetworkManager: %s"
-msgstr "NetworkManager മുഖേന നെറ്റ്‌വര്‍ക്ക് അവസ്ഥ കണ്ടുപിടിയ്ക്കുവാന്‍ സാധ്യമല്ല: %s"
+msgid "Can't open directory for writing '%s'"
+msgstr "'%s'സൂക്ഷിയ്ക്കുന്നതിനായി ഡയറക്ടറി തുറക്കുവാന്‍ സാധ്യമല്ല"
 
-#: ../src/applet/applet.c:384
-msgid "A problem has been detected"
-msgstr "ഒരു പ്രശ്നം കണ്ടുപിടിച്ചിരിയ്ക്കുന്നു"
-
-#: ../src/applet/applet.c:386
-#, c-format
-msgid "A problem in the %s package has been detected"
-msgstr "%s പാക്കേജില്‍ ഒരു പ്രശ്നം കണ്ടുപിടിച്ചിരിയ്ക്കുന്നു"
-
-#: ../src/applet/applet.c:396
-#, c-format
-msgid "%s and the diagnostic data has been submitted"
-msgstr ""
-
-#: ../src/applet/applet.c:556 ../src/plugins/abrt-retrace-client.c:131
-#: ../src/plugins/abrt-retrace-client.c:168
-#, c-format
-msgid "Can't execute '%s'"
-msgstr "'%s' പ്രവര്‍ത്തിപ്പിയ്ക്കുവാന്‍ സാധ്യമല്ല"
-
-#: ../src/applet/applet.c:641 ../src/applet/applet.c:713
+#: ../src/applet/applet.c:442 ../src/applet/applet.c:461
 #, c-format
 msgid "Can't close notification: %s"
 msgstr "അറിയിപ്പു് അടയ്ക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: ../src/applet/applet.c:675
-msgid ""
-"You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
-"\n"
-"Do you want to continue?"
+#: ../src/applet/applet.c:496
+msgid "Oops!"
 msgstr ""
 
-#: ../src/applet/applet.c:753 ../src/applet/applet.c:755
-msgid "Warning"
-msgstr "മുന്നറിയിപ്പു്"
-
-#: ../src/applet/applet.c:803
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
-msgstr "ABRT കണ്ടുപിടിക്കുന്ന പ്രശ്നങ്ങളെപ്പറ്റി ഉപയോക്താവിനെ അറിയിക്കുന്നതിനായുള്ള ആപ്ലെറ്റ്"
-
-#: ../src/applet/applet.c:819
-msgid "translator-credits"
-msgstr "Ani Peter | അനി പീറ്റര്‍ <apeter@redhat.com>"
-
-#: ../src/applet/applet.c:827
-msgid "_Quit"
-msgstr "പു_റത്തു് കടക്കുക"
-
-#: ../src/applet/applet.c:829
-msgid "Hide"
-msgstr "അദൃശ്യമാക്കുക"
-
-#: ../src/applet/applet.c:831
-msgid "_About"
-msgstr "സം_ബന്ധിച്ചു്"
-
-#: ../src/applet/applet.c:899
-msgid "Problem detected"
-msgstr "പ്രശ്നം കണ്ടുപിടിച്ചിരിയ്ക്കുന്നു"
-
-#: ../src/applet/applet.c:949
-msgid "Ignore forever"
-msgstr "എന്നേക്കുമായി ഉപേക്ഷിയ്ക്കുക"
-
-#. Problem has been 'autoreported' and is considered as KNOWN
-#: ../src/applet/applet.c:960 ../src/applet/applet.c:975
-msgid "Open"
-msgstr "തുറക്കുക"
-
-#: ../src/applet/applet.c:965
-msgid "The Problem has already been Reported"
-msgstr ""
-
-#: ../src/applet/applet.c:965
-msgid "A Known Problem has Occurred"
-msgstr "പരിചിതമായൊരു പ്രശ്നമുണ്ടായിരിയ്ക്കുന്നു"
-
-#. Problem has not yet been 'autoreported' and can be
-#. * 'autoreported' on user request.
-#: ../src/applet/applet.c:984 ../src/applet/applet.c:1019
+#: ../src/applet/applet.c:514
 msgid "Report"
 msgstr "റിപോര്‍ട്ട്"
 
-#: ../src/applet/applet.c:989
-msgid "A Problem has Occurred"
-msgstr "ഒരു പ്രശ്നം ഉണ്ടായിരിയ്ക്കുന്നു"
+#: ../src/applet/applet.c:523
+msgid "Restart"
+msgstr ""
 
-#: ../src/applet/applet.c:1015
-msgid "A Problem has been Reported"
-msgstr "ഒരു പ്രശ്നം രേഖപ്പെടുത്തിയിരിയ്ക്കുന്നു"
+#: ../src/applet/applet.c:588
+#, c-format
+msgid ""
+"We're sorry, it looks like %s crashed. The problem has been automatically "
+"reported."
+msgstr ""
 
-#: ../src/applet/applet.c:1023
-msgid "A New Problem has Occurred"
-msgstr "പുതിയൊരു പ്രശ്നമുണ്ടായിരിയ്ക്കുന്നു"
+#: ../src/applet/applet.c:593
+#, c-format
+msgid ""
+"We’re sorry, it looks like %s crashed. The problem will be reported when the "
+"internet is available."
+msgstr ""
 
-#: ../src/applet/applet.c:1033
+#: ../src/applet/applet.c:599 ../src/applet/applet.c:613
+#: ../src/applet/applet.c:641
+#, c-format
+msgid ""
+"We're sorry, it looks like %s crashed. Please contact the developer if you "
+"want to report the issue."
+msgstr ""
+
+#: ../src/applet/applet.c:607
+#, c-format
+msgid ""
+"We're sorry, it looks like %s crashed. If you'd like to help resolve the "
+"issue, please send a report."
+msgstr ""
+
+#: ../src/applet/applet.c:626
+msgid ""
+"We're sorry, it looks like a problem occurred in a component. The problem "
+"has been automatically reported."
+msgstr ""
+
+#: ../src/applet/applet.c:630
+msgid ""
+"We're sorry, it looks like a problem occurred in a component. The problem "
+"will be reported when the internet is available."
+msgstr ""
+
+#: ../src/applet/applet.c:635
+msgid ""
+"We're sorry, it looks like a problem occurred. If you'd like to help resolve "
+"the issue, please send a report."
+msgstr ""
+
+#: ../src/applet/applet.c:680
 #, c-format
 msgid "Can't show notification: %s"
 msgstr "അറിയിപ്പു് കാണിയ്ക്കുവാന്‍ സാധ്യമല്ല: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:1067 ../src/daemon/abrt-upload-watch.c:168
+#: ../src/applet/applet.c:712 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "gio ചാനലില്‍ നിന്നും ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല : '%s'"
 
-#: ../src/applet/applet.c:1151
+#: ../src/applet/applet.c:790
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "gio ചാനലില്‍ എന്‍കോഡിങ് സജ്ജമാക്കുവാന്‍ സാധ്യമല്ല : '%s'"
 
-#: ../src/applet/applet.c:1155
+#: ../src/applet/applet.c:794
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "gio ചാനലിനു് nonblocking മോഡ് ഓണ്‍ ചെയ്യുവാാന്‍ സാധ്യമല്ല: %s"
 
-#: ../src/applet/applet.c:1189
-#, c-format
-msgid "Can't take ownership of '%s'"
-msgstr "'%s'-ന്റെ അവകാശം സ്വീകരിയ്ക്കുവാന്‍ സാധ്യമല്ല"
-
-#: ../src/applet/applet.c:1198
-#, c-format
-msgid "Can't open directory for writing '%s'"
-msgstr "'%s'സൂക്ഷിയ്ക്കുന്നതിനായി ഡയറക്ടറി തുറക്കുവാന്‍ സാധ്യമല്ല"
-
-#: ../src/applet/applet.c:1481
-#, c-format
-msgid ""
-"Failed to open connection to session manager: '%s', notification may "
-"reappear on the next login"
-msgstr "സെഷന്‍ മാനേജറിലേക്കുള്ള കണക്ഷന്‍ തുറക്കുന്നതില്‍ പരാജയം: '%s', അടുത്ത തവണ പ്രവേശിയ്ക്കുമ്പോള്‍ അറിയിപ്പു് വീണ്ടും വരാന്‍ സാധ്യതയുണ്ടു്"
-
-#: ../src/applet/applet.c:1622
+#: ../src/applet/applet.c:1090
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
-msgstr "& [-v] [DIR]...\n\nപുതിയ പ്രശ്നങ്ങള്‍ ABRT കണ്ടുപിടിയ്ക്കുമ്പോള്‍ ഉപയോക്താവിനെ അറിയിയ്ക്കുന്നതിനുള്ള ആപ്ലെറ്റ്\n"
+msgstr ""
+"& [-v] [DIR]...\n"
+"\n"
+"പുതിയ പ്രശ്നങ്ങള്‍ ABRT കണ്ടുപിടിയ്ക്കുമ്പോള്‍ ഉപയോക്താവിനെ "
+"അറിയിയ്ക്കുന്നതിനുള്ള ആപ്ലെറ്റ്\n"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr ""
+msgstr "ഡയറക്ടറി കരസ്ഥമാക്കുന്നതിനുള്ള മുമ്പ് ചോദിയ്ക്കുക"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
-msgstr ""
+msgstr "സ്വയമായി uReport അയയ്ക്കുക"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
-msgstr ""
+msgstr "ചെറിയ രീതിയിലുള്ള റിപോര്‍ട്ടിങ്"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
-msgstr ""
+msgstr "നിശബ്ദമായ ചെറിയ റിപോര്‍ട്ടിങ്"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
-"space consuming operation. ABRT provides a service which generates the stack"
-" trace from the coredump but you have to upload the coredump to this "
-"service. With this option disabled ABRT will upload the coredump without "
-"asking."
+"space consuming operation. ABRT provides a service which generates the stack "
+"trace from the coredump but you have to upload the coredump to this service. "
+"With this option disabled ABRT will upload the coredump without asking."
 msgstr ""
+"സ്റ്റാക്ക് ട്രെയിസ് ലഭ്യമാക്കുന്നതിന് കോര്‍ഡമ്പ് ഫയല്‍ ആവശ്യമാണു്. ഇതിനു് "
+"അധികമായ സമയവും സ്ഥലവും ആവശ്യമാണു്. കോര്‍ഡമ്പില്‍ നിന്നും സ്റ്റാക്ക് ട്രെയിസ് "
+"ലഭ്യമാക്കുന്നതിനുള്ള സേവനം എബിആര്‍ടി ലഭ്യമാക്കുന്നു, പക്ഷേ ഇതിനായി നിങ്ങള്‍ "
+"കോര്‍ഡമ്പ് അപ്‌ലോഡ് ചെയ്യണം. ഈ ഐച്ഛികം പ്രവര്‍ത്തന രഹിതമാക്കിയാല്‍, ഒരു "
+"ചോദ്യങ്ങളുമില്ലാതെ എബിആര്‍ടി കോര്‍ഡമ്പ് അപ്‌ലോ‍ഡ് ചെയ്യുന്നു."
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
 "ABRT stores problem data in directories. Whenever ABRT needs writable "
@@ -226,31 +178,51 @@ msgid ""
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
 msgstr ""
+"പ്രശ്നമുള്ള ഡേറ്റാ എബിആര്‍ടി ഡയറക്ടറികളില്‍ സൂക്ഷിയ്ക്കുന്നു. എഴുതേണ്ട "
+"ഡയറക്ടറി എബിആര്‍ടിയ്ക്ക് ആവശ്യമുള്ളപ്പോള്‍, സിസ്റ്റത്തിലുള്ള സ്ഥാനത്ത് "
+"നിന്നും ഡയറക്ടറി ആസ്ഥാനത്തിലേക്ക് നീക്കുന്നു. ഈ ഐച്ഛികം പ്രവര്‍ത്തന "
+"രഹിതമാക്കുമ്പോള്‍, ചോദ്യങ്ങളില്ലാതെ എബിആര്‍ടി പ്രശ്നമുള്ള ഡയറക്ടറി "
+"നീക്കുന്നു."
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
-"uses uReports  for fast global duplicate detection. In default configuration"
-" uReport is sent at beginning of reporting process. With this option enabled"
-" uReports are sent automatically immediately after problem detection."
+"uses uReports  for fast global duplicate detection. In default configuration "
+"uReport is sent at beginning of reporting process. With this option enabled "
+"uReports are sent automatically immediately after problem detection."
 msgstr ""
+"ഒരു പ്രശ്നത്തെപ്പറ്റിയുള്ള ചെറിയതും അപരിചിതവുമായ വിവരണമാണു് uReport.  "
+"ആയാസത്തിലുള്ള കണ്ടുപിടിത്തതിനായി എബിആര്‍ടി uReports ഉപയോഗിയ്ക്കുന്നു. "
+"സ്വതവേ, രേഖപ്പെടുത്തുമ്പോള്‍ തന്നെ uReport അയയ്ക്കുന്നു. ഇതു് പ്രവര്‍ത്തന "
+"രഹിതമാക്കുമ്പോള്‍, uReports സ്വയമായി അയയ്ക്കപ്പെടുന്നു."
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
-"With this option enabled reporting process started by click on Report button"
-" in problem notification bubble will be interrupted after uReport is sent. "
+"With this option enabled reporting process started by click on Report button "
+"in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
+"ഈ ഐച്ഛികം പ്രവര്‍ത്തന സജ്ജമെങ്കില്‍, പ്രശ്നം അറിയിക്കുന്നതിനുള്ള "
+"കുമിളയിലുള്ള റിപോര്‍ട്ട് ബട്ടണ്‍ ക്ലിക്ക ചെയ്ത് പ്രശ്നം രേഖപ്പെടുത്തുന്നതു്, "
+"uReport അയച്ച ശേഷം തടസ്സപ്പെടുന്നു. പൂര്‍ണ്ണമായ റിപോര്‍ട്ട് "
+"തയ്യാറാക്കുന്നതിനു് സ്വതവേയുള്ള പ്രശ്നങ്ങള്‍ക്കുള്ള ബ്രൌസര്‍ ഉപയോഗിയ്ക്കാം."
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
+"ഈ ഐച്ഛികം പ്രവര്‍ത്തന സജ്ജമെങ്കില്‍, രേഖപ്പെടുത്തിയ പ്രശ്നങ്ങള്‍ക്കുള്ള "
+"അറിയിപ്പ് എബിആര്‍ടി ഒരിക്കലും കാണിക്കില്ല. ലഘുവായി രേഖപ്പെടുത്തുന്നത് "
+"സജ്ജമെങ്കില്‍ മാത്രം ഇതു് പ്രാഭല്യത്തിലാകുന്നു."
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid "Ask before uploading coredump"
-msgstr ""
+msgstr "coredump അപ്‌ലോഡ് ചെയ്യുന്നതിന് മുമ്പ് ചോദിയ്ക്കുക"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid ""
@@ -258,24 +230,32 @@ msgid ""
 "access if possibly sensitive data are detected."
 msgstr ""
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Request private ticket for sensitive information"
-msgstr ""
+msgstr "സെന്‍സിറ്റീവ് വിവരങ്ങള്‍ക്ക് സ്വകാര്യ ടിക്കറ്റ് ആവശ്യപ്പെടുക"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid "Notify incomplete problems"
-msgstr ""
+msgstr "പൂര്‍ണ്ണമല്ലാത്ത പ്രശ്നങ്ങള്‍ അറിയിയ്ക്കുക"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
 msgstr ""
+"കമ്പ്യൂട്ടര്‍ അടച്ചുപൂട്ടുമ്പോള്‍ അല്ലെങ്കില്‍ ഉപയോക്താവ് പുറത്ത് "
+"കടക്കുമ്പോള്‍ പൂര്‍ത്തിയാകാത്ത പ്രശ്നങ്ങള്‍ ലഭ്യമാകുന്നു. ഉചിതമായ "
+"റിപോര്‍ട്ടുകള്‍ ലഭ്യമാക്കുന്നതിനു്, എബിആര്‍ടി ഇവ രേഖപ്പെടുത്തുവാന്‍ "
+"അനുവദിക്കുകയില്ല."
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/system-config-abrt.c:79
 msgid "_Close"
-msgstr ""
+msgstr "_അടയ്ക്കുക"
 
 #: ../src/configuration-gui/system-config-abrt.c:88
 msgid "_Defaults"
@@ -298,16 +278,17 @@ msgstr "സംബന്ധിച്ചു്"
 msgid "Quit"
 msgstr "പുറത്തു് കടക്കുക"
 
-#: ../src/daemon/abrt-action-save-package-data.c:388
+#: ../src/daemon/abrt-action-save-package-data.c:390
 msgid ""
-"& [-v] [-c CONFFILE] -d DIR\n"
+"& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
-msgstr "& [-v] [-c CONFFILE] -d DIR\n\nപാക്കേജ് ഡേറ്റാബെയിസ് ചോദ്യം ചെയ്തു്, പാക്കേജും ഘടകത്തിന്റെ പേരും സൂക്ഷിയ്ക്കുക"
+msgstr ""
 
-#: ../src/daemon/abrt-action-save-package-data.c:400
+#: ../src/daemon/abrt-action-save-package-data.c:403
+#: ../src/daemon/abrt-action-save-container-data.c:210
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
-#: ../src/plugins/abrt-action-analyze-c.c:78
+#: ../src/plugins/abrt-action-analyze-c.c:141
 #: ../src/plugins/abrt-action-analyze-oops.c:48
 #: ../src/plugins/abrt-action-analyze-xorg.c:84
 #: ../src/plugins/abrt-action-analyze-python.c:47
@@ -316,12 +297,26 @@ msgstr "& [-v] [-c CONFFILE] -d DIR\n\nപാക്കേജ് ഡേറ്റ�
 msgid "Problem directory"
 msgstr "പ്രശ്നമുള്ള ഡയറക്ടറി"
 
-#: ../src/daemon/abrt-action-save-package-data.c:401
+#: ../src/daemon/abrt-action-save-package-data.c:404
 msgid "Configuration file"
 msgstr "ക്രമീകരണ ഫയല്‍"
 
-#: ../src/daemon/abrt-server.c:785 ../src/dbus/abrt-dbus.c:781
-#: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:484
+#: ../src/daemon/abrt-action-save-package-data.c:405
+msgid "Use this directory as RPM root"
+msgstr ""
+
+#: ../src/daemon/abrt-action-save-container-data.c:199
+msgid "& [-v] -d DIR\n"
+"\n"
+"Save container metadata"
+msgstr ""
+
+#: ../src/daemon/abrt-action-save-container-data.c:211
+msgid "Root directory for running container commands"
+msgstr ""
+
+#: ../src/daemon/abrt-server.c:785 ../src/dbus/abrt-dbus.c:891
+#: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:444
 msgid "& [options]"
 msgstr "& [options]"
 
@@ -330,94 +325,116 @@ msgid "Use NUM as client uid"
 msgstr "ക്ലയന്റ് യുഐഡി ആയി NUM ഉപയോഗിയ്ക്കുക"
 
 #: ../src/daemon/abrt-server.c:797 ../src/daemon/abrt-upload-watch.c:280
-#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:96
-#: ../src/plugins/abrt-dump-journal-oops.c:302
+#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:97
+#: ../src/plugins/abrt-dump-journal-core.c:477
+#: ../src/plugins/abrt-dump-journal-oops.c:219
 #: ../src/plugins/abrt-dump-xorg.c:244
 msgid "Log to syslog"
 msgstr "syslog-ലേക്കു് പ്രവേശിയ്ക്കുക"
 
-#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrtd.c:500
+#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrtd.c:460
 msgid "Add program names to log"
 msgstr "ലോഗിലേക്കു് പ്രോഗ്രാമിന്റെ പേരുകള്‍ ചേര്‍ക്കുക"
 
-#: ../src/dbus/abrt-dbus.c:123
+#: ../src/dbus/abrt-dbus.c:132
 msgid "Unknown error"
 msgstr "അപരിചിതമായ പിശക്"
 
-#: ../src/dbus/abrt-dbus.c:188
+#: ../src/dbus/abrt-dbus.c:197
 #, c-format
 msgid "'%s' is not a valid problem directory"
 msgstr "'%s' ശരിയായൊരു പ്രശ്ന ഡയറക്ടറിയല്ല"
 
-#: ../src/dbus/abrt-dbus.c:223
+#: ../src/dbus/abrt-dbus.c:232
 #, c-format
 msgid "'%s' element can't be modified"
 msgstr "'%s' എലമെന്റില്‍ മാറ്റം വരുവാന്‍ സാധ്യമല്ല"
 
-#: ../src/dbus/abrt-dbus.c:244 ../src/dbus/abrt-dbus.c:446
-#: ../src/dbus/abrt-dbus.c:498 ../src/dbus/abrt-configuration.c:618
+#: ../src/dbus/abrt-dbus.c:253 ../src/dbus/abrt-dbus.c:455
+#: ../src/dbus/abrt-dbus.c:507 ../src/dbus/abrt-dbus.c:571
+#: ../src/dbus/abrt-dbus.c:737 ../src/dbus/abrt-configuration.c:618
 #: ../src/dbus/abrt-configuration.c:683
 #, c-format
 msgid "Not Authorized"
 msgstr "അധികാരമില്ല"
 
-#: ../src/dbus/abrt-dbus.c:256
+#: ../src/dbus/abrt-dbus.c:265
 msgid "Can't access the problem for modification"
 msgstr "മാറ്റം വരുത്തുന്നതിനായി പ്രശ്നം കാണിയ്ക്കുവാന്‍ സാധ്യമല്ല"
 
-#: ../src/dbus/abrt-dbus.c:461
+#: ../src/dbus/abrt-dbus.c:470
 msgid "Chowning directory failed. Check system logs for more details."
-msgstr "ഡയറക്ടറി ചൌണ്‍ ചെയ്യുന്നതില്‍ പരാജയപ്പെട്ടു. കൂടുതല്‍ വിവരങ്ങള്‍ക്കായി സിസ്റ്റം ലോഗുകള്‍ പരിശോധിയ്ക്കുക."
+msgstr ""
+"ഡയറക്ടറി ചൌണ്‍ ചെയ്യുന്നതില്‍ പരാജയപ്പെട്ടു. കൂടുതല്‍ വിവരങ്ങള്‍ക്കായി "
+"സിസ്റ്റം ലോഗുകള്‍ പരിശോധിയ്ക്കുക."
 
-#: ../src/dbus/abrt-dbus.c:559
+#: ../src/dbus/abrt-dbus.c:581
+msgid "Can't access the problem for reading"
+msgstr ""
+
+#: ../src/dbus/abrt-dbus.c:630
 #, c-format
 msgid "'%s' is not a valid element name"
 msgstr "'%s' ശരിയായൊരു എലമെന്റ് നാമമല്ല is not a valid element name"
 
-#: ../src/dbus/abrt-dbus.c:580
+#: ../src/dbus/abrt-dbus.c:651
 #, c-format
 msgid "Can't get size of '%s'"
 msgstr "'%s'-ന്റെ വ്യാപ്തി ലഭ്യമല്ല"
 
-#: ../src/dbus/abrt-dbus.c:595
+#: ../src/dbus/abrt-dbus.c:666
 msgid "No problem space left"
 msgstr "സ്ഥലം ലഭ്യമല്ല"
 
-#: ../src/dbus/abrt-dbus.c:627
+#: ../src/dbus/abrt-dbus.c:698
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr "'%s' എലമെന്റ് വെട്ടി നീക്കുവാന്‍ സാധ്യമല്ല ('%s' ഡയറക്ടറിയില്‍ നിന്നും)"
+msgstr ""
+"'%s' എലമെന്റ് വെട്ടി നീക്കുവാന്‍ സാധ്യമല്ല ('%s' ഡയറക്ടറിയില്‍ നിന്നും)"
 
-#: ../src/dbus/abrt-dbus.c:763 ../src/dbus/abrt-configuration.c:983
+#: ../src/dbus/abrt-dbus.c:725
+msgid "Can't access the problem"
+msgstr ""
+
+#: ../src/dbus/abrt-dbus.c:873 ../src/dbus/abrt-configuration.c:983
+#: ../src/daemon/abrtd.c:426
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
-msgstr "'%s' എന്ന നാമം നഷ്ടമായി, ഈ പേരില്‍  മറ്റൊരു സര്‍വീസും പ്രവര്‍ത്തനത്തിലില്ല എന്നു് ദയവായി ഉറപ്പാക്കുക.\n"
+msgstr ""
+"'%s' എന്ന നാമം നഷ്ടമായി, ഈ പേരില്‍  മറ്റൊരു സര്‍വീസും പ്രവര്‍ത്തനത്തിലില്ല "
+"എന്നു് ദയവായി ഉറപ്പാക്കുക.\n"
 
-#: ../src/dbus/abrt-dbus.c:790 ../src/dbus/abrt-configuration.c:1011
-#: ../src/daemon/abrtd.c:499
+#: ../src/dbus/abrt-dbus.c:900 ../src/dbus/abrt-configuration.c:1011
+#: ../src/daemon/abrtd.c:459
 msgid "Exit after NUM seconds of inactivity"
 msgstr "NUM നിമിഷങ്ങള്‍ നിഷ്ക്രിയമായശേഷം പുറത്തു് കടക്കുക"
 
-#: ../src/dbus/abrt-dbus.c:808 ../src/dbus/abrt-configuration.c:1021
+#: ../src/dbus/abrt-dbus.c:918 ../src/dbus/abrt-configuration.c:1021
 msgid "This program must be run as root."
 msgstr "ഈ പ്രോഗ്രാം റൂട്ടായി പ്രവര്‍ത്തിപ്പിയ്ക്കണം."
 
-#: ../src/daemon/abrtd.c:451
+#: ../src/daemon/abrtd.c:389
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
-"detected while computer is shutting down or user is logging out. In order to"
-" provide valuable problem reports, ABRT will not allow you to submit this "
-"problem. If you have time and want to help the developers in their effort to"
-" sort out this problem, please contact them directly."
-msgstr "പ്രശ്നമുള്ള ഡേറ്റാ പൂര്‍ണ്ണമല്ല. കമ്പ്യൂട്ടര്‍ അടച്ചുപൂട്ടുമ്പോള്‍ അല്ലെങ്കില്‍ ഉപയോക്താവു് പുറത്തു് കടക്കുമ്പോള്‍ ഒരു പ്രശ്നമുണ്ടായാലാണു് ഇതു് സാധാരണ സംഭവിയ്ക്കുന്നതു്. ശരിയായ റിപോര്‍ട്ടുകള്‍ നല്‍കുന്നതിനായി, ഈ പ്രശ്നം രേഖപ്പെടുത്തുവാന്‍ നിങ്ങളെ എബിആര്‍റ്റി അനുവദിയ്ക്കുന്നില്ല. നിങ്ങള്‍ക്കു് ഈ പ്രശ്നം ശരിയായി പരിഹരിയ്ക്കുന്നതിനായി ഡവലപ്പര്‍മാരെ സഹായിയ്ക്കണമെങ്കില്‍, അവരുമായി നേരിട്ടു് ബന്ധപ്പെടുക."
+"detected while computer is shutting down or user is logging out. In order to "
+"provide valuable problem reports, ABRT will not allow you to submit this "
+"problem. If you have time and want to help the developers in their effort to "
+"sort out this problem, please contact them directly."
+msgstr ""
+"പ്രശ്നമുള്ള ഡേറ്റാ പൂര്‍ണ്ണമല്ല. കമ്പ്യൂട്ടര്‍ അടച്ചുപൂട്ടുമ്പോള്‍ "
+"അല്ലെങ്കില്‍ ഉപയോക്താവു് പുറത്തു് കടക്കുമ്പോള്‍ ഒരു പ്രശ്നമുണ്ടായാലാണു് ഇതു് "
+"സാധാരണ സംഭവിയ്ക്കുന്നതു്. ശരിയായ റിപോര്‍ട്ടുകള്‍ നല്‍കുന്നതിനായി, ഈ പ്രശ്നം "
+"രേഖപ്പെടുത്തുവാന്‍ നിങ്ങളെ എബിആര്‍റ്റി അനുവദിയ്ക്കുന്നില്ല. നിങ്ങള്‍ക്കു് ഈ "
+"പ്രശ്നം ശരിയായി പരിഹരിയ്ക്കുന്നതിനായി ഡവലപ്പര്‍മാരെ സഹായിയ്ക്കണമെങ്കില്‍, "
+"അവരുമായി നേരിട്ടു് ബന്ധപ്പെടുക."
 
-#: ../src/daemon/abrtd.c:497
+#: ../src/daemon/abrtd.c:457
 msgid "Do not daemonize"
 msgstr "daemonize ചെയ്യേണ്ടതില്ല"
 
-#: ../src/daemon/abrtd.c:498
+#: ../src/daemon/abrtd.c:458
 msgid "Log to syslog even with -d"
 msgstr "-d ഉപയോഗിച്ചു് syslog-ലേക്കു് പ്രവേശിയ്ക്കുക"
 
@@ -433,11 +450,14 @@ msgstr "DIR-ല്‍ EVENT പ്രവര്‍ത്തിപ്പിയ്�
 msgid "Communicate directly to the user"
 msgstr "ഉപയോക്താവുമായി നേരിട്ടു് ഇടപെടുക"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
 msgstr ""
+"പണിയില്ലാത്തവരും പൂര്‍ണ്ണ ബഫറുമില്ല. '%s' ആര്‍ക്കൈവ് ഉപേക്ഷിയ്ക്കുന്നു."
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
 "& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
@@ -449,32 +469,117 @@ msgid ""
 "If UPLOAD_DIRECTORY is not provided, uses a value of\n"
 "WatchCrashdumpArchiveDir option from abrt.conf"
 msgstr ""
+"& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
+"\n"
+"\n"
+"Watches UPLOAD_DIRECTORY and unpacks incoming archives into DumpLocation\n"
+"specified in abrt.conf\n"
+"\n"
+"If UPLOAD_DIRECTORY is not provided, uses a value of\n"
+"WatchCrashdumpArchiveDir option from abrt.conf"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-upload-watch.c:281
 msgid "Daemize"
-msgstr ""
+msgstr "ഡമണൈസ്"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr ""
+msgstr "ഒരേപോലെ ജോലിചെയ്യുന്നവരുടെ എണ്ണം. സ്വതവേയഉള്ളതു്"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr ""
+msgstr "MiB-ല്‍ ഏറ്റവും കൂടിയ ക്യാഷ് വ്യാപ്തി. സ്വതവേയുള്ളതു്"
 
-#: ../src/daemon/abrt-auto-reporting.c:81
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/daemon/abrt-auto-reporting.c:176
 msgid "& [ "
-msgstr ""
+msgstr "& [ "
 
-#: ../src/daemon/abrt-auto-reporting.c:113
+# translation auto-copied from project abrt, version rhel7, document abrt, author Ani Peter
+#: ../src/daemon/abrt-auto-reporting.c:213
+msgid "Turns the authentication off"
+msgstr "ആധികാരികത ഉറപ്പാക്കല്‍ സംവിധാനം ഓഫ് ചെയ്യുന്നു"
+
+# translation auto-copied from project abrt, version rhel7, document abrt, author Ani Peter
+#: ../src/daemon/abrt-auto-reporting.c:214
+msgid "Red Hat Support user name"
+msgstr "Red Hat പിന്തുണയ്ക്കുള്ള ഉപയോക്തൃനാമം"
+
+# translation auto-copied from project abrt, version rhel7, document abrt, author Ani Peter
+#: ../src/daemon/abrt-auto-reporting.c:215
+msgid "Red Hat Support password, if not given, a prompt for it will be issued"
+msgstr ""
+"Red Hat പിന്തുണയ്ക്കുള്ള രഹസ്യവാക്ക്, നല്‍കിയിട്ടില്ലെങ്കില്‍, ഇതിനായി "
+"ആവശ്യപ്പെടുന്നു"
+
+# translation auto-copied from project abrt, version rhel7, document abrt, author Ani Peter
+#: ../src/daemon/abrt-auto-reporting.c:216
+msgid "uReport SSL certificate paths or certificate type"
+msgstr ""
+"uReport എസ്എസ്എല്‍ സര്‍ട്ടിഫിക്കേറ്റ് പാഥ് അല്ലെങ്കില്‍ സര്‍ട്ടിഫിക്കേറ്റ് "
+"രീതി"
+
+# translation auto-copied from project abrt, version rhel7, document abrt, author Ani Peter
+#: ../src/daemon/abrt-auto-reporting.c:227
+msgid "You also need to specify --username for --password"
+msgstr " --password-നുള്ള --username നല്‍കേണ്ടതുണ്ടു്"
+
+# translation auto-copied from project abrt, version rhel7, document abrt, author Ani Peter
+#: ../src/daemon/abrt-auto-reporting.c:233
+msgid "You can use either --username or --certificate"
+msgstr "--username അല്ലെങ്കില്‍ --certificate ഉപയോഗിയ്ക്കാം"
+
+# translation auto-copied from project abrt, version rhel7, document abrt, author Ani Peter
+#: ../src/daemon/abrt-auto-reporting.c:239
+msgid "You can use either --username or --anonymous"
+msgstr "--username അല്ലെങ്കില്‍ --anonymous ഉപയോഗിയ്ക്കാം"
+
+# translation auto-copied from project abrt, version rhel7, document abrt, author Ani Peter
+#: ../src/daemon/abrt-auto-reporting.c:245
+msgid "You can use either --anonymous or --certificate"
+msgstr "--anonymous അല്ലെങ്കില്‍ --certificate ഉപയോഗിയ്ക്കാം"
+
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/daemon/abrt-auto-reporting.c:251
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "ആര്‍ഗ്യുമെന്റുകളുടെ തെറ്റായ എണ്ണം"
 
-#: ../src/daemon/abrt-auto-reporting.c:138
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/daemon/abrt-auto-reporting.c:270
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "അപരിചിതമായ മൂല്ല്യം: '%s'\n"
 
+# translation auto-copied from project abrt, version rhel7, document abrt, author Ani Peter
+#: ../src/daemon/abrt-auto-reporting.c:305
+msgid "Password:"
+msgstr "രഹസ്യവാക്ക്:"
+
+# translation auto-copied from project abrt, version rhel7, document abrt, author Ani Peter
+#: ../src/daemon/abrt-auto-reporting.c:308
+msgid "Cannot continue without password\n"
+msgstr "രഹസ്യവാക്കില്ലാതെ തുടരുവാന്‍ സാധ്യമല്ല\n"
+
+# translation auto-copied from project abrt, version rhel7, document abrt, author Ani Peter
+#. Print only the part before ':' of a string like "username:password"
+#: ../src/daemon/abrt-auto-reporting.c:347
+msgid "HTTP Authenticated auto reporting"
+msgstr "എച്ടിടിപി ആധികാരികതയുള്ള ഓട്ടോ റിപോര്‍ട്ടിങ്"
+
+# translation auto-copied from project abrt, version rhel7, document abrt, author Ani Peter
+#: ../src/daemon/abrt-auto-reporting.c:349
+msgid "SSL Client Authenticated auto reporting"
+msgstr "എസ്എസ്എല്‍ ക്ലയന്റ് ആധികാരികതയുള്ള ഓട്ടോ റിപോര്‍ട്ടിങ്"
+
+# translation auto-copied from project abrt, version rhel7, document abrt, author Ani Peter
+#: ../src/daemon/abrt-auto-reporting.c:351
+msgid "anonymous auto reporting"
+msgstr "അപരിചിതമായ ഓട്ടോ റിപോര്‍ട്ടിങ്"
+
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-handle-upload.in:69
 #, c-format
 msgid ""
@@ -486,71 +591,95 @@ msgid ""
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
 msgstr ""
+"ഉപയോഗിയ്ക്കേണ്ട വിധം: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
+"\n"
+"   -v             - വെര്‍ബോസ്\n"
+"   -d             - അപ്‌ലോഡ് ചെയ്ത ആര്‍ക്കൈവ് വെട്ടി നീക്കുക\n"
+"   ABRT_SPOOL_DIR - അപ്‌ലോഡ് ചെയ്ത ഉചിതമായ ആര്‍ക്കൈവുകള്‍ തുറന്നിടുന്ന "
+"ഡയറക്ടറി\n"
+"   UPLOAD_DIR     - അപ്‌ലോഡ് ചെയ്ത ഡയറക്ടറികള്‍ സൂക്ഷിയ്ക്കുന്ന ഡയറക്ടറി\n"
+"   FILENAME       - അപ്‌ലോഡ് ചെയ്ത് ആര്‍ക്കൈവ് ഫയല്‍ നാമം.\n"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-handle-upload.in:105
 #: ../src/daemon/abrt-handle-upload.in:108
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "ഡയറക്ടറിയല്ല: '{0}'"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-handle-upload.in:111
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
+msgstr "ഉപേക്ഷിയ്ക്കുന്നു: '{0}' (സ്ലാഷില്‍ ആരംഭിയ്ക്കുന്നു)"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-handle-upload.in:114
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
+msgstr "ഉപേക്ഷിയ്ക്കുന്നു: '{0}' (കുത്തില്‍ ആരംഭിയ്ക്കുന്നു)"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-handle-upload.in:117
 msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
+msgstr "ഉപേക്ഷിയ്ക്കുന്നു: '{0}' (.. അടങ്ങുന്നു)"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-handle-upload.in:120
 msgid "Skipping: '{0}' (contains space)"
-msgstr ""
+msgstr "ഉപേക്ഷിയ്ക്കുന്നു: '{0}' (സ്പെയിസ് അടങ്ങുന്നു)"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-handle-upload.in:123
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "ഉപേക്ഷിയ്ക്കുന്നു: '{0}' (ടാബ് അടങ്ങുന്നു)"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-handle-upload.in:128
 msgid "Can't change directory to '{0}'"
-msgstr ""
+msgstr "ഡയറക്ടറിയെ '{0}'-ലേക്ക് മാറ്റുവാന്‍ സാധ്യമല്ല"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-handle-upload.in:139
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "അപരിചിതമായ ഫയല്‍ രീതി: '{0}'"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-handle-upload.in:144
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "'{0}'-ല്‍ പ്രവര്‍ത്തനത്തിലുള്ള ഡയറക്ടറി തയ്യാറാക്കുവാന്‍ സാധ്യമല്ല"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-handle-upload.in:155
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}'-നെ '{1}'-ലേക്ക് നീക്കുവാന്‍ സാധ്യമല്ല"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-handle-upload.in:160
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}'-നെ '{1}'-ലേക്ക് നീക്കുവാന്‍ സാധ്യമല്ല"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-handle-upload.in:164
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "'{0}'-ല്‍ ഉറപ്പാക്കുന്നതില്‍ പിശക്"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-handle-upload.in:166
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "'{0}' തുറക്കുന്നു"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-handle-upload.in:170
 msgid "Can't create '{0}' directory"
-msgstr ""
+msgstr "'{0}' ഡയറക്ടറി തയ്യാറാക്കുവാന്‍ സാധ്യമല്ല"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-handle-upload.in:174
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "'{0}' തുറക്കുവാന്‍ സാധ്യമല്ല"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-handle-upload.in:198
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' വിജയകരമായി നടപ്പിലാക്കി"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
@@ -572,15 +701,23 @@ msgstr "'%s' chown ചെയ്യുവാന്‍ സാധ്യമല്ല
 msgid "Deleting problem directory failed: %s"
 msgstr "പ്രശ്നമുള്ള ഡയറക്ടറി വെട്ടിനീക്കുന്നതില്‍ പരാജയം: %s"
 
-#: ../src/lib/problem_api_dbus.c:133
+#: ../src/lib/problem_api_dbus.c:133 ../src/lib/problem_api_dbus.c:206
+#: ../src/lib/problem_api_dbus.c:286
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
-msgstr "abrt-dbus-ല്‍ നിന്നും പ്രശ്നമുള്ള ഡേറ്റാ ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല: %s"
+msgstr ""
+"abrt-dbus-ല്‍ നിന്നും പ്രശ്നമുള്ള ഡേറ്റാ ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
 #: ../src/lib/problem_api_dbus.c:169
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
-msgstr "abrt-dbus-ല്‍ നിന്നും പ്രശ്നമുള്ള പട്ടിക ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല: %s"
+msgstr ""
+"abrt-dbus-ല്‍ നിന്നും പ്രശ്നമുള്ള പട്ടിക ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല: %s"
+
+#: ../src/lib/problem_api_dbus.c:250
+#, c-format
+msgid "Can't test whether the element exists over abrt-dbus: %s"
+msgstr ""
 
 #: ../src/lib/ignored_problems.c:233
 #, c-format
@@ -592,13 +729,17 @@ msgstr "താല്‍ക്കാലിക ഫയല്‍ '%s' തയ്യ�
 msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
 "problems '%s'"
-msgstr "'%s'-ലേക്കു് സൂക്ഷിയ്ക്കുവാന്‍ സാധ്യമല്ല. '%s' പ്രശ്നം അവഗണിച്ച '%s' പ്രശ്നങ്ങളില്‍ നിന്നും നീക്കം ചെയ്യപ്പെടുകയില്ല."
+msgstr ""
+"'%s'-ലേക്കു് സൂക്ഷിയ്ക്കുവാന്‍ സാധ്യമല്ല. '%s' പ്രശ്നം അവഗണിച്ച '%s' "
+"പ്രശ്നങ്ങളില്‍ നിന്നും നീക്കം ചെയ്യപ്പെടുകയില്ല."
 
 #. Something nefarious happened
 #: ../src/lib/ignored_problems.c:264
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
-msgstr "'%s' എന്നതു് '%s' ആയി മാറ്റുവാന്‍ സാധ്യമല്ല. '%s' പ്രശ്നം നീക്കം ചെയ്യുവാന്‍ സാധ്യമല്ല."
+msgstr ""
+"'%s' എന്നതു് '%s' ആയി മാറ്റുവാന്‍ സാധ്യമല്ല. '%s' പ്രശ്നം നീക്കം ചെയ്യുവാന്‍ "
+"സാധ്യമല്ല."
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:41
 msgid ""
@@ -606,11 +747,18 @@ msgid ""
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
-msgstr "& [options] -d DIR\n\nC/C++ ബാക്ക്ട്രെയിസ് നിരീക്ഷിച്ചു്, ഡൂപ്ലിക്കേറ്റ് ഹാഷ് ലഭ്യമാക്കി, റേറ്റിങ് ബാക്ക്ട്രെയിസ് ചെയ്തു്,\nപ്രശ്നമുള്ള ഡയറക്ടറി DIR-യില്‍ നിന്നും ക്രാഷ് ഫംഗ്ഷന്‍ തിരിച്ചറിയുന്നു"
+msgstr ""
+"& [options] -d DIR\n"
+"\n"
+"C/C++ ബാക്ക്ട്രെയിസ് നിരീക്ഷിച്ചു്, ഡൂപ്ലിക്കേറ്റ് ഹാഷ് ലഭ്യമാക്കി, റേറ്റിങ് "
+"ബാക്ക്ട്രെയിസ് ചെയ്തു്,\n"
+"പ്രശ്നമുള്ള ഡയറക്ടറി DIR-യില്‍ നിന്നും ക്രാഷ് ഫംഗ്ഷന്‍ തിരിച്ചറിയുന്നു"
 
+#. 
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -620,38 +768,50 @@ msgstr "%s-നുള്ള ബാക്ക്ട്രെയിസ് പാഴ�
 msgid "Crash thread not found"
 msgstr "ക്രാഷ് ത്രെഡ് ലഭ്യമായില്ല"
 
-#: ../src/plugins/abrt-action-analyze-c.c:67
+#: ../src/plugins/abrt-action-analyze-c.c:130
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
-msgstr "& [-v] -d DIR\n\nപ്രശ്നമുള്ള ഡയറക്ടറി DIR-യില്‍ കോര്‍ഡംപിനുള്ള UUID കണക്കുകൂട്ടി സൂക്ഷിയ്ക്കുന്നു"
+msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"പ്രശ്നമുള്ള ഡയറക്ടറി DIR-യില്‍ കോര്‍ഡംപിനുള്ള UUID കണക്കുകൂട്ടി "
+"സൂക്ഷിയ്ക്കുന്നു"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "'%s' കോര്‍ഡംപ് നിരീക്ഷിയ്ക്കുന്നു"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-analyze-core.in:110
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "ബിള്‍ഡ് ഐഡി ലഭ്യമല്ല: %s"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-analyze-core.in:142
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr ""
+msgstr "ഉപയോഗിയ്ക്കേണ്ട വിധം: %s [-v] [-o OUTFILE] -c COREFILE"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-analyze-core.in:164
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "COREFILE നല്‍കിയിട്ടില്ല"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
-msgstr "& [-v] -d DIR\n\noops പ്രശ്നങ്ങള്‍ക്കുള്ള ഡയറക്ടറി DIR-യ്ക്കുള്ള UUID, DUPHASH കണക്കു കൂട്ടി സൂക്ഷിയ്ക്കുന്നു"
+msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"oops പ്രശ്നങ്ങള്‍ക്കുള്ള ഡയറക്ടറി DIR-യ്ക്കുള്ള UUID, DUPHASH കണക്കു കൂട്ടി "
+"സൂക്ഷിയ്ക്കുന്നു"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:79
 msgid ""
@@ -666,7 +826,11 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
-msgstr "& [-v] -d DIR\n\nxorg പ്രശ്നങ്ങള്‍ക്കുള്ള ഡയറക്ടറി DIR-യ്ക്കുള്ള UUID, DUPHASH കണക്കു കൂട്ടി സൂക്ഷിയ്ക്കുന്നു"
+msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"xorg പ്രശ്നങ്ങള്‍ക്കുള്ള ഡയറക്ടറി DIR-യ്ക്കുള്ള UUID, DUPHASH കണക്കു കൂട്ടി "
+"സൂക്ഷിയ്ക്കുന്നു"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:113
 #, c-format
@@ -678,46 +842,61 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
-msgstr "& [-v] -d DIR\n\nപൈഥണ്‍ ക്രാഷ് ഡംപുകളുടെ യുയുഐഡി, DUPHASH കണക്കുകൂട്ടി സൂക്ഷിയ്ക്കുക"
+msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"പൈഥണ്‍ ക്രാഷ് ഡംപുകളുടെ യുയുഐഡി, DUPHASH കണക്കുകൂട്ടി സൂക്ഷിയ്ക്കുക"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:52
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
-msgstr ""
+msgstr "ഉപയോഗിയ്ക്കേണ്ട വിധം: {0} [-v[v]] [--core=VMCORE]"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:79
 msgid "File {0} doesn't exist"
 msgstr "ഫയല്‍ {0} നിലവിലില്ല"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:82
 msgid "Extracting the oops text from core"
-msgstr ""
+msgstr "കോറില്‍ നിന്നും oops വാചകം ലഭ്യമാക്കുന്നു"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
-msgid ""
-"Can't process {0}:\n"
+msgid "Can't process {0}:\n"
 "{1}"
-msgstr ""
+msgstr "{0} നടപ്പിലാക്കുവാന്‍ സാധ്യമല്ല:\n"
+"{1}"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "Can't extract the oops message: '{0}'"
-msgstr ""
+msgstr "oops സന്ദേശം ലഭ്യമാക്കുവാനായില്ല: '{0}'"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:98
 msgid "Oops text extracted successfully"
-msgstr ""
+msgstr "Oops വാചകം വിജയകരമായി ലഭ്യമാക്കി"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
 msgstr ""
+"ഹാര്‍ഡ്‌വെയര്‍ പിശകുകള്‍ ഉണ്ടായതായി കേര്‍ണല്‍ ലോഗ് സൂചിപ്പിയ്ക്കുന്നു.\n"
+"അതുകൊണ്ടു് ഇതൊരു സോഫ്റ്റ്‌വെയര്‍ പ്രശ്നമല്ല.\n"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
 "& [options] -d DIR\n"
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
-msgstr "& [options] -d DIR\n\nപ്രശ്നമുള്ള ഡയറക്ടറി DIR-യില്‍ നിന്നും കോര്‍ഡംപ് നിരീക്ഷിച്ചു് ബാക്ക്ട്രെയിസ് ലഭ്യമാക്കി സൂക്ഷിയ്ക്കുന്നു"
+msgstr ""
+"& [options] -d DIR\n"
+"\n"
+"പ്രശ്നമുള്ള ഡയറക്ടറി DIR-യില്‍ നിന്നും കോര്‍ഡംപ് നിരീക്ഷിച്ചു് "
+"ബാക്ക്ട്രെയിസ് ലഭ്യമാക്കി സൂക്ഷിയ്ക്കുന്നു"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
@@ -725,10 +904,12 @@ msgstr "കൂടുതല്‍ debuginfo ഡയറക്ടറികള്‍"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:57
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr "NUM സെക്കന്‍ഡുകളില്‍ കൂടുതല്‍ gdb പ്രവര്‍ത്തിപ്പിച്ചാല്‍, അതു് ഇല്ലാതാക്കുക"
+msgstr ""
+"NUM സെക്കന്‍ഡുകളില്‍ കൂടുതല്‍ gdb പ്രവര്‍ത്തിപ്പിച്ചാല്‍, അതു് ഇല്ലാതാക്കുക"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -739,7 +920,11 @@ msgid ""
 "& [-v] [-r] -d DIR\n"
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
-msgstr "& [-v] [-r] -d DIR\n\nകോര്‍ ഡംപില്‍ നിന്നും അതിനുള്ള ബൈനറിയില്‍ നിന്നും coredump-level ബാക്ക്ട്രെയിസ് തയ്യാറാക്കുന്നു"
+msgstr ""
+"& [-v] [-r] -d DIR\n"
+"\n"
+"കോര്‍ ഡംപില്‍ നിന്നും അതിനുള്ള ബൈനറിയില്‍ നിന്നും coredump-level "
+"ബാക്ക്ട്രെയിസ് തയ്യാറാക്കുന്നു"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
@@ -763,49 +948,63 @@ msgstr "പിശക്: %s"
 msgid "Exiting on user command"
 msgstr "ഉപയോക്താവിന്റെ കമാന്‍ഡില്‍ പുറത്തു് കടക്കുന്നു"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:88
+#: ../src/plugins/abrt-action-install-debuginfo.in:89
 #, c-format
 msgid ""
-"Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH]...]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
 "Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
 "\n"
+"Reads configuration from /etc/abrt/plugins/CCpp.conf\n"
+"\n"
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
 "    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
+"    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
 "    -e,--exact  Download only specified files\n"
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:169
+#: ../src/plugins/abrt-action-install-debuginfo.in:175
 msgid "Can't open {0}: {1}"
 msgstr "{0}: {1} തുറക്കുവാന്‍ സാധ്യമല്ല"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:206
+#: ../src/plugins/abrt-action-install-debuginfo.in:212
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
-msgstr "കോര്‍ഡംപ് {0} debuginfo ഫയലുകള്‍ സൂചിപ്പിയ്ക്കുന്നു, അവയില്‍ {1} ഇന്‍സ്റ്റോള്‍ ചെയ്തിട്ടില്ല"
+msgstr ""
+"കോര്‍ഡംപ് {0} debuginfo ഫയലുകള്‍ സൂചിപ്പിയ്ക്കുന്നു, അവയില്‍ {1} "
+"ഇന്‍സ്റ്റോള്‍ ചെയ്തിട്ടില്ല"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:209
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/plugins/abrt-action-install-debuginfo.in:215
 msgid "{0} of debuginfo files are not installed"
+msgstr "debuginfo ഫയലുകളുടെ {0} ഇന്‍സ്റ്റോള്‍ ചെയ്തിട്ടില്ല"
+
+#: ../src/plugins/abrt-action-install-debuginfo.in:234
+#, c-format
+msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:223
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/plugins/abrt-action-install-debuginfo.in:249
 msgid "Missing requested file: {0}"
-msgstr ""
+msgstr "ലഭ്യമല്ലാത്ത ആവശ്യപ്പെട്ട ഫയല്‍: {0}"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:228
+#: ../src/plugins/abrt-action-install-debuginfo.in:254
 msgid "Missing debuginfo file: {0}"
 msgstr "debuginfo ഫയല്‍ ലഭ്യമല്ല: {0}"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:231
+#: ../src/plugins/abrt-action-install-debuginfo.in:257
 msgid "All debuginfo files are available"
 msgstr "എല്ലാ debuginfo ഫയലുകളും ലഭ്യമാണു്"
 
@@ -814,21 +1013,33 @@ msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
-msgstr "കോര്‍ ഡംപ് അപ്‌ലോ‍ഡ് ചെയ്യണമോ? (പ്രശ്നമുള്ള ഡേറ്റായുണ്ടാവാം). നിങ്ങള്‍ക്കു് ഇതു് ചെയ്യേണ്ടതില്ലെങ്കില്‍, ഒരു സ്റ്റാക്ക് ട്രെയിസ് ലോക്കലായി തയ്യാറാക്കപ്പെടുന്നു. (ഇതൊരു പക്ഷേ വലിയ ഡേറ്റാ ഡൌണ്‍ലോഡ് ചെയ്തേക്കാം)."
+msgstr ""
+"കോര്‍ ഡംപ് അപ്‌ലോ‍ഡ് ചെയ്യണമോ? (പ്രശ്നമുള്ള ഡേറ്റായുണ്ടാവാം). നിങ്ങള്‍ക്കു് "
+"ഇതു് ചെയ്യേണ്ടതില്ലെങ്കില്‍, ഒരു സ്റ്റാക്ക് ട്രെയിസ് ലോക്കലായി "
+"തയ്യാറാക്കപ്പെടുന്നു. (ഇതൊരു പക്ഷേ വലിയ ഡേറ്റാ ഡൌണ്‍ലോഡ് ചെയ്തേക്കാം)."
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
-msgstr "സ്റ്റാക്ക് ട്രെയിസ് പ്രാദേശികമായി ലഭ്യമാക്കണമോ? (ഒരുപാടു് വലിയ ഡേറ്റാ ഇതു് ഡൌണ്‍ലോഡ് ചെയ്തേക്കാം, പക്ഷേ സ്റ്റാക്ക് ട്രെയിസ് ഇല്ലാതെ രേഖപ്പെടുത്തല്‍ സാധ്യമല്ല)."
+msgstr ""
+"സ്റ്റാക്ക് ട്രെയിസ് പ്രാദേശികമായി ലഭ്യമാക്കണമോ? (ഒരുപാടു് വലിയ ഡേറ്റാ ഇതു് "
+"ഡൌണ്‍ലോഡ് ചെയ്തേക്കാം, പക്ഷേ സ്റ്റാക്ക് ട്രെയിസ് ഇല്ലാതെ രേഖപ്പെടുത്തല്‍ "
+"സാധ്യമല്ല)."
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
+"SIZE.\n"
 "FILEs are preserved (never deleted)."
-msgstr "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n\nSIZE-നേക്കാള്‍ ചെറുതാകുന്നതു് വരെ പ്രശ്നമുള്ള ഡയറക്ടറികള്‍ (-d) അല്ലെങ്കില്‍ ഫയലുകള്‍ (-f) വെട്ടി നീക്കുന്നു.\nഫയലുകള്‍ സൂക്ഷിയ്ക്കുന്നു (ഒരിക്കലും വെട്ടിനീക്കിയിട്ടില്ല)."
+msgstr ""
+"& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
+"\n"
+"SIZE-നേക്കാള്‍ ചെറുതാകുന്നതു് വരെ പ്രശ്നമുള്ള ഡയറക്ടറികള്‍ (-d) അല്ലെങ്കില്‍ "
+"ഫയലുകള്‍ (-f) വെട്ടി നീക്കുന്നു.\n"
+"ഫയലുകള്‍ സൂക്ഷിയ്ക്കുന്നു (ഒരിക്കലും വെട്ടിനീക്കിയിട്ടില്ല)."
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
@@ -842,41 +1053,49 @@ msgstr "ഈ ഡയറക്ടറിയിലുള്ള ഫയലുകള്�
 msgid "Preserve this directory"
 msgstr "ഈ ഡയറക്ടറി സൂക്ഷിയ്ക്കുക"
 
-#: ../src/plugins/abrt-action-ureport:40
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/plugins/abrt-action-ureport:59
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr "'%s' ആരംഭിയ്ക്കുവാന്‍ സാധ്യമല്ല, പിശക് സന്ദേശം: '%s'"
 
-#: ../src/plugins/abrt-action-ureport:51
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/plugins/abrt-action-ureport:70
 #, c-format
 msgid "Not a number in file '%s'"
-msgstr ""
+msgstr "'%s' ഫയലിലുള്ള നംബറല്ല"
 
-#: ../src/plugins/abrt-action-ureport:80
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/plugins/abrt-action-ureport:99
 #, c-format
 msgid "Usage: %s [-v]"
-msgstr ""
+msgstr "ഉപയോഗിയ്ക്കേണ്ട വിധം: %s [-v]"
 
-#: ../src/plugins/abrt-action-ureport:100
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/plugins/abrt-action-ureport:120
 msgid "Unable to get current working directory as it was probably deleted"
 msgstr ""
+"നിലവില്‍ പ്രവര്‍ത്തനത്തിലുള്ള ഡയറക്ടറി വെട്ടി നീക്കിയതിനാല്‍ ലഭ്യമല്ല."
 
-#: ../src/plugins/abrt-action-ureport:128
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/plugins/abrt-action-ureport:148
 msgid "A bug was already filed about this problem:"
-msgstr ""
+msgstr "ഈ പ്രശ്നത്തെപ്പറ്റി ഒരു ബഗ് നിലവില്‍ രേഖപ്പെടുത്തിയിട്ടുണ്ട്:"
 
-#: ../src/plugins/abrt-action-ureport:138
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/plugins/abrt-action-ureport:158
 msgid "uReport was already sent, not sending it again"
-msgstr ""
+msgstr "uReport അയച്ചു, ഇനി അയയ്ക്കുന്നില്ല"
 
-#: ../src/plugins/abrt-action-ureport:159
+#: ../src/plugins/abrt-action-ureport:179
 msgid "Adding you to CC List of the existing bugzilla bug"
 msgstr ""
 
-#: ../src/plugins/abrt-action-ureport:164
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/plugins/abrt-action-ureport:193
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
-msgstr ""
+msgstr "reporter-ureport %d എന്ന കോഡുമായി പരാജയപ്പെട്ടു പുറത്തു് കടന്നു"
 
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
@@ -964,7 +1183,9 @@ msgstr "തെറ്റായൊരു വിലാസത്തിലേക്�
 
 #: ../src/plugins/abrt-gdb-exploitable:660
 msgid "Subroutine return to an invalid address (corrupted stack?)"
-msgstr "തെറ്റായൊരു വിലാസത്തിലേക്കു് സബ്റൂട്ടീന്‍ തിരികെ ലഭിയ്ക്കുന്നു (തകരാറുള്ള സ്റ്റാക്ക്?)"
+msgstr ""
+"തെറ്റായൊരു വിലാസത്തിലേക്കു് സബ്റൂട്ടീന്‍ തിരികെ ലഭിയ്ക്കുന്നു (തകരാറുള്ള "
+"സ്റ്റാക്ക്?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:666
 #: ../src/plugins/abrt-gdb-exploitable:670
@@ -974,11 +1195,14 @@ msgstr "ഒരു തെറ്റായ വിലാസത്തിലേക്�
 #: ../src/plugins/abrt-gdb-exploitable:674
 msgid ""
 "Access past the end of mapped file, invalid address, unaligned access, etc"
-msgstr "മാപ്പ് ചെയ്ത ഫയലിന്റെ അവസാനത്തേക്കുള്ള പ്രവേശനം കഴിഞ്ഞു, തെറ്റായ വിലാസം, ഉചിതമല്ലാത്ത പ്രവേശനം എന്നിവ"
+msgstr ""
+"മാപ്പ് ചെയ്ത ഫയലിന്റെ അവസാനത്തേക്കുള്ള പ്രവേശനം കഴിഞ്ഞു, തെറ്റായ വിലാസം, "
+"ഉചിതമല്ലാത്ത പ്രവേശനം എന്നിവ"
 
 #: ../src/plugins/abrt-gdb-exploitable:693
 msgid "Can't get signal no and do exploitability analysis\n"
-msgstr "സിഗ്നല്‍ ലഭ്യമാക്കി എക്സ്പ്ലോയിറ്റബിളിറ്റി നിരീക്ഷണം ചെയ്യുവാന്‍ സാധ്യമല്ല\n"
+msgstr ""
+"സിഗ്നല്‍ ലഭ്യമാക്കി എക്സ്പ്ലോയിറ്റബിളിറ്റി നിരീക്ഷണം ചെയ്യുവാന്‍ സാധ്യമല്ല\n"
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Likely crash reason: "
@@ -988,9 +1212,10 @@ msgstr "സാധ്യതയുള്ള ക്രാഷ് കാരണം:"
 msgid "Exploitable rating (0-9 scale): "
 msgstr "എക്സ്പ്ലോയിട്ടബിള്‍ പരിധി (0-9 പരിധി):"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:709
 msgid "Current instruction: "
-msgstr ""
+msgstr "നിലവിലുള്ള നിര്‍ദ്ദേശ:"
 
 #: ../src/plugins/abrt-gdb-exploitable:711
 msgid "Exploitability analysis came up empty\n"
@@ -1001,122 +1226,172 @@ msgid ""
 "& [-vs] [-F STR]... FILE PROG [ARGS]\n"
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
-msgstr "& [-vs] [-F STR]... FILE PROG [ARGS]\n\nലോഗ് ഫയല്‍ FILE നിരീക്ഷിയ്ക്കുക, ഇതു് വര്‍ദ്ധിയ്ക്കുമ്പോള്‍ അല്ലെങ്കില്‍ മാറ്റുമ്പോള്‍ PROG പ്രവര്‍ത്തിപ്പിയ്ക്കുക"
+msgstr ""
+"& [-vs] [-F STR]... FILE PROG [ARGS]\n"
+"\n"
+"ലോഗ് ഫയല്‍ FILE നിരീക്ഷിയ്ക്കുക, ഇതു് വര്‍ദ്ധിയ്ക്കുമ്പോള്‍ അല്ലെങ്കില്‍ "
+"മാറ്റുമ്പോള്‍ PROG പ്രവര്‍ത്തിപ്പിയ്ക്കുക"
 
 #: ../src/plugins/abrt-watch-log.c:154
 msgid "Don't run PROG if STRs aren't found"
 msgstr "STR ലഭ്യമല്ലെങ്കില്‍ PROG പ്രവര്‍ത്തിപ്പിയ്ക്കേണ്ട"
 
-#: ../src/plugins/abrt-dump-oops.c:76
+#: ../src/plugins/abrt-dump-oops.c:77
 msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
-msgstr "& [-vusoxm] [-d DIR]/[-D] [FILE]\n\nFILE-ല്‍ നിന്നും ഒഒപിഎസ് ലഭ്യമാക്കുക (അല്ലെങ്കില്‍ സാധാരണയുള്ള ഇന്‍പുട്ട്)"
+msgstr ""
+"& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"FILE-ല്‍ നിന്നും ഒഒപിഎസ് ലഭ്യമാക്കുക (അല്ലെങ്കില്‍ സാധാരണയുള്ള ഇന്‍പുട്ട്)"
 
-#: ../src/plugins/abrt-dump-oops.c:97
-#: ../src/plugins/abrt-dump-journal-oops.c:303
+#: ../src/plugins/abrt-dump-oops.c:98
+#: ../src/plugins/abrt-dump-journal-oops.c:220
 msgid "Print found oopses on standard output"
 msgstr "സാധാരണ ഔട്ട്പുട്ടില്‍ ലഭ്യമാക്കി oops-കള്‍ പ്രിന്റ് ചെയ്യുക"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#: ../src/plugins/abrt-dump-oops.c:101
-#: ../src/plugins/abrt-dump-journal-oops.c:307
+#. 
+#: ../src/plugins/abrt-dump-oops.c:102
+#: ../src/plugins/abrt-dump-journal-oops.c:224
 msgid "Create new problem directory in DIR for every oops found"
 msgstr "എല്ലാ oops-നും DIR-ലുള്ള തകരാറിനുള്ള ഡയറക്ടറി തയ്യാറാക്കുക"
 
-#: ../src/plugins/abrt-dump-oops.c:102
-#: ../src/plugins/abrt-dump-journal-oops.c:308
+#: ../src/plugins/abrt-dump-oops.c:103
+#: ../src/plugins/abrt-dump-journal-core.c:479
+#: ../src/plugins/abrt-dump-journal-oops.c:225
 #: ../src/plugins/abrt-dump-xorg.c:247
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
-msgstr "-d DumpLocation പോലെ തന്നെ, abrt.conf-ല്‍ DumpLocation നിഷ്കര്‍ഷിച്ചിരിയ്ക്കുന്നു"
+msgstr ""
+"-d DumpLocation പോലെ തന്നെ, abrt.conf-ല്‍ DumpLocation "
+"നിഷ്കര്‍ഷിച്ചിരിയ്ക്കുന്നു"
 
-#: ../src/plugins/abrt-dump-oops.c:103
+#: ../src/plugins/abrt-dump-oops.c:104
 msgid "Save the extracted information in PROBLEM"
 msgstr "PROBLEM-ല്‍ ലഭ്യമാക്കിയ വിവരം സൂക്ഷിയ്ക്കുക"
 
-#: ../src/plugins/abrt-dump-oops.c:104
-#: ../src/plugins/abrt-dump-journal-oops.c:309
+#: ../src/plugins/abrt-dump-oops.c:105
+#: ../src/plugins/abrt-dump-journal-oops.c:226
 #: ../src/plugins/abrt-dump-xorg.c:248
 msgid "Make the problem directory world readable"
 msgstr "പ്രശ്നമുള്ള ഡയറക്ടറി ലഭ്യമാക്കുക"
 
-#: ../src/plugins/abrt-dump-oops.c:105
-#: ../src/plugins/abrt-dump-journal-oops.c:310
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/plugins/abrt-dump-oops.c:106
+#: ../src/plugins/abrt-dump-journal-oops.c:227
 msgid "Throttle problem directory creation to 1 per second"
 msgstr ""
+"ത്രോട്ടില്‍ പ്രശ്നം ഡയറക്ടറി തയ്യാറാക്കുന്നതു് ഒരു സെക്കന്‍ഡില്‍ ഒന്നു്"
 
-#: ../src/plugins/abrt-dump-oops.c:106 ../src/plugins/abrt-dump-xorg.c:249
+#: ../src/plugins/abrt-dump-oops.c:107 ../src/plugins/abrt-dump-xorg.c:249
 msgid "Print search string(s) to stdout and exit"
 msgstr "stdout-ലേക്കു് തെരയുന്ന സ്ട്രിങ് പ്രിന്റ് ചെയ്തു് പുറത്തു് കടക്കുക"
 
-#: ../src/plugins/abrt-dump-oops.c:126
-#: ../src/plugins/abrt-dump-journal-oops.c:214
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/plugins/abrt-dump-oops.c:127
+#: ../src/plugins/abrt-dump-journal-oops.c:128
 msgid "Failed to compile regex"
-msgstr ""
+msgstr "regex കംപൈല്‍ ചെയ്യുന്നതില്‍ പരാജയപ്പെട്ടു"
 
-#: ../src/plugins/abrt-dump-oops.c:185
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/plugins/abrt-dump-oops.c:186
 msgid "Can't update the problem: more than one oops found"
 msgstr ""
+"പ്രശ്നം പരിഷ്കരിയ്ക്കുവാന്‍ സാധ്യമല്ല: ഒന്നില്‍ കൂടുതല്‍ oops ലഭ്യമായി"
 
-#: ../src/plugins/abrt-dump-journal-oops.c:43
-msgid "Cannot read journal data."
+#: ../src/plugins/abrt-dump-journal-core.c:341
+#: ../src/plugins/abrt-dump-journal-core.c:377
+msgid "Failed to obtain all required information from journald"
 msgstr ""
 
-#. Only notice because this is expected
-#: ../src/plugins/abrt-dump-journal-oops.c:125
+#. We don't want to update the counter here.
+#: ../src/plugins/abrt-dump-journal-core.c:401
 #, c-format
-msgid "Not restoring journal watch's position: file '%s' does not exist"
+msgid "Not saving repeating crash after %ds (limit is %ds)"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-oops.c:129
-#, c-format
-msgid "Cannot restore journal watch's position form file '%s'"
+#: ../src/plugins/abrt-dump-journal-core.c:407
+msgid "Failed to save detect problem data in abrt database"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-oops.c:135
-#, c-format
-msgid "Cannot restore journal watch's position: path '%s' is not regular file"
-msgstr ""
-
-#: ../src/plugins/abrt-dump-journal-oops.c:141
-#, c-format
-msgid ""
-"Cannot restore journal watch's position: file '%s' exceeds %dB size limit"
-msgstr ""
-
-#: ../src/plugins/abrt-dump-journal-oops.c:149
-#, c-format
-msgid "Cannot restore journal watch's position: open('%s')"
-msgstr ""
-
-#: ../src/plugins/abrt-dump-journal-oops.c:158
-#, c-format
-msgid "Cannot restore journal watch's position: cannot read entire file '%s'"
-msgstr ""
-
-#. abrt_journal_set_cursor() prints error message in verbose mode
-#: ../src/plugins/abrt-dump-journal-oops.c:170
-#, c-format
-msgid "Failed to move the journal to a cursor from file '%s'"
-msgstr ""
-
-#. abrt_journal_set_cursor() prints error message in verbose mode
-#: ../src/plugins/abrt-dump-journal-oops.c:185
-msgid "Cannot save journal watch's position"
-msgstr ""
-
-#: ../src/plugins/abrt-dump-journal-oops.c:195
-#, c-format
-msgid "Cannot save journal watch's position: open('%s')"
-msgstr ""
-
-#: ../src/plugins/abrt-dump-journal-oops.c:251
+#: ../src/plugins/abrt-dump-journal-core.c:427
+#: ../src/plugins/abrt-dump-journal-oops.c:165
 msgid "Failed to initialize systemd-journal watch"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-oops.c:272
+#: ../src/plugins/abrt-dump-journal-core.c:447
+msgid ""
+"& [-vsf] [-e]/[-c CURSOR] [-t INT]/[-T] [-d DIR]/[-D]\n"
+"\n"
+"Extract coredumps from systemd-journal\n"
+"\n"
+"-c and -e options conflicts because both specifies the first read message.\n"
+"\n"
+"-e is useful only for -f because the following of journal starts by reading \n"
+"the entire journal if the last seen possition is not available.\n"
+"\n"
+"The last seen position is saved in "
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-core.c:478
+msgid "Create new problem directory in DIR for every coredump"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-core.c:480
+#: ../src/plugins/abrt-dump-journal-oops.c:228
+msgid "Start reading systemd-journal from the CURSOR position"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-core.c:481
+#: ../src/plugins/abrt-dump-journal-oops.c:229
+msgid "Start reading systemd-journal from the end"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-core.c:482
+msgid "Throttle problem directory creation to 1 per INT second"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-core.c:483
+msgid "Same as -t INT, INT is specified in plugins/CCpp.conf"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-core.c:484
+#: ../src/plugins/abrt-dump-journal-oops.c:230
+msgid "Follow systemd-journal from the last seen position (if available)"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-core.c:495
+#: ../src/plugins/abrt-dump-journal-oops.c:246
+msgid "You need to specify either -c CURSOR or -e"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-core.c:541
+#: ../src/plugins/abrt-dump-journal-oops.c:284
+msgid "Cannot open systemd-journal"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-core.c:544
+msgid "Cannot filter systemd-journal to systemd-coredump data only"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-core.c:547
+#: ../src/plugins/abrt-dump-journal-oops.c:291
+msgid "Cannot seek to the end of journal"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-core.c:550
+#: ../src/plugins/abrt-dump-journal-oops.c:307
+#, c-format
+msgid "Failed to set systemd-journal cursor '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-oops.c:40
+msgid "Cannot read journal data."
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-oops.c:186
 msgid ""
 "& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
 "\n"
@@ -1130,42 +1405,26 @@ msgid ""
 "The last seen position is saved in "
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-oops.c:311
-msgid "Start reading systemd-journal from the CURSOR position"
+#: ../src/plugins/abrt-dump-journal-oops.c:231
+msgid "Read journal files from all machines"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-oops.c:312
-msgid "Start reading systemd-journal from the end"
+#: ../src/plugins/abrt-dump-journal-oops.c:232
+msgid "Read all journal files from directory at PATH"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-oops.c:313
-msgid "Follow systemd-journal from the last seen position (if available)"
+#: ../src/plugins/abrt-dump-journal-oops.c:279
+#, c-format
+msgid "Cannot initialize systemd-journal in directory '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-oops.c:327
-msgid "You need to specify either -c CURSOR or -e"
-msgstr ""
-
-#: ../src/plugins/abrt-dump-journal-oops.c:356
-msgid "Cannot open systemd-journal"
-msgstr ""
-
-#: ../src/plugins/abrt-dump-journal-oops.c:359
+#: ../src/plugins/abrt-dump-journal-oops.c:288
 msgid "Cannot filter systemd-journal to kernel data only"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-oops.c:362
-msgid "Cannot seek to the end of journal"
-msgstr ""
-
-#: ../src/plugins/abrt-dump-journal-oops.c:369
+#: ../src/plugins/abrt-dump-journal-oops.c:298
 #, c-format
 msgid "Failed to start watch from cursor '%s'"
-msgstr ""
-
-#: ../src/plugins/abrt-dump-journal-oops.c:378
-#, c-format
-msgid "Failed to set systemd-journal cursor '%s'"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-xorg.c:237
@@ -1173,7 +1432,10 @@ msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
-msgstr "& [-vsoxm] [-d DIR]/[-D] [FILE]\n\nFILE-ല്‍ നിന്നും Xorg ക്രാഷ് ലഭ്യമാക്കുക (അല്ലെങ്കില്‍ സാധാരണ ഇന്‍പുട്ട്)"
+msgstr ""
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"FILE-ല്‍ നിന്നും Xorg ക്രാഷ് ലഭ്യമാക്കുക (അല്ലെങ്കില്‍ സാധാരണ ഇന്‍പുട്ട്)"
 
 #: ../src/plugins/abrt-dump-xorg.c:245
 msgid "Print found crash data on standard output"
@@ -1183,19 +1445,76 @@ msgstr "സാധാരണ ഔട്ട്പുട്ടിലേക്കു�
 msgid "Create problem directory in DIR for every crash found"
 msgstr "എല്ലാ ക്രാഷിനും DIR-ലുള്ള തകരാറിനുള്ള ഡയറക്ടറി തയ്യാറാക്കുക"
 
+#. abrt_journal_set_cursor() prints error message in verbose mode
+#: ../src/plugins/abrt-journal.c:267
+msgid "Cannot save journal watch's position"
+msgstr ""
+
+#: ../src/plugins/abrt-journal.c:277
+#, c-format
+msgid "Cannot save journal watch's position: open('%s')"
+msgstr ""
+
+#. Only notice because this is expected
+#: ../src/plugins/abrt-journal.c:295
+#, c-format
+msgid "Not restoring journal watch's position: file '%s' does not exist"
+msgstr ""
+
+#: ../src/plugins/abrt-journal.c:297
+#, c-format
+msgid "Cannot restore journal watch's position form file '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt-journal.c:304
+#, c-format
+msgid "Cannot restore journal watch's position: path '%s' is not regular file"
+msgstr ""
+
+#: ../src/plugins/abrt-journal.c:310
+#, c-format
+msgid ""
+"Cannot restore journal watch's position: file '%s' exceeds %dB size limit"
+msgstr ""
+
+#: ../src/plugins/abrt-journal.c:318
+#, c-format
+msgid "Cannot restore journal watch's position: open('%s')"
+msgstr ""
+
+#: ../src/plugins/abrt-journal.c:327
+#, c-format
+msgid "Cannot restore journal watch's position: cannot read entire file '%s'"
+msgstr ""
+
+#. abrt_journal_set_cursor() prints error message in verbose mode
+#: ../src/plugins/abrt-journal.c:339
+#, c-format
+msgid "Failed to move the journal to a cursor from file '%s'"
+msgstr ""
+
 #: ../src/plugins/abrt-retrace-client.c:70
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
-msgstr "റീട്രെയിസ് സര്‍വര്‍ ഉപയോഗിയ്ക്കുവാന്‍ സാധ്യമല്ല, ക്രാഷ് വളരെ വലുതാണു്. പ്രാദേശിക റീട്രെയിസിങ് ശ്രമിയ്ക്കുക."
+msgstr ""
+"റീട്രെയിസ് സര്‍വര്‍ ഉപയോഗിയ്ക്കുവാന്‍ സാധ്യമല്ല, ക്രാഷ് വളരെ വലുതാണു്. "
+"പ്രാദേശിക റീട്രെയിസിങ് ശ്രമിയ്ക്കുക."
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
+#. 
 #: ../src/plugins/abrt-retrace-client.c:103
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
 msgid "Can't create temporary file in "
 msgstr "ഇവിടെ താല്‍ക്കാലിക ഫയല്‍ തയ്യാറാക്കുവാന്‍ പാടില്ല"
+
+#: ../src/plugins/abrt-retrace-client.c:131
+#: ../src/plugins/abrt-retrace-client.c:168
+#, c-format
+msgid "Can't execute '%s'"
+msgstr "'%s' പ്രവര്‍ത്തിപ്പിയ്ക്കുവാന്‍ സാധ്യമല്ല"
 
 #: ../src/plugins/abrt-retrace-client.c:211
 #: ../src/plugins/abrt-retrace-client.c:398
@@ -1203,7 +1522,9 @@ msgstr "ഇവിടെ താല്‍ക്കാലിക ഫയല്‍ ത
 #: ../src/plugins/abrt-retrace-client.c:842
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr "%d വ്യാപ്തിയുള്ള എച്ടിടിപി ഹെഡര്‍ അയയ്ക്കുന്നതില്‍ പരാജയപ്പെട്ടു: എന്‍എസ്എസ് പിശക് %d"
+msgstr ""
+"%d വ്യാപ്തിയുള്ള എച്ടിടിപി ഹെഡര്‍ അയയ്ക്കുന്നതില്‍ പരാജയപ്പെട്ടു: എന്‍എസ്എസ് "
+"പിശക് %d"
 
 #: ../src/plugins/abrt-retrace-client.c:223
 #: ../src/plugins/abrt-retrace-client.c:412
@@ -1213,10 +1534,10 @@ msgstr "%d വ്യാപ്തിയുള്ള എച്ടിടിപി �
 #: ../src/plugins/abrt-retrace-client.c:1011
 #: ../src/plugins/abrt-retrace-client.c:1070
 #, c-format
-msgid ""
-"Unexpected HTTP response from server: %d\n"
+msgid "Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr "സര്‍വറില്‍ നിന്നും അപ്രതീക്ഷിതമായ എച്ടിടിപി മറുപടി: %d\n%s"
+msgstr "സര്‍വറില്‍ നിന്നും അപ്രതീക്ഷിതമായ എച്ടിടിപി മറുപടി: %d\n"
+"%s"
 
 #: ../src/plugins/abrt-retrace-client.c:232
 #: ../src/plugins/abrt-retrace-client.c:755
@@ -1232,7 +1553,9 @@ msgstr "സര്‍വറില്‍ നിന്നും തെറ്റാ�
 msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official '%s' repositories?"
-msgstr "'%s.%s' പാക്കേജ് നടപ്പിലാക്കുവാന്‍ റീട്രെയിസ് സര്‍വറിനു് സാധ്യമല്ല.\n'%s' റിപ്പോസിറ്ററികളുടെ ഭാഗമാണോ?"
+msgstr ""
+"'%s.%s' പാക്കേജ് നടപ്പിലാക്കുവാന്‍ റീട്രെയിസ് സര്‍വറിനു് സാധ്യമല്ല.\n"
+"'%s' റിപ്പോസിറ്ററികളുടെ ഭാഗമാണോ?"
 
 #: ../src/plugins/abrt-retrace-client.c:444
 msgid "Querying server settings"
@@ -1250,7 +1573,8 @@ msgstr "സര്‍വര്‍ നിങ്ങളുടെ ആവശ്യം 
 #: ../src/plugins/abrt-retrace-client.c:500
 #, c-format
 msgid "'%s' must be a regular file in order to use Retrace server."
-msgstr "റീട്രെയിസ് സര്‍വര്‍ ഉപയോഗിയ്ക്കുന്നതിനായി '%s' ഒരു സാധാരണ ഫയലായിരിയ്ക്കണം."
+msgstr ""
+"റീട്രെയിസ് സര്‍വര്‍ ഉപയോഗിയ്ക്കുന്നതിനായി '%s' ഒരു സാധാരണ ഫയലായിരിയ്ക്കണം."
 
 #: ../src/plugins/abrt-retrace-client.c:520
 #, c-format
@@ -1283,8 +1607,8 @@ msgstr "ആര്‍ക്കൈവ് അപ്‌ലോഡ് ചെയ്യ�
 #: ../src/plugins/abrt-retrace-client.c:628
 #, c-format
 msgid ""
-"The size of your archive is %s, but the retrace server only accepts archives"
-" smaller or equal to %s."
+"The size of your archive is %s, but the retrace server only accepts archives "
+"smaller or equal to %s."
 msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:640
@@ -1323,13 +1647,17 @@ msgstr "അപ്‌ലോഡ് വിജയിച്ചു"
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
-msgstr "നിങ്ങളുടെ പ്രശ്നമുള്ള ഡയറക്ടറിയില്‍ തകരാറുണ്ടു്, അതിനാല്‍ റീട്രെയിസ് സര്‍വറിനു് നടപ്പിലാക്കുവാന്‍ സാധ്യമല്ല."
+msgstr ""
+"നിങ്ങളുടെ പ്രശ്നമുള്ള ഡയറക്ടറിയില്‍ തകരാറുണ്ടു്, അതിനാല്‍ റീട്രെയിസ് "
+"സര്‍വറിനു് നടപ്പിലാക്കുവാന്‍ സാധ്യമല്ല."
 
 #: ../src/plugins/abrt-retrace-client.c:769
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
-msgstr "ആര്‍ക്കൈവില്‍ തകരാറുള്ള ഫയലുകള്‍ അടങ്ങുന്നു (ഉദാഹരണത്തിനു് സിംലിങ്കുകള്‍), അതിനാല്‍ നടപ്പിലാക്കുവാന്‍ സാധ്യമല്ല."
+msgstr ""
+"ആര്‍ക്കൈവില്‍ തകരാറുള്ള ഫയലുകള്‍ അടങ്ങുന്നു (ഉദാഹരണത്തിനു് സിംലിങ്കുകള്‍), "
+"അതിനാല്‍ നടപ്പിലാക്കുവാന്‍ സാധ്യമല്ല."
 
 #: ../src/plugins/abrt-retrace-client.c:782
 msgid "Invalid response from server: missing X-Task-Id."
@@ -1345,10 +1673,10 @@ msgstr "റീട്രെയിസ് ജോലി ആരംഭിച്ചി�
 
 #: ../src/plugins/abrt-retrace-client.c:808
 #, c-format
-msgid ""
-"Task Id: %s\n"
+msgid "Task Id: %s\n"
 "Task Password: %s\n"
-msgstr "ജോലിയ്ക്കുള്ള ഐഡി: %s\nജോലിയ്ക്കുള്ള രഹസ്യവാക്ക്: %s\n"
+msgstr "ജോലിയ്ക്കുള്ള ഐഡി: %s\n"
+"ജോലിയ്ക്കുള്ള രഹസ്യവാക്ക്: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:866
 msgid "Invalid response from server: missing X-Task-Status."
@@ -1356,23 +1684,27 @@ msgstr "സര്‍വറില്‍ നിന്നും തെറ്റാ�
 
 #: ../src/plugins/abrt-retrace-client.c:878
 #, c-format
-msgid ""
-"Task Status: %s\n"
+msgid "Task Status: %s\n"
 "%s\n"
-msgstr "ജോലിയുടെ അവസ്ഥ: %s\n%s\n"
+msgstr "ജോലിയുടെ അവസ്ഥ: %s\n"
+"%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:909
 #: ../src/plugins/abrt-retrace-client.c:983
 #: ../src/plugins/abrt-retrace-client.c:1053
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr "%d വ്യാപ്തിയുള്ള എച്ടിടിപി ഹെഡര്‍ അയയ്ക്കുന്നതില്‍ പരാജംയ: എന്‍എസ്എസ് പിശക് %d."
+msgstr ""
+"%d വ്യാപ്തിയുള്ള എച്ടിടിപി ഹെഡര്‍ അയയ്ക്കുന്നതില്‍ പരാജംയ: എന്‍എസ്എസ് പിശക് "
+"%d."
 
 #: ../src/plugins/abrt-retrace-client.c:1170
 msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
-msgstr "റീട്രെയിസ് പരാജയപ്പെട്ടു. പിന്നീടു് വീണ്ടും ശ്രമിച്ചു്, അഥവാ ഈ പ്രശ്നം വീണ്ടും ഉണ്ടായാല്‍ ദയവായി രേഖപ്പെടുത്തുക."
+msgstr ""
+"റീട്രെയിസ് പരാജയപ്പെട്ടു. പിന്നീടു് വീണ്ടും ശ്രമിച്ചു്, അഥവാ ഈ പ്രശ്നം "
+"വീണ്ടും ഉണ്ടായാല്‍ ദയവായി രേഖപ്പെടുത്തുക."
 
 #: ../src/plugins/abrt-retrace-client.c:1217
 msgid "log to syslog"
@@ -1386,7 +1718,9 @@ msgstr "റീട്രെയിസ് സര്‍വറിലേക്കു�
 msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
-msgstr "ആര്‍ക്കൈവ് അപ്‌ലോഡ് ചെയ്യുന്നതിനു് മുമ്പു് ലഭ്യമാക്കിയ പാക്കേജിനു് റീട്രെയിസ് സര്‍വര്‍ നടപ്പിലാക്കുവാന്‍ സാധ്യമാണോ എന്നു് പരിശോധിയ്ക്കേണ്ടതില്ല"
+msgstr ""
+"ആര്‍ക്കൈവ് അപ്‌ലോഡ് ചെയ്യുന്നതിനു് മുമ്പു് ലഭ്യമാക്കിയ പാക്കേജിനു് "
+"റീട്രെയിസ് സര്‍വര്‍ നടപ്പിലാക്കുവാന്‍ സാധ്യമാണോ എന്നു് പരിശോധിയ്ക്കേണ്ടതില്ല"
 
 #: ../src/plugins/abrt-retrace-client.c:1224
 msgid "retrace server URL"
@@ -1418,7 +1752,9 @@ msgstr "പോളിങ് പ്രക്രിയകളുടെ താമസ�
 
 #: ../src/plugins/abrt-retrace-client.c:1237
 msgid "(debug) do not delete temporary archive created from dump dir in "
-msgstr "(ഡീബഗ് ചെയ്യുക) ഡംപ് ഡയറക്ടറിയില്‍ നിന്നും തയ്യാറാക്കിയ താല്‍‌ക്കാലിക ആര്‍ക്കൈവ് വെട്ടി നീക്കുവാന്‍ സാധ്യമല്ല"
+msgstr ""
+"(ഡീബഗ് ചെയ്യുക) ഡംപ് ഡയറക്ടറിയില്‍ നിന്നും തയ്യാറാക്കിയ താല്‍‌ക്കാലിക "
+"ആര്‍ക്കൈവ് വെട്ടി നീക്കുവാന്‍ സാധ്യമല്ല"
 
 #: ../src/plugins/abrt-retrace-client.c:1239
 msgid "For status, backtrace, and log operations"
@@ -1432,11 +1768,14 @@ msgstr "സര്‍വറില്‍ നിങ്ങളുടെ ജോലി�
 msgid "password of your task on server"
 msgstr "സര്‍വറില്‍ നിങ്ങളുടെ ജോലിയുടെ രഹസ്യവാക്ക്"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1247
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch/exploitable"
 msgstr ""
+"abrt-retrace-client <operation> [options]\n"
+"Operations: create/status/backtrace/log/batch/exploitable"
 
 #: ../src/plugins/abrt-retrace-client.c:1292
 #: ../src/plugins/abrt-retrace-client.c:1298
@@ -1468,27 +1807,40 @@ msgstr "പ്രാദേശിക ജിഎന്‍യു ഡീബഗ്ഗ�
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr "debuginfo പാക്കേജുകള്‍ ഡൌണ്‍ലോഡ് ചെയ്തു് ജിഡിബി ഉപയോഗിച്ചു് പ്രാദേശികമായി ബാക്ക്ട്രെയിസ് ലഭ്യമാക്കുക"
+msgstr ""
+"debuginfo പാക്കേജുകള്‍ ഡൌണ്‍ലോഡ് ചെയ്തു് ജിഡിബി ഉപയോഗിച്ചു് പ്രാദേശികമായി "
+"ബാക്ക്ട്രെയിസ് ലഭ്യമാക്കുക"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
-msgstr "debuginfo പാക്കേജുകള്‍ ഡൌണ്‍ലോഡ് ചെയ്യേണ്ടതുണ്ടു്.ഇതു് വളരെ സമയവും ഡിസ്ക് സ്ഥലവും ഉപയോഗിയ്ക്കുന്നു. എന്നിരുന്നാലും, RetraceServer പോലെ, റിമോട്ട് സിസ്റ്റങ്ങളിലേക്കു് കോര്‍ഡംപ് അയയ്ക്കുന്നില്ല."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
+msgstr ""
+"debuginfo പാക്കേജുകള്‍ ഡൌണ്‍ലോഡ് ചെയ്യേണ്ടതുണ്ടു്.ഇതു് വളരെ സമയവും ഡിസ്ക് "
+"സ്ഥലവും ഉപയോഗിയ്ക്കുന്നു. എന്നിരുന്നാലും, RetraceServer പോലെ, റിമോട്ട് "
+"സിസ്റ്റങ്ങളിലേക്കു് കോര്‍ഡംപ് അയയ്ക്കുന്നില്ല."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
-msgstr "നിരീക്ഷിയ്ക്കുന്നതിനായി റിമോട്ട് റീട്രെയിസ് സര്‍വറിലേക്കു് കോര്‍ ഡംപ് അയയ്ക്കുക"
+msgstr ""
+"നിരീക്ഷിയ്ക്കുന്നതിനായി റിമോട്ട് റീട്രെയിസ് സര്‍വറിലേക്കു് കോര്‍ ഡംപ് "
+"അയയ്ക്കുക"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. "
-"Pros: no need for debuginfo downloads. Retrace server's database of "
-"debuginfos is more complete. Retrace server may generate better backtraces. "
-"Cons: coredump you upload contains all the data from the crashed program, "
-"including your private data, if any."
-msgstr "ഒരു സര്‍വറിലേക്കു് കോര്‍ഡംപ് അപ്‌ലോഡ് ചെയ്യുന്നു, ഇതു് ബാക്ക്ട്രെയിസ് ലഭ്യമാക്കി തിരികെ ലഭ്യമാക്കുന്നു. പ്രശ്നങ്ങള്‍: debuginfo ഡൌണ്‍ലോഡുകള്‍ ആവശ്യമില്ല. റീട്രെയിസ് സര്‍വറിന്റെ debuginfo ഡേറ്റാബെയിസ് കൂടുതല്‍ പൂര്‍ണ്ണമാണു്. റീട്രെയിസ് സര്‍വര്‍ ഒരു പക്ഷേ മെച്ചപ്പെട്ട ബാക്ക്ട്രെയിസുകള്‍ ലഭ്യമാക്കുന്നു. ഫലങ്ങള്‍: നിങ്ങള്‍ അപ്‌ലോഡ് ചെയ്ത കോര്‍ഡംപില്‍ തകര്‍ന്ന പ്രോഗ്രാമിന്റെ എല്ലാ ഡേറ്റയും അടങ്ങുന്നു."
+"Uploads coredump to a server, which generates backtrace and returns it. Pros:"
+" no need for debuginfo downloads. Retrace server's database of debuginfos is "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
+"private data, if any."
+msgstr ""
+"ഒരു സര്‍വറിലേക്കു് കോര്‍ഡംപ് അപ്‌ലോഡ് ചെയ്യുന്നു, ഇതു് ബാക്ക്ട്രെയിസ് "
+"ലഭ്യമാക്കി തിരികെ ലഭ്യമാക്കുന്നു. പ്രശ്നങ്ങള്‍: debuginfo ഡൌണ്‍ലോഡുകള്‍ "
+"ആവശ്യമില്ല. റീട്രെയിസ് സര്‍വറിന്റെ debuginfo ഡേറ്റാബെയിസ് കൂടുതല്‍ "
+"പൂര്‍ണ്ണമാണു്. റീട്രെയിസ് സര്‍വര്‍ ഒരു പക്ഷേ മെച്ചപ്പെട്ട ബാക്ക്ട്രെയിസുകള്‍ "
+"ലഭ്യമാക്കുന്നു. ഫലങ്ങള്‍: നിങ്ങള്‍ അപ്‌ലോഡ് ചെയ്ത കോര്‍ഡംപില്‍ തകര്‍ന്ന "
+"പ്രോഗ്രാമിന്റെ എല്ലാ ഡേറ്റയും അടങ്ങുന്നു."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Retrace server URL"
@@ -1508,10 +1860,13 @@ msgstr "അസുരക്ഷിതമായ കണക്ഷന്‍ ഉപയ�
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
-msgstr "അസുരക്ഷിതമായ കണക്ഷന്‍ &lt;a href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;(warning)&lt;/a&gt; അനുവദിയ്ക്കുന്നതിനായി \"അസുരക്ഷിതം\" എഴുതുക"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
+"&gt;(warning)&lt;/a&gt;"
+msgstr ""
+"അസുരക്ഷിതമായ കണക്ഷന്‍ &lt;a href=\"https://fedorahosted.org/abrt/wiki/"
+"AbrtRetraceServerInsecureConnection\" &gt;(warning)&lt;/a&gt; "
+"അനുവദിയ്ക്കുന്നതിനായി \"അസുരക്ഷിതം\" എഴുതുക"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
@@ -1525,7 +1880,10 @@ msgstr "~/.xsession-errors ഫയലില്‍ നിന്നും ഉചി
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
-msgstr "~/.xsession-errors ഫയല്‍ പരിശോധിച്ചു്, പ്രവര്‍ത്തിയ്ക്കുന്നവയുടെ പേരടങ്ങുന്ന വരികള്‍ സൂക്ഷിയ്ക്കുന്നു. ഇതിന്റെ ഫലം 'xsession_errors' എലമെന്റായി സൂക്ഷിയ്ക്കുന്നു."
+msgstr ""
+"~/.xsession-errors ഫയല്‍ പരിശോധിച്ചു്, പ്രവര്‍ത്തിയ്ക്കുന്നവയുടെ പേരടങ്ങുന്ന "
+"വരികള്‍ സൂക്ഷിയ്ക്കുന്നു. ഇതിന്റെ ഫലം 'xsession_errors' എലമെന്റായി "
+"സൂക്ഷിയ്ക്കുന്നു."
 
 #: ../src/plugins/https-utils.c:62
 msgid "An error occurred on the server side."
@@ -1553,12 +1911,15 @@ msgstr "ലഭ്യമാകുന്ന സര്‍ട്ടിഫിക്�
 #: ../src/plugins/https-utils.c:100
 #, c-format
 msgid "Certificate is signed by an untrusted issuer: '%s'."
-msgstr "അവിശ്വസനീയമായ ഇഷ്യൂവര്‍ സര്‍ട്ടിഫിക്കേറ്റില്‍ ഒപ്പിട്ടിരിയ്ക്കുന്നു: '%s'."
+msgstr ""
+"അവിശ്വസനീയമായ ഇഷ്യൂവര്‍ സര്‍ട്ടിഫിക്കേറ്റില്‍ ഒപ്പിട്ടിരിയ്ക്കുന്നു: '%s'."
 
 #: ../src/plugins/https-utils.c:103
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
-msgstr "സര്‍ട്ടിഫിക്കേറ്റിന്റെ വിഷയ നാമം '%s', ലക്ഷ്യസ്ഥാനത്തുള്ള ഹോസ്റ്റ് നാമം'%s'-മായി പൊരുത്തപ്പെടുന്നില്ല."
+msgstr ""
+"സര്‍ട്ടിഫിക്കേറ്റിന്റെ വിഷയ നാമം '%s', ലക്ഷ്യസ്ഥാനത്തുള്ള ഹോസ്റ്റ് നാമം'%s'-"
+"മായി പൊരുത്തപ്പെടുന്നില്ല."
 
 #: ../src/plugins/https-utils.c:107
 msgid "Remote certificate has expired."
@@ -1572,7 +1933,8 @@ msgstr "സര്‍ട്ടിഫിക്കേറ്റ് ഇഷ്യൂ�
 #: ../src/plugins/https-utils.c:113
 #, c-format
 msgid "Bad certificate received. Subject '%s', issuer '%s'."
-msgstr "തെറ്റായ സര്‍ട്ടിഫിക്കേറ്റ് ലഭിച്ചിരിയ്ക്കുന്നു. വിഷയം '%s', ഇഷ്യൂവര്‍ '%s'."
+msgstr ""
+"തെറ്റായ സര്‍ട്ടിഫിക്കേറ്റ് ലഭിച്ചിരിയ്ക്കുന്നു. വിഷയം '%s', ഇഷ്യൂവര്‍ '%s'."
 
 #: ../src/plugins/https-utils.c:149
 #, c-format
@@ -1582,7 +1944,8 @@ msgstr "'PEM Token #0' സ്ലോട്ട് ലഭ്യമാക്കു�
 #: ../src/plugins/https-utils.c:182
 #, c-format
 msgid "Can't resolve host name '%s'. NSS error %d."
-msgstr "'%s' ഹോസ്റ്റ് നാമം റിസോള്‍വ് ചെയ്യുവാന്‍ സാധ്യമല്ല. എന്‍എസ്എസ് പിശക് %d."
+msgstr ""
+"'%s' ഹോസ്റ്റ് നാമം റിസോള്‍വ് ചെയ്യുവാന്‍ സാധ്യമല്ല. എന്‍എസ്എസ് പിശക് %d."
 
 #. Host exists, but has neither IPv4 nor IPv6??
 #: ../src/plugins/https-utils.c:203
@@ -1598,92 +1961,113 @@ msgstr "സോക്കറ്റ് ബ്ലോക്കിങ് മോഡ് 
 msgid "Failed to wrap TCP socket by SSL."
 msgstr "ടിസിപി സോക്കറ്റ് എസ്എസ്എല്‍ റാപ്പ് ചെയ്യുന്നതില്‍ പരാജയം."
 
-#: ../src/plugins/https-utils.c:215 ../src/plugins/https-utils.c:217
-#: ../src/plugins/https-utils.c:219 ../src/plugins/https-utils.c:221
+#: ../src/plugins/https-utils.c:215
 msgid "Failed to enable client handshake to SSL socket."
-msgstr "എസ്എസ്എല്‍ സോക്കറ്റിലേക്കു് ക്ലയന്റ് ഹാന്‍ഡ്ഷെയിക്ക് പ്രവര്‍ത്തന സജ്ജമാക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
+msgstr ""
+"എസ്എസ്എല്‍ സോക്കറ്റിലേക്കു് ക്ലയന്റ് ഹാന്‍ഡ്ഷെയിക്ക് പ്രവര്‍ത്തന "
+"സജ്ജമാക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
 
-#: ../src/plugins/https-utils.c:223
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/plugins/https-utils.c:220
+msgid "Failed to enable SSL3."
+msgstr "SSL3 പ്രവര്‍ത്തന സജ്ജമാക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
+
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/plugins/https-utils.c:222
+msgid "Failed to enable TLS."
+msgstr "ടിഎല്‍എസ് പ്രവര്‍ത്തന സജ്ജമാക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
+
+#: ../src/plugins/https-utils.c:224
 msgid "Failed to set URL to SSL socket."
 msgstr "എസ്എസ്എല്‍ സോക്കറ്റിലേക്കു് യുആര്‍എല്‍ സജ്ജമാക്കുന്നതില്‍ പരാജയം."
 
-#: ../src/plugins/https-utils.c:232
+#: ../src/plugins/https-utils.c:233
 #, c-format
 msgid "Can't connect to '%s'"
 msgstr "'%s'-ലേക്കു് കണക്ട് ചെയ്യുവാന്‍ സാധ്യമല്ല"
 
-#: ../src/plugins/https-utils.c:240
+#: ../src/plugins/https-utils.c:241
 msgid "Failed to set certificate hook."
 msgstr "സര്‍ട്ടിഫിക്കേറ്റ് ഹുക്ക് സജ്ജമാക്കുവാന്‍ പരാജയപ്പെട്ടു."
 
-#: ../src/plugins/https-utils.c:246
+#: ../src/plugins/https-utils.c:247
 msgid "Failed to set handshake callback."
 msgstr "ഹാന്‍ഡ്ഷെയിക്ക് കോള്‍ബാക്ക് സജ്ജമാക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
 
-#: ../src/plugins/https-utils.c:250
+#: ../src/plugins/https-utils.c:251
 msgid "Failed to reset handshake."
 msgstr "ഹാന്‍ഡ്ഷെയിക്ക് വീണ്ടും സജ്ജമാക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
 
-#: ../src/plugins/https-utils.c:257
+#: ../src/plugins/https-utils.c:258
 #, c-format
 msgid "Failed to complete SSL handshake: NSS error %d."
 msgstr "എസ്എസ്എല്‍ ഹാന്‍ഡ്ഷേക്ക് പൂര്‍ത്തിയാക്കിയില്ല: എന്‍എസ്എസ് പിശക് %d."
 
-#: ../src/plugins/https-utils.c:266
+#: ../src/plugins/https-utils.c:267
 msgid "Failed to close SSL socket."
 msgstr "എസ്എസ്എല്‍ സോക്കറ്റ് അടയ്ക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
 
-#: ../src/plugins/https-utils.c:331
+#: ../src/plugins/https-utils.c:332
 #, c-format
 msgid "Malformed HTTP response header: '%s'"
 msgstr "തെറ്റായ എച്‌ടിടിപി മറുപടിയ്ക്കുള്ള ഹെഡര്‍: '%s'"
 
-#: ../src/plugins/https-utils.c:368
+#: ../src/plugins/https-utils.c:369
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
 msgstr "ഡേറ്റാ ലഭ്യമാക്കുന്നതു് പരാജയപ്പെട്ടു: എന്‍എസ്എസ് പിശക് %d"
 
-#: ../src/plugins/https-utils.c:397
+#: ../src/plugins/https-utils.c:398
 msgid "Malformed chunked response."
 msgstr "തെറ്റായ മറുപടി."
 
-#: ../src/plugins/https-utils.c:422
+#: ../src/plugins/https-utils.c:423
 msgid "Failed to initialize NSS."
 msgstr "എന്‍എസ്എസ് ആരംഭിയ്ക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
 
-#: ../src/plugins/https-utils.c:428
+#: ../src/plugins/https-utils.c:429
 msgid "Failed to initialize security module."
 msgstr "സുരക്ഷിത ഘടകം ആരംഭിയ്ക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
 
-#: ../src/plugins/https-utils.c:443
+#: ../src/plugins/https-utils.c:444
 msgid "Failed to shutdown NSS."
 msgstr "എന്‍എസ്എസ് അടച്ചുപൂട്ടല്‍ പരാജയപ്പെട്ടു."
 
-#: ../src/plugins/oops-utils.c:71
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/plugins/oops-utils.c:73
 #, c-format
 msgid "Sleeping for %d seconds"
-msgstr ""
+msgstr "%d നിമിഷത്തേക്കു് മയങ്ങുന്നു"
 
-#: ../src/plugins/oops-utils.c:205
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/plugins/oops-utils.c:207
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
 msgstr ""
+"തകരാറുള്ള ബയോസ് കാരണം ഒരു കേര്‍ണല്‍ പ്രശ്നമുണ്ടായിരിയ്ക്കുന്നു. ഇവ പക്ഷേ "
+"കേര്‍ണല്‍ കൈകാര്യം ചെയ്യുന്നവര്‍ക്കു് പരിഹരിയ്ക്കുവാന്‍ സാധ്യമല്ല."
 
-#: ../src/plugins/oops-utils.c:210
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/plugins/oops-utils.c:212
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
 msgstr ""
+"ഒരു കേര്‍ണല്‍ പ്രശ്നം ഉണ്ടായിരിയ്ക്കുന്നു, പക്ഷേ ഹാര്‍ഡ്‌വെയറിനു് പിന്തുണ "
+"ലഭ്യമല്ല. അതിനാല്‍, കേര്‍ണല്‍ കൈകാര്യം ചെയ്യുന്നവര്‍ക്കു് ഇതു് "
+"പരിഹരിയ്ക്കുവാന്‍ സാധ്യമല്ല."
 
-#: ../src/plugins/oops-utils.c:225
+#: ../src/plugins/oops-utils.c:227
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
-msgstr "കേര്‍ണലില്‍ ഒരു പ്രശ്നമുണ്ടായിരിയ്ക്കുന്നു (ഫ്ലാഗുകള്‍:%s). കാരണം എന്താണു് എന്നു് കണ്ടുപിടിയ്ക്കുവാന്‍ കേര്‍ണല്‍ പാലകന്‍മാര്‍ക്കു് സാധ്യമായിട്ടില്ല."
+msgstr ""
+"കേര്‍ണലില്‍ ഒരു പ്രശ്നമുണ്ടായിരിയ്ക്കുന്നു (ഫ്ലാഗുകള്‍:%s). കാരണം എന്താണു് "
+"എന്നു് കണ്ടുപിടിയ്ക്കുവാന്‍ കേര്‍ണല്‍ പാലകന്‍മാര്‍ക്കു് സാധ്യമായിട്ടില്ല."
 
-#: ../src/plugins/oops-utils.c:233
+#: ../src/plugins/oops-utils.c:235
 #, c-format
 msgid " Tainted modules: %s."
 msgstr " ലൈസന്‍സ് പ്രശ്നങ്ങളുള്ള ഘടകങ്ങള്‍: %s."
@@ -1705,7 +2089,10 @@ msgid ""
 "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
 "\n"
 "Search for updates on bodhi server"
-msgstr "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n\nബോധി സര്‍വറില്‍ പരിഷ്കരണങ്ങള്‍ക്കായി തെരയുക"
+msgstr ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"\n"
+"ബോധി സര്‍വറില്‍ പരിഷ്കരണങ്ങള്‍ക്കായി തെരയുക"
 
 #: ../src/plugins/bodhi.c:434
 msgid "Searching for updates"
@@ -1718,21 +2105,29 @@ msgstr "ഈ പാക്കേജിനു് പരിഷ്കരണങ്ങ�
 #. strbuf_free(q);
 #: ../src/plugins/bodhi.c:469
 msgid "Local version of the package is newer than available updates"
-msgstr "ലഭ്യമായ പരിഷ്കരണങ്ങളേക്കാള്‍ പുതിയതാണു് നിങ്ങളുടെ സിസ്റ്റത്തിലുള്ള പതിപ്പു്"
+msgstr ""
+"ലഭ്യമായ പരിഷ്കരണങ്ങളേക്കാള്‍ പുതിയതാണു് നിങ്ങളുടെ സിസ്റ്റത്തിലുള്ള പതിപ്പു്"
 
 #: ../src/plugins/bodhi.c:486
 #, c-format
 msgid ""
-"An update exists which might fix your problem. You can install it by "
-"running: %s. Do you want to continue with reporting the bug?"
-msgstr "നിങ്ങളുടെ പ്രശ്നം പരിഹരിയ്ക്കുന്നതിനുള്ളൊരു പരിഷ്കരണം നിലവിലുണ്ടാവാം. നിങ്ങള്‍ക്കു് ഇതു് ഇന്‍സ്റ്റോള്‍ ചെയ്യുന്നതിനായി പ്രവര്‍ത്തിയ്ക്കേണ്ടതു്: %s. ബഗ് രേഖപ്പെടുത്തുവാന്‍ തുടരണമോ?"
+"An update exists which might fix your problem. You can install it by running:"
+" %s. Do you want to continue with reporting the bug?"
+msgstr ""
+"നിങ്ങളുടെ പ്രശ്നം പരിഹരിയ്ക്കുന്നതിനുള്ളൊരു പരിഷ്കരണം നിലവിലുണ്ടാവാം. "
+"നിങ്ങള്‍ക്കു് ഇതു് ഇന്‍സ്റ്റോള്‍ ചെയ്യുന്നതിനായി പ്രവര്‍ത്തിയ്ക്കേണ്ടതു്: %s."
+" ബഗ് രേഖപ്പെടുത്തുവാന്‍ തുടരണമോ?"
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
 msgid ""
 "& [-v] [-od] FILE...\n"
 "\n"
 "Scans files for split oops message. Can print and/or delete them."
-msgstr "& [-v] [-od] FILE...\n\nവേര്‍തിരിച്ച ഒഒപിഎസ് സന്ദേശത്തിനായി ഫയലുകള്‍ പരിശോധിയ്ക്കുന്നു. അവ പ്രിന്റ് ചെയ്യാം അല്ലെങ്കില്‍ വെട്ടി നീക്കാം."
+msgstr ""
+"& [-v] [-od] FILE...\n"
+"\n"
+"വേര്‍തിരിച്ച ഒഒപിഎസ് സന്ദേശത്തിനായി ഫയലുകള്‍ പരിശോധിയ്ക്കുന്നു. അവ പ്രിന്റ് "
+"ചെയ്യാം അല്ലെങ്കില്‍ വെട്ടി നീക്കാം."
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:97
 msgid "Print found oopses"
@@ -1742,18 +2137,20 @@ msgstr "കണ്ടുപിടിച്ച ഒഒപിഎസുകള്‍ �
 msgid "Delete files with found oopses"
 msgstr "കണ്ടുപിടിച്ച ഒഒപിഎസുകളുള്ള ഫയലുകള്‍ വെട്ടി നീക്കുക"
 
-#: ../src/cli/abrt-cli-core.c:91
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/cli/abrt-cli-core.c:89
 #, c-format
 msgid "'%s' identifies more than one problem directory"
-msgstr ""
+msgstr "'%s' ഒന്നില്‍ കൂടുതല്‍ പ്രശ്നമുള്ള ഡയറക്ടറി തിരിച്ചറിയുന്നു"
 
 #: ../src/cli/abrt-cli.c:144
 msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
 msgstr "Usage: abrt-cli [--version] COMMAND [DIR]..."
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/abrt-cli.c:148
 msgid "List problems [in DIRs]"
-msgstr ""
+msgstr "പ്രശ്നങ്ങള്‍ ലഭ്യമാക്കുക [DIR-കളില്‍]"
 
 #: ../src/cli/abrt-cli.c:149
 msgid "Remove problem directory DIR"
@@ -1771,116 +2168,145 @@ msgstr "DIR സംബന്ധിച്ചുള്ള വിവരം പ്ര
 msgid "Print the count of the recent crashes"
 msgstr "പുതിയ തകരാറുകളുടെ എണ്ണം പ്രിന്റ് ചെയ്യുക"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/abrt-cli.c:153
 msgid "Process multiple problems"
-msgstr ""
+msgstr "അനവധി പ്രശ്നങ്ങള്‍ നടപ്പിലാക്കുക"
 
 #: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "കൂടുതല്‍ വിവരങ്ങള്‍ക്കായി 'abrt-cli COMMAND --help' കാണുക."
 
-#: ../src/cli/list.c:130
-msgid "& list [options] [DIR]..."
-msgstr "& list [options] [DIR]..."
-
-#: ../src/cli/list.c:139
-msgid "List only not-reported problems"
+#: ../src/cli/list.c:125
+msgid "& list [options]"
 msgstr ""
 
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/cli/list.c:134
+msgid "List only not-reported problems"
+msgstr "രേഖപ്പെടുത്താത്ത പ്രശ്നങ്ങള്‍ മാത്രം ലഭ്യമാക്കുക"
+
 #. deprecate -d option with --pretty=full
-#: ../src/cli/list.c:141 ../src/cli/list.c:194
+#: ../src/cli/list.c:136 ../src/cli/list.c:181
 msgid "Show detailed report"
 msgstr "വിശദമായ രേഖപ്പെടുത്തല്‍ കാണിയ്ക്കുക"
 
-#: ../src/cli/list.c:142
+#: ../src/cli/list.c:137
 msgid "List only the problems more recent than specified timestamp"
-msgstr "നല്‍കിയിരിയ്ക്കുന്ന സമയത്തിനേക്കാള്‍ പുതിയ പ്രശ്നങ്ങള്‍ മാത്രം കാണിയ്ക്കുക"
+msgstr ""
+"നല്‍കിയിരിയ്ക്കുന്ന സമയത്തിനേക്കാള്‍ പുതിയ പ്രശ്നങ്ങള്‍ മാത്രം കാണിയ്ക്കുക"
 
-#: ../src/cli/list.c:143
+#: ../src/cli/list.c:138
 msgid "List only the problems older than specified timestamp"
-msgstr "നല്‍കിയിരിയ്ക്കുന്ന സമയത്തിനേക്കാള്‍ പഴയ പ്രശ്നങ്ങള്‍ മാത്രം കാണിയ്ക്കുക"
+msgstr ""
+"നല്‍കിയിരിയ്ക്കുന്ന സമയത്തിനേക്കാള്‍ പഴയ പ്രശ്നങ്ങള്‍ മാത്രം കാണിയ്ക്കുക"
 
-#: ../src/cli/list.c:175
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/cli/list.c:162
 #, c-format
 msgid ""
-"The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
+"The Autoreporting feature is disabled. Please consider enabling it by "
+"issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
 msgstr ""
+"സ്വയമായി രേഖപ്പെടുത്ത വിശേഷത പ്രവര്‍ത്തന രഹിതമാണു്. റൂട്ട് അനുമതികളുള്ള "
+"ഉപയോക്താവായി 'abrt-auto-reporting enabled' നല്‍കി\n"
+"ഇതു് പ്രവര്‍ത്തന സജ്ജമാക്കുക.\n"
 
-#: ../src/cli/list.c:186
+#: ../src/cli/list.c:173
 msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
 
-#: ../src/cli/list.c:195
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/cli/list.c:182
 msgid "Text larger than this will be shown abridged"
-msgstr ""
+msgstr "ഇതിലും വലുതായ വാചകം അബ്രിഡ്ജമായ കാണിയ്ക്കുന്നു"
 
-#: ../src/cli/list.c:215
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/cli/list.c:202
 #, c-format
 msgid "No such problem directory '%s'"
+msgstr "'%s' പോലുള്ള പ്രശ്നമുള്ള ഡയറക്ടറി ലഭ്യമല്ല"
+
+#: ../src/cli/status.c:62
+msgid "& status"
 msgstr ""
 
 #: ../src/cli/status.c:70
-msgid "& status [DIR]..."
-msgstr "& അവസ്ഥ [DIR]..."
-
-#: ../src/cli/status.c:78
 msgid "Print only the problem count without any message"
 msgstr "സന്ദേശമില്ലാതെ പ്രശ്നത്തിന്റെ എണ്ണം മാത്രം പ്രിന്റ് ചെയ്യുക"
 
-#: ../src/cli/status.c:79
+#: ../src/cli/status.c:71
 msgid "Print only the problems more recent than specified timestamp"
-msgstr "നല്‍കിയിരിയ്ക്കുന്ന ടൈംസ്റ്റാമ്പിനേക്കാള്‍ പുതുതായ പ്രശ്നങ്ങള്‍ മാത്രം പ്രിന്റ് ചെയ്യുക"
+msgstr ""
+"നല്‍കിയിരിയ്ക്കുന്ന ടൈംസ്റ്റാമ്പിനേക്കാള്‍ പുതുതായ പ്രശ്നങ്ങള്‍ മാത്രം "
+"പ്രിന്റ് ചെയ്യുക"
 
-#: ../src/cli/status.c:104
+#: ../src/cli/status.c:87
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
-msgstr "എബിആര്‍റ്റി %u പ്രശ്നങ്ങള്‍ കണ്ടുപിടിച്ചിരിയ്ക്കുന്നു. കൂടുതല്‍ വിവരങ്ങള്‍ക്കായി പ്രവര്‍ത്തിപ്പിക്കേണ്ടതു്: abrt-cli list%s\n"
+msgstr ""
+"എബിആര്‍റ്റി %u പ്രശ്നങ്ങള്‍ കണ്ടുപിടിച്ചിരിയ്ക്കുന്നു. കൂടുതല്‍ "
+"വിവരങ്ങള്‍ക്കായി പ്രവര്‍ത്തിപ്പിക്കേണ്ടതു്: abrt-cli list%s\n"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/report.c:28
 msgid "& report [options] DIR..."
-msgstr ""
+msgstr "& report [options] DIR..."
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/report.c:38
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "രേഖപ്പെടുത്തിയ ശേഷം PROBLEM_DIR നീക്കം ചെയ്യുക"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/report.c:71 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "'%s' വെട്ടി നീക്കുന്നു"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
-msgstr ""
+msgstr "പ്രവര്‍ത്തികള്‍: remove(rm), info(i), skip(s):"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/process.c:66
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
-msgstr ""
+msgstr "പ്രവര്‍ത്തികള്‍: remove(rm), report(e), info(i), skip(s):"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/process.c:77
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "'%s' രേഖപ്പെടുത്തുന്നു"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:133
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "അടുത്ത പ്രശ്നത്തിന് ENTER അമര്‍ത്തുക:"
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/process.c:144
 msgid "Without --since argument, iterates over all detected problems."
 msgstr ""
+"--since ആര്‍ഗ്യുമെന്റില്ലാതെ, ലഭ്യമായ പ്രശ്നങ്ങളിലെല്ലാം ആവര്‍ത്തിയ്ക്കുന്നു."
+""
 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/process.c:150
 msgid "Selects only problems detected after timestamp"
-msgstr ""
+msgstr "ടൈംസ്റ്റാബിനു് ശേഷം ലഭിച്ച പ്രശ്നങ്ങള്‍ മാത്രം തെരഞ്ഞെടുക്കുന്നു"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
-msgstr "നിരീക്ഷിയ്ക്കുന്നതിനായി റിമോട്ട് റീട്രെയിസ് സര്‍വറിലേക്കു് കോര്‍ ഡംപ് അയയ്ക്കുക അല്ലെങ്കില്‍ ഇതു് പരാജപ്പെട്ടാല്‍, നിങ്ങളുടെ സിസ്റ്റത്തിലുള്ള നിരീക്ഷണം നടപ്പിലാക്കുക"
+msgstr ""
+"നിരീക്ഷിയ്ക്കുന്നതിനായി റിമോട്ട് റീട്രെയിസ് സര്‍വറിലേക്കു് കോര്‍ ഡംപ് "
+"അയയ്ക്കുക അല്ലെങ്കില്‍ ഇതു് പരാജപ്പെട്ടാല്‍, നിങ്ങളുടെ സിസ്റ്റത്തിലുള്ള "
+"നിരീക്ഷണം നടപ്പിലാക്കുക"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
 msgid ""
@@ -1888,8 +2314,8 @@ msgid ""
 "user doesn't want to upload his coredump to anywhere the event performs "
 "local analysis. Local analysis is run event if remote analysis fails. Pros: "
 "no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump"
-" you upload contains all the data from the crashed program, including your "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
 
@@ -1900,13 +2326,17 @@ msgstr "വിഎം കോര്‍ നിരീക്ഷിയ്ക്കു�
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
 msgid ""
 "Install kernel debuginfo packages, generate kernel log and oops message"
-msgstr "കേര്‍ണല്‍ debuginfo പാക്കേജുകള്‍ ഇന്‍സ്റ്റോള്‍ ചെയ്യുക. കേര്‍ണല്‍ ലോഗും oops സന്ദേശവും ലഭ്യമാക്കുക"
+msgstr ""
+"കേര്‍ണല്‍ debuginfo പാക്കേജുകള്‍ ഇന്‍സ്റ്റോള്‍ ചെയ്യുക. കേര്‍ണല്‍ ലോഗും oops "
+"സന്ദേശവും ലഭ്യമാക്കുക"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
 "Needs to install kernel debuginfo packages, which might take significant "
 "time, and take up disk space."
-msgstr "കേര്‍ണല്‍ debuginfo പാക്കേജുകള്‍ ഇന്‍സ്റ്റോള്‍ ചെയ്യേണ്ടതുണ്ടു്, ഇതു് വളരെ സമയവും ഡിസ്ക് സ്ഥലവും ഉപയോഗിയ്ക്കുന്നു."
+msgstr ""
+"കേര്‍ണല്‍ debuginfo പാക്കേജുകള്‍ ഇന്‍സ്റ്റോള്‍ ചെയ്യേണ്ടതുണ്ടു്, ഇതു് വളരെ "
+"സമയവും ഡിസ്ക് സ്ഥലവും ഉപയോഗിയ്ക്കുന്നു."
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
@@ -1920,7 +2350,9 @@ msgstr "പ്രയോഗത്തിനുള്ള GConf ഡയറക്ട�
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
-msgstr "gconftool-2 --recursive-list /apps/executable പ്രവര്‍ത്തിപ്പിച്ചു്, 'gconf_subtree' എലമെന്റായി സൂക്ഷിയ്ക്കുക."
+msgstr ""
+"gconftool-2 --recursive-list /apps/executable പ്രവര്‍ത്തിപ്പിച്ചു്, "
+"'gconf_subtree' എലമെന്റായി സൂക്ഷിയ്ക്കുക."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
@@ -1934,7 +2366,9 @@ msgstr "/etc/vimrc, /etc/gvimrc സൂക്ഷിയ്ക്കുക"
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
-msgstr "/etc-ല്‍ vimrc, gvimrc ഫയലുകള്‍ ഉണ്ടോ എന്നു് പരിശോധിച്ചു്, അവ system_vimrc, system_gvimrc എന്നിവയായി സൂക്ഷിയ്ക്കുക."
+msgstr ""
+"/etc-ല്‍ vimrc, gvimrc ഫയലുകള്‍ ഉണ്ടോ എന്നു് പരിശോധിച്ചു്, അവ system_vimrc, "
+"system_gvimrc എന്നിവയായി സൂക്ഷിയ്ക്കുക."
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid "Collect yours vim configuration files"
@@ -1946,9 +2380,11 @@ msgstr "നിങ്ങളുടെ ആസ്ഥാന ഡയറക്ടറി�
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
-msgstr "/etc-ല്‍ vimrc, gvimrc ഫയലുകള്‍ ഉണ്ടോ എന്നു് പരിശോധിച്ചു്, അവ user_vimrc, user_gvimrc എന്നിവയായി സൂക്ഷിയ്ക്കുക."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
+msgstr ""
+"/etc-ല്‍ vimrc, gvimrc ഫയലുകള്‍ ഉണ്ടോ എന്നു് പരിശോധിച്ചു്, അവ user_vimrc, "
+"user_gvimrc എന്നിവയായി സൂക്ഷിയ്ക്കുക."
 
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"
