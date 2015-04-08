@@ -327,11 +327,11 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "Boolean from non-default file"
-        rlAssertEquals "Get 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_false"
-        rlRun "confDBusSetProperty abrt ProcessUnpackaged boolean True" 0
-        rlAssertEquals "Set 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_true"
+        rlAssertEquals "Get 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_true"
+        rlRun "confDBusSetProperty abrt ProcessUnpackaged boolean False" 0
+        rlAssertEquals "Set 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_false"
         rlRun "confDBusSetPropertyDefault abrt ProcessUnpackaged" 0
-        rlAssertEquals "Reset 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_false"
+        rlAssertEquals "Reset 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_true"
     rlPhaseEnd
 
     rlPhaseStartTest "Empty Int32 Value from non-default file"
