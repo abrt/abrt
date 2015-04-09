@@ -51,7 +51,7 @@
     %define docdirversion -%{version}
 %endif
 
-%define libreport_ver 2.4.0
+%define libreport_ver 2.5.1
 %define satyr_ver 0.16
 
 Summary: Automatic bug detection and reporting tool
@@ -1067,6 +1067,25 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Thu Apr 09 2015 Jakub Filak <jfilak@redhat.com> 2.5.1-1
+- Translation updates
+- problem: use 'type' element instead of 'analyzer'
+- cli-status: don't return 0 if there is a problem older than limit
+- journal-oops: add an argument accepting journal directory
+- journal: open journal files from directory
+- lib: don't expect kernel's version '2.6.*' or '3.*.*'
+- cli: use the DBus methods for getting problem information
+- libabrt: add wrappers TestElemeExists and GetInfo for one element
+- dbus: add new method to test existence of an element
+- libabrt: add new function fetching full problem data over DBus
+- applet: use a shared function for getting problems over DBus
+- vmcore: generate 'reason' file in all cases
+- applet: Fix trivial indentation bug
+- applet: Don't show report button for unpackaged programs
+- applet: fix freeing of the notify problem list
+- applet: get the list of problems through D-Bus service
+- doc: D-Bus api: make desc of DeleteProblem clearer
+
 * Wed Mar 18 2015 Jakub Filak <jfilak@redhat.com> 2.5.0-1
 - applet: cast to correct type to fix a warrning
 - applet: Use new problem_create_app_from_env() helper
