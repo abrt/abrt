@@ -88,8 +88,10 @@ def generate_machine_id_systemd():
                 .format(str(ex)))
 
 
-GENERATORS = { 'sosreport_uploader-dmidecode' : generate_machine_id_dmidecode,
-               'systemd'                      : generate_machine_id_systemd }
+GENERATORS = {
+               'sosreport_uploader-dmidecode' : generate_machine_id_dmidecode
+#              ,'systemd'                      : generate_machine_id_systemd
+             }
 
 
 def generate_machine_id(generators):
