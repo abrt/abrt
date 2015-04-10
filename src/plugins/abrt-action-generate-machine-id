@@ -112,7 +112,7 @@ def generate_machine_id(generators):
             ids[sd] = workers[sd]()
         except RuntimeError as ex:
             logging.error("Machine-ID generator '{0}' failed: {1}"
-                        .format(sd, ex.message))
+                        .format(sd, str(ex)))
 
     return ids
 
