@@ -310,21 +310,24 @@ static int create_or_die(const char *filename, int user_core_fd)
     perror_msg_and_die("Can't open '%s'", filename);
 }
 
-static void create_core_backtrace(pid_t tid, const char *executable, int signal_no, const char *dd_path)
+static void create_core_backtrace(pid_t tid, const char *executable, int signal_no, struct dump_dir *dd)
 {
 #ifdef ENABLE_DUMP_TIME_UNWIND
     if (g_verbose > 1)
         sr_debug_parser = true;
 
     char *error_message = NULL;
-    bool success = sr_abrt_create_core_stacktrace_from_core_hook(dd_path, tid, executable,
-                                                                 signal_no, &error_message);
+    char *core_bt = sr_abrt_get_core_stacktrace_from_core_hook(tid, executable,
+                                                               signal_no, &error_message);
 
-    if (!success)
+    if (core_bt == NULL)
     {
         log("Failed to create core_backtrace: %s", error_message);
         free(error_message);
     }
+
+    dd_save_text(dd, FILENAME_CORE_BACKTRACE, core_bt);
+    free(core_bt);
 #endif /* ENABLE_DUMP_TIME_UNWIND */
 }
 
@@ -647,37 +650,26 @@ int main(int argc, char** argv)
 
         // Disabled for now: /proc/PID/smaps tends to be BIG,
         // and not much more informative than /proc/PID/maps:
-        //copy_file(source_filename, dest_filename, 0640);
-        //chown(dest_filename, dd->dd_uid, dd->dd_gid);
+        // dd_copy_file(dd, FILENAME_SMAPS, source_filename);
 
         strcpy(source_filename + source_base_ofs, "maps");
-        strcpy(dest_base, FILENAME_MAPS);
-        copy_file(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE);
-        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        dd_copy_file(dd, FILENAME_MAPS, source_filename);
 
         strcpy(source_filename + source_base_ofs, "limits");
-        strcpy(dest_base, FILENAME_LIMITS);
-        copy_file(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE);
-        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        dd_copy_file(dd, FILENAME_LIMITS, source_filename);
 
         strcpy(source_filename + source_base_ofs, "cgroup");
-        strcpy(dest_base, FILENAME_CGROUP);
-        copy_file(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE);
-        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        dd_copy_file(dd, FILENAME_CGROUP, source_filename);
 
         strcpy(source_filename + source_base_ofs, "mountinfo");
-        strcpy(dest_base, FILENAME_MOUNTINFO);
-        copy_file(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE);
-        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        dd_copy_file(dd, FILENAME_MOUNTINFO, source_filename);
 
         strcpy(dest_base, FILENAME_OPEN_FDS);
         strcpy(source_filename + source_base_ofs, "fd");
-        if (dump_fd_info(dest_filename, source_filename) == 0)
-            IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        dump_fd_info_ext(dest_filename, source_filename, dd->dd_uid, dd->dd_gid);
 
         strcpy(dest_base, FILENAME_NAMESPACES);
-        if (dump_namespace_diff(dest_filename, 1, pid))
-            IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        dump_namespace_diff_ext(dest_filename, 1, pid, dd->dd_uid, dd->dd_gid);
 
         free(dest_filename);
 
@@ -854,7 +846,7 @@ int main(int argc, char** argv)
 
         /* Perform crash-time unwind of the guilty thread. */
         if (tid > 0 && setting_CreateCoreBacktrace)
-            create_core_backtrace(tid, executable, signal_no, dd->dd_dirname);
+            create_core_backtrace(tid, executable, signal_no, dd);
 
         /* We close dumpdir before we start catering for crash storm case.
          * Otherwise, delete_dump_dir's from other concurrent
