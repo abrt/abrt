@@ -861,7 +861,7 @@ int main(int argc, char** argv)
      * the current user, hence, we have to call dd_reset_ownership() after the
      * directory is populated.
      */
-    dd = dd_create_skeleton(path, fsuid, 0640);
+    dd = dd_create_skeleton(path, fsuid, 0640, /*no flags*/0);
     if (dd)
     {
         char *rootdir = get_rootdir(pid);
