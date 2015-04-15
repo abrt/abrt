@@ -862,7 +862,7 @@ int main(int argc, char** argv)
     {
         char *rootdir = get_rootdir(pid);
 
-        dd_create_basic_files(dd, fsuid, (rootdir && strcmp(rootdir, "/") != 0) ? rootdir : NULL);
+        dd_create_basic_files(dd, fsuid, NULL);
 
         char source_filename[sizeof("/proc/%lu/somewhat_long_name") + sizeof(long)*3];
         int source_base_ofs = sprintf(source_filename, "/proc/%lu/smaps", (long)pid);
