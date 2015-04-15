@@ -621,8 +621,12 @@ int main(int argc, char** argv)
 
     /* use fsuid instead of uid, so we don't expose any sensitive
      * information of suided app in /var/tmp/abrt
+     *
+     * dd_create_skeleton() creates a new directory and leaves ownership to
+     * the current user, hence, we have to call dd_reset_ownership() after the
+     * directory is populated.
      */
-    dd = dd_create(path, fsuid, DEFAULT_DUMP_DIR_MODE);
+    dd = dd_create_skeleton(path, fsuid, DEFAULT_DUMP_DIR_MODE);
     if (dd)
     {
         char source_filename[sizeof("/proc/%lu/somewhat_long_name") + sizeof(long)*3];
@@ -850,6 +854,9 @@ int main(int argc, char** argv)
         /* Perform crash-time unwind of the guilty thread. */
         if (tid > 0 && setting_CreateCoreBacktrace)
             create_core_backtrace(tid, executable, signal_no, dd);
+
+        /* And finally set the right uid and gid */
+        dd_reset_ownership(dd);
 
         /* We close dumpdir before we start catering for crash storm case.
          * Otherwise, delete_dump_dir's from other concurrent
