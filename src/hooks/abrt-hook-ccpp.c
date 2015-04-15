@@ -399,7 +399,7 @@ static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_valu
 
 static bool dump_fd_info(const char *dest_filename, char *source_filename, int source_base_ofs, uid_t uid, gid_t gid)
 {
-    FILE *fp = fopen(dest_filename, "w");
+    FILE *fp = fopen(dest_filename, "wx");
     if (!fp)
         return false;
 
