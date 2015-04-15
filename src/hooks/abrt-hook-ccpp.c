@@ -403,7 +403,7 @@ static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_valu
     return user_core_fd;
 }
 
-static bool dump_fd_info(const char *dest_filename, char *source_filename, int source_base_ofs)
+static bool dump_fd_info(const char *dest_filename, char *source_filename, int source_base_ofs, uid_t uid, gid_t gid)
 {
     FILE *fp = fopen(dest_filename, "w");
     if (!fp)
@@ -435,6 +435,16 @@ static bool dump_fd_info(const char *dest_filename, char *source_filename, int s
         }
         fclose(in);
     }
+
+    const int dest_fd = fileno(fp);
+    if (fchown(dest_fd, uid, gid) < 0)
+    {
+        perror_msg("Can't change '%s' ownership to %lu:%lu", dest_filename, (long)uid, (long)gid);
+        fclose(fp);
+        unlink(dest_filename);
+        return false;
+    }
+
     fclose(fp);
     return true;
 }
@@ -862,27 +872,22 @@ int main(int argc, char** argv)
 
         // Disabled for now: /proc/PID/smaps tends to be BIG,
         // and not much more informative than /proc/PID/maps:
-        //copy_file(source_filename, dest_filename, 0640);
-        //chown(dest_filename, dd->dd_uid, dd->dd_gid);
+        //copy_file_ext(source_filename, dest_filename, 0640, dd->dd_uid, dd->dd_gid, O_RDONLY, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL);
 
         strcpy(source_filename + source_base_ofs, "maps");
         strcpy(dest_base, FILENAME_MAPS);
-        copy_file(source_filename, dest_filename, 0640);
-        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        copy_file_ext(source_filename, dest_filename, 0640, dd->dd_uid, dd->dd_gid, O_RDONLY, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL);
 
         strcpy(source_filename + source_base_ofs, "limits");
         strcpy(dest_base, FILENAME_LIMITS);
-        copy_file(source_filename, dest_filename, 0640);
-        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        copy_file_ext(source_filename, dest_filename, 0640, dd->dd_uid, dd->dd_gid, O_RDONLY, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL);
 
         strcpy(source_filename + source_base_ofs, "cgroup");
         strcpy(dest_base, FILENAME_CGROUP);
-        copy_file(source_filename, dest_filename, 0640);
-        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        copy_file_ext(source_filename, dest_filename, 0640, dd->dd_uid, dd->dd_gid, O_RDONLY, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL);
 
         strcpy(dest_base, FILENAME_OPEN_FDS);
-        if (dump_fd_info(dest_filename, source_filename, source_base_ofs))
-            IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        dump_fd_info(dest_filename, source_filename, source_base_ofs, dd->dd_uid, dd->dd_gid);
 
         free(dest_filename);
 
