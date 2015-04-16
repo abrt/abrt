@@ -64,6 +64,8 @@ extern bool          g_settings_autoreporting;
 extern char *        g_settings_autoreporting_event;
 #define g_settings_shortenedreporting abrt_g_settings_shortenedreporting
 extern bool          g_settings_shortenedreporting;
+#define g_settings_explorechroots abrt_g_settings_explorechroots
+extern bool          g_settings_explorechroots;
 
 
 #define load_abrt_conf abrt_load_abrt_conf

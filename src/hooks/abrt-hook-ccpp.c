@@ -429,8 +429,18 @@ int main(int argc, char** argv)
         setting_SaveFullCore = value ? string_to_bool(value) : true;
         value = get_map_string_item_or_NULL(settings, "CreateCoreBacktrace");
         setting_CreateCoreBacktrace = value ? string_to_bool(value) : true;
+
         value = get_map_string_item_or_NULL(settings, "SaveContainerizedPackageData");
         setting_SaveContainerizedPackageData = value && string_to_bool(value);
+
+        /* Do not call abrt-action-save-package-data with process's root, if ExploreChroots is disabled. */
+        if (!g_settings_explorechroots)
+        {
+            if (setting_SaveContainerizedPackageData)
+                log_warning("Ignoring SaveContainerizedPackageData because ExploreChroots is disabled");
+            setting_SaveContainerizedPackageData = false;
+        }
+
         value = get_map_string_item_or_NULL(settings, "StandaloneHook");
         setting_StandaloneHook = value && string_to_bool(value);
         value = get_map_string_item_or_NULL(settings, "VerboseLog");
@@ -619,9 +629,18 @@ int main(int argc, char** argv)
         /* What's wrong on using /proc/[pid]/root every time ?*/
         /* It creates os_info_in_root_dir for all crashes. */
         char *rootdir = process_has_own_root(pid) ? get_rootdir(pid) : NULL;
-        /* Yes, test 'rootdir' but use 'source_filename' because 'rootdir' can
-         * be '/' for a process with own namespace. 'source_filename' is /proc/[pid]/root. */
-        dd_create_basic_files(dd, fsuid, (rootdir != NULL) ? source_filename : NULL);
+
+        /* Reading data from an arbitrary root directory is not secure. */
+        if (g_settings_explorechroots)
+        {
+            /* Yes, test 'rootdir' but use 'source_filename' because 'rootdir' can
+             * be '/' for a process with own namespace. 'source_filename' is /proc/[pid]/root. */
+            dd_create_basic_files(dd, fsuid, (rootdir != NULL) ? source_filename : NULL);
+        }
+        else
+        {
+            dd_create_basic_files(dd, fsuid, NULL);
+        }
 
         char *dest_filename = concat_path_file(dd->dd_dirname, "also_somewhat_longish_name");
         char *dest_base = strrchr(dest_filename, '/') + 1;

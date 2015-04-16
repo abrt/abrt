@@ -239,7 +239,10 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
 
     cmdline = dd_load_text_ext(dd, FILENAME_CMDLINE, DD_FAIL_QUIETLY_ENOENT);
     executable = dd_load_text(dd, FILENAME_EXECUTABLE);
-    if (chroot == NULL)
+
+    /* Do not implicitly query rpm database in process's root dir, if
+     * ExploreChroots is disabled. */
+    if (g_settings_explorechroots && chroot == NULL)
         chroot = rootdir = dd_load_text_ext(dd, FILENAME_ROOTDIR,
                                DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
 
