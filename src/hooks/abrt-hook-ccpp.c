@@ -26,6 +26,8 @@
 #include <satyr/utils.h>
 #endif /* ENABLE_DUMP_TIME_UNWIND */
 
+static int g_user_core_flags;
+static int g_need_nonrelative;
 
 /* I want to use -Werror, but gcc-4.4 throws a curveball:
  * "warning: ignoring return value of 'ftruncate', declared with attribute warn_unused_result"
@@ -228,7 +230,14 @@ static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_valu
 
     full_core_basename = core_basename;
     if (core_basename[0] != '/')
+    {
+        if (g_need_nonrelative)
+        {
+            error_msg("Current suid_dumpable policy prevents from saving core dumps according to relative core_pattern");
+            return -1;
+        }
         core_basename = concat_path_file(user_pwd, core_basename);
+    }
 
     /* Open (create) compat core file.
      * man core:
@@ -263,19 +272,19 @@ static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_valu
     struct stat sb;
     errno = 0;
     /* Do not O_TRUNC: if later checks fail, we do not want to have file already modified here */
-    int user_core_fd = open(core_basename, O_WRONLY | O_CREAT | O_NOFOLLOW, 0600); /* kernel makes 0600 too */
+    int user_core_fd = open(core_basename, O_WRONLY | O_CREAT | O_NOFOLLOW | g_user_core_flags, 0600); /* kernel makes 0600 too */
     xsetegid(0);
     xseteuid(0);
     if (user_core_fd < 0
      || fstat(user_core_fd, &sb) != 0
      || !S_ISREG(sb.st_mode)
      || sb.st_nlink != 1
-    /* kernel internal dumper checks this too: if (inode->i_uid != current->fsuid) <fail>, need to mimic? */
+     || sb.st_uid != fsuid
     ) {
         if (user_core_fd < 0)
             perror_msg("Can't open '%s'", full_core_basename);
         else
-            perror_msg("'%s' is not a regular file with link count 1", full_core_basename);
+            perror_msg("'%s' is not a regular file with link count 1 owned by UID(%d)", full_core_basename, fsuid);
         return -1;
     }
     if (ftruncate(user_core_fd, 0) != 0) {
@@ -537,8 +546,11 @@ int main(int argc, char** argv)
         /* use root for suided apps unless it's explicitly set to UNSAFE */
         fsuid = 0;
         if (suid_policy == DUMP_SUID_UNSAFE)
-        {
             fsuid = tmp_fsuid;
+        else
+        {
+            g_user_core_flags = O_EXCL;
+            g_need_nonrelative = 1;
         }
     }
 
