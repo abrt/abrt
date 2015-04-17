@@ -21,6 +21,7 @@
 #include <syslog.h>
 #include <sys/utsname.h>
 #include "libabrt.h"
+#include <selinux/selinux.h>
 
 #define  DUMP_SUID_UNSAFE 1
 #define  DUMP_SUID_SAFE 2
@@ -295,6 +296,54 @@ static int dump_suid_policy()
     return suid_dump_policy;
 }
 
+/* Computes a security context of new file created by the given process with
+ * pid in the given directory represented by file descriptor.
+ *
+ * On errors returns negative number. Returns 0 if the function succeeds and
+ * computes the context and returns positive number and assigns NULL to newcon
+ * if the security context is not needed (SELinux disabled).
+ */
+static int compute_selinux_con_for_new_file(pid_t pid, int dir_fd, security_context_t *newcon)
+{
+    security_context_t srccon;
+    security_context_t dstcon;
+
+    const int r = is_selinux_enabled();
+    if (r == 0)
+    {
+        *newcon = NULL;
+        return 1;
+    }
+    else if (r == -1)
+    {
+        perror_msg("Couldn't get state of SELinux");
+        return -1;
+    }
+    else if (r != 1)
+        error_msg_and_die("Unexpected SELinux return value: %d", r);
+
+
+    if (getpidcon_raw(pid, &srccon) < 0)
+    {
+        perror_msg("getpidcon_raw(%d)", pid);
+        return -1;
+    }
+
+    if (fgetfilecon_raw(dir_fd, &dstcon) < 0)
+    {
+        perror_msg("getfilecon_raw(%s)", user_pwd);
+        return -1;
+    }
+
+    if (security_compute_create_raw(srccon, dstcon, string_to_security_class("file"), newcon) < 0)
+    {
+        perror_msg("security_compute_create_raw(%s, %s, 'file')", srccon, dstcon);
+        return -1;
+    }
+
+    return 0;
+}
+
 static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_values)
 {
     proc_cwd = open_cwd(pid);
@@ -302,6 +351,14 @@ static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_valu
         return -1;
 
     errno = 0;
+
+    /* http://article.gmane.org/gmane.comp.security.selinux/21842 */
+    security_context_t newcon;
+    if (compute_selinux_con_for_new_file(pid, dirfd(proc_cwd), &newcon) < 0)
+    {
+        error_msg("Not going to create a user core due to SELinux errors");
+        return -1;
+    }
 
     xsetegid(get_fsgid(pid));
     xseteuid(fsuid);
@@ -397,10 +454,25 @@ static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_valu
      * (However, see the description of the prctl(2) PR_SET_DUMPABLE operation,
      * and the description of the /proc/sys/fs/suid_dumpable file in proc(5).)
      */
+
+    /* Set SELinux context like kernel when creating core dump file */
+    if (newcon != NULL && setfscreatecon_raw(newcon) < 0)
+    {
+        perror_msg("setfscreatecon_raw(%s)", newcon);
+        return -1;
+    }
+
     struct stat sb;
     errno = 0;
     /* Do not O_TRUNC: if later checks fail, we do not want to have file already modified here */
     int user_core_fd = openat(dirfd(proc_cwd), core_basename, O_WRONLY | O_CREAT | O_NOFOLLOW | g_user_core_flags, 0600); /* kernel makes 0600 too */
+
+    if (newcon != NULL && setfscreatecon_raw(NULL) < 0)
+    {
+        error_msg("setfscreatecon_raw(NULL)");
+        goto user_core_fail;
+    }
+
     xsetegid(0);
     xseteuid(0);
     if (user_core_fd < 0
@@ -413,16 +485,23 @@ static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_valu
             perror_msg("Can't open '%s' at '%s'", core_basename, user_pwd);
         else
             perror_msg("'%s' at '%s' is not a regular file with link count 1 owned by UID(%d)", core_basename, user_pwd, fsuid);
-        return -1;
+        goto user_core_fail;
     }
     if (ftruncate(user_core_fd, 0) != 0) {
         /* perror first, otherwise unlink may trash errno */
         perror_msg("Can't truncate '%s' at '%s' to size 0", core_basename, user_pwd);
-        unlinkat(dirfd(proc_cwd), core_basename, /*unlink file*/0);
-        return -1;
+        goto user_core_fail;
     }
 
     return user_core_fd;
+
+user_core_fail:
+    if (user_core_fd >= 0)
+    {
+        close(user_core_fd);
+        unlinkat(dirfd(proc_cwd), core_basename, /*unlink file*/0);
+    }
+    return -1;
 }
 
 static bool dump_fd_info(const char *dest_filename, char *source_filename, int source_base_ofs, uid_t uid, gid_t gid)

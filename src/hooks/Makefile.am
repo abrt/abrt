@@ -30,12 +30,14 @@ abrt_hook_ccpp_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
+    $(LIBSELINUX_CFLAGS) \
     -Wall -Wwrite-strings \
     -Werror \
     -D_GNU_SOURCE
 abrt_hook_ccpp_LDADD = \
     ../lib/libabrt.la \
-    $(LIBREPORT_LIBS)
+    $(LIBREPORT_LIBS) \
+    $(LIBSELINUX_LIBS)
 
 pyhook_PYTHON = abrt_exception_handler.py abrt.pth
 EXTRA_DIST = abrt_exception_handler.py.in \

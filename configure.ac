@@ -71,6 +71,8 @@ PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([SATYR], [satyr])
 PKG_CHECK_MODULES([LIBREPORT], [libreport])
 PKG_CHECK_MODULES([LIBREPORT_GTK], [libreport-gtk])
+PKG_CHECK_MODULES([LIBSELINUX], [libselinux])
+
 # Just PKG_CHECK_MODULES([PYTHON], [python]) works only with python2.7+
 # Below, if python is not found, we set up for python2.6 w/o checking:
 PKG_CHECK_MODULES([PYTHON], [python],,[
