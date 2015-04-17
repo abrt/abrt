@@ -33,10 +33,12 @@ abrt_hook_ccpp_CPPFLAGS = \
     -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
+    $(LIBSELINUX_CFLAGS) \
     -D_GNU_SOURCE
 abrt_hook_ccpp_LDADD = \
     ../lib/libabrt.la \
-    $(LIBREPORT_LIBS)
+    $(LIBREPORT_LIBS) \
+    $(LIBSELINUX_LIBS)
 
 # abrt-merge-pstoreoops
 abrt_merge_pstoreoops_SOURCES = \

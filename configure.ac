@@ -106,6 +106,7 @@ PKG_CHECK_MODULES([LIBREPORT_GTK], [libreport-gtk])
 PKG_CHECK_MODULES([POLKIT], [polkit-gobject-1])
 PKG_CHECK_MODULES([GIO], [gio-2.0])
 PKG_CHECK_MODULES([SATYR], [satyr])
+PKG_CHECK_MODULES([LIBSELINUX], [libselinux])
 
 PKG_PROG_PKG_CONFIG
 AC_ARG_WITH([systemdsystemunitdir],
