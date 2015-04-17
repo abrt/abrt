@@ -164,16 +164,13 @@ static DIR *open_cwd(pid_t pid)
     return cwd;
 }
 
-static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_values)
+static int open_user_core(uid_t uid, uid_t fsuid, gid_t fsgid, pid_t pid, char **percent_values)
 {
     proc_cwd = open_cwd(pid);
     if (proc_cwd == NULL)
         return -1;
 
-    struct passwd* pw = getpwuid(uid);
-    gid_t gid = pw ? pw->pw_gid : uid;
-    //log("setting uid: %i gid: %i", uid, gid);
-    xsetegid(gid);
+    xsetegid(fsgid);
     xseteuid(fsuid);
 
     if (strcmp(core_basename, "core") == 0)
@@ -544,6 +541,10 @@ int main(int argc, char** argv)
     if (tmp_fsuid < 0)
         perror_msg_and_die("Can't parse 'Uid: line' in /proc/%lu/status", (long)pid);
 
+    const int fsgid = get_fsgid(proc_pid_status);
+    if (fsgid < 0)
+        error_msg_and_die("Can't parse 'Gid: line' in /proc/%lu/status", (long)pid);
+
     int suid_policy = dump_suid_policy();
     if (tmp_fsuid != uid)
     {
@@ -562,7 +563,7 @@ int main(int argc, char** argv)
     int user_core_fd = -1;
     if (setting_MakeCompatCore && ulimit_c != 0)
         /* note: checks "user_pwd == NULL" inside; updates core_basename */
-        user_core_fd = open_user_core(uid, fsuid, pid, &argv[1]);
+        user_core_fd = open_user_core(uid, fsuid, fsgid, pid, &argv[1]);
 
     if (executable == NULL)
     {
