@@ -131,6 +131,7 @@ static off_t copyfd_sparse(int src_fd, int dst_fd1, int dst_fd2, off_t size2)
 
 /* Global data */
 static char *user_pwd;
+static DIR *proc_cwd;
 static struct dump_dir *dd;
 
 /*
@@ -150,22 +151,24 @@ static struct dump_dir *dd;
  */
 static const char percent_specifiers[] = "%scpugtePi";
 static char *core_basename = (char*) "core";
-/*
- * Used for error messages only.
- * It is either the same as core_basename if it is absolute,
- * or $PWD/core_basename.
- */
-static char *full_core_basename;
+
+static DIR *open_cwd(pid_t pid)
+{
+    char buf[sizeof("/proc/%lu/cwd") + sizeof(long)*3];
+    sprintf(buf, "/proc/%lu/cwd", (long)pid);
+
+    DIR *cwd = opendir(buf);
+    if (cwd == NULL)
+        perror_msg("Can't open process's CWD for CompatCore");
+
+    return cwd;
+}
 
 static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_values)
 {
-    errno = 0;
-    if (user_pwd == NULL
-     || chdir(user_pwd) != 0
-    ) {
-        perror_msg("Can't cd to '%s'", user_pwd);
+    proc_cwd = open_cwd(pid);
+    if (proc_cwd == NULL)
         return -1;
-    }
 
     struct passwd* pw = getpwuid(uid);
     gid_t gid = pw ? pw->pw_gid : uid;
@@ -228,15 +231,10 @@ static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_valu
         }
     }
 
-    full_core_basename = core_basename;
-    if (core_basename[0] != '/')
+    if (g_need_nonrelative && core_basename[0] != '/')
     {
-        if (g_need_nonrelative)
-        {
-            error_msg("Current suid_dumpable policy prevents from saving core dumps according to relative core_pattern");
-            return -1;
-        }
-        core_basename = concat_path_file(user_pwd, core_basename);
+        error_msg("Current suid_dumpable policy prevents from saving core dumps according to relative core_pattern");
+        return -1;
     }
 
     /* Open (create) compat core file.
@@ -272,7 +270,7 @@ static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_valu
     struct stat sb;
     errno = 0;
     /* Do not O_TRUNC: if later checks fail, we do not want to have file already modified here */
-    int user_core_fd = open(core_basename, O_WRONLY | O_CREAT | O_NOFOLLOW | g_user_core_flags, 0600); /* kernel makes 0600 too */
+    int user_core_fd = openat(dirfd(proc_cwd), core_basename, O_WRONLY | O_CREAT | O_NOFOLLOW | g_user_core_flags, 0600); /* kernel makes 0600 too */
     xsetegid(0);
     xseteuid(0);
     if (user_core_fd < 0
@@ -282,15 +280,15 @@ static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_valu
      || sb.st_uid != fsuid
     ) {
         if (user_core_fd < 0)
-            perror_msg("Can't open '%s'", full_core_basename);
+            perror_msg("Can't open '%s' at '%s'", core_basename, user_pwd);
         else
-            perror_msg("'%s' is not a regular file with link count 1 owned by UID(%d)", full_core_basename, fsuid);
+            perror_msg("'%s' at '%s' is not a regular file with link count 1 owned by UID(%d)", core_basename, user_pwd, fsuid);
         return -1;
     }
     if (ftruncate(user_core_fd, 0) != 0) {
         /* perror first, otherwise unlink may trash errno */
-        perror_msg("Can't truncate '%s' to size 0", full_core_basename);
-        unlink(core_basename);
+        perror_msg("Can't truncate '%s' at '%s' to size 0", core_basename, user_pwd);
+        unlinkat(dirfd(proc_cwd), core_basename, /*unlink file*/0);
         return -1;
     }
 
@@ -311,10 +309,8 @@ static int create_or_die(const char *filename, int user_core_fd)
     if (dd)
         dd_delete(dd);
     if (user_core_fd >= 0)
-    {
-        xchdir(user_pwd);
-        unlink(core_basename);
-    }
+        unlinkat(dirfd(proc_cwd), core_basename, /*unlink file*/0);
+
     errno = sv_errno;
     perror_msg_and_die("Can't open '%s'", filename);
 }
@@ -342,27 +338,34 @@ static void create_core_backtrace(pid_t tid, const char *executable, int signal_
 
 static int create_user_core(int user_core_fd, pid_t pid, off_t ulimit_c)
 {
+    int err = 1;
     if (user_core_fd >= 0)
     {
         off_t core_size = copyfd_size(STDIN_FILENO, user_core_fd, ulimit_c, COPYFD_SPARSE);
         if (fsync(user_core_fd) != 0 || close(user_core_fd) != 0 || core_size < 0)
         {
             /* perror first, otherwise unlink may trash errno */
-            perror_msg("Error writing '%s'", full_core_basename);
-            xchdir(user_pwd);
-            unlink(core_basename);
-            return 1;
+            perror_msg("Error writing '%s' at '%s'", core_basename, user_pwd);
+            unlinkat(dirfd(proc_cwd), core_basename, /*only files*/0);
+            goto finito;
         }
         if (ulimit_c == 0 || core_size > ulimit_c)
         {
-            xchdir(user_pwd);
-            unlink(core_basename);
-            return 1;
+            unlinkat(dirfd(proc_cwd), core_basename, /*only files*/0);
+            goto finito;
         }
-        log_notice("Saved core dump of pid %lu to %s (%llu bytes)", (long)pid, full_core_basename, (long long)core_size);
+        log_notice("Saved core dump of pid %lu to %s at '%s' (%llu bytes)", (long)pid, core_basename, user_pwd, (long long)core_size);
+    }
+    err = 0;
+
+finito:
+    if (proc_cwd != NULL)
+    {
+        closedir(proc_cwd);
+        proc_cwd = NULL;
     }
 
-    return 0;
+    return err;
 }
 
 static int test_configuration(bool setting_SaveFullCore, bool setting_CreateCoreBacktrace)
@@ -418,6 +421,7 @@ int main(int argc, char** argv)
     if (fd > 2)
         close(fd);
 
+    int err = 1;
     logmode = LOGMODE_JOURNAL;
 
     /* Parse abrt.conf */
@@ -621,7 +625,8 @@ int main(int argc, char** argv)
             error_msg_and_die("Error saving '%s'", path);
         }
         log_notice("Saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
-        return 0;
+        err = 0;
+        goto cleanup_and_exit;
     }
 
     unsigned path_len = snprintf(path, sizeof(path), "%s/ccpp-%s-%lu.new",
@@ -770,7 +775,7 @@ int main(int argc, char** argv)
             {
                 error_msg("Error saving '%s'", path);
 
-                goto error_exit;
+                goto cleanup_and_exit;
             }
         }
 
@@ -799,7 +804,7 @@ int main(int argc, char** argv)
                  * but it does not log file name */
                 error_msg("Error writing '%s'", path);
 
-                goto error_exit;
+                goto cleanup_and_exit;
             }
             if (user_core_fd >= 0
                 /* error writing user coredump? */
@@ -809,8 +814,7 @@ int main(int argc, char** argv)
                 )
             ) {
                 /* nuke it (silently) */
-                xchdir(user_pwd);
-                unlink(core_basename);
+                unlinkat(dirfd(proc_cwd), core_basename, /*unlink file*/0);
             }
         }
         else
@@ -856,7 +860,7 @@ int main(int argc, char** argv)
                 {
                     error_msg("Error saving '%s'", path);
 
-                    goto error_exit;
+                    goto cleanup_and_exit;
                 }
                 close(src_fd);
             }
@@ -921,21 +925,23 @@ int main(int argc, char** argv)
             trim_problem_dirs(g_settings_dump_location, maxsize * (double)(1024*1024), path);
         }
 
-        return 0;
+        err = 0;
+    }
+    else
+    {
+        /* We didn't create abrt dump, but may need to create compat coredump */
+        return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
-    /* We didn't create abrt dump, but may need to create compat coredump */
-    return create_user_core(user_core_fd, pid, ulimit_c);
-
-error_exit:
+cleanup_and_exit:
     if (dd)
         dd_delete(dd);
 
     if (user_core_fd >= 0)
-    {
-        xchdir(user_pwd);
-        unlink(core_basename);
-    }
+        unlinkat(dirfd(proc_cwd), core_basename, /*only files*/0);
 
-    xfunc_die();
+    if (proc_cwd != NULL)
+        closedir(proc_cwd);
+
+    return err;
 }
