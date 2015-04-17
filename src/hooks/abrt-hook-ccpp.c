@@ -218,23 +218,27 @@ static char* get_rootdir(pid_t pid)
     return malloc_readlink(buf);
 }
 
-static int get_fsuid(void)
+static int get_proc_fs_id(char type)
 {
-    int real, euid, saved;
-    /* if we fail to parse the uid, then make it root only readable to be safe */
-    int fs_uid = 0;
+    const char *scanf_format = "%*cid:\t%d\t%d\t%d\t%d\n";
+    char id_type[] = "_id";
+    id_type[0] = type;
+
+    int real, e_id, saved;
+    int fs_id = 0;
 
     char *line = proc_pid_status; /* never NULL */
     for (;;)
     {
-        if (strncmp(line, "Uid", 3) == 0)
+        if (strncmp(line, id_type, 3) == 0)
         {
-            int n = sscanf(line, "Uid:\t%d\t%d\t%d\t%d\n", &real, &euid, &saved, &fs_uid);
+            int n = sscanf(line, scanf_format, &real, &e_id, &saved, &fs_id);
             if (n != 4)
             {
-                perror_msg_and_die("Can't parse Uid: line");
+                perror_msg_and_die("Can't parse %cid: line", type);
             }
-            break;
+
+            return fs_id;
         }
         line = strchr(line, '\n');
         if (!line)
@@ -242,7 +246,17 @@ static int get_fsuid(void)
         line++;
     }
 
-    return fs_uid;
+    perror_msg_and_die("Failed to get file system %cID of the crashed process", type);
+}
+
+static int get_fsuid(void)
+{
+    return get_proc_fs_id(/*UID*/'U');
+}
+
+static int get_fsgid(void)
+{
+    return get_proc_fs_id(/*GID*/'G');
 }
 
 static int dump_suid_policy()
@@ -278,10 +292,9 @@ static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_valu
     if (proc_cwd == NULL)
         return -1;
 
-    struct passwd* pw = getpwuid(uid);
-    gid_t gid = pw ? pw->pw_gid : uid;
-    //log("setting uid: %i gid: %i", uid, gid);
-    xsetegid(gid);
+    errno = 0;
+
+    xsetegid(get_fsgid());
     xseteuid(fsuid);
 
     if (strcmp(core_basename, "core") == 0)
