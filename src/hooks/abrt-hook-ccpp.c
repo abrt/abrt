@@ -32,18 +32,23 @@
  */
 #define IGNORE_RESULT(func_call) do { if (func_call) /* nothing */; } while (0)
 
-static char* malloc_readlink(const char *linkname)
+static char* malloc_readlinkat(int dir_fd, const char *linkname)
 {
     char buf[PATH_MAX + 1];
     int len;
 
-    len = readlink(linkname, buf, sizeof(buf)-1);
+    len = readlinkat(dir_fd, linkname, buf, sizeof(buf)-1);
     if (len >= 0)
     {
         buf[len] = '\0';
         return xstrdup(buf);
     }
     return NULL;
+}
+
+static char* malloc_readlink(const char *linkname)
+{
+    return malloc_readlinkat(AT_FDCWD, linkname);
 }
 
 /* Custom version of copyfd_xyz,
@@ -456,6 +461,156 @@ static int create_or_die(const char *filename)
     perror_msg_and_die("Can't open '%s'", filename);
 }
 
+static char *get_dev_log_socket_inode(void)
+{
+    char *dev_log_path = xstrdup("/dev/log");
+    char *tmp = NULL;
+    while ((tmp = malloc_readlink(dev_log_path)) != NULL)
+    {
+        free(dev_log_path);
+        dev_log_path = tmp;
+    }
+
+    if (errno != EINVAL)
+    {
+        free(dev_log_path);
+        return NULL;
+    }
+
+    FILE *fpnu = fopen("/proc/net/unix", "r");
+    if (fpnu == NULL)
+        return NULL;
+
+    /* skip the first line with column headers */
+    int c = 0;
+    while ((c = fgetc(fpnu)) != EOF && c != '\n')
+        ;
+
+    char *socket_inode = NULL;
+    long inode_pos = 0;
+    while (ferror(fpnu) == 0)
+    {
+        int field = 0;
+        while ((c = fgetc(fpnu)) != EOF && c != '\n')
+        {
+            if (c != ' ')
+                continue;
+
+            ++field;
+            if (field == 6)
+                inode_pos = ftell(fpnu);
+            else if (field == 7)
+                break;
+        }
+
+        if (c != '\n' && field == 7)
+        {
+            /* inode_pos is the white space right before the inode value */
+            const long inode_len = (ftell(fpnu) - inode_pos) - 1;
+
+            const char *path_iter = dev_log_path;
+            while ((c = fgetc(fpnu)) != EOF && c != '\n' && c == *path_iter)
+                ++path_iter;
+
+            if (c == '\n' && path_iter[0] == '\0')
+            {
+                socket_inode = xmalloc(inode_len + 1);
+
+                if (fseek(fpnu, inode_pos, SEEK_SET))
+                    goto cleanup;
+
+                if (fread(socket_inode, 1, inode_len, fpnu) != inode_len)
+                {
+                    free(socket_inode);
+                    socket_inode = NULL;
+                }
+
+                goto cleanup;
+            }
+        }
+
+        while ((c = fgetc(fpnu)) != EOF && c != '\n')
+            ;
+    }
+
+cleanup:
+    fclose(fpnu);
+    free(dev_log_path);
+
+    return socket_inode;
+}
+
+/* Like other glibc functions this one also return 0 on logical true, positive
+ * number on logical false and negative number on error. */
+static int process_is_syslog(pid_t pid)
+{
+    char *socket_inode = NULL;
+    int r = 1;
+
+    char proc_pid_fd_path[sizeof("/proc/%lu/fd") + sizeof(long)*3];
+    sprintf(proc_pid_fd_path, "/proc/%lu/fd", (long)pid);
+
+    DIR *proc_fd_dir = opendir(proc_pid_fd_path);
+    if (!proc_fd_dir)
+        goto cleanup;
+
+    while (1)
+    {
+        errno = 0;
+        struct dirent *dent = readdir(proc_fd_dir);
+        if (dent == NULL)
+        {
+            if (errno > 0)
+            {
+                r = -errno;
+                goto cleanup;
+            }
+            break;
+        }
+        else if (dot_or_dotdot(dent->d_name))
+            continue;
+
+        char *fdname = malloc_readlinkat(dirfd(proc_fd_dir), dent->d_name);
+
+        if (prefixcmp(fdname, /*prefix*/"socket:[") == 0)
+        {
+            if (socket_inode == NULL)
+            {
+                /* get_dev_log_socket_inode() returns NULL on errors */
+                socket_inode = get_dev_log_socket_inode();
+
+                if (socket_inode == NULL)
+                {
+                    free(fdname);
+                    r = -1;
+                    break;
+                }
+
+                /* Abuse trailing '\0' and replace it with ']'. But then we have to
+                 * use a function which does not require a null-terminated string. */
+                socket_inode[strlen(socket_inode)] = ']';
+            }
+
+            const char *fdsocket = fdname + strlen("socket:[");
+            /* Only the second argument must be a null-terminated string */
+            if (prefixcmp(socket_inode, /*prefix*/fdsocket) == 0)
+            {
+                free(fdname);
+                r = 0;
+                break;
+            }
+        }
+
+        free(fdname);
+    }
+
+cleanup:
+    free(socket_inode);
+    closedir(proc_fd_dir);
+
+    return r;
+}
+
 int main(int argc, char** argv)
 {
     /* Kernel starts us with all fd's closed.
@@ -491,8 +646,18 @@ int main(int argc, char** argv)
         }
     }
 
-    openlog("abrt", LOG_PID, LOG_DAEMON);
-    logmode = LOGMODE_SYSLOG;
+    const char *pid_str = argv[3];
+    pid_t pid = xatoi_positive(argv[3]);
+
+    if (process_is_syslog(pid) == 0)
+    {
+        logmode = LOGMODE_STDIO;
+    }
+    else
+    {
+        openlog("abrt", LOG_PID, LOG_DAEMON);
+        logmode = LOGMODE_SYSLOG;
+    }
 
     /* Parse abrt.conf */
     load_abrt_conf();
@@ -522,8 +687,6 @@ int main(int argc, char** argv)
         /* set to max possible >0 value */
         ulimit_c = ~((off_t)1 << (sizeof(off_t)*8-1));
     }
-    const char *pid_str = argv[3];
-    pid_t pid = xatoi_positive(argv[3]);
     uid_t uid = xatoi_positive(argv[4]);
     if (errno || pid <= 0)
     {
