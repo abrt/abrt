@@ -222,13 +222,18 @@ static char* get_rootdir(pid_t pid)
     return malloc_readlink(buf);
 }
 
-static int get_fsuid(pid_t pid)
+static int get_proc_fs_id(pid_t pid, char type)
 {
+    const char *scanf_format = "%*cid:\t%d\t%d\t%d\t%d\n";
+    char id_type[] = "_id";
+    id_type[0] = type;
+
+    int real, e_id, saved;
+    int fs_id = 0;
+
     char filename[sizeof("/proc/%lu/status") + sizeof(long)*3];
     sprintf(filename, "/proc/%lu/status", (long)pid);
-    int real, euid, saved, fs_uid = 0; //if we fail to parse the uid, then make it root only readable to be safe
     FILE *file = fopen(filename, "r");
-
     if (!file)
         /* rather bail out than create core with wrong permission */
         perror_msg_and_die("Can't open %s", filename);
@@ -236,19 +241,31 @@ static int get_fsuid(pid_t pid)
     char line[128];
     while (fgets(line, sizeof(line), file) != NULL)
     {
-        if (strncmp(line, "Uid", 3) == 0)
+        if (strncmp(line, id_type, 3) == 0)
         {
-            int n = sscanf(line, "Uid:\t%d\t%d\t%d\t%d\n",&real, &euid, &saved, &fs_uid);
+            int n = sscanf(line, scanf_format, &real, &e_id, &saved, &fs_id);
             if (n != 4)
             {
-                perror_msg_and_die("Can't parse %s", filename);
+                perror_msg_and_die("Can't parse %cid: line in %s", type, filename);
             }
-            break;
+
+            fclose(file);
+            return fs_id;
         }
     }
     fclose(file);
 
-    return fs_uid;
+    perror_msg_and_die("Failed to get file system %cID of the crashed process", type);
+}
+
+static int get_fsuid(pid_t pid)
+{
+    return get_proc_fs_id(pid, /*UID*/'U');
+}
+
+static int get_fsgid(pid_t pid)
+{
+    return get_proc_fs_id(pid, /*GID*/'G');
 }
 
 static int dump_suid_policy()
@@ -284,10 +301,9 @@ static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_valu
     if (proc_cwd == NULL)
         return -1;
 
-    struct passwd* pw = getpwuid(uid);
-    gid_t gid = pw ? pw->pw_gid : uid;
-    //log("setting uid: %i gid: %i", uid, gid);
-    xsetegid(gid);
+    errno = 0;
+
+    xsetegid(get_fsgid(pid));
     xseteuid(fsuid);
 
     if (strcmp(core_basename, "core") == 0)
