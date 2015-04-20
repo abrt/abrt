@@ -861,6 +861,9 @@ int main(int argc, char** argv)
         }
     }
 
+    /* If PrivateReports is on, root owns all problem directories */
+    const uid_t dduid = g_settings_privatereports ? 0 : fsuid;
+
     /* Open a fd to compat coredump, if requested and is possible */
     if (setting_MakeCompatCore && ulimit_c != 0)
         /* note: checks "user_pwd == NULL" inside; updates core_basename */
@@ -959,19 +962,19 @@ int main(int argc, char** argv)
         return 1;
     }
 
-
-    /* use fsuid instead of uid, so we don't expose any sensitive
+    /* use dduid (either fsuid or 0) instead of uid, so we don't expose any
      * information of suided app in /var/spool/abrt
      *
      * dd_create_skeleton() creates a new directory and leaves ownership to
      * the current user, hence, we have to call dd_reset_ownership() after the
      * directory is populated.
      */
-    dd = dd_create_skeleton(path, fsuid, 0640, /*no flags*/0);
+    dd = dd_create_skeleton(path, dduid, 0640, /*no flags*/0);
     if (dd)
     {
         char *rootdir = get_rootdir(pid);
 
+        /* This function uses fsuid only for its value. The function stores fsuid in a file name 'uid'*/
         dd_create_basic_files(dd, fsuid, NULL);
 
         char source_filename[sizeof("/proc/%lu/somewhat_long_name") + sizeof(long)*3];

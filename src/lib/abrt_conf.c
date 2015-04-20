@@ -26,6 +26,7 @@ char *        g_settings_dump_location = NULL;
 bool          g_settings_delete_uploaded = 0;
 bool          g_settings_autoreporting = 0;
 char *        g_settings_autoreporting_event = NULL;
+bool          g_settings_privatereports = true;
 
 void free_abrt_conf_data()
 {
@@ -91,6 +92,13 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     }
     else
         g_settings_autoreporting_event = xstrdup("submit_uReport");
+
+    value = get_map_string_item_or_NULL(settings, "PrivateReports");
+    if (value)
+    {
+        g_settings_privatereports = string_to_bool(value);
+        remove_map_string_item(settings, "PrivateReports");
+    }
 
     GHashTableIter iter;
     const char *name;

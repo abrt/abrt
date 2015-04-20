@@ -58,6 +58,8 @@ extern bool          g_settings_delete_uploaded;
 extern bool          g_settings_autoreporting;
 #define g_settings_autoreporting_event abrt_g_settings_autoreporting_event
 extern char *        g_settings_autoreporting_event;
+#define g_settings_privatereports abrt_g_settings_privatereports
+extern bool          g_settings_privatereports;
 
 
 #define load_abrt_conf abrt_load_abrt_conf

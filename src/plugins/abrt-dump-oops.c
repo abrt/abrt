@@ -139,6 +139,14 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
         mode = 0640;
         my_euid = geteuid();
     }
+    if (g_settings_privatereports)
+    {
+        if (world_readable_dump)
+            log("Not going to make dump directories world readable because PrivateReports is on");
+
+        mode = 0640;
+        my_euid = 0;
+    }
 
     pid_t my_pid = getpid();
     unsigned errors = 0;
