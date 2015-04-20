@@ -1,90 +1,263 @@
-#!/bin/sh
+#!/usr/bin/python -u
 # Called by abrtd when a new file is noticed in upload directory.
 # The task of this script is to unpack the file and move
 # problem data found in it to abrtd spool directory.
-#
-# Usage: abrt-handle-upload [-d] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME
-#
-#   -d             - deletes an uploaded archive
-#   ABRT_SPOOL_DIR - a directory where valid uploaded archives are unpacked to
-#   UPLOAD_DIR     - a directory where uploaded archives are stored in
-#   FILENAME       - an uploaded archive file name
 
-#echo "Started: $0 $*"
+import sys
+import stat
+import os
+import getopt
+import tempfile
+import shutil
+import datetime
+import grp
 
-print_clean_and_die()
-{
-    printf "%s\n" "$*"
-    #echo delete_on_exit="$delete_on_exit"
-    test "$delete_on_exit" && rm -rf -- $delete_on_exit
-    exit $die_exitcode
-}
+from reportclient import set_verbosity, error_msg_and_die, error_msg, log
 
-die_exitcode=1
-delete_on_exit=""
+GETTEXT_PROGNAME = "abrt"
+import locale
+import gettext
 
-delete_archive=false
-if test x"$1" == x"-d"; then delete_archive=true; shift; fi
+_ = lambda x: gettext.lgettext(x)
 
-abrt_dir="$1"
-upload_dir="$2"
-archive="$3"
+def init_gettext():
+    try:
+        locale.setlocale(locale.LC_ALL, "")
+    except locale.Error:
+        os.environ['LC_ALL'] = 'C'
+        locale.setlocale(locale.LC_ALL, "")
+    # Defeat "AttributeError: 'module' object has no attribute 'nl_langinfo'"
+    try:
+        gettext.bind_textdomain_codeset(GETTEXT_PROGNAME, locale.nl_langinfo(locale.CODESET))
+    except AttributeError:
+        pass
+    gettext.bindtextdomain(GETTEXT_PROGNAME, '/usr/share/locale')
+    gettext.textdomain(GETTEXT_PROGNAME)
 
-test -d "$abrt_dir" || print_clean_and_die "Not a directory: '$abrt_dir'"
-test -d "$upload_dir" || print_clean_and_die "Not a directory: '$upload_dir'"
-test x"${archive#/}" != x"$archive" && print_clean_and_die "Skipping: '$archive' (starts with slash)"
-test x"${archive#.}" != x"$archive" && print_clean_and_die "Skipping: '$archive' (starts with dot)"
-test x"${archive#*..}" != x"$archive" && print_clean_and_die "Skipping: '$archive' (contains ..)"
-test x"${archive#* }" != x"$archive" && print_clean_and_die "Skipping: '$archive' (contains space)"
-# Note: next line has a tab!
-test x"${archive#*	}" != x"$archive" && print_clean_and_die "Skipping: '$archive' (contains tab)"
 
-cd -- "$upload_dir" || print_clean_and_die "Can't chdir to '$upload_dir'"
+import problem
 
-unpacker=""
-test x"${archive%.tar.gz}" != x"$archive" && unpacker="gunzip"
-test x"${archive%.tar.bz2}" != x"$archive" && unpacker="bunzip2"
-test x"${archive%.tar.xz}" != x"$archive" && unpacker="unxz"
+def write_str_to(filename, s, uid, gid, mode):
+    fd = os.open(filename, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, mode)
+    if fd >= 0:
+        os.fchown(fd, uid, gid)
+        os.write(fd, s)
+        os.close(fd)
 
-test "$unpacker" || print_clean_and_die "Unknown file type: '$archive'"
 
-workingdir=`mktemp -d "abrt_handle_upload.XXXXXXXXXX" --tmpdir=/tmp` || print_clean_and_die "Can't create working directory"
-delete_on_exit="$workingdir"
+def validate_transform_move_and_notify(uploaded_dir_path, problem_dir_path, dest=None):
+    fsuid = 0
+    fsgid = 0
 
-tempdir="$workingdir/remote.`date +%Y-%m-%d-%H:%M:%S.%N`.$$"
-working_archive="$workingdir/$archive"
+    try:
+        gabrt = grp.getgrnam("abrt")
+        fsgid = gabrt.gr_gid
+    except KeyError as ex:
+        error_msg("Failed to get GID of 'abrt' (using 0 instead): {0}'".format(str(ex)))
 
-if $delete_archive; then
-    mv -- "$archive" "$working_archive" || print_clean_and_die "Can't move '$archive' to '$working_archive'"
-else
-    cp -- "$archive" "$working_archive" || print_clean_and_die "Can't copy '$archive' to '$working_archive'"
-fi
+    try:
+        # give the uploaded directory to 'root:abrt' or 'root:root'
+        os.chown(uploaded_dir_path, fsuid, fsgid)
+        # set the right permissions for this machine
+        # (allow the owner and the group to access problem elements,
+        #  the default dump dir mode lacks x bit for both)
+        os.chmod(uploaded_dir_path, 0640 | stat.S_IXUSR | stat.S_IXGRP)
 
-$unpacker -t -- "$working_archive" || print_clean_and_die "Verification error on '$archive'"
+        # sanitize problem elements
+        for item in os.listdir(uploaded_dir_path):
+            apath = os.path.join(uploaded_dir_path, item)
+            if os.path.islink(apath):
+                # remove symbolic links
+                os.remove(apath)
+            elif os.path.isdir(apath):
+                # remove directories
+                shutil.rmtree(apath)
+            elif os.path.isfile(apath):
+                # set file ownership to 'root:abrt' or 'root:root'
+                os.chown(apath, fsuid, fsgid)
+                # set the right file permissions for this machine
+                os.chmod(apath, 0640)
+            else:
+                # remove things that are neither files, symlinks nor directories
+                os.remove(apath)
+    except OSError as ex:
+        error_msg("Removing uploaded dir '{0}': '{1}'".format(uploaded_dir_path, str(ex)))
+        try:
+            shutil.rmtree(uploaded_dir_path)
+        except OSError as ex2:
+            error_msg_and_die("Failed to clean up dir '{0}': '{1}'".format(uploaded_dir_path, str(ex2)))
+        return
 
-echo "Unpacking '$archive'"
-mkdir "$tempdir" || print_clean_and_die "Can't create '$tempdir' directory"
-$unpacker <"$working_archive" | tar xf - -C "$tempdir" || print_clean_and_die "Can't unpack '$archive'"
+    # overwrite remote if it exists
+    remote_path = os.path.join(uploaded_dir_path, "remote")
+    write_str_to(remote_path, "1", fsuid, fsgid, 0640)
 
-# The archive can contain either plain dump files
-# or one or more complete problem data directories.
-# Checking second possibility first.
-if test -f "$tempdir/analyzer" && test -f "$tempdir/time" && test -f "$tempdir/uid"; then
-    printf "1" >"$tempdir/remote"
-    mv -- "$tempdir" "$abrt_dir"
-else
-    (
-    cd -- "$tempdir" || exit
-    for d in *; do
-        test -d "$d" || continue
-        printf "1" >"$d/remote"
-        dst="$abrt_dir/$d"
-        test -e "$dst" && dst="$abrt_dir/$d.$$"
-        test -e "$dst" && continue
-        mv -- "$d" "$dst"
-    done
-    )
-fi
+    # abrtd would increment count value and abrt-server refuses to process
+    # problem directories containing 'count' element when PrivateReports is on.
+    count_path = os.path.join(uploaded_dir_path, "count")
+    if os.path.exists(count_path):
+        # overwrite remote_count if it exists
+        remote_count_path = os.path.join(uploaded_dir_path, "remote_count")
+        os.rename(count_path, remote_count_path)
 
-die_exitcode=0
-print_clean_and_die "'$archive' processed successfully"
+    if not dest:
+        dest = problem_dir_path
+
+    shutil.move(uploaded_dir_path, dest)
+
+
+if __name__ == "__main__":
+
+    # Helper: exit with cleanup
+    die_exitcode = 1
+    delete_on_exit = None
+    def print_clean_and_die(fmt, *args):
+        sys.stderr.write("%s\n" % (fmt % args))
+        if delete_on_exit:
+            shutil.rmtree(delete_on_exit, True) # True: ignore_errors
+        sys.exit(die_exitcode)
+
+    # localization
+    init_gettext()
+
+    verbose = 0
+    ABRT_VERBOSE = os.getenv("ABRT_VERBOSE")
+    if ABRT_VERBOSE:
+        try:
+            verbose = int(ABRT_VERBOSE)
+        except:
+            pass
+
+    progname = os.path.basename(sys.argv[0])
+    help_text = _(
+        "Usage: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME"
+      "\n"
+      "\n   -v             - Verbose"
+      "\n   -d             - Delete uploaded archive"
+      "\n   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to"
+      "\n   UPLOAD_DIR     - Directory where uploaded archives are stored"
+      "\n   FILENAME       - Uploaded archive file name"
+      "\n"
+    ) % progname
+
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "vdh", ["help"])
+    except getopt.GetoptError as err:
+        error_msg(err)  # prints something like "option -a not recognized"
+        error_msg_and_die(help_text)
+
+    delete_archive = False
+    for opt, arg in opts:
+        if opt in ("-h", "--help"):
+            print help_text
+            sys.exit(0)
+        if opt == "-v":
+            verbose += 1
+        if opt == "-d":
+            delete_archive = True
+
+    set_verbosity(verbose)
+
+    if len(args) < 3:
+        error_msg_and_die(help_text)
+
+    abrt_dir = args[0]
+    upload_dir = args[1]
+    archive = args[2]
+
+    if not os.path.isdir(abrt_dir):
+        error_msg_and_die(_("Not a directory: '{0}'").format(abrt_dir))
+
+    if not os.path.isdir(upload_dir):
+        error_msg_and_die(_("Not a directory: '{0}'").format(upload_dir))
+
+    if archive[0] == "/":
+        error_msg_and_die(_("Skipping: '{0}' (starts with slash)").format(archive))
+
+    if archive[0] == ".":
+        error_msg_and_die(_("Skipping: '{0}' (starts with dot)").format(archive))
+
+    if ".." in archive:
+        error_msg_and_die(_("Skipping: '{0}' (contains ..)").format(archive))
+
+    if " " in archive:
+        error_msg_and_die(_("Skipping: '{0}' (contains space)").format(archive))
+
+    if "\t" in archive:
+        error_msg_and_die(_("Skipping: '{0}' (contains tab)").format(archive))
+
+    try:
+        os.chdir(upload_dir)
+    except OSError:
+        error_msg_and_die(_("Can't change directory to '{0}'").format(upload_dir))
+
+    if archive.endswith(".tar.gz"):
+        unpacker = "gunzip"
+    elif archive.endswith(".tgz"):
+        unpacker = "gunzip"
+    elif archive.endswith(".tar.bz2"):
+        unpacker = "bunzip2"
+    elif archive.endswith(".tar.xz"):
+        unpacker = "unxz"
+    else:
+        error_msg_and_die(_("Unknown file type: '{0}'").format(archive))
+
+    try:
+        working_dir = tempfile.mkdtemp(prefix="abrt_handle_upload.", dir="@LARGE_DATA_TMP_DIR@")
+    except OSError:
+        error_msg_and_die(_("Can't create working directory in '{0}'").format("@LARGE_DATA_TMP_DIR@"))
+    delete_on_exit = working_dir
+
+    try:
+        tempdir = working_dir + "/remote." + datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S.%f.") + str(os.getpid())
+        working_archive = working_dir + "/" + archive
+
+        if delete_archive:
+            try:
+                shutil.move(archive, working_archive)
+            except IOError:
+                print_clean_and_die(_("Can't move '{0}' to '{1}'").format(archive, working_archive))
+        else:
+            try:
+                shutil.copy(archive, working_archive)
+            except IOError:
+                print_clean_and_die(_("Can't copy '{0}' to '{1}'").format(archive, working_archive))
+
+        ex = os.spawnlp(os.P_WAIT, unpacker, unpacker, "-t", "--", working_archive)
+        if ex != 0:
+            print_clean_and_die(_("Verification error on '{0}'").format(archive))
+
+        log(_("Unpacking '{0}'").format(archive))
+        try:
+            os.mkdir(tempdir)
+        except OSError:
+            print_clean_and_die(_("Can't create '{0}' directory").format(tempdir))
+
+        ex = os.system(unpacker+" <"+working_archive+" | tar xf - -C "+tempdir)
+        if ex != 0:
+            print_clean_and_die(_("Can't unpack '{0}'").format(archive))
+
+        # The archive can contain either plain dump files
+        # or one or more complete problem data directories.
+        # Checking second possibility first.
+        if os.path.exists(tempdir+"/analyzer") and os.path.exists(tempdir+"/time"):
+            validate_transform_move_and_notify(tempdir, abrt_dir+"/"+os.path.basename(tempdir), dest=abrt_dir)
+        else:
+            for d in os.listdir(tempdir):
+                if not os.path.isdir(tempdir+"/"+d):
+                    continue
+                dst = abrt_dir+"/"+d
+                if os.path.exists(dst):
+                    dst += "."+str(os.getpid())
+                if os.path.exists(dst):
+                    continue
+                validate_transform_move_and_notify(tempdir+"/"+d, dst)
+
+        die_exitcode = 0
+        # This deletes working_dir (== delete_on_exit)
+        print_clean_and_die(_("'{0}' processed successfully").format(archive))
+
+    except:
+        if delete_on_exit:
+            shutil.rmtree(delete_on_exit, True) # True: ignore_errors
+        raise
