@@ -15,6 +15,7 @@
   with this program; if not, write to the Free Software Foundation, Inc.,
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include "problem_api.h"
 #include "libabrt.h"
 
 /* Maximal length of backtrace. */
@@ -153,7 +154,36 @@ static int run_post_create(const char *dirname)
         error_msg("Bad problem directory name '%s', should start with: '%s'", dirname, g_settings_dump_location);
         return 400; /* Bad Request */
     }
-    if (!dump_dir_accessible_by_uid(dirname, client_uid))
+    if (g_settings_privatereports)
+    {
+        struct stat statbuf;
+        if (lstat(dirname, &statbuf) != 0 || !S_ISDIR(statbuf.st_mode))
+        {
+            error_msg("Path '%s' isn't directory", dirname);
+            return 404; /* Not Found */
+        }
+        /* Get ABRT's group gid */
+        struct group *gr = getgrnam("abrt");
+        if (!gr)
+        {
+            error_msg("Group 'abrt' does not exist");
+            return 500;
+        }
+        if (statbuf.st_uid != 0 || !(statbuf.st_gid == 0 || statbuf.st_gid == gr->gr_gid) || statbuf.st_mode & 07)
+        {
+            error_msg("Problem directory '%s' isn't owned by root:abrt or others are not restricted from access", dirname);
+            return 403;
+        }
+        struct dump_dir *dd = dd_opendir(dirname, DD_OPEN_READONLY);
+        const bool complete = dd && problem_dump_dir_is_complete(dd);
+        dd_close(dd);
+        if (complete)
+        {
+            error_msg("Problem directory '%s' has already been processed", dirname);
+            return 403;
+        }
+    }
+    else if (!dump_dir_accessible_by_uid(dirname, client_uid))
     {
         if (errno == ENOTDIR)
         {
@@ -377,7 +407,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     /* No need to check the path length, as all variables used are limited,
      * and dd_create() fails if the path is too long.
      */
-    struct dump_dir *dd = dd_create(path, client_uid, DEFAULT_DUMP_DIR_MODE);
+    struct dump_dir *dd = dd_create(path, g_settings_privatereports ? 0 : client_uid, DEFAULT_DUMP_DIR_MODE);
     if (!dd)
     {
         error_msg_and_die("Error creating problem directory '%s'", path);
