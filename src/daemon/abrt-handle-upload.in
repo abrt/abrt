@@ -10,6 +10,7 @@ import getopt
 import tempfile
 import shutil
 import datetime
+import grp
 
 from reportclient import set_verbosity, error_msg_and_die, error_msg, log
 
@@ -36,11 +37,76 @@ def init_gettext():
 
 import problem
 
-def write_str_to(filename, s):
-    fd = os.open(filename, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, @DEFAULT_DUMP_DIR_MODE@ | stat.S_IROTH)
+def write_str_to(filename, s, uid, gid, mode):
+    fd = os.open(filename, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, mode)
     if fd >= 0:
+        os.fchown(fd, uid, gid)
         os.write(fd, s)
         os.close(fd)
+
+
+def validate_transform_move_and_notify(uploaded_dir_path, problem_dir_path, dest=None):
+    fsuid = 0
+    fsgid = 0
+
+    try:
+        gabrt = grp.getgrnam("abrt")
+        fsgid = gabrt.gr_gid
+    except KeyError as ex:
+        error_msg("Failed to get GID of 'abrt' (using 0 instead): {0}'".format(str(ex)))
+
+    try:
+        # give the uploaded directory to 'root:abrt' or 'root:root'
+        os.chown(uploaded_dir_path, fsuid, fsgid)
+        # set the right permissions for this machine
+        # (allow the owner and the group to access problem elements,
+        #  the default dump dir mode lacks x bit for both)
+        os.chmod(uploaded_dir_path, @DEFAULT_DUMP_DIR_MODE@ | stat.S_IXUSR | stat.S_IXGRP)
+
+        # sanitize problem elements
+        for item in os.listdir(uploaded_dir_path):
+            apath = os.path.join(uploaded_dir_path, item)
+            if os.path.islink(apath):
+                # remove symbolic links
+                os.remove(apath)
+            elif os.path.isdir(apath):
+                # remove directories
+                shutil.rmtree(apath)
+            elif os.path.isfile(apath):
+                # set file ownership to 'root:abrt' or 'root:root'
+                os.chown(apath, fsuid, fsgid)
+                # set the right file permissions for this machine
+                os.chmod(apath, @DEFAULT_DUMP_DIR_MODE@)
+            else:
+                # remove things that are neither files, symlinks nor directories
+                os.remove(apath)
+    except OSError as ex:
+        error_msg("Removing uploaded dir '{0}': '{1}'".format(uploaded_dir_path, str(ex)))
+        try:
+            shutil.rmtree(uploaded_dir_path)
+        except OSError as ex2:
+            error_msg_and_die("Failed to clean up dir '{0}': '{1}'".format(uploaded_dir_path, str(ex2)))
+        return
+
+    # overwrite remote if it exists
+    remote_path = os.path.join(uploaded_dir_path, "remote")
+    write_str_to(remote_path, "1", fsuid, fsgid, @DEFAULT_DUMP_DIR_MODE@)
+
+    # abrtd would increment count value and abrt-server refuses to process
+    # problem directories containing 'count' element when PrivateReports is on.
+    count_path = os.path.join(uploaded_dir_path, "count")
+    if os.path.exists(count_path):
+        # overwrite remote_count if it exists
+        remote_count_path = os.path.join(uploaded_dir_path, "remote_count")
+        os.rename(count_path, remote_count_path)
+
+    if not dest:
+        dest = problem_dir_path
+
+    shutil.move(uploaded_dir_path, dest)
+
+    problem.notify_new_path(problem_dir_path)
+
 
 if __name__ == "__main__":
 
@@ -177,21 +243,17 @@ if __name__ == "__main__":
         # or one or more complete problem data directories.
         # Checking second possibility first.
         if os.path.exists(tempdir+"/analyzer") and os.path.exists(tempdir+"/time"):
-            write_str_to(tempdir+"/remote", "1")
-            shutil.move(tempdir, abrt_dir)
-            problem.notify_new_path(abrt_dir+"/"+os.path.basename(tempdir))
+            validate_transform_move_and_notify(tempdir, abrt_dir+"/"+os.path.basename(tempdir), dest=abrt_dir)
         else:
             for d in os.listdir(tempdir):
                 if not os.path.isdir(tempdir+"/"+d):
                     continue
-                write_str_to(tempdir+"/"+d+"/remote", "1")
                 dst = abrt_dir+"/"+d
                 if os.path.exists(dst):
                     dst += "."+str(os.getpid())
                 if os.path.exists(dst):
                     continue
-                shutil.move(tempdir+"/"+d, dst)
-                problem.notify_new_path(dst)
+                validate_transform_move_and_notify(tempdir+"/"+d, dst)
 
         die_exitcode = 0
         # This deletes working_dir (== delete_on_exit)
