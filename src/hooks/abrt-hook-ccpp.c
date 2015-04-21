@@ -553,7 +553,7 @@ static bool dump_fd_info(const char *dest_filename, char *source_filename, int s
 /* Like xopen, but on error, unlocks and deletes dd and user core */
 static int create_or_die(const char *filename)
 {
-    int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0640);
+    int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL, 0640);
     if (fd >= 0)
     {
         IGNORE_RESULT(fchown(fd, dd->dd_uid, dd->dd_gid));
