@@ -374,7 +374,7 @@ user_core_fail:
 /* Like xopen, but on error, unlocks and deletes dd and user core */
 static int create_or_die(const char *filename, int user_core_fd)
 {
-    int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, DEFAULT_DUMP_DIR_MODE);
+    int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL, DEFAULT_DUMP_DIR_MODE);
     if (fd >= 0)
     {
         IGNORE_RESULT(fchown(fd, dd->dd_uid, dd->dd_gid));
