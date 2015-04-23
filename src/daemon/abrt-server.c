@@ -445,22 +445,6 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     exit(0);
 }
 
-/* Checks if a string contains only printable characters. */
-static gboolean printable_str(const char *str)
-{
-    do {
-        if ((unsigned char)(*str) < ' ' || *str == 0x7f)
-            return FALSE;
-        str++;
-    } while (*str);
-    return TRUE;
-}
-
-static gboolean is_correct_filename(const char *value)
-{
-    return printable_str(value) && !strchr(value, '/') && !strchr(value, '.');
-}
-
 static gboolean key_value_ok(gchar *key, gchar *value)
 {
     char *i;
@@ -479,7 +463,7 @@ static gboolean key_value_ok(gchar *key, gchar *value)
      || strcmp(key, FILENAME_TYPE) == 0
     )
     {
-        if (!is_correct_filename(value))
+        if (!str_is_correct_filename(value))
         {
             error_msg("Value of '%s' ('%s') is not a valid directory name",
                       key, value);
