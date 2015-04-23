@@ -29,7 +29,8 @@ TESTSUITE_AT = \
   testsuite.at \
   pyhook.at \
   koops-parser.at \
-  ignored_problems.at
+  ignored_problems.at \
+  hooklib.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite
