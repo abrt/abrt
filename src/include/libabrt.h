@@ -49,6 +49,15 @@ char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec);
 #define get_backtrace abrt_get_backtrace
 char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char *debuginfo_dirs);
 
+#define dir_is_in_dump_location abrt_dir_is_in_dump_location
+bool dir_is_in_dump_location(const char *dir_name);
+
+enum {
+    DD_PERM_EVENTS  = 1 << 0,
+    DD_PERM_DAEMONS = 1 << 1,
+};
+#define dir_has_correct_permissions abrt_dir_has_correct_permissions
+bool dir_has_correct_permissions(const char *dir_name, int flags);
 
 #define g_settings_nMaxCrashReportsSize abrt_g_settings_nMaxCrashReportsSize
 extern unsigned int  g_settings_nMaxCrashReportsSize;
