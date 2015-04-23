@@ -1,0 +1,85 @@
+# -*- Autotest -*-
+
+AT_BANNER([hooklib])
+
+AT_TESTFUN([dir_is_in_dump_location],
+[[
+#include "libabrt.h"
+#include <assert.h>
+
+void test(char *name, bool expected)
+{
+    if (dir_is_in_dump_location(name) != expected)
+    {
+        fprintf(stderr, "Bad: %s", name);
+        abort();
+    }
+
+    free(name);
+}
+
+int main(void)
+{
+    g_verbose = 3;
+    load_abrt_conf();
+
+    g_verbose = 3;
+
+    char *name;
+
+    assert(dir_is_in_dump_location("/") == false);
+
+    asprintf(&name, "%s", g_settings_dump_location);
+    test(name, false);
+
+    asprintf(&name, "%s..evil", g_settings_dump_location);
+    test(name, false);
+
+    asprintf(&name, "%s/", g_settings_dump_location);
+    test(name, false);
+
+    asprintf(&name, "%s///", g_settings_dump_location);
+    test(name, false);
+
+    asprintf(&name, "%s/.", g_settings_dump_location);
+    test(name, false);
+
+    asprintf(&name, "%s///.", g_settings_dump_location);
+    test(name, false);
+
+    asprintf(&name, "%s/./", g_settings_dump_location);
+    test(name, false);
+
+    asprintf(&name, "%s/.///", g_settings_dump_location);
+    test(name, false);
+
+    asprintf(&name, "%s/..", g_settings_dump_location);
+    test(name, false);
+
+    asprintf(&name, "%s///..", g_settings_dump_location);
+    test(name, false);
+
+    asprintf(&name, "%s/../", g_settings_dump_location);
+    test(name, false);
+
+    asprintf(&name, "%s/..///", g_settings_dump_location);
+    test(name, false);
+
+    asprintf(&name, "%s/good/../../../evil", g_settings_dump_location);
+    test(name, false);
+
+    asprintf(&name, "%s/good..still", g_settings_dump_location);
+    test(name, true);
+
+    asprintf(&name, "%s/good.new", g_settings_dump_location);
+    test(name, true);
+
+    asprintf(&name, "%s/.meta", g_settings_dump_location);
+    test(name, true);
+
+    asprintf(&name, "%s/..data", g_settings_dump_location);
+    test(name, true);
+
+    return 0;
+}
+]])

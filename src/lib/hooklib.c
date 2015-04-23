@@ -386,3 +386,59 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
     free(args[7]);
     return bt;
 }
+
+bool dir_is_in_dump_location(const char *dir_name)
+{
+    unsigned len = strlen(g_settings_dump_location);
+
+    /* The path must start with "g_settings_dump_location" */
+    if (strncmp(dir_name, g_settings_dump_location, len) != 0)
+    {
+        VERB2 log("Bad parent directory: '%s' not in '%s'", g_settings_dump_location, dir_name);
+        return false;
+    }
+
+    /* and must be a sub-directory of the g_settings_dump_location dir */
+    const char *base_name = dir_name + len;
+    while (*base_name && *base_name == '/')
+        ++base_name;
+
+    if (*(base_name - 1) != '/' || !str_is_correct_filename(base_name))
+    {
+        VERB2 log("Invalid dump directory name: '%s'", base_name);
+        return false;
+    }
+
+    /* and we are sure it is a directory */
+    struct stat sb;
+    if (lstat(dir_name, &sb) < 0)
+    {
+        VERB2 perror_msg("stat('%s')", dir_name);
+        return errno== ENOENT;
+    }
+
+    return S_ISDIR(sb.st_mode);
+}
+
+bool dir_has_correct_permissions(const char *dir_name)
+{
+    if (g_settings_privatereports)
+    {
+        struct stat statbuf;
+        if (lstat(dir_name, &statbuf) != 0 || !S_ISDIR(statbuf.st_mode))
+        {
+            error_msg("Path '%s' isn't directory", dir_name);
+            return false;
+        }
+        /* Get ABRT's group gid */
+        struct group *gr = getgrnam("abrt");
+        if (!gr)
+        {
+            error_msg("Group 'abrt' does not exist");
+            return false;
+        }
+        if (statbuf.st_uid != 0 || !(statbuf.st_gid == 0 || statbuf.st_gid == gr->gr_gid) || statbuf.st_mode & 07)
+            return false;
+    }
+    return true;
+}

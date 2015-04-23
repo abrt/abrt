@@ -90,7 +90,6 @@ static char *dir_basename;
  */
 static char *reason;
 
-
 /* Create a new debug dump from client session.
  * Caller must ensure that all fields in struct client
  * are properly filled.
@@ -175,46 +174,29 @@ static bool starts_with(const char *str, const char *start)
 static int delete_path(const char *dump_dir_name)
 {
     /* If doesn't start with "g_settings_dump_location/"... */
-    char *dump_location = xasprintf("%s/", g_settings_dump_location);
-    log("%s", dump_location);
-    if (!starts_with(dump_dir_name, dump_location)
-    /* or contains "/." anywhere (-> might contain ".." component) */
-     || strstr(dump_dir_name + strlen(g_settings_dump_location), "/.")
-    ) {
+    if (!dir_is_in_dump_location(dump_dir_name))
+    {
         /* Then refuse to operate on it (someone is attacking us??) */
-        error_msg("Bad problem directory name '%s', not deleting", dump_dir_name);
-        free(dump_location);
+        error_msg("Bad problem directory name '%s', should start with: '%s'", dump_dir_name, g_settings_dump_location);
         return 400; /* Bad Request */
     }
-    free(dump_location);
-
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return 404; /* Not Found */
-
-    if (client_uid != 0) /* not called by root */
+    if (!dir_has_correct_permissions(dump_dir_name))
     {
-        char client_uid_str[sizeof(long) * 3 + 2];
-        sprintf(client_uid_str, "%ld", (long)client_uid);
-
-        char *uid = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-        /* we assume that the dump_dir can be handled by everyone if uid == NULL
-         * e.g: kerneloops
-         */
-        if (uid != NULL)
+        error_msg("Problem directory '%s' isn't owned by root:abrt or others are not restricted from access", dump_dir_name);
+        return 400; /*  */
+    }
+    if (!dump_dir_accessible_by_uid(dump_dir_name, client_uid))
+    {
+        if (errno == ENOTDIR)
         {
-            bool uid_matches = (strcmp(uid, client_uid_str) == 0);
-            free(uid);
-            if (!uid_matches)
-            {
-                dd_close(dd);
-                error_msg("Dump directory '%s' can't be accessed by user with uid %ld", dump_dir_name, (long)client_uid);
-                return 403; /* Forbidden */
-            }
+            error_msg("Path '%s' isn't problem directory", dump_dir_name);
+            return 404; /* Not Found */
         }
+        error_msg("Problem directory '%s' can't be accessed by user with uid %ld", dump_dir_name, (long)client_uid);
+        return 403; /* Forbidden */
     }
 
-    dd_delete(dd);
+    delete_dump_dir(dump_dir_name);
 
     return 0; /* success */
 }
