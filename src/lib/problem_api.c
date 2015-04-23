@@ -76,6 +76,13 @@ int for_each_problem_in_dir(const char *path,
 
 static int add_dirname_to_GList(struct dump_dir *dd, void *arg)
 {
+    if (!dir_has_correct_permissions(dd->dd_dirname, DD_PERM_DAEMONS))
+    {
+        log("Ignoring '%s': invalid owner, group or mode", dd->dd_dirname);
+        /*Do not break*/
+        return 0;
+    }
+
     GList **list = arg;
     *list = g_list_prepend(*list, xstrdup(dd->dd_dirname));
     return 0;

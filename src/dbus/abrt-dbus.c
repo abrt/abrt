@@ -141,21 +141,20 @@ static uid_t get_caller_uid(GDBusConnection *connection, GDBusMethodInvocation *
     return caller_uid;
 }
 
-static bool allowed_problem_dir(const char *dir_name)
+bool allowed_problem_dir(const char *dir_name)
 {
-//HACK HACK HACK! Disabled for now until we fix clients (abrt-gui) to not pass /home/user/.cache/abrt/spool
-#if 0
-    unsigned len = strlen(g_settings_dump_location);
-
-    /* If doesn't start with "g_settings_dump_location[/]"... */
-    if (strncmp(dir_name, g_settings_dump_location, len) != 0
-     || (dir_name[len] != '/' && dir_name[len] != '\0')
-    /* or contains "/." anywhere (-> might contain ".." component) */
-     || strstr(dir_name + len, "/.")
-    ) {
+    if (!dir_is_in_dump_location(dir_name))
+    {
+        error_msg("Bad problem directory name '%s', should start with: '%s'", dir_name, g_settings_dump_location);
         return false;
     }
-#endif
+
+    if (!dir_has_correct_permissions(dir_name, DD_PERM_DAEMONS))
+    {
+        error_msg("Problem directory '%s' has invalid owner, groop or mode", dir_name);
+        return false;
+    }
+
     return true;
 }
 
@@ -561,6 +560,12 @@ static void handle_method_call(GDBusConnection *connection,
 
         g_variant_get(parameters, "(&s)", &problem_id);
 
+        if (!allowed_problem_dir(problem_id))
+        {
+            return_InvalidProblemDir_error(invocation, problem_id);
+            return;
+        }
+
         int ddstat = dump_dir_stat_for_uid(problem_id, caller_uid);
         if ((ddstat & DD_STAT_ACCESSIBLE_BY_UID) == 0 &&
                 polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
@@ -624,6 +629,12 @@ static void handle_method_call(GDBusConnection *connection,
 
         g_variant_get(parameters, "(&s&s&s)", &problem_id, &element, &value);
 
+        if (!allowed_problem_dir(problem_id))
+        {
+            return_InvalidProblemDir_error(invocation, problem_id);
+            return;
+        }
+
         if (element == NULL || element[0] == '\0' || strlen(element) > 64)
         {
             log_notice("'%s' is not a valid element name of '%s'", element, problem_id);
@@ -683,6 +694,12 @@ static void handle_method_call(GDBusConnection *connection,
 
         g_variant_get(parameters, "(&s&s)", &problem_id, &element);
 
+        if (!allowed_problem_dir(problem_id))
+        {
+            return_InvalidProblemDir_error(invocation, problem_id);
+            return;
+        }
+
         struct dump_dir *dd = open_directory_for_modification_of_element(
                                     invocation, caller_uid, problem_id, element);
         if (!dd)
@@ -715,6 +732,11 @@ static void handle_method_call(GDBusConnection *connection,
 
         g_variant_get(parameters, "(&s&s)", &problem_id, &element);
 
+        if (!allowed_problem_dir(problem_id))
+        {
+            return_InvalidProblemDir_error(invocation, problem_id);
+            return;
+        }
 
         struct dump_dir *dd = dd_opendir(problem_id, DD_OPEN_READONLY);
         if (!dd)
