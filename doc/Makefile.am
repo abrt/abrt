@@ -78,6 +78,17 @@ man1_MANS = ${MAN1_TXT:%.txt=%.1}
 man5_MANS = ${MAN5_TXT:%.txt=%.5} ${MAN5_PREFORMATTED}
 man8_MANS = ${MAN8_TXT:%.txt=%.8}
 
+MAN_SOURCE =
+MAN_SOURCE = abrt-auto-reporting-authenticated.txt
+MAN_SOURCE = abrt-auto-reporting-unauthenticated.txt
+
+if AUTHENTICATED_AUTOREPORTING
+abrt-auto-reporting.txt: abrt-auto-reporting-authenticated.txt
+else
+abrt-auto-reporting.txt: abrt-auto-reporting-unauthenticated.txt
+endif
+	cp $< $@
+
 %.1 %.5 %.8: %.xml
 	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
 
@@ -86,6 +97,6 @@ man8_MANS = ${MAN8_TXT:%.txt=%.8}
                            --conf-file ../asciidoc.conf \
                            -aabrt_version=$(PACKAGE_VERSION) -o $@ $<
 
-EXTRA_DIST = $(MAN1_TXT) $(MAN5_TXT) $(MAN8_TXT) $(MAN5_PREFORMATTED)
+EXTRA_DIST = $(MAN1_TXT) $(MAN5_TXT) $(MAN8_TXT) $(MAN5_PREFORMATTED) $(MAN_SOURCE)
 
 CLEANFILES = ${MAN1_TXT:%.txt=%.1} ${MAN5_TXT:%.txt=%.5} ${MAN8_TXT:%.txt=%.8}
