@@ -46,7 +46,17 @@ int for_each_problem_in_dir(const char *path,
             continue; /* skip "." and ".." */
 
         char *full_name = concat_path_file(path, dent->d_name);
-        if (caller_uid == -1 || dump_dir_accessible_by_uid(full_name, caller_uid))
+
+        struct dump_dir *dd = dd_opendir(full_name,   DD_OPEN_FD_ONLY
+                                                    | DD_FAIL_QUIETLY_ENOENT
+                                                    | DD_FAIL_QUIETLY_EACCES);
+        if (dd == NULL)
+        {
+            VERB2 perror_msg("can't open problem directory '%s'", full_name);
+            continue;
+        }
+
+        if (caller_uid == -1 || dd_accessible_by_uid(dd, caller_uid))
         {
             /* Silently ignore *any* errors, not only EACCES.
              * We saw "lock file is locked by process PID" error
@@ -55,14 +65,15 @@ int for_each_problem_in_dir(const char *path,
             int sv_logmode = logmode;
             /* Silently ignore errors only in the silent log level. */
             logmode = g_verbose == 0 ? 0: sv_logmode;
-            struct dump_dir *dd = dd_opendir(full_name, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES | DD_DONT_WAIT_FOR_LOCK);
+            dd = dd_fdopendir(dd, DD_OPEN_READONLY | DD_DONT_WAIT_FOR_LOCK);
             logmode = sv_logmode;
             if (dd)
-            {
                 brk = callback ? callback(dd, arg) : 0;
-                dd_close(dd);
-            }
         }
+
+        if (dd)
+            dd_close(dd);
+
         free(full_name);
         if (brk)
             break;
