@@ -158,6 +158,21 @@ bool allowed_problem_dir(const char *dir_name)
     return true;
 }
 
+bool allowed_problem_element(GDBusMethodInvocation *invocation, const char *element)
+{
+    if (str_is_correct_filename(element))
+        return true;
+
+    log_notice("'%s' is not a valid element name", element);
+    char *error = xasprintf(_("'%s' is not a valid element name"), element);
+    g_dbus_method_invocation_return_dbus_error(invocation,
+            "org.freedesktop.problems.InvalidElement",
+            error);
+
+    free(error);
+    return false;
+}
+
 static char *handle_new_problem(GVariant *problem_info, uid_t caller_uid, char **error)
 {
     problem_data_t *pd = problem_data_new();
@@ -627,17 +642,8 @@ static void handle_method_call(GDBusConnection *connection,
 
         g_variant_get(parameters, "(&s&s&s)", &problem_id, &element, &value);
 
-        if (element == NULL || element[0] == '\0' || strlen(element) > 64)
-        {
-            log_notice("'%s' is not a valid element name of '%s'", element, problem_id);
-            char *error = xasprintf(_("'%s' is not a valid element name"), element);
-            g_dbus_method_invocation_return_dbus_error(invocation,
-                                              "org.freedesktop.problems.InvalidElement",
-                                              error);
-
-            free(error);
+        if (!allowed_problem_element(invocation, element))
             return;
-        }
 
         struct dump_dir *dd = open_directory_for_modification_of_element(
                                     invocation, caller_uid, problem_id, element);
@@ -686,6 +692,9 @@ static void handle_method_call(GDBusConnection *connection,
 
         g_variant_get(parameters, "(&s&s)", &problem_id, &element);
 
+        if (!allowed_problem_element(invocation, element))
+            return;
+
         struct dump_dir *dd = open_directory_for_modification_of_element(
                                     invocation, caller_uid, problem_id, element);
         if (!dd)
@@ -717,6 +726,9 @@ static void handle_method_call(GDBusConnection *connection,
         const char *element;
 
         g_variant_get(parameters, "(&s&s)", &problem_id, &element);
+
+        if (!allowed_problem_element(invocation, element))
+            return;
 
         struct dump_dir *dd = open_dump_directory(invocation, caller, caller_uid,
                 problem_id, DD_OPEN_READONLY, OPEN_AUTH_ASK);
@@ -789,6 +801,9 @@ static void handle_method_call(GDBusConnection *connection,
         g_variant_get_child(parameters, 2, "x", &timestamp_from);
         g_variant_get_child(parameters, 3, "x", &timestamp_to);
         g_variant_get_child(parameters, 4, "b", &all);
+
+        if (!allowed_problem_element(invocation, element))
+            return;
 
         if (all && polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") == PolkitYes)
             caller_uid = 0;
