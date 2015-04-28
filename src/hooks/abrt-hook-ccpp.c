@@ -810,6 +810,8 @@ int main(int argc, char** argv)
          * ! No other errors should cause removal of the user core !
          */
 
+/* Because of #1211835 and #1126850 */
+#if 0
         /* Save JVM crash log if it exists. (JVM's coredump per se
          * is nearly useless for JVM developers)
          */
@@ -843,6 +845,7 @@ int main(int argc, char** argv)
                 close(src_fd);
             }
         }
+#endif
 
         /* Perform crash-time unwind of the guilty thread. */
         if (tid > 0 && setting_CreateCoreBacktrace)
