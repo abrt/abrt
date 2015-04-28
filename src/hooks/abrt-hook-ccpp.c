@@ -795,6 +795,8 @@ int main(int argc, char** argv)
             unlink(core_basename);
         }
 
+/* Because of #1211835 and #1126850 */
+#if 0
         /* Save JVM crash log if it exists. (JVM's coredump per se
          * is nearly useless for JVM developers)
          */
@@ -827,6 +829,7 @@ int main(int argc, char** argv)
                 close(src_fd);
             }
         }
+#endif
 
         /* We close dumpdir before we start catering for crash storm case.
          * Otherwise, delete_dump_dir's from other concurrent
