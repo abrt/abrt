@@ -28,28 +28,90 @@
  */
 int main(int argc, char **argv)
 {
-    /*
-     * We disallow passing of arguments which point to writable dirs
-     * and other files possibly not accessible to calling user.
-     * This way, the script will always use default values for these arguments.
-     */
-    char **pp = argv;
-    char *arg;
-    while ((arg = *++pp) != NULL)
+    /* I18n */
+    setlocale(LC_ALL, "");
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
+
+    abrt_init(argv);
+
+    /* Can't keep these strings/structs static: _() doesn't support that */
+    const char *program_usage_string = _(
+        "& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+        "\t[-r REPO]\n"
+        "\n"
+        "Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
+        "ABRT system cache."
+    );
+
+    enum {
+        OPT_v = 1 << 0,
+        OPT_y = 1 << 1,
+        OPT_i = 1 << 2,
+        OPT_e = 1 << 3,
+        OPT_r = 1 << 4,
+        OPT_s = 1 << 5,
+    };
+
+    const char *build_ids = "build_ids";
+    const char *exact = NULL;
+    const char *repo = NULL;
+    const char *size_mb = NULL;
+
+    struct options program_options[] = {
+        OPT__VERBOSE(&g_verbose),
+        OPT_BOOL  ('y', "yes",         NULL,                   _("Noninteractive, assume 'Yes' to all questions")),
+        OPT_STRING('i', "ids",   &build_ids, "BUILD_IDS_FILE", _("- means STDIN, default: build_ids")),
+        OPT_STRING('e', "exact",     &exact, "EXACT",          _("Download only specified files")),
+        OPT_STRING('r', "repo",       &repo, "REPO",           _("Pattern to use when searching for repos, default: *debug*")),
+        OPT_STRING('s', "size_mb", &size_mb, "SIZE_MB",        _("Ignored option")),
+        OPT_END()
+    };
+    const unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+
+    /* We need to open the build ids file under the caller's UID/GID to avoid
+     * information disclosures when reading files with changed UID.
+     * Unfortunately, we cannot replace STDIN with the new fd because ABRT uses
+     * STDIN to communicate with the caller. So, the following code opens a
+     * dummy file descriptor to the build ids file and passes the new fd's proc
+     * path to the wrapped program in the ids argument.
+     * The new fd remains opened, the OS will close it for us. */
+    char *build_ids_self_fd = NULL;
+    if (strcmp("-", build_ids) != 0)
     {
-        /* Allow taking ids from stdin */
-        if (strcmp(arg, "--ids=-") == 0)
-            continue;
+        const int build_ids_fd = open(build_ids, O_RDONLY);
+        if (build_ids_fd < 0)
+            perror_msg_and_die("Failed to open file '%s'", build_ids);
 
-        if (strncmp(arg, "--exact", 7) == 0)
-            continue;
+        /* We are not going to free this memory. There is no place to do so. */
+        build_ids_self_fd = xasprintf("/proc/self/fd/%d", build_ids_fd);
+    }
 
-        if (strncmp(arg, "--cache", 7) == 0)
-            error_msg_and_die("bad option %s", arg);
-        if (strncmp(arg, "--tmpdir", 8) == 0)
-            error_msg_and_die("bad option %s", arg);
-        if (strncmp(arg, "--ids", 5) == 0)
-            error_msg_and_die("bad option %s", arg);
+    /* name, -v, --ids, -, -y, -e, EXACT, -r, REPO, --, NULL */
+    const char *args[11];
+    {
+        const char *verbs[] = { "", "-v", "-vv", "-vvv" };
+        unsigned i = 0;
+        args[i++] = EXECUTABLE;
+        args[i++] = "--ids";
+        args[i++] = (build_ids_self_fd != NULL) ? build_ids_self_fd : "-";
+        args[i++] = verbs[g_verbose <= 3 ? g_verbose : 3];
+        if ((opts & OPT_y))
+            args[i++] = "-y";
+        if ((opts & OPT_e))
+        {
+            args[i++] = "--exact";
+            args[i++] = exact;
+        }
+        if ((opts & OPT_r))
+        {
+            args[i++] = "--repo";
+            args[i++] = repo;
+        }
+        args[i++] = "--";
+        args[i] = NULL;
     }
 
     /* Switch real user/group to effective ones.
@@ -97,6 +159,6 @@ int main(int argc, char **argv)
             putenv((char*) "PATH=/usr/bin:/bin");
     }
 
-    execvp(EXECUTABLE, argv);
+    execvp(EXECUTABLE, (char **)args);
     error_msg_and_die("Can't execute %s", EXECUTABLE);
 }
