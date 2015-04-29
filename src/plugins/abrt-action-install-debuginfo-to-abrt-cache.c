@@ -157,6 +157,9 @@ int main(int argc, char **argv)
             putenv((char*) "PATH=/usr/sbin:/sbin:/usr/bin:/bin");
         else
             putenv((char*) "PATH=/usr/bin:/bin");
+
+        /* Use safe umask */
+        umask(0022);
     }
 
     execvp(EXECUTABLE, (char **)args);
