@@ -199,6 +199,9 @@ int main(int argc, char **argv)
         if (euid != 0)
             strcpy(path_env, "PATH=/usr/bin:/bin:"BIN_DIR);
         putenv(path_env);
+
+        /* Use safe umask */
+        umask(0022);
     }
 
     execvp(EXECUTABLE, (char **)args);
