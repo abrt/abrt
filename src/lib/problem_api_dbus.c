@@ -101,23 +101,21 @@ int delete_problem_dirs_over_dbus(const GList *problem_dir_paths)
     return 0;
 }
 
-problem_data_t *get_problem_data_dbus(const char *problem_dir_path)
+int fill_problem_data_over_dbus(const char *problem_id, const char **elements, problem_data_t *problem_data)
 {
     INITIALIZE_LIBABRT();
 
     GDBusProxy *proxy = get_dbus_proxy();
     if (!proxy)
-        return NULL;
+        return -1;
 
-    GVariantBuilder *builder = g_variant_builder_new(G_VARIANT_TYPE("as"));
-    g_variant_builder_add(builder, "s", FILENAME_TIME          );
-    g_variant_builder_add(builder, "s", FILENAME_REASON        );
-    g_variant_builder_add(builder, "s", FILENAME_NOT_REPORTABLE);
-    g_variant_builder_add(builder, "s", FILENAME_COMPONENT     );
-    g_variant_builder_add(builder, "s", FILENAME_EXECUTABLE    );
-    g_variant_builder_add(builder, "s", FILENAME_REPORTED_TO   );
-    GVariant *params = g_variant_new("(sas)", problem_dir_path, builder);
-    g_variant_builder_unref(builder);
+    GVariantBuilder *args_builder = g_variant_builder_new(G_VARIANT_TYPE("as"));
+
+    for (const char **iter = elements; *iter; ++iter)
+        g_variant_builder_add(args_builder, "s", *iter);
+
+    GVariant *params = g_variant_new("(sas)", problem_id, args_builder);
+    g_variant_builder_unref(args_builder);
 
     GError *error = NULL;
     GVariant *result = g_dbus_proxy_call_sync(proxy,
@@ -130,20 +128,46 @@ problem_data_t *get_problem_data_dbus(const char *problem_dir_path)
 
     if (error)
     {
-        error_msg(_("Can't get problem data from abrt-dbus: %s"), error->message);
+        error_msg(_("D-Bus GetInfo method call failed: %s"), error->message);
         g_error_free(error);
-        return NULL;
+        return -2;
     }
 
-    problem_data_t *pd = problem_data_new();
+
     char *key, *val;
     GVariantIter *iter;
     g_variant_get(result, "(a{ss})", &iter);
     while (g_variant_iter_loop(iter, "{ss}", &key, &val))
-    {
-        problem_data_add_text_noteditable(pd, key, val);
-    }
+        problem_data_add_text_noteditable(problem_data, key, val);
+
     g_variant_unref(result);
+
+    return 0;
+}
+
+problem_data_t *get_problem_data_dbus(const char *problem_dir_path)
+{
+    INITIALIZE_LIBABRT();
+
+    static const char *elements[] = {
+        FILENAME_TIME,
+        FILENAME_REASON,
+        FILENAME_NOT_REPORTABLE,
+        FILENAME_COMPONENT,
+        FILENAME_EXECUTABLE,
+        FILENAME_REPORTED_TO,
+        NULL,
+    };
+
+    problem_data_t *pd = problem_data_new();
+
+    if (fill_problem_data_over_dbus(problem_dir_path, elements, pd) != 0)
+    {
+        error_msg(_("Can't get problem data from abrt-dbus"));
+        problem_data_free(pd);
+        return NULL;
+    }
+
     return pd;
 }
 
@@ -257,6 +281,11 @@ int test_exist_over_dbus(const char *problem_id, const char *element_name)
     g_variant_unref(result);
 
     return retval;
+}
+
+int dbus_problem_is_complete(const char *problem_id)
+{
+    return test_exist_over_dbus(problem_id, FILENAME_COUNT);
 }
 
 char *load_text_over_dbus(const char *problem_id, const char *element_name)
