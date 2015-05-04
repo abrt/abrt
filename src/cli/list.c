@@ -142,6 +142,8 @@ int cmd_list(int argc, const char **argv)
     parse_opts(argc, (char **)argv, program_options, program_usage_string);
 
     vector_of_problem_data_t *ci = fetch_crash_infos();
+    if (ci == NULL)
+        return 1;
 
     g_ptr_array_sort_with_data(ci, &cmp_problem_data, (char *) FILENAME_LAST_OCCURRENCE);
 
