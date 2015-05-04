@@ -227,9 +227,6 @@ static int open_user_core(uid_t uid, uid_t fsuid, gid_t fsgid, pid_t pid, char *
         return -1;
     }
 
-    xsetegid(fsgid);
-    xseteuid(fsuid);
-
     if (strcmp(core_basename, "core") == 0)
     {
         /* Mimic "core.PID" if requested */
@@ -322,36 +319,53 @@ static int open_user_core(uid_t uid, uid_t fsuid, gid_t fsgid, pid_t pid, char *
      * and the description of the /proc/sys/fs/suid_dumpable file in proc(5).)
      */
 
-    /* Set SELinux context like kernel when creating core dump file */
-    if (newcon != NULL && setfscreatecon_raw(newcon) < 0)
+    int user_core_fd = -1;
+    int selinux_fail = 1;
+
+    /*
+     * These calls must be reverted as soon as possible.
+     */
+    xsetegid(fsgid);
+    xseteuid(fsuid);
+
+    /* Set SELinux context like kernel when creating core dump file.
+     * This condition is TRUE if */
+    if (/* SELinux is disabled  */ newcon == NULL
+     || /* or the call succeeds */ setfscreatecon_raw(newcon) >= 0)
     {
+        /* Do not O_TRUNC: if later checks fail, we do not want to have file already modified here */
+        user_core_fd = openat(dirfd(proc_cwd), core_basename, O_WRONLY | O_CREAT | O_NOFOLLOW | g_user_core_flags, 0600); /* kernel makes 0600 too */
+
+        /* Do the error check here and print the error message in order to
+         * avoid interference in 'errno' usage caused by SELinux functions */
+        if (user_core_fd < 0)
+            perror_msg("Can't open '%s' at '%s'", core_basename, user_pwd);
+
+        /* Fail if SELinux is enabled and the call fails */
+        if (newcon != NULL && setfscreatecon_raw(NULL) < 0)
+            perror_msg("setfscreatecon_raw(NULL)");
+        else
+            selinux_fail = 0;
+    }
+    else
         perror_msg("setfscreatecon_raw(%s)", newcon);
-        return -1;
-    }
 
-    struct stat sb;
-    errno = 0;
-    /* Do not O_TRUNC: if later checks fail, we do not want to have file already modified here */
-    int user_core_fd = openat(dirfd(proc_cwd), core_basename, O_WRONLY | O_CREAT | O_NOFOLLOW | g_user_core_flags, 0600); /* kernel makes 0600 too */
-
-    if (newcon != NULL && setfscreatecon_raw(NULL) < 0)
-    {
-        error_msg("setfscreatecon_raw(NULL)");
-        goto user_core_fail;
-    }
-
+    /*
+     * DON'T JUMP OVER THIS REVERT OF THE UID/GID CHANGES
+     */
     xsetegid(0);
     xseteuid(0);
-    if (user_core_fd < 0
-     || fstat(user_core_fd, &sb) != 0
+
+    if (user_core_fd < 0 || selinux_fail)
+        goto user_core_fail;
+
+    struct stat sb;
+    if (fstat(user_core_fd, &sb) != 0
      || !S_ISREG(sb.st_mode)
      || sb.st_nlink != 1
      || sb.st_uid != fsuid
     ) {
-        if (user_core_fd < 0)
-            perror_msg("Can't open '%s' at '%s'", core_basename, user_pwd);
-        else
-            perror_msg("'%s' at '%s' is not a regular file with link count 1 owned by UID(%d)", core_basename, user_pwd, fsuid);
+        perror_msg("'%s' at '%s' is not a regular file with link count 1 owned by UID(%d)", core_basename, user_pwd, fsuid);
         goto user_core_fail;
     }
     if (ftruncate(user_core_fd, 0) != 0) {
