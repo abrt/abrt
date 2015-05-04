@@ -301,6 +301,7 @@ Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-cli >= %{libreport_ver}
 Requires: abrt-libs = %{version}-%{release}
+Requires: abrt-dbus
 
 %description tui
 This package contains a simple command line client for processing abrt reports
