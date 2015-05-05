@@ -82,6 +82,14 @@ static void save_bt_to_dump_dir(const char *bt, const char *exe, const char *rea
         mode = DEFAULT_DUMP_DIR_MODE;
         my_euid = geteuid();
     }
+    if (g_settings_privatereports)
+    {
+        if ((g_opts & OPT_x))
+            log("Not going to make dump directories world readable because PrivateReports is on");
+
+        mode = DEFAULT_DUMP_DIR_MODE;
+        my_euid = 0;
+    }
 
     pid_t my_pid = getpid();
 

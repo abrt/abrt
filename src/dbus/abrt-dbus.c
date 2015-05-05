@@ -132,18 +132,34 @@ static uid_t get_caller_uid(GDBusConnection *connection, GDBusMethodInvocation *
     return caller_uid;
 }
 
-static bool allowed_problem_dir(const char *dir_name)
+bool allowed_problem_dir(const char *dir_name)
 {
-//HACK HACK HACK! Disabled for now until we fix clients (abrt-gui) to not pass /home/user/.cache/abrt/spool
-#if 0
-    unsigned len = strlen(g_settings_dump_location);
+    if (!dir_is_in_dump_location(dir_name))
+    {
+        error_msg("Bad problem directory name '%s', should start with: '%s'", dir_name, g_settings_dump_location);
+        return false;
+    }
 
-    /* If doesn't start with "g_settings_dump_location[/]"... */
-    if (strncmp(dir_name, g_settings_dump_location, len) != 0
-     || (dir_name[len] != '/' && dir_name[len] != '\0')
-    /* or contains "/." anywhere (-> might contain ".." component) */
-     || strstr(dir_name + len, "/.")
-    ) {
+    /* We cannot test correct permissions yet because we still need to chown
+     * dump directories before reporting and Chowing changes the file owner to
+     * the reporter, which causes this test to fail and prevents users from
+     * getting problem data after reporting it.
+     *
+     * Fortunately, libreport has been hardened against hard link and symbolic
+     * link attacks and refuses to work with such files, so this test isn't
+     * really necessary, however, we will use it once we get rid of the
+     * chowning files.
+     *
+     * abrt-server refuses to run post-create on directories that have
+     * incorrect owner (not "root:(abrt|root)"), incorrect permissions (other
+     * bits are not 0) and are complete (post-create finished). So, there is no
+     * way to run security sensitive event scripts (post-create) on crafted
+     * problem directories.
+     */
+#if 0
+    if (!dir_has_correct_permissions(dir_name))
+    {
+        error_msg("Problem directory '%s' isn't owned by root:abrt or others are not restricted from access", dir_name);
         return false;
     }
 #endif
@@ -229,7 +245,15 @@ static struct dump_dir *open_directory_for_modification_of_element(
         }
     }
 
-    if (!dump_dir_accessible_by_uid(problem_id, caller_uid))
+    int dir_fd = dd_openfd(problem_id);
+    if (dir_fd < 0)
+    {
+        perror_msg("can't open problem directory '%s'", problem_id);
+        return_InvalidProblemDir_error(invocation, problem_id);
+        return NULL;
+    }
+
+    if (!fdump_dir_accessible_by_uid(dir_fd, caller_uid))
     {
         if (errno == ENOTDIR)
         {
@@ -244,10 +268,11 @@ static struct dump_dir *open_directory_for_modification_of_element(
                                 _("Not Authorized"));
         }
 
+        close(dir_fd);
         return NULL;
     }
 
-    struct dump_dir *dd = dd_opendir(problem_id, /* flags : */ 0);
+    struct dump_dir *dd = dd_fdopendir(dir_fd, problem_id, /* flags : */ 0);
     if (!dd)
     {   /* This should not happen because of the access check above */
         log_notice("Can't access the problem '%s' for modification", problem_id);
@@ -413,7 +438,15 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
-        int ddstat = dump_dir_stat_for_uid(problem_dir, caller_uid);
+        int dir_fd = dd_openfd(problem_dir);
+        if (dir_fd < 0)
+        {
+            perror_msg("can't open problem directory '%s'", problem_dir);
+            return_InvalidProblemDir_error(invocation, problem_dir);
+            return;
+        }
+
+        int ddstat = fdump_dir_stat_for_uid(dir_fd, caller_uid);
         if (ddstat < 0)
         {
             if (errno == ENOTDIR)
@@ -427,6 +460,7 @@ static void handle_method_call(GDBusConnection *connection,
 
             return_InvalidProblemDir_error(invocation, problem_dir);
 
+            close(dir_fd);
             return;
         }
 
@@ -434,6 +468,7 @@ static void handle_method_call(GDBusConnection *connection,
         {   //caller seems to be in group with access to this dir, so no action needed
             log_notice("caller has access to the requested directory %s", problem_dir);
             g_dbus_method_invocation_return_value(invocation, NULL);
+            close(dir_fd);
             return;
         }
 
@@ -444,10 +479,11 @@ static void handle_method_call(GDBusConnection *connection,
             g_dbus_method_invocation_return_dbus_error(invocation,
                                               "org.freedesktop.problems.AuthFailure",
                                               _("Not Authorized"));
+            close(dir_fd);
             return;
         }
 
-        struct dump_dir *dd = dd_opendir(problem_dir, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
+        struct dump_dir *dd = dd_fdopendir(dir_fd, problem_dir, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
         if (!dd)
         {
             return_InvalidProblemDir_error(invocation, problem_dir);
@@ -481,12 +517,21 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
-        if (!dump_dir_accessible_by_uid(problem_dir, caller_uid))
+        int dir_fd = dd_openfd(problem_dir);
+        if (dir_fd < 0)
+        {
+            perror_msg("can't open problem directory '%s'", problem_dir);
+            return_InvalidProblemDir_error(invocation, problem_dir);
+            return;
+        }
+
+        if (!fdump_dir_accessible_by_uid(dir_fd, caller_uid))
         {
             if (errno == ENOTDIR)
             {
                 log_notice("Requested directory does not exist '%s'", problem_dir);
                 return_InvalidProblemDir_error(invocation, problem_dir);
+                close(dir_fd);
                 return;
             }
 
@@ -496,11 +541,12 @@ static void handle_method_call(GDBusConnection *connection,
                 g_dbus_method_invocation_return_dbus_error(invocation,
                                                   "org.freedesktop.problems.AuthFailure",
                                                   _("Not Authorized"));
+                close(dir_fd);
                 return;
             }
         }
 
-        struct dump_dir *dd = dd_opendir(problem_dir, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
+        struct dump_dir *dd = dd_fdopendir(dir_fd, problem_dir, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
         if (!dd)
         {
             return_InvalidProblemDir_error(invocation, problem_dir);
@@ -553,7 +599,7 @@ static void handle_method_call(GDBusConnection *connection,
 
         g_variant_get(parameters, "(&s&s&s)", &problem_id, &element, &value);
 
-        if (element == NULL || element[0] == '\0' || strlen(element) > 64)
+        if (!str_is_correct_filename(element))
         {
             log_notice("'%s' is not a valid element name of '%s'", element, problem_id);
             char *error = xasprintf(_("'%s' is not a valid element name"), element);
@@ -612,6 +658,18 @@ static void handle_method_call(GDBusConnection *connection,
 
         g_variant_get(parameters, "(&s&s)", &problem_id, &element);
 
+        if (!str_is_correct_filename(element))
+        {
+            log_notice("'%s' is not a valid element name of '%s'", element, problem_id);
+            char *error = xasprintf(_("'%s' is not a valid element name"), element);
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                              "org.freedesktop.problems.InvalidElement",
+                                              error);
+
+            free(error);
+            return;
+        }
+
         struct dump_dir *dd = open_directory_for_modification_of_element(
                                     invocation, caller_uid, problem_id, element);
         if (!dd)
@@ -661,20 +719,40 @@ static void handle_method_call(GDBusConnection *connection,
         for (GList *l = problem_dirs; l; l = l->next)
         {
             const char *dir_name = (const char*)l->data;
-            if (!dump_dir_accessible_by_uid(dir_name, caller_uid))
+
+            int dir_fd = dd_openfd(dir_name);
+            if (dir_fd < 0)
+            {
+                perror_msg("can't open problem directory '%s'", dir_name);
+                return_InvalidProblemDir_error(invocation, dir_name);
+                return;
+            }
+
+            if (!fdump_dir_accessible_by_uid(dir_fd, caller_uid))
             {
                 if (errno == ENOTDIR)
                 {
                     log_notice("Requested directory does not exist '%s'", dir_name);
+                    close(dir_fd);
                     continue;
                 }
 
                 if (polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
                 { // if user didn't provide correct credentials, just move to the next dir
+                    close(dir_fd);
                     continue;
                 }
             }
-            delete_dump_dir(dir_name);
+
+            struct dump_dir *dd = dd_fdopendir(dir_fd, dir_name, /*flags:*/ 0);
+            if (dd)
+            {
+                if (dd_delete(dd) != 0)
+                {
+                    error_msg("Failed to delete problem directory '%s'", dir_name);
+                    dd_close(dd);
+                }
+            }
         }
 
         g_dbus_method_invocation_return_value(invocation, NULL);

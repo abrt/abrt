@@ -106,6 +106,7 @@ PKG_CHECK_MODULES([LIBREPORT_GTK], [libreport-gtk])
 PKG_CHECK_MODULES([POLKIT], [polkit-gobject-1])
 PKG_CHECK_MODULES([GIO], [gio-2.0])
 PKG_CHECK_MODULES([SATYR], [satyr])
+PKG_CHECK_MODULES([LIBSELINUX], [libselinux])
 
 PKG_PROG_PKG_CONFIG
 AC_ARG_WITH([systemdsystemunitdir],
@@ -145,8 +146,8 @@ PROBLEMS_CONFIG_INTERFACES_DIR=${dbusinterfacedir}
 
 AC_ARG_WITH([defaultdumplocation],
             AS_HELP_STRING([--with-defaultdumplocation=DIR],
-                           [Default dump location ('LOCALSTATEDIR/tmp/abrt')]),
-            [], [with_defaultdumplocation=${localstatedir}/tmp/abrt])
+                           [Default dump location ('LOCALSTATEDIR/spool/abrt')]),
+            [], [with_defaultdumplocation=${localstatedir}/spool/abrt])
 AC_SUBST([DEFAULT_DUMP_LOCATION], [$with_defaultdumplocation])
 
 AC_ARG_WITH(augeaslenslibdir,

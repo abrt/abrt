@@ -15,6 +15,7 @@
   with this program; if not, write to the Free Software Foundation, Inc.,
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include "problem_api.h"
 #include "libabrt.h"
 
 /* Maximal length of backtrace. */
@@ -75,20 +76,6 @@ static unsigned total_bytes_read = 0;
 static uid_t client_uid = (uid_t)-1L;
 
 
-static bool dir_is_in_dump_location(const char *dump_dir_name)
-{
-    unsigned len = strlen(g_settings_dump_location);
-
-    if (strncmp(dump_dir_name, g_settings_dump_location, len) == 0
-     && dump_dir_name[len] == '/'
-    /* must not contain "/." anywhere (IOW: disallow ".." component) */
-     && !strstr(dump_dir_name + len, "/.")
-    ) {
-        return 1;
-    }
-    return 0;
-}
-
 /* Remove dump dir */
 static int delete_path(const char *dump_dir_name)
 {
@@ -98,6 +85,11 @@ static int delete_path(const char *dump_dir_name)
         /* Then refuse to operate on it (someone is attacking us??) */
         error_msg("Bad problem directory name '%s', should start with: '%s'", dump_dir_name, g_settings_dump_location);
         return 400; /* Bad Request */
+    }
+    if (!dir_has_correct_permissions(dump_dir_name))
+    {
+        error_msg("Problem directory '%s' isn't owned by root:abrt or others are not restricted from access", dump_dir_name);
+        return 400; /*  */
     }
     if (!dump_dir_accessible_by_uid(dump_dir_name, client_uid))
     {
@@ -153,7 +145,23 @@ static int run_post_create(const char *dirname)
         error_msg("Bad problem directory name '%s', should start with: '%s'", dirname, g_settings_dump_location);
         return 400; /* Bad Request */
     }
-    if (!dump_dir_accessible_by_uid(dirname, client_uid))
+    if (!dir_has_correct_permissions(dirname))
+    {
+        error_msg("Problem directory '%s' isn't owned by root:abrt or others are not restricted from access", dirname);
+        return 400; /*  */
+    }
+    if (g_settings_privatereports)
+    {
+        struct dump_dir *dd = dd_opendir(dirname, DD_OPEN_READONLY);
+        const bool complete = dd && problem_dump_dir_is_complete(dd);
+        dd_close(dd);
+        if (complete)
+        {
+            error_msg("Problem directory '%s' has already been processed", dirname);
+            return 403;
+        }
+    }
+    else if (!dump_dir_accessible_by_uid(dirname, client_uid))
     {
         if (errno == ENOTDIR)
         {
@@ -377,7 +385,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     /* No need to check the path length, as all variables used are limited,
      * and dd_create() fails if the path is too long.
      */
-    struct dump_dir *dd = dd_create(path, client_uid, DEFAULT_DUMP_DIR_MODE);
+    struct dump_dir *dd = dd_create(path, g_settings_privatereports ? 0 : client_uid, DEFAULT_DUMP_DIR_MODE);
     if (!dd)
     {
         error_msg_and_die("Error creating problem directory '%s'", path);
@@ -446,22 +454,6 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     exit(0);
 }
 
-/* Checks if a string contains only printable characters. */
-static gboolean printable_str(const char *str)
-{
-    do {
-        if ((unsigned char)(*str) < ' ' || *str == 0x7f)
-            return FALSE;
-        str++;
-    } while (*str);
-    return TRUE;
-}
-
-static gboolean is_correct_filename(const char *value)
-{
-    return printable_str(value) && !strchr(value, '/') && !strchr(value, '.');
-}
-
 static gboolean key_value_ok(gchar *key, gchar *value)
 {
     char *i;
@@ -480,7 +472,7 @@ static gboolean key_value_ok(gchar *key, gchar *value)
      || strcmp(key, FILENAME_TYPE) == 0
     )
     {
-        if (!is_correct_filename(value))
+        if (!str_is_correct_filename(value))
         {
             error_msg("Value of '%s' ('%s') is not a valid directory name",
                       key, value);
