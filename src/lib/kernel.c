@@ -632,8 +632,14 @@ char *koops_extract_version(const char *linepointer)
  *  'W' - Taint on warning.
  *  'C' - modules from drivers/staging are loaded.
  *  'I' - Working around severe firmware bug.
+ *  'O' - Out-of-tree module has been loaded.
+ *  'E' - Unsigned module has been loaded.
+ *  'L' - A soft lockup has previously occurred.
+ *  'K' - Kernel has been live patched.
+ *
+ * Compatibility flags from older versions and downstream sources:
  *  'H' - Hardware is unsupported.
- *   T  - Tech_preview
+ *  'T' - Tech_preview
  */
 
 #if 0 /* unused */
@@ -658,7 +664,7 @@ char *kernel_tainted_short(const char *kernel_bt)
         return NULL;
 
     tainted += strlen("Tainted: ");
-    /* 13 == current count of known flags */
+    /* 17 + 2 == current count of known flags */
     /* http://git.kernel.org/?p=linux/kernel/git/torvalds/linux.git;a=blob_plain;f=kernel/panic.c;hb=HEAD */
     /* 26 the maximal sane count of flags because of alphabet limits */
     unsigned sz = 26 + 1;
@@ -701,14 +707,14 @@ static const char *const tnts_long[] = {
     /* B */ "System has hit bad_page.",
     /* C */ "Modules from drivers/staging are loaded.",
     /* D */ "Kernel has oopsed before",
-    /* E */ NULL,
+    /* E */ "Unsigned module has been loaded."
     /* F */ "Module has been forcibly loaded.",
     /* G */ "Proprietary module has not been loaded.",
     /* H */ NULL,
     /* I */ "Working around severe firmware bug.",
     /* J */ NULL,
-    /* K */ NULL,
-    /* L */ NULL,
+    /* K */ "Kernel has been live patched.",
+    /* L */ "A soft lockup has previously occurred.",
     /* M */ "System experienced a machine check exception.",
     /* N */ NULL,
     /* O */ "Out-of-tree module has been loaded.",
