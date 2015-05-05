@@ -38,6 +38,8 @@ rlJournalStart
         LANG=""
         export LANG
 
+        rpm -q libreport-plugin-mantisbt || rlDie "Package 'libreport-plugin-mantisbt' is not installed."
+
         TmpDir=$(mktemp -d)
         cp -R queries/* $TmpDir
         cp -R problem_dir $TmpDir
