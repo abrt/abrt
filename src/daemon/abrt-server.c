@@ -185,8 +185,16 @@ static int delete_path(const char *dump_dir_name)
         error_msg("Problem directory '%s' isn't owned by root:abrt or others are not restricted from access", dump_dir_name);
         return 400; /*  */
     }
-    if (!dump_dir_accessible_by_uid(dump_dir_name, client_uid))
+
+    int dir_fd = dd_openfd(dump_dir_name);
+    if (dir_fd < 0)
     {
+        perror_msg("Can't open problem directory '%s'", dump_dir_name);
+        return 400;
+    }
+    if (!fdump_dir_accessible_by_uid(dir_fd, client_uid))
+    {
+        close(dir_fd);
         if (errno == ENOTDIR)
         {
             error_msg("Path '%s' isn't problem directory", dump_dir_name);
@@ -196,7 +204,16 @@ static int delete_path(const char *dump_dir_name)
         return 403; /* Forbidden */
     }
 
-    delete_dump_dir(dump_dir_name);
+    struct dump_dir *dd = dd_fdopendir(dir_fd, dump_dir_name, /*flags:*/ 0);
+    if (dd)
+    {
+        if (dd_delete(dd) != 0)
+        {
+            error_msg("Failed to delete problem directory '%s'", dump_dir_name);
+            dd_close(dd);
+            return 400;
+        }
+    }
 
     return 0; /* success */
 }
