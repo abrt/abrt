@@ -91,8 +91,16 @@ static int delete_path(const char *dump_dir_name)
         error_msg("Problem directory '%s' has wrong owner or group", dump_dir_name);
         return 400; /*  */
     }
-    if (!dump_dir_accessible_by_uid(dump_dir_name, client_uid))
+
+    struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_FD_ONLY);
+    if (dd == NULL)
     {
+        perror_msg("Can't open problem directory '%s'", dump_dir_name);
+        return 400;
+    }
+    if (!dd_accessible_by_uid(dd, client_uid))
+    {
+        dd_close(dd);
         if (errno == ENOTDIR)
         {
             error_msg("Path '%s' isn't problem directory", dump_dir_name);
@@ -102,7 +110,16 @@ static int delete_path(const char *dump_dir_name)
         return 403; /* Forbidden */
     }
 
-    delete_dump_dir(dump_dir_name);
+    dd = dd_fdopendir(dd, /*flags:*/ 0);
+    if (dd)
+    {
+        if (dd_delete(dd) != 0)
+        {
+            error_msg("Failed to delete problem directory '%s'", dump_dir_name);
+            dd_close(dd);
+            return 400;
+        }
+    }
 
     return 0; /* success */
 }
