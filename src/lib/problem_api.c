@@ -46,6 +46,15 @@ int for_each_problem_in_dir(const char *path,
             continue; /* skip "." and ".." */
 
         char *full_name = concat_path_file(path, dent->d_name);
+
+        int dir_fd = dd_openfd(full_name);
+        if (dir_fd < 0)
+        {
+            VERB2 perror_msg("can't open problem directory '%s'", full_name);
+            free(full_name);
+            continue;
+        }
+
         if (dump_dir_accessible_by_uid(full_name, caller_uid))
         {
             /* Silently ignore *any* errors, not only EACCES.
@@ -54,7 +63,7 @@ int for_each_problem_in_dir(const char *path,
              */
             int sv_logmode = logmode;
             logmode = 0;
-            struct dump_dir *dd = dd_opendir(full_name, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES | DD_DONT_WAIT_FOR_LOCK);
+            struct dump_dir *dd = dd_fdopendir(dir_fd, full_name, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES | DD_DONT_WAIT_FOR_LOCK);
             logmode = sv_logmode;
             if (dd)
             {
@@ -62,6 +71,9 @@ int for_each_problem_in_dir(const char *path,
                 dd_close(dd);
             }
         }
+        else
+            close(dir_fd);
+
         free(full_name);
         if (brk)
             break;
