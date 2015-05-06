@@ -173,26 +173,7 @@ static char* exec_vp(char **args, int redirect_stderr, unsigned exec_timeout_sec
 
 char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
 {
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return NULL;
-
-    char *uid_str = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-    dd_close(dd);
-    uid_t uid = -1L;
-    if (uid_str)
-    {
-        uid = xatoi_positive(uid_str);
-        free(uid_str);
-        if (uid == geteuid())
-        {
-            uid = -1L; /* no need to setuid/gid if we are already under right uid */
-        }
-    }
-
     int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_SETSID | EXECFLG_QUIET;
-    if (uid != (uid_t)-1L)
-        flags |= EXECFLG_SETGUID;
     VERB1 flags &= ~EXECFLG_QUIET;
     int pipeout[2];
     char* args[4];
@@ -200,7 +181,7 @@ char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
     args[1] = xasprintf("--core=%s/"FILENAME_COREDUMP, dump_dir_name);
     args[2] = (char*)"-n";
     args[3] = NULL;
-    pid_t child = fork_execv_on_steroids(flags, args, pipeout, /*env_vec:*/ NULL, /*dir:*/ NULL, uid);
+    pid_t child = fork_execv_on_steroids(flags, args, pipeout, /*env_vec:*/ NULL, /*dir:*/ NULL, /*unused(uid)*/ 0);
     free(args[1]);
 
     /* Bugs in unstrip or corrupted coredumps can cause it to enter infinite loop.
