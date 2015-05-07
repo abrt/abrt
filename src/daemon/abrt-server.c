@@ -486,7 +486,7 @@ static gboolean key_value_ok(gchar *key, gchar *value)
         }
     }
 
-    return TRUE;
+    return allowed_new_user_problem_entry(client_uid, key, value);
 }
 
 /* Handles a message received from client over socket. */

@@ -571,3 +571,27 @@ bool dir_has_correct_permissions(const char *dir_name, int flags)
      */
     return correct_group;
 }
+
+bool allowed_new_user_problem_entry(uid_t uid, const char *name, const char *value)
+{
+    /* Allow root to create everything */
+    if (uid == 0)
+        return true;
+
+    /* Permit non-root users to create everything except: analyzer and type */
+    if (strcmp(name, FILENAME_ANALYZER) != 0
+     && strcmp(name, FILENAME_TYPE) != 0
+     /* compatibility value used in abrt-server */
+     && strcmp(name, "basename") != 0)
+        return true;
+
+    /* Permit non-root users to create all types except: C/C++, Koops, vmcore and xorg */
+     if (strcmp(value, "CCpp") != 0
+      && strcmp(value, "Kerneloops") != 0
+      && strcmp(value, "vmcore") != 0
+      && strcmp(value, "xorg") != 0)
+        return true;
+
+    error_msg("Only root is permitted to create element '%s' containing '%s'", name, value);
+    return false;
+}

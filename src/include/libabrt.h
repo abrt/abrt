@@ -58,6 +58,8 @@ enum {
 };
 #define dir_has_correct_permissions abrt_dir_has_correct_permissions
 bool dir_has_correct_permissions(const char *dir_name, int flags);
+#define allowed_new_user_problem_entry abrt_allowed_new_user_problem_entry
+bool allowed_new_user_problem_entry(uid_t uid, const char *name, const char *value);
 
 #define g_settings_nMaxCrashReportsSize abrt_g_settings_nMaxCrashReportsSize
 extern unsigned int  g_settings_nMaxCrashReportsSize;

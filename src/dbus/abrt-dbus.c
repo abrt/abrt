@@ -175,6 +175,7 @@ bool allowed_problem_element(GDBusMethodInvocation *invocation, const char *elem
 
 static char *handle_new_problem(GVariant *problem_info, uid_t caller_uid, char **error)
 {
+    char *problem_id = NULL;
     problem_data_t *pd = problem_data_new();
 
     GVariantIter *iter;
@@ -182,6 +183,12 @@ static char *handle_new_problem(GVariant *problem_info, uid_t caller_uid, char *
     gchar *key, *value;
     while (g_variant_iter_loop(iter, "{ss}", &key, &value))
     {
+        if (allowed_new_user_problem_entry(caller_uid, key, value) == false)
+        {
+            *error = xasprintf("You are not allowed to create element '%s' containing '%s'", key, value);
+            goto finito;
+        }
+
         problem_data_add_text_editable(pd, key, value);
     }
 
@@ -196,12 +203,13 @@ static char *handle_new_problem(GVariant *problem_info, uid_t caller_uid, char *
     /* At least it should generate local problem identifier UUID */
     problem_data_add_basics(pd);
 
-    char *problem_id = problem_data_save(pd);
+    problem_id = problem_data_save(pd);
     if (problem_id)
         notify_new_path(problem_id);
     else if (error)
         *error = xasprintf("Cannot create a new problem");
 
+finito:
     problem_data_free(pd);
     return problem_id;
 }
