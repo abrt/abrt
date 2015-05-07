@@ -91,8 +91,16 @@ static int delete_path(const char *dump_dir_name)
         error_msg("Problem directory '%s' isn't owned by root:abrt or others are not restricted from access", dump_dir_name);
         return 400; /*  */
     }
-    if (!dump_dir_accessible_by_uid(dump_dir_name, client_uid))
+
+    int dir_fd = dd_openfd(dump_dir_name);
+    if (dir_fd < 0)
     {
+        perror_msg("Can't open problem directory '%s'", dump_dir_name);
+        return 400;
+    }
+    if (!fdump_dir_accessible_by_uid(dir_fd, client_uid))
+    {
+        close(dir_fd);
         if (errno == ENOTDIR)
         {
             error_msg("Path '%s' isn't problem directory", dump_dir_name);
@@ -102,7 +110,16 @@ static int delete_path(const char *dump_dir_name)
         return 403; /* Forbidden */
     }
 
-    delete_dump_dir(dump_dir_name);
+    struct dump_dir *dd = dd_fdopendir(dir_fd, dump_dir_name, /*flags:*/ 0);
+    if (dd)
+    {
+        if (dd_delete(dd) != 0)
+        {
+            error_msg("Failed to delete problem directory '%s'", dump_dir_name);
+            dd_close(dd);
+            return 400;
+        }
+    }
 
     return 0; /* success */
 }
@@ -160,16 +177,6 @@ static int run_post_create(const char *dirname)
             error_msg("Problem directory '%s' has already been processed", dirname);
             return 403;
         }
-    }
-    else if (!dump_dir_accessible_by_uid(dirname, client_uid))
-    {
-        if (errno == ENOTDIR)
-        {
-            error_msg("Path '%s' isn't problem directory", dirname);
-            return 404; /* Not Found */
-        }
-        error_msg("Problem directory '%s' can't be accessed by user with uid %ld", dirname, (long)client_uid);
-        return 403; /* Forbidden */
     }
 
     int child_stdout_fd;
@@ -480,7 +487,7 @@ static gboolean key_value_ok(gchar *key, gchar *value)
         }
     }
 
-    return TRUE;
+    return allowed_new_user_problem_entry(client_uid, key, value);
 }
 
 /* Handles a message received from client over socket. */
@@ -724,14 +731,21 @@ static int perform_http_xact(void)
     /* Body received, EOF was seen. Don't let alarm to interrupt after this. */
     alarm(0);
 
+    int ret = 0;
     if (url_type == CREATION_NOTIFICATION)
     {
+        if (client_uid != 0)
+        {
+            error_msg("UID=%ld is not authorized to trigger post-create processing", (long)client_uid);
+            ret = 403; /* Forbidden */
+            goto out;
+        }
+
         messagebuf_data[messagebuf_len] = '\0';
         return run_post_create(messagebuf_data);
     }
 
     /* Save problem dir */
-    int ret = 0;
     unsigned pid = convert_pid(problem_info);
     die_if_data_is_missing(problem_info);
 
