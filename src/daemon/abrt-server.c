@@ -446,6 +446,9 @@ static int perform_http_xact(void)
     if (repeating_crash) /* Only pretend that we saved it */
         return 0; /* ret is 0: "success" */
 
+    if (allowed_new_user_problem_entry(client_uid, FILENAME_ANALYZER, analyzer) == false)
+        return 403; /* Forbidden */
+
     return create_debug_dump();
 }
 
