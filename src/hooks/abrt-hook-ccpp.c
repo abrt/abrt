@@ -380,7 +380,7 @@ static int test_configuration(bool setting_SaveFullCore, bool setting_CreateCore
     return 0;
 }
 
-int save_crashing_binary(pid_t pid, const char *dest_path, uid_t uid, gid_t gid)
+static int save_crashing_binary(pid_t pid, struct dump_dir *dd)
 {
     char buf[sizeof("/proc/%lu/exe") + sizeof(long)*3];
 
@@ -392,15 +392,15 @@ int save_crashing_binary(pid_t pid, const char *dest_path, uid_t uid, gid_t gid)
         return 0;
     }
 
-    int dst_fd = open(dest_path, O_WRONLY | O_CREAT | O_TRUNC, DEFAULT_DUMP_DIR_MODE);
+    int dst_fd = openat(dd->dd_fd, FILENAME_BINARY, O_WRONLY | O_CREAT | O_EXCL | O_TRUNC, DEFAULT_DUMP_DIR_MODE);
     if (dst_fd < 0)
     {
-        log_notice("Failed to create file '%s'", dest_path);
+        log_notice("Failed to create file '"FILENAME_BINARY"' at '%s'", dd->dd_dirname);
         close(src_fd_binary);
         return -1;
     }
 
-    IGNORE_RESULT(fchown(dst_fd, uid, gid));
+    IGNORE_RESULT(fchown(dst_fd, dd->dd_uid, dd->dd_gid));
 
     off_t sz = copyfd_eof(src_fd_binary, dst_fd, COPYFD_SPARSE);
     close(src_fd_binary);
@@ -769,9 +769,7 @@ int main(int argc, char** argv)
 
         if (setting_SaveBinaryImage)
         {
-            strcpy(path + path_len, "/"FILENAME_BINARY);
-
-            if (save_crashing_binary(pid, path, dd->dd_uid, dd->dd_gid))
+            if (save_crashing_binary(pid, dd))
             {
                 error_msg("Error saving '%s'", path);
 
