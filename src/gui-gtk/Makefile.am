@@ -6,6 +6,7 @@ abrt_gui_CFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -I$(srcdir)/../gtk-helpers \
+    -DBIN_DIR=\"$(bindir)\" \
     -DICON_DIR=\"${datadir}/abrt/icons/hicolor/48x48/status\" \
     $(GTK_CFLAGS) \
     $(LIBREPORT_GTK_CFLAGS) \
@@ -40,4 +41,12 @@ desktopdir = $(datadir)/applications
 desktop_in_files = abrt.desktop.in
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 
-EXTRA_DIST = $(desktop_in_files)
+install-exec-hook:
+	ln -sf $(bindir)/consolehelper $(DESTDIR)$(bindir)/abrt-gui-root
+
+install-data-hook:
+	$(MKDIR_P) $(DESTDIR)$(sysconfdir)/pam.d $(DESTDIR)$(sysconfdir)/security/console.apps
+	$(INSTALL_DATA) abrt-gui-root.pam $(DESTDIR)$(sysconfdir)/pam.d/abrt-gui-root
+	$(INSTALL_DATA) abrt-gui-root.console $(DESTDIR)$(sysconfdir)/security/console.apps/abrt-gui-root
+
+EXTRA_DIST = $(desktop_in_files) abrt-gui-root.console abrt-gui-root.pam

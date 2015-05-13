@@ -60,6 +60,11 @@ enum
     NUM_COLUMNS
 };
 
+enum
+{
+    MW_PRIVATE_REPORTS_WARNING = 1 << 0,
+};
+
 //FIXME: maybe we can use strrchr and make this faster...
 static char *get_last_line(const char* msg)
 {
@@ -697,7 +702,18 @@ static GtkWidget *create_menu(void)
     return menu;
 }
 
-static GtkWidget *create_main_window(void)
+static GtkWidget *create_privata_reports_warning(void)
+{
+    GtkWidget *lbl = gtk_label_new(_("PrivateReports is enabled. Use a privileged user account to see the problems detected by ABRT."));
+    gtk_misc_set_padding(GTK_MISC(lbl), 12, 10);
+
+    GtkWidget *warn_box = gtk_hbox_new(false, 0);
+    gtk_box_pack_start(GTK_BOX(warn_box), lbl, true, true, 0.5);
+
+    return warn_box;
+}
+
+static GtkWidget *create_main_window(int flags)
 {
     /* Main window */
     g_main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -708,6 +724,10 @@ static GtkWidget *create_main_window(void)
     GtkWidget *main_vbox = gtk_vbox_new(false, 0);
     /* add menu */
     gtk_box_pack_start(GTK_BOX(main_vbox), create_menu(), false, false, 0);
+
+    /* add private reports warning */
+    if ((flags & MW_PRIVATE_REPORTS_WARNING))
+        gtk_box_pack_start(GTK_BOX(main_vbox), create_privata_reports_warning(), false, true, 0);
 
     GtkWidget *not_subm_vbox = gtk_vbox_new(false, 0);
     gtk_container_set_border_width(GTK_CONTAINER(not_subm_vbox), 10);
@@ -1005,6 +1025,12 @@ static void scan_dirs_and_add_to_dirlist(void)
         scan_directory_and_add_to_dirlist(*argv++);
 }
 
+volatile sig_atomic_t s_child_started;
+static void handle_sigusr1(int signo)
+{
+    s_child_started = 1;
+}
+
 int main(int argc, char **argv)
 {
     /* I18n */
@@ -1033,11 +1059,14 @@ int main(int argc, char **argv)
     enum {
         OPT_v = 1 << 0,
         OPT_p = 1 << 1,
+        OPT_m = 1 << 1,
     };
+    int ppid = -1;
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_BOOL(   'p', NULL, NULL      , _("Add program names to log")),
+        OPT_INTEGER('m', NULL, &ppid     , _("Parent GUI pid")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -1046,9 +1075,49 @@ int main(int argc, char **argv)
 
     export_abrt_envvars(opts & OPT_p);
 
-    GtkWidget *main_window = create_main_window();
-
     load_abrt_conf();
+
+    int main_window_flags = 0;
+
+    if (ppid != -1)
+        kill(ppid, SIGUSR1);
+    else if (g_settings_privatereports && getuid() != 0)
+    {
+        const char *verbs[] = { "", "-v", "-vv", "-vvv" };
+        char *new_args[8];
+        int i = 0;
+        new_args[i++] = (char *)"abrt-gui-root";
+        new_args[i++] = (char *)"-m";
+        /* leak */
+        new_args[i++] = xasprintf("%d", getpid());;
+        if ((opts & OPT_v))
+            new_args[i++] = (char *)verbs[g_verbose <= 3 ? g_verbose : 3];
+        if ((opts & OPT_p))
+            new_args[i++] = (char *)"-p";
+        new_args[i] = (char *)NULL;
+
+        signal(SIGUSR1, handle_sigusr1);
+
+        pid_t pid = fork();
+        if (pid < 0)
+            perror_msg_and_die("fork");
+        if (pid == 0)
+        {
+            execv(BIN_DIR"/abrt-gui-root", (char *const *)new_args);
+            perror_msg("Could not execute abrt-gui-root");
+            exit(-1);
+        }
+
+        int status = 0;
+        safe_waitpid(pid, &status, 0);
+        if (s_child_started)
+            exit(WEXITSTATUS(status));
+
+        main_window_flags = MW_PRIVATE_REPORTS_WARNING;
+    }
+
+    GtkWidget *main_window = create_main_window(main_window_flags);
+
     const char *default_dirs[] = {
         g_settings_dump_location,
         NULL,

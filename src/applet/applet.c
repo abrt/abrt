@@ -437,9 +437,18 @@ static void show_problem_notification(problem_info_t *pi, const char *format, ..
     va_end(args);
 
     NotifyNotification *notification = new_warn_notification();
-    notify_notification_add_action(notification, "REPORT", _("Report"),
+    if (!pi->foreign)
+    {
+        notify_notification_add_action(notification, "REPORT", _("Report"),
                                     NOTIFY_ACTION_CALLBACK(action_report),
                                     pi, NULL);
+    }
+    else
+    {
+        notify_notification_add_action(notification, "SHOW", _("Show"),
+                                    NOTIFY_ACTION_CALLBACK(action_open_gui),
+                                    NULL, NULL);
+    }
     notify_notification_add_action(notification, "default", _("Show"),
                                     NOTIFY_ACTION_CALLBACK(action_open_gui),
                                     NULL, NULL);
@@ -527,9 +536,23 @@ static void Crash(DBusMessage* signal)
         }
     }
 
-    const char* message = _("A problem in the %s package has been detected");
-    if (package_name[0] == '\0')
-        message = _("A problem has been detected");
+    const int foreign = !dump_dir_accessible_by_uid(dir, getuid());
+    const char* message;
+
+    if (foreign)
+    {
+        if (package_name[0] == '\0')
+            message = _("Use a privileged user account to report the problem");
+        else
+            message = _("Use a privileged user account to report the problem in the %s package");
+    }
+    else
+    {
+        if (package_name[0] == '\0')
+            message = _("A problem has been detected");
+        else
+            message = _("A problem in the %s package has been detected");
+    }
 
     if (!server_has_persistence())
     {
@@ -560,6 +583,7 @@ static void Crash(DBusMessage* signal)
 
     problem_info_t *pi = problem_info_new();
     pi->problem_dir = xstrdup(dir);
+    pi->foreign = foreign;
     show_problem_notification(pi, message, package_name);
 }
 
