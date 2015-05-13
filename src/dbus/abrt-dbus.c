@@ -607,6 +607,12 @@ static void handle_method_call(GDBusConnection *connection,
 
         g_variant_get(parameters, "(&s&s&s)", &problem_id, &element, &value);
 
+        if (!allowed_problem_dir(problem_id))
+        {
+            return_InvalidProblemDir_error(invocation, problem_id);
+            return;
+        }
+
         if (!str_is_correct_filename(element))
         {
             log_notice("'%s' is not a valid element name of '%s'", element, problem_id);
@@ -665,6 +671,12 @@ static void handle_method_call(GDBusConnection *connection,
         const char *element;
 
         g_variant_get(parameters, "(&s&s)", &problem_id, &element);
+
+        if (!allowed_problem_dir(problem_id))
+        {
+            return_InvalidProblemDir_error(invocation, problem_id);
+            return;
+        }
 
         if (!str_is_correct_filename(element))
         {
@@ -782,6 +794,18 @@ static void handle_method_call(GDBusConnection *connection,
         g_variant_get_child(parameters, 2, "x", &timestamp_from);
         g_variant_get_child(parameters, 3, "x", &timestamp_to);
         g_variant_get_child(parameters, 4, "b", &all);
+
+        if (!str_is_correct_filename(element))
+        {
+            log_notice("'%s' is not a valid element name", element);
+            char *error = xasprintf(_("'%s' is not a valid element name"), element);
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                              "org.freedesktop.problems.InvalidElement",
+                                              error);
+
+            free(error);
+            return;
+        }
 
         if (all && polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") == PolkitYes)
             caller_uid = 0;
