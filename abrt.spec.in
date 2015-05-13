@@ -497,6 +497,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files gui
 %defattr(-,root,root,-)
 %{_bindir}/abrt-gui
+%{_bindir}/abrt-gui-root
 %dir %{_datadir}/%{name}
 # all glade, gtkbuilder and py files for gui
 %{_datadir}/applications/%{desktopvendor}-%{name}.desktop
@@ -506,6 +507,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-applet
 #%{_bindir}/test-report
 %config(noreplace) %{_sysconfdir}/xdg/autostart/abrt-applet.desktop
+%config(noreplace) %{_sysconfdir}/pam.d/abrt-gui-root
+%config(noreplace) %{_sysconfdir}/security/console.apps/abrt-gui-root
 
 %files addon-ccpp
 %defattr(-,root,root,-)
@@ -595,7 +598,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files tui
 %defattr(-,root,root,-)
 %{_bindir}/abrt-cli
+%{_bindir}/abrt-cli-root
 %{_mandir}/man1/abrt-cli.1.gz
+%config(noreplace) %{_sysconfdir}/pam.d/abrt-cli-root
+%config(noreplace) %{_sysconfdir}/security/console.apps/abrt-cli-root
 
 %files desktop
 %defattr(-,root,root,-)
