@@ -42,6 +42,8 @@ int cmd_status(int argc, const char **argv)
     parse_opts(argc, (char **)argv, program_options, program_usage_string);
     argv += optind;
 
+    /* Don't use restart_as_root_if_needed() -> this command is called from an etc/profile.d script */
+
     GList *problem_dir_list = NULL;
     while (*argv)
         problem_dir_list = g_list_append(problem_dir_list, xstrdup(*argv++));

@@ -19,6 +19,7 @@
 
 #include "libabrt.h"
 #include "builtin-cmd.h"
+#include "abrt-cli-core.h"
 
 /* TODO npajkovs:
  *   add -n, --dry-run
@@ -41,6 +42,9 @@ int cmd_rm(int argc, const char **argv)
 
     if (!argv[0])
         show_usage_and_die(program_usage_string, program_options);
+
+    load_abrt_conf();
+    restart_as_root_if_needed("rm", /*no args*/0, /*no args*/NULL);
 
     int errs = 0;
     while (*argv)

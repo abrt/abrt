@@ -31,4 +31,6 @@ vector_of_problem_data_t *new_vector_of_problem_data(void);
 problem_data_t *fill_crash_info(const char *dump_dir_name);
 vector_of_problem_data_t *fetch_crash_infos(GList *dir_list);
 
+void restart_as_root_if_needed(const char *cmd, unsigned cmd_argc, const char *cmd_argv[]);
+
 #endif /* ABRT_CLI_CORE_H_ */
