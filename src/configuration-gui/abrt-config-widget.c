@@ -175,10 +175,13 @@ on_switch_activate(GObject       *object,
         GParamSpec     *spec,
         AbrtConfigWidget *config)
 {
+    AbrtConfigWidgetOption *option = g_object_get_data(G_OBJECT(object), "abrt-option");
+    if (option->config == NULL)
+        return;
+
     const gboolean state = gtk_switch_get_active(GTK_SWITCH(object));
     const char *const val = state ? "yes" : "no";
 
-    AbrtConfigWidgetOption *option = g_object_get_data(G_OBJECT(object), "abrt-option");
     log_debug("%s : %s", option->name, val);
     abrt_app_configuration_set_value(option->config, option->name, val);
     abrt_app_configuration_save(option->config);
@@ -191,7 +194,11 @@ update_option_current_value(AbrtConfigWidget *self, enum AbrtOptions opid)
     assert((opid >= _ABRT_OPT_BEGIN_ && opid < _ABRT_OPT_END_) || !"Out of range Option ID value");
 
     AbrtConfigWidgetOption *option = &(self->priv->options[opid]);
-    const char *val = abrt_app_configuration_get_value(option->config, option->name);
+
+    const char *val = NULL;
+    if (option->config != NULL)
+        val = abrt_app_configuration_get_value(option->config, option->name);
+
     option->current_value = val ? string_to_bool(val) : option->default_value;
 }
 
@@ -209,6 +216,9 @@ connect_switch_with_option(AbrtConfigWidget *self, enum AbrtOptions opid, const 
     g_object_set_data(G_OBJECT(gsw), "abrt-option", option);
     g_signal_connect(G_OBJECT(gsw), "notify::active",
             G_CALLBACK(on_switch_activate), self);
+
+    if (option->config == NULL)
+        gtk_widget_set_sensitive(GTK_WIDGET(gsw), FALSE);
 }
 
 static void
