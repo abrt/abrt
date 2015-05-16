@@ -221,14 +221,14 @@ abrt_config_widget_init(AbrtConfigWidget *self)
     self->priv->builder = gtk_builder_new();
     gtk_builder_set_translation_domain(self->priv->builder, GETTEXT_PACKAGE);
 
-    gtk_builder_add_from_file(self->priv->builder, ABRT_UI_DIR "/" UI_FILE_NAME, &error);
+    gtk_builder_add_from_file(self->priv->builder, UI_FILE_NAME, &error);
     if(error != NULL) {
-        g_warning("Failed to load '%s': %s", ABRT_UI_DIR "/" UI_FILE_NAME, error->message);
+        log_debug("Failed to load '%s': %s", UI_FILE_NAME, error->message);
         g_error_free(error);
         error = NULL;
-        gtk_builder_add_from_file(self->priv->builder, UI_FILE_NAME, &error);
+        gtk_builder_add_from_file(self->priv->builder, ABRT_UI_DIR "/" UI_FILE_NAME, &error);
         if(error != NULL) {
-            g_warning("Failed to load '%s': %s", UI_FILE_NAME, error->message);
+            g_warning("Failed to load '%s': %s", ABRT_UI_DIR "/" UI_FILE_NAME, error->message);
             g_error_free(error);
             return;
         }
