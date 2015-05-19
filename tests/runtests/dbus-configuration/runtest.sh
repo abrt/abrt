@@ -317,13 +317,13 @@ rlJournalStart
     rlPhaseStartTest "String Array from non-default file"
         rlRun "confDBusGetProperty abrt Interpreters" 0
         rlAssertEquals "Get 'Interpreters' value" "_$(confDBusGetProperty abrt Interpreters)" \
-            '_[ string "python2" string "python2.7" string "python" string "python3" string "python3.3" string "perl" string "perl5.16.2" ]'
+            '_[ string "python2" string "python2.7" string "python" string "python3" string "python3.3" string "python3.4" string "python3.5" string "perl" string "perl5.16.2" ]'
         rlRun "confDBusSetProperty abrt Interpreters array:string '[\"foo\",\"blah\",\"panda\"]'" 0
         rlAssertEquals "Failed to set 'Interpreters ' value" "_$(confDBusGetProperty abrt Interpreters)" \
             '_[ string "foo" string "blah" string "panda" ]'
         rlRun "confDBusSetPropertyDefault abrt Interpreters" 0
         rlAssertEquals "Get 'Interpreters' value" "_$(confDBusGetProperty abrt Interpreters)" \
-            '_[ string "python2" string "python2.7" string "python" string "python3" string "python3.3" string "perl" string "perl5.16.2" ]'
+            '_[ string "python2" string "python2.7" string "python" string "python3" string "python3.3" string "python3.4" string "python3.5" string "perl" string "perl5.16.2" ]'
     rlPhaseEnd
 
     rlPhaseStartTest "Boolean from non-default file"
