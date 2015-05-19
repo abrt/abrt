@@ -501,7 +501,6 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
     problem_info_t *pi = (problem_info_t *)user_data;
     if (problem_info_get_dir(pi))
         fork_exec_gui(problem_info_get_dir(pi));
-    problem_info_unref(pi);
 }
 
 static void action_restart(NotifyNotification *notification, gchar *action, gpointer user_data)
@@ -528,7 +527,6 @@ static void action_restart(NotifyNotification *notification, gchar *action, gpoi
                    err->message);
     }
     g_object_unref (app);
-    problem_info_unref(pi);
 }
 
 static void on_notify_close(NotifyNotification *notification, gpointer user_data)
