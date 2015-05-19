@@ -36,6 +36,10 @@
 #include "libabrt.h"
 #include "problem_api.h"
 
+#define APP_NAME "abrt-applet"
+#define GS_SCHEMA_ID_PRIVACY "org.gnome.desktop.privacy"
+#define GS_PRIVACY_OPT_AUTO_REPORTING "report-technical-problems"
+
 /* libnotify action keys */
 #define A_REPORT_REPORT "REPORT"
 #define A_RESTART_APPLICATION "RESTART"
@@ -55,15 +59,60 @@ static bool is_autoreporting_enabled(void)
     GSettings *settings;
     gboolean ret;
 
-    settings = g_settings_new ("org.gnome.desktop.privacy");
-    ret = g_settings_get_boolean (settings, "report-technical-problems");
+    settings = g_settings_new (GS_SCHEMA_ID_PRIVACY);
+    ret = g_settings_get_boolean (settings, GS_PRIVACY_OPT_AUTO_REPORTING);
     g_object_unref (settings);
     return ret;
 }
 
+static void migrate_auto_reporting_to_gsettings(void)
+{
+#define OPT_NAME "AutoreportingEnabled"
+    map_string_t *settings = new_map_string();
+    if (!load_app_conf_file(APP_NAME, settings))
+        goto finito;
+
+    /* Silently ignore not configured options */
+    int sv_logmode = logmode;
+    /* but only if we run in silent mode (no -v on command line) */
+    logmode = g_verbose == 0 ? 0 : sv_logmode;
+
+    int auto_reporting = 0;
+    int configured = try_get_map_string_item_as_bool(settings, OPT_NAME, &auto_reporting);
+
+    logmode = sv_logmode;
+
+    if (!configured)
+        goto finito;
+
+    /* Enable the GS option if AutoreportingEnabled is true because the user
+     * turned the Autoreporting in abrt-applet in a before GS.
+     *
+     * Do not disable the GS option if AutoreportingEvent is false because the
+     * GS option is false by default, thus disabling would revert the user's
+     * decision to  automatically report technical problems.
+     */
+    if (auto_reporting)
+    {
+        GSettings *settings = g_settings_new(GS_SCHEMA_ID_PRIVACY);
+        g_settings_set_boolean(settings, GS_PRIVACY_OPT_AUTO_REPORTING, TRUE);
+        g_object_unref(settings);
+    }
+
+    remove_map_string_item(settings, OPT_NAME);
+    save_app_conf_file(APP_NAME, settings);
+
+    log("Successfully migrated "APP_NAME":"OPT_NAME" to "GS_SCHEMA_ID_PRIVACY":"GS_PRIVACY_OPT_AUTO_REPORTING);
+
+#undef OPT_NAME
+finito:
+    free_map_string(settings);
+    return;
+}
+
 static const char *get_autoreport_event_name(void)
 {
-    load_user_settings("abrt-applet");
+    load_user_settings(APP_NAME);
     const char *configured = get_user_setting("AutoreportingEvent");
     return configured ? configured : g_settings_autoreporting_event;
 }
@@ -552,7 +601,7 @@ static NotifyNotification *new_warn_notification(const char *body)
 
     notify_notification_set_urgency(notification, NOTIFY_URGENCY_NORMAL);
     notify_notification_set_timeout(notification, NOTIFY_EXPIRES_DEFAULT);
-    notify_notification_set_hint(notification, "desktop-entry", g_variant_new_string("abrt-applet"));
+    notify_notification_set_hint(notification, "desktop-entry", g_variant_new_string(APP_NAME));
 
     return notification;
 }
@@ -1145,13 +1194,14 @@ int main(int argc, char** argv)
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
 
     migrate_to_xdg_dirs();
+    migrate_auto_reporting_to_gsettings();
 
     export_abrt_envvars(0);
     msg_prefix = g_progname;
 
     load_abrt_conf();
     load_event_config_data();
-    load_user_settings("abrt-applet");
+    load_user_settings(APP_NAME);
 
     /* Initialize our (dbus_abrt) machinery by filtering
      * for signals:
