@@ -37,7 +37,7 @@ to a dedicated server(s) for processing (backtrace, etc).
 
 	Design
 
-Abrt design should be flexible enough to accomodate all
+Abrt design should be flexible enough to accommodate all
 of the above usage scenarios.
 
 Since currently we do not know how to dump oops on demand,
@@ -70,7 +70,7 @@ uses inotify to watch for crashes. Instead the programs which create crashes
 can trigger their initial ("post-create") processing themselves]
 
 Crashes conceptually go through "events" in their lives.
-Apart from "post-create" event decribed above, they may have
+Apart from "post-create" event described above, they may have
 "analyze" event, "report[_FOO]" events,
 and arbitrarily-named other events.
 abrt-handle-crashdump tool can be used to "run" an event on a directory,
@@ -124,7 +124,7 @@ Done:
 * Make abrt-gui start abrtd on demand, so that abrt-gui can be started
   even if abrtd does not run at the moment.
 * make kerneloops plugin into separate daemon (convert it to a hook
-  and get rid of "cron plugins" which are wrong idea since the begining)
+  and get rid of "cron plugins" which are wrong idea since the beginning)
 * make C/C++ hook to be started by init script
 * add "include FILE" feature to abrt_event.conf
 

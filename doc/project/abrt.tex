@@ -194,7 +194,7 @@ information regarding their interests, involvement.
 {\textbf{Package Maintainers}
   \nodepart{second} \vspace{-5mm}
   \begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
-  \item Fixing most frequently occured bugs
+  \item Fixing most frequently occurred bugs
   \item Fixing bugs where the bug is well described
   \end{itemize}
 };
@@ -265,7 +265,7 @@ Highlight important reports
 In-depth bug fixing
 -------------------
 
-Collect core-dump for frequently occured reports
+Collect core-dump for frequently occurred reports
 
 Retrace coredumps on demand
 
@@ -570,7 +570,7 @@ components.
     Red Hat Bugzilla.
   \end{description}
 \item[Data Storage] Database and file storage for data required for
-  the analysis, evaluation, adn processing of reports and problems.
+  the analysis, evaluation, and processing of reports and problems.
   \begin{description}
   \item[LLVM bitcode] We store LLVM bitcode of every binary and
     dynamic library compiled from C/C++ source code.
@@ -582,8 +582,8 @@ components.
 \begin{tikzpicture}
 \umlclass[x=-4,y=0]{problem}{
 id : PRIMARY KEY \\
-first occurence : TIMESTAMP NOT NULL \\
-last occurence : TIMESTAMP NOT NULL \\
+first occurrence : TIMESTAMP NOT NULL \\
+last occurrence : TIMESTAMP NOT NULL \\
 }{}
 
 \umlclass[x=4,y=-2]{problem report}{
@@ -616,8 +616,8 @@ Part of reports is populated from $\mu$reports.
 \umlclass[x=-4,y=0]{report}{
 id : PRIMARY KEY AUTOINCREMENT \\
 type : ENUM (USERSPACE, KERNEL, PYTHON, SELINUX) \\
-first occurence : TIMESTAMP \\
-last occurence : TIMESTAMP \\
+first occurrence : TIMESTAMP \\
+last occurrence : TIMESTAMP \\
 count : INT \\
 component id : FOREIGN KEY \\
 problem id : FOREIGN KEY
