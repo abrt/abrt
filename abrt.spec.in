@@ -94,6 +94,8 @@ Provides: abrt-applet = %{version}-%{release}
 Obsoletes: abrt-applet < 0.0.5
 Conflicts: abrt-applet < 0.0.5
 Requires: abrt-libs = %{version}-%{release}
+Requires: pam
+Requires: usermode
 
 %description gui
 GTK+ wizard for convenient bug reporting.
@@ -150,6 +152,8 @@ uncaught exception in python programs.
 Summary: %{name}'s command line interface
 Group: User Interface/Desktops
 Requires: abrt-libs = %{version}-%{release}
+Requires: pam
+Requires: usermode
 
 %description tui
 This package contains simple command line client for processing abrt reports in
