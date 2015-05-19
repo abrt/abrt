@@ -35,6 +35,7 @@ rlJournalStart
     rlPhaseStartSetup
         rlShowRunningKernel
         load_abrt_conf
+        CRASHDIR=$(cat /etc/abrt/abrt.conf | grep DumpLocation | sed 's/.* = //')
     rlPhaseEnd
 
     rlPhaseStartTest
@@ -48,7 +49,7 @@ rlJournalStart
 
         wait_for_hooks
 
-        rlRun "cd /var/tmp/abrt/libreport*"
+        rlRun "cd $CRASHDIR/libreport*"
         rlLog "Removing count file and restarting abrtd"
         rlRun "rm -f count"
         rlRun "systemctl restart abrtd"
@@ -58,7 +59,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "rm -rf /var/tmp/abrt/libreport*" 0 "Removing problem dir"
+        rlRun "rm -rf $CRASHDIR/libreport*" 0 "Removing problem dir"
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd

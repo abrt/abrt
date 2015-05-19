@@ -43,6 +43,7 @@ rlJournalStart
         cp -R -- problem_dir "$TmpDir"
         cp -- pyserve *.conf "$TmpDir"
         pushd "$TmpDir"
+        CRASHDIR=$(cat /etc/abrt/abrt.conf | grep DumpLocation | sed 's/.* = //')
     rlPhaseEnd
 
     rlPhaseStartTest "sanity"
@@ -128,7 +129,7 @@ rlJournalStart
         rlAssertGrep "curl sent header: 'POST /rs/cases/[0-9]*/attachments/.*/attachments HTTP/1" client_create3
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
-        rlRun "rm -rf /var/tmp/abrt/last-ccpp"
+        rlRun "rm -rf $CRASHDIR/last-ccpp"
     rlPhaseEnd
 
    rlPhaseStartTest "rhtsupport create with option -u with attach email"
@@ -174,7 +175,7 @@ rlJournalStart
         rlAssertGrep "curl sent header: 'POST /rs/cases/[0-9]*/attachments/.*/attachments HTTP/1" client_create4
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
-        rlRun "rm -rf /var/tmp/abrt/last-ccpp"
+        rlRun "rm -rf $CRASHDIR/last-ccpp"
     rlPhaseEnd
 
     rlPhaseStartTest "rhtsupport create with option -u (uReport has been already submitted, email is configured)"
@@ -221,7 +222,7 @@ rlJournalStart
         rlAssertGrep "curl sent header: 'POST /rs/cases/[0-9]*/attachments/.*/attachments HTTP/1" client_create5
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
-        rlRun "rm -rf /var/tmp/abrt/last-ccpp"
+        rlRun "rm -rf $CRASHDIR/last-ccpp"
     rlPhaseEnd
 
     rlPhaseStartTest "rhtsupport create with option -u (uReport has been already submitted, email is not configured)"
