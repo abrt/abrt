@@ -25,7 +25,8 @@ Querying problems
 
 Querying all problems
 ---------------------
-The ``list_all`` method will try to authenticate via 
+The ``list`` method used with ``auth=True`` parameter
+will try to authenticate via
 `polkit <http://www.freedesktop.org/wiki/Software/polkit>`_ to
 gain access to all problems on the system.
 
