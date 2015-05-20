@@ -75,25 +75,6 @@ static unsigned handle_internal_options(int argc, const char **argv, const char 
         {
             return skip + argc;
         }
-#if 0
-        if (prefixcmp(cmd, "--base-dir=") == 0)
-            D_list = g_list_append(D_list, xstrdup(cmd + strlen("--base-dir=")));
-        else if (prefixcmp(cmd, "--list-events") == 0)
-        {
-            const char *pfx = cmd + strlen("--list-events");
-            if (pfx && *pfx)
-                pfx += 1; /* skip '=' */
-
-            char *events = list_possible_events(NULL, dump_dir_name, pfx);
-            if (!events)
-                exit(1); /* error msg is already logged */
-
-            fputs(events, stdout);
-            free(events);
-
-            exit(0);
-        }
-#endif
         else
             error_msg_and_die("%s", usage);
 
