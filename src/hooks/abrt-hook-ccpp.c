@@ -117,8 +117,8 @@ static off_t copyfd_sparse(int src_fd, int dst_fd1, int dst_fd2, off_t size2)
 		size2 -= rd;
 		if (size2 < 0)
 			dst_fd2 = -1;
-//TODO: truncate to 0 or even delete the second file
-//(currently we delete the file later)
+// truncate to 0 or even delete the second file?
+// No, kernel does not delete nor truncate core files.
 	}
  out:
 
@@ -378,11 +378,18 @@ static int open_user_core(uid_t uid, uid_t fsuid, gid_t fsgid, pid_t pid, char *
 
 user_core_fail:
     if (user_core_fd >= 0)
-    {
         close(user_core_fd);
-        unlinkat(dirfd(proc_cwd), core_basename, /*unlink file*/0);
-    }
     return -1;
+}
+
+static int close_user_core(int user_core_fd, off_t core_size)
+{
+    if (user_core_fd >= 0 && (fsync(user_core_fd) != 0 || close(user_core_fd) != 0 || core_size < 0))
+    {
+        perror_msg("Error writing '%s' at '%s'", core_basename, user_pwd);
+        return -1;
+    }
+    return 0;
 }
 
 /* Like xopen, but on error, unlocks and deletes dd and user core */
@@ -399,7 +406,7 @@ static int create_or_die(const char *filename, int user_core_fd)
     if (dd)
         dd_delete(dd);
     if (user_core_fd >= 0)
-        unlinkat(dirfd(proc_cwd), core_basename, /*unlink file*/0);
+        close(user_core_fd);
 
     errno = sv_errno;
     perror_msg_and_die("Can't open '%s'", filename);
@@ -432,19 +439,10 @@ static int create_user_core(int user_core_fd, pid_t pid, off_t ulimit_c)
     if (user_core_fd >= 0)
     {
         off_t core_size = copyfd_size(STDIN_FILENO, user_core_fd, ulimit_c, COPYFD_SPARSE);
-        if (fsync(user_core_fd) != 0 || close(user_core_fd) != 0 || core_size < 0)
-        {
-            /* perror first, otherwise unlink may trash errno */
-            perror_msg("Error writing '%s' at '%s'", core_basename, user_pwd);
-            unlinkat(dirfd(proc_cwd), core_basename, /*only files*/0);
+        if (close_user_core(user_core_fd, core_size) != 0)
             goto finito;
-        }
-        if (ulimit_c == 0 || core_size > ulimit_c)
-        {
-            unlinkat(dirfd(proc_cwd), core_basename, /*only files*/0);
-            goto finito;
-        }
-        log_notice("Saved core dump of pid %lu to %s at '%s' (%llu bytes)", (long)pid, core_basename, user_pwd, (long long)core_size);
+
+        log_notice("Saved core dump of pid %lu to '%s' at '%s' (%llu bytes)", (long)pid, core_basename, user_pwd, (long long)core_size);
     }
     err = 0;
 
@@ -890,6 +888,7 @@ int main(int argc, char** argv)
              * ls: cannot access core*: No such file or directory <=== BAD
              */
             core_size = copyfd_sparse(STDIN_FILENO, abrt_core_fd, user_core_fd, ulimit_c);
+            close_user_core(user_core_fd, core_size);
             if (fsync(abrt_core_fd) != 0 || close(abrt_core_fd) != 0 || core_size < 0)
             {
                 unlink(path);
@@ -899,16 +898,6 @@ int main(int argc, char** argv)
                 error_msg("Error writing '%s'", path);
 
                 goto cleanup_and_exit;
-            }
-            if (user_core_fd >= 0
-                /* error writing user coredump? */
-             && (fsync(user_core_fd) != 0 || close(user_core_fd) != 0
-                /* user coredump is too big? */
-                || (ulimit_c == 0 /* paranoia */ || core_size > ulimit_c)
-                )
-            ) {
-                /* nuke it (silently) */
-                unlinkat(dirfd(proc_cwd), core_basename, /*unlink file*/0);
             }
         }
         else
