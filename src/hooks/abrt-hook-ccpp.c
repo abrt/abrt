@@ -135,8 +135,8 @@ static off_t copyfd_sparse(int src_fd, int dst_fd1, int dst_fd2, off_t size2)
 		size2 -= rd;
 		if (size2 < 0)
 			dst_fd2 = -1;
-//TODO: truncate to 0 or even delete the second file
-//(currently we delete the file later)
+// truncate to 0 or even delete the second file?
+// No, kernel does not delete nor truncate core files.
 	}
  out:
 
@@ -511,11 +511,18 @@ static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_valu
 
 user_core_fail:
     if (user_core_fd >= 0)
-    {
         close(user_core_fd);
-        unlinkat(dirfd(proc_cwd), core_basename, /*unlink file*/0);
-    }
     return -1;
+}
+
+static int close_user_core(int user_core_fd, off_t core_size)
+{
+    if (user_core_fd >= 0 && (fsync(user_core_fd) != 0 || close(user_core_fd) != 0 || core_size < 0))
+    {
+        perror_msg("Error writing '%s' at '%s'", core_basename, user_pwd);
+        return -1;
+    }
+    return 0;
 }
 
 static bool dump_fd_info(const char *dest_filename, char *source_filename, int source_base_ofs, uid_t uid, gid_t gid)
@@ -578,7 +585,7 @@ static int create_or_die(const char *filename)
     if (dd)
         dd_delete(dd);
     if (user_core_fd >= 0)
-        unlinkat(dirfd(proc_cwd), core_basename, /*unlink file*/0);
+        close(user_core_fd);
 
     errno = sv_errno;
     perror_msg_and_die("Can't open '%s'", filename);
@@ -743,6 +750,7 @@ cleanup:
 
 int main(int argc, char** argv)
 {
+    int err = 1;
     /* Kernel starts us with all fd's closed.
      * But it's dangerous:
      * fprintf(stderr) can dump messages into random fds, etc.
@@ -964,9 +972,8 @@ int main(int argc, char** argv)
             error_msg_and_die("Error saving '%s'", path);
         }
         log("Saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
-        if (proc_cwd != NULL)
-            closedir(proc_cwd);
-        return 0;
+        err = 0;
+        goto finito;
     }
 
     unsigned path_len = snprintf(path, sizeof(path), "%s/ccpp-%s-%lu.new",
@@ -1072,25 +1079,16 @@ int main(int argc, char** argv)
          * ls: cannot access core*: No such file or directory <=== BAD
          */
         off_t core_size = copyfd_sparse(STDIN_FILENO, abrt_core_fd, user_core_fd, ulimit_c);
+
+        close_user_core(user_core_fd, core_size);
+
         if (fsync(abrt_core_fd) != 0 || close(abrt_core_fd) != 0 || core_size < 0)
         {
             unlink(path);
             dd_delete(dd);
-            if (user_core_fd >= 0)
-                unlinkat(dirfd(proc_cwd), core_basename, /*unlink file*/0);
             /* copyfd_sparse logs the error including errno string,
              * but it does not log file name */
             error_msg_and_die("Error writing '%s'", path);
-        }
-        if (user_core_fd >= 0
-            /* error writing user coredump? */
-         && (fsync(user_core_fd) != 0 || close(user_core_fd) != 0
-            /* user coredump is too big? */
-            || (ulimit_c == 0 /* paranoia */ || core_size > ulimit_c)
-            )
-        ) {
-            /* nuke it (silently) */
-            unlinkat(dirfd(proc_cwd), core_basename, /*unlink file*/0);
         }
 
 /* Provisional code, pending discussion with JVM people */
@@ -1148,9 +1146,9 @@ int main(int argc, char** argv)
         }
 
         free(rootdir);
-        if (proc_cwd != NULL)
-            closedir(proc_cwd);
-        return 0;
+
+        err = 0;
+        goto finito;
     }
 
     /* We didn't create abrt dump, but may need to create compat coredump */
@@ -1158,26 +1156,16 @@ int main(int argc, char** argv)
     if (user_core_fd >= 0)
     {
         off_t core_size = copyfd_size(STDIN_FILENO, user_core_fd, ulimit_c, COPYFD_SPARSE);
-        if (fsync(user_core_fd) != 0 || close(user_core_fd) != 0 || core_size < 0)
-        {
-            /* perror first, otherwise unlink may trash errno */
-            perror_msg("Error writing '%s' at '%s'", core_basename, user_pwd);
-            unlinkat(dirfd(proc_cwd), core_basename, /*unlink file*/0);
-            if (proc_cwd != NULL)
-                closedir(proc_cwd);
-            return 1;
-        }
-        if (ulimit_c == 0 || core_size > ulimit_c)
-        {
-            unlinkat(dirfd(proc_cwd), core_basename, /*unlink file*/0);
-            if (proc_cwd != NULL)
-                closedir(proc_cwd);
-            return 1;
-        }
+        if (close_user_core(user_core_fd, core_size) != 0)
+            goto finito;
+
+        err = 0;
         log("Saved core dump of pid %lu to %s at %s (%llu bytes)", (long)pid, core_basename, user_pwd, (long long)core_size);
     }
 
+ finito:
     if (proc_cwd != NULL)
         closedir(proc_cwd);
-    return 0;
+
+    return err;
 }
