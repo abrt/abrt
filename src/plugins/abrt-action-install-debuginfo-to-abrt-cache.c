@@ -72,6 +72,11 @@ int main(int argc, char **argv)
     };
     const unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
+    const gid_t egid = getegid();
+    const gid_t rgid = getgid();
+    const uid_t euid = geteuid();
+    const gid_t ruid = getuid();
+
     /* We need to open the build ids file under the caller's UID/GID to avoid
      * information disclosures when reading files with changed UID.
      * Unfortunately, we cannot replace STDIN with the new fd because ABRT uses
@@ -82,7 +87,20 @@ int main(int argc, char **argv)
     char *build_ids_self_fd = NULL;
     if (strcmp("-", build_ids) != 0)
     {
+        if (setregid(egid, rgid) < 0)
+            perror_msg_and_die("setregid(egid, rgid)");
+
+        if (setreuid(euid, ruid) < 0)
+            perror_msg_and_die("setreuid(euid, ruid)");
+
         const int build_ids_fd = open(build_ids, O_RDONLY);
+
+        if (setregid(rgid, egid) < 0)
+            perror_msg_and_die("setregid(rgid, egid)");
+
+        if (setreuid(ruid, euid) < 0 )
+            perror_msg_and_die("setreuid(ruid, euid)");
+
         if (build_ids_fd < 0)
             perror_msg_and_die("Failed to open file '%s'", build_ids);
 
@@ -118,14 +136,12 @@ int main(int argc, char **argv)
     /* Switch real user/group to effective ones.
      * Otherwise yum library gets confused - gets EPERM (why??).
      */
-    gid_t g = getegid();
     /* do setregid only if we have to, to not upset selinux needlessly */
-    if (g != getgid())
-        IGNORE_RESULT(setregid(g, g));
-    uid_t u = geteuid();
-    if (u != getuid())
+    if (egid != rgid)
+        IGNORE_RESULT(setregid(egid, egid));
+    if (euid != ruid)
     {
-        IGNORE_RESULT(setreuid(u, u));
+        IGNORE_RESULT(setreuid(euid, euid));
         /* We are suid'ed! */
         /* Prevent malicious user from messing up with suid'ed process: */
 #if 1
@@ -179,7 +195,7 @@ int main(int argc, char **argv)
         // abrt-action-install-debuginfo doesn't fail when spawning
         // abrt-action-trim-files
         char path_env[] = "PATH=/usr/sbin:/sbin:/usr/bin:/bin:"BIN_DIR":"SBIN_DIR;
-        if (u != 0)
+        if (euid != 0)
             strcpy(path_env, "PATH=/usr/bin:/bin:"BIN_DIR);
         putenv(path_env);
 
