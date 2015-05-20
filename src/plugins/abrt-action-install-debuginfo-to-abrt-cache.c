@@ -115,7 +115,8 @@ int main(int argc, char **argv)
         args[i++] = EXECUTABLE;
         args[i++] = "--ids";
         args[i++] = (build_ids_self_fd != NULL) ? build_ids_self_fd : "-";
-        args[i++] = verbs[g_verbose <= 3 ? g_verbose : 3];
+        if (g_verbose > 0)
+            args[i++] = verbs[g_verbose <= 3 ? g_verbose : 3];
         if ((opts & OPT_y))
             args[i++] = "-y";
         if ((opts & OPT_e))
