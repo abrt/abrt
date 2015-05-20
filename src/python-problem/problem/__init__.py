@@ -21,6 +21,21 @@ XORG = 'xorg'
 UNKNOWN = 'libreport'
 
 REQUIRED_FIELDS = ['executable']
+PREFETCH_FIELDS = [
+    # core fields
+    'component', 'hostname', 'os_release', 'uid',
+    'username', 'architecture', 'kernel', 'package',
+    'time', 'count', 'pkg_arch', 'pkg_name',
+    'pkg_epoch', 'pkg_version', 'pkg_release',
+    'uuid',
+    # type specific
+    'cgroup', 'core_backtrace', 'backtrace',
+    'dso_list', 'exploitable', 'maps',
+    'cmdline', 'environ', 'open_fds', 'pid',
+    'proc_pid_status', 'limits', 'var_log_messages',
+    'suspend_stats', 'reported_to', 'event_log',
+    'dmesg',
+]
 
 PROBLEM_TYPES = {
     'JAVA': JAVA,
@@ -151,6 +166,17 @@ class Problem(object):
         self.environ = ''
         for key, value in os.environ.items():
             self.environ += '{0}={1}\n'.format(key, value)
+
+    def prefetch_data(self):
+        ''' Prefetch possible data fields of this problem '''
+        if not self._persisted:
+            return
+
+        for field in PREFETCH_FIELDS:
+            try:
+                self.__getattr__(field)
+            except AttributeError:
+                pass
 
     def items(self):
         return self._data.items()
