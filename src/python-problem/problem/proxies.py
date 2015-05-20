@@ -25,7 +25,12 @@ class DBusProxy(object):
     def connect(self):
         self.connected = False
         if self._proxy:
-            self._proxy.close()
+            try:
+                # we might get org.freedesktop.DBus.Error.ServiceUnknown here
+                # if endpoint timed out
+                self._proxy.close()
+            except self.dbus.exceptions.DBusException:
+                pass
         try:
             self._proxy = self.dbus.SystemBus().get_object(
                 'org.freedesktop.problems', '/org/freedesktop/problems')
