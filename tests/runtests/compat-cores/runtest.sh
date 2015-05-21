@@ -193,7 +193,7 @@ rlJournalStart
 
         rlLog "Use absolute path in core_pattern"
         rlRun "systemctl stop abrt-ccpp"
-        rlRun "OLD_CORE=$(cat /proc/sys/kernel/core_pattern)"
+        rlRun "OLD_CORE=\"$(cat /proc/sys/kernel/core_pattern)\""
         rlRun "echo /var/tmp/core.%p > /proc/sys/kernel/core_pattern"
         rlRun "systemctl start abrt-ccpp"
 
@@ -232,7 +232,7 @@ rlJournalStart
 
         rlLog "Use absolute path in core_pattern"
         rlRun "systemctl stop abrt-ccpp"
-        rlRun "OLD_CORE=$(cat /proc/sys/kernel/core_pattern)"
+        rlRun "OLD_CORE=\"$(cat /proc/sys/kernel/core_pattern)\""
         rlRun "echo /var/tmp/core.%p > /proc/sys/kernel/core_pattern"
         rlRun "systemctl start abrt-ccpp"
 
