@@ -50,7 +50,7 @@ rlJournalStart
         rlRun "useradd abrt-suid-test -M" 0
         rlRun "echo \"kokotice\" | passwd abrt-suid-test --stdin"
 
-        sed -i 's/ProcessUnpackaged = no/ProcessUnpackaged = yes/g' $CFG_FILE
+        sed -i 's/\(ProcessUnpackaged\) = no/\1 = yes/g' $CFG_FILE
 
     rlPhaseEnd
 
