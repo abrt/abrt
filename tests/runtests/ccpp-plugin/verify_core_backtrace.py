@@ -20,7 +20,7 @@ expected = {
     ]
 }
 
-if arch == 'ppc64':
+if arch in ['ppc64','ppc64le']:
     expected['/usr/bin/will_segfault'].append('generic_start_main.isra.0')
 
 with open(sys.argv[1], 'r') as fh:
