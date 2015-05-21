@@ -17,4 +17,5 @@ def problemify(probdir, proxy):
     prob._probdir = probdir
     prob._persisted = True
     prob._proxy = proxy
+
     return prob

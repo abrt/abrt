@@ -1,4 +1,5 @@
 import os
+import hashlib
 import inspect
 import datetime
 
@@ -63,6 +64,7 @@ class Problem(object):
         self._persisted = False
         self._proxy = None
         self._probdir = None
+        self._id = None
 
         self.type = typ
         if analyzer is None:
@@ -177,6 +179,27 @@ class Problem(object):
                 self.__getattr__(field)
             except AttributeError:
                 pass
+
+    @property
+    def path(self):
+        if self._persisted:
+            return self._probdir
+
+        return None
+
+    @property
+    def id(self):
+        if not self._id and self._persisted:
+            self._id = hashlib.sha1(self.path.encode('utf-8')).hexdigest()
+
+        return self._id
+
+    @property
+    def short_id(self):
+        if not self.id:
+            return None
+
+        return self.id[:7]
 
     def items(self):
         return self._data.items()
