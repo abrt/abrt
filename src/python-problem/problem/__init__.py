@@ -16,6 +16,7 @@ JAVA = 'java'
 SELINUX = 'selinux'
 CCPP = 'CCpp'
 PYTHON = 'Python'
+PYTHON3 = 'Python3'
 KERNELOOPS = 'Kerneloops'
 RUNTIME = 'runtime'
 XORG = 'xorg'
@@ -43,6 +44,7 @@ PROBLEM_TYPES = {
     'SELINUX': SELINUX,
     'CCPP': CCPP,
     'PYTHON': PYTHON,
+    'PYTHON3': PYTHON3,
     'KERNELOOPS': KERNELOOPS,
     'RUNTIME': RUNTIME,
     'XORG': XORG,
@@ -275,6 +277,12 @@ class Python(Problem):
     ''' Python problem '''
     def __init__(self, reason):
         super(Python, self).__init__(PYTHON, reason)
+
+
+class Python3(Problem):
+    ''' Python3 problem '''
+    def __init__(self, reason):
+        super(Python3, self).__init__(PYTHON3, reason)
 
 
 class Kerneloops(Problem):
