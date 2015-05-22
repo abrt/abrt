@@ -312,11 +312,11 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
 static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr);
 
 /* Runs post-create event asynchronously. Uses GIOChanel for communication with event process. */
-static void run_post_create_on_dir_async(const char *name)
+static void run_post_create_on_dir_async(const char *dirname)
 {
     struct event_processing_state *state = new_event_processing_state();
     state->event_type = EVTYPE_POST_CREATE;
-    state->dirname = concat_path_file(g_settings_dump_location, name);
+    state->dirname = xstrdup(dirname);
 
     state->child_pid = spawn_event_handler_child(state->dirname, "post-create", &state->child_stdout_fd);
     s_pid_list = g_list_prepend(s_pid_list, state);
@@ -620,6 +620,15 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             //VERB3 log("Directory '%s' creation detected, ignoring", name);
             continue;
         }
+
+        char *dirpath = concat_path_file(g_settings_dump_location, name);
+        if (!dir_has_correct_permissions(dirpath))
+        {
+            error_msg("New directory '%s' has invalid owner or owner", name);
+            free(dirpath);
+            continue;
+        }
+
         log("Directory '%s' creation detected", name);
 
         if (g_settings_nMaxCrashReportsSize > 0)
@@ -642,11 +651,11 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 
         const bool empty_queue = s_dir_queue == NULL;
         /* push the new directory to the end of the incoming queue */
-        s_dir_queue = g_list_append(s_dir_queue, xstrdup(name));
+        s_dir_queue = g_list_append(s_dir_queue, dirpath);
 
         /* if the queue was empty process the current directory */
         if (empty_queue)
-            run_post_create_on_dir_async(name);
+            run_post_create_on_dir_async(dirpath);
 
     } /* while */
 
