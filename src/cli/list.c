@@ -129,14 +129,6 @@ int cmd_list(int argc, const char **argv)
         "& list [options] [DIR]..."
         );
 
-    enum {
-        OPT_v = 1 << 0,
-        OPT_n = 1 << 1,
-        OPT_d = 1 << 2,
-        OPT_s = 1 << 3,
-        OPT_u = 1 << 4,
-    };
-
     int opt_not_reported = 0;
     int opt_detailed = 0;
     int opt_since = 0;
@@ -152,31 +144,10 @@ int cmd_list(int argc, const char **argv)
         OPT_END()
     };
 
-    int opts = parse_opts(argc, (char **)argv, program_options, program_usage_string);
+    parse_opts(argc, (char **)argv, program_options, program_usage_string);
 
-    {
-        int c = 0;
-        const char *cmd_args[6];
-        if (opt_not_reported)
-            cmd_args[c++] = "-n";
-        if (opt_detailed)
-            cmd_args[c++] = "-d";
-        if ((opts & OPT_s))
-        {
-            cmd_args[c++] = "-s";
-            /* leak */
-            cmd_args[c++] = xasprintf("%d", opt_since);
-        }
-        if ((opts & OPT_u))
-        {
-            cmd_args[c++] = "-u";
-            /* leak */
-            cmd_args[c++] = xasprintf("%d", opt_until);
-        }
-
-        load_abrt_conf();
-        restart_as_root_if_needed("list", c, cmd_args);
-    }
+    load_abrt_conf();
+    restart_as_root_if_needed(argc, argv);
 
     argv += optind;
 
@@ -224,20 +195,14 @@ int cmd_info(int argc, const char **argv)
     };
 
     parse_opts(argc, (char **)argv, program_options, program_usage_string);
-    argv += optind;
 
-    if (!argv[0])
+    if (!argv[optind])
         show_usage_and_die(program_usage_string, program_options);
 
-    {
-        unsigned c = 0;
-        const char *cmd_args[1];
-        if (opt_detailed)
-            cmd_args[c++] = "-d";
+    load_abrt_conf();
+    restart_as_root_if_needed(argc, argv);
 
-        load_abrt_conf();
-        restart_as_root_if_needed("info", c, cmd_args);
-    }
+    argv += optind;
 
     int errs = 0;
     while (*argv)

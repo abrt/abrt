@@ -80,7 +80,7 @@ vector_of_problem_data_t *fetch_crash_infos(GList *dir_list)
     return vpd;
 }
 
-void restart_as_root_if_needed(const char *cmd, unsigned cmd_argc, const char *cmd_argv[])
+void restart_as_root_if_needed(unsigned cmd_argc, const char *cmd_argv[])
 {
     if (g_settings_privatereports && getuid() == 0)
         return;
@@ -90,17 +90,12 @@ void restart_as_root_if_needed(const char *cmd, unsigned cmd_argc, const char *c
     if (!ask_yes_no(_("Do you wan to run abrt-cli-root?")))
         return;
 
-    const char *verbs[] = { "", "-v", "-vv", "-vvv" };
     int i = 0;
-    char **new_args = xmalloc((cmd_argc + 4)*sizeof(char *));
+    char **new_args = xmalloc((cmd_argc + 2)*sizeof(char *));
     new_args[i++] = (char *)"abrt-cli-root";
-    new_args[i++] = (char *)cmd;
 
     for (unsigned j = 0; j < cmd_argc; )
         new_args[i++] = (char *)cmd_argv[j++];
-
-    if (g_verbose)
-        new_args[i++] = (char *)verbs[g_verbose <= 3 ? g_verbose : 3];
 
     new_args[i++] = (char *)NULL;
 

@@ -34,13 +34,14 @@ int cmd_report(int argc, const char **argv)
     };
 
     parse_opts(argc, (char **)argv, program_options, program_usage_string);
-    argv += optind;
 
-    if (!argv[0])
+    if (!argv[optind])
         show_usage_and_die(program_usage_string, program_options);
 
     load_abrt_conf();
-    restart_as_root_if_needed("report", /*no args*/0, /*no args*/NULL);
+    restart_as_root_if_needed(argc, argv);
+
+    argv += optind;
 
     char *home = getenv("HOME");
     GList *D_list = NULL;
