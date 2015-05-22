@@ -203,6 +203,32 @@ class Problem(object):
 
         return self.id[:7]
 
+    @property
+    def not_reportable(self):
+        return hasattr(self, 'not-reportable')
+
+    @not_reportable.setter
+    def not_reportable(self, value):
+        if isinstance(value, bool):
+            if value:
+                setattr(self, 'not-reportable', '')
+            else:
+                delattr(self, 'not-reportable')
+
+        else:  # if value is used as reason
+            setattr(self, 'not-reportable', value)
+
+    @property
+    def not_reportable_reason(self):
+        if hasattr(self, 'not-reportable'):
+            return getattr(self, 'not-reportable')
+
+        return None
+
+    @not_reportable_reason.setter
+    def not_reportable_reason(self, value):
+        setattr(self, 'not-reportable', value)
+
     def items(self):
         return self._data.items()
 

@@ -40,6 +40,36 @@ class PropertiesTestCase(ProblematicTestCase):
         tools.eq_(prob.id, hid)
         tools.eq_(prob.short_id, hid[:7])
 
+    def test_not_reportable_sets_empty_reason(self):
+        prob = self.create_problem()
+        prob.add_current_process_data()
+
+        prob.not_reportable = True
+
+        tools.eq_(prob.not_reportable, True)
+        tools.eq_(prob.not_reportable_reason, '')
+
+    def test_not_reportable_with_reason(self):
+        prob = self.create_problem()
+        prob.add_current_process_data()
+
+        prob.not_reportable = True
+        prob.not_reportable_reason = 'dunno'
+
+        tools.eq_(prob.not_reportable, True)
+        tools.eq_(prob.not_reportable_reason, 'dunno')
+
+    def test_not_reportable_reset(self):
+        prob = self.create_problem()
+        prob.add_current_process_data()
+
+        prob.not_reportable = True
+        prob.not_reportable = False
+
+        tools.eq_(prob.not_reportable, False)
+        tools.eq_(prob.not_reportable_reason, None)
+
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     unittest.main()
