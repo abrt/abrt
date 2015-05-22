@@ -241,7 +241,7 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
         return TRUE;
     }
 
-    log("New client connected");
+    VERB1 log("New client connected");
     pid_t pid = fork();
     if (pid < 0)
     {
