@@ -2,7 +2,7 @@
 # vim: dict=/usr/share/beakerlib/dictionary.vim cpt=.,w,b,u,t,i,k
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-#   runtest.sh of bz783450-setuid-core-owned-by-root
+#   runtest.sh of compat-cores
 #   Description: Tests correctness of creating user cores
 #   Author: Jiri Moskovcak <jmoskovc@redhat.com>
 #
