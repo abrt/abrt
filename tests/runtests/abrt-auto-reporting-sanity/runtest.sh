@@ -108,27 +108,6 @@ rlJournalStart
         done
     rlPhaseEnd
 
-    rlPhaseStartTest "turn SSL Auth on"
-        rlRun "abrt-auto-reporting --certificate rhsm"
-
-        rlAssertGrep "^SSLClientAuth = rhsm$" /etc/libreport/plugins/ureport.conf
-    rlPhaseEnd
-
-    rlPhaseStartTest "turn HTTP Auth on"
-        rlRun "abrt-auto-reporting --username rhn-username --password rhn-password"
-
-        rlAssertGrep "^HTTPAuth = rhts-credentials$" /etc/libreport/plugins/ureport.conf
-        rlAssertGrep "^Login = rhn-username$" /etc/libreport/plugins/rhtsupport.conf
-        rlAssertGrep "^Password = rhn-password$" /etc/libreport/plugins/rhtsupport.conf
-    rlPhaseEnd
-
-    rlPhaseStartTest "turn the Auth off"
-        rlRun "abrt-auto-reporting --anonymous"
-
-        rlAssertNotGrep "^SSLClientAuth" /etc/libreport/plugins/ureport.conf
-        rlAssertNotGrep "^HTTPAuth" /etc/libreport/plugins/ureport.conf
-    rlPhaseEnd
-
     rlPhaseStartCleanup
         rlRun "abrt-auto-reporting disabled"
         popd # TmpDir
