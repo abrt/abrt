@@ -192,8 +192,14 @@ rlJournalStart
         prepare
 
         rlLog "Use absolute path in core_pattern"
+        rlRun "SAVED_CORE=\"$(cat /var/run/abrt/saved_core_pattern)\""
+        rlRun "CURRENT_CORE=\"$(cat /proc/sys/kernel/core_pattern)\""
         rlRun "systemctl stop abrt-ccpp"
         rlRun "OLD_CORE=\"$(cat /proc/sys/kernel/core_pattern)\""
+        if [ "_${SAVED_CORE}" == "_${CURRENT_CORE}" ]; then
+            rlLog "Reset OLD_CORE to 'core'"
+            OLD_CORE="core"
+        fi
         rlRun "echo /var/tmp/core.%p > /proc/sys/kernel/core_pattern"
         rlRun "systemctl start abrt-ccpp"
 
@@ -222,7 +228,7 @@ rlJournalStart
         rlRun "rm /var/tmp/core.$killpid"
         rlRun "echo 0 > /proc/sys/fs/suid_dumpable" 0 "Set setuid no dump"
         rlRun "systemctl stop abrt-ccpp"
-        rlRun "echo $OLD_CORE > /proc/sys/kernel/core_pattern"
+        rlRun "echo \"$OLD_CORE\" > /proc/sys/kernel/core_pattern"
         rlRun "systemctl start abrt-ccpp"
         rlRun "abrt-cli rm $crash_PATH"
     rlPhaseEnd
@@ -231,8 +237,14 @@ rlJournalStart
         prepare
 
         rlLog "Use absolute path in core_pattern"
+        rlRun "SAVED_CORE=\"$(cat /var/run/abrt/saved_core_pattern)\""
+        rlRun "CURRENT_CORE=\"$(cat /proc/sys/kernel/core_pattern)\""
         rlRun "systemctl stop abrt-ccpp"
         rlRun "OLD_CORE=\"$(cat /proc/sys/kernel/core_pattern)\""
+        if [ "_${SAVED_CORE}" == "_${CURRENT_CORE}" ]; then
+            rlLog "Reset OLD_CORE to 'core'"
+            OLD_CORE="core"
+        fi
         rlRun "echo /var/tmp/core.%p > /proc/sys/kernel/core_pattern"
         rlRun "systemctl start abrt-ccpp"
 
@@ -256,7 +268,7 @@ rlJournalStart
         rlRun "rm /var/tmp/core.$killpid"
         rlRun "echo 0 > /proc/sys/fs/suid_dumpable" 0 "Set setuid no dump"
         rlRun "systemctl stop abrt-ccpp"
-        rlRun "echo $OLD_CORE > /proc/sys/kernel/core_pattern"
+        rlRun "echo \"$OLD_CORE\" > /proc/sys/kernel/core_pattern"
         rlRun "systemctl start abrt-ccpp"
         rlRun "abrt-cli rm $crash_PATH"
     rlPhaseEnd
