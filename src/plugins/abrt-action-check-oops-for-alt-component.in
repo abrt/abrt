@@ -1,0 +1,93 @@
+#!/usr/bin/python3 -u
+
+import sys
+import os
+import locale
+import gettext
+import hashlib
+import re
+
+GETTEXT_PROGNAME = "abrt"
+
+_ = gettext.lgettext
+
+tags = [
+"WARNING:",
+"[ER]IP[^:]",
+" \[<[a-f0-9]{8,16}>\]"
+]
+
+checks = [
+ ("i915", "xorg-x11-drv-intel"),
+ ("nouveau", "xorg-x11-drv-nouveau"),
+ ("radeon", "xorg-x11-drv-ati"),
+ ("qxl", "xorg-x11-drv-qxl"),
+]
+
+def check_tag(line):
+    for tag in tags:
+        if re.match(tag, line) is not None:
+            for (mod, component) in checks:
+                if re.search(mod, line) is not None:
+                    return component
+    return None
+
+def get_new_component(filename):
+    try:
+        f = open(filename, "r")
+    except IOError as e:
+        return None
+    for line in f:
+        c = check_tag(line)
+        if c is not None:
+            f.close()
+            return c
+    f.close()
+    return None
+
+def open_or_die(filename, mode):
+    try:
+        f = open(filename, mode)
+    except IOError as e:
+        sys.stderr.write(str(e) + "\n")
+        sys.exit(1)
+    return f
+
+
+if __name__ == "__main__":
+    try:
+        locale.setlocale(locale.LC_ALL, "")
+    except locale.Error:
+        os.environ['LC_ALL'] = 'C'
+        locale.setlocale(locale.LC_ALL, "")
+
+    # Defeat "AttributeError: 'module' object has no attribute 'nl_langinfo'"
+    try:
+        gettext.bind_textdomain_codeset(GETTEXT_PROGNAME,
+                                        locale.nl_langinfo(locale.CODESET))
+    except AttributeError:
+        pass
+
+    gettext.bindtextdomain(GETTEXT_PROGNAME, '/usr/share/locale')
+    gettext.textdomain(GETTEXT_PROGNAME)
+
+    #
+    # Certain drivers are in the kernel but need to be tracked separtely
+    # in other components. This fixes those components.
+    #
+
+    new_component = get_new_component("backtrace")
+    if new_component is None:
+        sys.exit(0)
+
+    print("Oops looks like a problem in kernel module, new component {0}"
+            .format(new_component))
+
+    f = open_or_die("component", "w")
+    f.write(new_component)
+    f.close()
+
+    # keep kernel maint in the loop even if the component gets changed
+    f = open_or_die("extra-cc", "w")
+    f.write("kernel-maint@redhat.com")
+    f.close()

@@ -1,0 +1,39 @@
+abrt-dump-oops: Found oopses: 1
+
+Version: 3.19.5-200.fc21.x86_64
+WARNING: CPU: 0 PID: 16684 at arch/x86/mm/ioremap.c:197 __ioremap_caller+0x2aa/0x3a0()
+Info: mapping multiple BARs. Your kernel is fine.
+Modules linked in:
+ bnep bluetooth rfkill xt_CHECKSUM iptable_mangle ipt_MASQUERADE nf_nat_masquerade_ipv4 iptable_nat nf_nat_ipv4 nf_nat nf_conntrack_ipv4 nf_defrag_ipv4 xt_conntrack nf_conntrack bridge stp llc snd_hda_codec_hdmi snd_hda_codec_realtek snd_hda_codec_generic snd_hda_intel snd_hda_controller snd_hda_codec fuse snd_hwdep snd_seq snd_seq_device snd_pcm snd_timer edac_core usblp kvm_amd snd serio_raw kvm k10temp edac_mce_amd sp5100_tco i2c_piix4 shpchp soundcore acpi_cpufreq nfsd auth_rpcgss nfs_acl lockd grace sunrpc ata_generic pata_acpi nouveau video mxm_wmi wmi i2c_algo_bit drm_kms_helper ttm drm pata_atiixp r8169 mii
+CPU: 0 PID: 16684 Comm: firefox Not tainted 3.19.5-200.fc21.x86_64 #1
+Hardware name: Gigabyte Technology Co., Ltd. To be filled by O.E.M./970A-DS3P, BIOS F1 04/08/2013
+ 0000000000000000 0000000087b0a5f7 ffff8802e1b9b768 ffffffff8176ead5
+ 0000000000000000 ffff8802e1b9b7c0 ffff8802e1b9b7a8 ffffffff8109bc1a
+ ffff8802e1b9b7d8 ffffc9001c180000 00000000d206d000 0000000000100000
+Call Trace:
+ [<ffffffff8176ead5>] dump_stack+0x45/0x57
+ [<ffffffff8109bc1a>] warn_slowpath_common+0x8a/0xc0
+ [<ffffffff8109bca5>] warn_slowpath_fmt+0x55/0x70
+ [<ffffffff810643aa>] __ioremap_caller+0x2aa/0x3a0
+ [<ffffffff810644b7>] ioremap_nocache+0x17/0x20
+ [<ffffffffa00e8036>] nouveau_barobj_ctor+0xd6/0x110 [nouveau]
+ [<ffffffffa00e69d1>] nouveau_object_ctor+0x41/0xf0 [nouveau]
+ [<ffffffffa00e80af>] nouveau_bar_alloc+0x3f/0x70 [nouveau]
+ [<ffffffffa00e3795>] nouveau_gpuobj_create_+0x2a5/0x2f0 [nouveau]
+ [<ffffffffa00e382c>] _nouveau_gpuobj_ctor+0x4c/0x70 [nouveau]
+ [<ffffffffa00e69d1>] nouveau_object_ctor+0x41/0xf0 [nouveau]
+ [<ffffffffa00e38ab>] nouveau_gpuobj_new+0x5b/0x80 [nouveau]
+ [<ffffffffa0132173>] nouveau_vm_get+0x183/0x2f0 [nouveau]
+ [<ffffffff811dd04a>] ? map_vm_area+0x2a/0x40
+ [<ffffffffa0182744>] nouveau_bo_vma_add+0x34/0x90 [nouveau]
+ [<ffffffffa017aee9>] nouveau_channel_prep+0x269/0x3b0 [nouveau]
+ [<ffffffffa017b0b3>] nouveau_channel_new+0x83/0x800 [nouveau]
+ [<ffffffffa01782fa>] ? nvif_device_init+0x3a/0x50 [nouveau]
+ [<ffffffff811fbba6>] ? kmem_cache_alloc_trace+0x1f6/0x230
+ [<ffffffffa0185770>] nouveau_abi16_ioctl_channel_alloc+0x120/0x3a0 [nouveau]
+ [<ffffffffa0031a9f>] drm_ioctl+0x1df/0x680 [drm]
+ [<ffffffff811cf196>] ? handle_mm_fault+0x8a6/0xff0
+ [<ffffffffa0179222>] nouveau_drm_ioctl+0x72/0xd0 [nouveau]
+ [<ffffffff8122e318>] do_vfs_ioctl+0x2f8/0x500
+ [<ffffffff8122e5a1>] SyS_ioctl+0x81/0xa0
+ [<ffffffff817752c9>] system_call_fastpath+0x12/0x17

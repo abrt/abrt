@@ -1,0 +1,71 @@
+BUG: unable to handle kernel NULL pointer dereference at 00000008
+IP: [<f83f9f24>] radeon_audio_detect+0x54/0x140 [radeon]
+*pdpt = 0000000033260001 *pde = 0000000000000000 
+Oops: 0000 [#1] SMP 
+Modules linked in: radeon i2c_algo_bit drm_kms_helper e1000 ttm e100 drm ata_generic pata_acpi mii
+CPU: 0 PID: 222 Comm: plymouthd Not tainted 4.0.3-201.fc21.i686+PAE #1
+Hardware name: Dell Inc.                 Dimension 4700               /0M3918, BIOS A10 01/04/2006
+task: f325f640 ti: f33b8000 task.ti: f33b8000
+EIP: 0060:[<f83f9f24>] EFLAGS: 00010246 CPU: 0
+EIP is at radeon_audio_detect+0x54/0x140 [radeon]
+EAX: f6884240 EBX: f339dc00 ECX: 00000000 EDX: 00000000
+ESI: f3364320 EDI: f681c000 EBP: f33b9d14 ESP: f33b9d04
+ DS: 007b ES: 007b FS: 00d8 GS: 00e0 SS: 0068
+CR0: 80050033 CR2: 00000008 CR3: 33209000 CR4: 000007f0
+Stack:
+ f6884240 f339dc00 00000001 f7374800 f33b9d48 f833bb78 00000001 f33be600
+ 4ac04888 00000000 f33be600 f33b9d68 00000001 f681c000 f339dc30 f339dc00
+ 00000001 f33b9d94 f809287b f3259580 f775d500 f325f640 f33b9fec f33e0540
+Call Trace:
+ [<f833bb78>] radeon_dvi_detect+0x2d8/0x4b0 [radeon]
+ [<f809287b>] drm_helper_probe_single_connector_modes_merge_bits+0x27b/0x4a0 [drm_kms_helper]
+ [<c0a8abc0>] ? mutex_lock+0x10/0x30
+ [<f8092ab7>] drm_helper_probe_single_connector_modes+0x17/0x20 [drm_kms_helper]
+ [<f80c5f2d>] drm_mode_getconnector+0x28d/0x320 [drm]
+ [<f80c5ca0>] ? drm_mode_getcrtc+0xd0/0xd0 [drm]
+ [<f80b81a5>] drm_ioctl+0x1f5/0x560 [drm]
+ [<f80c5ca0>] ? drm_mode_getcrtc+0xd0/0xd0 [drm]
+ [<c05064a7>] ? do_seccomp+0x2d7/0x6e0
+ [<c07043a6>] ? _copy_to_user+0x26/0x30
+ [<c0823931>] ? __pm_runtime_resume+0x51/0x70
+ [<c04c64a7>] ? posix_get_boottime+0x7/0x30
+ [<f831503e>] radeon_drm_ioctl+0x3e/0x70 [radeon]
+ [<f8315000>] ? 0xf8315000
+ [<c05b69b2>] do_vfs_ioctl+0x322/0x540
+ [<c0690c42>] ? inode_has_perm.isra.32+0x32/0x50
+ [<c0690da7>] ? file_has_perm+0x97/0xa0
+ [<c06919cb>] ? selinux_file_ioctl+0x4b/0xe0
+ [<c05b6c30>] SyS_ioctl+0x60/0x90
+ [<c04c64a7>] ? posix_get_boottime+0x7/0x30
+ [<c04c64a7>] ? posix_get_boottime+0x7/0x30
+ [<c0a8d0df>] sysenter_do_call+0x12/0x12
+ [<c04c64a7>] ? posix_get_boottime+0x7/0x30
+ [<c04c64a7>] ? posix_get_boottime+0x7/0x30
+Code: 44 8b 93 0c 02 00 00 8b 02 8b b2 20 01 00 00 8b 78 18 8b 86 e4 00 00 00 85 c0 74 29 83 7d f0 01 74 35 8b 50 10 8b 8f 70 1c 00 00 <8b> 59 08 85 db 74 0c 89 f8 31 c9 ff d3 8b 86 e4 00 00 00 c7 40
+EIP: [<f83f9f24>] radeon_audio_detect+0x54/0x140 [radeon] SS:ESP 0068:f33b9d04
+CR2: 0000000000000008
+---[ end trace c37768228d821e9f ]---
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 263 at lib/list_debug.c:62 __list_del_entry+0xf4/0x100()
+list_del corruption. next->prev should be f3215564, but was   (null)
+Modules linked in: radeon i2c_algo_bit drm_kms_helper e1000 ttm e100 drm ata_generic pata_acpi mii
+CPU: 1 PID: 263 Comm: plymouth Tainted: G      D         4.0.3-201.fc21.i686+PAE #1
+Hardware name: Dell Inc.                 Dimension 4700               /0M3918, BIOS A10 01/04/2006
+ c0d3c9c7 b9171629 00000000 f3337eb4 c0a878b6 f3337ef8 f3337ee8 c0466c1b
+ c0c929c4 f3337f18 00000107 c0c91c9f 0000003e c0712794 0000003e c0712794
+ 00000000 00000001 f32150a0 f3337f04 c0466c8e 00000009 f3337ef8 c0c929c4
+Call Trace:
+ [<c0a878b6>] dump_stack+0x41/0x52
+ [<c0466c1b>] warn_slowpath_common+0x8b/0xc0
+ [<c0712794>] ? __list_del_entry+0xf4/0x100
+ [<c0712794>] ? __list_del_entry+0xf4/0x100
+ [<c0466c8e>] warn_slowpath_fmt+0x3e/0x60
+ [<c0712794>] __list_del_entry+0xf4/0x100
+ [<c04e8a63>] cgroup_exit+0x33/0x100
+ [<c0469208>] do_exit+0x2b8/0x950
+ [<c0457a72>] ? __do_page_fault+0x252/0x4a0
+ [<c0469917>] do_group_exit+0x37/0xa0
+ [<c0469996>] SyS_exit_group+0x16/0x20
+ [<c0a8d0df>] sysenter_do_call+0x12/0x12
+---[ end trace c37768228d821ea0 ]---
+
