@@ -9,9 +9,9 @@ def problemify(probdir, proxy):
     reason = proxy.get_item(probdir, 'reason')
 
     if typ not in by_typ:
-        return problem.Unknown(reason)
-
-    class_name = by_typ[typ].lower().capitalize()
+        class_name = 'Unknown'
+    else:
+        class_name = by_typ[typ].lower().capitalize()
 
     prob = getattr(problem, class_name)(reason)
     prob._probdir = probdir
