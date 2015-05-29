@@ -95,6 +95,9 @@ Requires: python-augeas
 Requires: python-dbus
 Requires: python-dmidecode
 Requires: libreport-plugin-ureport
+%if 0%{?rhel}
+Requires: libreport-plugin-rhtsupport
+%endif
 
 %description
 %{name} is a tool to help users to detect defects in applications and
