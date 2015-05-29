@@ -683,7 +683,6 @@ fi
 
 %posttrans
 # update the old problem dirs to contain "type" element
-abrtdir=$(grep "DumpLocation" /etc/abrt/abrt.conf | cut -d'=' -f2 | tr -d ' '); cd $abrtdir 2>/dev/null && for i in `find . -name "analyzer" 2>/dev/null`; do len=${#i};cp "$i" "${i:0:$len-9}/type"; done; for i in `find "$abrtdir" -mindepth 1 -maxdepth 1 -type d`; do chown `stat --format=%U:abrt $i` $i/*; done
 service abrtd condrestart >/dev/null 2>&1 || :
 
 %posttrans addon-ccpp
