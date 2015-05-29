@@ -72,8 +72,8 @@ man5_MANS = ${MAN5_TXT:%.txt=%.5} ${MAN5_PREFORMATTED}
 man8_MANS = ${MAN8_TXT:%.txt=%.8}
 
 MAN_SOURCE =
-MAN_SOURCE = abrt-auto-reporting-authenticated.txt
-MAN_SOURCE = abrt-auto-reporting-unauthenticated.txt
+MAN_SOURCE += abrt-auto-reporting-authenticated.txt
+MAN_SOURCE += abrt-auto-reporting-unauthenticated.txt
 
 if AUTHENTICATED_AUTOREPORTING
 abrt-auto-reporting.txt: abrt-auto-reporting-authenticated.txt
