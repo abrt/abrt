@@ -410,7 +410,7 @@ char* problem_data_save(problem_data_t *pd)
 {
     load_abrt_conf();
 
-    struct dump_dir *dd = create_dump_dir_from_problem_data(pd, g_settings_dump_location);
+    struct dump_dir *dd = create_dump_dir_from_problem_data_ext(pd, g_settings_dump_location, /*fs owner*/0);
 
     char *problem_id = NULL;
     if (dd)

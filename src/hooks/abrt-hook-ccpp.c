@@ -730,14 +730,17 @@ int main(int argc, char** argv)
         return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
-    /* use fsuid instead of uid, so we don't expose any sensitive
-     * information of suided app in /var/tmp/abrt
+    /* If you don't want to have fs owner as root then:
      *
-     * dd_create_skeleton() creates a new directory and leaves ownership to
-     * the current user, hence, we have to call dd_reset_ownership() after the
-     * directory is populated.
+     * - use fsuid instead of uid for fs owner, so we don't expose any
+     *   sensitive information of suided app in /var/(tmp|spool)/abrt
+     *
+     * - use dd_create_skeleton() and dd_reset_ownership(), when you finish
+     *   creating the new dump directory, to prevent the real owner to write to
+     *   the directory until the hook is done (avoid race conditions and defend
+     *   hard and symbolic link attacs)
      */
-    dd = dd_create_skeleton(path, fsuid, DEFAULT_DUMP_DIR_MODE, /*no flags*/0);
+    dd = dd_create(path, /*fs owner*/0, DEFAULT_DUMP_DIR_MODE);
     if (dd)
     {
         char source_filename[sizeof("/proc/%lu/somewhat_long_name") + sizeof(long)*3];
@@ -953,9 +956,6 @@ int main(int argc, char** argv)
         /* Perform crash-time unwind of the guilty thread. */
         if (tid > 0 && setting_CreateCoreBacktrace)
             create_core_backtrace(tid, executable, signal_no, dd);
-
-        /* And finally set the right uid and gid */
-        dd_reset_ownership(dd);
 
         /* We close dumpdir before we start catering for crash storm case.
          * Otherwise, delete_dump_dir's from other concurrent

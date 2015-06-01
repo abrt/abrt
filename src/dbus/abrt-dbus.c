@@ -506,13 +506,10 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
-        if (ddstat & DD_STAT_OWNED_BY_UID)
-        {   //caller seems to be in group with access to this dir, so no action needed
-            log_notice("caller has access to the requested directory %s", problem_dir);
-            g_dbus_method_invocation_return_value(invocation, NULL);
-            dd_close(dd);
-            return;
-        }
+        /* It might happen that we will do chowing even if the UID is alreay fs
+         * owner, but DD_STAT_OWNED_BY_UID no longer denotes fs owner and this
+         * method has to ensure file system ownership for the uid.
+         */
 
         if ((ddstat & DD_STAT_ACCESSIBLE_BY_UID) == 0 &&
                 polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)

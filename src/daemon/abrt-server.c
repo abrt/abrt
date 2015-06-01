@@ -391,7 +391,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     /* No need to check the path length, as all variables used are limited,
      * and dd_create() fails if the path is too long.
      */
-    struct dump_dir *dd = dd_create(path, client_uid, DEFAULT_DUMP_DIR_MODE);
+    struct dump_dir *dd = dd_create(path, /*fs owner*/0, DEFAULT_DUMP_DIR_MODE);
     if (!dd)
     {
         error_msg_and_die("Error creating problem directory '%s'", path);
