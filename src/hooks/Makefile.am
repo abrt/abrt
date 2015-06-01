@@ -6,10 +6,13 @@ pluginsconfdir = $(PLUGINS_CONF_DIR)
 
 dist_pluginsconf_DATA = \
     CCpp.conf \
-    CCpp_Atomic.conf \
     python.conf \
     python3.conf \
     oops.conf
+
+if BUILD_ATOMIC
+dist_pluginsconf_DATA += CCpp_Atomic.conf
+endif
 
 defaultpluginsconfdir = $(DEFAULT_PLUGINS_CONF_DIR)
 dist_defaultpluginsconf_DATA = $(dist_pluginsconf_DATA)

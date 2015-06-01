@@ -47,7 +47,6 @@ check-local:
 
 if HAVE_SYSTEMD
     dist_systemdsystemunit_DATA = init-scripts/abrtd.service \
-                                  init-scripts/abrt-coredump-helper.service \
                                   init-scripts/abrt-ccpp.service \
                                   init-scripts/abrt-journal-core.service \
                                   init-scripts/abrt-oops.service \
@@ -57,6 +56,10 @@ if HAVE_SYSTEMD
 
 if BUILD_ADDON_VMCORE
     dist_systemdsystemunit_DATA += init-scripts/abrt-vmcore.service
+endif
+
+if BUILD_ATOMIC
+    dist_systemdsystemunit_DATA += init-scripts/abrt-coredump-helper.service
 endif
 
     systemdtmpfilesdir = $(prefix)/lib/tmpfiles.d

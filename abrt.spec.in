@@ -14,6 +14,9 @@
     %bcond_without bodhi
 %endif
 
+# build abrt-atomic subpackage
+%bcond_without atomic
+
 %ifarch aarch64
 %define have_kexec_tools 0
 %else
@@ -389,6 +392,7 @@ Provides: bug-buddy
 Virtual package to install all necessary packages for usage from desktop
 environment.
 
+%if %{with atomic}
 %package atomic
 Summary: Package to make easy default installation on Atomic hosts.
 Group: Applications/System
@@ -398,6 +402,7 @@ Conflicts: %{name}-addon-ccpp
 %description atomic
 Package to install all necessary packages for usage from Atomic
 hosts.
+%endif
 
 %package dbus
 Summary: ABRT DBus service
@@ -493,6 +498,9 @@ CFLAGS="%{optflags} -Werror" %configure \
 %endif
 %if %{without bodhi}
         --without-bodhi \
+%endif
+%if %{without atomic}
+        --without-atomic \
 %endif
 %if 0%{?rhel:%{rhel} < 7}%{?fedora:%{fedora} < 18}
         --with-defaultdumplocation=/var/%{var_base_dir}/abrt \
@@ -639,6 +647,7 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 # update icon cache
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
+%if %{with atomic}
 %post atomic
 if [ -f /etc/abrt/plugins/CCpp.conf ]; then
     mv /etc/abrt/plugins/CCpp.conf /etc/abrt/plugins/CCpp.conf.rpmsave.atomic || exit 1;
@@ -666,6 +675,7 @@ fi
 
 %postun atomic
 %systemd_postun_with_restart abrt-coredump-helper.service
+%endif # with atomic
 
 %post libs -p /sbin/ldconfig
 
@@ -1008,6 +1018,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files desktop
 %defattr(-,root,root,-)
 
+%if %{with atomic}
 %files atomic
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp_Atomic.conf
@@ -1017,6 +1028,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-action-save-package-data
 %{_mandir}/man1/abrt-action-save-package-data.1.gz
 %{_mandir}/man5/abrt-action-save-package-data.conf.5.gz
+%endif
 
 %if %{with bodhi}
 %files plugin-bodhi
