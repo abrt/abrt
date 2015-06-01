@@ -379,6 +379,17 @@ else
 AM_CONDITIONAL(BUILD_BODHI, false)
 fi dnl end NO_BODHI
 
+AC_ARG_WITH(atomic,
+AS_HELP_STRING([--with-atomic],[add Atomic support (default is YES)]),
+ABRT_PARSE_WITH([atomic]))
+
+if test -z "$NO_ATOMIC"
+then
+AM_CONDITIONAL(BUILD_ATOMIC, true)
+else
+AM_CONDITIONAL(BUILD_ATOMIC, false)
+fi dnl end NO_BODHI
+
 # Initialize the test suite.
 AC_CONFIG_TESTDIR(tests)
 AC_CONFIG_FILES([tests/Makefile tests/atlocal])
