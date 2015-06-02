@@ -1,0 +1,72 @@
+ONELINE_FMT = '''{short_id} {count}x {what} {time}'''
+
+SHORT_FMT = '''#table
+id,{short_id}
+{what_field},{what}
+count,{count}
+time,{time}
+'''
+
+MEDIUM_FMT = '''#table
+id,{short_id}
+{what_field},{what}
+count,{count}
+time,{time}
+user id,{uid_username}
+reported to,{reported_to}
+,{not_reportable}
+,{not_reportable_reason}
+'''
+
+FULL_FMT = '''#table
+id,{short_id}
+{what_field},{what}
+count,{count}
+time,{time}
+command line,{cmdline}
+package,{package}
+user id,{uid_username}
+path,{path}
+reported to,{reported_to}
+,{not_reportable}
+,{not_reportable_reason}
+'''
+
+BACKTRACE_FMT = '''{backtrace}'''
+
+EMAIL_FMT = '''Id:       {short_id}
+Offender: {what}
+Count:    {count}
+Time:     {time}
+Package:  {package}
+User:     {uid_username}
+Path:     {path}
+Reported: {reported_to}
+
+{not_reportable}
+{not_reportable_reason}
+
+Backtrace: {backtrace}
+'''
+
+FORMATS = ['oneline', 'short', 'medium', 'full', 'email']
+
+LOCALE_DIR = "@LOCALE_DIR@"
+VERSION = "abrt @VERSION@"
+
+DEBUGINFO_INSTALL_CMD = '''
+abrt-action-analyze-ccpp-local --without-bz --without-bodhi
+'''
+
+DEBUGINFO_PATH = '/usr/lib/debug:/var/cache/abrt-di/usr/lib/debug'
+
+GDB_CMD = '''
+gdb -iex "set debug-file-directory {di_path}" \
+    -iex "set add-auto-load-safe-path {di_path}" \
+    -iex "set add-auto-load-scripts-directory {di_path}" \
+    -ex "file $( cat executable )" \
+    -ex "core-file coredump" \
+    -ex "set height 0" \
+    -ex "info sharedlib" \
+    -ex "bt"
+'''

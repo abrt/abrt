@@ -3,6 +3,7 @@ SUBDIRS = problems-service dbus-configuration
 -include ../config.mak
 
 MAN1_TXT =
+MAN1_TXT += abrt.txt
 MAN1_TXT += abrt-action-analyze-c.txt
 MAN1_TXT += abrt-action-trim-files.txt
 MAN1_TXT += abrt-action-generate-backtrace.txt

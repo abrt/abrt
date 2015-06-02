@@ -1,0 +1,125 @@
+abrt(1)
+=======
+
+NAME
+----
+abrt - Manage problems handled by ABRT
+
+SYNOPSIS
+--------
+'abrt' [OPTIONS...] SUBCOMMAND [MATCH]
+
+OPTIONS
+-------
+-a,--auth::
+   Authenticate and show all problems on this machine
+
+-v,--version::
+   Show program's version number and exit
+
+-h,--help::
+   Show help message
+
+
+SUBCOMMANDS
+-----------
+'list'::
+   List problems
+
+'info'::
+   Print information about a problem
+
+'report'::
+   Report problem
+
+'remove'::
+   Remove problem
+
+'backtrace'::
+  Show backtrace of a problem
+
+'retrace'::
+   Generate backtrace from coredump
+
+'gdb'::
+   Run GDB (GNU Project debugger) against a problem
+
+'debuginfo-install'::
+   Install required debuginfo packages for given problem
+
+'status'::
+   Print count of the recent crashes
+
+Use 'abrt help SUBCOMMAND' for detailed list of options for selected subcommand.
+
+MATCHING
+--------
+
+Subcommands requiring single problem like 'info' or 'backtrace' will use the last
+problem that happened on your system unless 'MATCH' is specified.
+
+'MATCH' can be either component name, short hash (from 'list' subcommand)
+or combination of both in form '<component>@<hash>'
+
+EXAMPLES
+--------
+
+*List all problems handled by ABRT*
+----
+$ abrt list
+----
+
+*List problems with built-in format*
+----
+$ abrt list --pretty=oneline
+----
+
+*List problems with custom format*
+----
+$ abrt list --fmt '{count}x {short_id} {what}'
+----
+
+*Display detailed information about a problem*
+----
+$ abrt info --pretty full kernel
+----
+
+*Install debuginfo packages and run GDB against last problem*
+----
+$ abrt gdb --debuginfo-install
+----
+
+*Generate backtrace from last problem's coredump and generated detailed mail report*
+----
+$ abrt retrace
+$ abrt info --pretty email
+----
+
+FORMATTING
+----------
+
+Fields usable for custom formatting::
+  \{what\};;
+    either component name or executable
+  \{count\};;
+    number of occurrences
+  \{time\};;
+    time of the last occurrence
+  \{short_id\};;
+    short hash
+  \{uid\};;
+    user ID
+  \{username\};;
+    username
+  \{uid_username\};;
+    combination of the above two fields
+  \{path\};;
+    full path to problem data directory
+  \{package\};;
+    affected package
+  \{cmdline\};;
+    command line used to start an application
+
+AUTHORS
+-------
+* ABRT team
