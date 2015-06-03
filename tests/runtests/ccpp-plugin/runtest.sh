@@ -45,14 +45,20 @@ rlJournalStart
         pushd $TmpDir
     rlPhaseEnd
 
-    rlPhaseStartTest "CCpp plugin works"
-        generate_crash
+    rlPhaseStartTest "CCpp plugin (testuser crash)"
+	useradd testuser
+        generate_crash testuser
         wait_for_hooks
         get_crash_path
 
         ARCHITECTURE=$(rlGetPrimaryArch)
 
         ls $crash_PATH > crash_dir_ls
+
+        rlRun "echo $crash_PATH_RIGHTS | grep drwxr-x---" 0 "Crash directory has proper rights"
+        ls -la $crash_PATH
+        rlRun "[ 'x$crash_PATH_USER' == 'xroot' ]" 0 "Crash directory owned by root"
+        rlRun "[ 'x$crash_PATH_GROUP' == 'xabrt' ]" 0 "Crash directory group is abrt"
 
         rlAssertExists "$crash_PATH/uuid"
 
@@ -66,6 +72,7 @@ rlJournalStart
 
     rlPhaseStartCleanup
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+	userdel -e testuser
     rlPhaseEnd
 
     rlPhaseStartTest "core_backtrace for stack overflow"
@@ -73,6 +80,11 @@ rlJournalStart
         generate_stack_overflow_crash
         wait_for_hooks
         get_crash_path
+
+        rlRun "echo $crash_PATH_RIGHTS | grep drwxr-x---" 0 "Crash directory has proper rights"
+        ls -la $crash_PATH
+        rlRun "[ 'x$crash_PATH_USER' == 'xroot' ]" 0 "Crash directory owned by root"
+        rlRun "[ 'x$crash_PATH_GROUP' == 'xabrt' ]" 0 "Crash directory group is abrt"
 
         rlAssertExists "$crash_PATH/core_backtrace"
         rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace $ARCHITECTURE 2>&1 > verify_result_overflow" 0
@@ -88,6 +100,10 @@ rlJournalStart
         generate_crash
         wait_for_hooks
         get_crash_path
+
+        rlRun "echo $crash_PATH_RIGHTS | grep drwxr-x---" 0 "Crash directory has proper rights"
+        rlRun "[ 'x$crash_PATH_USER' == 'xroot' ]" 0 "Crash directory owned by root"
+        rlRun "[ 'x$crash_PATH_GROUP' == 'xabrt' ]" 0 "Crash directory group is abrt"
 
         rlRun "mkdir -p /var/cache/abrt-di/usr/lib/debug/usr/bin"
 

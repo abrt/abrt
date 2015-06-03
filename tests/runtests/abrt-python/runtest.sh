@@ -57,6 +57,9 @@ rlJournalStart
 
         kill %1
         rlAssertNotDiffer watch_output watch_expected
+        rlRun "echo $crash_PATH_RIGHTS | grep drwxr-x---" 0 "Crash directory has proper rights"
+        rlRun "[ 'x$crash_PATH_USER' == 'xroot' ]" 0 "Crash directory owned by root"
+        rlRun "[ 'x$crash_PATH_GROUP' == 'xabrt' ]" 0 "Crash directory group is abrt"
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
     rlPhaseEnd

@@ -49,6 +49,10 @@ rlJournalStart
         get_crash_path
         wait_for_hooks
 
+        rlRun "echo $crash_PATH_RIGHTS | grep drwxr-x---" 0 "Crash directory has proper rights"
+        rlRun "[ 'x$crash_PATH_USER' == 'xroot' ]" 0 "Crash directory owned by root"
+        rlRun "[ 'x$crash_PATH_GROUP' == 'xabrt' ]" 0 "Crash directory group is abrt"
+
         ls $crash_PATH > crash_dir_ls
 
         rlAssertExists "$crash_PATH/hs_err.log"

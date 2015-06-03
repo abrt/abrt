@@ -44,6 +44,10 @@ rlJournalStart
         generate_python3_exception
         get_crash_path
 
+        rlRun "echo $crash_PATH_RIGHTS | grep drwxr-x---" 0 "Crash directory has proper rights"
+        rlRun "[ 'x$crash_PATH_USER' == 'xroot' ]" 0 "Crash directory owned by root"
+        rlRun "[ 'x$crash_PATH_GROUP' == 'xabrt' ]" 0 "Crash directory group is abrt"
+
         rlRun "abrt-cli info $crash_PATH | grep will_python3_raise" 0 "abrt-cli info should contain will_python3_raise"
         rlRun "abrt-cli info $crash_PATH | grep 'Python'" 0 "abrt-cli info should contain 'Python'"
     rlPhaseEnd

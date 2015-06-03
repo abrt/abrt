@@ -12,6 +12,9 @@ function get_crash_path() {
     rlLog "Get crash path"
     rlAssertGreater "Crash recorded" $(abrt-cli list 2> /dev/null | wc -l) 0
     crash_PATH="$(abrt-cli list 2> /dev/null | grep Directory | awk '{ print $2 }' | tail -n1)"
+    crash_PATH_RIGHTS=$(ls -la $crash_PATH | grep ' .$' | awk '{print $1}')
+    crash_PATH_USER=$(ls -la $crash_PATH | grep ' .$' | awk '{print $3}')
+    crash_PATH_GROUP=$(ls -la $crash_PATH | grep ' .$' | awk '{print $4}')
     if [ ! -d "$crash_PATH" ]; then
         rlDie "No crash dir generated, this shouldn't happen"
     fi
@@ -59,43 +62,43 @@ function wait_for_hooks() {
 
 function generate_crash() {
     rlLog "Generate crash"
-    will_segfault
+    su -c will_segfault $1
 }
 
 function generate_second_crash() {
     rlLog "Generate second crash"
-    will_abort
+    su -c will_abort $1
 }
 
 function generate_stack_overflow_crash() {
     rlLog "Generate stack overflow"
-    will_stackoverflow
+    su -c will_stackoverflow $1
 }
 
 function generate_python_segfault() {
     rlLog "Generate python segfault"
-    will_python_sigsegv
+    su -c will_python_sigsegv $1
 }
 
 function generate_python_exception() {
     rlLog "Generate unhandled python exception"
-    will_python_raise
+    su -c will_python_raise $1
 }
 
 function generate_python3_exception() {
     rlLog "Generate unhandled python3 exception"
-    will_python3_raise
+    su -c will_python3_raise $1
 }
 
 function load_abrt_conf() {
-    ABRT_CONF_DUMP_LOCATION=`sed -n '/^DumpLocation[ \t]*=/ s/.*=[ \t]*//p' @CONF_DIR@/abrt.conf 2>/dev/null`
+    ABRT_CONF_DUMP_LOCATION=/var/tmp/abrt/
 
     if test -z "$ABRT_CONF_DUMP_LOCATION"; then
-        ABRT_CONF_DUMP_LOCATION=$( pkg-config abrt --variable=defaultdumplocation )
+        ABRT_CONF_DUMP_LOCATION=/var/tmp/abrt/
     fi
 
     if test -z "$ABRT_CONF_DUMP_LOCATION"; then
-        ABRT_CONF_DUMP_LOCATION="/var/spool/abrt"
+        ABRT_CONF_DUMP_LOCATION=/var/tmp/abrt/
     fi
 }
 

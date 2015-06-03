@@ -91,6 +91,10 @@ rlJournalStart
                 rlAssertExists "$crash_PATH/$f"
             done
 
+            rlRun "echo $crash_PATH_RIGHTS | grep drwxr-x---" 0 "Crash directory has proper rights"
+            rlRun "[ 'x$crash_PATH_USER' == 'xroot' ]" 0 "Crash directory owned by root"
+            rlRun "[ 'x$crash_PATH_GROUP' == 'xabrt' ]" 0 "Crash directory group is abrt"
+
             if [[ "$oops" == *not_reportable* ]]; then
                 rlAssertExists "$crash_PATH/not-reportable"
             else
