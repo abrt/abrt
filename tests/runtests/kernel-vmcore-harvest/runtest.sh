@@ -49,6 +49,10 @@ rlJournalStart
 
         wait_for_hooks
 
+        rlRun "echo $crash_PATH_RIGHTS | grep drwxr-x---" 0 "Crash directory has proper rights"
+        rlRun "[ 'x$crash_PATH_USER' == 'xroot' ]" 0 "Crash directory owned by root"
+        rlRun "[ 'x$crash_PATH_GROUP' == 'xabrt' ]" 0 "Crash directory group is abrt"
+
         rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-test"
         rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-test/analyzer"
         for f in $REQUIRED_FILES; do
@@ -73,6 +77,10 @@ rlJournalStart
         systemctl restart  abrtd.service
 
         wait_for_hooks
+
+        rlRun "echo $crash_PATH_RIGHTS | grep drwxr-x---" 0 "Crash directory has proper rights"
+        rlRun "[ 'x$crash_PATH_USER' == 'xroot' ]" 0 "Crash directory owned by root"
+        rlRun "[ 'x$crash_PATH_GROUP' == 'xabrt' ]" 0 "Crash directory group is abrt"
 
         rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-${TEST_ID}"
         rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-${TEST_ID}/analyzer"

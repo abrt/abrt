@@ -77,6 +77,10 @@ function test_single_oops
 
     ls $crash_PATH > crash_dir_ls
 
+    rlRun "echo $crash_PATH_RIGHTS | grep drwxr-x---" 0 "Crash directory has proper rights"
+    rlRun "[ 'x$crash_PATH_USER' == 'xroot' ]" 0 "Crash directory owned by root"
+    rlRun "[ 'x$crash_PATH_GROUP' == 'xabrt' ]" 0 "Crash directory group is abrt"
+
     for f in $OOPS_REQUIRED_FILES; do
         rlAssertExists "$crash_PATH/$f"
     done
