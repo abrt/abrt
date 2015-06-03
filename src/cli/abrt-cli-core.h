@@ -34,6 +34,9 @@ vector_of_problem_data_t *fetch_crash_infos(void);
 char *find_problem_by_hash(const char *hash, GList *problems);
 /* Returns malloced string, or NULL if not found: */
 char *hash2dirname(const char *hash);
+/* If input looks like a hash, returns malloced string, or NULL if not found.
+ * Otherwise returns a copy of the input. */
+char *hash2dirname_if_necessary(const char *input);
 
 
 #endif /* ABRT_CLI_CORE_H_ */

@@ -107,3 +107,8 @@ char *hash2dirname(const char *hash)
 
     return found_name;
 }
+
+char *hash2dirname_if_necessary(const char *input)
+{
+    return isxdigit_str(input) ? hash2dirname(input) : xstrdup(input);
+}
