@@ -15,6 +15,7 @@
   with this program; if not, write to the Free Software Foundation, Inc.,
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include "problem_api.h"
 #include "libabrt.h"
 
 /* Maximal length of backtrace. */
@@ -75,20 +76,6 @@ static unsigned total_bytes_read = 0;
 static uid_t client_uid = (uid_t)-1L;
 
 
-static bool dir_is_in_dump_location(const char *dump_dir_name)
-{
-    unsigned len = strlen(g_settings_dump_location);
-
-    if (strncmp(dump_dir_name, g_settings_dump_location, len) == 0
-     && dump_dir_name[len] == '/'
-    /* must not contain "/." anywhere (IOW: disallow ".." component) */
-     && !strstr(dump_dir_name + len, "/.")
-    ) {
-        return 1;
-    }
-    return 0;
-}
-
 /* Remove dump dir */
 static int delete_path(const char *dump_dir_name)
 {
@@ -99,8 +86,21 @@ static int delete_path(const char *dump_dir_name)
         error_msg("Bad problem directory name '%s', should start with: '%s'", dump_dir_name, g_settings_dump_location);
         return 400; /* Bad Request */
     }
-    if (!dump_dir_accessible_by_uid(dump_dir_name, client_uid))
+    if (!dir_has_correct_permissions(dump_dir_name, DD_PERM_DAEMONS))
     {
+        error_msg("Problem directory '%s' has wrong owner or group", dump_dir_name);
+        return 400; /*  */
+    }
+
+    struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_FD_ONLY);
+    if (dd == NULL)
+    {
+        perror_msg("Can't open problem directory '%s'", dump_dir_name);
+        return 400;
+    }
+    if (!dd_accessible_by_uid(dd, client_uid))
+    {
+        dd_close(dd);
         if (errno == ENOTDIR)
         {
             error_msg("Path '%s' isn't problem directory", dump_dir_name);
@@ -110,7 +110,16 @@ static int delete_path(const char *dump_dir_name)
         return 403; /* Forbidden */
     }
 
-    delete_dump_dir(dump_dir_name);
+    dd = dd_fdopendir(dd, /*flags:*/ 0);
+    if (dd)
+    {
+        if (dd_delete(dd) != 0)
+        {
+            error_msg("Failed to delete problem directory '%s'", dump_dir_name);
+            dd_close(dd);
+            return 400;
+        }
+    }
 
     return 0; /* success */
 }
@@ -153,15 +162,21 @@ static int run_post_create(const char *dirname)
         error_msg("Bad problem directory name '%s', should start with: '%s'", dirname, g_settings_dump_location);
         return 400; /* Bad Request */
     }
-    if (!dump_dir_accessible_by_uid(dirname, client_uid))
+    if (!dir_has_correct_permissions(dirname, DD_PERM_EVENTS))
     {
-        if (errno == ENOTDIR)
+        error_msg("Problem directory '%s' has wrong owner or group", dirname);
+        return 400; /*  */
+    }
+    /* Check completness */
+    {
+        struct dump_dir *dd = dd_opendir(dirname, DD_OPEN_READONLY);
+        const bool complete = dd && problem_dump_dir_is_complete(dd);
+        dd_close(dd);
+        if (complete)
         {
-            error_msg("Path '%s' isn't problem directory", dirname);
-            return 404; /* Not Found */
+            error_msg("Problem directory '%s' has already been processed", dirname);
+            return 403;
         }
-        error_msg("Problem directory '%s' can't be accessed by user with uid %ld", dirname, (long)client_uid);
-        return 403; /* Forbidden */
     }
 
     int child_stdout_fd;
@@ -376,7 +391,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     /* No need to check the path length, as all variables used are limited,
      * and dd_create() fails if the path is too long.
      */
-    struct dump_dir *dd = dd_create(path, client_uid, DEFAULT_DUMP_DIR_MODE);
+    struct dump_dir *dd = dd_create(path, /*fs owner*/0, DEFAULT_DUMP_DIR_MODE);
     if (!dd)
     {
         error_msg_and_die("Error creating problem directory '%s'", path);
@@ -445,22 +460,6 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     exit(0);
 }
 
-/* Checks if a string contains only printable characters. */
-static gboolean printable_str(const char *str)
-{
-    do {
-        if ((unsigned char)(*str) < ' ' || *str == 0x7f)
-            return FALSE;
-        str++;
-    } while (*str);
-    return TRUE;
-}
-
-static gboolean is_correct_filename(const char *value)
-{
-    return printable_str(value) && !strchr(value, '/') && !strchr(value, '.');
-}
-
 static gboolean key_value_ok(gchar *key, gchar *value)
 {
     char *i;
@@ -479,7 +478,7 @@ static gboolean key_value_ok(gchar *key, gchar *value)
      || strcmp(key, FILENAME_TYPE) == 0
     )
     {
-        if (!is_correct_filename(value))
+        if (!str_is_correct_filename(value))
         {
             error_msg("Value of '%s' ('%s') is not a valid directory name",
                       key, value);
@@ -487,7 +486,7 @@ static gboolean key_value_ok(gchar *key, gchar *value)
         }
     }
 
-    return TRUE;
+    return allowed_new_user_problem_entry(client_uid, key, value);
 }
 
 /* Handles a message received from client over socket. */
@@ -731,14 +730,21 @@ static int perform_http_xact(void)
     /* Body received, EOF was seen. Don't let alarm to interrupt after this. */
     alarm(0);
 
+    int ret = 0;
     if (url_type == CREATION_NOTIFICATION)
     {
+        if (client_uid != 0)
+        {
+            error_msg("UID=%ld is not authorized to trigger post-create processing", (long)client_uid);
+            ret = 403; /* Forbidden */
+            goto out;
+        }
+
         messagebuf_data[messagebuf_len] = '\0';
         return run_post_create(messagebuf_data);
     }
 
     /* Save problem dir */
-    int ret = 0;
     unsigned pid = convert_pid(problem_info);
     die_if_data_is_missing(problem_info);
 

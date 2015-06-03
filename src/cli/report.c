@@ -53,26 +53,32 @@ int cmd_report(int argc, const char **argv)
     while (*argv)
     {
         const char *dir_name = *argv++;
-
-        char *free_me = NULL;
-        if (access(dir_name, F_OK) != 0 && errno == ENOENT)
+        char *const real_problem_id = hash2dirname_if_necessary(dir_name);
+        if (real_problem_id == NULL)
         {
-            free_me = hash2dirname(dir_name);
-            if (free_me)
-                dir_name = free_me;
+            error_msg(_("Can't find problem '%s'"), dir_name);
+            continue;
         }
-        int status = report_problem_in_dir(dir_name,
+
+        const int res = chown_dir_over_dbus(real_problem_id);
+        if (res != 0)
+        {
+            error_msg(_("Can't take ownership of '%s'"), real_problem_id);
+            free(real_problem_id);
+            continue;
+        }
+        int status = report_problem_in_dir(real_problem_id,
                                              LIBREPORT_WAIT
                                            | LIBREPORT_RUN_CLI);
 
         /* the problem was successfully reported and option is -d */
         if((opts & OPT_d) && (status == 0 || status == EXIT_STOP_EVENT_RUN))
         {
-            log(_("Deleting '%s'"), dir_name);
-            delete_dump_dir_possibly_using_abrtd(dir_name);
+            log(_("Deleting '%s'"), real_problem_id);
+            delete_dump_dir_possibly_using_abrtd(real_problem_id);
         }
 
-        free(free_me);
+        free(real_problem_id);
 
         if (status)
             exit(status);

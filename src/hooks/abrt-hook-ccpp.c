@@ -20,12 +20,15 @@
 */
 #include <sys/utsname.h>
 #include "libabrt.h"
+#include <selinux/selinux.h>
 
 #ifdef ENABLE_DUMP_TIME_UNWIND
 #include <satyr/abrt.h>
 #include <satyr/utils.h>
 #endif /* ENABLE_DUMP_TIME_UNWIND */
 
+static int g_user_core_flags;
+static int g_need_nonrelative;
 
 /* I want to use -Werror, but gcc-4.4 throws a curveball:
  * "warning: ignoring return value of 'ftruncate', declared with attribute warn_unused_result"
@@ -114,8 +117,8 @@ static off_t copyfd_sparse(int src_fd, int dst_fd1, int dst_fd2, off_t size2)
 		size2 -= rd;
 		if (size2 < 0)
 			dst_fd2 = -1;
-//TODO: truncate to 0 or even delete the second file
-//(currently we delete the file later)
+// truncate to 0 or even delete the second file?
+// No, kernel does not delete nor truncate core files.
 	}
  out:
 
@@ -129,6 +132,7 @@ static off_t copyfd_sparse(int src_fd, int dst_fd1, int dst_fd2, off_t size2)
 
 /* Global data */
 static char *user_pwd;
+static DIR *proc_cwd;
 static struct dump_dir *dd;
 
 /*
@@ -148,28 +152,80 @@ static struct dump_dir *dd;
  */
 static const char percent_specifiers[] = "%scpugtePi";
 static char *core_basename = (char*) "core";
-/*
- * Used for error messages only.
- * It is either the same as core_basename if it is absolute,
- * or $PWD/core_basename.
- */
-static char *full_core_basename;
 
-static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_values)
+static DIR *open_cwd(pid_t pid)
 {
-    errno = 0;
-    if (user_pwd == NULL
-     || chdir(user_pwd) != 0
-    ) {
-        perror_msg("Can't cd to '%s'", user_pwd);
+    char buf[sizeof("/proc/%lu/cwd") + sizeof(long)*3];
+    sprintf(buf, "/proc/%lu/cwd", (long)pid);
+
+    DIR *cwd = opendir(buf);
+    if (cwd == NULL)
+        perror_msg("Can't open process's CWD for CompatCore");
+
+    return cwd;
+}
+
+/* Computes a security context of new file created by the given process with
+ * pid in the given directory represented by file descriptor.
+ *
+ * On errors returns negative number. Returns 0 if the function succeeds and
+ * computes the context and returns positive number and assigns NULL to newcon
+ * if the security context is not needed (SELinux disabled).
+ */
+static int compute_selinux_con_for_new_file(pid_t pid, int dir_fd, security_context_t *newcon)
+{
+    security_context_t srccon;
+    security_context_t dstcon;
+
+    const int r = is_selinux_enabled();
+    if (r == 0)
+    {
+        *newcon = NULL;
+        return 1;
+    }
+    else if (r == -1)
+    {
+        perror_msg("Couldn't get state of SELinux");
+        return -1;
+    }
+    else if (r != 1)
+        error_msg_and_die("Unexpected SELinux return value: %d", r);
+
+
+    if (getpidcon_raw(pid, &srccon) < 0)
+    {
+        perror_msg("getpidcon_raw(%d)", pid);
         return -1;
     }
 
-    struct passwd* pw = getpwuid(uid);
-    gid_t gid = pw ? pw->pw_gid : uid;
-    //log("setting uid: %i gid: %i", uid, gid);
-    xsetegid(gid);
-    xseteuid(fsuid);
+    if (fgetfilecon_raw(dir_fd, &dstcon) < 0)
+    {
+        perror_msg("getfilecon_raw(%s)", user_pwd);
+        return -1;
+    }
+
+    if (security_compute_create_raw(srccon, dstcon, string_to_security_class("file"), newcon) < 0)
+    {
+        perror_msg("security_compute_create_raw(%s, %s, 'file')", srccon, dstcon);
+        return -1;
+    }
+
+    return 0;
+}
+
+static int open_user_core(uid_t uid, uid_t fsuid, gid_t fsgid, pid_t pid, char **percent_values)
+{
+    proc_cwd = open_cwd(pid);
+    if (proc_cwd == NULL)
+        return -1;
+
+    /* http://article.gmane.org/gmane.comp.security.selinux/21842 */
+    security_context_t newcon;
+    if (compute_selinux_con_for_new_file(pid, dirfd(proc_cwd), &newcon) < 0)
+    {
+        log_notice("Not going to create a user core due to SELinux errors");
+        return -1;
+    }
 
     if (strcmp(core_basename, "core") == 0)
     {
@@ -226,9 +282,11 @@ static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_valu
         }
     }
 
-    full_core_basename = core_basename;
-    if (core_basename[0] != '/')
-        core_basename = concat_path_file(user_pwd, core_basename);
+    if (g_need_nonrelative && core_basename[0] != '/')
+    {
+        error_msg("Current suid_dumpable policy prevents from saving core dumps according to relative core_pattern");
+        return -1;
+    }
 
     /* Open (create) compat core file.
      * man core:
@@ -260,38 +318,84 @@ static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_valu
      * (However, see the description of the prctl(2) PR_SET_DUMPABLE operation,
      * and the description of the /proc/sys/fs/suid_dumpable file in proc(5).)
      */
-    struct stat sb;
-    errno = 0;
-    /* Do not O_TRUNC: if later checks fail, we do not want to have file already modified here */
-    int user_core_fd = open(core_basename, O_WRONLY | O_CREAT | O_NOFOLLOW, 0600); /* kernel makes 0600 too */
+
+    int user_core_fd = -1;
+    int selinux_fail = 1;
+
+    /*
+     * These calls must be reverted as soon as possible.
+     */
+    xsetegid(fsgid);
+    xseteuid(fsuid);
+
+    /* Set SELinux context like kernel when creating core dump file.
+     * This condition is TRUE if */
+    if (/* SELinux is disabled  */ newcon == NULL
+     || /* or the call succeeds */ setfscreatecon_raw(newcon) >= 0)
+    {
+        /* Do not O_TRUNC: if later checks fail, we do not want to have file already modified here */
+        user_core_fd = openat(dirfd(proc_cwd), core_basename, O_WRONLY | O_CREAT | O_NOFOLLOW | g_user_core_flags, 0600); /* kernel makes 0600 too */
+
+        /* Do the error check here and print the error message in order to
+         * avoid interference in 'errno' usage caused by SELinux functions */
+        if (user_core_fd < 0)
+            perror_msg("Can't open '%s' at '%s'", core_basename, user_pwd);
+
+        /* Fail if SELinux is enabled and the call fails */
+        if (newcon != NULL && setfscreatecon_raw(NULL) < 0)
+            perror_msg("setfscreatecon_raw(NULL)");
+        else
+            selinux_fail = 0;
+    }
+    else
+        perror_msg("setfscreatecon_raw(%s)", newcon);
+
+    /*
+     * DON'T JUMP OVER THIS REVERT OF THE UID/GID CHANGES
+     */
     xsetegid(0);
     xseteuid(0);
-    if (user_core_fd < 0
-     || fstat(user_core_fd, &sb) != 0
+
+    if (user_core_fd < 0 || selinux_fail)
+        goto user_core_fail;
+
+    struct stat sb;
+    if (fstat(user_core_fd, &sb) != 0
      || !S_ISREG(sb.st_mode)
      || sb.st_nlink != 1
-    /* kernel internal dumper checks this too: if (inode->i_uid != current->fsuid) <fail>, need to mimic? */
+     || sb.st_uid != fsuid
     ) {
-        if (user_core_fd < 0)
-            perror_msg("Can't open '%s'", full_core_basename);
-        else
-            perror_msg("'%s' is not a regular file with link count 1", full_core_basename);
-        return -1;
+        perror_msg("'%s' at '%s' is not a regular file with link count 1 owned by UID(%d)", core_basename, user_pwd, fsuid);
+        goto user_core_fail;
     }
     if (ftruncate(user_core_fd, 0) != 0) {
         /* perror first, otherwise unlink may trash errno */
-        perror_msg("Can't truncate '%s' to size 0", full_core_basename);
-        unlink(core_basename);
-        return -1;
+        perror_msg("Can't truncate '%s' at '%s' to size 0", core_basename, user_pwd);
+        goto user_core_fail;
     }
 
     return user_core_fd;
+
+user_core_fail:
+    if (user_core_fd >= 0)
+        close(user_core_fd);
+    return -1;
+}
+
+static int close_user_core(int user_core_fd, off_t core_size)
+{
+    if (user_core_fd >= 0 && (fsync(user_core_fd) != 0 || close(user_core_fd) != 0 || core_size < 0))
+    {
+        perror_msg("Error writing '%s' at '%s'", core_basename, user_pwd);
+        return -1;
+    }
+    return 0;
 }
 
 /* Like xopen, but on error, unlocks and deletes dd and user core */
 static int create_or_die(const char *filename, int user_core_fd)
 {
-    int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, DEFAULT_DUMP_DIR_MODE);
+    int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL, DEFAULT_DUMP_DIR_MODE);
     if (fd >= 0)
     {
         IGNORE_RESULT(fchown(fd, dd->dd_uid, dd->dd_gid));
@@ -302,55 +406,54 @@ static int create_or_die(const char *filename, int user_core_fd)
     if (dd)
         dd_delete(dd);
     if (user_core_fd >= 0)
-    {
-        xchdir(user_pwd);
-        unlink(core_basename);
-    }
+        close(user_core_fd);
+
     errno = sv_errno;
     perror_msg_and_die("Can't open '%s'", filename);
 }
 
-static void create_core_backtrace(pid_t tid, const char *executable, int signal_no, const char *dd_path)
+static void create_core_backtrace(pid_t tid, const char *executable, int signal_no, struct dump_dir *dd)
 {
 #ifdef ENABLE_DUMP_TIME_UNWIND
     if (g_verbose > 1)
         sr_debug_parser = true;
 
     char *error_message = NULL;
-    bool success = sr_abrt_create_core_stacktrace_from_core_hook(dd_path, tid, executable,
-                                                                 signal_no, &error_message);
+    char *core_bt = sr_abrt_get_core_stacktrace_from_core_hook(tid, executable,
+                                                               signal_no, &error_message);
 
-    if (!success)
+    if (core_bt == NULL)
     {
         log("Failed to create core_backtrace: %s", error_message);
         free(error_message);
     }
+
+    dd_save_text(dd, FILENAME_CORE_BACKTRACE, core_bt);
+    free(core_bt);
 #endif /* ENABLE_DUMP_TIME_UNWIND */
 }
 
 static int create_user_core(int user_core_fd, pid_t pid, off_t ulimit_c)
 {
+    int err = 1;
     if (user_core_fd >= 0)
     {
         off_t core_size = copyfd_size(STDIN_FILENO, user_core_fd, ulimit_c, COPYFD_SPARSE);
-        if (fsync(user_core_fd) != 0 || close(user_core_fd) != 0 || core_size < 0)
-        {
-            /* perror first, otherwise unlink may trash errno */
-            perror_msg("Error writing '%s'", full_core_basename);
-            xchdir(user_pwd);
-            unlink(core_basename);
-            return 1;
-        }
-        if (ulimit_c == 0 || core_size > ulimit_c)
-        {
-            xchdir(user_pwd);
-            unlink(core_basename);
-            return 1;
-        }
-        log_notice("Saved core dump of pid %lu to %s (%llu bytes)", (long)pid, full_core_basename, (long long)core_size);
+        if (close_user_core(user_core_fd, core_size) != 0)
+            goto finito;
+
+        log_notice("Saved core dump of pid %lu to '%s' at '%s' (%llu bytes)", (long)pid, core_basename, user_pwd, (long long)core_size);
+    }
+    err = 0;
+
+finito:
+    if (proc_cwd != NULL)
+    {
+        closedir(proc_cwd);
+        proc_cwd = NULL;
     }
 
-    return 0;
+    return err;
 }
 
 static int test_configuration(bool setting_SaveFullCore, bool setting_CreateCoreBacktrace)
@@ -365,7 +468,7 @@ static int test_configuration(bool setting_SaveFullCore, bool setting_CreateCore
     return 0;
 }
 
-int save_crashing_binary(pid_t pid, const char *dest_path, uid_t uid, gid_t gid)
+static int save_crashing_binary(pid_t pid, struct dump_dir *dd)
 {
     char buf[sizeof("/proc/%lu/exe") + sizeof(long)*3];
 
@@ -377,15 +480,15 @@ int save_crashing_binary(pid_t pid, const char *dest_path, uid_t uid, gid_t gid)
         return 0;
     }
 
-    int dst_fd = open(dest_path, O_WRONLY | O_CREAT | O_TRUNC, DEFAULT_DUMP_DIR_MODE);
+    int dst_fd = openat(dd->dd_fd, FILENAME_BINARY, O_WRONLY | O_CREAT | O_EXCL | O_TRUNC, DEFAULT_DUMP_DIR_MODE);
     if (dst_fd < 0)
     {
-        log_notice("Failed to create file '%s'", dest_path);
+        log_notice("Failed to create file '"FILENAME_BINARY"' at '%s'", dd->dd_dirname);
         close(src_fd_binary);
         return -1;
     }
 
-    IGNORE_RESULT(fchown(dst_fd, uid, gid));
+    IGNORE_RESULT(fchown(dst_fd, dd->dd_uid, dd->dd_gid));
 
     off_t sz = copyfd_eof(src_fd_binary, dst_fd, COPYFD_SPARSE);
     close(src_fd_binary);
@@ -406,6 +509,7 @@ int main(int argc, char** argv)
     if (fd > 2)
         close(fd);
 
+    int err = 1;
     logmode = LOGMODE_JOURNAL;
 
     /* Parse abrt.conf */
@@ -429,8 +533,18 @@ int main(int argc, char** argv)
         setting_SaveFullCore = value ? string_to_bool(value) : true;
         value = get_map_string_item_or_NULL(settings, "CreateCoreBacktrace");
         setting_CreateCoreBacktrace = value ? string_to_bool(value) : true;
+
         value = get_map_string_item_or_NULL(settings, "SaveContainerizedPackageData");
         setting_SaveContainerizedPackageData = value && string_to_bool(value);
+
+        /* Do not call abrt-action-save-package-data with process's root, if ExploreChroots is disabled. */
+        if (!g_settings_explorechroots)
+        {
+            if (setting_SaveContainerizedPackageData)
+                log_warning("Ignoring SaveContainerizedPackageData because ExploreChroots is disabled");
+            setting_SaveContainerizedPackageData = false;
+        }
+
         value = get_map_string_item_or_NULL(settings, "StandaloneHook");
         setting_StandaloneHook = value && string_to_bool(value);
         value = get_map_string_item_or_NULL(settings, "VerboseLog");
@@ -518,14 +632,21 @@ int main(int argc, char** argv)
     if (tmp_fsuid < 0)
         perror_msg_and_die("Can't parse 'Uid: line' in /proc/%lu/status", (long)pid);
 
+    const int fsgid = get_fsgid(proc_pid_status);
+    if (fsgid < 0)
+        error_msg_and_die("Can't parse 'Gid: line' in /proc/%lu/status", (long)pid);
+
     int suid_policy = dump_suid_policy();
     if (tmp_fsuid != uid)
     {
         /* use root for suided apps unless it's explicitly set to UNSAFE */
         fsuid = 0;
         if (suid_policy == DUMP_SUID_UNSAFE)
-        {
             fsuid = tmp_fsuid;
+        else
+        {
+            g_user_core_flags = O_EXCL;
+            g_need_nonrelative = 1;
         }
     }
 
@@ -533,7 +654,7 @@ int main(int argc, char** argv)
     int user_core_fd = -1;
     if (setting_MakeCompatCore && ulimit_c != 0)
         /* note: checks "user_pwd == NULL" inside; updates core_basename */
-        user_core_fd = open_user_core(uid, fsuid, pid, &argv[1]);
+        user_core_fd = open_user_core(uid, fsuid, fsgid, pid, &argv[1]);
 
     if (executable == NULL)
     {
@@ -585,7 +706,9 @@ int main(int argc, char** argv)
          * and maybe crash again...
          * Unlike dirs, mere files are ignored by abrtd.
          */
-        snprintf(path, sizeof(path), "%s/%s-coredump", g_settings_dump_location, last_slash);
+        if (snprintf(path, sizeof(path), "%s/%s-coredump", g_settings_dump_location, last_slash) >= sizeof(path))
+            error_msg_and_die("Error saving '%s': truncated long file path", path);
+
         int abrt_core_fd = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0600);
         off_t core_size = copyfd_eof(STDIN_FILENO, abrt_core_fd, COPYFD_SPARSE);
         if (core_size < 0 || fsync(abrt_core_fd) != 0)
@@ -596,7 +719,8 @@ int main(int argc, char** argv)
             error_msg_and_die("Error saving '%s'", path);
         }
         log_notice("Saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
-        return 0;
+        err = 0;
+        goto cleanup_and_exit;
     }
 
     unsigned path_len = snprintf(path, sizeof(path), "%s/ccpp-%s-%lu.new",
@@ -606,10 +730,17 @@ int main(int argc, char** argv)
         return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
-    /* use fsuid instead of uid, so we don't expose any sensitive
-     * information of suided app in /var/tmp/abrt
+    /* If you don't want to have fs owner as root then:
+     *
+     * - use fsuid instead of uid for fs owner, so we don't expose any
+     *   sensitive information of suided app in /var/(tmp|spool)/abrt
+     *
+     * - use dd_create_skeleton() and dd_reset_ownership(), when you finish
+     *   creating the new dump directory, to prevent the real owner to write to
+     *   the directory until the hook is done (avoid race conditions and defend
+     *   hard and symbolic link attacs)
      */
-    dd = dd_create(path, fsuid, DEFAULT_DUMP_DIR_MODE);
+    dd = dd_create(path, /*fs owner*/0, DEFAULT_DUMP_DIR_MODE);
     if (dd)
     {
         char source_filename[sizeof("/proc/%lu/somewhat_long_name") + sizeof(long)*3];
@@ -619,46 +750,44 @@ int main(int argc, char** argv)
         /* What's wrong on using /proc/[pid]/root every time ?*/
         /* It creates os_info_in_root_dir for all crashes. */
         char *rootdir = process_has_own_root(pid) ? get_rootdir(pid) : NULL;
-        /* Yes, test 'rootdir' but use 'source_filename' because 'rootdir' can
-         * be '/' for a process with own namespace. 'source_filename' is /proc/[pid]/root. */
-        dd_create_basic_files(dd, fsuid, (rootdir != NULL) ? source_filename : NULL);
+
+        /* Reading data from an arbitrary root directory is not secure. */
+        if (g_settings_explorechroots)
+        {
+            /* Yes, test 'rootdir' but use 'source_filename' because 'rootdir' can
+             * be '/' for a process with own namespace. 'source_filename' is /proc/[pid]/root. */
+            dd_create_basic_files(dd, fsuid, (rootdir != NULL) ? source_filename : NULL);
+        }
+        else
+        {
+            dd_create_basic_files(dd, fsuid, NULL);
+        }
 
         char *dest_filename = concat_path_file(dd->dd_dirname, "also_somewhat_longish_name");
         char *dest_base = strrchr(dest_filename, '/') + 1;
 
         // Disabled for now: /proc/PID/smaps tends to be BIG,
         // and not much more informative than /proc/PID/maps:
-        //copy_file(source_filename, dest_filename, 0640);
-        //chown(dest_filename, dd->dd_uid, dd->dd_gid);
+        // dd_copy_file(dd, FILENAME_SMAPS, source_filename);
 
         strcpy(source_filename + source_base_ofs, "maps");
-        strcpy(dest_base, FILENAME_MAPS);
-        copy_file(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE);
-        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        dd_copy_file(dd, FILENAME_MAPS, source_filename);
 
         strcpy(source_filename + source_base_ofs, "limits");
-        strcpy(dest_base, FILENAME_LIMITS);
-        copy_file(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE);
-        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        dd_copy_file(dd, FILENAME_LIMITS, source_filename);
 
         strcpy(source_filename + source_base_ofs, "cgroup");
-        strcpy(dest_base, FILENAME_CGROUP);
-        copy_file(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE);
-        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        dd_copy_file(dd, FILENAME_CGROUP, source_filename);
 
         strcpy(source_filename + source_base_ofs, "mountinfo");
-        strcpy(dest_base, FILENAME_MOUNTINFO);
-        copy_file(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE);
-        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        dd_copy_file(dd, FILENAME_MOUNTINFO, source_filename);
 
         strcpy(dest_base, FILENAME_OPEN_FDS);
         strcpy(source_filename + source_base_ofs, "fd");
-        if (dump_fd_info(dest_filename, source_filename) == 0)
-            IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        dump_fd_info_ext(dest_filename, source_filename, dd->dd_uid, dd->dd_gid);
 
         strcpy(dest_base, FILENAME_NAMESPACES);
-        if (dump_namespace_diff(dest_filename, 1, pid))
-            IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        dump_namespace_diff_ext(dest_filename, 1, pid, dd->dd_uid, dd->dd_gid);
 
         free(dest_filename);
 
@@ -737,13 +866,11 @@ int main(int argc, char** argv)
 
         if (setting_SaveBinaryImage)
         {
-            strcpy(path + path_len, "/"FILENAME_BINARY);
-
-            if (save_crashing_binary(pid, path, dd->dd_uid, dd->dd_gid))
+            if (save_crashing_binary(pid, dd))
             {
                 error_msg("Error saving '%s'", path);
 
-                goto error_exit;
+                goto cleanup_and_exit;
             }
         }
 
@@ -764,6 +891,7 @@ int main(int argc, char** argv)
              * ls: cannot access core*: No such file or directory <=== BAD
              */
             core_size = copyfd_sparse(STDIN_FILENO, abrt_core_fd, user_core_fd, ulimit_c);
+            close_user_core(user_core_fd, core_size);
             if (fsync(abrt_core_fd) != 0 || close(abrt_core_fd) != 0 || core_size < 0)
             {
                 unlink(path);
@@ -772,18 +900,7 @@ int main(int argc, char** argv)
                  * but it does not log file name */
                 error_msg("Error writing '%s'", path);
 
-                goto error_exit;
-            }
-            if (user_core_fd >= 0
-                /* error writing user coredump? */
-             && (fsync(user_core_fd) != 0 || close(user_core_fd) != 0
-                /* user coredump is too big? */
-                || (ulimit_c == 0 /* paranoia */ || core_size > ulimit_c)
-                )
-            ) {
-                /* nuke it (silently) */
-                xchdir(user_pwd);
-                unlink(core_basename);
+                goto cleanup_and_exit;
             }
         }
         else
@@ -799,6 +916,8 @@ int main(int argc, char** argv)
          * ! No other errors should cause removal of the user core !
          */
 
+/* Because of #1211835 and #1126850 */
+#if 0
         /* Save JVM crash log if it exists. (JVM's coredump per se
          * is nearly useless for JVM developers)
          */
@@ -827,15 +946,16 @@ int main(int argc, char** argv)
                 {
                     error_msg("Error saving '%s'", path);
 
-                    goto error_exit;
+                    goto cleanup_and_exit;
                 }
                 close(src_fd);
             }
         }
+#endif
 
         /* Perform crash-time unwind of the guilty thread. */
         if (tid > 0 && setting_CreateCoreBacktrace)
-            create_core_backtrace(tid, executable, signal_no, dd->dd_dirname);
+            create_core_backtrace(tid, executable, signal_no, dd);
 
         /* We close dumpdir before we start catering for crash storm case.
          * Otherwise, delete_dump_dir's from other concurrent
@@ -888,21 +1008,23 @@ int main(int argc, char** argv)
             trim_problem_dirs(g_settings_dump_location, maxsize * (double)(1024*1024), path);
         }
 
-        return 0;
+        err = 0;
+    }
+    else
+    {
+        /* We didn't create abrt dump, but may need to create compat coredump */
+        return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
-    /* We didn't create abrt dump, but may need to create compat coredump */
-    return create_user_core(user_core_fd, pid, ulimit_c);
-
-error_exit:
+cleanup_and_exit:
     if (dd)
         dd_delete(dd);
 
     if (user_core_fd >= 0)
-    {
-        xchdir(user_pwd);
-        unlink(core_basename);
-    }
+        unlinkat(dirfd(proc_cwd), core_basename, /*only files*/0);
 
-    xfunc_die();
+    if (proc_cwd != NULL)
+        closedir(proc_cwd);
+
+    return err;
 }

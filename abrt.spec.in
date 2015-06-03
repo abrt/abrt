@@ -87,6 +87,7 @@ BuildRequires: satyr-devel >= %{satyr_ver}
 BuildRequires: systemd-python
 BuildRequires: systemd-python3
 BuildRequires: augeas
+BuildRequires: libselinux-devel
 
 Requires: libreport >= %{libreport_ver}
 Requires: satyr >= %{satyr_ver}
@@ -486,11 +487,7 @@ to the shell
 %build
 autoconf
 
-%if 0%{?rhel:%{rhel} < 7}%{?fedora:%{fedora} < 18}
-    %define var_base_dir spool
-%else
-    %define var_base_dir tmp
-%endif
+%define var_base_dir spool
 
 CFLAGS="%{optflags} -Werror" %configure \
 %if 0%{?suse_version}
@@ -502,9 +499,6 @@ CFLAGS="%{optflags} -Werror" %configure \
 %if %{without atomic}
         --without-atomic \
 %endif
-%if 0%{?rhel:%{rhel} < 7}%{?fedora:%{fedora} < 18}
-        --with-defaultdumplocation=/var/%{var_base_dir}/abrt \
-%endif
 %if 0%{?rhel}
         --enable-suggest-autoreporting \
         --enable-authenticated-autoreporting \
@@ -515,6 +509,7 @@ CFLAGS="%{optflags} -Werror" %configure \
 %if %{?have_kexec_tools} == 0
         --disable-addon-vmcore \
 %endif
+        --with-defaultdumplocation=/var/%{var_base_dir}/abrt \
         --enable-doxygen-docs \
         --disable-silent-rules
 
@@ -731,6 +726,10 @@ service abrt-pstoreoops condrestart >/dev/null 2>&1 || :
 
 %posttrans gui
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+
+%posttrans dbus
+# Force abrt-dbus to restart like we do with the other services
+killall abrt-dbus >/dev/null 2>&1 || :
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)

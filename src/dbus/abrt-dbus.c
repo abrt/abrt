@@ -141,26 +141,41 @@ static uid_t get_caller_uid(GDBusConnection *connection, GDBusMethodInvocation *
     return caller_uid;
 }
 
-static bool allowed_problem_dir(const char *dir_name)
+bool allowed_problem_dir(const char *dir_name)
 {
-//HACK HACK HACK! Disabled for now until we fix clients (abrt-gui) to not pass /home/user/.cache/abrt/spool
-#if 0
-    unsigned len = strlen(g_settings_dump_location);
-
-    /* If doesn't start with "g_settings_dump_location[/]"... */
-    if (strncmp(dir_name, g_settings_dump_location, len) != 0
-     || (dir_name[len] != '/' && dir_name[len] != '\0')
-    /* or contains "/." anywhere (-> might contain ".." component) */
-     || strstr(dir_name + len, "/.")
-    ) {
+    if (!dir_is_in_dump_location(dir_name))
+    {
+        error_msg("Bad problem directory name '%s', should start with: '%s'", dir_name, g_settings_dump_location);
         return false;
     }
-#endif
+
+    if (!dir_has_correct_permissions(dir_name, DD_PERM_DAEMONS))
+    {
+        error_msg("Problem directory '%s' has invalid owner, groop or mode", dir_name);
+        return false;
+    }
+
     return true;
+}
+
+bool allowed_problem_element(GDBusMethodInvocation *invocation, const char *element)
+{
+    if (str_is_correct_filename(element))
+        return true;
+
+    log_notice("'%s' is not a valid element name", element);
+    char *error = xasprintf(_("'%s' is not a valid element name"), element);
+    g_dbus_method_invocation_return_dbus_error(invocation,
+            "org.freedesktop.problems.InvalidElement",
+            error);
+
+    free(error);
+    return false;
 }
 
 static char *handle_new_problem(GVariant *problem_info, uid_t caller_uid, char **error)
 {
+    char *problem_id = NULL;
     problem_data_t *pd = problem_data_new();
 
     GVariantIter *iter;
@@ -168,6 +183,12 @@ static char *handle_new_problem(GVariant *problem_info, uid_t caller_uid, char *
     gchar *key, *value;
     while (g_variant_iter_loop(iter, "{ss}", &key, &value))
     {
+        if (allowed_new_user_problem_entry(caller_uid, key, value) == false)
+        {
+            *error = xasprintf("You are not allowed to create element '%s' containing '%s'", key, value);
+            goto finito;
+        }
+
         problem_data_add_text_editable(pd, key, value);
     }
 
@@ -182,12 +203,13 @@ static char *handle_new_problem(GVariant *problem_info, uid_t caller_uid, char *
     /* At least it should generate local problem identifier UUID */
     problem_data_add_basics(pd);
 
-    char *problem_id = problem_data_save(pd);
+    problem_id = problem_data_save(pd);
     if (problem_id)
         notify_new_path(problem_id);
     else if (error)
         *error = xasprintf("Cannot create a new problem");
 
+finito:
     problem_data_free(pd);
     return problem_id;
 }
@@ -200,6 +222,69 @@ static void return_InvalidProblemDir_error(GDBusMethodInvocation *invocation, co
                                       msg);
 
     free(msg);
+}
+
+enum {
+    OPEN_FAIL_NO_REPLY = 1 << 0,
+    OPEN_AUTH_ASK      = 1 << 1,
+    OPEN_AUTH_FAIL     = 1 << 2,
+};
+
+static struct dump_dir *open_dump_directory(GDBusMethodInvocation *invocation,
+    const gchar *caller, uid_t caller_uid, const char *problem_dir, int dd_flags, int flags)
+{
+    if (!allowed_problem_dir(problem_dir))
+    {
+        log("UID=%d attempted to access not allowed problem directory '%s'",
+                caller_uid, problem_dir);
+        if (!(flags & OPEN_FAIL_NO_REPLY))
+            return_InvalidProblemDir_error(invocation, problem_dir);
+        return NULL;
+    }
+
+    struct dump_dir *dd = dd_opendir(problem_dir, DD_OPEN_FD_ONLY);
+    if (dd == NULL)
+    {
+        perror_msg("can't open problem directory '%s'", problem_dir);
+        if (!(flags & OPEN_FAIL_NO_REPLY))
+            return_InvalidProblemDir_error(invocation, problem_dir);
+        return NULL;
+    }
+
+    if (!dd_accessible_by_uid(dd, caller_uid))
+    {
+        if (errno == ENOTDIR)
+        {
+            log_notice("Requested directory does not exist '%s'", problem_dir);
+            if (!(flags & OPEN_FAIL_NO_REPLY))
+                return_InvalidProblemDir_error(invocation, problem_dir);
+            dd_close(dd);
+            return NULL;
+        }
+
+        if (   !(flags & OPEN_AUTH_ASK)
+            || polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
+        {
+            log_notice("not authorized");
+            if (!(flags & OPEN_FAIL_NO_REPLY))
+                g_dbus_method_invocation_return_dbus_error(invocation,
+                                              "org.freedesktop.problems.AuthFailure",
+                                              _("Not Authorized"));
+            dd_close(dd);
+            return NULL;
+        }
+    }
+
+    dd = dd_fdopendir(dd, dd_flags);
+    if (dd == NULL)
+    {
+        log_notice("Can't open the problem '%s' with flags %x0", problem_dir, dd_flags);
+        if (!(flags & OPEN_FAIL_NO_REPLY))
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                "org.freedesktop.problems.Failure",
+                                _("Can't open the problem"));
+    }
+    return dd;
 }
 
 /*
@@ -238,35 +323,8 @@ static struct dump_dir *open_directory_for_modification_of_element(
         }
     }
 
-    if (!dump_dir_accessible_by_uid(problem_id, caller_uid))
-    {
-        if (errno == ENOTDIR)
-        {
-            log_notice("'%s' is not a valid problem directory", problem_id);
-            return_InvalidProblemDir_error(invocation, problem_id);
-        }
-        else
-        {
-            log_notice("UID(%d) is not Authorized to access '%s'", caller_uid, problem_id);
-            g_dbus_method_invocation_return_dbus_error(invocation,
-                                "org.freedesktop.problems.AuthFailure",
-                                _("Not Authorized"));
-        }
-
-        return NULL;
-    }
-
-    struct dump_dir *dd = dd_opendir(problem_id, /* flags : */ 0);
-    if (!dd)
-    {   /* This should not happen because of the access check above */
-        log_notice("Can't access the problem '%s' for modification", problem_id);
-        g_dbus_method_invocation_return_dbus_error(invocation,
-                                "org.freedesktop.problems.Failure",
-                                _("Can't access the problem for modification"));
-        return NULL;
-    }
-
-    return dd;
+    return open_dump_directory(invocation, /*caller*/NULL, caller_uid, problem_id, /*Read/Write*/0,
+                               OPEN_AUTH_FAIL);
 }
 
 
@@ -422,7 +480,15 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
-        int ddstat = dump_dir_stat_for_uid(problem_dir, caller_uid);
+        struct dump_dir *dd = dd_opendir(problem_dir, DD_OPEN_FD_ONLY);
+        if (dd == NULL)
+        {
+            perror_msg("can't open problem directory '%s'", problem_dir);
+            return_InvalidProblemDir_error(invocation, problem_dir);
+            return;
+        }
+
+        int ddstat = dd_stat_for_uid(dd, caller_uid);
         if (ddstat < 0)
         {
             if (errno == ENOTDIR)
@@ -436,15 +502,14 @@ static void handle_method_call(GDBusConnection *connection,
 
             return_InvalidProblemDir_error(invocation, problem_dir);
 
+            dd_close(dd);
             return;
         }
 
-        if (ddstat & DD_STAT_OWNED_BY_UID)
-        {   //caller seems to be in group with access to this dir, so no action needed
-            log_notice("caller has access to the requested directory %s", problem_dir);
-            g_dbus_method_invocation_return_value(invocation, NULL);
-            return;
-        }
+        /* It might happen that we will do chowing even if the UID is alreay fs
+         * owner, but DD_STAT_OWNED_BY_UID no longer denotes fs owner and this
+         * method has to ensure file system ownership for the uid.
+         */
 
         if ((ddstat & DD_STAT_ACCESSIBLE_BY_UID) == 0 &&
                 polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
@@ -453,10 +518,11 @@ static void handle_method_call(GDBusConnection *connection,
             g_dbus_method_invocation_return_dbus_error(invocation,
                                               "org.freedesktop.problems.AuthFailure",
                                               _("Not Authorized"));
+            dd_close(dd);
             return;
         }
 
-        struct dump_dir *dd = dd_opendir(problem_dir, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
+        dd = dd_fdopendir(dd, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
         if (!dd)
         {
             return_InvalidProblemDir_error(invocation, problem_dir);
@@ -484,37 +550,10 @@ static void handle_method_call(GDBusConnection *connection,
         g_variant_get_child(parameters, 0, "&s", &problem_dir);
         log_notice("problem_dir:'%s'", problem_dir);
 
-        if (!allowed_problem_dir(problem_dir))
-        {
-            return_InvalidProblemDir_error(invocation, problem_dir);
-            return;
-        }
-
-        if (!dump_dir_accessible_by_uid(problem_dir, caller_uid))
-        {
-            if (errno == ENOTDIR)
-            {
-                log_notice("Requested directory does not exist '%s'", problem_dir);
-                return_InvalidProblemDir_error(invocation, problem_dir);
-                return;
-            }
-
-            if (polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
-            {
-                log_notice("not authorized");
-                g_dbus_method_invocation_return_dbus_error(invocation,
-                                                  "org.freedesktop.problems.AuthFailure",
-                                                  _("Not Authorized"));
-                return;
-            }
-        }
-
-        struct dump_dir *dd = dd_opendir(problem_dir, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
+        struct dump_dir *dd = open_dump_directory(invocation, caller, caller_uid,
+                problem_dir, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES , OPEN_AUTH_ASK);
         if (!dd)
-        {
-            return_InvalidProblemDir_error(invocation, problem_dir);
             return;
-        }
 
 	/* Get 2nd param - vector of element names */
         GVariant *array = g_variant_get_child_value(parameters, 1);
@@ -561,26 +600,10 @@ static void handle_method_call(GDBusConnection *connection,
 
         g_variant_get(parameters, "(&s)", &problem_id);
 
-        int ddstat = dump_dir_stat_for_uid(problem_id, caller_uid);
-        if ((ddstat & DD_STAT_ACCESSIBLE_BY_UID) == 0 &&
-                polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
-        {
-            log_notice("Unauthorized access : '%s'", problem_id);
-            g_dbus_method_invocation_return_dbus_error(invocation,
-                                              "org.freedesktop.problems.AuthFailure",
-                                              _("Not Authorized"));
+        struct dump_dir *dd = open_dump_directory(invocation, caller, caller_uid,
+                    problem_id, DD_OPEN_READONLY, OPEN_AUTH_ASK);
+        if (!dd)
             return;
-        }
-
-        struct dump_dir *dd = dd_opendir(problem_id, DD_OPEN_READONLY);
-        if (dd == NULL)
-        {
-            log_notice("Can't access the problem '%s' for reading", problem_id);
-            g_dbus_method_invocation_return_dbus_error(invocation,
-                                    "org.freedesktop.problems.Failure",
-                                    _("Can't access the problem for reading"));
-            return;
-        }
 
         problem_data_t *pd = create_problem_data_from_dump_dir(dd);
         dd_close(dd);
@@ -624,17 +647,8 @@ static void handle_method_call(GDBusConnection *connection,
 
         g_variant_get(parameters, "(&s&s&s)", &problem_id, &element, &value);
 
-        if (element == NULL || element[0] == '\0' || strlen(element) > 64)
-        {
-            log_notice("'%s' is not a valid element name of '%s'", element, problem_id);
-            char *error = xasprintf(_("'%s' is not a valid element name"), element);
-            g_dbus_method_invocation_return_dbus_error(invocation,
-                                              "org.freedesktop.problems.InvalidElement",
-                                              error);
-
-            free(error);
+        if (!allowed_problem_element(invocation, element))
             return;
-        }
 
         struct dump_dir *dd = open_directory_for_modification_of_element(
                                     invocation, caller_uid, problem_id, element);
@@ -683,6 +697,9 @@ static void handle_method_call(GDBusConnection *connection,
 
         g_variant_get(parameters, "(&s&s)", &problem_id, &element);
 
+        if (!allowed_problem_element(invocation, element))
+            return;
+
         struct dump_dir *dd = open_directory_for_modification_of_element(
                                     invocation, caller_uid, problem_id, element);
         if (!dd)
@@ -715,28 +732,13 @@ static void handle_method_call(GDBusConnection *connection,
 
         g_variant_get(parameters, "(&s&s)", &problem_id, &element);
 
+        if (!allowed_problem_element(invocation, element))
+            return;
 
-        struct dump_dir *dd = dd_opendir(problem_id, DD_OPEN_READONLY);
+        struct dump_dir *dd = open_dump_directory(invocation, caller, caller_uid,
+                problem_id, DD_OPEN_READONLY, OPEN_AUTH_ASK);
         if (!dd)
-        {
-            log_notice("Can't access the problem '%s'", problem_id);
-            g_dbus_method_invocation_return_dbus_error(invocation,
-                                    "org.freedesktop.problems.Failure",
-                                    _("Can't access the problem"));
             return;
-        }
-
-        int ddstat = dump_dir_stat_for_uid(problem_id, caller_uid);
-        if ((ddstat & DD_STAT_ACCESSIBLE_BY_UID) == 0 &&
-                polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
-        {
-            dd_close(dd);
-            log_notice("Unauthorized access : '%s'", problem_id);
-            g_dbus_method_invocation_return_dbus_error(invocation,
-                                              "org.freedesktop.problems.AuthFailure",
-                                              _("Not Authorized"));
-            return;
-        }
 
         int ret = dd_exist(dd, element);
         dd_close(dd);
@@ -771,20 +773,18 @@ static void handle_method_call(GDBusConnection *connection,
         for (GList *l = problem_dirs; l; l = l->next)
         {
             const char *dir_name = (const char*)l->data;
-            if (!dump_dir_accessible_by_uid(dir_name, caller_uid))
-            {
-                if (errno == ENOTDIR)
-                {
-                    log_notice("Requested directory does not exist '%s'", dir_name);
-                    continue;
-                }
 
-                if (polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
-                { // if user didn't provide correct credentials, just move to the next dir
-                    continue;
+            struct dump_dir *dd = open_dump_directory(invocation, caller, caller_uid,
+                        dir_name, /*Read/Write*/0, OPEN_FAIL_NO_REPLY | OPEN_AUTH_ASK);
+
+            if (dd)
+            {
+                if (dd_delete(dd) != 0)
+                {
+                    error_msg("Failed to delete problem directory '%s'", dir_name);
+                    dd_close(dd);
                 }
             }
-            delete_dump_dir(dir_name);
         }
 
         g_dbus_method_invocation_return_value(invocation, NULL);
@@ -806,6 +806,9 @@ static void handle_method_call(GDBusConnection *connection,
         g_variant_get_child(parameters, 2, "x", &timestamp_from);
         g_variant_get_child(parameters, 3, "x", &timestamp_to);
         g_variant_get_child(parameters, 4, "b", &all);
+
+        if (!allowed_problem_element(invocation, element))
+            return;
 
         if (all && polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") == PolkitYes)
             caller_uid = 0;

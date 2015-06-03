@@ -410,7 +410,7 @@ char* problem_data_save(problem_data_t *pd)
 {
     load_abrt_conf();
 
-    struct dump_dir *dd = create_dump_dir_from_problem_data(pd, g_settings_dump_location);
+    struct dump_dir *dd = create_dump_dir_from_problem_data_ext(pd, g_settings_dump_location, /*fs owner*/0);
 
     char *problem_id = NULL;
     if (dd)
@@ -493,4 +493,105 @@ void ensure_writable_dir(const char *dir, mode_t mode, const char *user)
         perror_msg_and_die("Can't set owner %u:%u on '%s'", (unsigned int)pw->pw_uid, (unsigned int)pw->pw_gid, dir);
     if ((sb.st_mode & 07777) != mode && chmod(dir, mode) != 0)
         perror_msg_and_die("Can't set mode %o on '%s'", mode, dir);
+}
+
+bool dir_is_in_dump_location(const char *dir_name)
+{
+    unsigned len = strlen(g_settings_dump_location);
+
+    /* The path must start with "g_settings_dump_location" */
+    if (strncmp(dir_name, g_settings_dump_location, len) != 0)
+    {
+        log_debug("Bad parent directory: '%s' not in '%s'", g_settings_dump_location, dir_name);
+        return false;
+    }
+
+    /* and must be a sub-directory of the g_settings_dump_location dir */
+    const char *base_name = dir_name + len;
+    while (*base_name && *base_name == '/')
+        ++base_name;
+
+    if (*(base_name - 1) != '/' || !str_is_correct_filename(base_name))
+    {
+        log_debug("Invalid dump directory name: '%s'", base_name);
+        return false;
+    }
+
+    /* and we are sure it is a directory */
+    struct stat sb;
+    if (lstat(dir_name, &sb) < 0)
+    {
+        VERB2 perror_msg("stat('%s')", dir_name);
+        return errno== ENOENT;
+    }
+
+    return S_ISDIR(sb.st_mode);
+}
+
+bool dir_has_correct_permissions(const char *dir_name, int flags)
+{
+    struct stat statbuf;
+    if (lstat(dir_name, &statbuf) != 0 || !S_ISDIR(statbuf.st_mode))
+    {
+        error_msg("Path '%s' isn't directory", dir_name);
+        return false;
+    }
+
+    /* Get ABRT's group id */
+    struct group *gr = getgrnam("abrt");
+    if (!gr)
+    {
+        error_msg("The group 'abrt' does not exist");
+        return false;
+    }
+
+    /* The group must be root or abrt. */
+    const bool correct_group =    statbuf.st_gid == 0
+                               || statbuf.st_gid == gr->gr_gid;
+
+    /* Require owner 'root' and group 'abrt' for the event shell scripts.
+     * Because the shell scripts are vulnerable to hard link and symbolic link
+     * attacks.
+     */
+    const bool events =    statbuf.st_uid == 0
+                        && correct_group
+                        && (statbuf.st_mode & S_IWGRP) == 0
+                        && (statbuf.st_mode & S_IWOTH) == 0;
+
+    if ((flags & DD_PERM_EVENTS))
+        return events;
+
+    /* Be less restrictive and allow the daemos (abrtd, abrt-dbus) to work with
+     * dump directories having group 'root' or 'abrt'.
+     *
+     * 1. Chowning of dump directories switches the ownership to 'user':'abrt'
+     * 2. We want to allow users to delete their problems
+     * 3. We want to allow users to modify their data
+     * 4. The daemons are hardened agains hard link and symbolic link issues.
+     */
+    return correct_group;
+}
+
+bool allowed_new_user_problem_entry(uid_t uid, const char *name, const char *value)
+{
+    /* Allow root to create everything */
+    if (uid == 0)
+        return true;
+
+    /* Permit non-root users to create everything except: analyzer and type */
+    if (strcmp(name, FILENAME_ANALYZER) != 0
+     && strcmp(name, FILENAME_TYPE) != 0
+     /* compatibility value used in abrt-server */
+     && strcmp(name, "basename") != 0)
+        return true;
+
+    /* Permit non-root users to create all types except: C/C++, Koops, vmcore and xorg */
+     if (strcmp(value, "CCpp") != 0
+      && strcmp(value, "Kerneloops") != 0
+      && strcmp(value, "vmcore") != 0
+      && strcmp(value, "xorg") != 0)
+        return true;
+
+    error_msg("Only root is permitted to create element '%s' containing '%s'", name, value);
+    return false;
 }
