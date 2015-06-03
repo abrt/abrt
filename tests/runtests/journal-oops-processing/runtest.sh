@@ -77,6 +77,8 @@ function test_single_oops
 
     ls $crash_PATH > crash_dir_ls
 
+    check_dump_dir_attributes $crash_PATH
+
     for f in $OOPS_REQUIRED_FILES; do
         rlAssertExists "$crash_PATH/$f"
     done

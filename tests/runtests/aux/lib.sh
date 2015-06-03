@@ -8,6 +8,19 @@ function check_prior_crashes() {
     fi
 }
 
+function check_dump_dir_attributes() {
+    rlLog "Check dump dir FS attributes"
+    if [ -z "$1" ]; then
+        rlFail "Missing path to the test dump directory"
+        return
+    fi
+
+    ls -al $1
+    rlAssertEquals "Dump directory has proper rights" "_$(stat --format=%A $1)" "_drwxr-x---"
+    rlAssertEquals "Dump directory owned by root" "x$(stat --format=%U $1)" "xroot"
+    rlAssertEquals "Dump directory group is abrt" "x$(stat --format=%G $1)" "xabrt"
+}
+
 function get_crash_path() {
     rlLog "Get crash path"
     rlAssertGreater "Crash recorded" $(abrt-cli list 2> /dev/null | wc -l) 0
@@ -59,32 +72,32 @@ function wait_for_hooks() {
 
 function generate_crash() {
     rlLog "Generate crash"
-    will_segfault
+    su -c will_segfault $1
 }
 
 function generate_second_crash() {
     rlLog "Generate second crash"
-    will_abort
+    su -c will_abort $1
 }
 
 function generate_stack_overflow_crash() {
     rlLog "Generate stack overflow"
-    will_stackoverflow
+    su -c will_stackoverflow $1
 }
 
 function generate_python_segfault() {
     rlLog "Generate python segfault"
-    will_python_sigsegv
+    su -c will_python_sigsegv $1
 }
 
 function generate_python_exception() {
     rlLog "Generate unhandled python exception"
-    will_python_raise
+    su -c will_python_raise $1
 }
 
 function generate_python3_exception() {
     rlLog "Generate unhandled python3 exception"
-    will_python3_raise
+    su -c will_python3_raise $1
 }
 
 function load_abrt_conf() {
@@ -95,7 +108,16 @@ function load_abrt_conf() {
     fi
 
     if test -z "$ABRT_CONF_DUMP_LOCATION"; then
+        # The commented line in abrt.conf should always hold the default value
+        ABRT_CONF_DUMP_LOCATION=`sed -n '/^#[ \t]*DumpLocation[ \t]*=/ s/.*=[ \t]*//p' @CONF_DIR@/abrt.conf 2>/dev/null`
+    fi
+
+    if test -z "$ABRT_CONF_DUMP_LOCATION" && test -d /var/spool/abrt; then
         ABRT_CONF_DUMP_LOCATION="/var/spool/abrt"
+    fi
+
+    if test -z "$ABRT_CONF_DUMP_LOCATION"; then
+        ABRT_CONF_DUMP_LOCATION="/var/tmp/abrt"
     fi
 }
 

@@ -50,7 +50,9 @@ rlJournalStart
         rlRun "python $TFILE" 1 "Run python $TFILE"
         sleep 3
 
+        wait_for_hooks
         get_crash_path
+        check_dump_dir_attributes $crash_PATH
 
         rlRun "abrt-cli info $crash_PATH | grep $TFILE" 0 "abrt-cli info should contain $TFILE"
         rlRun "abrt-cli info $crash_PATH | grep 'Python'" 0 "abrt-cli info should contain 'Python'"

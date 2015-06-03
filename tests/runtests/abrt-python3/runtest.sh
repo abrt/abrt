@@ -57,6 +57,7 @@ rlJournalStart
 
         kill %1
         rlAssertNotDiffer watch_output watch_expected
+        check_dump_dir_attributes $crash_PATH
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
     rlPhaseEnd

@@ -42,7 +42,10 @@ rlJournalStart
 
     rlPhaseStartTest
         generate_python3_exception
+        wait_for_hooks
         get_crash_path
+
+        check_dump_dir_attributes $crash_PATH
 
         rlRun "abrt-cli info $crash_PATH | grep will_python3_raise" 0 "abrt-cli info should contain will_python3_raise"
         rlRun "abrt-cli info $crash_PATH | grep 'Python'" 0 "abrt-cli info should contain 'Python'"

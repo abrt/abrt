@@ -91,6 +91,8 @@ rlJournalStart
                 rlAssertExists "$crash_PATH/$f"
             done
 
+            check_dump_dir_attributes $crash_PATH
+
             if [[ "$oops" == *not_reportable* ]]; then
                 rlAssertExists "$crash_PATH/not-reportable"
             else
