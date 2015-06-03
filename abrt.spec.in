@@ -727,6 +727,10 @@ service abrt-pstoreoops condrestart >/dev/null 2>&1 || :
 %posttrans gui
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
+%posttrans dbus
+# Force abrt-dbus to restart like we do with the other services
+killall abrt-dbus >/dev/null 2>&1 || :
+
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc README COPYING
