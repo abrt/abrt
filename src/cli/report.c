@@ -50,6 +50,7 @@ int cmd_report(int argc, const char **argv)
     load_abrt_conf();
     free_abrt_conf_data();
 
+    int ret = 0;
     while (*argv)
     {
         const char *dir_name = *argv++;
@@ -57,6 +58,7 @@ int cmd_report(int argc, const char **argv)
         if (real_problem_id == NULL)
         {
             error_msg(_("Can't find problem '%s'"), dir_name);
+            ++ret;
             continue;
         }
 
@@ -65,6 +67,7 @@ int cmd_report(int argc, const char **argv)
         {
             error_msg(_("Can't take ownership of '%s'"), real_problem_id);
             free(real_problem_id);
+            ++ret;
             continue;
         }
         int status = report_problem_in_dir(real_problem_id,
@@ -84,5 +87,5 @@ int cmd_report(int argc, const char **argv)
             exit(status);
     }
 
-    return 0;
+    return ret;
 }
