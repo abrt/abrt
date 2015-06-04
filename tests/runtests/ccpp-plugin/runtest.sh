@@ -46,7 +46,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "CCpp plugin (testuser crash)"
-        useradd testuser
+        rlRun "useradd testuser" 0
         generate_crash testuser
         wait_for_hooks
         get_crash_path
@@ -68,7 +68,7 @@ rlJournalStart
 
     rlPhaseStartCleanup
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
-        userdel -e testuser
+        rlRun "userdel -r -f testuser" 0
     rlPhaseEnd
 
     rlPhaseStartTest "core_backtrace for stack overflow"
