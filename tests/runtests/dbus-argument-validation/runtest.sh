@@ -88,7 +88,7 @@ rlJournalStart
             RES=$(dbus-send --system --type=method_call --print-reply \
                         --dest=org.freedesktop.problems /org/freedesktop/problems org.freedesktop.problems.NewProblem \
                         dict:string:string:"type","libreport","executable","$(which true)","uuid","81680083","$banned","content" 2>&1)
-            rlRun "journalctl SYSLOG_IDENTIFIER=dbus-daemon --since=\"$SINCE\" | grep \"Problem data field name contains disallowed chars: '$banned'\""
+            rlRun "journalctl SYSLOG_IDENTIFIER=dbus-daemon SYSLOG_IDENTIFIER=org.freedesktop.problems --since=\"$SINCE\" | grep \"Problem data field name contains disallowed chars: '$banned'\""
 
             wait_for_hooks
 
