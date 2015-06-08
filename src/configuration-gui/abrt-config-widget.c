@@ -57,9 +57,10 @@ typedef struct {
  */
 typedef struct {
     const char *name;           ///< e.g. ask_steal_dir, report-technical-problems
-    GtkSwitch *widget;
-    gboolean default_value;
-    gboolean current_value;
+    GtkSwitch *switch_widget;
+    GtkWidget *radio_button_widget[3];
+    int default_value;
+    int current_value;
     AbrtAppConfiguration *config;
 } AbrtConfigWidgetOption;
 
@@ -68,15 +69,30 @@ enum AbrtOptions
 {
     _ABRT_OPT_BEGIN_,
 
-    ABRT_OPT_UPLOAD_COREDUMP = _ABRT_OPT_BEGIN_,
-    ABRT_OPT_STEAL_DIRECTORY,
+    _ABRT_OPT_SWITCH_BEGIN_= _ABRT_OPT_BEGIN_,
+
+    ABRT_OPT_STEAL_DIRECTORY= _ABRT_OPT_BEGIN_,
     ABRT_OPT_PRIVATE_TICKET,
     ABRT_OPT_SEND_UREPORT,
     ABRT_OPT_SHORTENED_REPORTING,
     ABRT_OPT_SILENT_SHORTENED_REPORTING,
     ABRT_OPT_NOTIFY_INCOMPLETE_PROBLEMS,
 
+    _ABRT_OPT_SWITCH_END_,
+
+    _ABRT_RADIOBUTTON_OPT_BEGIN_= _ABRT_OPT_SWITCH_END_,
+
+    ABRT_OPT_UPLOAD_COREDUMP= _ABRT_OPT_SWITCH_END_,
+
     _ABRT_OPT_END_,
+};
+
+enum AbrtRadioButtonOptions
+{
+    _ABRT_RADIOBUTTON_OPT_ = -1,
+    ABRT_RADIOBUTTON_OPT_NEVER = 0,
+    ABRT_RADIOBUTTON_OPT_ALWAYS = 1,
+    ABRT_RADIOBUTTON_OPT_ASK = 2,
 };
 
 /* This structure holds private data of AbrtConfigWidget
@@ -149,7 +165,10 @@ static const char *
 abrt_app_configuration_get_value(AbrtAppConfiguration *conf, const char *name)
 {
     if (conf->settings)
-        return get_app_user_setting(conf->settings, name);
+    {
+        const char *val = get_app_user_setting(conf->settings, name);
+        return (val == NULL || strcmp(val, "") == 0) ? NULL : val;
+    }
 
     if (conf->glib_settings)
         return g_settings_get_boolean(conf->glib_settings, name) ? "yes" : "no";
@@ -255,9 +274,30 @@ on_switch_activate(GObject       *object,
 }
 
 static void
-update_option_current_value(AbrtConfigWidget *self, enum AbrtOptions opid)
+on_radio_button_toggle(GObject       *object,
+        AbrtConfigWidget *config)
 {
-    assert((opid >= _ABRT_OPT_BEGIN_ && opid < _ABRT_OPT_END_) || !"Out of range Option ID value");
+    /* inactive radio button */
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(object)) == false)
+        return;
+
+    AbrtConfigWidgetOption *option = g_object_get_data(G_OBJECT(object), "abrt-option");
+    if (option->config == NULL)
+        return;
+
+    /* get active radio button */
+    const char *val = g_object_get_data(G_OBJECT(object), "abrt-triple-switch-value");
+    log_debug("%s : %s", option->name, val);
+
+    abrt_app_configuration_set_value(option->config, option->name, val);
+    abrt_app_configuration_save(option->config);
+    emit_change(config);
+}
+
+static void
+update_option_switch_current_value(AbrtConfigWidget *self, enum AbrtOptions opid)
+{
+    assert((opid >= _ABRT_OPT_SWITCH_BEGIN_ && opid < _ABRT_OPT_SWITCH_END_) || !"Out of range Option ID value");
 
     AbrtConfigWidgetOption *option = &(self->priv->options[opid]);
 
@@ -269,22 +309,80 @@ update_option_current_value(AbrtConfigWidget *self, enum AbrtOptions opid)
 }
 
 static void
-connect_switch_with_option(AbrtConfigWidget *self, enum AbrtOptions opid, const char *switch_name)
+update_option_radio_button_current_value(AbrtConfigWidget *self, enum AbrtOptions opid)
 {
-    assert((opid >= _ABRT_OPT_BEGIN_ && opid < _ABRT_OPT_END_) || !"Out of range Option ID value");
+    assert((opid >= _ABRT_RADIOBUTTON_OPT_BEGIN_ && opid < _ABRT_OPT_END_) || !"Out of range Option ID value");
 
     AbrtConfigWidgetOption *option = &(self->priv->options[opid]);
-    update_option_current_value(self, opid);
+
+    const char *val = NULL;
+    if (option->config != NULL)
+        val = abrt_app_configuration_get_value(option->config, option->name);
+
+    if (val == NULL)
+        option->current_value = option->default_value;
+    else if (string_to_bool(val))
+        option->current_value = ABRT_RADIOBUTTON_OPT_ALWAYS;
+    else
+        option->current_value = ABRT_RADIOBUTTON_OPT_NEVER;
+}
+
+static void
+connect_switch_with_option(AbrtConfigWidget *self, enum AbrtOptions opid, const char *switch_name)
+{
+    assert((opid >= _ABRT_OPT_SWITCH_BEGIN_ && opid < _ABRT_OPT_SWITCH_END_) || !"Out of range Option ID value");
+
+    AbrtConfigWidgetOption *option = &(self->priv->options[opid]);
+    update_option_switch_current_value(self, opid);
 
     GtkSwitch *gsw = GTK_SWITCH(WID(switch_name));
-    option->widget = gsw;
-    gtk_switch_set_active(gsw, option->current_value);
+    option->switch_widget = gsw;
+    gtk_switch_set_active(gsw, (gboolean)option->current_value);
+
     g_object_set_data(G_OBJECT(gsw), "abrt-option", option);
     g_signal_connect(G_OBJECT(gsw), "notify::active",
             G_CALLBACK(on_switch_activate), self);
 
     /* If the option has no config, make the corresponding insensitive. */
     gtk_widget_set_sensitive(GTK_WIDGET(gsw), option->config != NULL);
+}
+
+static void
+connect_radio_buttons_with_option(AbrtConfigWidget *self, enum AbrtOptions opid,
+                 const char *btn_always_name, const char *btn_never_name,
+                 const char *btn_ask_name)
+{
+    assert((opid >= _ABRT_RADIOBUTTON_OPT_BEGIN_ && opid < _ABRT_OPT_END_) || !"Out of range Option ID value");
+
+    AbrtConfigWidgetOption *option = &(self->priv->options[opid]);
+    update_option_radio_button_current_value(self, opid);
+
+    GtkWidget *btn_always = WID(btn_always_name);
+    GtkWidget *btn_never = WID(btn_never_name);
+    GtkWidget *btn_ask = WID(btn_ask_name);
+
+    option->radio_button_widget[ABRT_RADIOBUTTON_OPT_ALWAYS] = btn_always;
+    option->radio_button_widget[ABRT_RADIOBUTTON_OPT_NEVER] = btn_never;
+    option->radio_button_widget[ABRT_RADIOBUTTON_OPT_ASK] = btn_ask;
+
+    GtkWidget *active_button = option->radio_button_widget[option->current_value];
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(active_button), TRUE);
+
+    g_object_set_data(G_OBJECT(btn_always), "abrt-option", option);
+    g_object_set_data(G_OBJECT(btn_always), "abrt-triple-switch-value", (char *)"yes");
+    g_object_set_data(G_OBJECT(btn_never), "abrt-option", option);
+    g_object_set_data(G_OBJECT(btn_never), "abrt-triple-switch-value", (char *)"no");
+    g_object_set_data(G_OBJECT(btn_ask), "abrt-option", option);
+    g_object_set_data(G_OBJECT(btn_ask), "abrt-triple-switch-value", NULL);
+
+    g_signal_connect(btn_always, "toggled", G_CALLBACK(on_radio_button_toggle), self);
+    g_signal_connect(btn_never, "toggled", G_CALLBACK(on_radio_button_toggle), self);
+    g_signal_connect(btn_ask, "toggled", G_CALLBACK(on_radio_button_toggle), self);
+
+    /* If the option has no config, make the corresponding insensitive. */
+    gtk_widget_set_sensitive(GTK_WIDGET(btn_always), option->config != NULL);
+    gtk_widget_set_sensitive(GTK_WIDGET(btn_never), option->config != NULL);
+    gtk_widget_set_sensitive(GTK_WIDGET(btn_ask), option->config != NULL);
 }
 
 static void
@@ -346,8 +444,8 @@ abrt_config_widget_init(AbrtConfigWidget *self)
     self->priv->options[ABRT_OPT_STEAL_DIRECTORY].default_value = TRUE;
     self->priv->options[ABRT_OPT_STEAL_DIRECTORY].config = self->priv->report_gtk_conf;
 
-    self->priv->options[ABRT_OPT_UPLOAD_COREDUMP].name = "abrt_analyze_smart_ask_upload_coredump";
-    self->priv->options[ABRT_OPT_UPLOAD_COREDUMP].default_value = TRUE;
+    self->priv->options[ABRT_OPT_UPLOAD_COREDUMP].name = "abrt_analyze_upload_coredump";
+    self->priv->options[ABRT_OPT_UPLOAD_COREDUMP].default_value = ABRT_RADIOBUTTON_OPT_ASK;
     self->priv->options[ABRT_OPT_UPLOAD_COREDUMP].config = self->priv->report_gtk_conf;
     self->priv->options[ABRT_OPT_PRIVATE_TICKET].name = CREATE_PRIVATE_TICKET;
     self->priv->options[ABRT_OPT_PRIVATE_TICKET].default_value = FALSE;
@@ -454,8 +552,11 @@ abrt_config_widget_init(AbrtConfigWidget *self)
     self->priv->options[ABRT_OPT_NOTIFY_INCOMPLETE_PROBLEMS].default_value = FALSE;
     self->priv->options[ABRT_OPT_NOTIFY_INCOMPLETE_PROBLEMS].config = self->priv->abrt_applet_conf;
 
+    /* Connect radio buttons with options */
+    connect_radio_buttons_with_option(self, ABRT_OPT_UPLOAD_COREDUMP,
+                                        "bg_always", "bg_never", "bg_ask" );
+
     /* Connect widgets with options */
-    connect_switch_with_option(self, ABRT_OPT_UPLOAD_COREDUMP, "switch_upload_coredump");
     connect_switch_with_option(self, ABRT_OPT_STEAL_DIRECTORY, "switch_steal_directory");
     connect_switch_with_option(self, ABRT_OPT_PRIVATE_TICKET, "switch_private_ticket");
     connect_switch_with_option(self, ABRT_OPT_SEND_UREPORT, "switch_send_ureport");
@@ -485,6 +586,13 @@ abrt_config_widget_new()
 void
 abrt_config_widget_reset_to_defaults(AbrtConfigWidget *self)
 {
-    for(unsigned i = _ABRT_OPT_BEGIN_; i < _ABRT_OPT_END_; ++i)
-        gtk_switch_set_active(self->priv->options[i].widget, self->priv->options[i].default_value);
+    for(unsigned i = _ABRT_OPT_SWITCH_BEGIN_; i < _ABRT_OPT_SWITCH_END_; ++i)
+        gtk_switch_set_active(self->priv->options[i].switch_widget, self->priv->options[i].default_value);
+
+    for(unsigned i = _ABRT_RADIOBUTTON_OPT_BEGIN_; i < _ABRT_OPT_END_; ++i)
+    {
+        unsigned default_value = self->priv->options[i].default_value;
+        GtkWidget *radio_button = self->priv->options[i].radio_button_widget[default_value];
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_button), TRUE);
+    }
 }
