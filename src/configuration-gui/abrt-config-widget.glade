@@ -45,19 +45,6 @@
           </packing>
         </child>
         <child>
-          <object class="GtkSwitch" id="switch_upload_coredump">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="halign">end</property>
-            <property name="valign">center</property>
-            <property name="margin_left">10</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkSwitch" id="switch_steal_directory">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -146,7 +133,7 @@
           <object class="GtkImage" id="image1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="tooltip_text" translatable="yes">The coredump file is necessary for generating stack trace which is time and space consuming operation. ABRT provides a service which generates the stack trace from the coredump but you have to upload the coredump to this service. With this option disabled ABRT will upload the coredump without asking.</property>
+            <property name="tooltip_text" translatable="yes">The coredump file is necessary for generating stack trace which is time and space consuming operation. ABRT provides a service which generates the stack trace from the coredump but you have to upload the coredump to this service. With option 'Always' ABRT will always upload the coredump without asking. With option 'Never' the stack trace will be always generated locally. With option 'Ask' ABRT will always ask the user.</property>
             <property name="halign">end</property>
             <property name="margin_left">5</property>
             <property name="margin_right">1</property>
@@ -211,22 +198,6 @@
           <packing>
             <property name="left_attach">2</property>
             <property name="top_attach">6</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="label1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="hexpand">True</property>
-            <property name="ypad">10</property>
-            <property name="label" translatable="yes">Ask before uploading coredump</property>
-            <signal name="enter-notify-event" handler="label_enter_notify_event_cb" swapped="no"/>
-            <signal name="leave-notify-event" handler="label_leave_notify_event_cb" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
           </packing>
         </child>
         <child>
@@ -323,6 +294,87 @@
             <property name="left_attach">0</property>
             <property name="top_attach">4</property>
             <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButtonBox" id="bg_button_box">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">end</property>
+            <property name="valign">center</property>
+            <property name="hexpand">False</property>
+            <property name="vexpand">False</property>
+            <property name="resize_mode">immediate</property>
+            <property name="layout_style">expand</property>
+            <child>
+              <object class="GtkRadioButton" id="bg_always">
+                <property name="label" translatable="yes">Always</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="xalign">0</property>
+                <property name="active">True</property>
+                <property name="draw_indicator">False</property>
+                <property name="group">bg_ask</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+                <property name="non_homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="bg_never">
+                <property name="label" translatable="yes">Never</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="xalign">0</property>
+                <property name="active">True</property>
+                <property name="draw_indicator">False</property>
+                <property name="group">bg_ask</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="bg_ask">
+                <property name="label" translatable="yes">Ask</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="xalign">0</property>
+                <property name="active">True</property>
+                <property name="draw_indicator">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="hexpand">True</property>
+            <property name="ypad">10</property>
+            <property name="label" translatable="yes">Upload coredump for backtrace generation</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
           </packing>
         </child>
         <child>
