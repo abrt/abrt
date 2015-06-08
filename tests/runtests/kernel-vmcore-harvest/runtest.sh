@@ -49,7 +49,7 @@ rlJournalStart
 
         wait_for_hooks
 
-        check_dump_dir_attributes $crash_PATH
+        check_dump_dir_attributes "${ABRT_CONF_DUMP_LOCATION}/vmcore-test"
 
         rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-test"
         rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-test/analyzer"
@@ -76,7 +76,7 @@ rlJournalStart
 
         wait_for_hooks
 
-        check_dump_dir_attributes $crash_PATH
+        check_dump_dir_attributes "${ABRT_CONF_DUMP_LOCATION}/vmcore-${TEST_ID}"
 
         rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-${TEST_ID}"
         rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-${TEST_ID}/analyzer"
