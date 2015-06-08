@@ -12,6 +12,7 @@ from subprocess import Popen
 
 import report
 from reportclient import (ask_yes_no_yesforever,
+                          ask_yes_no_save_result,
                           RETURN_OK,
                           RETURN_CANCEL_BY_USER,
                           RETURN_FAILURE)
@@ -58,7 +59,7 @@ def run_analyze_smart(problem_dir):
     """
 
     retval = RETURN_CANCEL_BY_USER
-    allowed = ask_yes_no_yesforever("abrt_analyze_smart_ask_upload_coredump",
+    allowed = ask_yes_no_save_result("abrt_analyze_upload_coredump",
                 _("Ok to upload core dump? (It may contain sensitive data). "\
                   "If your answer is 'No', a stack trace will be generated locally. "\
                   "(It may download a huge amount of data)."))
