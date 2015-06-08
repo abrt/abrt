@@ -70,7 +70,7 @@ rlJournalStart
             rlAssertGrep "sleep" var_log_messages
         else
             rlAssertExists var_log_messages
-            rlAssertGrep "System Logs" var_log_messages
+            rlAssertNotGrep "System Logs" var_log_messages
             rlAssertGrep "User Logs" var_log_messages
         fi
 
@@ -107,11 +107,10 @@ rlJournalStart
         then
             rlLog "journald does not have '--system' argument, using /var/log/messages instead"
             rlAssertExists var_log_messages
-            rlAssertNotGrep "System Logs" var_log_messages
             rlAssertGrep "sleep" var_log_messages
         else
             rlAssertExists var_log_messages
-            rlAssertGrep "System Logs" var_log_messages
+            rlAssertNotGrep "System Logs" var_log_messages
             rlAssertGrep "User Logs" var_log_messages
         fi
 
