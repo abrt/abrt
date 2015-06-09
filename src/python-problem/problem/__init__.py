@@ -1,4 +1,5 @@
 import os
+import hashlib
 import inspect
 import datetime
 
@@ -15,18 +16,35 @@ JAVA = 'java'
 SELINUX = 'selinux'
 CCPP = 'CCpp'
 PYTHON = 'Python'
+PYTHON3 = 'Python3'
 KERNELOOPS = 'Kerneloops'
 RUNTIME = 'runtime'
 XORG = 'xorg'
 UNKNOWN = 'libreport'
 
 REQUIRED_FIELDS = ['executable']
+PREFETCH_FIELDS = [
+    # core fields
+    'component', 'hostname', 'os_release', 'uid',
+    'username', 'architecture', 'kernel', 'package',
+    'time', 'count', 'pkg_arch', 'pkg_name',
+    'pkg_epoch', 'pkg_version', 'pkg_release',
+    'uuid',
+    # type specific
+    'cgroup', 'core_backtrace', 'backtrace',
+    'dso_list', 'exploitable', 'maps',
+    'cmdline', 'environ', 'open_fds', 'pid',
+    'proc_pid_status', 'limits', 'var_log_messages',
+    'suspend_stats', 'reported_to', 'event_log',
+    'dmesg',
+]
 
 PROBLEM_TYPES = {
     'JAVA': JAVA,
     'SELINUX': SELINUX,
     'CCPP': CCPP,
     'PYTHON': PYTHON,
+    'PYTHON3': PYTHON3,
     'KERNELOOPS': KERNELOOPS,
     'RUNTIME': RUNTIME,
     'XORG': XORG,
@@ -48,6 +66,7 @@ class Problem(object):
         self._persisted = False
         self._proxy = None
         self._probdir = None
+        self._id = None
 
         self.type = typ
         if analyzer is None:
@@ -152,6 +171,64 @@ class Problem(object):
         for key, value in os.environ.items():
             self.environ += '{0}={1}\n'.format(key, value)
 
+    def prefetch_data(self):
+        ''' Prefetch possible data fields of this problem '''
+        if not self._persisted:
+            return
+
+        for field in PREFETCH_FIELDS:
+            try:
+                self.__getattr__(field)
+            except AttributeError:
+                pass
+
+    @property
+    def path(self):
+        if self._persisted:
+            return self._probdir
+
+        return None
+
+    @property
+    def id(self):
+        if not self._id and self._persisted:
+            self._id = hashlib.sha1(self.path.encode('utf-8')).hexdigest()
+
+        return self._id
+
+    @property
+    def short_id(self):
+        if not self.id:
+            return None
+
+        return self.id[:7]
+
+    @property
+    def not_reportable(self):
+        return hasattr(self, 'not-reportable')
+
+    @not_reportable.setter
+    def not_reportable(self, value):
+        if isinstance(value, bool):
+            if value:
+                setattr(self, 'not-reportable', '')
+            else:
+                delattr(self, 'not-reportable')
+
+        else:  # if value is used as reason
+            setattr(self, 'not-reportable', value)
+
+    @property
+    def not_reportable_reason(self):
+        if hasattr(self, 'not-reportable'):
+            return getattr(self, 'not-reportable')
+
+        return None
+
+    @not_reportable_reason.setter
+    def not_reportable_reason(self, value):
+        setattr(self, 'not-reportable', value)
+
     def items(self):
         return self._data.items()
 
@@ -226,6 +303,12 @@ class Python(Problem):
     ''' Python problem '''
     def __init__(self, reason):
         super(Python, self).__init__(PYTHON, reason)
+
+
+class Python3(Problem):
+    ''' Python3 problem '''
+    def __init__(self, reason):
+        super(Python3, self).__init__(PYTHON3, reason)
 
 
 class Kerneloops(Problem):

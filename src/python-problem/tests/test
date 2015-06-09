@@ -1,2 +1,3 @@
 #!/bin/bash
-nosetests --with-coverage --cover-package=problem --nocapture --nologcapture --no-skip --verbose
+export PYTHONPATH="..:../problem/.libs/:$PYTHONPATH"
+nosetests --with-coverage --cover-package=problem --nocapture --nologcapture --no-skip --verbose test*.py
