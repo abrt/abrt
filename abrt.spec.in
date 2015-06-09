@@ -54,8 +54,8 @@
     %define docdirversion -%{version}
 %endif
 
-%define libreport_ver 2.5.1
-%define satyr_ver 0.16
+%define libreport_ver 2.6.0
+%define satyr_ver 0.18
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
@@ -1081,6 +1081,62 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Tue Jun 09 2015 Jakub Filak <jfilak@redhat.com> 2.6.0-1
+- spec: add abrt-dbus to Rs of abrt-python
+- vmcore: use libreport dd API in the harvestor
+- ccpp: don't save the system logs by default
+- cli: exit with the number of unreported problems
+- spec: restart abrt-dbus in posttrans
+- cli: chown before reporting
+- hooks: use root for owner of all dump directories
+- ccpp: do not unlink failed and big user cores
+- ccpp: include the system logs only with root's coredumps
+- koops: don't save dmesg if kernel.dmesg_restrict=1
+- daemon, dbus: allow only root to create CCpp, Koops, vmcore and xorg
+- daemon: allow only root user to trigger the post-create
+- daemon: harden against race conditions in DELETE
+- ccpp: revert the UID/GID changes if user core fails
+- a-a-i-d-t-a-cache: sanitize umask
+- a-a-i-d-t-a-cache: sanitize arguments
+- dbus: report invalid element names
+- dbus: avoid race-conditions in tests for dum dir availability
+- dbus: process only valid sub-directories of the dump location
+- lib: add functions validating dump dir
+- daemon: use libreport's function checking file name
+- configure: move the default dump location to /var/spool
+- ccpp: avoid overriding system files by coredump
+- spec: add libselinux-devel to BRs
+- ccpp: emulate selinux for creation of compat cores
+- ccpp: harden dealing with UID/GID
+- ccpp: do not use value of /proc/PID/cwd for chdir
+- ccpp: do not override existing files by compat cores
+- ccpp: stop reading hs_error.log from /tmp
+- ccpp: fix symlink race conditions
+- turn off exploring crashed process's root directories
+- abrt-python: add proper PYTHONPATH to test shellscripts
+- abrt-python: unify unknown problem type handling
+- abrt-python: add not_reportable properties
+- spec: remove analyzer to type conversion
+- abrt-python: add Python3 problem type
+- abrt-python: add id, short_id and path to problem
+- abrt-python: add Problem.prefetch_data function
+- abrt-python: handle reconnection gracefully
+- config UI: Automatic reporting from GSettings
+- doc, polkit: Spelling/grammar fixes
+- applet: fix problem info double free
+- a-a-s-p-d: add new known interpreter to conf file
+- config UI: enable options without config files
+- config UI: read glade from a local file first
+- applet: migrate Autoreporting options to GSettings
+- abrt-action-list-dsos: do not decode not existing object
+- spec: add AUTHENTICATED_AUTOREPORTING conditional
+- abrt-auto-reporting: require rhtsupport.conf file only on RHEL
+- lib: add new kernel taint flags
+- spec: add a dependency on abrt-dbus to abrt-cli
+- cli: do not exit with segfault if dbus fails
+- applet: switch to D-Bus methods
+- upload: validate and sanitize uploaded dump directories
+
 * Thu Apr 09 2015 Jakub Filak <jfilak@redhat.com> 2.5.1-1
 - Translation updates
 - problem: use 'type' element instead of 'analyzer'
