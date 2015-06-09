@@ -422,6 +422,7 @@ Summary: ABRT Python API
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-libs = %{version}-%{release}
+Requires: %{name}-dbus = %{version}-%{release}
 Requires: pygobject2
 Requires: dbus-python
 Requires: libreport-python
@@ -449,6 +450,7 @@ Summary: ABRT Python 3 API
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-libs = %{version}-%{release}
+Requires: %{name}-dbus = %{version}-%{release}
 Requires: pygobject3
 Requires: python3-dbus
 Requires: libreport-python3
