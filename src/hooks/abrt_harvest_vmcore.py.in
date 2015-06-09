@@ -15,6 +15,7 @@ import hashlib
 import augeas
 
 import problem
+import report
 
 
 def get_augeas(module, file_path):
@@ -93,85 +94,39 @@ def parse_kdump():
     return path
 
 
-def write_to_file(path, content):
-    """
-    A function for writing into a file
-
-    path - path to the file
-    content - content to write into the file
-    """
-
-    with open(path, 'w') as wfile:
-        wfile.write(content)
-
-
-def change_owner_rec(dest):
-    """
-    A simple function to recursively change file mode for a directory.
-
-    dest - path to the directory
-    """
-
-    os.chown(dest, 0, 0)
-    for root, dirs, files in os.walk(dest):
-        for i in dirs:
-            os.chown(os.path.join(root, i), 0, 0)
-        for i in files:
-            os.chown(os.path.join(root, i), 0, 0)
-
-
-def change_mode_rec(dest):
-    """
-    A simple function to recursively change file mode for a directory.
-
-    dest - path to the directory
-    """
-
-    os.chmod(dest, 0o700)
-    for root, dirs, files in os.walk(dest):
-        for i in dirs:
-            os.chmod(os.path.join(root, i), 0o700)
-        for i in files:
-            os.chmod(os.path.join(root, i), 0o600)
-
-
-def create_abrtd_info(dest):
+def create_abrtd_info(dest, uuid):
     """
     A simple function to write important information for the abrt daemon into
     the vmcore directory to let abrtd know what kind of problem it is.
 
     dest - path to the vmcore directory
+    uuid - unique indentifier of the vmcore
     """
 
-    write_to_file(os.path.join(dest, 'analyzer'), 'abrt-vmcore')
-    write_to_file(os.path.join(dest, 'type'), 'vmcore')
-    write_to_file(os.path.join(dest, 'component'), 'kernel')
-    write_to_file(os.path.join(dest, 'time'), str(time.time()).split('.')[0])
-    shutil.copy(os.path.join(dest, 'time'),
-                os.path.join(dest, 'last_occurrence'))
-    write_to_file(os.path.join(dest, 'architecture'), os.uname()[4])
-    write_to_file(os.path.join(dest, 'uid'), '0')
+    dd = report.dd_create(dest, 0)
+    if dd is None:
+        return None
 
-    # TODO: need to generate *real* UUID,
-    # one which has a real chance of catching dups!
-    # This one generates different hashes even for similar cores:
-    hashobj = hashlib.sha1()
-    # Iterate over the file a line at a time in order to not load the whole
-    # vmcore file
-    with open(os.path.join(dest, 'vmcore'), 'r') as corefile:
-        for line in corefile:
-            hashobj.update(line)
-    write_to_file(os.path.join(dest, 'uuid'), hashobj.hexdigest())
+    dd.create_basic_files(0)
+    dd.save_text('analyzer', 'abrt-vmcore')
+    dd.save_text('type', 'vmcore')
+    dd.save_text('component', 'kernel')
+    dd.save_text('uuid', uuid)
+    return dd
 
-    # Write os info into the vmcore directory
-    if os.path.exists('/etc/system-release'):
-        shutil.copy('/etc/system-release', os.path.join(dest, 'os_release'))
-    elif os.path.exists('/etc/redhat-release'):
-        shutil.copy('/etc/redhat-release', os.path.join(dest, 'os_release'))
-    elif os.path.exists('/etc/SuSE-release'):
-        shutil.copy('/etc/SuSE-release', os.path.join(dest, 'os_release'))
-    if os.path.exists('/etc/os-release'):
-        shutil.copy('/etc/os-release', os.path.join(dest, 'os_info'))
+
+def delete_and_close(dd, dd_dirname):
+    """
+    Deletes the given dump directory and closes it.
+
+    dd - dump directory object
+    dd_dirname - full path to dump directory
+    """
+    if not dd.delete() == 0:
+        sys.stderr.write("Unable to delete '%s'\n" % (dd_dirname))
+        return
+
+    dd.close()
 
 
 def harvest_vmcore():
@@ -199,8 +154,6 @@ def harvest_vmcore():
             time.sleep(1)
         else:
             break
-
-    os.umask(0o077)
 
     # Check abrt config files for copy/move settings and
     try:
@@ -245,6 +198,8 @@ def harvest_vmcore():
                     "VMCore dir '%s' doesn't contain 'vmcore' file.\n" % f_full)
                 continue
 
+        # We use .new suffix - we must make sure abrtd doesn't try
+        # to process partially-copied directory.
         destdir = os.path.join(abrtdumpdir, ('vmcore-' + cfile))
         destdirnew = destdir + '.new'
         # Did we already copy it last time we booted?
@@ -252,38 +207,46 @@ def harvest_vmcore():
             continue
         if os.path.isdir(destdirnew):
             continue
+
+        # TODO: need to generate *real* UUID,
+        # one which has a real chance of catching dups!
+        # This one generates different hashes even for similar cores:
+        hashobj = hashlib.sha1()
+        # Iterate over the file a line at a time in order to not load the whole
+        # vmcore file
+        with open(os.path.join(f_full, 'vmcore'), 'r') as corefile:
+            for line in corefile:
+                hashobj.update(line)
+
+        dd = create_abrtd_info(destdirnew, hashobj.hexdigest())
+        if dd is None:
+            sys.stderr.write("Unable to create problem directory info")
+            continue
+
         # Copy/move vmcore directory to abrt spool dir.
-        # We use .new suffix - we must make sure abrtd doesn't try
-        # to process partially-copied directory.
+        for name in os.listdir(f_full):
+            full_name = os.path.join(f_full, name)
 
-        try:
-            shutil.copytree(f_full, destdirnew)
-        except (OSError, shutil.Error):
-            sys.stderr.write("Unable to copy '%s' to '%s'. Skipping\n"
-                             % (f_full, destdirnew))
+            # Skip sub-directories, abrt ignores them in its processing anyway
+            if not os.path.isfile(full_name):
+                continue
 
-            # delete .new dir so we don't create mess
-            shutil.rmtree(destdirnew)
-            continue
-
-        try:
-            # Let abrtd know what type of problem it is:
-            create_abrtd_info(destdirnew)
-        except EnvironmentError as ex:
-            sys.stderr.write("Unable to create problem directory info: " + str(ex))
             try:
-                shutil.rmtree(destdirnew)
-            except Exception as ex:
-                sys.stderr.write("Unable to remove incomplete problem directory: " + str(ex))
+                if not dd.copy_file(name, full_name) == 0:
+                    raise OSError
+            except (OSError, shutil.Error):
+                sys.stderr.write("Unable to copy '%s' to '%s'. Skipping\n"
+                                 % (full_name, destdirnew))
+                delete_and_close(dd)
+                continue
+
+        # Get rid of the .new suffix
+        if not dd.rename(destdir) == 0:
+            sys.stderr.write("Unable to rename '%s' to '%s'. Skipping\n" % (destdirnew, destdir))
+            delete_and_close(dd)
             continue
 
-        # chown -R 0:0
-        change_owner_rec(destdirnew)
-        # chmod -R u+rwX,go-rwxst
-        change_mode_rec(destdirnew)
-
-        # Get rid of  the .new suffix
-        shutil.move(destdirnew, destdir)
+        dd.close()
 
         if copyvmcore == 'no':
             try:
