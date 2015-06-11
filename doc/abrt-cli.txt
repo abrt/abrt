@@ -7,29 +7,43 @@ abrt-cli - List, remove, print, analyze, report problems
 
 SYNOPSIS
 --------
-'abrt-cli' list   [-vdf] [DIR]...
+'abrt-cli' list    [-vn] [--detailed] [--since NUM] [--until NUM] [DIR]...
 
-'abrt-cli' remove [-v]   DIR...
+'abrt-cli' remove  [-v]  DIR...
 
-'abrt-cli' report [-v]   DIR...
+'abrt-cli' report  [-v]  [--delete]  DIR...
 
-'abrt-cli' info   [-vd] [-s SIZE] DIR...
+'abrt-cli' info    [-v]  [--detailed] [-s SIZE] DIR...
 
-'abrt-cli' process [-v] DIR...
+'abrt-cli' status  [-vb] [--since NUM]
+
+'abrt-cli' process [-v]  [--since NUM] DIR...
 
 OPTIONS
 -------
 -v,--verbose::
    Be more verbose. Can be given multiple times.
 
--d,--detailed::
+-b, --bare::
+    Print only the problem count without any message
+
+--detailed::
    Show detailed report
+
+--delete::
+    Remove PROBLEM_DIR after reporting
 
 -n,--not-reported::
    List only not-reported problems
 
--s,--size SIZE:
+--size SIZE::
    Text larger than SIZE bytes will be shown abridged
+
+--since NUM::
+    Selects only problems detected after timestamp
+
+--until NUM::
+    Selects only the problems older than specified timestamp
 
 AUTHORS
 -------
