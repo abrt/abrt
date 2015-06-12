@@ -618,7 +618,7 @@ static char *get_dev_log_socket_inode(void)
 
     char *socket_inode = NULL;
     long inode_pos = 0;
-    while (ferror(fpnu) == 0)
+    while (feof(fpnu) == 0 && ferror(fpnu) == 0)
     {
         int field = 0;
         while ((c = fgetc(fpnu)) != EOF && c != '\n')
