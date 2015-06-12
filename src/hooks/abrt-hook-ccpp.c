@@ -620,6 +620,8 @@ static char *get_dev_log_socket_inode(void)
     long inode_pos = 0;
     while (feof(fpnu) == 0 && ferror(fpnu) == 0)
     {
+        /* Read fields delimited by single ' ', the 7th field might be
+         * delimited with several ' '. */
         int field = 0;
         while ((c = fgetc(fpnu)) != EOF && c != '\n')
         {
@@ -629,8 +631,17 @@ static char *get_dev_log_socket_inode(void)
             ++field;
             if (field == 6)
             {
-                if ((inode_pos = ftell(fpnu)) < 0)
+                /* We are going to read the 7th field, so we have to ignore
+                 * multiple occurrences of ' '. Thanks jstancek! */
+                while ((c = fgetc(fpnu)) != EOF && c == ' ')
+                    ;
+
+                /* Must be greater than 0, because we are going to decrement it
+                 * to move inode_pos at beginnig of the 7th field (skipping of
+                 * multiple ' ' moved us to the 2nd byte of the 7th field). */
+                if ((inode_pos = ftell(fpnu)) <= 0)
                     goto cleanup;
+                --inode_pos;
             }
             else if (field == 7)
                 break;
