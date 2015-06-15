@@ -51,7 +51,7 @@ rlJournalStart
     rlPhaseStartTest
         prepare
 
-        rlRun "gcc morituri.c -o $EXE"
+        rlRun "gcc -std=c99 morituri.c -o $EXE"
 
         rlLog "Creating crash data."
         rlRun "./$EXE" 134
