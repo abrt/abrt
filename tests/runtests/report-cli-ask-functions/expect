@@ -1,0 +1,37 @@
+#!/usr/bin/expect -f
+
+set event [lindex $argv 0]
+set dir [lindex $argv 1]
+set res [lindex $argv 2]
+
+spawn report-cli -e $event $dir
+
+set timeout 10
+
+# timeout handler
+proc itstime {args} {
+    puts "!! expect timeout !!"
+        exit 1
+}
+
+while {1} {
+    expect {
+
+        eof {break}
+
+        timeout { itstime }
+
+        -re "ABRT ask_yes_no_save_result testing .*" {
+            send "$res\n"
+        }
+        -re "ABRT ask_yes_no_yesforever testing .*" {
+            send "$res\n"
+        }
+        -re "ABRT ask_yes_no testing .*" {
+            send "$res\n"
+        }
+        -re "ABRT ask testing .*" {
+            send "$res\n"
+        }
+    }
+}
