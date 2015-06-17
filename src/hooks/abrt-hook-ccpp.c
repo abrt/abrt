@@ -834,6 +834,8 @@ int main(int argc, char** argv)
         dd_save_text(dd, FILENAME_PROC_PID_STATUS, proc_pid_status);
         if (user_pwd)
             dd_save_text(dd, FILENAME_PWD, user_pwd);
+        if (tid_str)
+            dd_save_text(dd, FILENAME_TID, tid_str);
 
         if (rootdir)
         {
