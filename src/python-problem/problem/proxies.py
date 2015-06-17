@@ -84,6 +84,9 @@ class DBusProxy(object):
     def delete(self, dump_dir):
         return self._dbus_call('DeleteProblem', [dump_dir])
 
+    def chown(self, dump_dir):
+        return self._dbus_call('ChownProblemDir', dump_dir)
+
     def list(self):
         return [str(prob) for prob in self._dbus_call('GetProblems')]
 
