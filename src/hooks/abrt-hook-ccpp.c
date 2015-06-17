@@ -606,10 +606,11 @@ int main(int argc, char** argv)
     const char *global_pid_str = argv[8];
     pid_t pid = xatoi_positive(argv[8]);
 
-    pid_t tid = 0;
-    if (argv[9])
+    pid_t tid = -1;
+    const char *tid_str = argv[9];
+    if (tid_str)
     {
-        tid = xatoi_positive(argv[8]);
+        tid = xatoi_positive(tid_str);
     }
 
     char path[PATH_MAX];
