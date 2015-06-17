@@ -28,7 +28,6 @@ if $INSTALL_DI; then
     else
         abrt-action-analyze-core --core=coredump -o build_ids && @LIBEXEC_DIR@/abrt-action-install-debuginfo-to-abrt-cache --size_mb=4096
     fi
-    rm -f build_ids
 fi
 
 if [ $? = 0 ]; then
