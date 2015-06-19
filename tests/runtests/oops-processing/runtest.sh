@@ -36,7 +36,7 @@ EXAMPLES_PATH="../../../examples"
 
 rlJournalStart
     rlPhaseStartSetup
-        CRASHDIR=$(cat /etc/abrt/abrt.conf | grep DumpLocation | sed 's/.* = //')
+        load_abrt_conf
         LANG=""
         export LANG
         check_prior_crashes
@@ -122,7 +122,7 @@ rlJournalStart
         # abrtd does not notify that a problem has been detected and deleted.
         sleep 3
 
-        rlRun "ls $CRASHDIR/oops* 2>&1 | grep -q 'No such file or directory'"
+        rlRun "ls $ABRT_CONF_DUMP_LOCATION/oops* 2>&1 | grep -q 'No such file or directory'"
 
         if [ -n "$ABRT_DROP_OOPS_VAL" ]; then
             rlRun "augtool set /files/etc/abrt/plugins/oops.conf/DropNotReportableOopses $ABRT_DROP_OOPS_VAL" 0

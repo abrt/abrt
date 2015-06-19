@@ -36,7 +36,6 @@ rlJournalStart
         rlShowRunningKernel
         load_abrt_conf
         rlRun "mv /etc/libreport/events.d/ccpp_event.conf /var/tmp/"
-        CRASHDIR=$(cat /etc/abrt/abrt.conf | grep DumpLocation | sed 's/.* = //')
     rlPhaseEnd
 
     rlPhaseStartTest "Same CORE_BACKTRACEs & different UUIDs"
@@ -62,7 +61,7 @@ problems.NewProblem(description)
 EOF
         wait_for_hooks
 
-        rlRun "cd $CRASHDIR/CCpp*"
+        rlRun "cd $ABRT_CONF_DUMP_LOCATION/CCpp*"
 
         first_occurrence=`cat last_occurrence`
 
@@ -98,7 +97,7 @@ EOF
     rlPhaseStartCleanup
         # Not now, the conf file will be restored after a next case
         #rlRun "mv /var/tmp/ccpp_event.conf /etc/libreport/events.d/"
-        rlRun "rm -rf $CRASHDIR/CCpp*" 0 "Removing problem dirs"
+        rlRun "rm -rf $ABRT_CONF_DUMP_LOCATION/CCpp*" 0 "Removing problem dirs"
     rlPhaseEnd
 
     rlPhaseStartTest "Same CORE_BACKTRACEs & different EXECUTABLEs"
@@ -124,7 +123,7 @@ problems.NewProblem(description)
 EOF
         wait_for_hooks
 
-        rlRun "cd $CRASHDIR/CCpp*"
+        rlRun "cd $ABRT_CONF_DUMP_LOCATION/CCpp*"
 
         first_occurrence=`cat last_occurrence`
 
@@ -159,7 +158,7 @@ EOF
 
     rlPhaseStartCleanup
         rlRun "mv /var/tmp/ccpp_event.conf /etc/libreport/events.d/"
-        rlRun "rm -rf $CRASHDIR/CCpp*" 0 "Removing problem dirs"
+        rlRun "rm -rf $ABRT_CONF_DUMP_LOCATION/CCpp*" 0 "Removing problem dirs"
     rlPhaseEnd
 
     rlJournalPrintText

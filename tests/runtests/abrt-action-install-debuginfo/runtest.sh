@@ -36,8 +36,8 @@ PACKAGES=${PACKAGES:-"abrt"}
 
 rlJournalStart
     rlPhaseStartSetup
-        DUMP_DIR=$(cat /etc/abrt/abrt.conf | grep DumpLocation | sed 's/.* = //')
-        [ -n "$DUMP_DIR" ] || rlDie "Missing DumpLocation"
+        load_abrt_conf
+        [ -n "$ABRT_CONF_DUMP_LOCATION" ] || rlDie "Missing DumpLocation"
 
         check_prior_crashes
 
@@ -67,12 +67,12 @@ rlJournalStart
     rlPhaseStartTest "Sanitization of command line arguments"
         TESTPERFORMED=0
         for BUILDID in $(cat $crash_PATH/build_ids) ; do
-            rm -rf $DUMP_DIR/usr &>/dev/null
-            rlRun "echo $BUILDID | su testuser -c \"(umask 0; /usr/libexec/abrt-action-install-debuginfo-to-abrt-cache --id=- --tmpdi $DUMP_DIR/usr --ca $DUMP_DIR -y)\""
-            ls -l $DUMP_DIR
-            rlAssertNotExists $DUMP_DIR/usr
-            rlRun "ls -l $DUMP_DIR | grep usr | grep rwxrwxrwx" 1 "The spoofed dump dir has not a+rwx"
-            rm -rf $DUMP_DIR/usr &>/dev/null
+            rm -rf $ABRT_CONF_DUMP_LOCATION/usr &>/dev/null
+            rlRun "echo $BUILDID | su testuser -c \"(umask 0; /usr/libexec/abrt-action-install-debuginfo-to-abrt-cache --id=- --tmpdi $ABRT_CONF_DUMP_LOCATION/usr --ca $ABRT_CONF_DUMP_LOCATION -y)\""
+            ls -l $ABRT_CONF_DUMP_LOCATION
+            rlAssertNotExists $ABRT_CONF_DUMP_LOCATION/usr
+            rlRun "ls -l $ABRT_CONF_DUMP_LOCATION | grep usr | grep rwxrwxrwx" 1 "The spoofed dump dir has not a+rwx"
+            rm -rf $ABRT_CONF_DUMP_LOCATION/usr &>/dev/null
             TESTPERFORMED=1
         done
         [ $TESTPERFORMED -eq 0 ] && rlWarn "No actual testing happened"
