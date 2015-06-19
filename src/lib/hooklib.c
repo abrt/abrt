@@ -346,7 +346,7 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
     /* Get the backtrace, but try to cap its size */
     /* Limit bt depth. With no limit, gdb sometimes OOMs the machine */
     unsigned bt_depth = 1024;
-    const char *thread_apply_all = "thread apply all";
+    const char *thread_apply_all = "thread apply all -ascending";
     const char *full = " full";
     char *bt = NULL;
     while (1)
