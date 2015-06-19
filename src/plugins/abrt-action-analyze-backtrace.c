@@ -121,6 +121,10 @@ int main(int argc, char **argv)
         return 0;
     }
 
+    uint32_t tid = -1;
+    if (dd_load_uint32(dd, FILENAME_TID, &tid) == 0)
+        sr_gdb_stacktrace_set_crash_tid(backtrace, tid);
+
     /* Compute duplication hash. */
     struct sr_thread *crash_thread =
         (struct sr_thread *)sr_gdb_stacktrace_find_crash_thread(backtrace);
