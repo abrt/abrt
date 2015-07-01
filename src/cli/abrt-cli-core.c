@@ -20,6 +20,17 @@
 #include "libabrt.h"
 #include "abrt-cli-core.h"
 
+/* It is not possible to include polkitagent.h without the following define.
+ * Check out the included header file.
+ */
+#define POLKIT_AGENT_I_KNOW_API_IS_SUBJECT_TO_CHANGE
+#include <polkitagent/polkitagent.h>
+
+int g_cli_authenticate;
+
+static PolkitAgentListener *s_local_polkit_agent = NULL;
+static gpointer s_local_agent_handle = NULL;
+
 /* Vector of problems: */
 /* problem_data_vector[i] = { "name" = { "content", CD_FLAG_foo_bits } } */
 
@@ -41,7 +52,7 @@ vector_of_problem_data_t *new_vector_of_problem_data(void)
 
 vector_of_problem_data_t *fetch_crash_infos(void)
 {
-    GList *problems = get_problems_over_dbus(/*don't authorize*/false);
+    GList *problems = get_problems_over_dbus(g_cli_authenticate);
     if (problems == ERR_PTR)
         return NULL;
 
@@ -97,7 +108,7 @@ char *find_problem_by_hash(const char *hash, GList *problems)
 char *hash2dirname(const char *hash)
 {
     /* Try loading by dirname hash */
-    GList *problems = get_problems_over_dbus(/*don't authorize*/false);
+    GList *problems = get_problems_over_dbus(g_cli_authenticate);
     if (problems == ERR_PTR)
         return NULL;
 
@@ -111,4 +122,39 @@ char *hash2dirname(const char *hash)
 char *hash2dirname_if_necessary(const char *input)
 {
     return isxdigit_str(input) ? hash2dirname(input) : xstrdup(input);
+}
+
+void initialize_polkit_agent(void)
+{
+    GError *error = NULL;
+    PolkitSubject *subject = polkit_unix_process_new_for_owner(
+                                getpid(),
+                                /*start time from /proc*/0,
+                                getuid());
+
+    s_local_polkit_agent = polkit_agent_text_listener_new(NULL, &error);
+    if (s_local_polkit_agent == NULL)
+    {
+        error_msg_and_die("polkit_agent_text_listener_new: %s (%s, %d)\n",
+                error->message, g_quark_to_string (error->domain), error->code);
+    }
+
+    s_local_agent_handle = polkit_agent_listener_register(s_local_polkit_agent,
+            POLKIT_AGENT_REGISTER_FLAGS_RUN_IN_THREAD, subject, NULL, NULL, &error);
+    if (s_local_agent_handle == NULL)
+    {
+        error_msg_and_die("polkit_agent_listener_register: %s (%s, %d)\n",
+                error->message, g_quark_to_string (error->domain), error->code);
+    }
+
+    g_object_unref(subject);
+}
+
+void uninitialize_polkit_agent(void)
+{
+    if (s_local_agent_handle != NULL)
+        polkit_agent_listener_unregister(s_local_agent_handle);
+
+    if (s_local_polkit_agent != NULL)
+        g_object_unref(s_local_polkit_agent);
 }

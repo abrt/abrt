@@ -22,6 +22,10 @@
 
 #include "problem_api.h"
 
+/* Use authenticate D-Bus methods. The authentication requires a polkit agent
+ * to finish an authenticated method successfully. */
+extern int g_cli_authenticate;
+
 typedef GPtrArray vector_of_problem_data_t;
 
 problem_data_t *get_problem_data(vector_of_problem_data_t *vector, unsigned i);
@@ -37,6 +41,9 @@ char *hash2dirname(const char *hash);
 /* If input looks like a hash, returns malloced string, or NULL if not found.
  * Otherwise returns a copy of the input. */
 char *hash2dirname_if_necessary(const char *input);
-
+/* Initialize a new polkit text agent in a new thread */
+void initialize_polkit_agent(void);
+/* Uninitialize the polkit text agent */
+void uninitialize_polkit_agent(void);
 
 #endif /* ABRT_CLI_CORE_H_ */
