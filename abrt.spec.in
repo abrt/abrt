@@ -518,6 +518,7 @@ CFLAGS="%{optflags} -Werror" %configure \
 %endif
         --with-defaultdumplocation=/var/%{var_base_dir}/abrt \
         --enable-doxygen-docs \
+        --enable-dump-time-unwind \
         --disable-silent-rules
 
 make %{?_smp_mflags}
