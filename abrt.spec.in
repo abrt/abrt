@@ -424,6 +424,7 @@ CFLAGS="%{optflags} -Werror" %configure \
         --enable-native-unwinder \
 %endif
         --enable-doxygen-docs \
+        --enable-dump-time-unwind \
         --disable-silent-rules
 
 make %{?_smp_mflags}
