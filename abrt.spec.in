@@ -1087,6 +1087,23 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Thu Jul 02 2015 Matej Habrnal <mhabrnal@redhat.com> 2.6.1-1
+- dbus: keep the polkit authorization for all clients
+- cli: enable polkit authentication on command line
+- spec: --enable-dump-time-unwind by default
+- ccpp: use TID to find crash thread
+- spec: remove PyGObject from all Requires
+- spec: update version of gdb because of -ascending
+- lib: make it easier to find the backtrace of th crash thread
+- ccpp: save TID in the file 'tid'
+- ccpp: get TID from correct cmd line argument
+- configui: add option always generate backtrace locally
+- a-a-p-ccpp-analysis: use ask_yes_no_save_result instead of ask_yes_no_yesforever
+- spec: use more appropriate url
+- spec: abrt requires libreport-plugin-rhtsupport on rhel
+- sosreport: add processor information to sosreport
+- doc: update abrt-cli man page
+
 * Tue Jun 09 2015 Jakub Filak <jfilak@redhat.com> 2.6.0-1
 - spec: add abrt-dbus to Rs of abrt-python
 - vmcore: use libreport dd API in the harvestor
