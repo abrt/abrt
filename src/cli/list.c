@@ -97,7 +97,7 @@ static void print_crash(problem_data_t *problem_data, int detailed, int text_siz
              * libreport and try to improve libreport public API.
              */
             const char *const dump_dir_name = problem_data_get_content_or_NULL(problem_data, CD_DUMPDIR);
-            GList *const wf_names = list_possible_events_glist(dump_dir_name, "workflow");
+            GList *const wf_names = list_possible_events_problem_data_glist(problem_data, dump_dir_name, "workflow");
             GHashTable *const possible_workflows = load_workflow_config_data_from_list(wf_names, WORKFLOWS_DIR);
             g_list_free_full(wf_names, free);
 
