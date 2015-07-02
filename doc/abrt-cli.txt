@@ -7,6 +7,8 @@ abrt-cli - List, remove, print, analyze, report problems
 
 SYNOPSIS
 --------
+'abrt-cli' [--authenticate] COMMAND [COMMAND OPTIONS]
+
 'abrt-cli' list    [-vn] [--detailed] [--since NUM] [--until NUM] [DIR]...
 
 'abrt-cli' remove  [-v]  DIR...
@@ -19,8 +21,13 @@ SYNOPSIS
 
 'abrt-cli' process [-v]  [--since NUM] DIR...
 
-OPTIONS
--------
+GLOBAL OPTIONS
+--------------
+-a,--authenticate::
+   Enable PolicyKit authentication to be able to work with the system problems
+
+COMMAND OPTIONS
+---------------
 -v,--verbose::
    Be more verbose. Can be given multiple times.
 
