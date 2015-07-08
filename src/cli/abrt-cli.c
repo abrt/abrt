@@ -149,7 +149,7 @@ int main(int argc, const char **argv)
     {
         if (g_cli_authenticate)
             initialize_polkit_agent();
-        else if (g_settings_privatereports)
+        else if (geteuid() != 0 && g_settings_privatereports)
             log(_("Private Reports is enabled, use 'abrt-cli -a COMMAND' to get the detected problems."));
 
         handle_internal_command(argc, argv, commands);
