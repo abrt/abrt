@@ -19,11 +19,38 @@
 
 #include "libabrt.h"
 #include "builtin-cmd.h"
+#include "abrt-cli-core.h"
 
 /* TODO npajkovs:
  *   add -n, --dry-run
  *   add -q, --quite
  */
+
+static int remove_using_dbus(const char **dirs_strv)
+{
+    GList *dirs = NULL;
+    while (*dirs_strv)
+        dirs = g_list_prepend(dirs, (void *)*dirs_strv++);
+    const int ret = delete_problem_dirs_over_dbus(dirs);
+    g_list_free(dirs);
+    return ret;
+}
+
+static int remove_using_abrtd_or_fs(const char **dirs_strv)
+{
+    int errs = 0;
+    while (*dirs_strv)
+    {
+        int status;
+        const char *rm_dir = *dirs_strv++;
+        status = delete_dump_dir_possibly_using_abrtd(rm_dir);
+        if (!status)
+            log("rm '%s'", rm_dir);
+        else
+            errs++;
+    }
+    return errs;
+}
 
 int cmd_remove(int argc, const char **argv)
 {
@@ -42,17 +69,5 @@ int cmd_remove(int argc, const char **argv)
     if (!argv[0])
         show_usage_and_die(program_usage_string, program_options);
 
-    int errs = 0;
-    while (*argv)
-    {
-        int status;
-        const char *rm_dir = *argv++;
-        status = delete_dump_dir_possibly_using_abrtd(rm_dir);
-        if (!status)
-            log("rm '%s'", rm_dir);
-        else
-            errs++;
-    }
-
-    return errs;
+    return (g_cli_authenticate ? remove_using_dbus : remove_using_abrtd_or_fs)(argv);
 }
