@@ -20,12 +20,13 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include "problem_api.h"
+#include "abrt-cli-core.h"
 
 static unsigned int count_problem_dirs(unsigned long since)
 {
     unsigned count = 0;
 
-    GList *problems = get_problems_over_dbus(/*don't authorize*/false);
+    GList *problems = get_problems_over_dbus(g_cli_authenticate);
     for (GList *iter = problems; iter != NULL; iter = g_list_next(iter))
     {
         const char *problem_id = (const char *)iter->data;
