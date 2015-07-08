@@ -54,9 +54,9 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "list"
-        rlRun "abrt-cli -a list 2>&1 | tee owner-list.log"
+        rlRun "abrt-cli list 2>&1 | sort | tee owner-list.log"
         rlRun "sudo -u abrt-unprivileged /tmp/expect abrt-cli -a list 2>&1 | tee auth-list.log"
-        rlRun "tail -$(wc -l owner-list.log | cut -f1 -d' ') auth-list.log | sed 's/\o033\[0m//' | tr -d '\r' | tee auth-list.tmp"
+        rlRun "tail -$(wc -l owner-list.log | cut -f1 -d' ') auth-list.log | sed 's/\o033\[0m//' | tr -d '\r' | sort | tee auth-list.tmp"
         rlAssertNotDiffer owner-list.log auth-list.tmp
     rlPhaseEnd
 
