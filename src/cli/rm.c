@@ -52,6 +52,11 @@ static int remove_using_abrtd_or_fs(const char **dirs_strv)
     return errs;
 }
 
+int _cmd_remove(const char **dirs_strv)
+{
+    return (g_cli_authenticate ? remove_using_dbus : remove_using_abrtd_or_fs)(dirs_strv);
+}
+
 int cmd_remove(int argc, const char **argv)
 {
     const char *program_usage_string = _(
@@ -69,5 +74,5 @@ int cmd_remove(int argc, const char **argv)
     if (!argv[0])
         show_usage_and_die(program_usage_string, program_options);
 
-    return (g_cli_authenticate ? remove_using_dbus : remove_using_abrtd_or_fs)(argv);
+    return _cmd_remove(argv);
 }

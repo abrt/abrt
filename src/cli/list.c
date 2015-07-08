@@ -168,6 +168,12 @@ int cmd_list(int argc, const char **argv)
     return 0;
 }
 
+int _cmd_info(problem_data_t *problem_data, int detailed, int text_size)
+{
+    print_crash(problem_data, detailed, text_size);
+    return 0;
+}
+
 int cmd_info(int argc, const char **argv)
 {
     const char *program_usage_string = _(
@@ -205,7 +211,7 @@ int cmd_info(int argc, const char **argv)
             continue;
         }
 
-        print_crash(problem, opt_detailed, text_size);
+        _cmd_info(problem, opt_detailed, text_size);
         problem_data_free(problem);
         if (*argv)
             printf("\n");
