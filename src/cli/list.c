@@ -63,11 +63,10 @@ static void print_crash(problem_data_t *problem_data, int detailed, int text_siz
     char *desc;
     if (detailed)
     {
-        int show_multiline = (detailed ? MAKEDESC_SHOW_MULTILINE : 0);
         desc = make_description(problem_data,
                                 /*names_to_skip:*/ NULL,
                                 /*max_text_size:*/ text_size,
-                                MAKEDESC_SHOW_FILES | show_multiline);
+                                MAKEDESC_SHOW_FILES | MAKEDESC_SHOW_MULTILINE);
     }
     else
     {
