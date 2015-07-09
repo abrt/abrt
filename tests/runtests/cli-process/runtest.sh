@@ -62,18 +62,18 @@ rlJournalStart
     rlPhaseStartTest "process action info"
 
         #abrt-cli info $crash_PATH
-        rlRun "./expect info 2>&1 process.log" 0 "Running abrt-cli info via expect"
+        rlRun "./expect info &> process-info.log" 0 "Running abrt-cli info via expect"
 
-        rlAssertGrep "reason:" process.log
-        rlAssertGrep "time:" process.log
-        rlAssertGrep "cmdline:" process.log
-        rlAssertGrep "Directory:" process.log
-        rlAssertGrep "$crash_PATH" process.log
-        rlAssertGrep "Actions: remove(rm), report(e), info(i), skip(s):" process.log
+        rlAssertGrep "reason:" process-info.log
+        rlAssertGrep "time:" process-info.log
+        rlAssertGrep "cmdline:" process-info.log
+        rlAssertGrep "Directory:" process-info.log
+        rlAssertGrep "$crash_PATH" process-info.log
+        rlAssertGrep "Actions: remove(rm), report(e), info(i), skip(s):" process-info.log
 
-        abrt-cli info -d $crash_PATH &> info.log
-
-        rlAssertGrep "$(cat info.log)" process.log
+        rlRun "abrt-cli info -d $crash_PATH &> info.log"
+        rlRun "tail -$(wc -l info.log | cut -f1 -d' ') process-info.log | tr -d '\r' > process-info.tmp"
+        rlAssertNotDiffer info.log process-info.tmp
 
     rlPhaseEnd
 
@@ -110,12 +110,15 @@ rlJournalStart
 
         #set testing analyzer to problem
         rlAssertExists "$crash_PATH/analyzer"
+        rlAssertExists "$crash_PATH/type"
         echo -n ABRT_testing > $crash_PATH/analyzer
+        echo -n ABRT_testing > $crash_PATH/type
         rlAssertGrep "ABRT_testing" $crash_PATH/analyzer
+        rlAssertGrep "ABRT_testing" $crash_PATH/type
 
         workflow_conf_file="/etc/libreport/workflows.d/report_testing.conf"
         cat > $workflow_conf_file << EOF
-EVENT=workflow_testing analyzer=ABRT_testing
+EVENT=workflow_testing analyzer=ABRT_testing type=ABRT_testing
 EOF
         rlAssertExists "$workflow_conf_file"
 
@@ -136,10 +139,10 @@ EOF
 
         event_conf_file="/etc/libreport/events.d/testing_event.conf"
         cat > $event_conf_file << EOF
-EVENT=report_testing analyzer=ABRT_testing
+EVENT=report_testing analyzer=ABRT_testing type=ABRT_testing
     echo REPORTING
 
-EVENT=report-cli analyzer=ABRT_testing
+EVENT=report-cli analyzer=ABRT_testing type=ABRT_testing
     report-cli -- "\$DUMP_DIR"
 EOF
 
@@ -177,10 +180,12 @@ EOF
     rlPhaseEnd
 
     rlPhaseStartTest "process --since"
-        generate_crash
+        # abrt-ccpp ignores repeated crashes of a single executable
+        generate_python_segfault
         get_crash_path
         wait_for_hooks
 
+        sleep 2
         generate_second_crash
         wait_for_hooks
 
@@ -201,9 +206,11 @@ EOF
         rlAssertGrep "$crash2_PATH" since.log
         rlAssertNotGrep "$crash_PATH" since.log
 
+        rlRun "abrt-cli rm $crash_PATH $crash2_PATH"
     rlPhaseEnd
 
     rlPhaseStartCleanup
+        rlBundleLogs abrt-cli-process $(ls *.log)
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd

@@ -1,5 +1,10 @@
 #!/usr/bin/expect -f
 
+if {[lindex $argv 2] == "process"} {
+    set action [lindex $argv end]
+    set argv [lreplace $argv end end]
+}
+
 spawn {*}$argv
 
 set timeout 10
@@ -28,6 +33,10 @@ while {1} {
 
         "Choose identity to authenticate as" {
             send "$identity\n"
+        }
+
+        "Actions: remove(rm), report(e), info(i), skip(s):" {
+            send "$action\n"
         }
 
         "Password:" {

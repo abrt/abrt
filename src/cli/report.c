@@ -22,6 +22,48 @@
 #include "abrt-cli-core.h"
 #include "builtin-cmd.h"
 
+int _cmd_report(const char **dirs_strv, int remove)
+{
+    int ret = 0;
+    while (*dirs_strv)
+    {
+        const char *dir_name = *dirs_strv++;
+        char *const real_problem_id = hash2dirname_if_necessary(dir_name);
+        if (real_problem_id == NULL)
+        {
+            error_msg(_("Can't find problem '%s'"), dir_name);
+            ++ret;
+            continue;
+        }
+
+        const int res = chown_dir_over_dbus(real_problem_id);
+        if (res != 0)
+        {
+            error_msg(_("Can't take ownership of '%s'"), real_problem_id);
+            free(real_problem_id);
+            ++ret;
+            continue;
+        }
+        int status = report_problem_in_dir(real_problem_id,
+                                             LIBREPORT_WAIT
+                                           | LIBREPORT_RUN_CLI);
+
+        /* the problem was successfully reported and option is -d */
+        if(remove && (status == 0 || status == EXIT_STOP_EVENT_RUN))
+        {
+            log(_("Deleting '%s'"), real_problem_id);
+            delete_dump_dir_possibly_using_abrtd(real_problem_id);
+        }
+
+        free(real_problem_id);
+
+        if (status)
+            exit(status);
+    }
+
+    return ret;
+}
+
 int cmd_report(int argc, const char **argv)
 {
     const char *program_usage_string = _(
@@ -50,42 +92,5 @@ int cmd_report(int argc, const char **argv)
     load_abrt_conf();
     free_abrt_conf_data();
 
-    int ret = 0;
-    while (*argv)
-    {
-        const char *dir_name = *argv++;
-        char *const real_problem_id = hash2dirname_if_necessary(dir_name);
-        if (real_problem_id == NULL)
-        {
-            error_msg(_("Can't find problem '%s'"), dir_name);
-            ++ret;
-            continue;
-        }
-
-        const int res = chown_dir_over_dbus(real_problem_id);
-        if (res != 0)
-        {
-            error_msg(_("Can't take ownership of '%s'"), real_problem_id);
-            free(real_problem_id);
-            ++ret;
-            continue;
-        }
-        int status = report_problem_in_dir(real_problem_id,
-                                             LIBREPORT_WAIT
-                                           | LIBREPORT_RUN_CLI);
-
-        /* the problem was successfully reported and option is -d */
-        if((opts & OPT_d) && (status == 0 || status == EXIT_STOP_EVENT_RUN))
-        {
-            log(_("Deleting '%s'"), real_problem_id);
-            delete_dump_dir_possibly_using_abrtd(real_problem_id);
-        }
-
-        free(real_problem_id);
-
-        if (status)
-            exit(status);
-    }
-
-    return ret;
+    return _cmd_report(argv, opts & OPT_d);
 }

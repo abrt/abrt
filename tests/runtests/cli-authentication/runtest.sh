@@ -32,6 +32,11 @@ TEST="cli-authentication"
 PACKAGE="abrt"
 RUNTESTS_EVENT_CONF_FILE="/etc/libreport/events.d/runtests_events.conf"
 
+function normalize_file
+{
+    rlRun "tail -$(wc -l $2 | cut -f1 -d' ') $1 | sed 's/\o033\[0m//' | tr -d '\r' | $3 | tee $1.norm"
+}
+
 rlJournalStart
     rlPhaseStartSetup
         LANG=""
@@ -51,27 +56,45 @@ rlJournalStart
         rlRun "useradd abrt-unprivileged"
         rlRun "echo ribbit | passwd abrt-unprivileged --stdin"
         rlRun "gpasswd -a abrt-unprivileged wheel"
+
+        rlLog "Creating $RUNTESTS_EVENT_CONF_FILE"
+        cat > $RUNTESTS_EVENT_CONF_FILE <<EOF
+EVENT=report-cli type=runtests analyzer=runtests
+    echo "It works!" > have_been_here
+EOF
     rlPhaseEnd
 
     rlPhaseStartTest "list"
         rlRun "abrt-cli list 2>&1 | sort | tee owner-list.log"
         rlRun "sudo -u abrt-unprivileged /tmp/expect abrt-cli -a list 2>&1 | tee auth-list.log"
-        rlRun "tail -$(wc -l owner-list.log | cut -f1 -d' ') auth-list.log | sed 's/\o033\[0m//' | tr -d '\r' | sort | tee auth-list.tmp"
-        rlAssertNotDiffer owner-list.log auth-list.tmp
+        normalize_file auth-list.log owner-list.log sort
+        rlAssertNotDiffer owner-list.log auth-list.log.norm
     rlPhaseEnd
 
     rlPhaseStartTest "info"
         rlRun "abrt-cli info $crash_PATH 2>&1 | tee owner-info.log"
         rlRun "sudo -u abrt-unprivileged /tmp/expect abrt-cli -a info $crash_PATH 2>&1 | tee auth-info.log"
-        rlRun "tail -$(wc -l owner-info.log | cut -f1 -d' ') auth-info.log | sed 's/\o033\[0m//' | tr -d '\r' | tee auth-info.tmp"
-        rlAssertNotDiffer owner-info.log auth-info.tmp
+        normalize_file auth-info.log owner-info.log cat
+        rlAssertNotDiffer owner-info.log auth-info.log.norm
+    rlPhaseEnd
+
+    rlPhaseStartTest "process info"
+        # Remove several big text files to avoid reaching out the size limits"
+        rlRun "rm -f $crash_PATH/mountinfo"
+        rlRun "rm -f $crash_PATH/environ"
+        rlRun "rm -f $crash_PATH/maps"
+
+        rlRun "abrt-cli info -d $crash_PATH 2>&1 | tee owner-detailed-info.log"
+        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt-cli -a process info 2>&1 | tee process-auth-info.log"
+        normalize_file process-auth-info.log owner-detailed-info.log cat
+        rlAssertNotDiffer owner-detailed-info.log process-auth-info.log.norm
     rlPhaseEnd
 
     rlPhaseStartTest "status"
         rlRun "abrt-cli status 2>&1 | tee owner-status.log"
         rlRun "sudo -u abrt-unprivileged /tmp/expect abrt-cli -a status 2>&1 | tee auth-status.log"
-        rlRun "tail -$(wc -l owner-status.log | cut -f1 -d' ') auth-status.log | sed 's/\o033\[0m//' | tr -d '\r' | tee auth-status.tmp"
-        rlAssertNotDiffer owner-status.log auth-status.tmp
+        normalize_file auth-status.log owner-status.log cat
+        rlAssertNotDiffer owner-status.log auth-status.log.norm
     rlPhaseEnd
 
     rlPhaseStartTest "remove"
@@ -79,20 +102,19 @@ rlJournalStart
         rlAssertNotExists $crash_PATH
     rlPhaseEnd
 
-    rlPhaseStartTest "report"
-        # abrt-ccpp could ignore this crash due to short period of time between
-        # two crashes of the same executable
-        sleep 30
-
-        generate_crash
+    rlPhaseStartTest "process remove"
+        generate_python_segfault
         wait_for_hooks
         get_crash_path
 
-        rlLog "Creating $RUNTESTS_EVENT_CONF_FILE"
-        cat > $RUNTESTS_EVENT_CONF_FILE <<EOF
-EVENT=report-cli type=runtests analyzer=runtests
-    echo "It works!" > have_been_here
-EOF
+        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt-cli -a process remove 2>&1 | tee process-auth-remove.log"
+        rlAssertNotExists $crash_PATH
+    rlPhaseEnd
+
+    rlPhaseStartTest "report"
+        generate_second_crash
+        wait_for_hooks
+        get_crash_path
 
         rlLog "Making the crash reportable with $RUNTESTS_EVENT_CONF_FILE"
         rlRun "echo -n runtests > $crash_PATH/type"
@@ -102,12 +124,31 @@ EOF
         rlAssertExists $crash_PATH/have_been_here
         rlAssertGrep "It works!" $crash_PATH/have_been_here
 
-        rlRun "rm $RUNTESTS_EVENT_CONF_FILE"
+        rlRun "abrt-cli rm $crash_PATH"
+        rlAssertNotExists $crash_PATH
+    rlPhaseEnd
+
+    rlPhaseStartTest "process report"
+        sleep 1000 &
+        kill -ABRT %%
+        wait_for_hooks
+        get_crash_path
+
+        rlLog "Making the crash reportable with $RUNTESTS_EVENT_CONF_FILE"
+        rlRun "echo -n runtests > $crash_PATH/type"
+        rlRun "echo -n runtests > $crash_PATH/analyzer"
+
+        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt-cli -a process report 2>&1 | tee auth-report.log"
+        rlAssertExists $crash_PATH/have_been_here
+        rlAssertGrep "It works!" $crash_PATH/have_been_here
+
+        rlRun "abrt-cli rm $crash_PATH"
+        rlAssertNotExists $crash_PATH
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlBundleLogs abrt-cli-authetication $(ls *.log)
-        rlRun "abrt-cli rm $crash_PATH"
+        rlBundleLogs abrt-cli-authetication $(ls *.log *.norm)
+        rlRun "rm $RUNTESTS_EVENT_CONF_FILE"
         userdel -f -r abrt-unprivileged
         popd # TmpDir
         rm -rf $TmpDir
