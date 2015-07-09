@@ -22,8 +22,11 @@
 
 extern int cmd_list(int argc, const char **argv);
 extern int cmd_remove(int argc, const char **argv);
+extern int _cmd_remove(const char **dirs_strv);
 extern int cmd_report(int argc, const char **argv);
+extern int _cmd_report(const char **dirs_strv, int remove);
 extern int cmd_info(int argc, const char **argv);
+extern int _cmd_info(problem_data_t *problem_data, int detailed, int text_size);
 extern int cmd_status(int argc, const char **argv);
 extern int cmd_process(int argc, const char **argv);
 

@@ -68,28 +68,22 @@ static int process_one_crash(problem_data_t *problem_data)
         if(strcmp(action, "rm") == 0 || strcmp(action, "remove") == 0 )
         {
             log(_("Deleting '%s'"), dir_name);
-            delete_dump_dir_possibly_using_abrtd(dir_name);
+            const char *dirs_strv[] = {dir_name, NULL};
+            _cmd_remove(dirs_strv);
 
             ret_val = ACT_REMOVE;
         }
         else if (not_reportable == NULL && (strcmp(action, "e") == 0 || strcmp(action, "report") == 0))
         {
             log(_("Reporting '%s'"), dir_name);
-            report_problem_in_dir(dir_name,
-                                     LIBREPORT_WAIT
-                                   | LIBREPORT_RUN_CLI);
+            const char *dirs_strv[] = {dir_name, NULL};
+            _cmd_report(dirs_strv, /*do not delete*/0);
 
             ret_val = ACT_REPORT;
         }
         else if (strcmp(action, "i") == 0 || strcmp(action, "info") == 0)
         {
-            char *desc = make_description(problem_data,
-                                    /*names_to_skip:*/ NULL,
-                                    /*max_text_size:*/ CD_TEXT_ATT_SIZE_BZ,
-                                    MAKEDESC_SHOW_FILES | MAKEDESC_SHOW_MULTILINE);
-
-            fputs(desc, stdout);
-            free(desc);
+            _cmd_info(problem_data, /*detailed*/1, CD_TEXT_ATT_SIZE_BZ);
 
             ret_val = ACT_INFO;
         }
