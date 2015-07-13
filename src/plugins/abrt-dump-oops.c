@@ -172,6 +172,17 @@ int main(int argc, char **argv)
         log("Updating problem directory");
         switch (g_list_length(oops_list))
         {
+            case 0:
+                {
+                    error_msg(_("Can't update the problem: no oops found"));
+                    errors = 1;
+                    break;
+                }
+            default:
+                {
+                    log_notice(_("More oopses found: process only the first one"));
+                }
+                /* falls trought */
             case 1:
                 {
                     struct dump_dir *dd = dd_opendir(problem_dir, /*open for writing*/0);
@@ -181,11 +192,6 @@ int main(int argc, char **argv)
                         dd_close(dd);
                     }
                 }
-                break;
-            default:
-                error_msg(_("Can't update the problem: more than one oops found"));
-                errors = 1;
-                break;
         }
     }
     else
