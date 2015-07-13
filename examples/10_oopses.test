@@ -1,0 +1,524 @@
+[   71.324674] [drm] Disabling audio 0 support
+[   71.417662] vgaarb: device changed decodes: PCI:0000:00:02.0,olddecodes=none,decodes=io+mem:owns=none
+[   71.418271] [drm] radeon atom LVDS backlight unloaded
+[   71.418580] [drm] radeon: finishing device.
+[   71.420003] radeon 0000:01:00.0: ffff88003649d000 unpin not necessary
+[   71.427712] radeon 0000:01:00.0: Userspace still has active objects !
+[   71.427722] radeon 0000:01:00.0: ffff880093480e60 ffff880093480c00 16384 4294967297 force free
+[   71.427727] radeon 0000:01:00.0: ffff880093482660 ffff880093482400 16384 4294967297 force free
+[   71.427731] radeon 0000:01:00.0: ffff880093486a60 ffff880093486800 16384 4294967297 force free
+[   71.427736] radeon 0000:01:00.0: ffff880093486e60 ffff880093486c00 16384 4294967297 force free
+[   71.427740] radeon 0000:01:00.0: ffff880093482e60 ffff880093482c00 3145728 4294967297 force free
+[   71.427744] radeon 0000:01:00.0: ffff880093486660 ffff880093486400 8192 4294967297 force free
+[   71.427756] ------------[ cut here ]------------
+[   71.427811] WARNING: CPU: 0 PID: 37 at drivers/gpu/drm/radeon/radeon_gart.c:235 radeon_gart_unbind+0xca/0xe0 [radeon]()
+[   71.427814] trying to unbind memory from uninitialized GART !
+[   71.427815] Modules linked in: fuse nf_conntrack_netbios_ns nf_conntrack_broadcast ipt_MASQUERADE ip6t_REJECT bnep bluetooth xt_conntrack ebtable_nat ebtable_broute bridge stp llc ebtable_filter ebtables ip6table_nat nf_conntrack_ipv6 nf_defrag_ipv6 nf_nat_ipv6 ip6table_mangle ip6table_security ip6table_raw ip6table_filter ip6_tables iptable_nat nf_conntrack_ipv4 nf_defrag_ipv4 nf_nat_ipv4 nf_nat nf_conntrack iptable_mangle iptable_security iptable_raw snd_hda_codec_hdmi arc4 snd_hda_codec_realtek brcmsmac coretemp cordic brcmutil b43 snd_hda_intel snd_hda_codec mac80211 snd_hwdep iTCO_wdt uvcvideo snd_seq snd_seq_device kvm cfg80211 snd_pcm ssb crc32c_intel mmc_core iTCO_vendor_support bcma hp_wmi r8169 microcode nfsd mii mei_me auth_rpcgss videobuf2_vmalloc videobuf2_memops mei lpc_ich videobuf2_core
+[   71.427867]  videodev sparse_keymap rfkill nfs_acl snd_page_alloc lockd snd_timer intel_ips shpchp i2c_i801 media snd joydev soundcore mfd_core serio_raw wmi acpi_cpufreq sunrpc radeon i915 i2c_algo_bit ttm drm_kms_helper drm i2c_core video
+[   71.427892] CPU: 0 PID: 37 Comm: kworker/0:1 Not tainted <KERNEL_VERSION> #1
+[   71.427895] Hardware name: Hewlett-Packard HP G62 Notebook PC              /143A, BIOS F.48 11/09/2011
+[   71.427903] Workqueue: kacpi_hotplug hotplug_event_work
+[   71.427906]  0000000000000009 ffff88014f057818 ffffffff81662d11 ffff88014f057860
+[   71.427911]  ffff88014f057850 ffffffff810691dd ffff88014ee0c000 ffff880093480c48
+[   71.427916]  ffff88014f215a80 ffff88014f0579f8 ffff880093480c48 ffff88014f0578b0
+[   71.427921] Call Trace:
+[   71.427930]  [<ffffffff81662d11>] dump_stack+0x45/0x56
+[   71.427937]  [<ffffffff810691dd>] warn_slowpath_common+0x7d/0xa0
+[   71.427941]  [<ffffffff8106924c>] warn_slowpath_fmt+0x4c/0x50
+[   71.427968]  [<ffffffffa01c435a>] radeon_gart_unbind+0xca/0xe0 [radeon]
+[   71.427993]  [<ffffffffa01c158a>] radeon_ttm_backend_unbind+0x1a/0x20 [radeon]
+[   71.428014]  [<ffffffffa00e4fb7>] ttm_tt_unbind+0x27/0x40 [ttm]
+[   71.428024]  [<ffffffffa00e84a8>] ttm_bo_move_ttm+0xd8/0x120 [ttm]
+[   71.428033]  [<ffffffffa00e6eab>] ttm_bo_handle_move_mem+0x4fb/0x5b0 [ttm]
+[   71.428043]  [<ffffffffa00e7546>] ? ttm_bo_mem_space+0x116/0x340 [ttm]
+[   71.428053]  [<ffffffffa00e70ca>] ttm_bo_evict+0x16a/0x330 [ttm]
+[   71.428063]  [<ffffffffa00e73c1>] ttm_mem_evict_first+0x131/0x1a0 [ttm]
+[   71.428073]  [<ffffffffa00e77d4>] ttm_bo_force_list_clean+0x64/0xb0 [ttm]
+[   71.428084]  [<ffffffffa00e7867>] ttm_bo_clean_mm+0x47/0x80 [ttm]
+[   71.428109]  [<ffffffffa01c296d>] radeon_ttm_fini+0xbd/0x180 [radeon]
+[   71.428135]  [<ffffffffa01c33c2>] radeon_bo_fini+0x12/0x20 [radeon]
+[   71.428170]  [<ffffffffa020d1c3>] evergreen_fini+0xa3/0xd0 [radeon]
+[   71.428191]  [<ffffffffa01a7cae>] radeon_device_fini+0x3e/0x120 [radeon]
+[   71.428213]  [<ffffffffa01a9b1d>] radeon_driver_unload_kms+0x3d/0x60 [radeon]
+[   71.428235]  [<ffffffffa007e863>] drm_put_dev+0x63/0x180 [drm]
+[   71.428257]  [<ffffffffa01a606d>] radeon_pci_remove+0x1d/0x20 [radeon]
+[   71.428263]  [<ffffffff8133bfdb>] pci_device_remove+0x3b/0xb0
+[   71.428270]  [<ffffffff813ff89f>] __device_release_driver+0x7f/0xf0
+[   71.428274]  [<ffffffff813ff933>] device_release_driver+0x23/0x30
+[   71.428281]  [<ffffffff813ff0c8>] bus_remove_device+0x108/0x180
+[   71.428286]  [<ffffffff813fb995>] device_del+0x135/0x1d0
+[   71.428292]  [<ffffffff81335b64>] pci_stop_bus_device+0x94/0xa0
+[   71.428296]  [<ffffffff81335c52>] pci_stop_and_remove_bus_device+0x12/0x20
+[   71.428300]  [<ffffffff813508e7>] trim_stale_devices+0x67/0xf0
+[   71.428304]  [<ffffffff81350d36>] acpiphp_check_bridge+0x86/0xd0
+[   71.428307]  [<ffffffff81351b6a>] hotplug_event+0x10a/0x250
+[   71.428313]  [<ffffffff811941bd>] ? kmem_cache_free+0x1cd/0x1e0
+[   71.428317]  [<ffffffff813716e4>] ? acpi_os_execute_deferred+0x2d/0x32
+[   71.428321]  [<ffffffff81351cd7>] hotplug_event_work+0x27/0x70
+[   71.428327]  [<ffffffff810835f6>] process_one_work+0x176/0x430
+[   71.428330]  [<ffffffff8108422b>] worker_thread+0x11b/0x3a0
+[   71.428332]  [<ffffffff81084110>] ? rescuer_thread+0x350/0x350
+[   71.428338]  [<ffffffff8108b0d0>] kthread+0xc0/0xd0
+[   71.428341]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.428346]  [<ffffffff81671cbc>] ret_from_fork+0x7c/0xb0
+[   71.428350]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.428353] ---[ end trace 056472c3176dbd80 ]---
+[   71.428359] ------------[ cut here ]------------
+[   71.428383] WARNING: CPU: 0 PID: 37 at drivers/gpu/drm/radeon/radeon_gart.c:235 radeon_gart_unbind+0xca/0xe0 [radeon]()
+[   71.428384] trying to unbind memory from uninitialized GART !
+[   71.428386] Modules linked in: fuse nf_conntrack_netbios_ns nf_conntrack_broadcast ipt_MASQUERADE ip6t_REJECT bnep bluetooth xt_conntrack ebtable_nat ebtable_broute bridge stp llc ebtable_filter ebtables ip6table_nat nf_conntrack_ipv6 nf_defrag_ipv6 nf_nat_ipv6 ip6table_mangle ip6table_security ip6table_raw ip6table_filter ip6_tables iptable_nat nf_conntrack_ipv4 nf_defrag_ipv4 nf_nat_ipv4 nf_nat nf_conntrack iptable_mangle iptable_security iptable_raw snd_hda_codec_hdmi arc4 snd_hda_codec_realtek brcmsmac coretemp cordic brcmutil b43 snd_hda_intel snd_hda_codec mac80211 snd_hwdep iTCO_wdt uvcvideo snd_seq snd_seq_device kvm cfg80211 snd_pcm ssb crc32c_intel mmc_core iTCO_vendor_support bcma hp_wmi r8169 microcode nfsd mii mei_me auth_rpcgss videobuf2_vmalloc videobuf2_memops mei lpc_ich videobuf2_core
+[   71.428453]  videodev sparse_keymap rfkill nfs_acl snd_page_alloc lockd snd_timer intel_ips shpchp i2c_i801 media snd joydev soundcore mfd_core serio_raw wmi acpi_cpufreq sunrpc radeon i915 i2c_algo_bit ttm drm_kms_helper drm i2c_core video
+[   71.428474] CPU: 0 PID: 37 Comm: kworker/0:1 Tainted: G        W    <KERNEL_VERSION> #1
+[   71.428476] Hardware name: Hewlett-Packard HP G62 Notebook PC              /143A, BIOS F.48 11/09/2011
+[   71.428480] Workqueue: kacpi_hotplug hotplug_event_work
+[   71.428482]  0000000000000009 ffff88014f057818 ffffffff81662d11 ffff88014f057860
+[   71.428487]  ffff88014f057850 ffffffff810691dd ffff88014ee0c000 ffff880093482448
+[   71.428491]  ffff88014f215e80 ffff88014f0579f8 ffff880093482448 ffff88014f0578b0
+[   71.428495] Call Trace:
+[   71.428500]  [<ffffffff81662d11>] dump_stack+0x45/0x56
+[   71.428504]  [<ffffffff810691dd>] warn_slowpath_common+0x7d/0xa0
+[   71.428508]  [<ffffffff8106924c>] warn_slowpath_fmt+0x4c/0x50
+[   71.428534]  [<ffffffffa01c435a>] radeon_gart_unbind+0xca/0xe0 [radeon]
+[   71.428558]  [<ffffffffa01c158a>] radeon_ttm_backend_unbind+0x1a/0x20 [radeon]
+[   71.428567]  [<ffffffffa00e4fb7>] ttm_tt_unbind+0x27/0x40 [ttm]
+[   71.428577]  [<ffffffffa00e84a8>] ttm_bo_move_ttm+0xd8/0x120 [ttm]
+[   71.428586]  [<ffffffffa00e6eab>] ttm_bo_handle_move_mem+0x4fb/0x5b0 [ttm]
+[   71.428596]  [<ffffffffa00e7546>] ? ttm_bo_mem_space+0x116/0x340 [ttm]
+[   71.428605]  [<ffffffffa00e70ca>] ttm_bo_evict+0x16a/0x330 [ttm]
+[   71.428615]  [<ffffffffa00e73c1>] ttm_mem_evict_first+0x131/0x1a0 [ttm]
+[   71.428624]  [<ffffffffa00e77d4>] ttm_bo_force_list_clean+0x64/0xb0 [ttm]
+[   71.428635]  [<ffffffffa00e7867>] ttm_bo_clean_mm+0x47/0x80 [ttm]
+[   71.428659]  [<ffffffffa01c296d>] radeon_ttm_fini+0xbd/0x180 [radeon]
+[   71.428684]  [<ffffffffa01c33c2>] radeon_bo_fini+0x12/0x20 [radeon]
+[   71.428714]  [<ffffffffa020d1c3>] evergreen_fini+0xa3/0xd0 [radeon]
+[   71.428736]  [<ffffffffa01a7cae>] radeon_device_fini+0x3e/0x120 [radeon]
+[   71.428757]  [<ffffffffa01a9b1d>] radeon_driver_unload_kms+0x3d/0x60 [radeon]
+[   71.428773]  [<ffffffffa007e863>] drm_put_dev+0x63/0x180 [drm]
+[   71.428795]  [<ffffffffa01a606d>] radeon_pci_remove+0x1d/0x20 [radeon]
+[   71.428800]  [<ffffffff8133bfdb>] pci_device_remove+0x3b/0xb0
+[   71.428805]  [<ffffffff813ff89f>] __device_release_driver+0x7f/0xf0
+[   71.428808]  [<ffffffff813ff933>] device_release_driver+0x23/0x30
+[   71.428812]  [<ffffffff813ff0c8>] bus_remove_device+0x108/0x180
+[   71.428816]  [<ffffffff813fb995>] device_del+0x135/0x1d0
+[   71.428819]  [<ffffffff81335b64>] pci_stop_bus_device+0x94/0xa0
+[   71.428823]  [<ffffffff81335c52>] pci_stop_and_remove_bus_device+0x12/0x20
+[   71.428828]  [<ffffffff813508e7>] trim_stale_devices+0x67/0xf0
+[   71.428831]  [<ffffffff81350d36>] acpiphp_check_bridge+0x86/0xd0
+[   71.428834]  [<ffffffff81351b6a>] hotplug_event+0x10a/0x250
+[   71.428838]  [<ffffffff811941bd>] ? kmem_cache_free+0x1cd/0x1e0
+[   71.428842]  [<ffffffff813716e4>] ? acpi_os_execute_deferred+0x2d/0x32
+[   71.428845]  [<ffffffff81351cd7>] hotplug_event_work+0x27/0x70
+[   71.428850]  [<ffffffff810835f6>] process_one_work+0x176/0x430
+[   71.428853]  [<ffffffff8108422b>] worker_thread+0x11b/0x3a0
+[   71.428856]  [<ffffffff81084110>] ? rescuer_thread+0x350/0x350
+[   71.428860]  [<ffffffff8108b0d0>] kthread+0xc0/0xd0
+[   71.428864]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.428868]  [<ffffffff81671cbc>] ret_from_fork+0x7c/0xb0
+[   71.428871]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.428874] ---[ end trace 056472c3176dbd81 ]---
+[   71.428878] ------------[ cut here ]------------
+[   71.428899] WARNING: CPU: 0 PID: 37 at drivers/gpu/drm/radeon/radeon_gart.c:235 radeon_gart_unbind+0xca/0xe0 [radeon]()
+[   71.428901] trying to unbind memory from uninitialized GART !
+[   71.428902] Modules linked in: fuse nf_conntrack_netbios_ns nf_conntrack_broadcast ipt_MASQUERADE ip6t_REJECT bnep bluetooth xt_conntrack ebtable_nat ebtable_broute bridge stp llc ebtable_filter ebtables ip6table_nat nf_conntrack_ipv6 nf_defrag_ipv6 nf_nat_ipv6 ip6table_mangle ip6table_security ip6table_raw ip6table_filter ip6_tables iptable_nat nf_conntrack_ipv4 nf_defrag_ipv4 nf_nat_ipv4 nf_nat nf_conntrack iptable_mangle iptable_security iptable_raw snd_hda_codec_hdmi arc4 snd_hda_codec_realtek brcmsmac coretemp cordic brcmutil b43 snd_hda_intel snd_hda_codec mac80211 snd_hwdep iTCO_wdt uvcvideo snd_seq snd_seq_device kvm cfg80211 snd_pcm ssb crc32c_intel mmc_core iTCO_vendor_support bcma hp_wmi r8169 microcode nfsd mii mei_me auth_rpcgss videobuf2_vmalloc videobuf2_memops mei lpc_ich videobuf2_core
+[   71.428942]  videodev sparse_keymap rfkill nfs_acl snd_page_alloc lockd snd_timer intel_ips shpchp i2c_i801 media snd joydev soundcore mfd_core serio_raw wmi acpi_cpufreq sunrpc radeon i915 i2c_algo_bit ttm drm_kms_helper drm i2c_core video
+[   71.428961] CPU: 0 PID: 37 Comm: kworker/0:1 Tainted: G        W    <KERNEL_VERSION> #1
+[   71.428963] Hardware name: Hewlett-Packard HP G62 Notebook PC              /143A, BIOS F.48 11/09/2011
+[   71.428967] Workqueue: kacpi_hotplug hotplug_event_work
+[   71.428969]  0000000000000009 ffff88014f057818 ffffffff81662d11 ffff88014f057860
+[   71.428974]  ffff88014f057850 ffffffff810691dd ffff88014ee0c000 ffff880093486848
+[   71.428979]  ffff88014f215f80 ffff88014f0579f8 ffff880093486848 ffff88014f0578b0
+[   71.428983] Call Trace:
+[   71.428988]  [<ffffffff81662d11>] dump_stack+0x45/0x56
+[   71.428992]  [<ffffffff810691dd>] warn_slowpath_common+0x7d/0xa0
+[   71.428997]  [<ffffffff8106924c>] warn_slowpath_fmt+0x4c/0x50
+[   71.429020]  [<ffffffffa01c435a>] radeon_gart_unbind+0xca/0xe0 [radeon]
+[   71.429040]  [<ffffffffa01c158a>] radeon_ttm_backend_unbind+0x1a/0x20 [radeon]
+[   71.429051]  [<ffffffffa00e4fb7>] ttm_tt_unbind+0x27/0x40 [ttm]
+[   71.429060]  [<ffffffffa00e84a8>] ttm_bo_move_ttm+0xd8/0x120 [ttm]
+[   71.429070]  [<ffffffffa00e6eab>] ttm_bo_handle_move_mem+0x4fb/0x5b0 [ttm]
+[   71.429078]  [<ffffffffa00e7546>] ? ttm_bo_mem_space+0x116/0x340 [ttm]
+[   71.429087]  [<ffffffffa00e70ca>] ttm_bo_evict+0x16a/0x330 [ttm]
+[   71.429097]  [<ffffffffa00e73c1>] ttm_mem_evict_first+0x131/0x1a0 [ttm]
+[   71.429106]  [<ffffffffa00e77d4>] ttm_bo_force_list_clean+0x64/0xb0 [ttm]
+[   71.429116]  [<ffffffffa00e7867>] ttm_bo_clean_mm+0x47/0x80 [ttm]
+[   71.429139]  [<ffffffffa01c296d>] radeon_ttm_fini+0xbd/0x180 [radeon]
+[   71.429164]  [<ffffffffa01c33c2>] radeon_bo_fini+0x12/0x20 [radeon]
+[   71.429195]  [<ffffffffa020d1c3>] evergreen_fini+0xa3/0xd0 [radeon]
+[   71.429210]  [<ffffffffa01a7cae>] radeon_device_fini+0x3e/0x120 [radeon]
+[   71.429227]  [<ffffffffa01a9b1d>] radeon_driver_unload_kms+0x3d/0x60 [radeon]
+[   71.429244]  [<ffffffffa007e863>] drm_put_dev+0x63/0x180 [drm]
+[   71.429262]  [<ffffffffa01a606d>] radeon_pci_remove+0x1d/0x20 [radeon]
+[   71.429267]  [<ffffffff8133bfdb>] pci_device_remove+0x3b/0xb0
+[   71.429273]  [<ffffffff813ff89f>] __device_release_driver+0x7f/0xf0
+[   71.429277]  [<ffffffff813ff933>] device_release_driver+0x23/0x30
+[   71.429281]  [<ffffffff813ff0c8>] bus_remove_device+0x108/0x180
+[   71.429285]  [<ffffffff813fb995>] device_del+0x135/0x1d0
+[   71.429290]  [<ffffffff81335b64>] pci_stop_bus_device+0x94/0xa0
+[   71.429294]  [<ffffffff81335c52>] pci_stop_and_remove_bus_device+0x12/0x20
+[   71.429298]  [<ffffffff813508e7>] trim_stale_devices+0x67/0xf0
+[   71.429302]  [<ffffffff81350d36>] acpiphp_check_bridge+0x86/0xd0
+[   71.429307]  [<ffffffff81351b6a>] hotplug_event+0x10a/0x250
+[   71.429310]  [<ffffffff811941bd>] ? kmem_cache_free+0x1cd/0x1e0
+[   71.429314]  [<ffffffff813716e4>] ? acpi_os_execute_deferred+0x2d/0x32
+[   71.429318]  [<ffffffff81351cd7>] hotplug_event_work+0x27/0x70
+[   71.429323]  [<ffffffff810835f6>] process_one_work+0x176/0x430
+[   71.429326]  [<ffffffff8108422b>] worker_thread+0x11b/0x3a0
+[   71.429329]  [<ffffffff81084110>] ? rescuer_thread+0x350/0x350
+[   71.429333]  [<ffffffff8108b0d0>] kthread+0xc0/0xd0
+[   71.429337]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.429341]  [<ffffffff81671cbc>] ret_from_fork+0x7c/0xb0
+[   71.429345]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.429348] ---[ end trace 056472c3176dbd82 ]---
+[   71.429353] ------------[ cut here ]------------
+[   71.429375] WARNING: CPU: 0 PID: 37 at drivers/gpu/drm/radeon/radeon_gart.c:235 radeon_gart_unbind+0xca/0xe0 [radeon]()
+[   71.429378] trying to unbind memory from uninitialized GART !
+[   71.429380] Modules linked in: fuse nf_conntrack_netbios_ns nf_conntrack_broadcast ipt_MASQUERADE ip6t_REJECT bnep bluetooth xt_conntrack ebtable_nat ebtable_broute bridge stp llc ebtable_filter ebtables ip6table_nat nf_conntrack_ipv6 nf_defrag_ipv6 nf_nat_ipv6 ip6table_mangle ip6table_security ip6table_raw ip6table_filter ip6_tables iptable_nat nf_conntrack_ipv4 nf_defrag_ipv4 nf_nat_ipv4 nf_nat nf_conntrack iptable_mangle iptable_security iptable_raw snd_hda_codec_hdmi arc4 snd_hda_codec_realtek brcmsmac coretemp cordic brcmutil b43 snd_hda_intel snd_hda_codec mac80211 snd_hwdep iTCO_wdt uvcvideo snd_seq snd_seq_device kvm cfg80211 snd_pcm ssb crc32c_intel mmc_core iTCO_vendor_support bcma hp_wmi r8169 microcode nfsd mii mei_me auth_rpcgss videobuf2_vmalloc videobuf2_memops mei lpc_ich videobuf2_core
+[   71.429432]  videodev sparse_keymap rfkill nfs_acl snd_page_alloc lockd snd_timer intel_ips shpchp i2c_i801 media snd joydev soundcore mfd_core serio_raw wmi acpi_cpufreq sunrpc radeon i915 i2c_algo_bit ttm drm_kms_helper drm i2c_core video
+[   71.429453] CPU: 0 PID: 37 Comm: kworker/0:1 Tainted: G        W    <KERNEL_VERSION> #1
+[   71.429455] Hardware name: Hewlett-Packard HP G62 Notebook PC              /143A, BIOS F.48 11/09/2011
+[   71.429461] Workqueue: kacpi_hotplug hotplug_event_work
+[   71.429463]  0000000000000009 ffff88014f057818 ffffffff81662d11 ffff88014f057860
+[   71.429467]  ffff88014f057850 ffffffff810691dd ffff88014ee0c000 ffff880093486c48
+[   71.429471]  ffff88014f215480 ffff88014f0579f8 ffff880093486c48 ffff88014f0578b0
+[   71.429475] Call Trace:
+[   71.429480]  [<ffffffff81662d11>] dump_stack+0x45/0x56
+[   71.429484]  [<ffffffff810691dd>] warn_slowpath_common+0x7d/0xa0
+[   71.429488]  [<ffffffff8106924c>] warn_slowpath_fmt+0x4c/0x50
+[   71.429516]  [<ffffffffa01c435a>] radeon_gart_unbind+0xca/0xe0 [radeon]
+[   71.429537]  [<ffffffffa01c158a>] radeon_ttm_backend_unbind+0x1a/0x20 [radeon]
+[   71.429547]  [<ffffffffa00e4fb7>] ttm_tt_unbind+0x27/0x40 [ttm]
+[   71.429556]  [<ffffffffa00e84a8>] ttm_bo_move_ttm+0xd8/0x120 [ttm]
+[   71.429566]  [<ffffffffa00e6eab>] ttm_bo_handle_move_mem+0x4fb/0x5b0 [ttm]
+[   71.429575]  [<ffffffffa00e7546>] ? ttm_bo_mem_space+0x116/0x340 [ttm]
+[   71.429583]  [<ffffffffa00e70ca>] ttm_bo_evict+0x16a/0x330 [ttm]
+[   71.429594]  [<ffffffffa00e73c1>] ttm_mem_evict_first+0x131/0x1a0 [ttm]
+[   71.429603]  [<ffffffffa00e77d4>] ttm_bo_force_list_clean+0x64/0xb0 [ttm]
+[   71.429614]  [<ffffffffa00e7867>] ttm_bo_clean_mm+0x47/0x80 [ttm]
+[   71.429635]  [<ffffffffa01c296d>] radeon_ttm_fini+0xbd/0x180 [radeon]
+[   71.429660]  [<ffffffffa01c33c2>] radeon_bo_fini+0x12/0x20 [radeon]
+[   71.429691]  [<ffffffffa020d1c3>] evergreen_fini+0xa3/0xd0 [radeon]
+[   71.429712]  [<ffffffffa01a7cae>] radeon_device_fini+0x3e/0x120 [radeon]
+[   71.429730]  [<ffffffffa01a9b1d>] radeon_driver_unload_kms+0x3d/0x60 [radeon]
+[   71.429744]  [<ffffffffa007e863>] drm_put_dev+0x63/0x180 [drm]
+[   71.429761]  [<ffffffffa01a606d>] radeon_pci_remove+0x1d/0x20 [radeon]
+[   71.429765]  [<ffffffff8133bfdb>] pci_device_remove+0x3b/0xb0
+[   71.429770]  [<ffffffff813ff89f>] __device_release_driver+0x7f/0xf0
+[   71.429773]  [<ffffffff813ff933>] device_release_driver+0x23/0x30
+[   71.429777]  [<ffffffff813ff0c8>] bus_remove_device+0x108/0x180
+[   71.429780]  [<ffffffff813fb995>] device_del+0x135/0x1d0
+[   71.429785]  [<ffffffff81335b64>] pci_stop_bus_device+0x94/0xa0
+[   71.429789]  [<ffffffff81335c52>] pci_stop_and_remove_bus_device+0x12/0x20
+[   71.429793]  [<ffffffff813508e7>] trim_stale_devices+0x67/0xf0
+[   71.429797]  [<ffffffff81350d36>] acpiphp_check_bridge+0x86/0xd0
+[   71.429800]  [<ffffffff81351b6a>] hotplug_event+0x10a/0x250
+[   71.429804]  [<ffffffff811941bd>] ? kmem_cache_free+0x1cd/0x1e0
+[   71.429807]  [<ffffffff813716e4>] ? acpi_os_execute_deferred+0x2d/0x32
+[   71.429811]  [<ffffffff81351cd7>] hotplug_event_work+0x27/0x70
+[   71.429815]  [<ffffffff810835f6>] process_one_work+0x176/0x430
+[   71.429819]  [<ffffffff8108422b>] worker_thread+0x11b/0x3a0
+[   71.429822]  [<ffffffff81084110>] ? rescuer_thread+0x350/0x350
+[   71.429826]  [<ffffffff8108b0d0>] kthread+0xc0/0xd0
+[   71.429830]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.429834]  [<ffffffff81671cbc>] ret_from_fork+0x7c/0xb0
+[   71.429838]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.429841] ---[ end trace 056472c3176dbd83 ]---
+[   71.429846] ------------[ cut here ]------------
+[   71.429868] WARNING: CPU: 0 PID: 37 at drivers/gpu/drm/radeon/radeon_gart.c:235 radeon_gart_unbind+0xca/0xe0 [radeon]()
+[   71.429870] trying to unbind memory from uninitialized GART !
+[   71.429872] Modules linked in: fuse nf_conntrack_netbios_ns nf_conntrack_broadcast ipt_MASQUERADE ip6t_REJECT bnep bluetooth xt_conntrack ebtable_nat ebtable_broute bridge stp llc ebtable_filter ebtables ip6table_nat nf_conntrack_ipv6 nf_defrag_ipv6 nf_nat_ipv6 ip6table_mangle ip6table_security ip6table_raw ip6table_filter ip6_tables iptable_nat nf_conntrack_ipv4 nf_defrag_ipv4 nf_nat_ipv4 nf_nat nf_conntrack iptable_mangle iptable_security iptable_raw snd_hda_codec_hdmi arc4 snd_hda_codec_realtek brcmsmac coretemp cordic brcmutil b43 snd_hda_intel snd_hda_codec mac80211 snd_hwdep iTCO_wdt uvcvideo snd_seq snd_seq_device kvm cfg80211 snd_pcm ssb crc32c_intel mmc_core iTCO_vendor_support bcma hp_wmi r8169 microcode nfsd mii mei_me auth_rpcgss videobuf2_vmalloc videobuf2_memops mei lpc_ich videobuf2_core
+[   71.429918]  videodev sparse_keymap rfkill nfs_acl snd_page_alloc lockd snd_timer intel_ips shpchp i2c_i801 media snd joydev soundcore mfd_core serio_raw wmi acpi_cpufreq sunrpc radeon i915 i2c_algo_bit ttm drm_kms_helper drm i2c_core video
+[   71.429939] CPU: 0 PID: 37 Comm: kworker/0:1 Tainted: G        W    <KERNEL_VERSION> #1
+[   71.429942] Hardware name: Hewlett-Packard HP G62 Notebook PC              /143A, BIOS F.48 11/09/2011
+[   71.429948] Workqueue: kacpi_hotplug hotplug_event_work
+[   71.429951]  0000000000000009 ffff88014f057818 ffffffff81662d11 ffff88014f057860
+[   71.429956]  ffff88014f057850 ffffffff810691dd ffff88014ee0c000 ffff880093486448
+[   71.429961]  ffff88014f215a00 ffff88014f0579f8 ffff880093486448 ffff88014f0578b0
+[   71.429965] Call Trace:
+[   71.429973]  [<ffffffff81662d11>] dump_stack+0x45/0x56
+[   71.429980]  [<ffffffff810691dd>] warn_slowpath_common+0x7d/0xa0
+[   71.429984]  [<ffffffff8106924c>] warn_slowpath_fmt+0x4c/0x50
+[   71.430034]  [<ffffffffa01c435a>] radeon_gart_unbind+0xca/0xe0 [radeon]
+[   71.430076]  [<ffffffffa01c158a>] radeon_ttm_backend_unbind+0x1a/0x20 [radeon]
+[   71.430096]  [<ffffffffa00e4fb7>] ttm_tt_unbind+0x27/0x40 [ttm]
+[   71.430111]  [<ffffffffa00e84a8>] ttm_bo_move_ttm+0xd8/0x120 [ttm]
+[   71.430124]  [<ffffffffa00e6eab>] ttm_bo_handle_move_mem+0x4fb/0x5b0 [ttm]
+[   71.430141]  [<ffffffffa00e7546>] ? ttm_bo_mem_space+0x116/0x340 [ttm]
+[   71.430155]  [<ffffffffa00e70ca>] ttm_bo_evict+0x16a/0x330 [ttm]
+[   71.430171]  [<ffffffffa00e73c1>] ttm_mem_evict_first+0x131/0x1a0 [ttm]
+[   71.430186]  [<ffffffffa00e77d4>] ttm_bo_force_list_clean+0x64/0xb0 [ttm]
+[   71.430202]  [<ffffffffa00e7867>] ttm_bo_clean_mm+0x47/0x80 [ttm]
+[   71.430231]  [<ffffffffa01c296d>] radeon_ttm_fini+0xbd/0x180 [radeon]
+[   71.430257]  [<ffffffffa01c33c2>] radeon_bo_fini+0x12/0x20 [radeon]
+[   71.430293]  [<ffffffffa020d1c3>] evergreen_fini+0xa3/0xd0 [radeon]
+[   71.430326]  [<ffffffffa01a7cae>] radeon_device_fini+0x3e/0x120 [radeon]
+[   71.430357]  [<ffffffffa01a9b1d>] radeon_driver_unload_kms+0x3d/0x60 [radeon]
+[   71.430386]  [<ffffffffa007e863>] drm_put_dev+0x63/0x180 [drm]
+[   71.430435]  [<ffffffffa01a606d>] radeon_pci_remove+0x1d/0x20 [radeon]
+[   71.430453]  [<ffffffff8133bfdb>] pci_device_remove+0x3b/0xb0
+[   71.430470]  [<ffffffff813ff89f>] __device_release_driver+0x7f/0xf0
+[   71.430483]  [<ffffffff813ff933>] device_release_driver+0x23/0x30
+[   71.430500]  [<ffffffff813ff0c8>] bus_remove_device+0x108/0x180
+[   71.430511]  [<ffffffff813fb995>] device_del+0x135/0x1d0
+[   71.430519]  [<ffffffff81335b64>] pci_stop_bus_device+0x94/0xa0
+[   71.430523]  [<ffffffff81335c52>] pci_stop_and_remove_bus_device+0x12/0x20
+[   71.430528]  [<ffffffff813508e7>] trim_stale_devices+0x67/0xf0
+[   71.430532]  [<ffffffff81350d36>] acpiphp_check_bridge+0x86/0xd0
+[   71.430535]  [<ffffffff81351b6a>] hotplug_event+0x10a/0x250
+[   71.430542]  [<ffffffff811941bd>] ? kmem_cache_free+0x1cd/0x1e0
+[   71.430546]  [<ffffffff813716e4>] ? acpi_os_execute_deferred+0x2d/0x32
+[   71.430551]  [<ffffffff81351cd7>] hotplug_event_work+0x27/0x70
+[   71.430558]  [<ffffffff810835f6>] process_one_work+0x176/0x430
+[   71.430562]  [<ffffffff8108422b>] worker_thread+0x11b/0x3a0
+[   71.430565]  [<ffffffff81084110>] ? rescuer_thread+0x350/0x350
+[   71.430572]  [<ffffffff8108b0d0>] kthread+0xc0/0xd0
+[   71.430576]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.430581]  [<ffffffff81671cbc>] ret_from_fork+0x7c/0xb0
+[   71.430584]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.430588] ---[ end trace 056472c3176dbd84 ]---
+[   71.430600] ------------[ cut here ]------------
+[   71.430627] WARNING: CPU: 0 PID: 37 at drivers/gpu/drm/radeon/radeon_gart.c:235 radeon_gart_unbind+0xca/0xe0 [radeon]()
+[   71.430629] trying to unbind memory from uninitialized GART !
+[   71.430631] Modules linked in: fuse nf_conntrack_netbios_ns nf_conntrack_broadcast ipt_MASQUERADE ip6t_REJECT bnep bluetooth xt_conntrack ebtable_nat ebtable_broute bridge stp llc ebtable_filter ebtables ip6table_nat nf_conntrack_ipv6 nf_defrag_ipv6 nf_nat_ipv6 ip6table_mangle ip6table_security ip6table_raw ip6table_filter ip6_tables iptable_nat nf_conntrack_ipv4 nf_defrag_ipv4 nf_nat_ipv4 nf_nat nf_conntrack iptable_mangle iptable_security iptable_raw snd_hda_codec_hdmi arc4 snd_hda_codec_realtek brcmsmac coretemp cordic brcmutil b43 snd_hda_intel snd_hda_codec mac80211 snd_hwdep iTCO_wdt uvcvideo snd_seq snd_seq_device kvm cfg80211 snd_pcm ssb crc32c_intel mmc_core iTCO_vendor_support bcma hp_wmi r8169 microcode nfsd mii mei_me auth_rpcgss videobuf2_vmalloc videobuf2_memops mei lpc_ich videobuf2_core
+[   71.430795]  videodev sparse_keymap rfkill nfs_acl snd_page_alloc lockd snd_timer intel_ips shpchp i2c_i801 media snd joydev soundcore mfd_core serio_raw wmi acpi_cpufreq sunrpc radeon i915 i2c_algo_bit ttm drm_kms_helper drm i2c_core video
+[   71.430818] CPU: 0 PID: 37 Comm: kworker/0:1 Tainted: G        W    <KERNEL_VERSION> #1
+[   71.430821] Hardware name: Hewlett-Packard HP G62 Notebook PC              /143A, BIOS F.48 11/09/2011
+[   71.430826] Workqueue: kacpi_hotplug hotplug_event_work
+[   71.430828]  0000000000000009 ffff88014f057818 ffffffff81662d11 ffff88014f057860
+[   71.430832]  ffff88014f057850 ffffffff810691dd ffff88014ee0c000 ffff880093482c48
+[   71.430836]  ffff88014f215380 ffff88014f0579f8 ffff880093482c48 ffff88014f0578b0
+[   71.430839] Call Trace:
+[   71.430846]  [<ffffffff81662d11>] dump_stack+0x45/0x56
+[   71.430853]  [<ffffffff810691dd>] warn_slowpath_common+0x7d/0xa0
+[   71.430857]  [<ffffffff8106924c>] warn_slowpath_fmt+0x4c/0x50
+[   71.430888]  [<ffffffffa01c435a>] radeon_gart_unbind+0xca/0xe0 [radeon]
+[   71.430912]  [<ffffffffa01c158a>] radeon_ttm_backend_unbind+0x1a/0x20 [radeon]
+[   71.430923]  [<ffffffffa00e4fb7>] ttm_tt_unbind+0x27/0x40 [ttm]
+[   71.430933]  [<ffffffffa00e84a8>] ttm_bo_move_ttm+0xd8/0x120 [ttm]
+[   71.430942]  [<ffffffffa00e6eab>] ttm_bo_handle_move_mem+0x4fb/0x5b0 [ttm]
+[   71.430952]  [<ffffffffa00e7546>] ? ttm_bo_mem_space+0x116/0x340 [ttm]
+[   71.430961]  [<ffffffffa00e70ca>] ttm_bo_evict+0x16a/0x330 [ttm]
+[   71.430980]  [<ffffffffa00e73c1>] ttm_mem_evict_first+0x131/0x1a0 [ttm]
+[   71.431005]  [<ffffffffa00e77d4>] ttm_bo_force_list_clean+0x64/0xb0 [ttm]
+[   71.431030]  [<ffffffffa00e7867>] ttm_bo_clean_mm+0x47/0x80 [ttm]
+[   71.431081]  [<ffffffffa01c296d>] radeon_ttm_fini+0xbd/0x180 [radeon]
+[   71.431131]  [<ffffffffa01c33c2>] radeon_bo_fini+0x12/0x20 [radeon]
+[   71.431202]  [<ffffffffa020d1c3>] evergreen_fini+0xa3/0xd0 [radeon]
+[   71.431255]  [<ffffffffa01a7cae>] radeon_device_fini+0x3e/0x120 [radeon]
+[   71.431298]  [<ffffffffa01a9b1d>] radeon_driver_unload_kms+0x3d/0x60 [radeon]
+[   71.431344]  [<ffffffffa007e863>] drm_put_dev+0x63/0x180 [drm]
+[   71.431389]  [<ffffffffa01a606d>] radeon_pci_remove+0x1d/0x20 [radeon]
+[   71.431413]  [<ffffffff8133bfdb>] pci_device_remove+0x3b/0xb0
+[   71.431425]  [<ffffffff813ff89f>] __device_release_driver+0x7f/0xf0
+[   71.431429]  [<ffffffff813ff933>] device_release_driver+0x23/0x30
+[   71.431439]  [<ffffffff813ff0c8>] bus_remove_device+0x108/0x180
+[   71.431445]  [<ffffffff813fb995>] device_del+0x135/0x1d0
+[   71.431454]  [<ffffffff81335b64>] pci_stop_bus_device+0x94/0xa0
+[   71.431461]  [<ffffffff81335c52>] pci_stop_and_remove_bus_device+0x12/0x20
+[   71.431480]  [<ffffffff813508e7>] trim_stale_devices+0x67/0xf0
+[   71.431498]  [<ffffffff81350d36>] acpiphp_check_bridge+0x86/0xd0
+[   71.431513]  [<ffffffff81351b6a>] hotplug_event+0x10a/0x250
+[   71.431532]  [<ffffffff811941bd>] ? kmem_cache_free+0x1cd/0x1e0
+[   71.431548]  [<ffffffff813716e4>] ? acpi_os_execute_deferred+0x2d/0x32
+[   71.431564]  [<ffffffff81351cd7>] hotplug_event_work+0x27/0x70
+[   71.431584]  [<ffffffff810835f6>] process_one_work+0x176/0x430
+[   71.431598]  [<ffffffff8108422b>] worker_thread+0x11b/0x3a0
+[   71.431602]  [<ffffffff81084110>] ? rescuer_thread+0x350/0x350
+[   71.431610]  [<ffffffff8108b0d0>] kthread+0xc0/0xd0
+[   71.431615]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.431621]  [<ffffffff81671cbc>] ret_from_fork+0x7c/0xb0
+[   71.431625]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.431628] ---[ end trace 056472c3176dbd85 ]---
+[   71.431636] ------------[ cut here ]------------
+[   71.431678] WARNING: CPU: 0 PID: 37 at drivers/gpu/drm/drm_mm.c:578 drm_mm_takedown+0x2e/0x30 [drm]()
+[   71.431680] Memory manager not clean during takedown.
+[   71.431683] Modules linked in: fuse nf_conntrack_netbios_ns nf_conntrack_broadcast ipt_MASQUERADE ip6t_REJECT bnep bluetooth xt_conntrack ebtable_nat ebtable_broute bridge stp llc ebtable_filter ebtables ip6table_nat nf_conntrack_ipv6 nf_defrag_ipv6 nf_nat_ipv6 ip6table_mangle ip6table_security ip6table_raw ip6table_filter ip6_tables iptable_nat nf_conntrack_ipv4 nf_defrag_ipv4 nf_nat_ipv4 nf_nat nf_conntrack iptable_mangle iptable_security iptable_raw snd_hda_codec_hdmi arc4 snd_hda_codec_realtek brcmsmac coretemp cordic brcmutil b43 snd_hda_intel snd_hda_codec mac80211 snd_hwdep iTCO_wdt uvcvideo snd_seq snd_seq_device kvm cfg80211 snd_pcm ssb crc32c_intel mmc_core iTCO_vendor_support bcma hp_wmi r8169 microcode nfsd mii mei_me auth_rpcgss videobuf2_vmalloc videobuf2_memops mei lpc_ich videobuf2_core
+[   71.431748]  videodev sparse_keymap rfkill nfs_acl snd_page_alloc lockd snd_timer intel_ips shpchp i2c_i801 media snd joydev soundcore mfd_core serio_raw wmi acpi_cpufreq sunrpc radeon i915 i2c_algo_bit ttm drm_kms_helper drm i2c_core video
+[   71.431785] CPU: 0 PID: 37 Comm: kworker/0:1 Tainted: G        W    <KERNEL_VERSION> #1
+[   71.431788] Hardware name: Hewlett-Packard HP G62 Notebook PC              /143A, BIOS F.48 11/09/2011
+[   71.431804] Workqueue: kacpi_hotplug hotplug_event_work
+[   71.431807]  0000000000000009 ffff88014f057a40 ffffffff81662d11 ffff88014f057a88
+[   71.431813]  ffff88014f057a78 ffffffff810691dd ffff880036794c00 ffff88014ee0caf8
+[   71.431817]  ffff88003649cc48 ffffffffa02bd100 ffff880151f0b028 ffff88014f057ad8
+[   71.431822] Call Trace:
+[   71.431835]  [<ffffffff81662d11>] dump_stack+0x45/0x56
+[   71.431846]  [<ffffffff810691dd>] warn_slowpath_common+0x7d/0xa0
+[   71.431859]  [<ffffffff8106924c>] warn_slowpath_fmt+0x4c/0x50
+[   71.431892]  [<ffffffffa0082f9e>] drm_mm_takedown+0x2e/0x30 [drm]
+[   71.431922]  [<ffffffffa00ec6d3>] ttm_bo_man_takedown+0x33/0x70 [ttm]
+[   71.431940]  [<ffffffffa00e7871>] ttm_bo_clean_mm+0x51/0x80 [ttm]
+[   71.432033]  [<ffffffffa01c296d>] radeon_ttm_fini+0xbd/0x180 [radeon]
+[   71.432082]  [<ffffffffa01c33c2>] radeon_bo_fini+0x12/0x20 [radeon]
+[   71.432136]  [<ffffffffa020d1c3>] evergreen_fini+0xa3/0xd0 [radeon]
+[   71.432173]  [<ffffffffa01a7cae>] radeon_device_fini+0x3e/0x120 [radeon]
+[   71.432213]  [<ffffffffa01a9b1d>] radeon_driver_unload_kms+0x3d/0x60 [radeon]
+[   71.432260]  [<ffffffffa007e863>] drm_put_dev+0x63/0x180 [drm]
+[   71.432310]  [<ffffffffa01a606d>] radeon_pci_remove+0x1d/0x20 [radeon]
+[   71.432321]  [<ffffffff8133bfdb>] pci_device_remove+0x3b/0xb0
+[   71.432333]  [<ffffffff813ff89f>] __device_release_driver+0x7f/0xf0
+[   71.432338]  [<ffffffff813ff933>] device_release_driver+0x23/0x30
+[   71.432349]  [<ffffffff813ff0c8>] bus_remove_device+0x108/0x180
+[   71.432354]  [<ffffffff813fb995>] device_del+0x135/0x1d0
+[   71.432365]  [<ffffffff81335b64>] pci_stop_bus_device+0x94/0xa0
+[   71.432371]  [<ffffffff81335c52>] pci_stop_and_remove_bus_device+0x12/0x20
+[   71.432378]  [<ffffffff813508e7>] trim_stale_devices+0x67/0xf0
+[   71.432381]  [<ffffffff81350d36>] acpiphp_check_bridge+0x86/0xd0
+[   71.432386]  [<ffffffff81351b6a>] hotplug_event+0x10a/0x250
+[   71.432392]  [<ffffffff811941bd>] ? kmem_cache_free+0x1cd/0x1e0
+[   71.432417]  [<ffffffff813716e4>] ? acpi_os_execute_deferred+0x2d/0x32
+[   71.432422]  [<ffffffff81351cd7>] hotplug_event_work+0x27/0x70
+[   71.432436]  [<ffffffff810835f6>] process_one_work+0x176/0x430
+[   71.432440]  [<ffffffff8108422b>] worker_thread+0x11b/0x3a0
+[   71.432443]  [<ffffffff81084110>] ? rescuer_thread+0x350/0x350
+[   71.432451]  [<ffffffff8108b0d0>] kthread+0xc0/0xd0
+[   71.432455]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.432463]  [<ffffffff81671cbc>] ret_from_fork+0x7c/0xb0
+[   71.432468]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.432471] ---[ end trace 056472c3176dbd86 ]---
+[   71.432604] ------------[ cut here ]------------
+[   71.432668] WARNING: CPU: 0 PID: 37 at drivers/gpu/drm/drm_mm.c:578 drm_mm_takedown+0x2e/0x30 [drm]()
+[   71.432671] Memory manager not clean during takedown.
+[   71.432673] Modules linked in: fuse nf_conntrack_netbios_ns nf_conntrack_broadcast ipt_MASQUERADE ip6t_REJECT bnep bluetooth xt_conntrack ebtable_nat ebtable_broute bridge stp llc ebtable_filter ebtables ip6table_nat nf_conntrack_ipv6 nf_defrag_ipv6 nf_nat_ipv6 ip6table_mangle ip6table_security ip6table_raw ip6table_filter ip6_tables iptable_nat nf_conntrack_ipv4 nf_defrag_ipv4 nf_nat_ipv4 nf_nat nf_conntrack iptable_mangle iptable_security iptable_raw snd_hda_codec_hdmi arc4 snd_hda_codec_realtek brcmsmac coretemp cordic brcmutil b43 snd_hda_intel snd_hda_codec mac80211 snd_hwdep iTCO_wdt uvcvideo snd_seq snd_seq_device kvm cfg80211 snd_pcm ssb crc32c_intel mmc_core iTCO_vendor_support bcma hp_wmi r8169 microcode nfsd mii mei_me auth_rpcgss videobuf2_vmalloc videobuf2_memops mei lpc_ich videobuf2_core
+[   71.432789]  videodev sparse_keymap rfkill nfs_acl snd_page_alloc lockd snd_timer intel_ips shpchp i2c_i801 media snd joydev soundcore mfd_core serio_raw wmi acpi_cpufreq sunrpc radeon i915 i2c_algo_bit ttm drm_kms_helper drm i2c_core video
+[   71.432813] CPU: 0 PID: 37 Comm: kworker/0:1 Tainted: G        W    <KERNEL_VERSION> #1
+[   71.432816] Hardware name: Hewlett-Packard HP G62 Notebook PC              /143A, BIOS F.48 11/09/2011
+[   71.432829] Workqueue: kacpi_hotplug hotplug_event_work
+[   71.432832]  0000000000000009 ffff88014f057a28 ffffffff81662d11 ffff88014f057a70
+[   71.432837]  ffff88014f057a60 ffffffff810691dd ffff88014ee0ceb8 ffff88014ee0ca50
+[   71.432849]  ffff88014ee0ca70 ffff880036794d80 0000000000000000 ffff88014f057ac0
+[   71.432857] Call Trace:
+[   71.432868]  [<ffffffff81662d11>] dump_stack+0x45/0x56
+[   71.432883]  [<ffffffff810691dd>] warn_slowpath_common+0x7d/0xa0
+[   71.432888]  [<ffffffff8106924c>] warn_slowpath_fmt+0x4c/0x50
+[   71.432918]  [<ffffffffa00e667b>] ? ttm_bo_delayed_delete+0x3b/0x1f0 [ttm]
+[   71.432948]  [<ffffffffa0082f9e>] drm_mm_takedown+0x2e/0x30 [drm]
+[   71.432978]  [<ffffffffa009129b>] drm_vma_offset_manager_destroy+0x1b/0x30 [drm]
+[   71.432995]  [<ffffffffa00e7963>] ttm_bo_device_release+0xc3/0xf0 [ttm]
+[   71.433077]  [<ffffffffa01c2975>] radeon_ttm_fini+0xc5/0x180 [radeon]
+[   71.433122]  [<ffffffffa01c33c2>] radeon_bo_fini+0x12/0x20 [radeon]
+[   71.433164]  [<ffffffffa020d1c3>] evergreen_fini+0xa3/0xd0 [radeon]
+[   71.433200]  [<ffffffffa01a7cae>] radeon_device_fini+0x3e/0x120 [radeon]
+[   71.433231]  [<ffffffffa01a9b1d>] radeon_driver_unload_kms+0x3d/0x60 [radeon]
+[   71.433269]  [<ffffffffa007e863>] drm_put_dev+0x63/0x180 [drm]
+[   71.433307]  [<ffffffffa01a606d>] radeon_pci_remove+0x1d/0x20 [radeon]
+[   71.433317]  [<ffffffff8133bfdb>] pci_device_remove+0x3b/0xb0
+[   71.433328]  [<ffffffff813ff89f>] __device_release_driver+0x7f/0xf0
+[   71.433332]  [<ffffffff813ff933>] device_release_driver+0x23/0x30
+[   71.433341]  [<ffffffff813ff0c8>] bus_remove_device+0x108/0x180
+[   71.433347]  [<ffffffff813fb995>] device_del+0x135/0x1d0
+[   71.433358]  [<ffffffff81335b64>] pci_stop_bus_device+0x94/0xa0
+[   71.433363]  [<ffffffff81335c52>] pci_stop_and_remove_bus_device+0x12/0x20
+[   71.433371]  [<ffffffff813508e7>] trim_stale_devices+0x67/0xf0
+[   71.433375]  [<ffffffff81350d36>] acpiphp_check_bridge+0x86/0xd0
+[   71.433380]  [<ffffffff81351b6a>] hotplug_event+0x10a/0x250
+[   71.433388]  [<ffffffff811941bd>] ? kmem_cache_free+0x1cd/0x1e0
+[   71.433423]  [<ffffffff813716e4>] ? acpi_os_execute_deferred+0x2d/0x32
+[   71.433437]  [<ffffffff81351cd7>] hotplug_event_work+0x27/0x70
+[   71.433453]  [<ffffffff810835f6>] process_one_work+0x176/0x430
+[   71.433462]  [<ffffffff8108422b>] worker_thread+0x11b/0x3a0
+[   71.433465]  [<ffffffff81084110>] ? rescuer_thread+0x350/0x350
+[   71.433470]  [<ffffffff8108b0d0>] kthread+0xc0/0xd0
+[   71.433474]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.433480]  [<ffffffff81671cbc>] ret_from_fork+0x7c/0xb0
+[   71.433484]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.433488] ---[ end trace 056472c3176dbd87 ]---
+[   71.433501] [TTM] Finalizing pool allocator
+[   71.433509] [TTM] Finalizing DMA pool allocator
+[   71.433518] ------------[ cut here ]------------
+[   71.433533] WARNING: CPU: 0 PID: 37 at drivers/gpu/drm/ttm/ttm_page_alloc_dma.c:533 ttm_dma_free_pool+0xea/0xf0 [ttm]()
+[   71.433535] Modules linked in: fuse nf_conntrack_netbios_ns nf_conntrack_broadcast ipt_MASQUERADE ip6t_REJECT bnep bluetooth xt_conntrack ebtable_nat ebtable_broute bridge stp llc ebtable_filter ebtables ip6table_nat nf_conntrack_ipv6 nf_defrag_ipv6 nf_nat_ipv6 ip6table_mangle ip6table_security ip6table_raw ip6table_filter ip6_tables iptable_nat nf_conntrack_ipv4 nf_defrag_ipv4 nf_nat_ipv4 nf_nat nf_conntrack iptable_mangle iptable_security iptable_raw snd_hda_codec_hdmi arc4 snd_hda_codec_realtek brcmsmac coretemp cordic brcmutil b43 snd_hda_intel snd_hda_codec mac80211 snd_hwdep iTCO_wdt uvcvideo snd_seq snd_seq_device kvm cfg80211 snd_pcm ssb crc32c_intel mmc_core iTCO_vendor_support bcma hp_wmi r8169 microcode nfsd mii mei_me auth_rpcgss videobuf2_vmalloc videobuf2_memops mei lpc_ich videobuf2_core
+[   71.433578]  videodev sparse_keymap rfkill nfs_acl snd_page_alloc lockd snd_timer intel_ips shpchp i2c_i801 media snd joydev soundcore mfd_core serio_raw wmi acpi_cpufreq sunrpc radeon i915 i2c_algo_bit ttm drm_kms_helper drm i2c_core video
+[   71.433597] CPU: 0 PID: 37 Comm: kworker/0:1 Tainted: G        W    <KERNEL_VERSION> #1
+[   71.433599] Hardware name: Hewlett-Packard HP G62 Notebook PC              /143A, BIOS F.48 11/09/2011
+[   71.433604] Workqueue: kacpi_hotplug hotplug_event_work
+[   71.433606]  0000000000000009 ffff88014f057a30 ffffffff81662d11 0000000000000000
+[   71.433611]  ffff88014f057a68 ffffffff810691dd ffff880036794b40 ffff8801519fe298
+[   71.433615]  0000000000000008 ffffffffa02bd100 ffff880151f0b028 ffff88014f057a78
+[   71.433618] Call Trace:
+[   71.433625]  [<ffffffff81662d11>] dump_stack+0x45/0x56
+[   71.433631]  [<ffffffff810691dd>] warn_slowpath_common+0x7d/0xa0
+[   71.433638]  [<ffffffff810692ba>] warn_slowpath_null+0x1a/0x20
+[   71.433648]  [<ffffffffa00ed0da>] ttm_dma_free_pool+0xea/0xf0 [ttm]
+[   71.433656]  [<ffffffffa00ee0ae>] ttm_dma_page_alloc_fini+0x8e/0x104 [ttm]
+[   71.433666]  [<ffffffffa00e4529>] ttm_mem_global_release+0x19/0x90 [ttm]
+[   71.433693]  [<ffffffffa01c1642>] radeon_ttm_mem_global_release+0x12/0x20 [radeon]
+[   71.433712]  [<ffffffffa008fe8e>] drm_global_item_unref+0x5e/0x80 [drm]
+[   71.433735]  [<ffffffffa01c299e>] radeon_ttm_fini+0xee/0x180 [radeon]
+[   71.433758]  [<ffffffffa01c33c2>] radeon_bo_fini+0x12/0x20 [radeon]
+[   71.433790]  [<ffffffffa020d1c3>] evergreen_fini+0xa3/0xd0 [radeon]
+[   71.433820]  [<ffffffffa01a7cae>] radeon_device_fini+0x3e/0x120 [radeon]
+[   71.433850]  [<ffffffffa01a9b1d>] radeon_driver_unload_kms+0x3d/0x60 [radeon]
+[   71.433876]  [<ffffffffa007e863>] drm_put_dev+0x63/0x180 [drm]
+[   71.433900]  [<ffffffffa01a606d>] radeon_pci_remove+0x1d/0x20 [radeon]
+[   71.433905]  [<ffffffff8133bfdb>] pci_device_remove+0x3b/0xb0
+[   71.433910]  [<ffffffff813ff89f>] __device_release_driver+0x7f/0xf0
+[   71.433914]  [<ffffffff813ff933>] device_release_driver+0x23/0x30
+[   71.433919]  [<ffffffff813ff0c8>] bus_remove_device+0x108/0x180
+[   71.433923]  [<ffffffff813fb995>] device_del+0x135/0x1d0
+[   71.433928]  [<ffffffff81335b64>] pci_stop_bus_device+0x94/0xa0
+[   71.433941]  [<ffffffff81335c52>] pci_stop_and_remove_bus_device+0x12/0x20
+[   71.433946]  [<ffffffff813508e7>] trim_stale_devices+0x67/0xf0
+[   71.433949]  [<ffffffff81350d36>] acpiphp_check_bridge+0x86/0xd0
+[   71.433957]  [<ffffffff81351b6a>] hotplug_event+0x10a/0x250
+[   71.433961]  [<ffffffff811941bd>] ? kmem_cache_free+0x1cd/0x1e0
+[   71.433968]  [<ffffffff813716e4>] ? acpi_os_execute_deferred+0x2d/0x32
+[   71.433974]  [<ffffffff81351cd7>] hotplug_event_work+0x27/0x70
+[   71.433980]  [<ffffffff810835f6>] process_one_work+0x176/0x430
+[   71.433983]  [<ffffffff8108422b>] worker_thread+0x11b/0x3a0
+[   71.433987]  [<ffffffff81084110>] ? rescuer_thread+0x350/0x350
+[   71.433991]  [<ffffffff8108b0d0>] kthread+0xc0/0xd0
+[   71.433995]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.433999]  [<ffffffff81671cbc>] ret_from_fork+0x7c/0xb0
+[   71.434003]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.434006] ---[ end trace 056472c3176dbd88 ]---
+[   71.434412] [TTM] Zone  kernel: Used memory at exit: 3219 kiB
+[   71.434419] [drm] radeon: ttm finalized
+[   71.434430] vga_switcheroo: disabled
+[   71.460846] snd_hda_intel 0000:01:00.1: Refused to change power state, currently in D3
+[   71.531372] snd_hda_intel 0000:01:00.1: Refused to change power state, currently in D3
+[   71.546585] ------------[ cut here ]------------
+[   71.546597] WARNING: CPU: 0 PID: 37 at drivers/pci/pci.c:1430 pci_disable_device+0x84/0x90()
+[   71.546600] Device snd_hda_intel
+disabling already-disabled device
+[   71.546602] Modules linked in:
+[   71.546605]  fuse nf_conntrack_netbios_ns nf_conntrack_broadcast ipt_MASQUERADE ip6t_REJECT bnep bluetooth xt_conntrack ebtable_nat ebtable_broute bridge stp llc ebtable_filter ebtables ip6table_nat nf_conntrack_ipv6 nf_defrag_ipv6 nf_nat_ipv6 ip6table_mangle ip6table_security ip6table_raw ip6table_filter ip6_tables iptable_nat nf_conntrack_ipv4 nf_defrag_ipv4 nf_nat_ipv4 nf_nat nf_conntrack iptable_mangle iptable_security iptable_raw snd_hda_codec_hdmi arc4 snd_hda_codec_realtek brcmsmac coretemp cordic brcmutil b43 snd_hda_intel snd_hda_codec mac80211 snd_hwdep iTCO_wdt uvcvideo snd_seq snd_seq_device kvm cfg80211 snd_pcm ssb crc32c_intel mmc_core iTCO_vendor_support bcma hp_wmi r8169 microcode nfsd mii mei_me auth_rpcgss videobuf2_vmalloc videobuf2_memops mei lpc_ich videobuf2_core videodev sparse_keymap
+[   71.546671]  rfkill nfs_acl snd_page_alloc lockd snd_timer intel_ips shpchp i2c_i801 media snd joydev soundcore mfd_core serio_raw wmi acpi_cpufreq sunrpc radeon i915 i2c_algo_bit ttm drm_kms_helper drm i2c_core video
+[   71.546695] CPU: 0 PID: 37 Comm: kworker/0:1 Tainted: G        W    <KERNEL_VERSION> #1
+[   71.546697] Hardware name: Hewlett-Packard HP G62 Notebook PC              /143A, BIOS F.48 11/09/2011
+[   71.546703] Workqueue: kacpi_hotplug hotplug_event_work
+[   71.546706]  0000000000000009 ffff88014f057a60 ffffffff81662d11 ffff88014f057aa8
+[   71.546710]  ffff88014f057a98 ffffffff810691dd ffff8801519ff000 ffff88014fdc05a0
+[   71.546714]  0000000000000000 0000000000002000 ffff880151f0b028 ffff88014f057af8
+[   71.546717] Call Trace:
+[   71.546726]  [<ffffffff81662d11>] dump_stack+0x45/0x56
+[   71.546732]  [<ffffffff810691dd>] warn_slowpath_common+0x7d/0xa0
+[   71.546735]  [<ffffffff8106924c>] warn_slowpath_fmt+0x4c/0x50
+[   71.546740]  [<ffffffff813395c4>] pci_disable_device+0x84/0x90
+[   71.546747]  [<ffffffffa066926d>] azx_free+0x1ad/0x2c0 [snd_hda_intel]
+[   71.546753]  [<ffffffffa0669392>] azx_dev_free+0x12/0x20 [snd_hda_intel]
+[   71.546765]  [<ffffffffa02f30d5>] snd_device_free+0x65/0x140 [snd]
+[   71.546772]  [<ffffffffa02f35d1>] snd_device_free_all+0x61/0xa0 [snd]
+[   71.546779]  [<ffffffffa02ecb84>] snd_card_do_free+0x54/0x140 [snd]
+[   71.546786]  [<ffffffffa02ecfa4>] snd_card_free+0x94/0xa0 [snd]
+[   71.546793]  [<ffffffff8108be90>] ? wake_up_atomic_t+0x30/0x30
+[   71.546798]  [<ffffffffa0666912>] azx_remove+0x22/0x30 [snd_hda_intel]
+[   71.546803]  [<ffffffff8133bfdb>] pci_device_remove+0x3b/0xb0
+[   71.546808]  [<ffffffff813ff89f>] __device_release_driver+0x7f/0xf0
+[   71.546811]  [<ffffffff813ff933>] device_release_driver+0x23/0x30
+[   71.546818]  [<ffffffff813ff0c8>] bus_remove_device+0x108/0x180
+[   71.546822]  [<ffffffff813fb995>] device_del+0x135/0x1d0
+[   71.546827]  [<ffffffff81335b64>] pci_stop_bus_device+0x94/0xa0
+[   71.546831]  [<ffffffff81335c52>] pci_stop_and_remove_bus_device+0x12/0x20
+[   71.546835]  [<ffffffff813508e7>] trim_stale_devices+0x67/0xf0
+[   71.546839]  [<ffffffff81350d36>] acpiphp_check_bridge+0x86/0xd0
+[   71.546843]  [<ffffffff81351b6a>] hotplug_event+0x10a/0x250
+[   71.546849]  [<ffffffff811941bd>] ? kmem_cache_free+0x1cd/0x1e0
+[   71.546853]  [<ffffffff813716e4>] ? acpi_os_execute_deferred+0x2d/0x32
+[   71.546857]  [<ffffffff81351cd7>] hotplug_event_work+0x27/0x70
+[   71.546863]  [<ffffffff810835f6>] process_one_work+0x176/0x430
+[   71.546865]  [<ffffffff8108422b>] worker_thread+0x11b/0x3a0
+[   71.546868]  [<ffffffff81084110>] ? rescuer_thread+0x350/0x350
+[   71.546872]  [<ffffffff8108b0d0>] kthread+0xc0/0xd0
+[   71.546875]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.546880]  [<ffffffff81671cbc>] ret_from_fork+0x7c/0xb0
+[   71.546883]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.546886] ---[ end trace 056472c3176dbd89 ]---

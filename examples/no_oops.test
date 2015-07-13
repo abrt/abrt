@@ -1,0 +1,43 @@
+[   71.427921] Call Trace:
+[   71.427930]  [<ffffffff81662d11>] dump_stack+0x45/0x56
+[   71.427937]  [<ffffffff810691dd>] warn_slowpath_common+0x7d/0xa0
+[   71.427941]  [<ffffffff8106924c>] warn_slowpath_fmt+0x4c/0x50
+[   71.427968]  [<ffffffffa01c435a>] radeon_gart_unbind+0xca/0xe0 [radeon]
+[   71.427993]  [<ffffffffa01c158a>] radeon_ttm_backend_unbind+0x1a/0x20 [radeon]
+[   71.428014]  [<ffffffffa00e4fb7>] ttm_tt_unbind+0x27/0x40 [ttm]
+[   71.428024]  [<ffffffffa00e84a8>] ttm_bo_move_ttm+0xd8/0x120 [ttm]
+[   71.428033]  [<ffffffffa00e6eab>] ttm_bo_handle_move_mem+0x4fb/0x5b0 [ttm]
+[   71.428043]  [<ffffffffa00e7546>] ? ttm_bo_mem_space+0x116/0x340 [ttm]
+[   71.428053]  [<ffffffffa00e70ca>] ttm_bo_evict+0x16a/0x330 [ttm]
+[   71.428063]  [<ffffffffa00e73c1>] ttm_mem_evict_first+0x131/0x1a0 [ttm]
+[   71.428073]  [<ffffffffa00e77d4>] ttm_bo_force_list_clean+0x64/0xb0 [ttm]
+[   71.428084]  [<ffffffffa00e7867>] ttm_bo_clean_mm+0x47/0x80 [ttm]
+[   71.428109]  [<ffffffffa01c296d>] radeon_ttm_fini+0xbd/0x180 [radeon]
+[   71.428135]  [<ffffffffa01c33c2>] radeon_bo_fini+0x12/0x20 [radeon]
+[   71.428170]  [<ffffffffa020d1c3>] evergreen_fini+0xa3/0xd0 [radeon]
+[   71.428191]  [<ffffffffa01a7cae>] radeon_device_fini+0x3e/0x120 [radeon]
+[   71.428213]  [<ffffffffa01a9b1d>] radeon_driver_unload_kms+0x3d/0x60 [radeon]
+[   71.428235]  [<ffffffffa007e863>] drm_put_dev+0x63/0x180 [drm]
+[   71.428257]  [<ffffffffa01a606d>] radeon_pci_remove+0x1d/0x20 [radeon]
+[   71.428263]  [<ffffffff8133bfdb>] pci_device_remove+0x3b/0xb0
+[   71.428270]  [<ffffffff813ff89f>] __device_release_driver+0x7f/0xf0
+[   71.428274]  [<ffffffff813ff933>] device_release_driver+0x23/0x30
+[   71.428281]  [<ffffffff813ff0c8>] bus_remove_device+0x108/0x180
+[   71.428286]  [<ffffffff813fb995>] device_del+0x135/0x1d0
+[   71.428292]  [<ffffffff81335b64>] pci_stop_bus_device+0x94/0xa0
+[   71.428296]  [<ffffffff81335c52>] pci_stop_and_remove_bus_device+0x12/0x20
+[   71.428300]  [<ffffffff813508e7>] trim_stale_devices+0x67/0xf0
+[   71.428304]  [<ffffffff81350d36>] acpiphp_check_bridge+0x86/0xd0
+[   71.428307]  [<ffffffff81351b6a>] hotplug_event+0x10a/0x250
+[   71.428313]  [<ffffffff811941bd>] ? kmem_cache_free+0x1cd/0x1e0
+[   71.428317]  [<ffffffff813716e4>] ? acpi_os_execute_deferred+0x2d/0x32
+[   71.428321]  [<ffffffff81351cd7>] hotplug_event_work+0x27/0x70
+[   71.428327]  [<ffffffff810835f6>] process_one_work+0x176/0x430
+[   71.428330]  [<ffffffff8108422b>] worker_thread+0x11b/0x3a0
+[   71.428332]  [<ffffffff81084110>] ? rescuer_thread+0x350/0x350
+[   71.428338]  [<ffffffff8108b0d0>] kthread+0xc0/0xd0
+[   71.428341]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.428346]  [<ffffffff81671cbc>] ret_from_fork+0x7c/0xb0
+[   71.428350]  [<ffffffff8108b010>] ? insert_kthread_work+0x40/0x40
+[   71.428353] ---[ end trace 056472c3176dbd80 ]---
+[   71.428359] ------------[ cut here ]------------
