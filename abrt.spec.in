@@ -85,7 +85,7 @@ BuildRequires: xmlto
 BuildRequires: libreport-devel >= %{libreport_ver}
 BuildRequires: satyr-devel >= %{satyr_ver}
 BuildRequires: systemd-python
-BuildRequires: systemd-python3
+BuildRequires: python3-systemd
 BuildRequires: augeas
 BuildRequires: libselinux-devel
 
@@ -102,11 +102,11 @@ Requires: %{systemd_units}
 %endif
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
-Requires: %{name}-python = %{version}-%{release}
+Requires: %{name}-python3 = %{version}-%{release}
 Requires(pre): %{shadow_utils}
-Requires: python-augeas
-Requires: python-dbus
-Requires: python-dmidecode
+Requires: python3-augeas
+Requires: python3-dbus
+Requires: python3-dmidecode
 Requires: libreport-plugin-ureport
 %if 0%{?rhel}
 Requires: libreport-plugin-rhtsupport
@@ -191,7 +191,7 @@ Requires: %{name}-retrace-client
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-addon-coredump-helper = %{version}-%{release}
 Requires: abrt-libs = %{version}-%{release}
-Requires: libreport-python
+Requires: libreport-python3
 
 %description addon-ccpp
 This package contains %{name}'s C/C++ analyzer plugin.
@@ -249,8 +249,8 @@ Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-addon-kerneloops
 Requires: kexec-tools
-Requires: abrt-python
-Requires: python-augeas
+Requires: abrt-python3
+Requires: python3-augeas
 
 %description addon-vmcore
 This package contains plugin for collecting kernel crash information from
@@ -299,7 +299,7 @@ Summary: %{name}'s addon for catching and analyzing Python 3 exceptions
 Group: System Environment/Libraries
 Requires: python3
 Requires: %{name} = %{version}-%{release}
-Requires: systemd-python3
+Requires: python3-systemd
 Requires: abrt-python3
 
 %description addon-python3
