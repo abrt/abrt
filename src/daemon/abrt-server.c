@@ -126,15 +126,17 @@ static int delete_path(const char *dump_dir_name)
 
 static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *event_name, int *fdp)
 {
-    char *args[7];
+    char *args[9];
     args[0] = (char *) LIBEXEC_DIR"/abrt-handle-event";
     /* Do not forward ASK_* messages to parent*/
     args[1] = (char *) "-i";
-    args[2] = (char *) "-e";
-    args[3] = (char *) event_name;
-    args[4] = (char *) "--";
-    args[5] = (char *) dump_dir_name;
-    args[6] = NULL;
+    args[2] = (char *) "--nice";
+    args[3] = (char *) "10";
+    args[4] = (char *) "-e";
+    args[5] = (char *) event_name;
+    args[6] = (char *) "--";
+    args[7] = (char *) dump_dir_name;
+    args[8] = NULL;
 
     int pipeout[2];
     int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_QUIET | EXECFLG_ERR2OUT;

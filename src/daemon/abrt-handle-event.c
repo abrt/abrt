@@ -403,16 +403,18 @@ int main(int argc, char **argv)
     abrt_init(argv);
 
     const char *program_usage_string = _(
-        "& [-v -i] -e|--event EVENT DIR..."
+        "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
         );
 
     char *event_name = NULL;
     int interactive = 0; /* must be _int_, OPT_BOOL expects that! */
+    int nice_incr = 0;
 
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_STRING('e', "event" , &event_name, "EVENT",  _("Run EVENT on DIR")),
         OPT_BOOL('i', "interactive" , &interactive, _("Communicate directly to the user")),
+        OPT_INTEGER('n',     "nice" , &nice_incr,   _("Increment the nice value by INCREMENT")),
         OPT_END()
     };
 
@@ -422,6 +424,21 @@ int main(int argc, char **argv)
         show_usage_and_die(program_usage_string, program_options);
 
     load_abrt_conf();
+
+    const char *const opt_env_nice = getenv("ABRT_EVENT_NICE");
+    if (opt_env_nice != NULL && opt_env_nice[0] != '\0')
+    {
+        log_debug("Using ABRT_EVENT_NICE=%s to increment the nice value", opt_env_nice);
+        nice_incr = xatoi(opt_env_nice);
+    }
+
+    if (nice_incr != 0)
+    {
+        log_debug("Incrementing the nice value by %d", nice_incr);
+        const int ret = nice(nice_incr);
+        if (ret == -1)
+            perror_msg_and_die("Failed to increment the nice value");
+    }
 
     bool post_create = (strcmp(event_name, "post-create") == 0);
     char *dump_dir_name = NULL;

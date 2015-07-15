@@ -36,6 +36,13 @@ OPTIONS
 -p::
    Add program names to log.
 
+ENVIRONMENT
+-----------
+ABRT_EVENT_NICE::
+  'abrtd' runs its post-mortem processing with the nice value incremented by 10
+  in order to not take too much resources and keep the computer responsive.  If
+  you want to adjust the increment value, use the ABRT_EVENT_NICE environment
+  variable.
 
 CAVEATS
 -------
