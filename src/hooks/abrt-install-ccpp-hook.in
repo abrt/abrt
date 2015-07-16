@@ -31,6 +31,11 @@ CORE_PIPE_LIMIT_FILE="/proc/sys/kernel/core_pipe_limit"
 CORE_PIPE_LIMIT="4"
 
 start() {
+	if ! $HOOK_BIN --test-config; then
+		echo "Invalid configuration."
+		exit 1
+	fi
+
 	cur=`cat "$PATTERN_FILE"`
 	cur_first=`printf "%s" "$cur" | sed 's/ .*//'`
 
