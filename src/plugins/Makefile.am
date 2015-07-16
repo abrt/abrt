@@ -74,6 +74,7 @@ PYTHON_FILES = \
     abrt-action-list-dsos \
     abrt-action-analyze-core \
     abrt-action-analyze-vulnerability \
+    abrt-action-check-oops-for-alt-component.in \
     abrt-action-check-oops-for-hw-error.in \
     abrt-action-perform-ccpp-analysis.in \
     abrt-action-notify
@@ -101,6 +102,7 @@ EXTRA_DIST = \
 if BUILD_ADDON_VMCORE
 bin_SCRIPTS += \
     abrt-action-analyze-vmcore \
+    abrt-action-check-oops-for-alt-component \
     abrt-action-check-oops-for-hw-error
 
 dist_events_DATA += \
@@ -115,6 +117,7 @@ PYTHON_FILES += \
 EXTRA_DIST += \
     analyze_VMcore.xml.in \
     abrt-action-analyze-vmcore \
+    abrt-action-check-oops-for-alt-component \
     abrt-action-check-oops-for-hw-error
 endif
 

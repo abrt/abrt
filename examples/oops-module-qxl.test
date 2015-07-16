@@ -1,0 +1,35 @@
+WARNING: CPU: 0 PID: 1113 at drivers/gpu/drm/qxl/qxl_ttm.c:414 qxl_sync_obj_wait+0x188/0x210 [qxl]()
+sync obj 301 still has outstanding releases 0 0 0 4096 1
+Modules linked in: uinput ip6t_rpfilter ip6t_REJECT xt_conntrack ebtable_nat ebtable_broute bridge stp llc ebtable_filter ebtables ip6table_nat nf_conntrack_ipv6 nf_defrag_ipv6 nf_nat_ipv6 ip6table_mangle ip6table_security ip6table_raw ip6table_filter ip6_tables iptable_nat nf_conntrack_ipv4 nf_defrag_ipv4 nf_nat_ipv4 nf_nat nf_conntrack iptable_mangle iptable_security iptable_raw snd_hda_codec_generic snd_hda_intel snd_hda_controller snd_hda_codec joydev crct10dif_pclmul crc32_pclmul crc32c_intel ghash_clmulni_intel snd_hwdep snd_seq snd_seq_device snd_pcm snd_timer virtio_balloon snd virtio_console soundcore ppdev parport_pc serio_raw parport pvpanic i2c_piix4 nfsd auth_rpcgss nfs_acl lockd sunrpc virtio_net virtio_blk qxl drm_kms_helper ttm drm virtio_pci virtio_ring virtio ata_generic
+ pata_acpi
+CPU: 0 PID: 1113 Comm: Xorg.bin Not tainted 3.17.8-300.fc21.x86_64 #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.7.5-20140709_153950- 04/01/2014
+ 0000000000000000 00000000081232f1 ffff88007b49f880 ffffffff81741aea
+ ffff88007b49f8c8 ffff88007b49f8b8 ffffffff810970bd 0000000000000001
+ ffff880058b41360 0000000000000001 ffff880058b41378 0000000000000000
+Call Trace:
+ [<ffffffff81741aea>] dump_stack+0x45/0x56
+ [<ffffffff810970bd>] warn_slowpath_common+0x7d/0xa0
+ [<ffffffff8109713c>] warn_slowpath_fmt+0x5c/0x80
+ [<ffffffff81747e23>] ? schedule_hrtimeout_range+0x13/0x20
+ [<ffffffffa00991e8>] qxl_sync_obj_wait+0x188/0x210 [qxl]
+ [<ffffffff8132c2ac>] ? mls_level_isvalid+0x5c/0x70
+ [<ffffffffa00ad73d>] ttm_bo_wait+0xad/0x1b0 [ttm]
+ [<ffffffffa00af399>] ttm_bo_evict+0x59/0x3a0 [ttm]
+ [<ffffffff813265cc>] ? security_compute_sid.part.11+0x2cc/0x570
+ [<ffffffff811ee33e>] ? kmem_cache_alloc_trace+0x1ee/0x220
+ [<ffffffffa00af80d>] ttm_mem_evict_first+0x12d/0x1c0 [ttm]
+ [<ffffffffa00afb65>] ttm_bo_mem_space+0x2c5/0x350 [ttm]
+ [<ffffffffa00b0082>] ttm_bo_validate+0x1d2/0x250 [ttm]
+ [<ffffffffa00b0369>] ttm_bo_init+0x269/0x3c0 [ttm]
+ [<ffffffffa009b3af>] qxl_bo_create+0x13f/0x1b0 [qxl]
+ [<ffffffffa009b120>] ? qxl_fbdev_qobj_is_fb+0x30/0x30 [qxl]
+ [<ffffffffa009bb39>] qxl_gem_object_create+0x69/0x110 [qxl]
+ [<ffffffffa009bc3c>] qxl_gem_object_create_with_handle+0x5c/0x140 [qxl]
+ [<ffffffffa009f016>] qxl_alloc_ioctl+0x46/0xc0 [qxl]
+ [<ffffffffa0050e6f>] drm_ioctl+0x1df/0x680 [drm]
+ [<ffffffff811ca8af>] ? do_mmap_pgoff+0x31f/0x400
+ [<ffffffff812211c0>] do_vfs_ioctl+0x2d0/0x4b0
+ [<ffffffff811c9701>] ? do_munmap+0x201/0x440
+ [<ffffffff81221421>] SyS_ioctl+0x81/0xa0
+ [<ffffffff81748ca9>] system_call_fastpath+0x16/0x1b

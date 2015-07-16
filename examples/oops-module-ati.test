@@ -1,0 +1,47 @@
+kernel BUG at drivers/gpu/drm/radeon/radeon_asic.c:56!
+invalid opcode: 0000 [#1] SMP 
+Modules linked in: ata_generic pata_acpi amdkfd amd_iommu_v2 radeon i2c_algo_bit drm_kms_helper 8021q ttm garp stp llc mrp drm 8139too uas serio_raw 8139cp mii usb_storage pata_jmicron
+CPU: 1 PID: 280 Comm: plymouthd Not tainted 4.0.6-300.fc22.x86_64 #1
+Hardware name: Gigabyte Technology Co., Ltd. P35-DS3L/P35-DS3L, BIOS F3 07/12/2007
+task: ffff8800d87f6360 ti: ffff880035cd4000 task.ti: ffff880035cd4000
+RIP: 0010:[<ffffffffa01010e7>]  [<ffffffffa01010e7>] radeon_invalid_rreg+0x17/0x20 [radeon]
+RSP: 0018:ffff880035cd79b8  EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffff8800365676c0 RCX: 0000000000000053
+RDX: 0000000000000000 RSI: ffff88011fc8e698 RDI: ffff88011fc8e698
+RBP: ffff880035cd79b8 R08: 0000000000000000 R09: 0000000000000342
+R10: ffffffff81878aa0 R11: 0000000000000342 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000040
+FS:  00007faf82611700(0000) GS:ffff88011fc80000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f6a91d00140 CR3: 0000000035c80000 CR4: 00000000000007e0
+Stack:
+ ffff880035cd79c8 ffffffffa00fe439 ffff880035cd7a18 ffffffffa0117357
+ ffff880035cd7a58 00000001810d8bd9 ffff88011fc953f8 ffff880035cd7aa8
+ 0000000000000001 ffff880035cd7aa4 0000000000000001 0000000000000090
+Call Trace:
+ [<ffffffffa00fe439>] cail_pll_read+0x19/0x20 [radeon]
+ [<ffffffffa0117357>] atom_get_src_int+0x77/0x800 [radeon]
+ [<ffffffffa0117f66>] atom_op_compare+0x76/0x1f0 [radeon]
+ [<ffffffffa011a999>] ? atom_execute_table_locked+0x229/0x410 [radeon]
+ [<ffffffffa011a89b>] atom_execute_table_locked+0x12b/0x410 [radeon]
+ [<ffffffff81786011>] ? _cond_resched+0x21/0x30
+ [<ffffffffa011ada1>] atom_execute_table_scratch_unlocked+0x61/0x80 [radeon]
+ [<ffffffffa011adf3>] atom_execute_table+0x33/0x50 [radeon]
+ [<ffffffffa016dcdf>] radeon_dp_encoder_service+0x5f/0x80 [radeon]
+ [<ffffffffa016e7dd>] radeon_dp_getsinktype+0x2d/0x30 [radeon]
+ [<ffffffffa01e9a30>] radeon_audio_detect+0xd0/0x160 [radeon]
+ [<ffffffffa0127d1b>] radeon_dvi_detect+0x1bb/0x4d0 [radeon]
+ [<ffffffffa00e2cc8>] drm_helper_probe_single_connector_modes_merge_bits+0x248/0x500 [drm_kms_helper]
+ [<ffffffffa006fbee>] ? get_properties+0xbe/0x110 [drm]
+ [<ffffffffa00e2f93>] drm_helper_probe_single_connector_modes+0x13/0x20 [drm_kms_helper]
+ [<ffffffffa00748c0>] drm_mode_getconnector+0x340/0x3a0 [drm]
+ [<ffffffffa0065a5b>] drm_ioctl+0x1db/0x640 [drm]
+ [<ffffffffa0074580>] ? drm_mode_getcrtc+0xf0/0xf0 [drm]
+ [<ffffffffa00fe04c>] radeon_drm_ioctl+0x4c/0x80 [radeon]
+ [<ffffffff812320e6>] do_vfs_ioctl+0x2c6/0x4d0
+ [<ffffffff81232371>] SyS_ioctl+0x81/0xa0
+ [<ffffffff8178a0c8>] ? int_check_syscall_exit_work+0x34/0x3d
+ [<ffffffff81789e89>] system_call_fastpath+0x12/0x17
+Code: a0 31 c0 48 89 e5 e8 59 82 f6 ff 0f 0b 0f 1f 80 00 00 00 00 66 66 66 66 90 55 48 c7 c7 48 e1 22 a0 31 c0 48 89 e5 e8 39 82 f6 ff <0f> 0b 0f 1f 80 00 00 00 00 66 66 66 66 90 55 48 89 e5 53 48 89 
+RIP  [<ffffffffa01010e7>] radeon_invalid_rreg+0x17/0x20 [radeon]
+ RSP <ffff880035cd79b8>

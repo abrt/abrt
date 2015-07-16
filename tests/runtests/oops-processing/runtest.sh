@@ -100,6 +100,7 @@ rlJournalStart
             fi
 
             rlAssertGrep "kernel" "$crash_PATH/pkg_name"
+            rlAssertGrep "kernel" "$crash_PATH/component"
             rlAssertGrep "$kernel_version" "$crash_PATH/pkg_version"
 
             rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
