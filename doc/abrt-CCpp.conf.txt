@@ -22,10 +22,8 @@ SaveBinaryImage = 'yes' / 'no' ...::
 CreateCoreBacktrace = 'yes' / 'no' ...::
    When this option is set to 'yes', core backtrace is generated
    from the memory image of the crashing process. Only the crash
-   thread is present in the backtrace. This feature requires
-   kernel 3.18 or newer, otherwise the core backtrace is not
-   created.
-   Default is 'yes'.
+   thread is present in the backtrace.
+   Default is 'no'.
 
 SaveFullCore = 'yes' / 'no' ...::
    Save full coredump? If set to 'no', coredump won't be saved
