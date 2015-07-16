@@ -1,0 +1,24 @@
+WARNING: CPU: 3 PID: 40 at drivers/gpu/drm/i915/intel_pm.c:6312 intel_display_power_put+0x14c/0x160 [i915]()
+Modules linked in: tun ccm rfcomm fuse ip6t_rpfilter ip6t_REJECT xt_conntrack ebtable_nat ebtable_broute bridge stp llc ebtable_filter ebtables ip6table_nat nf_conntrack_ipv6 nf_defrag_ipv6 nf_nat_ipv6 ip6table_mangle ip6table_security ip6table_raw ip6table_filter ip6_tables iptable_nat nf_conntrack_ipv4 nf_defrag_ipv4 nf_nat_ipv4 nf_nat nf_conntrack iptable_mangle iptable_security iptable_raw bnep arc4 snd_hda_codec_realtek snd_hda_codec_generic snd_hda_codec_hdmi snd_hda_intel snd_hda_controller intel_rapl x86_pkg_temp_thermal snd_hda_codec coretemp iwlmvm iTCO_wdt uvcvideo iTCO_vendor_support mac80211 snd_hwdep videobuf2_vmalloc videobuf2_memops kvm snd_seq snd_seq_device btusb iwlwifi hid_uclogic bluetooth videobuf2_core snd_pcm v4l2_common cfg80211 joydev videodev serio_raw media
+ thinkpad_acpi rtsx_pci_ms tpm_tis memstick tpm rfkill mei_me mei snd_timer snd ie31200_edac edac_core i2c_i801 lpc_ich shpchp soundcore dm_crypt nouveau i915 rtsx_pci_sdmmc mmc_core mxm_wmi ttm i2c_algo_bit e1000e drm_kms_helper crct10dif_pclmul crc32_pclmul crc32c_intel drm ghash_clmulni_intel rtsx_pci mfd_core ptp pps_core wmi video
+CPU: 3 PID: 40 Comm: kworker/3:0 Not tainted 3.17.8-300.fc21.x86_64 #1
+Hardware name: LENOVO 20BFS39000/20BFS39000, BIOS GMET66WW (2.14 ) 07/01/2014
+Workqueue: events edp_panel_vdd_work [i915]
+ 0000000000000000 000000002d20f7ae ffff880428367d38 ffffffff81741aea
+ 0000000000000000 ffff880428367d70 ffffffff810970bd ffff880423a00044
+ 0000000000000011 ffff880423a08610 ffff880427cb8000 ffff880423a00000
+Call Trace:
+ [<ffffffff81741aea>] dump_stack+0x45/0x56
+ [<ffffffff810970bd>] warn_slowpath_common+0x7d/0xa0
+ [<ffffffff810971ea>] warn_slowpath_null+0x1a/0x20
+ [<ffffffffa01992ec>] intel_display_power_put+0x14c/0x160 [i915]
+ [<ffffffffa0204924>] edp_panel_vdd_off_sync+0xf4/0x1e0 [i915]
+ [<ffffffffa0204a74>] edp_panel_vdd_work+0x34/0x50 [i915]
+ [<ffffffff810af89d>] process_one_work+0x14d/0x400
+ [<ffffffff810b022b>] worker_thread+0x6b/0x4a0
+ [<ffffffff810b01c0>] ? rescuer_thread+0x2a0/0x2a0
+ [<ffffffff810b531a>] kthread+0xea/0x100
+ [<ffffffff810b6d90>] ? override_creds+0x40/0x40
+ [<ffffffff810b5230>] ? kthread_create_on_node+0x1a0/0x1a0
+ [<ffffffff81748bfc>] ret_from_fork+0x7c/0xb0
+ [<ffffffff810b5230>] ? kthread_create_on_node+0x1a0/0x1a0

@@ -1,0 +1,52 @@
+BUG: soft lockup - CPU#1 stuck for 22s! [X:5189]
+Modules linked in: cdc_acm ccm ip6t_rpfilter ip6t_REJECT xt_conntrack ebtable_nat ebtable_broute bridge stp llc ebtable_filter ebtables ip6table_nat nf_conntrack_ipv6 nf_defrag_ipv6 nf_nat_ipv6 ip6table_mangle ip6table_security ip6table_raw ip6table_filter ip6_tables iptable_nat nf_conntrack_ipv4 nf_defrag_ipv4 nf_nat_ipv4 nf_nat nf_conntrack iptable_mangle iptable_security iptable_raw bnep arc4 x86_pkg_temp_thermal iwldvm coretemp mac80211 kvm crc32_pclmul crc32c_intel snd_hda_codec_hdmi snd_hda_codec_realtek snd_hda_codec_generic snd_hda_intel uvcvideo snd_hda_controller videobuf2_vmalloc snd_hda_codec videobuf2_memops videobuf2_core snd_hwdep videodev snd_seq snd_seq_device media snd_pcm acer_wmi iTCO_wdt iTCO_vendor_support iwlwifi snd_timer btusb microcode snd serio_raw bluetooth soundcore cfg80211 lpc_ich mfd_core i2c_i801 ideapad_laptop sparse_keymap rfkill mei_me mei nfsd auth_rpcgss nfs_acl lockd sunrpc binfmt_misc nouveau mxm_wmi i915 ttm i2c_algo_bit r8169 drm_kms_helper mii drm wmi i2c_core video
+CPU: 1 PID: 5189 Comm: X Not tainted 3.15.10-201.fc20.i686+PAE #1
+Hardware name: LENOVO HuronRiver Platform/Emerald Lake, BIOS 45CN47WW 02/15/2012
+task: ebb99a40 ti: ebc92000 task.ti: ebc92000
+EIP: 0060:[<c06ca742>] EFLAGS: 00003296 CPU: 1
+EIP is at ioread32+0x32/0x40
+EAX: ffffffff EBX: f2042780 ECX: 00000000 EDX: 00000000
+ESI: f6c423c0 EDI: 0061a804 EBP: ebc93c9c ESP: ebc93c74
+ DS: 007b ES: 007b FS: 00d8 GS: 00e0 SS: 0068
+CR0: 80050033 CR2: 0920d0c4 CR3: 2dfd2000 CR4: 000407f0
+Stack:
+ f8779b2d 77359400 0061a804 00000000 00000000 ffffffff ffffffff 00000800
+ f6c423c0 0061a804 ebc93cd0 f8788f80 0061a804 80000000 00000000 f7e961ff
+ 00000004 00000154 00000001 c0a0e6a0 f6c423c0 ebc93cec 00000001 ebc93ce0
+Call Trace:
+ [<f8779b2d>] ? nouveau_timer_wait_eq+0x5d/0xc0 [nouveau]
+ [<f8788f80>] nv50_dac_sense+0x60/0x140 [nouveau]
+ [<f7e961ff>] ? __i2c_transfer+0x5f/0x210 [i2c_core]
+ [<c0a0e6a0>] ? mutex_lock+0x10/0x28
+ [<f878909a>] nv50_dac_mthd+0x3a/0x70 [nouveau]
+ [<f8789060>] ? nv50_dac_sense+0x140/0x140 [nouveau]
+ [<f87dc63c>] nv50_dac_detect+0x8c/0xb0 [nouveau]
+ [<f87c8f92>] nouveau_connector_detect+0x332/0x3b0 [nouveau]
+ [<f80664c2>] ? intel_display_power_put+0xe2/0x140 [i915]
+ [<f80b0001>] ? vlv_get_colorkey+0x51/0x90 [i915]
+ [<f7f0b740>] drm_helper_probe_single_connector_modes_merge_bits+0x260/0x380 [drm_kms_helper]
+ [<f7f0b877>] drm_helper_probe_single_connector_modes+0x17/0x20 [drm_kms_helper]
+ [<f7f4c3ad>] drm_mode_getconnector+0x2fd/0x380 [drm]
+ [<f7f0b877>] ? drm_helper_probe_single_connector_modes+0x17/0x20 [drm_kms_helper]
+ [<f7f4c344>] ? drm_mode_getconnector+0x294/0x380 [drm]
+ [<f7f4c0b0>] ? drm_mode_getcrtc+0xc0/0xc0 [drm]
+ [<f7f3f52f>] drm_ioctl+0x1cf/0x530 [drm]
+ [<c06c3a16>] ? _copy_to_user+0x26/0x30
+ [<f7f3f6f3>] ? drm_ioctl+0x393/0x530 [drm]
+ [<c05b585d>] ? fsnotify_destroy_event+0x1d/0x20
+ [<f7f4c0b0>] ? drm_mode_getcrtc+0xc0/0xc0 [drm]
+ [<c05064a7>] ? blk_add_trace_bio.isra.10+0x37/0x70
+ [<c07c5201>] ? __pm_runtime_resume+0x51/0x70
+ [<c04c64a7>] ? each_symbol_section.part.7+0xd7/0x160
+ [<f87b6ae1>] nouveau_drm_ioctl+0x51/0x80 [nouveau]
+ [<f87b6a90>] ? nouveau_pmops_thaw+0x60/0x60 [nouveau]
+ [<c058c62a>] do_vfs_ioctl+0x2ea/0x4b0
+ [<c057d741>] ? __sb_end_write+0x31/0x70
+ [<c057bc05>] ? vfs_write+0x155/0x1b0
+ [<c058c850>] SyS_ioctl+0x60/0x90
+ [<c04c64a7>] ? each_symbol_section.part.7+0xd7/0x160
+ [<c04c64a7>] ? each_symbol_section.part.7+0xd7/0x160
+ [<c0a1819f>] sysenter_do_call+0x12/0x12
+ [<c04c64a7>] ? each_symbol_section.part.7+0xd7/0x160
+ [<c04c64a7>] ? each_symbol_section.part.7+0xd7/0x160
+Code: 3d 00 00 01 00 76 0a 0f b7 d0 ed c3 90 8d 74 26 00 55 ba b3 eb be c0 89 e5 e8 0b ff ff ff b8 ff ff ff ff 5d c3 8d 74 26 00 8b 00 <c3> 8d b6 00 00 00 00 8d bc 27 00 00 00 00 81 fa ff ff 03 00 89
