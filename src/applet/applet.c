@@ -661,7 +661,11 @@ static void notify_problem_list(GList *problems)
         app = problem_create_app_from_env (problem_info_get_env(pi), problem_info_get_pid(pi));
 
         if (!app)
-            app = problem_create_app_from_cmdline (problem_info_get_command_line(pi));
+        {
+            const char *const cmd_line = problem_info_get_command_line(pi);
+            if (cmd_line != NULL)
+                app = problem_create_app_from_cmdline(cmd_line);
+        }
 
         /* For each problem we'll need to know:
          * - Whether or not the crash happened in an “app”
