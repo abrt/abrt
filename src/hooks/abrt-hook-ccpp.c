@@ -426,6 +426,7 @@ static void create_core_backtrace(pid_t tid, const char *executable, int signal_
     {
         log("Failed to create core_backtrace: %s", error_message);
         free(error_message);
+        return;
     }
 
     dd_save_text(dd, FILENAME_CORE_BACKTRACE, core_bt);
