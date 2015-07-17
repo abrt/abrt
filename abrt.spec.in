@@ -1086,6 +1086,19 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Fri Jul 17 2015 Jakub Filak <jfilak@redhat.com> 2.6.2-1
+- applet: do not crash if the new problem has no command_line
+- ccpp: do not crash if generate_core_backtrace fails
+- abrt: Fixup component of select kernel backtraces
+- abrtd: de-prioritize post-create event scripts
+- spec: switch python Requires to python3
+- switch all python scripts to python3
+- spec: drop abrt-addon-python requires
+- a-dump-oops: allow update the problem, if more then one oops found
+- cli: use internal command impl in the command process
+- cli: remove useless code from print_crash()
+- cli: enable authetication for all commands
+
 * Thu Jul 02 2015 Matej Habrnal <mhabrnal@redhat.com> 2.6.1-1
 - dbus: keep the polkit authorization for all clients
 - cli: enable polkit authentication on command line
