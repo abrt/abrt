@@ -1027,12 +1027,12 @@ int main(int argc, char** argv)
         }
 #endif
 
-        /* And finally set the right uid and gid */
-        dd_reset_ownership(dd);
-
         /* Perform crash-time unwind of the guilty thread. */
         if (tid > 0 && setting_CreateCoreBacktrace)
             create_core_backtrace(tid, executable, signal_no, dd);
+
+        /* And finally set the right uid and gid */
+        dd_reset_ownership(dd);
 
         /* We close dumpdir before we start catering for crash storm case.
          * Otherwise, delete_dump_dir's from other concurrent
