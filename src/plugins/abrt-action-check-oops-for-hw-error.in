@@ -9,7 +9,7 @@ import re
 
 GETTEXT_PROGNAME = "abrt"
 
-_ = gettext.lgettext
+_ = gettext.gettext
 
 def file_has_string(filename, string):
     try:
