@@ -19,7 +19,7 @@ from reportclient import (ask_yes_no_yesforever,
 
 GETTEXT_PROGNAME = "abrt"
 
-_ = gettext.lgettext
+_ = gettext.gettext
 
 def handle_event(event_name, problem_dir):
     """Helper function handling a single event

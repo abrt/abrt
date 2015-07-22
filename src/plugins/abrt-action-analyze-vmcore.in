@@ -14,7 +14,7 @@ GETTEXT_PROGNAME = "abrt"
 import locale
 import gettext
 
-_ = lambda x: gettext.lgettext(x)
+_ = lambda x: gettext.gettext(x)
 
 def init_gettext():
     try:
