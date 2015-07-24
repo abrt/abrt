@@ -214,9 +214,12 @@ def harvest_vmcore():
         hashobj = hashlib.sha1()
         # Iterate over the file a line at a time in order to not load the whole
         # vmcore file
-        with open(os.path.join(f_full, 'vmcore'), 'r') as corefile:
-            for line in corefile:
-                hashobj.update(line)
+        with open(os.path.join(f_full, 'vmcore'), 'rb') as corefile:
+            while True:
+                chunk = corefile.read(8192)
+                if not chunk:
+                    break
+                hashobj.update(chunk)
 
         dd = create_abrtd_info(destdirnew, hashobj.hexdigest())
         if dd is None:
