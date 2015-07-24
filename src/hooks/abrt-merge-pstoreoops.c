@@ -64,9 +64,9 @@ int compare_oops_texts(const void *a, const void *b)
         return -1;
     if (aa->panic_no > bb->panic_no)
         return 1;
-    if (aa->part_no < bb->part_no)
+    if (aa->part_no > bb->part_no)
         return -1;
-    return (aa->part_no > bb->part_no);
+    return (aa->part_no < bb->part_no);
 }
 
 int main(int argc, char **argv)
