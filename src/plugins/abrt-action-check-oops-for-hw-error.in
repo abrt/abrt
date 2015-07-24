@@ -88,7 +88,7 @@ if __name__ == "__main__":
     oops_hash = hashlib.sha1()
     with open("backtrace", "r") as btfile:
         for line in btfile:
-            oops_hash.update(line)
+            oops_hash.update(line.encode())
 
     with open_or_die("uuid", "w") as f:
         f.write(oops_hash.hexdigest())
