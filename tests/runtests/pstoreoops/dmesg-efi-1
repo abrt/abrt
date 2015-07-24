@@ -1,29 +1,14 @@
 Panic#2 Part1
-<4> [drm] Num pipes: 1
-<4> [drm] Setting GART location based on new memorymap
-<4> [drm] Loading RS690/RS740 Microcode
-<4> [drm] Num pipes: 1
-<4> [drm] writeback test succeeded in 1 usecs
-<4> [drm] Num pipes: 1
-<4> [drm] Setting GART location based on new memorymap
-<4> [drm] Loading RS690/RS740 Microcode
-<4> [drm] Num pipes: 1
-<4> [drm] writeback test succeeded in 1 usecs
-<4> [drm] Num pipes: 1
-<4> [drm:radeon_set_igpgart] *ERROR* Unable to useIGP GART table size 32768
-<4> [drm] Loading RS690/RS740 Microcode
-<4> BUG: unable to handle kernel NULL pointer dereference at 00000000
-<4> IP: [<f88dec25>] :radeon:radeon_cp_init_ring_buffer+0x90/0x302
-<4> *pde = 6f5c6067
-<4> Oops: 0000 [#1] SMP.
-<4> Modules linked in: r8169 mii fuse nfsd lockd nfs_acl auth_rpcgss exportfs bridge stp bnep sco l2cap bl
-<4> Pid: 8003, comm: Xorg Not tainted (2.6.27.9-159.fc10.i686 #1)
-<4> EIP: 0060:[<f88dec25>] EFLAGS: 00213246 CPU: 1
-<4> EIP is at radeon_cp_init_ring_buffer+0x90/0x302 [radeon]
-<4> EAX: 00000000 EBX: f78b4000 ECX: f78b4000 EDX: 00000000
-<4> ESI: f5dbe800 EDI: 00006458 EBP: f0a0cf18 ESP: f0a0cf08
-<4> DS: 007b ES: 007b FS: 00d8 GS: 0033 SS: 0068
-<4> Process Xorg (pid: 8003, ti=f0a0c000 task=f2380000 task.ti=f0a0c000)
-<4> Stack: f0a0cf18 f78b4000 f5dbe800 00006458 f0a0cf28 f88e11c7 f8911a24 00000000
-<4>       f0a0cf4c f88745f8 f30c3ba0 f5dbe800 f88e114a f5dbe828 f890fd78 f097ac00
-<4>       00000000 f0a0cf68 c049b1c0 00000000 00006458 f097ac00 f097ac00 00000000
+<4> Call Trace:
+<4> [<f88e11c7>] radeon_cp_resume+0x7d/0xbc [radeon]
+<4> [<f88745f8>] drm_ioctl+0x1b0/0x225 [drm]
+<4> [<f88e114a>] radeon_cp_resume+0x0/0xbc [radeon]
+<4> [<c049b1c0>] vfs_ioctl+0x50/0x69
+<4> [<c049b414>] do_vfs_ioctl+0x23b/0x247
+<4> [<c0460a56>] audit_syscall_entry+0xf9/0x123
+<4> [<c049b460>] sys_ioctl+0x40/0x5c
+<4> [<c0403c76>] syscall_call+0x7/0xb
+<4> =======================
+<4> Code: 66 31 d2 09 c2 89 d8 e8 fc e7 ff ff 8b 83 cc 00 00 00 8b 53 34 03 10 8b 86 70 02 00 00 2b  50 44
+<4> EIP: [<f88dec25>] radeon_cp_init_ring_buffer+0x90/0x302 [radeon] SS:ESP 0068:f0a0cf08
+<4> ---[ end trace 81e3cf9431f7af0c ]---
