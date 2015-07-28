@@ -82,6 +82,15 @@ MAN_SOURCE =
 MAN_SOURCE += abrt-auto-reporting-authenticated.txt
 MAN_SOURCE += abrt-auto-reporting-unauthenticated.txt
 
+# abrt-auto-reporting.txt is a copy of either
+# abrt-auto-reporting-authenticated.txt or
+# abrt-auto-reporting-unauthenticated.txt. abrt-auto-reporting.txt file always
+# exists because MAN1_TXT variable contains it and is distributed (the file is listed
+# in the EXTRA_DIST variable). It would be difficult to ensure
+# to have abrt-auto-reporting.txt in the MAN1_TXT and exclude it
+# from the EXTRA_DIST. So enforce copy, to get the right version of man page, seems
+# like the easiest way.
+.PHONY: abrt-auto-reporting.txt
 if AUTHENTICATED_AUTOREPORTING
 abrt-auto-reporting.txt: abrt-auto-reporting-authenticated.txt
 else
