@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2015-01-05 07:16-0500\n"
+"POT-Creation-Date: 2015-07-14 15:37+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,7 +23,7 @@ msgstr ""
 "language/te/)\n"
 "Language: te\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 3.5.1\n"
+"X-Generator: Zanata 3.6.2\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
@@ -63,7 +63,7 @@ msgstr "DBus నందు నెట్వర్కుమేనేజర్‌న
 msgid "Can't determine network status via NetworkManager: %s"
 msgstr "నెట్వర్కుమేనేజర్ ద్వారా నెట్వర్కు స్థితిని నిర్ణయించలేదు: %s"
 
-#: ../src/applet/applet.c:342
+#: ../src/applet/applet.c:342 ../src/cli/report.c:42
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "'%s' పై అజమాయిషీ తీసుకోలేదు"
@@ -346,7 +346,7 @@ msgstr "గురించి"
 msgid "Quit"
 msgstr "నిష్క్రమించు"
 
-#: ../src/daemon/abrt-action-save-package-data.c:382
+#: ../src/daemon/abrt-action-save-package-data.c:378
 msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
@@ -356,7 +356,7 @@ msgstr ""
 "\n"
 "ప్యాకేజీ డాటాబేస్ క్వరీచేసి ప్యాకేజీ మరియు మూలకం పేరును దాయి"
 
-#: ../src/daemon/abrt-action-save-package-data.c:394
+#: ../src/daemon/abrt-action-save-package-data.c:390
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
 #: ../src/plugins/abrt-action-analyze-c.c:78
 #: ../src/plugins/abrt-action-analyze-oops.c:48
@@ -367,92 +367,102 @@ msgstr ""
 msgid "Problem directory"
 msgstr "సమస్య డైరెక్టరీ"
 
-#: ../src/daemon/abrt-action-save-package-data.c:395
+#: ../src/daemon/abrt-action-save-package-data.c:391
 msgid "Configuration file"
 msgstr "ఆకృతీకరణ ఫైలు"
 
-#: ../src/daemon/abrt-server.c:786 ../src/dbus/abrt-dbus.c:781
+#: ../src/daemon/abrt-server.c:792 ../src/dbus/abrt-dbus.c:1001
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:484
 msgid "& [options]"
 msgstr "& [ఐచ్చికాలు]"
 
-#: ../src/daemon/abrt-server.c:797
+#: ../src/daemon/abrt-server.c:803
 msgid "Use NUM as client uid"
 msgstr "NUM క్లైంట్ uid వలె వుపయోగించు"
 
-#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:280
-#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:273
-#: ../src/plugins/abrt-dump-xorg.c:244
+#: ../src/daemon/abrt-server.c:804 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:281
+#: ../src/plugins/abrt-dump-xorg.c:252
 msgid "Log to syslog"
 msgstr "సిస్‌లాగ్‌కు లాగ్"
 
-#: ../src/daemon/abrt-server.c:799 ../src/daemon/abrtd.c:500
+#: ../src/daemon/abrt-server.c:805 ../src/daemon/abrtd.c:500
 msgid "Add program names to log"
 msgstr "లాగ్‌నకు ప్రోగ్రామ్ పేరులను జతచేయి"
 
-#: ../src/dbus/abrt-dbus.c:123
+#: ../src/dbus/abrt-dbus.c:132
 msgid "Unknown error"
 msgstr "తెలియని దోషం"
 
-#: ../src/dbus/abrt-dbus.c:188
+#: ../src/dbus/abrt-dbus.c:221
 #, c-format
 msgid "'%s' is not a valid problem directory"
 msgstr "'%s' సరైన సమస్యా డైరెక్టరీ కాదు"
 
-#: ../src/dbus/abrt-dbus.c:223
+#: ../src/dbus/abrt-dbus.c:256
 #, c-format
 msgid "'%s' element can't be modified"
 msgstr "'%s' మూలకం సవరించలేదు"
 
-#: ../src/dbus/abrt-dbus.c:244 ../src/dbus/abrt-dbus.c:446
-#: ../src/dbus/abrt-dbus.c:498 ../src/dbus/abrt-configuration.c:618
+#: ../src/dbus/abrt-dbus.c:285 ../src/dbus/abrt-dbus.c:498
+#: ../src/dbus/abrt-dbus.c:560 ../src/dbus/abrt-dbus.c:625
+#: ../src/dbus/abrt-dbus.c:815 ../src/dbus/abrt-configuration.c:618
 #: ../src/dbus/abrt-configuration.c:683
 #, c-format
 msgid "Not Authorized"
 msgstr "ధృవీకరించబడలేదు"
 
-#: ../src/dbus/abrt-dbus.c:256
+#: ../src/dbus/abrt-dbus.c:298
 msgid "Can't access the problem for modification"
 msgstr "సవరణ కొరకు సమస్యను యాక్సెస్ చేయలేము"
 
-#: ../src/dbus/abrt-dbus.c:461
+#: ../src/dbus/abrt-dbus.c:514
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
 "సంచయం chown చేయుట విఫలమైంది. మరిన్ని వివరాల కొరకు వ్యవస్థ లాగ్‌లను "
 "పరిశీలించండి."
 
-#: ../src/dbus/abrt-dbus.c:559
+#: ../src/dbus/abrt-dbus.c:635
+msgid "Can't access the problem for reading"
+msgstr ""
+
+#: ../src/dbus/abrt-dbus.c:690 ../src/dbus/abrt-dbus.c:755
+#: ../src/dbus/abrt-dbus.c:911
 #, c-format
 msgid "'%s' is not a valid element name"
 msgstr "'%s' చెల్లునటువంటి మూలకం పేరు కాదు"
 
-#: ../src/dbus/abrt-dbus.c:580
+#: ../src/dbus/abrt-dbus.c:711
 #, c-format
 msgid "Can't get size of '%s'"
 msgstr "'%s' యొక్క పరిమాణం పొందలేదు"
 
-#: ../src/dbus/abrt-dbus.c:595
+#: ../src/dbus/abrt-dbus.c:726
 msgid "No problem space left"
 msgstr "ఏ సమస్య ఖాళీ విడువలేదు"
 
-#: ../src/dbus/abrt-dbus.c:627
+#: ../src/dbus/abrt-dbus.c:776
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
 msgstr "మూలకం '%s'ను సమస్య డైరెక్టరీ '%s' నుండి తొలగించలేదు"
 
-#: ../src/dbus/abrt-dbus.c:763 ../src/dbus/abrt-configuration.c:983
+#: ../src/dbus/abrt-dbus.c:803
+msgid "Can't access the problem"
+msgstr ""
+
+#: ../src/dbus/abrt-dbus.c:983 ../src/dbus/abrt-configuration.c:983
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr "పేరు '%s' పోయంది, వేరే సేవ యీ పేరు పొంది నడువకుండా చూడండి.\n"
 
-#: ../src/dbus/abrt-dbus.c:790 ../src/dbus/abrt-configuration.c:1011
+#: ../src/dbus/abrt-dbus.c:1010 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:499
 msgid "Exit after NUM seconds of inactivity"
 msgstr "NUM క్షణాల క్రియాహీనత తరువాత నిష్క్రమించు"
 
-#: ../src/dbus/abrt-dbus.c:808 ../src/dbus/abrt-configuration.c:1021
+#: ../src/dbus/abrt-dbus.c:1028 ../src/dbus/abrt-configuration.c:1021
 msgid "This program must be run as root."
 msgstr "ఈ ప్రోగ్రామ్ root గా నడువవలెను."
 
@@ -528,73 +538,74 @@ msgstr "ఏకకాలంలో పనిచేయు వారి సంఖ్
 msgid "Maximal cache size in MiB. Default is "
 msgstr "గరిష్ట క్యాచీ పరిమాణం MiB నందు. అప్రమేయం"
 
-#: ../src/daemon/abrt-auto-reporting.c:176
+#: ../src/daemon/abrt-auto-reporting.c:200
+#: ../src/daemon/abrt-auto-reporting.c:208
 msgid "& [ "
 msgstr "& [ "
 
-#: ../src/daemon/abrt-auto-reporting.c:213
+#: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Turns the authentication off"
 msgstr "ధృవీకరణను ఆఫ్ చేయును"
 
-#: ../src/daemon/abrt-auto-reporting.c:214
+#: ../src/daemon/abrt-auto-reporting.c:236
 msgid "Red Hat Support user name"
 msgstr "Red Hat తోడ్పాటు వాడుకరి పేరు"
 
-#: ../src/daemon/abrt-auto-reporting.c:215
+#: ../src/daemon/abrt-auto-reporting.c:237
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
 msgstr "Red Hat తోడ్పాటు సంకేతపదం, ఇవ్వకపోతే, దానికొరకు ప్రామ్ట్ జారీ అగును"
 
-#: ../src/daemon/abrt-auto-reporting.c:216
+#: ../src/daemon/abrt-auto-reporting.c:238
 msgid "uReport SSL certificate paths or certificate type"
 msgstr "uReport SSL ధృవీకరణపత్రం పాత్స్ లేదా ధృవీకరణపత్రం రకం"
 
-#: ../src/daemon/abrt-auto-reporting.c:227
+#: ../src/daemon/abrt-auto-reporting.c:254
 msgid "You also need to specify --username for --password"
 msgstr "మీరు --username మరియు --password తెలపాలి"
 
-#: ../src/daemon/abrt-auto-reporting.c:233
+#: ../src/daemon/abrt-auto-reporting.c:260
 msgid "You can use either --username or --certificate"
 msgstr "మీరు --username లేదా --certificate ఉపయోగించవచ్చు"
 
-#: ../src/daemon/abrt-auto-reporting.c:239
+#: ../src/daemon/abrt-auto-reporting.c:266
 msgid "You can use either --username or --anonymous"
 msgstr "మీరు --username లేదా --anonymous ఉపయోగించవచ్చు"
 
-#: ../src/daemon/abrt-auto-reporting.c:245
+#: ../src/daemon/abrt-auto-reporting.c:272
 msgid "You can use either --anonymous or --certificate"
 msgstr "మీరు --anonymous లేదా --certificate ఉపయోగించవచ్చు"
 
-#: ../src/daemon/abrt-auto-reporting.c:251
+#: ../src/daemon/abrt-auto-reporting.c:279
 msgid "Invalid number of arguments"
 msgstr "చెల్లని ఆర్గుమెంట్ల సంఖ్య"
 
-#: ../src/daemon/abrt-auto-reporting.c:270
+#: ../src/daemon/abrt-auto-reporting.c:298
 #, c-format
 msgid "Unknown option value: '%s'\n"
 msgstr "తెలియని ఐచ్చికం విలువ: '%s'\n"
 
-#: ../src/daemon/abrt-auto-reporting.c:305
+#: ../src/daemon/abrt-auto-reporting.c:338
 msgid "Password:"
 msgstr "సంకేతపదం:"
 
-#: ../src/daemon/abrt-auto-reporting.c:308
+#: ../src/daemon/abrt-auto-reporting.c:341
 msgid "Cannot continue without password\n"
 msgstr "సంకేతపదం లేకుండా కొనసాగించలేము\n"
 
 #. Print only the part before ':' of a string like "username:password"
-#: ../src/daemon/abrt-auto-reporting.c:347
+#: ../src/daemon/abrt-auto-reporting.c:382
 msgid "HTTP Authenticated auto reporting"
 msgstr "HTTP ధృవీకృత స్వయంచాలన నివేదీకరణ"
 
-#: ../src/daemon/abrt-auto-reporting.c:349
+#: ../src/daemon/abrt-auto-reporting.c:384
 msgid "SSL Client Authenticated auto reporting"
 msgstr "SSL క్లైంట్ ధృవీకృత స్వయంచాలన నివేదీకరణ"
 
-#: ../src/daemon/abrt-auto-reporting.c:351
+#: ../src/daemon/abrt-auto-reporting.c:386
 msgid "anonymous auto reporting"
 msgstr "పేరులేకుండా స్వయంచాలన నివేదీకరణ"
 
-#: ../src/daemon/abrt-handle-upload.in:69
+#: ../src/daemon/abrt-handle-upload.in:135
 #, c-format
 msgid ""
 "Usage: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
@@ -613,68 +624,68 @@ msgstr ""
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
 
-#: ../src/daemon/abrt-handle-upload.in:105
-#: ../src/daemon/abrt-handle-upload.in:108
+#: ../src/daemon/abrt-handle-upload.in:171
+#: ../src/daemon/abrt-handle-upload.in:174
 msgid "Not a directory: '{0}'"
 msgstr "సంచయం కాదు: '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:111
+#: ../src/daemon/abrt-handle-upload.in:177
 msgid "Skipping: '{0}' (starts with slash)"
 msgstr "దాటవేస్తోంది: '{0}' (స్లాష్‌తో ప్రారంభమగును)"
 
-#: ../src/daemon/abrt-handle-upload.in:114
+#: ../src/daemon/abrt-handle-upload.in:180
 msgid "Skipping: '{0}' (starts with dot)"
 msgstr "దాటవేస్తోంది: '{0}' (డాట్‌తో ప్రారంభమగును)"
 
-#: ../src/daemon/abrt-handle-upload.in:117
+#: ../src/daemon/abrt-handle-upload.in:183
 msgid "Skipping: '{0}' (contains ..)"
 msgstr "దాటవేస్తోంది: '{0}' (.. కలిగివుంది)"
 
-#: ../src/daemon/abrt-handle-upload.in:120
+#: ../src/daemon/abrt-handle-upload.in:186
 msgid "Skipping: '{0}' (contains space)"
 msgstr "దాటవేస్తోంది: '{0}' (ఖాళీ కలిగివుంది)"
 
-#: ../src/daemon/abrt-handle-upload.in:123
+#: ../src/daemon/abrt-handle-upload.in:189
 msgid "Skipping: '{0}' (contains tab)"
 msgstr "దాటవేస్తోంది: '{0}' (టాబ్ కలిగివుంది)"
 
-#: ../src/daemon/abrt-handle-upload.in:128
+#: ../src/daemon/abrt-handle-upload.in:194
 msgid "Can't change directory to '{0}'"
 msgstr "సంచయంను '{0}' కు మార్చలేదు"
 
-#: ../src/daemon/abrt-handle-upload.in:139
+#: ../src/daemon/abrt-handle-upload.in:205
 msgid "Unknown file type: '{0}'"
 msgstr "తెలియని ఫైల్ రకం: '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:144
+#: ../src/daemon/abrt-handle-upload.in:210
 msgid "Can't create working directory in '{0}'"
 msgstr "'{0}' నందు పనిచేయుచున్న సంచయం సృష్టించలేదు"
 
-#: ../src/daemon/abrt-handle-upload.in:155
+#: ../src/daemon/abrt-handle-upload.in:221
 msgid "Can't move '{0}' to '{1}'"
 msgstr "'{0}' ను '{1}' కు కదల్చలేదు"
 
-#: ../src/daemon/abrt-handle-upload.in:160
+#: ../src/daemon/abrt-handle-upload.in:226
 msgid "Can't copy '{0}' to '{1}'"
 msgstr "'{0}' ను '{1}' కు నకలుతీయలేదు"
 
-#: ../src/daemon/abrt-handle-upload.in:164
+#: ../src/daemon/abrt-handle-upload.in:230
 msgid "Verification error on '{0}'"
 msgstr "'{0}' పై నిర్ధారణ దోషం"
 
-#: ../src/daemon/abrt-handle-upload.in:166
+#: ../src/daemon/abrt-handle-upload.in:232
 msgid "Unpacking '{0}'"
 msgstr "'{0}' విడమర్చుతోంది"
 
-#: ../src/daemon/abrt-handle-upload.in:170
+#: ../src/daemon/abrt-handle-upload.in:236
 msgid "Can't create '{0}' directory"
 msgstr "'{0}' సంచయం సృష్టించలేదు"
 
-#: ../src/daemon/abrt-handle-upload.in:174
+#: ../src/daemon/abrt-handle-upload.in:240
 msgid "Can't unpack '{0}'"
 msgstr "'{0}' విడమర్చలేదు"
 
-#: ../src/daemon/abrt-handle-upload.in:198
+#: ../src/daemon/abrt-handle-upload.in:260
 msgid "'{0}' processed successfully"
 msgstr "'{0}' విజయవంతంగా ప్రోసెసైంది"
 
@@ -698,7 +709,8 @@ msgstr "chown '%s' కాలేదు: %s"
 msgid "Deleting problem directory failed: %s"
 msgstr "సమస్యా డైరెక్టరీను తొలగించుట విఫలమైంది: %s"
 
-#: ../src/lib/problem_api_dbus.c:133
+#: ../src/lib/problem_api_dbus.c:133 ../src/lib/problem_api_dbus.c:206
+#: ../src/lib/problem_api_dbus.c:286
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
 msgstr "abrt-dbus నుండి సమస్యా దత్తాంశమును పొందలేదు: %s"
@@ -707,6 +719,11 @@ msgstr "abrt-dbus నుండి సమస్యా దత్తాంశము
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
 msgstr "abrt-dbus నుండి సమస్య జాబితాను పొందలేదు: %s"
+
+#: ../src/lib/problem_api_dbus.c:250
+#, c-format
+msgid "Can't test whether the element exists over abrt-dbus: %s"
+msgstr ""
 
 #: ../src/lib/ignored_problems.c:233
 #, c-format
@@ -983,6 +1000,35 @@ msgstr "డీబగ్‌యిన్ఫో ఫైల్ తప్పిపో�
 msgid "All debuginfo files are available"
 msgstr "అన్ని డీబగ్‌యిన్ఫో ఫైళ్ళు అందుబాటులో వున్నాయి"
 
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:43
+msgid ""
+"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+"\t[-r REPO]\n"
+"\n"
+"Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
+"ABRT system cache."
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:66
+msgid "Noninteractive, assume 'Yes' to all questions"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:67
+msgid "- means STDIN, default: build_ids"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
+msgid "Download only specified files"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
+msgid "Pattern to use when searching for repos, default: *debug*"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
+msgid "Ignored option"
+msgstr ""
+
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
 msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
@@ -1224,7 +1270,7 @@ msgstr ""
 msgid " Tainted modules: %s."
 msgstr "టైన్టెట్ మాడ్యూళ్ళు: %s."
 
-#: ../src/plugins/abrt-dump-oops.c:254
+#: ../src/plugins/abrt-dump-oops.c:262
 msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
@@ -1234,51 +1280,51 @@ msgstr ""
 "\n"
 "FILE (లేదా ప్రామాణిక ఇన్పుట్) నుండి oops వెలికితీయి"
 
-#: ../src/plugins/abrt-dump-oops.c:274
+#: ../src/plugins/abrt-dump-oops.c:282
 msgid "Print found oopses on standard output"
 msgstr "కనుగొన్న oopses ను ప్రామాణిక అవుట్పుట్‌పై ముద్రించు"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
 #. 
-#: ../src/plugins/abrt-dump-oops.c:278
+#: ../src/plugins/abrt-dump-oops.c:286
 msgid "Create new problem directory in DIR for every oops found"
 msgstr "కనుగొనబడిన ప్రతి oopsకు కొత్త సమస్య డైరెక్టరీను DIR నందు సృష్టించుము"
 
-#: ../src/plugins/abrt-dump-oops.c:279 ../src/plugins/abrt-dump-xorg.c:247
+#: ../src/plugins/abrt-dump-oops.c:287 ../src/plugins/abrt-dump-xorg.c:255
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "-d DumpLocation వలె, DumpLocation అనునది abrt.conf నందు తెలుపబడెను"
 
-#: ../src/plugins/abrt-dump-oops.c:280
+#: ../src/plugins/abrt-dump-oops.c:288
 msgid "Save the extracted information in PROBLEM"
 msgstr "వెలికితీసిన సమాచారం PROBLEM నందు దాయి"
 
-#: ../src/plugins/abrt-dump-oops.c:281 ../src/plugins/abrt-dump-xorg.c:248
+#: ../src/plugins/abrt-dump-oops.c:289 ../src/plugins/abrt-dump-xorg.c:256
 msgid "Make the problem directory world readable"
 msgstr "సమస్యాత్మక డైరెక్టరీను అందరూ చదువదగినదిగా చేయి"
 
-#: ../src/plugins/abrt-dump-oops.c:282
+#: ../src/plugins/abrt-dump-oops.c:290
 msgid "Throttle problem directory creation to 1 per second"
 msgstr "డైరెక్టరీ సృష్టించుటలో సమస్యను ఒక్కో క్షణానికి 1 కి బిగించు."
 
-#: ../src/plugins/abrt-dump-oops.c:283 ../src/plugins/abrt-dump-xorg.c:249
+#: ../src/plugins/abrt-dump-oops.c:291 ../src/plugins/abrt-dump-xorg.c:257
 msgid "Print search string(s) to stdout and exit"
 msgstr "stdout కు శోధన స్ట్రింగ్స్ ముద్రించి నిష్క్రమించు"
 
-#: ../src/plugins/abrt-dump-oops.c:311
+#: ../src/plugins/abrt-dump-oops.c:319
 msgid "Failed to compile regex"
 msgstr "regex కంపైల్ చేయుటకు విఫలమైంది"
 
-#: ../src/plugins/abrt-dump-oops.c:402
+#: ../src/plugins/abrt-dump-oops.c:410
 msgid "Can't update the problem: more than one oops found"
 msgstr "సమస్యను నవీకరించలేము: ఒకటి కన్నా ఎక్కువ oops కనబడెను"
 
-#: ../src/plugins/abrt-dump-oops.c:421
+#: ../src/plugins/abrt-dump-oops.c:429
 #, c-format
 msgid "Sleeping for %d seconds"
 msgstr "%d క్షణాలు స్లీపింగ్"
 
-#: ../src/plugins/abrt-dump-xorg.c:237
+#: ../src/plugins/abrt-dump-xorg.c:245
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
@@ -1288,11 +1334,11 @@ msgstr ""
 "\n"
 "Xorg క్రాష్ ఫైలు నుండి (లేదా ప్రామాణిక యిన్పుట్) నుండి వెలికితీయి"
 
-#: ../src/plugins/abrt-dump-xorg.c:245
+#: ../src/plugins/abrt-dump-xorg.c:253
 msgid "Print found crash data on standard output"
 msgstr "కనుగొనిన క్రాష్ దత్తాంశం ప్రామాణిక అవుట్పుట్‌పై ముద్రించు"
 
-#: ../src/plugins/abrt-dump-xorg.c:246
+#: ../src/plugins/abrt-dump-xorg.c:254
 msgid "Create problem directory in DIR for every crash found"
 msgstr "కనుగొనిన ప్రతి క్రాష్‌నకు DIR నందు సమస్య డైరెక్టరీ సృష్టించుము"
 
@@ -1890,44 +1936,50 @@ msgstr "కనుగొన్న oopses ముద్రించు"
 msgid "Delete files with found oopses"
 msgstr "కనుగొన్న oopses తో ఫైళ్ళు తొలగించు"
 
-#: ../src/cli/abrt-cli-core.c:91
+#: ../src/cli/abrt-cli-core.c:100
 #, c-format
 msgid "'%s' identifies more than one problem directory"
 msgstr "'%s' ఒకటి కన్నా ఎక్కువ సమస్య డైరెక్టరీలు గుర్తించెను"
 
-#: ../src/cli/abrt-cli.c:144
-msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
-msgstr "వా‍డుక: abrt-cli [--version] COMMAND [DIR]..."
+#: ../src/cli/abrt-cli.c:130
+msgid "Usage: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
+msgstr ""
 
-#: ../src/cli/abrt-cli.c:148
+#: ../src/cli/abrt-cli.c:134
 msgid "List problems [in DIRs]"
 msgstr "సమస్యలను జాబితాచేయి [DIRల నందు]"
 
-#: ../src/cli/abrt-cli.c:149
+#: ../src/cli/abrt-cli.c:135
 msgid "Remove problem directory DIR"
 msgstr "సమస్య డైరెక్టరీ DIR తీసివేయి"
 
-#: ../src/cli/abrt-cli.c:150
+#: ../src/cli/abrt-cli.c:136
 msgid "Analyze and report problem data in DIR"
 msgstr "సమస్య డాటాను DIR నందు విశ్లేషించు మరియు నివేదించు"
 
-#: ../src/cli/abrt-cli.c:151
+#: ../src/cli/abrt-cli.c:137
 msgid "Print information about DIR"
 msgstr "DIR గురించి సమాచారం ముద్రించు"
 
-#: ../src/cli/abrt-cli.c:152
+#: ../src/cli/abrt-cli.c:138
 msgid "Print the count of the recent crashes"
 msgstr "ఇటీవలి క్రాష్‌ల లెక్కను ముద్రించు"
 
-#: ../src/cli/abrt-cli.c:153
+#: ../src/cli/abrt-cli.c:139
 msgid "Process multiple problems"
 msgstr "పలు సమస్యలను ప్రోసెస్‌చేయి"
 
-#: ../src/cli/abrt-cli.c:168
+#: ../src/cli/abrt-cli.c:153
+msgid ""
+"Private Reports is enabled, use 'abrt-cli -a COMMAND' to get the detected "
+"problems."
+msgstr ""
+
+#: ../src/cli/abrt-cli.c:164
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "అదనపు సమాచారం కొరకు 'abrt-cli COMMAND --help' చూడండి"
 
-#: ../src/cli/list.c:127
+#: ../src/cli/list.c:121
 #, c-format
 msgid ""
 "%sRun 'abrt-cli report %s' for creating a case in Red Hat Customer Portal\n"
@@ -1935,28 +1987,28 @@ msgstr ""
 "Red Hat వినియోగదారి పోర్టల్ నందు ఒక కేస్ గురించి తెలపడానికి %s 'abrt-cli "
 "report %s' నడుపవలెను\n"
 
-#: ../src/cli/list.c:179
-msgid "& list [options] [DIR]..."
-msgstr "& list [options] [DIR]..."
+#: ../src/cli/list.c:173
+msgid "& list [options]"
+msgstr ""
 
-#: ../src/cli/list.c:188
+#: ../src/cli/list.c:182
 msgid "List only not-reported problems"
 msgstr "నివేదించని సమస్యలు మాత్రమే జాబితాచేయి"
 
 #. deprecate -d option with --pretty=full
-#: ../src/cli/list.c:190 ../src/cli/list.c:243
+#: ../src/cli/list.c:184 ../src/cli/list.c:237
 msgid "Show detailed report"
 msgstr "విశదీకృత నివేదిక చూపుము"
 
-#: ../src/cli/list.c:191
+#: ../src/cli/list.c:185
 msgid "List only the problems more recent than specified timestamp"
 msgstr "తెలిపిన టైమ్‌స్టాంప్ కన్నా యిటీవలి సమస్యలు మాత్రమే జాబితాచేయి"
 
-#: ../src/cli/list.c:192
+#: ../src/cli/list.c:186
 msgid "List only the problems older than specified timestamp"
 msgstr "తెలిపిన టైమ్‌స్టాంప్ కన్నా పాత సమస్యలు మాత్రమే జాబితాచేయి"
 
-#: ../src/cli/list.c:224
+#: ../src/cli/list.c:212
 #, c-format
 msgid ""
 "The Autoreporting feature is disabled. Please consider enabling it by "
@@ -1966,50 +2018,55 @@ msgstr ""
 "స్వయంచాలక నివేదీకరణ విశేషణం అచేతనం చేయబడెను. root అనుమతులగల వాడుకరితో\n"
 "'abrt-auto-reporting enabled' జారీచేసి దానిని చేతనం చేయుము.\n"
 
-#: ../src/cli/list.c:235
+#: ../src/cli/list.c:229
 msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
 
-#: ../src/cli/list.c:244
+#: ../src/cli/list.c:238
 msgid "Text larger than this will be shown abridged"
 msgstr "దీనికన్నా పెద్దదైన పాఠం సంక్షిప్తంగా చూపబడును"
 
-#: ../src/cli/list.c:264
+#: ../src/cli/list.c:258
 #, c-format
 msgid "No such problem directory '%s'"
 msgstr "అటువంటి సమస్యా డైరెక్టరీ '%s' లేదు"
 
-#: ../src/cli/status.c:70
-msgid "& status [DIR]..."
-msgstr "& స్థితి [DIR]..."
+#: ../src/cli/status.c:63
+msgid "& status"
+msgstr ""
 
-#: ../src/cli/status.c:78
+#: ../src/cli/status.c:71
 msgid "Print only the problem count without any message"
 msgstr "ఏ సందేశం లేకుండా సమస్య లెక్కను మాత్రమే ముద్రించు"
 
-#: ../src/cli/status.c:79
+#: ../src/cli/status.c:72
 msgid "Print only the problems more recent than specified timestamp"
 msgstr "తెలిపిన టైమ్‌స్టాంప్ కన్నా కొత్తవైన సమస్యలను మాత్రమే ముద్రించు"
 
-#: ../src/cli/status.c:104
+#: ../src/cli/status.c:88
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
 msgstr ""
 "ABRT %u సమస్య(లు) గుర్తించెను. మరింత సమాచారం కోసం యిది నడుపండి: abrt-cli "
 "list%s\n"
 
-#: ../src/cli/report.c:28
-msgid "& report [options] DIR..."
-msgstr "& report [options] DIR..."
+#: ../src/cli/report.c:34
+#, c-format
+msgid "Can't find problem '%s'"
+msgstr ""
 
-#: ../src/cli/report.c:38
-msgid "Remove PROBLEM_DIR after reporting"
-msgstr "నివేదించిన తరువాత PROBLEM_DIR తీసివేయి"
-
-#: ../src/cli/report.c:71 ../src/cli/process.c:70
+#: ../src/cli/report.c:54 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
 msgstr "'%s' తొలగిస్తోంది"
+
+#: ../src/cli/report.c:70
+msgid "& report [options] DIR..."
+msgstr "& report [options] DIR..."
+
+#: ../src/cli/report.c:80
+msgid "Remove PROBLEM_DIR after reporting"
+msgstr "నివేదించిన తరువాత PROBLEM_DIR తీసివేయి"
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
@@ -2019,22 +2076,22 @@ msgstr "చర్యలు: remove(rm), info(i), skip(s):"
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
 msgstr "చర్యలు: remove(rm), report(e), info(i), skip(s):"
 
-#: ../src/cli/process.c:77
+#: ../src/cli/process.c:78
 #, c-format
 msgid "Reporting '%s'"
 msgstr "'%s' నివేదిస్తోంది"
 
 #. dummy must be free because the function ask allocate memory
-#: ../src/cli/process.c:133
+#: ../src/cli/process.c:127
 msgid "For next problem press ENTER:"
 msgstr "తరువాతి సమస్య కొరకు ENTER వత్తండి:"
 
-#: ../src/cli/process.c:144
+#: ../src/cli/process.c:138
 msgid "Without --since argument, iterates over all detected problems."
 msgstr ""
 "--since ఎగ్రిమెంట్ లేకుండా, మొత్తం గుర్తించిన సమస్యలనందు ఆవృతంచెందును."
 
-#: ../src/cli/process.c:150
+#: ../src/cli/process.c:144
 msgid "Selects only problems detected after timestamp"
 msgstr "టైమ్‌స్టాంప్ తరువాత గుర్తించిన సమస్యలను మాత్రమే ఎంపికచేయును"
 

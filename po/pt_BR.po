@@ -22,21 +22,24 @@
 # Taylon Silmer <taylon@taylon.eti.br>, 2011
 # Teseu <tuliomac@gmail.com>, 2011
 # Vitor Lobo Ramos <lobocode@gmail.com>, 2014
+# Gcintra <gcintra@redhat.com>, 2015. #zanata
+# Jakub Filak <jfilak@redhat.com>, 2015. #zanata
+# Jonatas Z. de Vasconcellos <jonataszv@fedoraproject.org>, 2015. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2015-01-05 07:16-0500\n"
+"POT-Creation-Date: 2015-07-14 15:37+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-12-12 08:30-0500\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"PO-Revision-Date: 2015-07-18 11:44-0400\n"
+"Last-Translator: Gcintra <gcintra@redhat.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
 "fedora-abrt/language/pt_BR/)\n"
 "Language: pt-BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Zanata 3.5.1\n"
+"X-Generator: Zanata 3.6.2\n"
 
 # translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -83,7 +86,7 @@ msgid "Can't determine network status via NetworkManager: %s"
 msgstr "Não foi possível determinar o status usando o NetworkManager: %s"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/applet/applet.c:342
+#: ../src/applet/applet.c:342 ../src/cli/report.c:42
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "Não foi possível obter propriedade de '%s'"
@@ -407,7 +410,7 @@ msgid "Quit"
 msgstr "Sair"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/daemon/abrt-action-save-package-data.c:382
+#: ../src/daemon/abrt-action-save-package-data.c:378
 msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
@@ -418,7 +421,7 @@ msgstr ""
 "Analise o banco de dados do pacote e salve o pacote e nome do componente"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/daemon/abrt-action-save-package-data.c:394
+#: ../src/daemon/abrt-action-save-package-data.c:390
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
 #: ../src/plugins/abrt-action-analyze-c.c:78
 #: ../src/plugins/abrt-action-analyze-oops.c:48
@@ -430,95 +433,106 @@ msgid "Problem directory"
 msgstr "Diretório do problema"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/daemon/abrt-action-save-package-data.c:395
+#: ../src/daemon/abrt-action-save-package-data.c:391
 msgid "Configuration file"
 msgstr "Arquivo de Configuração"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/daemon/abrt-server.c:786 ../src/dbus/abrt-dbus.c:781
+#: ../src/daemon/abrt-server.c:792 ../src/dbus/abrt-dbus.c:1001
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:484
 msgid "& [options]"
 msgstr "& [options]"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/daemon/abrt-server.c:797
+#: ../src/daemon/abrt-server.c:803
 msgid "Use NUM as client uid"
 msgstr "Utilize o NUM como uid de cliente"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:280
-#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:273
-#: ../src/plugins/abrt-dump-xorg.c:244
+#: ../src/daemon/abrt-server.c:804 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:281
+#: ../src/plugins/abrt-dump-xorg.c:252
 msgid "Log to syslog"
 msgstr "Log para o syslog"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/daemon/abrt-server.c:799 ../src/daemon/abrtd.c:500
+#: ../src/daemon/abrt-server.c:805 ../src/daemon/abrtd.c:500
 msgid "Add program names to log"
 msgstr "Adicionar os nomes dos programas ao log"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:123
+#: ../src/dbus/abrt-dbus.c:132
 msgid "Unknown error"
 msgstr "Erro desconhecido"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:188
+#: ../src/dbus/abrt-dbus.c:221
 #, c-format
 msgid "'%s' is not a valid problem directory"
 msgstr "'%s' não é um diretório de problema válido"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:223
+#: ../src/dbus/abrt-dbus.c:256
 #, c-format
 msgid "'%s' element can't be modified"
 msgstr "O '%s' não pode ser modificado"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:244 ../src/dbus/abrt-dbus.c:446
-#: ../src/dbus/abrt-dbus.c:498 ../src/dbus/abrt-configuration.c:618
+#: ../src/dbus/abrt-dbus.c:285 ../src/dbus/abrt-dbus.c:498
+#: ../src/dbus/abrt-dbus.c:560 ../src/dbus/abrt-dbus.c:625
+#: ../src/dbus/abrt-dbus.c:815 ../src/dbus/abrt-configuration.c:618
 #: ../src/dbus/abrt-configuration.c:683
 #, c-format
 msgid "Not Authorized"
 msgstr "Não Autorizado"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:256
+#: ../src/dbus/abrt-dbus.c:298
 msgid "Can't access the problem for modification"
 msgstr "Não é possível acessar o problema para modificação"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:461
+#: ../src/dbus/abrt-dbus.c:514
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
 "Erro ao mudar o dono do diretório. Verifique os logs do sistema para mais "
 "detalhes."
 
+# translation auto-copied from project abrt, version master, document abrt, author Jonatas Z. de Vasconcellos
+#: ../src/dbus/abrt-dbus.c:635
+msgid "Can't access the problem for reading"
+msgstr "Não é possível acessar o problema para leitura"
+
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:559
+#: ../src/dbus/abrt-dbus.c:690 ../src/dbus/abrt-dbus.c:755
+#: ../src/dbus/abrt-dbus.c:911
 #, c-format
 msgid "'%s' is not a valid element name"
 msgstr "'%s'  não é um nome válido de elemento"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:580
+#: ../src/dbus/abrt-dbus.c:711
 #, c-format
 msgid "Can't get size of '%s'"
 msgstr "Não foi possível obter o tamanho de '%s'"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:595
+#: ../src/dbus/abrt-dbus.c:726
 msgid "No problem space left"
 msgstr "Nenhum problema de espaço."
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:627
+#: ../src/dbus/abrt-dbus.c:776
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
 msgstr "Não é possível remover o elemento '%s' do diretório de problema '%s'"
 
+#: ../src/dbus/abrt-dbus.c:803
+msgid "Can't access the problem"
+msgstr "Não é possível acessar o problema "
+
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:763 ../src/dbus/abrt-configuration.c:983
+#: ../src/dbus/abrt-dbus.c:983 ../src/dbus/abrt-configuration.c:983
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
@@ -528,13 +542,13 @@ msgstr ""
 "nome não está em execução.\n"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:790 ../src/dbus/abrt-configuration.c:1011
+#: ../src/dbus/abrt-dbus.c:1010 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:499
 msgid "Exit after NUM seconds of inactivity"
 msgstr "Sai após os segundos NUM de inatividade"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:808 ../src/dbus/abrt-configuration.c:1021
+#: ../src/dbus/abrt-dbus.c:1028 ../src/dbus/abrt-configuration.c:1021
 msgid "This program must be run as root."
 msgstr "Este programa deve estar sendo executado como root."
 
@@ -619,74 +633,76 @@ msgid "Maximal cache size in MiB. Default is "
 msgstr "Tamanho máximo de cache em MiB. O padrão é"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/daemon/abrt-auto-reporting.c:176
+#: ../src/daemon/abrt-auto-reporting.c:200
+#: ../src/daemon/abrt-auto-reporting.c:208
 msgid "& [ "
 msgstr "& [ "
 
-#: ../src/daemon/abrt-auto-reporting.c:213
+#: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Turns the authentication off"
-msgstr ""
+msgstr "Desliga a Autenticação"
 
-#: ../src/daemon/abrt-auto-reporting.c:214
+#: ../src/daemon/abrt-auto-reporting.c:236
 msgid "Red Hat Support user name"
-msgstr ""
+msgstr "Nome do usuário do Red Hat Support"
 
-#: ../src/daemon/abrt-auto-reporting.c:215
+#: ../src/daemon/abrt-auto-reporting.c:237
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
 msgstr ""
+"Senha do Red Hat Support, caso não seja fornecida, será enviada uma "
+"solicitação "
 
-#: ../src/daemon/abrt-auto-reporting.c:216
+#: ../src/daemon/abrt-auto-reporting.c:238
 msgid "uReport SSL certificate paths or certificate type"
-msgstr ""
+msgstr "Caminhos de certiifcado ou tipo de certificado do uReport SSL"
 
-#: ../src/daemon/abrt-auto-reporting.c:227
+#: ../src/daemon/abrt-auto-reporting.c:254
 msgid "You also need to specify --username for --password"
-msgstr ""
+msgstr "Você também precisa especificar --username para --password"
 
-#: ../src/daemon/abrt-auto-reporting.c:233
+#: ../src/daemon/abrt-auto-reporting.c:260
 msgid "You can use either --username or --certificate"
-msgstr ""
+msgstr "Você pode utilizar --username ou --certificate"
 
-#: ../src/daemon/abrt-auto-reporting.c:239
+#: ../src/daemon/abrt-auto-reporting.c:266
 msgid "You can use either --username or --anonymous"
-msgstr ""
+msgstr "Você pode usar --username ou --anonymous"
 
-#: ../src/daemon/abrt-auto-reporting.c:245
+#: ../src/daemon/abrt-auto-reporting.c:272
 msgid "You can use either --anonymous or --certificate"
-msgstr ""
+msgstr "Você pode usar --anonymous ou --certificate"
 
-#: ../src/daemon/abrt-auto-reporting.c:251
+#: ../src/daemon/abrt-auto-reporting.c:279
 msgid "Invalid number of arguments"
 msgstr "Número de argumentos é inválido"
 
-#: ../src/daemon/abrt-auto-reporting.c:270
+#: ../src/daemon/abrt-auto-reporting.c:298
 #, c-format
 msgid "Unknown option value: '%s'\n"
 msgstr "Valor de opção desconhecida: '%s'\n"
 
-#: ../src/daemon/abrt-auto-reporting.c:305
+#: ../src/daemon/abrt-auto-reporting.c:338
 msgid "Password:"
-msgstr ""
+msgstr "Senha:"
 
-#: ../src/daemon/abrt-auto-reporting.c:308
+#: ../src/daemon/abrt-auto-reporting.c:341
 msgid "Cannot continue without password\n"
-msgstr ""
+msgstr "Não foi possível continuar sem uma senha\n"
 
 #. Print only the part before ':' of a string like "username:password"
-#: ../src/daemon/abrt-auto-reporting.c:347
+#: ../src/daemon/abrt-auto-reporting.c:382
 msgid "HTTP Authenticated auto reporting"
-msgstr ""
+msgstr "Reportagem automática de HTTP autenticado"
 
-#: ../src/daemon/abrt-auto-reporting.c:349
-#, fuzzy
+#: ../src/daemon/abrt-auto-reporting.c:384
 msgid "SSL Client Authenticated auto reporting"
-msgstr "Reportar resumidamente de maneira anônima"
+msgstr "Reportagem automática de SSL Client autenticado"
 
-#: ../src/daemon/abrt-auto-reporting.c:351
+#: ../src/daemon/abrt-auto-reporting.c:386
 msgid "anonymous auto reporting"
-msgstr ""
+msgstr "Reportagem automática anônima"
 
-#: ../src/daemon/abrt-handle-upload.in:69
+#: ../src/daemon/abrt-handle-upload.in:135
 #, c-format
 msgid ""
 "Usage: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
@@ -705,68 +721,68 @@ msgstr ""
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
 
-#: ../src/daemon/abrt-handle-upload.in:105
-#: ../src/daemon/abrt-handle-upload.in:108
+#: ../src/daemon/abrt-handle-upload.in:171
+#: ../src/daemon/abrt-handle-upload.in:174
 msgid "Not a directory: '{0}'"
 msgstr "Não é um diretório: '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:111
+#: ../src/daemon/abrt-handle-upload.in:177
 msgid "Skipping: '{0}' (starts with slash)"
 msgstr "Pulando: '{0}' (começa com a barra)"
 
-#: ../src/daemon/abrt-handle-upload.in:114
+#: ../src/daemon/abrt-handle-upload.in:180
 msgid "Skipping: '{0}' (starts with dot)"
 msgstr "Pulando: '{0}' (começa com o ponto)"
 
-#: ../src/daemon/abrt-handle-upload.in:117
+#: ../src/daemon/abrt-handle-upload.in:183
 msgid "Skipping: '{0}' (contains ..)"
 msgstr "Pulando: '{0}' (contém ..)"
 
-#: ../src/daemon/abrt-handle-upload.in:120
+#: ../src/daemon/abrt-handle-upload.in:186
 msgid "Skipping: '{0}' (contains space)"
 msgstr "Pulando: '{0}' (contém espaço)"
 
-#: ../src/daemon/abrt-handle-upload.in:123
+#: ../src/daemon/abrt-handle-upload.in:189
 msgid "Skipping: '{0}' (contains tab)"
 msgstr "Pulando: '{0}' (contém aba)"
 
-#: ../src/daemon/abrt-handle-upload.in:128
+#: ../src/daemon/abrt-handle-upload.in:194
 msgid "Can't change directory to '{0}'"
 msgstr "Não foi possível modificar o diretóri para '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:139
+#: ../src/daemon/abrt-handle-upload.in:205
 msgid "Unknown file type: '{0}'"
 msgstr "Tipo de arquivo desconhecido:  '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:144
+#: ../src/daemon/abrt-handle-upload.in:210
 msgid "Can't create working directory in '{0}'"
 msgstr "Não foi possível criar o diretório em funcionamento no  '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:155
+#: ../src/daemon/abrt-handle-upload.in:221
 msgid "Can't move '{0}' to '{1}'"
 msgstr "Não foi possível mover  '{0}' para '{1}'"
 
-#: ../src/daemon/abrt-handle-upload.in:160
+#: ../src/daemon/abrt-handle-upload.in:226
 msgid "Can't copy '{0}' to '{1}'"
 msgstr "Não foi possível copiar  '{0}' para  '{1}'"
 
-#: ../src/daemon/abrt-handle-upload.in:164
+#: ../src/daemon/abrt-handle-upload.in:230
 msgid "Verification error on '{0}'"
 msgstr "Erro de verificação no  '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:166
+#: ../src/daemon/abrt-handle-upload.in:232
 msgid "Unpacking '{0}'"
 msgstr "Desempacotando '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:170
+#: ../src/daemon/abrt-handle-upload.in:236
 msgid "Can't create '{0}' directory"
 msgstr "Não foi possível criar o diretório  '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:174
+#: ../src/daemon/abrt-handle-upload.in:240
 msgid "Can't unpack '{0}'"
 msgstr "Não foi possível desempacotar '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:198
+#: ../src/daemon/abrt-handle-upload.in:260
 msgid "'{0}' processed successfully"
 msgstr "'{0}' processado com sucesso"
 
@@ -795,7 +811,8 @@ msgid "Deleting problem directory failed: %s"
 msgstr "Remoção do diretório problema falhou: %s"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/lib/problem_api_dbus.c:133
+#: ../src/lib/problem_api_dbus.c:133 ../src/lib/problem_api_dbus.c:206
+#: ../src/lib/problem_api_dbus.c:286
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
 msgstr "Não foi possível obter dados de problemas do abrt-dbus: %s"
@@ -805,6 +822,11 @@ msgstr "Não foi possível obter dados de problemas do abrt-dbus: %s"
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
 msgstr "Não foi possível obter lista de problemas a partir do abrt-dbus: %s"
+
+#: ../src/lib/problem_api_dbus.c:250
+#, c-format
+msgid "Can't test whether the element exists over abrt-dbus: %s"
+msgstr "Não foi possível testar se os elementos existem em abrt-dbus: %s"
 
 # translation auto-copied from project abrt, version master, document abrt
 #: ../src/lib/ignored_problems.c:233
@@ -1104,6 +1126,41 @@ msgstr "Faltando arquivo debuginfo: {0}"
 msgid "All debuginfo files are available"
 msgstr "Todos os arquivos debuginfo estão disponíveis."
 
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:43
+msgid ""
+"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+"\t[-r REPO]\n"
+"\n"
+"Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
+"ABRT system cache."
+msgstr ""
+"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+"\t[-r REPO]\n"
+"\n"
+"Instal pacotes do debuginfo para todos os build-ids listados no "
+"BUILD_IDS_FILE para o cache do sistema\n"
+"ABRT."
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:66
+msgid "Noninteractive, assume 'Yes' to all questions"
+msgstr "Não interativo, assume-se que 'Sim' para todas as perguntas"
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:67
+msgid "- means STDIN, default: build_ids"
+msgstr "- significa STDIN, padrão: build_ids"
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
+msgid "Download only specified files"
+msgstr "Baixar somente arquivos especificados"
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
+msgid "Pattern to use when searching for repos, default: *debug*"
+msgstr "Modelo a utilizar quando buscar repos, padrão: *debug*"
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
+msgid "Ignored option"
+msgstr "Opção ignorada"
+
 # translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
 msgid ""
@@ -1375,7 +1432,7 @@ msgstr ""
 msgid " Tainted modules: %s."
 msgstr "Módulos danificados: %s"
 
-#: ../src/plugins/abrt-dump-oops.c:254
+#: ../src/plugins/abrt-dump-oops.c:262
 msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
@@ -1386,7 +1443,7 @@ msgstr ""
 "Extrai o oops de FILE (ou entrada padrão)"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/plugins/abrt-dump-oops.c:274
+#: ../src/plugins/abrt-dump-oops.c:282
 msgid "Print found oopses on standard output"
 msgstr "Exibir erros encontrados no resultado padrão"
 
@@ -1394,50 +1451,50 @@ msgstr "Exibir erros encontrados no resultado padrão"
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
 #. 
-#: ../src/plugins/abrt-dump-oops.c:278
+#: ../src/plugins/abrt-dump-oops.c:286
 msgid "Create new problem directory in DIR for every oops found"
 msgstr "Crie novo diretório de problema no DIR para todos os oops encontrados"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/plugins/abrt-dump-oops.c:279 ../src/plugins/abrt-dump-xorg.c:247
+#: ../src/plugins/abrt-dump-oops.c:287 ../src/plugins/abrt-dump-xorg.c:255
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
 "Mesmo que -d DumpLocation, DumpLocation está especificado no abrt.conf"
 
-#: ../src/plugins/abrt-dump-oops.c:280
+#: ../src/plugins/abrt-dump-oops.c:288
 msgid "Save the extracted information in PROBLEM"
 msgstr "Salva a informação extraída em PROBLEM"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/plugins/abrt-dump-oops.c:281 ../src/plugins/abrt-dump-xorg.c:248
+#: ../src/plugins/abrt-dump-oops.c:289 ../src/plugins/abrt-dump-xorg.c:256
 msgid "Make the problem directory world readable"
 msgstr "Tornar o diretório de problema mundial legível"
 
-#: ../src/plugins/abrt-dump-oops.c:282
+#: ../src/plugins/abrt-dump-oops.c:290
 msgid "Throttle problem directory creation to 1 per second"
 msgstr "Alterna a criação de diretório do problema para 1 por segundo"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/plugins/abrt-dump-oops.c:283 ../src/plugins/abrt-dump-xorg.c:249
+#: ../src/plugins/abrt-dump-oops.c:291 ../src/plugins/abrt-dump-xorg.c:257
 msgid "Print search string(s) to stdout and exit"
 msgstr "Imprima a(s)  faixa(s) de busca no stdout e saia"
 
-#: ../src/plugins/abrt-dump-oops.c:311
+#: ../src/plugins/abrt-dump-oops.c:319
 msgid "Failed to compile regex"
 msgstr "Falha ao compilar o regex"
 
-#: ../src/plugins/abrt-dump-oops.c:402
+#: ../src/plugins/abrt-dump-oops.c:410
 msgid "Can't update the problem: more than one oops found"
 msgstr "Não foi possível atualizar o problema: mais do que um oops encontrado"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/plugins/abrt-dump-oops.c:421
+#: ../src/plugins/abrt-dump-oops.c:429
 #, c-format
 msgid "Sleeping for %d seconds"
 msgstr "Dormindo por %d segundos"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/plugins/abrt-dump-xorg.c:237
+#: ../src/plugins/abrt-dump-xorg.c:245
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
@@ -1448,12 +1505,12 @@ msgstr ""
 "Extraia o travamento do Xorg doFILE (ou entrada padrão)"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/plugins/abrt-dump-xorg.c:245
+#: ../src/plugins/abrt-dump-xorg.c:253
 msgid "Print found crash data on standard output"
 msgstr "Imprima dados de travamento encontrados na saída do padrão"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/plugins/abrt-dump-xorg.c:246
+#: ../src/plugins/abrt-dump-xorg.c:254
 msgid "Create problem directory in DIR for every crash found"
 msgstr ""
 "Criar diretório de problema no DIR para todos os travamentos encontrados"
@@ -1886,7 +1943,7 @@ msgid ""
 "fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
 "&gt;(warning)&lt;/a&gt;"
 msgstr ""
-"Escrever \"inseguro\" para permitir conexão insegura &lt;a href=\"https://"
+"Escrever \"insecure\" para permitir conexão insegura &lt;a href=\"https://"
 "fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
 "&gt;(warning)&lt;/a&gt;"
 
@@ -2151,83 +2208,91 @@ msgstr "Imprimir oopses encontrados"
 msgid "Delete files with found oopses"
 msgstr "Remover arquivos com os oopses encontrados"
 
-#: ../src/cli/abrt-cli-core.c:91
+#: ../src/cli/abrt-cli-core.c:100
 #, c-format
 msgid "'%s' identifies more than one problem directory"
 msgstr "'%s' identifica mais do que um diretório de problema"
 
-# translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/abrt-cli.c:144
-msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
-msgstr "Uso: abrt-cli [--version] COMMAND [DIR]..."
+#: ../src/cli/abrt-cli.c:130
+msgid "Usage: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
+msgstr "Uso: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
 
-#: ../src/cli/abrt-cli.c:148
+#: ../src/cli/abrt-cli.c:134
 msgid "List problems [in DIRs]"
 msgstr "Listar problemas [in DIRs]"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/abrt-cli.c:149
+#: ../src/cli/abrt-cli.c:135
 msgid "Remove problem directory DIR"
 msgstr "Remover DIR de diretório de problema"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/abrt-cli.c:150
+#: ../src/cli/abrt-cli.c:136
 msgid "Analyze and report problem data in DIR"
 msgstr "Analisar e reportar dados do problema no DIR"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/abrt-cli.c:151
+#: ../src/cli/abrt-cli.c:137
 msgid "Print information about DIR"
 msgstr "Imprimir informações sobre o DIR"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/abrt-cli.c:152
+#: ../src/cli/abrt-cli.c:138
 msgid "Print the count of the recent crashes"
 msgstr "Mostrar a contagem das quebras recentes"
 
-#: ../src/cli/abrt-cli.c:153
+#: ../src/cli/abrt-cli.c:139
 msgid "Process multiple problems"
 msgstr "Processar problemas múltiplos"
 
+#: ../src/cli/abrt-cli.c:153
+msgid ""
+"Private Reports is enabled, use 'abrt-cli -a COMMAND' to get the detected "
+"problems."
+msgstr ""
+"Relatório Privado está habilitado, use o 'abrt-cli -a COMMAND' para obter "
+"problemas detectados."
+
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/abrt-cli.c:168
+#: ../src/cli/abrt-cli.c:164
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "Ver 'abrt-cli COMMAND --help' para mais informações."
 
-#: ../src/cli/list.c:127
+#: ../src/cli/list.c:121
 #, c-format
 msgid ""
 "%sRun 'abrt-cli report %s' for creating a case in Red Hat Customer Portal\n"
 msgstr ""
+"%sExecutar 'abrt-cli report %s' para criar um caso no Red Hat Customer "
+"Portal\n"
 
-# translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/list.c:179
-msgid "& list [options] [DIR]..."
-msgstr "& lista [options] [DIR]..."
+#: ../src/cli/list.c:173
+msgid "& list [options]"
+msgstr "& list [opções]"
 
-#: ../src/cli/list.c:188
+#: ../src/cli/list.c:182
 msgid "List only not-reported problems"
 msgstr "Listar somente os problemas não reportados"
 
 # translation auto-copied from project abrt, version master, document abrt
 #. deprecate -d option with --pretty=full
-#: ../src/cli/list.c:190 ../src/cli/list.c:243
+#: ../src/cli/list.c:184 ../src/cli/list.c:237
 msgid "Show detailed report"
 msgstr "Exibir relatório detalhado"
 
-#: ../src/cli/list.c:191
+#: ../src/cli/list.c:185
 msgid "List only the problems more recent than specified timestamp"
 msgstr ""
 "Listar apenas problemas mais recentes que o carimbo de data e hora "
 "especificado"
 
-#: ../src/cli/list.c:192
+#: ../src/cli/list.c:186
 msgid "List only the problems older than specified timestamp"
 msgstr ""
 "Listar apenas problemas mais recentes que o carimbo de data e hora "
 "especificado"
 
-#: ../src/cli/list.c:224
+#: ../src/cli/list.c:212
 #, c-format
 msgid ""
 "The Autoreporting feature is disabled. Please consider enabling it by "
@@ -2239,55 +2304,59 @@ msgstr ""
 "previlégios root.\n"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/list.c:235
+#: ../src/cli/list.c:229
 msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
 
-#: ../src/cli/list.c:244
+#: ../src/cli/list.c:238
 msgid "Text larger than this will be shown abridged"
 msgstr "Texto maior do que este será exibido abreviado"
 
-#: ../src/cli/list.c:264
+#: ../src/cli/list.c:258
 #, c-format
 msgid "No such problem directory '%s'"
 msgstr "Não há tal diretório de problemas '%s'"
 
-# translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/status.c:70
-msgid "& status [DIR]..."
-msgstr "& status [DIR]..."
+#: ../src/cli/status.c:63
+msgid "& status"
+msgstr "& status"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/status.c:78
+#: ../src/cli/status.c:71
 msgid "Print only the problem count without any message"
 msgstr "Mostrar apenas a contagem de problema sem mensagem"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/status.c:79
+#: ../src/cli/status.c:72
 msgid "Print only the problems more recent than specified timestamp"
 msgstr ""
 "Mostrar apenas problemas mais recentes que a marca de tempo especificada"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/status.c:104
+#: ../src/cli/status.c:88
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
 msgstr ""
 "ABRT detectou %u problema(s). Para mais informações execute: abrt-cli "
 "list%s\n"
 
-#: ../src/cli/report.c:28
-msgid "& report [options] DIR..."
-msgstr "& relatório [opções] DIR..."
+#: ../src/cli/report.c:34
+#, c-format
+msgid "Can't find problem '%s'"
+msgstr "Não foi possível encontrar problema '%s'"
 
-#: ../src/cli/report.c:38
-msgid "Remove PROBLEM_DIR after reporting"
-msgstr "Remover PROBLEM_DIR após relatar"
-
-#: ../src/cli/report.c:71 ../src/cli/process.c:70
+#: ../src/cli/report.c:54 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
 msgstr "Removendo '%s'"
+
+#: ../src/cli/report.c:70
+msgid "& report [options] DIR..."
+msgstr "& relatório [opções] DIR..."
+
+#: ../src/cli/report.c:80
+msgid "Remove PROBLEM_DIR after reporting"
+msgstr "Remover PROBLEM_DIR após relatar"
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
@@ -2297,21 +2366,21 @@ msgstr "Ações: remover (rm),  info(i), skip(s):"
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
 msgstr "Acões: remove(rm), report(e), info(i), skip(s):"
 
-#: ../src/cli/process.c:77
+#: ../src/cli/process.c:78
 #, c-format
 msgid "Reporting '%s'"
 msgstr "Reportando '%s'"
 
 #. dummy must be free because the function ask allocate memory
-#: ../src/cli/process.c:133
+#: ../src/cli/process.c:127
 msgid "For next problem press ENTER:"
 msgstr "Para o próximo problema, pressione ENTER:"
 
-#: ../src/cli/process.c:144
+#: ../src/cli/process.c:138
 msgid "Without --since argument, iterates over all detected problems."
 msgstr "Sem o argumento --since, itera em todos os problemas detectados."
 
-#: ../src/cli/process.c:150
+#: ../src/cli/process.c:144
 msgid "Selects only problems detected after timestamp"
 msgstr "Seleciona somente problemas detectados após o timestamp"
 

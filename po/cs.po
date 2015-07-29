@@ -8,21 +8,23 @@
 # Milan Kerslager <milan@kerslager.cz>, 2010
 # Milan Kerslager <milan.kerslager@pslib.cz>, 2011
 # zdenek <chmelarz@gmail.com>, 2013
+# Jakub Filak <jfilak@redhat.com>, 2015. #zanata
+# Zdenek <chmelarz@gmail.com>, 2015. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2015-01-05 07:16-0500\n"
+"POT-Creation-Date: 2015-07-14 15:37+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-12-12 08:30-0500\n"
+"PO-Revision-Date: 2015-07-15 05:05-0400\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/cs/)\n"
 "Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Zanata 3.5.1\n"
+"X-Generator: Zanata 3.6.2\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
@@ -32,20 +34,25 @@ msgstr "Nástroj automatického hlášení chyb"
 msgid "ABRT notification applet"
 msgstr "Upozorňovací applet démonu ABRT"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:130
 msgid ""
 "The report which will be sent does not contain any security sensitive data. "
 "Therefore it is not necessary to bother you next time and require any "
 "further action by you. \n"
 msgstr ""
+"Hlášení, které bude odesláno, neobsahuje žádná citlivá data. Proto není "
+"nutné, abychom vás přístě otravovali a vyžadovali od vás dodatečnou akci.\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:136
 msgid "Do you want to enable automatically submitted crash reports?"
-msgstr ""
+msgstr "Chcete povolit automatické odesílání hlášení o pádech?"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:141
 msgid "Do you want to enable automatically submitted anonymous crash reports?"
-msgstr ""
+msgstr "Chcete povolit automatické odesílání anonymních hlášení o pádech?"
 
 #. The NetworkManager DBus service is not available.
 #: ../src/applet/applet.c:243
@@ -58,7 +65,7 @@ msgstr "Nemohu se připojit k NetworkManager přes DBus: %s"
 msgid "Can't determine network status via NetworkManager: %s"
 msgstr "Nemohu určit stav sítě pomocí NetworkManager: %s"
 
-#: ../src/applet/applet.c:342
+#: ../src/applet/applet.c:342 ../src/cli/report.c:42
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "Nelze převzít vlastnictví '%s'"
@@ -77,10 +84,11 @@ msgstr "Byl zjištěn problém"
 msgid "A problem in the %s package has been detected"
 msgstr "Byl zjištěn problém v balíčku %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:429
 #, c-format
 msgid "%s and the diagnostic data has been submitted"
-msgstr ""
+msgstr "%s a diagnostická data byla odeslána"
 
 #: ../src/applet/applet.c:589 ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
@@ -93,6 +101,7 @@ msgstr "„%s“ nelze spustit"
 msgid "Can't close notification: %s"
 msgstr "Nemohu zavřít oznámení: %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:706
 msgid ""
 "You are going to mute notifications of a particular problem. You will never "
@@ -101,6 +110,11 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
+"Chystáte se utišit upozornění na vybraný problém. Nikdy již neuvidíte "
+"upozornění na tento problém. Nicméně ABRT jej bude zaznamenávat a můžete jej "
+"nahlásit z grafického rozhraní ABRTu.\n"
+"\n"
+"Chcete pokračovat?"
 
 #: ../src/applet/applet.c:784 ../src/applet/applet.c:786
 msgid "Warning"
@@ -119,25 +133,28 @@ msgstr ""
 "Nikola Pajkovsky <npajkovs@redhat.com>\n"
 "Petr Písař <ppisar@redhat.com>"
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #: ../src/applet/applet.c:858
 msgid "_Quit"
-msgstr ""
+msgstr "_Konec"
 
 #: ../src/applet/applet.c:860
 msgid "Hide"
 msgstr "Skrýt"
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #: ../src/applet/applet.c:862
 msgid "_About"
-msgstr ""
+msgstr "_O aplikaci"
 
 #: ../src/applet/applet.c:930
 msgid "Problem detected"
 msgstr "Detekován problém"
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #: ../src/applet/applet.c:980
 msgid "Ignore forever"
-msgstr ""
+msgstr "Navždy ignorovat"
 
 #. Problem has been 'autoreported' and is considered as KNOWN
 #. 
@@ -145,9 +162,10 @@ msgstr ""
 msgid "Open"
 msgstr "Otevřít"
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #: ../src/applet/applet.c:996
 msgid "The Problem has already been Reported"
-msgstr ""
+msgstr "Problém byl již nareportován."
 
 #: ../src/applet/applet.c:996
 msgid "A Known Problem has Occurred"
@@ -193,12 +211,15 @@ msgstr "Nemohu nastavit kódování na kanálu gio: %s"
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "Nemohu zapnout neblokový režim pro kanál gio: %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/applet.c:1494
 #, c-format
 msgid ""
 "Failed to open connection to session manager: '%s', notification may "
 "reappear on the next login"
 msgstr ""
+"Selhalo otevření spojení ke správci sezení: '%s', upozornění se může znovu "
+"objevit po dalším přihlášení"
 
 #: ../src/applet/applet.c:1635
 msgid ""
@@ -210,22 +231,27 @@ msgstr ""
 "\n"
 "Applet, který uživatele upozorní, když ABRT detekuje nový problém\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr ""
+msgstr "Zeptat se před ukradnutím adresáře"
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
-msgstr ""
+msgstr "Automaticky posílat uReport"
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
-msgstr ""
+msgstr "Zkrácené hlášení"
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
-msgstr ""
+msgstr "Tiché zkrácené hlášení"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
@@ -233,7 +259,12 @@ msgid ""
 "trace from the coredump but you have to upload the coredump to this service. "
 "With this option disabled ABRT will upload the coredump without asking."
 msgstr ""
+"Soubor coredumpu je nezbytný pro vygenerování stack tracu, což je časově a "
+"prostorově náročná operace. ABRT poskytuje službu, která vygeneruje stack "
+"trace z coredumpu, ale musíte do této služby coredump nahrát. Pokud tuto "
+"volbu zakážete, ABRT nahraje coredump bez ptaní."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
 "ABRT stores problem data in directories. Whenever ABRT needs writable "
@@ -241,7 +272,12 @@ msgid ""
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
 msgstr ""
+"ABRT ukládá data o problémech v adresářích. Kdykoliv ABRT potřebuje "
+"zapisovatelný adresář, adresář je přesunut ze systémového umístění do vašeho "
+"domovského adresáře. Pokud je tato volba zakázána, ABRT přesune adresář "
+"problému bez ptaní."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
@@ -249,23 +285,36 @@ msgid ""
 "uReport is sent at beginning of reporting process. With this option enabled "
 "uReports are sent automatically immediately after problem detection."
 msgstr ""
+"uReport je krátký a zcela anonymní popis problému. ABRT používá uReporty pro "
+"rychlou globální detekci duplikátů. Ve výchozím nastavení je uReport odeslán "
+"na začátku procesu nahlášení. Pokud je tato volba povolená, uReporty se "
+"odesílají automaticky po každé detekci problému."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
 "With this option enabled reporting process started by click on Report button "
 "in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
+"Pokud je tato volba povolená, proces nahlášení odstartovaný kliknutím na "
+"tlačítko Nahlásit v upozornění na problém bude přerušený po tom, co se "
+"odešle uReport. Vždy můžete použít výchozí prohlížeč problémů, chcete-li "
+"udělat kompletní hlášení."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
+"Pokud je tato volba povolena, ABRT nebude nikdy zobrazovat upozornění na "
+"nahlášené problémy. Funguje pouze, pokud je povoleno Zkrácené hlášení."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid "Ask before uploading coredump"
-msgstr ""
+msgstr "Zeptat se před odesláním coredumpu"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid ""
@@ -273,47 +322,58 @@ msgid ""
 "access if possibly sensitive data are dected."
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Request private ticket for sensitive information"
-msgstr ""
+msgstr "Vyžadovat neveřejné hlášení v případě citlivých informací"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid "Notify incomplete problems"
-msgstr ""
+msgstr "Upozornit na nekompletní problémy"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
 msgstr ""
+"Nekompletní problémy jsou detekovány, když se počítač vypíná nebo uživatel "
+"odhlašuje. V zájmu užitečnosti hlášení, ABRT tyto problémy odesílat nebude."
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Close"
-msgstr ""
+msgstr "_Zavřít"
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #: ../src/configuration-gui/system-config-abrt.c:84
 msgid "_Defaults"
-msgstr ""
+msgstr "_Výchozí"
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #: ../src/configuration-gui/system-config-abrt.c:112
 #: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
-msgstr ""
+msgstr "Nastavení hlášení problémů"
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
-msgstr ""
+msgstr "O systémové konfiguraci ABRT"
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #: ../src/configuration-gui/main.c:105
 msgid "About"
-msgstr ""
+msgstr "O"
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #: ../src/configuration-gui/main.c:106
 msgid "Quit"
-msgstr ""
+msgstr "Konec"
 
-#: ../src/daemon/abrt-action-save-package-data.c:382
+#: ../src/daemon/abrt-action-save-package-data.c:378
 msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
@@ -323,7 +383,7 @@ msgstr ""
 "\n"
 "Dotáže databázi balíčků a uloží jméno balíčku a komponenty"
 
-#: ../src/daemon/abrt-action-save-package-data.c:394
+#: ../src/daemon/abrt-action-save-package-data.c:390
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
 #: ../src/plugins/abrt-action-analyze-c.c:78
 #: ../src/plugins/abrt-action-analyze-oops.c:48
@@ -334,80 +394,93 @@ msgstr ""
 msgid "Problem directory"
 msgstr "Adresář problému"
 
-#: ../src/daemon/abrt-action-save-package-data.c:395
+#: ../src/daemon/abrt-action-save-package-data.c:391
 msgid "Configuration file"
 msgstr "Konfigurační soubor"
 
-#: ../src/daemon/abrt-server.c:786 ../src/dbus/abrt-dbus.c:781
+#: ../src/daemon/abrt-server.c:792 ../src/dbus/abrt-dbus.c:1001
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:484
 msgid "& [options]"
 msgstr "& [volby]"
 
-#: ../src/daemon/abrt-server.c:797
+#: ../src/daemon/abrt-server.c:803
 msgid "Use NUM as client uid"
 msgstr "Použít NUM jako klient uid"
 
-#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:280
-#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:273
-#: ../src/plugins/abrt-dump-xorg.c:244
+#: ../src/daemon/abrt-server.c:804 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:281
+#: ../src/plugins/abrt-dump-xorg.c:252
 msgid "Log to syslog"
 msgstr "Protokolovat do syslogu"
 
-#: ../src/daemon/abrt-server.c:799 ../src/daemon/abrtd.c:500
+#: ../src/daemon/abrt-server.c:805 ../src/daemon/abrtd.c:500
 msgid "Add program names to log"
 msgstr "Přidá názvy programů do protokolu"
 
-#: ../src/dbus/abrt-dbus.c:123
+#: ../src/dbus/abrt-dbus.c:132
 msgid "Unknown error"
 msgstr "Neznámá chyba"
 
-#: ../src/dbus/abrt-dbus.c:188
+#: ../src/dbus/abrt-dbus.c:221
 #, c-format
 msgid "'%s' is not a valid problem directory"
 msgstr "'%s' není platným adresářem problému"
 
-#: ../src/dbus/abrt-dbus.c:223
+#: ../src/dbus/abrt-dbus.c:256
 #, c-format
 msgid "'%s' element can't be modified"
 msgstr "'%s' prvek nemůže být modifikován"
 
-#: ../src/dbus/abrt-dbus.c:244 ../src/dbus/abrt-dbus.c:446
-#: ../src/dbus/abrt-dbus.c:498 ../src/dbus/abrt-configuration.c:618
+#: ../src/dbus/abrt-dbus.c:285 ../src/dbus/abrt-dbus.c:498
+#: ../src/dbus/abrt-dbus.c:560 ../src/dbus/abrt-dbus.c:625
+#: ../src/dbus/abrt-dbus.c:815 ../src/dbus/abrt-configuration.c:618
 #: ../src/dbus/abrt-configuration.c:683
 #, c-format
 msgid "Not Authorized"
 msgstr "Neautorizovaný"
 
-#: ../src/dbus/abrt-dbus.c:256
+#: ../src/dbus/abrt-dbus.c:298
 msgid "Can't access the problem for modification"
 msgstr "Nemohu zpřístupnit problém ke změně"
 
-#: ../src/dbus/abrt-dbus.c:461
+#: ../src/dbus/abrt-dbus.c:514
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
 "Změna vlastníka adresáře selhala. Zkontrolujte logy systému pro více "
 "informací."
 
-#: ../src/dbus/abrt-dbus.c:559
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/dbus/abrt-dbus.c:635
+msgid "Can't access the problem for reading"
+msgstr "Problém není přístupný pro čtení"
+
+#: ../src/dbus/abrt-dbus.c:690 ../src/dbus/abrt-dbus.c:755
+#: ../src/dbus/abrt-dbus.c:911
 #, c-format
 msgid "'%s' is not a valid element name"
 msgstr "'%s' není platným jménem prvku"
 
-#: ../src/dbus/abrt-dbus.c:580
+#: ../src/dbus/abrt-dbus.c:711
 #, c-format
 msgid "Can't get size of '%s'"
 msgstr "Nemohu získat velikost '%s'"
 
-#: ../src/dbus/abrt-dbus.c:595
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/dbus/abrt-dbus.c:726
 msgid "No problem space left"
-msgstr ""
+msgstr "Nezbývá místo na problémy"
 
-#: ../src/dbus/abrt-dbus.c:627
+#: ../src/dbus/abrt-dbus.c:776
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
 msgstr "Nemohu smazat prvek '%s' z adresáře problému '%s'"
 
-#: ../src/dbus/abrt-dbus.c:763 ../src/dbus/abrt-configuration.c:983
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/dbus/abrt-dbus.c:803
+msgid "Can't access the problem"
+msgstr "Problém není přístupný"
+
+#: ../src/dbus/abrt-dbus.c:983 ../src/dbus/abrt-configuration.c:983
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
@@ -416,15 +489,16 @@ msgstr ""
 "Jméno '%s' bylo ztraceno, zkontrolujte prosím, zda-li jiná služba vlastnící "
 "toto jméno neběží.\n"
 
-#: ../src/dbus/abrt-dbus.c:790 ../src/dbus/abrt-configuration.c:1011
+#: ../src/dbus/abrt-dbus.c:1010 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:499
 msgid "Exit after NUM seconds of inactivity"
 msgstr "Ukončí po NUM sekundách neaktivity"
 
-#: ../src/dbus/abrt-dbus.c:808 ../src/dbus/abrt-configuration.c:1021
+#: ../src/dbus/abrt-dbus.c:1028 ../src/dbus/abrt-configuration.c:1021
 msgid "This program must be run as root."
 msgstr "Tento program musí být spuštěn pod root uživatelem."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrtd.c:451
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
@@ -433,6 +507,11 @@ msgid ""
 "problem. If you have time and want to help the developers in their effort to "
 "sort out this problem, please contact them directly."
 msgstr ""
+"Data problému jsou nekompletní. Toto se obvykle stává, když je problém "
+"detekován během vypínání počítače nebo odhlašování uživatele. V zájmu "
+"poskytování užitečných hlášení, ABRT neumožní takováto hlášení odeslat. Máte-"
+"li čas a chcete pomoct vývojářům tento problém vyřešit, kontaktujte je přímo."
+""
 
 #: ../src/daemon/abrtd.c:497
 msgid "Do not daemonize"
@@ -454,11 +533,13 @@ msgstr "Spustí EVENT v DIR"
 msgid "Communicate directly to the user"
 msgstr "Komunikovat přímo s uživatelem"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
-msgstr ""
+msgstr "Žádný volný \"dělník\" a plný zásobník. Archivování '%s' je vynecháno."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
 "& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
@@ -470,86 +551,117 @@ msgid ""
 "If UPLOAD_DIRECTORY is not provided, uses a value of\n"
 "WatchCrashdumpArchiveDir option from abrt.conf"
 msgstr ""
+"& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
+"\n"
+"\n"
+"Sleduje UPLOAD_DIRECTORY a rozbaluje příchozí archivy do DumpLocation\n"
+"specifikovaného v abrt.conf\n"
+"\n"
+"Pokud není UPLOAD_DIRECTORY poskytnuto, používá hodnotu volby\n"
+"WatchCrashdumpArchiveDir z abrt.conf"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-upload-watch.c:281
 msgid "Daemize"
-msgstr ""
+msgstr "Démonizovat"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr ""
+msgstr "Počet souběžných \"dělníků\". Výchozí je "
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr ""
+msgstr "Maximální velikost mezipaměti v MiB. Výchozí je "
 
-#: ../src/daemon/abrt-auto-reporting.c:176
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-auto-reporting.c:200
+#: ../src/daemon/abrt-auto-reporting.c:208
 msgid "& [ "
-msgstr ""
+msgstr "& [ "
 
-#: ../src/daemon/abrt-auto-reporting.c:213
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Turns the authentication off"
-msgstr ""
+msgstr "Vypíná autentizaci"
 
-#: ../src/daemon/abrt-auto-reporting.c:214
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-auto-reporting.c:236
 msgid "Red Hat Support user name"
-msgstr ""
+msgstr "Uživatelské jméno podpory Red Hat"
 
-#: ../src/daemon/abrt-auto-reporting.c:215
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-auto-reporting.c:237
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
 msgstr ""
+"Heslo pro podporu Red Hat. Pokud není uvedeno, bude obdržena výzva pro jeho "
+"vydání"
 
-#: ../src/daemon/abrt-auto-reporting.c:216
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-auto-reporting.c:238
 msgid "uReport SSL certificate paths or certificate type"
-msgstr ""
+msgstr "Cesta nebo typ SSL certifikátu pro uReport"
 
-#: ../src/daemon/abrt-auto-reporting.c:227
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-auto-reporting.c:254
 msgid "You also need to specify --username for --password"
-msgstr ""
+msgstr "Musíte zadat --username pro --password"
 
-#: ../src/daemon/abrt-auto-reporting.c:233
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-auto-reporting.c:260
 msgid "You can use either --username or --certificate"
-msgstr ""
+msgstr "Můžete použít buď --username nebo --certificate"
 
-#: ../src/daemon/abrt-auto-reporting.c:239
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-auto-reporting.c:266
 msgid "You can use either --username or --anonymous"
-msgstr ""
+msgstr "Můžete použít buď --username nebo --anonymous"
 
-#: ../src/daemon/abrt-auto-reporting.c:245
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-auto-reporting.c:272
 msgid "You can use either --anonymous or --certificate"
-msgstr ""
+msgstr "Můžete použít buď --anonymous nebo --certificate"
 
-#: ../src/daemon/abrt-auto-reporting.c:251
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-auto-reporting.c:279
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "Neplatný počet argumentů"
 
-#: ../src/daemon/abrt-auto-reporting.c:270
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-auto-reporting.c:298
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "Neznámá hodnota možnosti: '%s'\n"
 
-#: ../src/daemon/abrt-auto-reporting.c:305
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-auto-reporting.c:338
 msgid "Password:"
-msgstr ""
+msgstr "Heslo:"
 
-#: ../src/daemon/abrt-auto-reporting.c:308
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-auto-reporting.c:341
 msgid "Cannot continue without password\n"
-msgstr ""
+msgstr "Bez zadání hesla nelze pokračovat\n"
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #. Print only the part before ':' of a string like "username:password"
-#: ../src/daemon/abrt-auto-reporting.c:347
+#: ../src/daemon/abrt-auto-reporting.c:382
 msgid "HTTP Authenticated auto reporting"
-msgstr ""
+msgstr "Automatické hlášení chyb autorizováno pro HTTP"
 
-#: ../src/daemon/abrt-auto-reporting.c:349
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-auto-reporting.c:384
 msgid "SSL Client Authenticated auto reporting"
-msgstr ""
+msgstr "Automatické hlášení chyb autorizováno pro SSL klienta"
 
-#: ../src/daemon/abrt-auto-reporting.c:351
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-auto-reporting.c:386
 msgid "anonymous auto reporting"
-msgstr ""
+msgstr "Anonymní automatické hlášení chyb"
 
-#: ../src/daemon/abrt-handle-upload.in:69
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/daemon/abrt-handle-upload.in:135
 #, c-format
 msgid ""
 "Usage: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
@@ -560,71 +672,95 @@ msgid ""
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
 msgstr ""
+"Použití: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
+"\n"
+"   -v             - Upovídaný\n"
+"   -d             - Smazat nahraný archiv\n"
+"   ABRT_SPOOL_DIR - Adresář, do kterého jsou platné nahrané archivy "
+"rozbalené\n"
+"   UPLOAD_DIR     - Adresář, kde jsou nahrané archivy uložené\n"
+"   FILENAME       - Název souboru nahraného archivu\n"
 
-#: ../src/daemon/abrt-handle-upload.in:105
-#: ../src/daemon/abrt-handle-upload.in:108
-msgid "Not a directory: '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:111
-msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:114
-msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:117
-msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:120
-msgid "Skipping: '{0}' (contains space)"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:123
-msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:128
-msgid "Can't change directory to '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:139
-msgid "Unknown file type: '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:144
-msgid "Can't create working directory in '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:155
-msgid "Can't move '{0}' to '{1}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:160
-msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:164
-msgid "Verification error on '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:166
-msgid "Unpacking '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:170
-msgid "Can't create '{0}' directory"
-msgstr ""
-
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-handle-upload.in:171
 #: ../src/daemon/abrt-handle-upload.in:174
-msgid "Can't unpack '{0}'"
-msgstr ""
+msgid "Not a directory: '{0}'"
+msgstr "Ne adresář: '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:198
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-handle-upload.in:177
+msgid "Skipping: '{0}' (starts with slash)"
+msgstr "Přeskočení: '{0}' (začíná lomítkem)"
+
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-handle-upload.in:180
+msgid "Skipping: '{0}' (starts with dot)"
+msgstr "Přeskočení: '{0}' (začíná tečkou)"
+
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-handle-upload.in:183
+msgid "Skipping: '{0}' (contains ..)"
+msgstr "Přeskočení: '{0}' (obsahuje..)"
+
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-handle-upload.in:186
+msgid "Skipping: '{0}' (contains space)"
+msgstr "Přeskočení: '{0}' (obsahuje mezeru)"
+
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-handle-upload.in:189
+msgid "Skipping: '{0}' (contains tab)"
+msgstr "Přeskočení: '{0}' (obsahuje tabulátor)"
+
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-handle-upload.in:194
+msgid "Can't change directory to '{0}'"
+msgstr "Nelze změnit adresář na '{0}'"
+
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-handle-upload.in:205
+msgid "Unknown file type: '{0}'"
+msgstr "Neznámý typ souboru '{0}'"
+
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-handle-upload.in:210
+msgid "Can't create working directory in '{0}'"
+msgstr "Nelze vytvořit pracovní adresář '{0}'"
+
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-handle-upload.in:221
+msgid "Can't move '{0}' to '{1}'"
+msgstr "Nelze přesunout '{0}' do '{1}'"
+
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-handle-upload.in:226
+msgid "Can't copy '{0}' to '{1}'"
+msgstr "Nelze zkopírovat '{0}' do '{1}'"
+
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-handle-upload.in:230
+msgid "Verification error on '{0}'"
+msgstr "Chyba ověření na '{0}'"
+
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-handle-upload.in:232
+msgid "Unpacking '{0}'"
+msgstr "Rozbalení '{0}'"
+
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-handle-upload.in:236
+msgid "Can't create '{0}' directory"
+msgstr "Nelze vytvořit adresář '{0}'"
+
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-handle-upload.in:240
+msgid "Can't unpack '{0}'"
+msgstr "Nelze rozbalit '{0}'"
+
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/daemon/abrt-handle-upload.in:260
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' byl úspěšně zpracován"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
@@ -646,7 +782,8 @@ msgstr "Nelze provést chown '%s': %s"
 msgid "Deleting problem directory failed: %s"
 msgstr "Odstraňování adresáře problému selhalo: %s"
 
-#: ../src/lib/problem_api_dbus.c:133
+#: ../src/lib/problem_api_dbus.c:133 ../src/lib/problem_api_dbus.c:206
+#: ../src/lib/problem_api_dbus.c:286
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
 msgstr "Nemohu získat data problému z abrt-dbus: %s"
@@ -655,6 +792,12 @@ msgstr "Nemohu získat data problému z abrt-dbus: %s"
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
 msgstr "Nemohu získat seznam problémů z abrt-dbus: %s"
+
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/lib/problem_api_dbus.c:250
+#, c-format
+msgid "Can't test whether the element exists over abrt-dbus: %s"
+msgstr "Nelze otestovat zda-li element existuje nad abrt-dbus: %s"
 
 #: ../src/lib/ignored_problems.c:233
 #, c-format
@@ -699,9 +842,10 @@ msgstr ""
 msgid "Backtrace parsing failed for %s"
 msgstr "Rozbor zásobníku volání v %s se nezdařil"
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #: ../src/plugins/abrt-action-analyze-backtrace.c:146
 msgid "Crash thread not found"
-msgstr ""
+msgstr "Vlákno poruchy nenalezeno"
 
 #: ../src/plugins/abrt-action-analyze-c.c:67
 msgid ""
@@ -713,24 +857,28 @@ msgstr ""
 "\n"
 "Vypočítá a uloží UUID obrazu paměti v adresáři problému DIR"
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "Analýza obrazu paměti '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-core.in:110
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "Chybějící ID buildu: %s"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-core.in:142
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr ""
+msgstr "Použití: %s [-v] [-o OUTFILE] -c COREFILE"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-core.in:164
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "COREFILE není určený"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
@@ -766,36 +914,45 @@ msgstr "& [-v] -d DIR\n"
 "\n"
 "Spočítá a uloží UUID a DUPHASH výpisu pádu pythonu"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:52
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
-msgstr ""
+msgstr "Použití: {0} [-v[v]] [--core=VMCORE]"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:79
 msgid "File {0} doesn't exist"
 msgstr "Soubor {0} neexistuje"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:82
 msgid "Extracting the oops text from core"
-msgstr ""
+msgstr "Vytahování textu oopsu z jádra"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
 msgid "Can't process {0}:\n"
 "{1}"
-msgstr ""
+msgstr "Nelze zpracovat {0}:\n"
+"{1}"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "Can't extract the oops message: '{0}'"
-msgstr ""
+msgstr "Nelze vytáhnout zprávu oops: '{0}'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:98
 msgid "Oops text extracted successfully"
-msgstr ""
+msgstr "Text oops úspěšně vyňat."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
 msgstr ""
+"Protokol jádra indikuje, že byly detekovány chyby hardwaru.\n"
+"Toto není s největší pravděpodobností softwarový problém.\n"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
@@ -824,35 +981,44 @@ msgstr "Zabít gdb, jestliže poběží déle než POČET sekund"
 msgid "Backtrace is generated and saved, %u bytes"
 msgstr "Výpis volání byl vytvořen a uložen, %u bajtů"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:40
 msgid ""
 "& [-v] [-r] -d DIR\n"
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
 msgstr ""
+"& [-v] [-r] -d DIR\n"
+"\n"
+"Vytváří backtrace coredumo-level z core dumpu a odpovídající binárky"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
-msgstr ""
+msgstr "Nehashovat otisky"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
 msgid "Generating core_backtrace"
-msgstr ""
+msgstr "Vytváření core_backtrace"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:81
 msgid "Error: GDB did not return any data"
-msgstr ""
+msgstr "Chyba: GDB nevrátilo žádná data"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:95
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Chyba: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:51
 msgid "Exiting on user command"
 msgstr "Činnost ukončena na příkaz uživatele"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:88
 #, c-format
 msgid ""
@@ -876,6 +1042,25 @@ msgid ""
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
 msgstr ""
+"Použití: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH[:PATH]...]\n"
+"\n"
+"Instaluje debuginfo pro všechny ID buildů v BUILD_IDS_FILE\n"
+"do CACHEDIR pomocí TMPDIR jako dočasného vyčkávacího prostoru.\n"
+"Staré soubory v CACHEDIR jsou smazány, dokud nejsou menší než SIZE.\n"
+"\n"
+"    -v          Být upovídaný\n"
+"    -y          Neinterkativní, předpokládá 'Ano' pro všechny otázky\n"
+"    --ids       Výchozí: build_ids\n"
+"    --tmpdir    Výchozí: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
+"    --cache     Výchozí: /var/cache/abrt-di\n"
+"    --size_mb   Výchozí: 4096\n"
+"    -e,--exact  Stáhnout pouze uvedený soubor\n"
+"    --repo      Vzor, který použít pro hledání repozitářů.\n"
+"                Výchozí: *debug*\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:169
 msgid "Can't open {0}: {1}"
@@ -887,13 +1072,15 @@ msgstr ""
 "Obraz paměti odkazuje na {0} souborů ladicích údajů, {1} z nich nejsou "
 "nainstalovány"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:209
 msgid "{0} of debuginfo files are not installed"
-msgstr ""
+msgstr "{0} souborů debuginfo není nainstalováno"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:223
 msgid "Missing requested file: {0}"
-msgstr ""
+msgstr "Chybí požadovaný soubor: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:228
 msgid "Missing debuginfo file: {0}"
@@ -902,6 +1089,35 @@ msgstr "Chybějící soubory ladících údajů: {0}"
 #: ../src/plugins/abrt-action-install-debuginfo.in:231
 msgid "All debuginfo files are available"
 msgstr "Všechny soubory debuginfo jsou dostupné"
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:43
+msgid ""
+"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+"\t[-r REPO]\n"
+"\n"
+"Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
+"ABRT system cache."
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:66
+msgid "Noninteractive, assume 'Yes' to all questions"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:67
+msgid "- means STDIN, default: build_ids"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
+msgid "Download only specified files"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
+msgid "Pattern to use when searching for repos, default: *debug*"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
+msgid "Ignored option"
+msgstr ""
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
 msgid ""
@@ -948,155 +1164,193 @@ msgstr "Smazat soubory uvnitř tohoto adresáře"
 msgid "Preserve this directory"
 msgstr "Zachovat tento adresář"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-ureport:59
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr "Nelze spustit '%s', chybová hláška byla: '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-ureport:70
 #, c-format
 msgid "Not a number in file '%s'"
-msgstr ""
+msgstr "Není číslem v souboru '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-ureport:86
 #, c-format
 msgid "Usage: %s [-v]"
-msgstr ""
+msgstr "Použití: %s [-v]"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-ureport:107
 msgid "Unable to get current working directory as it was probably deleted"
 msgstr ""
+"Nelze získat aktuální pracovní adresář, protože byl pravděpodobně smazán"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-ureport:138
 msgid "A bug was already filed about this problem:"
-msgstr ""
+msgstr "Chyba už o tomto problému byla nahlášena:"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-ureport:148
 msgid "uReport was already sent, not sending it again"
-msgstr ""
+msgstr "uReport byl již odeslán, znovu se již posílat nebude"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-action-ureport:176
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
-msgstr ""
+msgstr "reporter-ureport selhal s ukončovacím kódem %d"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
-msgstr ""
+msgstr "Signál poslaný kódem z userspace"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:533
 msgid "Signal sent by timer/IO/async event"
-msgstr ""
+msgstr "Signál poslaný událostí timer/IO/async"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:541
 msgid "Signal has siginfo.si_code = SI_USER"
-msgstr ""
+msgstr "Signál má siginfo.si_code = SI_USER"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:544
 msgid "Signal due to write to closed pipe"
-msgstr ""
+msgstr "Signál kvůli zapisování do uzavřené roury"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:550
 #: ../src/plugins/abrt-gdb-exploitable:575
 msgid "Signal sent by keyboard"
-msgstr ""
+msgstr "Signál poslaný klávesnicí"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:554
 #: ../src/plugins/abrt-gdb-exploitable:579
 msgid "Job control signal sent by kernel"
-msgstr ""
+msgstr "Signál správy úloh poslaný kernelem"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:558
 #: ../src/plugins/abrt-gdb-exploitable:587
 msgid "Signal sent by window resize"
-msgstr ""
+msgstr "Signál poslaný změnou velikosti okna"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:562
 #: ../src/plugins/abrt-gdb-exploitable:591
 msgid "Signal sent by alarm(N) expiration"
-msgstr ""
+msgstr "Signál poslaný vypršením alarm(N)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:583
 msgid "Signal due to write to broken pipe"
-msgstr ""
+msgstr "Signál kvůli zapisování do rozbité roury"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:607
 msgid "ABRT signal (abort() was called?)"
-msgstr ""
+msgstr "Signál ABRT (abort() byl volaný?)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:616
 msgid "XCPU signal (over CPU time limit)"
-msgstr ""
+msgstr "Signál XCPU (přes časový limit CPU)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:620
 msgid "XFSZ signal (over file size limit)"
-msgstr ""
+msgstr "Signál XFSZ (přes limit velikosti souboru)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:624
 msgid "TRAP signal (can be a bug in a debugger/tracer)"
-msgstr ""
+msgstr "Signál TRAP (může být chybou v debuggeru/traceru)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:628
 msgid "SYS signal (unknown syscall was called?)"
-msgstr ""
+msgstr "Signál SYS (neznámý syscall byl volaný?)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:633
 msgid "Arithmetic exception"
-msgstr ""
+msgstr "Aritmetická výjimka"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:637
 msgid "Division by zero"
-msgstr ""
+msgstr "Dělení nulou"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:641
 msgid "Illegal instruction (jump to a random address?)"
-msgstr ""
+msgstr "Nepovolená instrukce (skok na náhodnou adresu?)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:647
 msgid "Non-crash related signal"
-msgstr ""
+msgstr "Signál, který nesouvisí s pádem"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:652
 msgid "Stack overflow"
-msgstr ""
+msgstr "Přetečení zásobníku"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:656
 msgid "Write to an invalid address"
-msgstr ""
+msgstr "Zápis do neplatné adresy"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:660
 msgid "Subroutine return to an invalid address (corrupted stack?)"
-msgstr ""
+msgstr "Podprogram vrací do neplatné adresy (poškozený zásobník?)"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:666
 #: ../src/plugins/abrt-gdb-exploitable:670
 msgid "Jump to an invalid address"
-msgstr ""
+msgstr "Skok na neplatnou adresu"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:674
 msgid ""
 "Access past the end of mapped file, invalid address, unaligned access, etc"
 msgstr ""
+"Přístup za konec namapovaného souboru, neplatné adresy, uspořádaného "
+"přístupu atd."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:693
 msgid "Can't get signal no and do exploitability analysis\n"
-msgstr ""
+msgstr "Nelze získat číslo signálu a udělat analýzu zranitelnosti\n"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Likely crash reason: "
-msgstr ""
+msgstr "Pravděpodobný důvod pádu:"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:707
 msgid "Exploitable rating (0-9 scale): "
-msgstr ""
+msgstr "Hodnocení zranitelnosti (škála 0-9):"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:709
 msgid "Current instruction: "
-msgstr ""
+msgstr "Současná situace:"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:711
 msgid "Exploitability analysis came up empty\n"
-msgstr ""
+msgstr "Analýza zranitelnosti se vrátila prázdná\n"
 
 #: ../src/plugins/abrt-watch-log.c:142
 msgid ""
@@ -1112,17 +1366,23 @@ msgstr ""
 msgid "Don't run PROG if STRs aren't found"
 msgstr "Nespouštějte PROG pokud STRs nejsou nalezeny"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:125
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
 msgstr ""
+"Problém v kernelu se vyskytl kvůli rozbitému BIOSu. Takového problémy nejsou "
+"bohužel vývojáři kernelu opravitelné."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-dump-oops.c:130
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
 msgstr ""
+"Vyskytl se problém v kernelu, ale váš hardware není podporovaný, proto "
+"vývojáři kernelu nejsou schopní tento problém opravit."
 
 #: ../src/plugins/abrt-dump-oops.c:145
 #, c-format
@@ -1138,59 +1398,68 @@ msgstr ""
 msgid " Tainted modules: %s."
 msgstr "Závadné moduly: %s."
 
-#: ../src/plugins/abrt-dump-oops.c:254
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/plugins/abrt-dump-oops.c:262
 msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr ""
+"& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"Vyjmutí oopsů z FILE (nebo standardního výstupu)"
 
-#: ../src/plugins/abrt-dump-oops.c:274
+#: ../src/plugins/abrt-dump-oops.c:282
 msgid "Print found oopses on standard output"
 msgstr "Nalezené stížnosti vypíše na standardní výstup"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
 #. 
-#: ../src/plugins/abrt-dump-oops.c:278
+#: ../src/plugins/abrt-dump-oops.c:286
 msgid "Create new problem directory in DIR for every oops found"
 msgstr "Vytvoř nový adresář problému v DIR pro každý nalezený oops"
 
-#: ../src/plugins/abrt-dump-oops.c:279 ../src/plugins/abrt-dump-xorg.c:247
+#: ../src/plugins/abrt-dump-oops.c:287 ../src/plugins/abrt-dump-xorg.c:255
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
 "Stejné jako -d DumpLocation, DumpLocation je specifikováno v abrt.conf"
 
-#: ../src/plugins/abrt-dump-oops.c:280
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/plugins/abrt-dump-oops.c:288
 msgid "Save the extracted information in PROBLEM"
-msgstr ""
+msgstr "Uložit vyňaté informace v PROBLEM"
 
-#: ../src/plugins/abrt-dump-oops.c:281 ../src/plugins/abrt-dump-xorg.c:248
+#: ../src/plugins/abrt-dump-oops.c:289 ../src/plugins/abrt-dump-xorg.c:256
 msgid "Make the problem directory world readable"
 msgstr "Učiň adresář problému přístupný pro čtení všem"
 
-#: ../src/plugins/abrt-dump-oops.c:282
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/plugins/abrt-dump-oops.c:290
 msgid "Throttle problem directory creation to 1 per second"
-msgstr ""
+msgstr "Omezit vytváření adresářů s problémy na 1 za sekundu"
 
-#: ../src/plugins/abrt-dump-oops.c:283 ../src/plugins/abrt-dump-xorg.c:249
+#: ../src/plugins/abrt-dump-oops.c:291 ../src/plugins/abrt-dump-xorg.c:257
 msgid "Print search string(s) to stdout and exit"
 msgstr "Vytiskne znak(y) vyhledávání do stdout a ukončí se"
 
-#: ../src/plugins/abrt-dump-oops.c:311
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/plugins/abrt-dump-oops.c:319
 msgid "Failed to compile regex"
-msgstr ""
+msgstr "Selhalo zkompilování regexu"
 
-#: ../src/plugins/abrt-dump-oops.c:402
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/plugins/abrt-dump-oops.c:410
 msgid "Can't update the problem: more than one oops found"
-msgstr ""
+msgstr "Nelze aktualizovat problém: nalezen více než jeden oops"
 
-#: ../src/plugins/abrt-dump-oops.c:421
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/plugins/abrt-dump-oops.c:429
 #, c-format
 msgid "Sleeping for %d seconds"
-msgstr ""
+msgstr "Spánek po %d sekund"
 
-#: ../src/plugins/abrt-dump-xorg.c:237
+#: ../src/plugins/abrt-dump-xorg.c:245
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
@@ -1200,11 +1469,11 @@ msgstr ""
 "\n"
 "Extrahuje pád Xorg ze souboru FILE (nebo standardního vstupu)"
 
-#: ../src/plugins/abrt-dump-xorg.c:245
+#: ../src/plugins/abrt-dump-xorg.c:253
 msgid "Print found crash data on standard output"
 msgstr "Vypiš nalezená data o havárii na standardní výstup"
 
-#: ../src/plugins/abrt-dump-xorg.c:246
+#: ../src/plugins/abrt-dump-xorg.c:254
 msgid "Create problem directory in DIR for every crash found"
 msgstr "Vytvoř adresář problému v DIR pro každý nalezený pád"
 
@@ -1216,6 +1485,7 @@ msgstr ""
 "Stopovací server nemůže být využit, protože je záznam příliš velký. Zkuste "
 "použít lokální stopování."
 
+# translation auto-copied from project abrt, version master, document abrt
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
 #. 
@@ -1223,7 +1493,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
 msgid "Can't create temporary file in "
-msgstr ""
+msgstr "Nelze vytvořit dočasný soubor v "
 
 #: ../src/plugins/abrt-retrace-client.c:211
 #: ../src/plugins/abrt-retrace-client.c:398
@@ -1255,12 +1525,15 @@ msgstr "Neočekávaná HTTP odpověd od serveru: %d\n"
 msgid "Invalid response from server: missing HTTP message body."
 msgstr "Neplatná odpověď serveru: chybí tělo odpovědi."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:424
 #, c-format
 msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official '%s' repositories?"
 msgstr ""
+"Retrace server nemůže zpracovat balíček '%s.%s'.\n"
+"Je součastí oficiálních repozitářů '%s'?"
 
 #: ../src/plugins/abrt-retrace-client.c:444
 msgid "Querying server settings"
@@ -1463,9 +1736,10 @@ msgstr "přečíst data ze záznamu v core"
 msgid "Delay for polling operations"
 msgstr "Prodleva pro operace poolingu"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1227
 msgid "(debug) do not delete temporary archive created from dump dir in "
-msgstr ""
+msgstr "(debug) nemažte dočasný archiv vytvořený z dump adresáře v "
 
 #: ../src/plugins/abrt-retrace-client.c:1229
 msgid "For status, backtrace, and log operations"
@@ -1479,11 +1753,14 @@ msgstr "id vaší úlohy na serveru"
 msgid "password of your task on server"
 msgstr "heslo vaší úlohy na serveru"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1237
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch/exploitable"
 msgstr ""
+"abrt-retrace-client <operation> [volby]\n"
+"Operace: create/status/backtrace/log/batch/exploitable"
 
 #: ../src/plugins/abrt-retrace-client.c:1282
 #: ../src/plugins/abrt-retrace-client.c:1288
@@ -1574,9 +1851,9 @@ msgid ""
 "fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
 "&gt;(warning)&lt;/a&gt;"
 msgstr ""
-"K povolení nezabezpečeného spojení použijte pole <a href=\"https://"
+"Napište \"insecure\" k povolení nezabezpečeného spojení <a href=\"https://"
 "fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
-">Nezabezpečený</a>"
+">(varování)</a>"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
@@ -1669,13 +1946,15 @@ msgstr "Nepodařilo se vytvořit SSL vrstvu nad TCP socketem."
 msgid "Failed to enable client handshake to SSL socket."
 msgstr "Selhalo povolení handshake pro SSL soket."
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #: ../src/plugins/https-utils.c:220
 msgid "Failed to enable SSL3."
-msgstr ""
+msgstr "Selhalo povolení SSL3."
 
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
 #: ../src/plugins/https-utils.c:222
 msgid "Failed to enable TLS."
-msgstr ""
+msgstr "Selhalo povolení TLS."
 
 #: ../src/plugins/https-utils.c:224
 msgid "Failed to set URL to SSL socket."
@@ -1777,161 +2056,207 @@ msgstr ""
 "Existuje aktualizace, která by mohla opravit váš problém. Můžete ji "
 "nainstalovat spuštěním: %s. Přejete si pokračovat s reportováním problému?"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
 msgid ""
 "& [-v] [-od] FILE...\n"
 "\n"
 "Scans files for split oops message. Can print and/or delete them."
 msgstr ""
+"& [-v] [-od] SOUBOR...\n"
+"\n"
+"Skenuje soubory a hledá zprávy oops. Může je vypsat a/nebo smazat."
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/hooks/abrt-merge-pstoreoops.c:97
 msgid "Print found oopses"
-msgstr ""
+msgstr "Vypsat nalezené oopsy"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/hooks/abrt-merge-pstoreoops.c:98
 msgid "Delete files with found oopses"
-msgstr ""
+msgstr "Smazat soubory s nalezenými oopsy"
 
-#: ../src/cli/abrt-cli-core.c:91
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/abrt-cli-core.c:100
 #, c-format
 msgid "'%s' identifies more than one problem directory"
+msgstr "'%s' nalezl více než jeden adresář s problémy"
+
+#: ../src/cli/abrt-cli.c:130
+msgid "Usage: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:144
-msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
-msgstr "Použití: abrt-cli [--version] PŘÍKAZ [DIR]..."
-
-#: ../src/cli/abrt-cli.c:148
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/abrt-cli.c:134
 msgid "List problems [in DIRs]"
-msgstr ""
+msgstr "Vypsat seznam problémů [v adresářích]"
 
-#: ../src/cli/abrt-cli.c:149
+#: ../src/cli/abrt-cli.c:135
 msgid "Remove problem directory DIR"
 msgstr "Odstraň adresář problému DIR"
 
-#: ../src/cli/abrt-cli.c:150
+#: ../src/cli/abrt-cli.c:136
 msgid "Analyze and report problem data in DIR"
 msgstr "Analyzuj a reportuj data problému v DIR"
 
-#: ../src/cli/abrt-cli.c:151
+#: ../src/cli/abrt-cli.c:137
 msgid "Print information about DIR"
 msgstr "Tisk informací o DIR"
 
-#: ../src/cli/abrt-cli.c:152
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/abrt-cli.c:138
 msgid "Print the count of the recent crashes"
-msgstr ""
+msgstr "Vypsat počet nedávných pádů"
+
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/abrt-cli.c:139
+msgid "Process multiple problems"
+msgstr "Zpracovat více problémů"
 
 #: ../src/cli/abrt-cli.c:153
-msgid "Process multiple problems"
+msgid ""
+"Private Reports is enabled, use 'abrt-cli -a COMMAND' to get the detected "
+"problems."
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:168
+#: ../src/cli/abrt-cli.c:164
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "Více informací získáte příkazem „abrt-cli PŘÍKAZ --help“"
 
-#: ../src/cli/list.c:127
+#: ../src/cli/list.c:121
 #, c-format
 msgid ""
 "%sRun 'abrt-cli report %s' for creating a case in Red Hat Customer Portal\n"
 msgstr ""
 
-#: ../src/cli/list.c:179
-msgid "& list [options] [DIR]..."
-msgstr "& list [volby] [DIR]..."
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/cli/list.c:173
+msgid "& list [options]"
+msgstr "& list [volby]"
 
-#: ../src/cli/list.c:188
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/list.c:182
 msgid "List only not-reported problems"
-msgstr ""
+msgstr "Vypsat seznam pouze nenahlášených problémů"
 
 #. deprecate -d option with --pretty=full
-#: ../src/cli/list.c:190 ../src/cli/list.c:243
+#: ../src/cli/list.c:184 ../src/cli/list.c:237
 msgid "Show detailed report"
 msgstr "Zbrazit detailní zprávu"
 
-#: ../src/cli/list.c:191
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/list.c:185
 msgid "List only the problems more recent than specified timestamp"
-msgstr ""
+msgstr "Vypsat seznam problémů novějších než zadaná časová značka"
 
-#: ../src/cli/list.c:192
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/list.c:186
 msgid "List only the problems older than specified timestamp"
-msgstr ""
+msgstr "Vypsat seznam problémů starších než zadaná časová značka"
 
-#: ../src/cli/list.c:224
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/list.c:212
 #, c-format
 msgid ""
 "The Autoreporting feature is disabled. Please consider enabling it by "
 "issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
 msgstr ""
+"Funkce automatického hlášení je zakázána. Prosím zvažte její povolení pomocí\n"
+"spuštění 'abrt-auto-reporting enabled' s právy roota\n"
 
-#: ../src/cli/list.c:235
+#: ../src/cli/list.c:229
 msgid "& info [options] DIR..."
 msgstr "& info [volby] DIR..."
 
-#: ../src/cli/list.c:244
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/list.c:238
 msgid "Text larger than this will be shown abridged"
-msgstr ""
+msgstr "Text delší než toto bude zestručněný"
 
-#: ../src/cli/list.c:264
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/list.c:258
 #, c-format
 msgid "No such problem directory '%s'"
-msgstr ""
+msgstr "Žádný adresář s problémy '%s'"
 
-#: ../src/cli/status.c:70
-msgid "& status [DIR]..."
-msgstr ""
+# translation auto-copied from project abrt, version master, document abrt, author Zdenek
+#: ../src/cli/status.c:63
+msgid "& status"
+msgstr "& stav"
 
-#: ../src/cli/status.c:78
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/status.c:71
 msgid "Print only the problem count without any message"
-msgstr ""
+msgstr "Vypsat pouze počet problémů beze zpráv"
 
-#: ../src/cli/status.c:79
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/status.c:72
 msgid "Print only the problems more recent than specified timestamp"
-msgstr ""
+msgstr "Vypsat pouze problémy novější než zadaná časová značka"
 
-#: ../src/cli/status.c:104
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/status.c:88
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
 msgstr ""
+"ABRT detekoval %u problém(ů). Chcete-li více informací, spusťte: abrt-cli "
+"list%s\n"
 
-#: ../src/cli/report.c:28
-msgid "& report [options] DIR..."
+#: ../src/cli/report.c:34
+#, c-format
+msgid "Can't find problem '%s'"
 msgstr ""
 
-#: ../src/cli/report.c:38
-msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
-
-#: ../src/cli/report.c:71 ../src/cli/process.c:70
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/report.c:54 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "Mazání '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/report.c:70
+msgid "& report [options] DIR..."
+msgstr "& report [options] DIR..."
+
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/report.c:80
+msgid "Remove PROBLEM_DIR after reporting"
+msgstr "Odstranit PROBLEM_DIR po nahlášení"
+
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
-msgstr ""
+msgstr "Akce: remove(rm), info(i), skip(s):"
 
+# translation auto-copied from project abrt, version master, document abrt
 #: ../src/cli/process.c:66
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
-msgstr ""
+msgstr "Akce: remove(rm), report(e), info(i), skip(s):"
 
-#: ../src/cli/process.c:77
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/process.c:78
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "Hlášení '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt
 #. dummy must be free because the function ask allocate memory
-#: ../src/cli/process.c:133
+#: ../src/cli/process.c:127
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "Na další problémy přejdete tisknutím ENTER:"
 
-#: ../src/cli/process.c:144
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/process.c:138
 msgid "Without --since argument, iterates over all detected problems."
 msgstr ""
+"Bez argumentu --since provedete operaci nad všemi detekovanými problémy."
 
-#: ../src/cli/process.c:150
+# translation auto-copied from project abrt, version master, document abrt
+#: ../src/cli/process.c:144
 msgid "Selects only problems detected after timestamp"
-msgstr ""
+msgstr "Vybere pouze problémy detekované po časové značce"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""

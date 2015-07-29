@@ -4,22 +4,23 @@
 # 
 # Translators:
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
+# Momcilo Medic <medicmomcilo@gmail.com>, 2015. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2015-01-05 07:16-0500\n"
+"POT-Creation-Date: 2015-07-14 15:37+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-12-12 08:30-0500\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"PO-Revision-Date: 2015-07-14 09:47-0400\n"
+"Last-Translator: Momcilo Medic <medicmomcilo@gmail.com>\n"
 "Language-Team: Serbian (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/sr/)\n"
 "Language: sr\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Zanata 3.5.1\n"
+"X-Generator: Zanata 3.6.2\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
@@ -55,15 +56,17 @@ msgstr ""
 msgid "Can't determine network status via NetworkManager: %s"
 msgstr ""
 
-#: ../src/applet/applet.c:342
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/applet/applet.c:342 ../src/cli/report.c:42
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr ""
+msgstr "Не могу да преузмем власништво над '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/applet/applet.c:350
 #, c-format
 msgid "Can't open directory for writing '%s'"
-msgstr ""
+msgstr "Не могу да отворим директоријум за упис '%s'"
 
 #: ../src/applet/applet.c:417
 msgid "A problem has been detected"
@@ -85,10 +88,11 @@ msgstr ""
 msgid "Can't execute '%s'"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/applet/applet.c:668 ../src/applet/applet.c:744
 #, c-format
 msgid "Can't close notification: %s"
-msgstr ""
+msgstr "Не могу да затворим обавештење: %s"
 
 #: ../src/applet/applet.c:706
 msgid ""
@@ -167,26 +171,30 @@ msgstr ""
 msgid "A New Problem has Occurred"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/applet/applet.c:1064
 #, c-format
 msgid "Can't show notification: %s"
-msgstr ""
+msgstr "Не могу да прикажем обавештење: %s"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #. TODO: Terminate child's process?
 #: ../src/applet/applet.c:1098 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr ""
+msgstr "Не могу да читам са gio канала: '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/applet/applet.c:1182
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr ""
+msgstr "Не могу да поставим кодирање на gio каналу: %s"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/applet/applet.c:1186
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr ""
+msgstr "Не могу да укључим неблокирајући режим за gio каналу: %s"
 
 #: ../src/applet/applet.c:1494
 #, c-format
@@ -195,29 +203,38 @@ msgid ""
 "reappear on the next login"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/applet/applet.c:1635
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr ""
+"& [-v] [DIR]...\n"
+"\n"
+"Програмчић који обавештава корисника када ABRT открије нове проблеме\n"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr ""
+msgstr "Питати пре крађе директоријума"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
-msgstr ""
+msgstr "Аутоматски пошаљи uReport"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
-msgstr ""
+msgstr "Скраћено пријављивање"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
-msgstr ""
+msgstr "Тихо скраћено пријављивање"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
@@ -225,7 +242,12 @@ msgid ""
 "trace from the coredump but you have to upload the coredump to this service. "
 "With this option disabled ABRT will upload the coredump without asking."
 msgstr ""
+"Датотека coredump је неопходна за операцију стварања трага стека која "
+"захтева време и простор. ABRT пружа сервис који ствара траг стека из "
+"coredump-а али морате послати coredump овом сервису. Када је ова опција "
+"онемогућена ABRT ће послати coredump без питања."
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
 "ABRT stores problem data in directories. Whenever ABRT needs writable "
@@ -233,7 +255,12 @@ msgid ""
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
 msgstr ""
+"ABRT чува податке о проблему у директоријумима. Кад год је ABRT-у неопходан "
+"директоријум за упис, директоријум ће бити премештен са системске локације у "
+"ваш лични директоријум. Када је ова опција онемогућена ABRT ће преместити "
+"директоријум проблема без питања."
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
@@ -241,23 +268,37 @@ msgid ""
 "uReport is sent at beginning of reporting process. With this option enabled "
 "uReports are sent automatically immediately after problem detection."
 msgstr ""
+"uReport је кратки и потпуно анонимни опис проблема. ABRT користи uReport-ове "
+"за брзо глобално откривање дупликата. У подразумеваној конфигурацији uReport "
+"се шаље на почету процеса пријављивања. Када је ова опција омогућена uReport "
+"се шаљу аутоматски одмах након откривања проблема."
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
 "With this option enabled reporting process started by click on Report button "
 "in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
+"Када је ова опција омогућена поступак пријављивања започет кликом на Пријави "
+"дугме у балону обавештења о проблему, ће бити прекинут након што је uReport "
+"послат. Можете увек употребити подразумевани прегледач проблема да направите "
+"комплетну пријаву."
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
+"Када је ова опција омогућена ABRT никад не приказује обавештења о "
+"пријављеним проблемима. Има ефекта само када је омогућено скраћено "
+"пријављивање."
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid "Ask before uploading coredump"
-msgstr ""
+msgstr "Питати пре слања coredump-а"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid ""
@@ -265,54 +306,67 @@ msgid ""
 "access if possibly sensitive data are dected."
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Request private ticket for sensitive information"
-msgstr ""
+msgstr "Захтевати приватну карту за осетљиве информације"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid "Notify incomplete problems"
-msgstr ""
+msgstr "Обавести о непотпуним проблемима"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
 msgstr ""
+"Непотпуни проблеми су откривени када се рачунар искључује или се корисник "
+"одјављује. Да би се пружили корисни извештаји о проблемима, ABRT вам неће "
+"дозволити да пошаљете ове проблеме."
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Close"
-msgstr ""
+msgstr "_Затвори"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/system-config-abrt.c:84
 msgid "_Defaults"
-msgstr ""
+msgstr "_Подразумеване вредности"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/system-config-abrt.c:112
 #: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
-msgstr ""
+msgstr "Подешавање пријављивања проблема"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
-msgstr ""
+msgstr "О програму за системско подешавање ABRT-а"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/main.c:105
 msgid "About"
-msgstr ""
+msgstr "О програму"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/configuration-gui/main.c:106
 msgid "Quit"
-msgstr ""
+msgstr "Излаз"
 
-#: ../src/daemon/abrt-action-save-package-data.c:382
+#: ../src/daemon/abrt-action-save-package-data.c:378
 msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
 msgstr ""
 
-#: ../src/daemon/abrt-action-save-package-data.c:394
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-action-save-package-data.c:390
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
 #: ../src/plugins/abrt-action-analyze-c.c:78
 #: ../src/plugins/abrt-action-analyze-oops.c:48
@@ -321,95 +375,130 @@ msgstr ""
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
 msgid "Problem directory"
-msgstr ""
+msgstr "Директоријум проблема"
 
-#: ../src/daemon/abrt-action-save-package-data.c:395
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-action-save-package-data.c:391
 msgid "Configuration file"
-msgstr ""
+msgstr "Датотека подешавања"
 
-#: ../src/daemon/abrt-server.c:786 ../src/dbus/abrt-dbus.c:781
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-server.c:792 ../src/dbus/abrt-dbus.c:1001
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:484
 msgid "& [options]"
-msgstr ""
+msgstr "& [опције]"
 
-#: ../src/daemon/abrt-server.c:797
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-server.c:803
 msgid "Use NUM as client uid"
-msgstr ""
+msgstr "Користи NUM као uid клијента"
 
-#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:280
-#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:273
-#: ../src/plugins/abrt-dump-xorg.c:244
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-server.c:804 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:281
+#: ../src/plugins/abrt-dump-xorg.c:252
 msgid "Log to syslog"
-msgstr ""
+msgstr "Записник у syslog"
 
-#: ../src/daemon/abrt-server.c:799 ../src/daemon/abrtd.c:500
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-server.c:805 ../src/daemon/abrtd.c:500
 msgid "Add program names to log"
-msgstr ""
+msgstr "Додај имена програма у записник"
 
-#: ../src/dbus/abrt-dbus.c:123
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/dbus/abrt-dbus.c:132
 msgid "Unknown error"
-msgstr ""
+msgstr "Непозната грешка"
 
-#: ../src/dbus/abrt-dbus.c:188
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/dbus/abrt-dbus.c:221
 #, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr ""
+msgstr "'%s' није исправан директоријум проблема"
 
-#: ../src/dbus/abrt-dbus.c:223
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/dbus/abrt-dbus.c:256
 #, c-format
 msgid "'%s' element can't be modified"
-msgstr ""
+msgstr "'%s' елемент не може бити измењен"
 
-#: ../src/dbus/abrt-dbus.c:244 ../src/dbus/abrt-dbus.c:446
-#: ../src/dbus/abrt-dbus.c:498 ../src/dbus/abrt-configuration.c:618
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/dbus/abrt-dbus.c:285 ../src/dbus/abrt-dbus.c:498
+#: ../src/dbus/abrt-dbus.c:560 ../src/dbus/abrt-dbus.c:625
+#: ../src/dbus/abrt-dbus.c:815 ../src/dbus/abrt-configuration.c:618
 #: ../src/dbus/abrt-configuration.c:683
 #, c-format
 msgid "Not Authorized"
-msgstr ""
+msgstr "Неовлашћен"
 
-#: ../src/dbus/abrt-dbus.c:256
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/dbus/abrt-dbus.c:298
 msgid "Can't access the problem for modification"
-msgstr ""
+msgstr "Не могу да приступим проблему за измену"
 
-#: ../src/dbus/abrt-dbus.c:461
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/dbus/abrt-dbus.c:514
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
+"Промена власништва директоријума неуспешна. Проверите системске записе за "
+"више детаља."
 
-#: ../src/dbus/abrt-dbus.c:559
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/dbus/abrt-dbus.c:635
+msgid "Can't access the problem for reading"
+msgstr "Не могу да приступим проблему за читање"
+
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/dbus/abrt-dbus.c:690 ../src/dbus/abrt-dbus.c:755
+#: ../src/dbus/abrt-dbus.c:911
 #, c-format
 msgid "'%s' is not a valid element name"
-msgstr ""
+msgstr "'%s' није исправно име елемента"
 
-#: ../src/dbus/abrt-dbus.c:580
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/dbus/abrt-dbus.c:711
 #, c-format
 msgid "Can't get size of '%s'"
-msgstr ""
+msgstr "Не могу да добијем величину '%s'"
 
-#: ../src/dbus/abrt-dbus.c:595
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/dbus/abrt-dbus.c:726
 msgid "No problem space left"
-msgstr ""
+msgstr "Није остало места за проблеме"
 
-#: ../src/dbus/abrt-dbus.c:627
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/dbus/abrt-dbus.c:776
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr ""
+msgstr "Не могу да обришем елемент '%s' из директоријума проблема '%s'"
 
-#: ../src/dbus/abrt-dbus.c:763 ../src/dbus/abrt-configuration.c:983
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/dbus/abrt-dbus.c:803
+msgid "Can't access the problem"
+msgstr "Не могу да приступим проблему"
+
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/dbus/abrt-dbus.c:983 ../src/dbus/abrt-configuration.c:983
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr ""
+"Име '%s' је изгубљено, молим проверите да ли други сервис са власништвом над "
+"именом није покренут.\n"
 
-#: ../src/dbus/abrt-dbus.c:790 ../src/dbus/abrt-configuration.c:1011
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/dbus/abrt-dbus.c:1010 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:499
 msgid "Exit after NUM seconds of inactivity"
-msgstr ""
+msgstr "Изађи након NUM секунди неактивности"
 
-#: ../src/dbus/abrt-dbus.c:808 ../src/dbus/abrt-configuration.c:1021
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/dbus/abrt-dbus.c:1028 ../src/dbus/abrt-configuration.c:1021
 msgid "This program must be run as root."
-msgstr ""
+msgstr "Овај програм мора бити извршен под root налогом."
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/daemon/abrtd.c:451
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
@@ -418,32 +507,44 @@ msgid ""
 "problem. If you have time and want to help the developers in their effort to "
 "sort out this problem, please contact them directly."
 msgstr ""
+"Подаци о проблему су непотпуни. Ово се обично дешава када се открије проблем "
+"док се рачунар искључује или се корисник одјављује. Да би се пружили корисни "
+"извештаји о проблемима, ABRT вам неће дозволити да пошаљете овај проблем. "
+"Ако имате времена и желите да помогнете програмерима у њиховом настојању да "
+"реше овај проблем, молим да их контактирате директно."
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/daemon/abrtd.c:497
 msgid "Do not daemonize"
-msgstr ""
+msgstr "Немој покренути као сервис"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/daemon/abrtd.c:498
 msgid "Log to syslog even with -d"
-msgstr ""
+msgstr "Записуј у syslog чак и са -d"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/daemon/abrt-handle-event.c:388
 msgid "& [-v -i] -e|--event EVENT DIR..."
-msgstr ""
+msgstr "& [-v -i] -e|--event EVENT DIR..."
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/daemon/abrt-handle-event.c:396
 msgid "Run EVENT on DIR"
-msgstr ""
+msgstr "Изврши EVENT над DIR-ом"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/daemon/abrt-handle-event.c:397
 msgid "Communicate directly to the user"
-msgstr ""
+msgstr "Пренеси директно са кориснику"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
-msgstr ""
+msgstr "Нема слободних радника и бафер је пун. Прескачем архиву '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
 "& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
@@ -455,86 +556,116 @@ msgid ""
 "If UPLOAD_DIRECTORY is not provided, uses a value of\n"
 "WatchCrashdumpArchiveDir option from abrt.conf"
 msgstr ""
+"& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
+"\n"
+"\n"
+"Прати UPLOAD_DIRECTORY и отпакује архиве које пристижу у DumpLocation\n"
+"назначену у abrt.conf\n"
+"\n"
+"Ако UPLOAD_DIRECTORY није задат, користи вредност\n"
+"WatchCrashdumpArchiveDir опције из abrt.conf"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/daemon/abrt-upload-watch.c:281
 msgid "Daemize"
-msgstr ""
+msgstr "Као сервис"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr ""
+msgstr "Број упоредних радника. Подразумевано је "
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr ""
+msgstr "Максимална величина кеша у MiB. Подразумевано је "
 
-#: ../src/daemon/abrt-auto-reporting.c:176
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-auto-reporting.c:200
+#: ../src/daemon/abrt-auto-reporting.c:208
 msgid "& [ "
-msgstr ""
+msgstr "& [ "
 
-#: ../src/daemon/abrt-auto-reporting.c:213
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Turns the authentication off"
-msgstr ""
+msgstr "Искључује аутентификацију"
 
-#: ../src/daemon/abrt-auto-reporting.c:214
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-auto-reporting.c:236
 msgid "Red Hat Support user name"
-msgstr ""
+msgstr "Red Hat Support корисничко име"
 
-#: ../src/daemon/abrt-auto-reporting.c:215
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-auto-reporting.c:237
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
 msgstr ""
+"Red Hat Support лозинка, ако није задата, онда ће бити издат упит за њу"
 
-#: ../src/daemon/abrt-auto-reporting.c:216
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-auto-reporting.c:238
 msgid "uReport SSL certificate paths or certificate type"
-msgstr ""
+msgstr "uReport SSL путање сертификата или врста сертификата"
 
-#: ../src/daemon/abrt-auto-reporting.c:227
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-auto-reporting.c:254
 msgid "You also need to specify --username for --password"
-msgstr ""
+msgstr "Такође је потребно да назначите --username за --password"
 
-#: ../src/daemon/abrt-auto-reporting.c:233
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-auto-reporting.c:260
 msgid "You can use either --username or --certificate"
-msgstr ""
+msgstr "Можете користити или --username или --certificate"
 
-#: ../src/daemon/abrt-auto-reporting.c:239
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-auto-reporting.c:266
 msgid "You can use either --username or --anonymous"
-msgstr ""
+msgstr "Можете користити или --username или --anonymous"
 
-#: ../src/daemon/abrt-auto-reporting.c:245
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-auto-reporting.c:272
 msgid "You can use either --anonymous or --certificate"
-msgstr ""
+msgstr "Можете користити или --anonymous или --certificate"
 
-#: ../src/daemon/abrt-auto-reporting.c:251
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-auto-reporting.c:279
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "Неисправан број аргумената"
 
-#: ../src/daemon/abrt-auto-reporting.c:270
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-auto-reporting.c:298
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "Непозната вредност опције: '%s'\n"
 
-#: ../src/daemon/abrt-auto-reporting.c:305
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-auto-reporting.c:338
 msgid "Password:"
-msgstr ""
+msgstr "Лозинка:"
 
-#: ../src/daemon/abrt-auto-reporting.c:308
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-auto-reporting.c:341
 msgid "Cannot continue without password\n"
-msgstr ""
+msgstr "Не могу наставити без лозинке\n"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #. Print only the part before ':' of a string like "username:password"
-#: ../src/daemon/abrt-auto-reporting.c:347
+#: ../src/daemon/abrt-auto-reporting.c:382
 msgid "HTTP Authenticated auto reporting"
-msgstr ""
+msgstr "HTTP аутентификовано аутоматско пријављивање"
 
-#: ../src/daemon/abrt-auto-reporting.c:349
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-auto-reporting.c:384
 msgid "SSL Client Authenticated auto reporting"
-msgstr ""
+msgstr "SSL Client аутентификовано аутоматско пријављивање"
 
-#: ../src/daemon/abrt-auto-reporting.c:351
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-auto-reporting.c:386
 msgid "anonymous auto reporting"
-msgstr ""
+msgstr "анонимно аутоматско пријављивање"
 
-#: ../src/daemon/abrt-handle-upload.in:69
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-handle-upload.in:135
 #, c-format
 msgid ""
 "Usage: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
@@ -545,120 +676,162 @@ msgid ""
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
 msgstr ""
+"Употреба: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
+"\n"
+"   -v             - Брбљивост\n"
+"   -d             - Обриши послату архиву\n"
+"   ABRT_SPOOL_DIR - Директоријум где се отпакују исправне послате архиве\n"
+"   UPLOAD_DIR     - Директоријум где се чувају послате архиве\n"
+"   FILENAME       - Име датотеке послате архиве\n"
 
-#: ../src/daemon/abrt-handle-upload.in:105
-#: ../src/daemon/abrt-handle-upload.in:108
-msgid "Not a directory: '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:111
-msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:114
-msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:117
-msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:120
-msgid "Skipping: '{0}' (contains space)"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:123
-msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:128
-msgid "Can't change directory to '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:139
-msgid "Unknown file type: '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:144
-msgid "Can't create working directory in '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:155
-msgid "Can't move '{0}' to '{1}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:160
-msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:164
-msgid "Verification error on '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:166
-msgid "Unpacking '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:170
-msgid "Can't create '{0}' directory"
-msgstr ""
-
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-handle-upload.in:171
 #: ../src/daemon/abrt-handle-upload.in:174
+msgid "Not a directory: '{0}'"
+msgstr "Није директоријум: '{0}'"
+
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-handle-upload.in:177
+msgid "Skipping: '{0}' (starts with slash)"
+msgstr "Прескачем: '{0}' (почиње косом цртом)"
+
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-handle-upload.in:180
+msgid "Skipping: '{0}' (starts with dot)"
+msgstr "Прескачем: '{0}' (почиње тачком)"
+
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-handle-upload.in:183
+msgid "Skipping: '{0}' (contains ..)"
+msgstr "Прескачем: '{0}' (садржи ..)"
+
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-handle-upload.in:186
+msgid "Skipping: '{0}' (contains space)"
+msgstr "Прескачем: '{0}' (садржи размак)"
+
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-handle-upload.in:189
+msgid "Skipping: '{0}' (contains tab)"
+msgstr "Прескачем: '{0}' (садржи таб)"
+
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-handle-upload.in:194
+msgid "Can't change directory to '{0}'"
+msgstr "Не могу променити директоријум на '{0}'"
+
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-handle-upload.in:205
+msgid "Unknown file type: '{0}'"
+msgstr "Непозната врста датотеке: '{0}'"
+
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-handle-upload.in:210
+msgid "Can't create working directory in '{0}'"
+msgstr "Не могу да направим радни директоријум у '{0}'"
+
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-handle-upload.in:221
+msgid "Can't move '{0}' to '{1}'"
+msgstr "Не могу преместити '{0}' на '{1}'"
+
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-handle-upload.in:226
+msgid "Can't copy '{0}' to '{1}'"
+msgstr "Не могу копирати '{0}' на '{1}'"
+
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-handle-upload.in:230
+msgid "Verification error on '{0}'"
+msgstr "Грешка при провери '{0}'"
+
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-handle-upload.in:232
+msgid "Unpacking '{0}'"
+msgstr "Отпакујем '{0}'"
+
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-handle-upload.in:236
+msgid "Can't create '{0}' directory"
+msgstr "Не могу да направим '{0}' директоријум"
+
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-handle-upload.in:240
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "Не могу да отпакујем '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:198
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/daemon/abrt-handle-upload.in:260
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' успешно обрађено"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
 msgid "Generating backtrace"
-msgstr ""
+msgstr "Стварам стабло позивања"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/lib/problem_api_dbus.c:42
 #, c-format
 msgid "Can't connect to system DBus: %s"
-msgstr ""
+msgstr "Не могу да се повежем на системски DBus: %s"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/lib/problem_api_dbus.c:68
 #, c-format
 msgid "Can't chown '%s': %s"
-msgstr ""
+msgstr "Не могу да chown-ујем '%s': %s"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/lib/problem_api_dbus.c:97
 #, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr ""
+msgstr "Грешка при брисању директоријума проблема: %s"
 
-#: ../src/lib/problem_api_dbus.c:133
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/lib/problem_api_dbus.c:133 ../src/lib/problem_api_dbus.c:206
+#: ../src/lib/problem_api_dbus.c:286
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
-msgstr ""
+msgstr "Не могу да преузмем податке о проблему од abrt-dbus: %s"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/lib/problem_api_dbus.c:169
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
-msgstr ""
+msgstr "Не могу преузети списак проблема од abrt-dbus: %s"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
+#: ../src/lib/problem_api_dbus.c:250
+#, c-format
+msgid "Can't test whether the element exists over abrt-dbus: %s"
+msgstr "Не могу испробати да ли елемент постоји преко abrt-dbus: %s"
+
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/lib/ignored_problems.c:233
 #, c-format
 msgid "Can't create temporary file '%s'"
-msgstr ""
+msgstr "Не могу направити привремену датотеку '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/lib/ignored_problems.c:250
 #, c-format
 msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
 "problems '%s'"
 msgstr ""
+"Не могу да упишем у '%s'. Проблем '%s' неће бити уклоњен из занемарених "
+"проблема '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #. Something nefarious happened
 #: ../src/lib/ignored_problems.c:264
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
-msgstr ""
+msgstr "Не могу да преименујем '%s' у '%s'. Грешка при уклањању проблема '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-analyze-backtrace.c:41
 msgid ""
 "& [options] -d DIR\n"
@@ -666,7 +839,13 @@ msgid ""
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
 msgstr ""
+"& [опције] -d DIR\n"
+"\n"
+"Анализира C/C++ стабло позивања, ствара збир понављања, оцену стабла "
+"позивања\n"
+"и идентификује срушену функцију у директоријуму проблема DIR"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #. 
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
@@ -675,146 +854,196 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "Неуспешна обрада стабла позивања за %s"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-analyze-backtrace.c:146
 msgid "Crash thread not found"
-msgstr ""
+msgstr "Срушена нит није пронађена"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-analyze-c.c:67
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Израчунава и чува UUID coredump-а у директоријуму проблема DIR"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "Анализирам coredump '%s'"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-analyze-core.in:110
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "Недостаје id изградње: %s"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-analyze-core.in:142
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr ""
+msgstr "Употреба: %s [-v] [-o OUTFILE] -c COREFILE"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-analyze-core.in:164
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "COREFILE није назначен"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Израчунава и чува UUID и DUPHASH за директоријум oops проблема DIR"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-analyze-xorg.c:73
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Израчунава и чува UUID и DUPHASH за директоријум xorg проблема DIR"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-analyze-xorg.c:113
 #, c-format
 msgid "Module '%s' was loaded - won't report this crash"
-msgstr ""
+msgstr "Модул '%s' је био учитан - нећу пријавити овај крах"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-analyze-python.c:36
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Израчунава и чува UUID и DUPHASH за python crash dump-ове"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-analyze-vmcore.in:52
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
-msgstr ""
+msgstr "Употреба: {0} [-v[v]] [--core=VMCORE]"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-analyze-vmcore.in:79
 msgid "File {0} doesn't exist"
-msgstr ""
+msgstr "Датотека {0} не постоји"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-analyze-vmcore.in:82
 msgid "Extracting the oops text from core"
-msgstr ""
+msgstr "Извлачим oops текст из језгра"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
 msgid "Can't process {0}:\n"
 "{1}"
-msgstr ""
+msgstr "Не могу да обрадим {0}:\n"
+"{1}"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "Can't extract the oops message: '{0}'"
-msgstr ""
+msgstr "Не могу да извучем oops поруку: '{0}'"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-analyze-vmcore.in:98
 msgid "Oops text extracted successfully"
-msgstr ""
+msgstr "Oops текст успешно извучен"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
 msgstr ""
+"Запис језгра указује на пронађене хардверске грешке.\n"
+"Ово највероватније није програмски проблем.\n"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
 "& [options] -d DIR\n"
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
 msgstr ""
+"& [опције] -d DIR\n"
+"\n"
+"Анализира coredump у директоријуму проблема DIR, ствара и чува стабло "
+"развоја"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
-msgstr ""
+msgstr "Додатни debuginfo директоријуми"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-generate-backtrace.c:57
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr ""
+msgstr "Убиј gdb ако се извршава дуже од NUM секунди"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
 #. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr ""
+msgstr "Стабло развоја је направљено и сачувано, %u бајтова"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:40
 msgid ""
 "& [-v] [-r] -d DIR\n"
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
 msgstr ""
+"& [-v] [-r] -d DIR\n"
+"\n"
+"Ствара стабло развоја coredump нивоа из core dump-а и одговарајуће бинарне "
+"датотеке"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
-msgstr ""
+msgstr "Немој правити збир отисака"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
 msgid "Generating core_backtrace"
-msgstr ""
+msgstr "Правим core_backtrace"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:81
 msgid "Error: GDB did not return any data"
-msgstr ""
+msgstr "Грешка: GDB није вратио никакве податке"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:95
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Грешка: %s"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-install-debuginfo.in:51
 msgid "Exiting on user command"
-msgstr ""
+msgstr "Излазим по команди корисника"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:88
 #, c-format
@@ -840,13 +1069,15 @@ msgid ""
 "                Default: *debug*\n"
 msgstr ""
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-install-debuginfo.in:169
 msgid "Can't open {0}: {1}"
-msgstr ""
+msgstr "Не могу да отворим {0}: {1}"
 
+# translation auto-copied from project abrt, version master, document abrt, author Momcilo Medic
 #: ../src/plugins/abrt-action-install-debuginfo.in:206
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
-msgstr ""
+msgstr "Coredump помиње {0} debuginfo датотека, {1} од њих није инсталирано"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:209
 msgid "{0} of debuginfo files are not installed"
@@ -862,6 +1093,35 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:231
 msgid "All debuginfo files are available"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:43
+msgid ""
+"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+"\t[-r REPO]\n"
+"\n"
+"Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
+"ABRT system cache."
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:66
+msgid "Noninteractive, assume 'Yes' to all questions"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:67
+msgid "- means STDIN, default: build_ids"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
+msgid "Download only specified files"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
+msgid "Pattern to use when searching for repos, default: *debug*"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
+msgid "Ignored option"
 msgstr ""
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
@@ -1083,69 +1343,69 @@ msgstr ""
 msgid " Tainted modules: %s."
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:254
+#: ../src/plugins/abrt-dump-oops.c:262
 msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:274
+#: ../src/plugins/abrt-dump-oops.c:282
 msgid "Print found oopses on standard output"
 msgstr ""
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
 #. 
-#: ../src/plugins/abrt-dump-oops.c:278
+#: ../src/plugins/abrt-dump-oops.c:286
 msgid "Create new problem directory in DIR for every oops found"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:279 ../src/plugins/abrt-dump-xorg.c:247
+#: ../src/plugins/abrt-dump-oops.c:287 ../src/plugins/abrt-dump-xorg.c:255
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:280
+#: ../src/plugins/abrt-dump-oops.c:288
 msgid "Save the extracted information in PROBLEM"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:281 ../src/plugins/abrt-dump-xorg.c:248
+#: ../src/plugins/abrt-dump-oops.c:289 ../src/plugins/abrt-dump-xorg.c:256
 msgid "Make the problem directory world readable"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:282
+#: ../src/plugins/abrt-dump-oops.c:290
 msgid "Throttle problem directory creation to 1 per second"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:283 ../src/plugins/abrt-dump-xorg.c:249
+#: ../src/plugins/abrt-dump-oops.c:291 ../src/plugins/abrt-dump-xorg.c:257
 msgid "Print search string(s) to stdout and exit"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:311
+#: ../src/plugins/abrt-dump-oops.c:319
 msgid "Failed to compile regex"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:402
+#: ../src/plugins/abrt-dump-oops.c:410
 msgid "Can't update the problem: more than one oops found"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:421
+#: ../src/plugins/abrt-dump-oops.c:429
 #, c-format
 msgid "Sleeping for %d seconds"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-xorg.c:237
+#: ../src/plugins/abrt-dump-xorg.c:245
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-xorg.c:245
+#: ../src/plugins/abrt-dump-xorg.c:253
 msgid "Print found crash data on standard output"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-xorg.c:246
+#: ../src/plugins/abrt-dump-xorg.c:254
 msgid "Create problem directory in DIR for every crash found"
 msgstr ""
 
@@ -1694,71 +1954,77 @@ msgstr ""
 msgid "Delete files with found oopses"
 msgstr ""
 
-#: ../src/cli/abrt-cli-core.c:91
+#: ../src/cli/abrt-cli-core.c:100
 #, c-format
 msgid "'%s' identifies more than one problem directory"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:144
-msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
+#: ../src/cli/abrt-cli.c:130
+msgid "Usage: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:148
+#: ../src/cli/abrt-cli.c:134
 msgid "List problems [in DIRs]"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:149
+#: ../src/cli/abrt-cli.c:135
 msgid "Remove problem directory DIR"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:150
+#: ../src/cli/abrt-cli.c:136
 msgid "Analyze and report problem data in DIR"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:151
+#: ../src/cli/abrt-cli.c:137
 msgid "Print information about DIR"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:152
+#: ../src/cli/abrt-cli.c:138
 msgid "Print the count of the recent crashes"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:153
+#: ../src/cli/abrt-cli.c:139
 msgid "Process multiple problems"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:168
+#: ../src/cli/abrt-cli.c:153
+msgid ""
+"Private Reports is enabled, use 'abrt-cli -a COMMAND' to get the detected "
+"problems."
+msgstr ""
+
+#: ../src/cli/abrt-cli.c:164
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr ""
 
-#: ../src/cli/list.c:127
+#: ../src/cli/list.c:121
 #, c-format
 msgid ""
 "%sRun 'abrt-cli report %s' for creating a case in Red Hat Customer Portal\n"
 msgstr ""
 
-#: ../src/cli/list.c:179
-msgid "& list [options] [DIR]..."
+#: ../src/cli/list.c:173
+msgid "& list [options]"
 msgstr ""
 
-#: ../src/cli/list.c:188
+#: ../src/cli/list.c:182
 msgid "List only not-reported problems"
 msgstr ""
 
 #. deprecate -d option with --pretty=full
-#: ../src/cli/list.c:190 ../src/cli/list.c:243
+#: ../src/cli/list.c:184 ../src/cli/list.c:237
 msgid "Show detailed report"
 msgstr ""
 
-#: ../src/cli/list.c:191
+#: ../src/cli/list.c:185
 msgid "List only the problems more recent than specified timestamp"
 msgstr ""
 
-#: ../src/cli/list.c:192
+#: ../src/cli/list.c:186
 msgid "List only the problems older than specified timestamp"
 msgstr ""
 
-#: ../src/cli/list.c:224
+#: ../src/cli/list.c:212
 #, c-format
 msgid ""
 "The Autoreporting feature is disabled. Please consider enabling it by "
@@ -1766,47 +2032,52 @@ msgid ""
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
 msgstr ""
 
-#: ../src/cli/list.c:235
+#: ../src/cli/list.c:229
 msgid "& info [options] DIR..."
 msgstr ""
 
-#: ../src/cli/list.c:244
+#: ../src/cli/list.c:238
 msgid "Text larger than this will be shown abridged"
 msgstr ""
 
-#: ../src/cli/list.c:264
+#: ../src/cli/list.c:258
 #, c-format
 msgid "No such problem directory '%s'"
 msgstr ""
 
-#: ../src/cli/status.c:70
-msgid "& status [DIR]..."
+#: ../src/cli/status.c:63
+msgid "& status"
 msgstr ""
 
-#: ../src/cli/status.c:78
+#: ../src/cli/status.c:71
 msgid "Print only the problem count without any message"
 msgstr ""
 
-#: ../src/cli/status.c:79
+#: ../src/cli/status.c:72
 msgid "Print only the problems more recent than specified timestamp"
 msgstr ""
 
-#: ../src/cli/status.c:104
+#: ../src/cli/status.c:88
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
 msgstr ""
 
-#: ../src/cli/report.c:28
+#: ../src/cli/report.c:34
+#, c-format
+msgid "Can't find problem '%s'"
+msgstr ""
+
+#: ../src/cli/report.c:54 ../src/cli/process.c:70
+#, c-format
+msgid "Deleting '%s'"
+msgstr ""
+
+#: ../src/cli/report.c:70
 msgid "& report [options] DIR..."
 msgstr ""
 
-#: ../src/cli/report.c:38
+#: ../src/cli/report.c:80
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
-
-#: ../src/cli/report.c:71 ../src/cli/process.c:70
-#, c-format
-msgid "Deleting '%s'"
 msgstr ""
 
 #: ../src/cli/process.c:64
@@ -1817,21 +2088,21 @@ msgstr ""
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
 msgstr ""
 
-#: ../src/cli/process.c:77
+#: ../src/cli/process.c:78
 #, c-format
 msgid "Reporting '%s'"
 msgstr ""
 
 #. dummy must be free because the function ask allocate memory
-#: ../src/cli/process.c:133
+#: ../src/cli/process.c:127
 msgid "For next problem press ENTER:"
 msgstr ""
 
-#: ../src/cli/process.c:144
+#: ../src/cli/process.c:138
 msgid "Without --since argument, iterates over all detected problems."
 msgstr ""
 
-#: ../src/cli/process.c:150
+#: ../src/cli/process.c:144
 msgid "Selects only problems detected after timestamp"
 msgstr ""
 
