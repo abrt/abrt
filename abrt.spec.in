@@ -272,6 +272,7 @@ Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-cli >= %{libreport_ver}
 Requires: abrt-libs = %{version}-%{release}
+Requires: %{name}-dbus = %{version}-%{release}
 
 %description tui
 This package contains a simple command line client for processing abrt reports
@@ -370,6 +371,7 @@ Summary: ABRT Python API
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-libs = %{version}-%{release}
+Requires: %{name}-dbus = %{version}-%{release}
 Requires: pygobject2
 Requires: dbus-python
 Requires: libreport-python
