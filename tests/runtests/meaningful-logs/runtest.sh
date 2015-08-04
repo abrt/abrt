@@ -34,21 +34,22 @@ PACKAGE="abrt"
 function capture_abrtd_startup_logs
 {
     local SINCE=$(date +"%Y-%m-%d %T")
+    rlRun "rm -rf /var/run/abrt/abrtd.pid"
     rlRun "systemctl start abrtd"
 
-    local TO=50
+    local TO=500
     local CNT=0
     while [ $CNT -lt $TO ]
     do
-        journalctl SYSLOG_IDENTIFIER=abrtd --since="$SINCE" > $1
-
-        if cat $1 | grep "Init complete, entering main loop" -q; then
+        if [ -e /var/run/abrt/abrtd.pid ]; then
             break
         fi
 
         sleep 0.1
         ((CNT++))
     done
+
+    journalctl SYSLOG_IDENTIFIER=abrtd --since="$SINCE" > $1
 
     rlRun "systemctl stop abrtd"
     rlRun "systemctl reset-failed abrtd.service"
@@ -71,7 +72,7 @@ function missing_or_corrupted_time
         rlAssertNotGrep "Missing file: time" $LOG_NAME
         rlAssertNotGrep "Unlocked '.*' (no or corrupted 'time' file)" $LOG_NAME
         rlAssertGrep "'/var/.*/abrt/.*' is not a problem directory" $LOG_NAME
-        rlAssertEquals "Sane number of lines" "03" "0$(wc -l $LOG_NAME | cut -f 1 -d ' ')"
+        rlAssertGreaterOrEqual "Sane number of lines" "03" "0$(wc -l $LOG_NAME | cut -f 1 -d ' ')"
     else
         rlFail "Could not capture abrtd logs for $1 time file"
     fi
@@ -113,7 +114,7 @@ rlJournalStart
             rlAssertNotGrep "Missing or empty file: type" time_file_exists.log
             rlAssertNotGrep "Unlocked '.*' (no or corrupted 'type' file)" time_file_exists.log
             rlAssertGrep "'/var/.*/abrt/.*' is not a problem directory" time_file_exists.log
-            rlAssertEquals "Sane number of line" "03" "0$(wc -l time_file_exists.log | cut -f 1 -d ' ')"
+            rlAssertGreaterOrEqual "Sane number of line" "03" "0$(wc -l time_file_exists.log | cut -f 1 -d ' ')"
         else
             rlFail "Could not capture abrtd logs for a directory with 'time' file"
         fi
@@ -124,7 +125,7 @@ rlJournalStart
 
         if [ $? -eq 0 ]; then
             rlAssertGrep "Marking '/var/.*/abrt/.*' not reportable (no 'count' item)" type_time_files_exist.log
-            rlAssertEquals "Sane number of line" "03" "0$(wc -l type_time_files_exist.log | cut -f 1 -d ' ')"
+            rlAssertGreaterOrEqual "Sane number of line" "03" "0$(wc -l type_time_files_exist.log | cut -f 1 -d ' ')"
         else
             rlFail "Could not capture abrtd logs for a directory with 'time' & 'type' files"
         fi
@@ -135,7 +136,7 @@ rlJournalStart
         capture_abrtd_startup_logs dump_directory_with_count.log
 
         if [ $? -eq 0 ]; then
-            rlAssertEquals "Sane number of line" "02" "0$(wc -l dump_directory_with_count.log | cut -f 1 -d ' ')"
+            rlAssertGreaterOrEqual "Sane number of line" "02" "0$(wc -l dump_directory_with_count.log | cut -f 1 -d ' ')"
         else
             rlFail "Could not capture abrtd logs for a directory with 'time' & 'type' & 'count' files"
         fi
