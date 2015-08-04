@@ -21,6 +21,19 @@ function check_dump_dir_attributes() {
     rlAssertEquals "Dump directory group is abrt" "x$(stat --format=%G $1)" "xabrt"
 }
 
+function check_dump_dir_attributes_vmcore_rhel() {
+    rlLog "Check dump dir FS attributes"
+    if [ -z "$1" ]; then
+        rlFail "Missing path to the test dump directory"
+        return
+    fi
+
+    ls -al $1
+    rlAssertEquals "Dump directory has proper rights" "_$(stat --format=%A $1)" "_drwx------"
+    rlAssertEquals "Dump directory owned by root" "x$(stat --format=%U $1)" "xroot"
+    rlAssertEquals "Dump directory group is abrt" "x$(stat --format=%G $1)" "xroot"
+}
+
 function get_crash_path() {
     rlLog "Get crash path"
     rlAssertGreater "Crash recorded" $(abrt-cli list 2> /dev/null | wc -l) 0
