@@ -26,7 +26,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
-. ../aux/lib.sh
+. ../../../aux/lib.sh
 
 TEST="dbus-argument-validation"
 PACKAGE="abrt"
