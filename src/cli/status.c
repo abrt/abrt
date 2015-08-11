@@ -27,6 +27,9 @@ static unsigned int count_problem_dirs(unsigned long since)
     unsigned count = 0;
 
     GList *problems = get_problems_over_dbus(g_cli_authenticate);
+    if (problems == ERR_PTR)
+        return count;
+
     for (GList *iter = problems; iter != NULL; iter = g_list_next(iter))
     {
         const char *problem_id = (const char *)iter->data;
@@ -37,7 +40,7 @@ static unsigned int count_problem_dirs(unsigned long since)
         }
 
         char *time_str = load_text_over_dbus(problem_id, FILENAME_LAST_OCCURRENCE);
-        if (time_str == NULL)
+        if (time_str == ERR_PTR || time_str == NULL)
         {
             log_debug("Not counting problem %s: failed to get time element", problem_id);
             continue;
