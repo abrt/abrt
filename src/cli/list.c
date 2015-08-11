@@ -36,6 +36,9 @@ static problem_data_t *load_problem_data(const char *problem_id)
 
     /* First, check if there is a problem with the passed id */
     GList *problems = get_problems_over_dbus(g_cli_authenticate);
+    if (problems == ERR_PTR)
+        return NULL;
+
     GList *item = g_list_find_custom(problems, problem_id, (GCompareFunc)strcmp);
 
     /* (git requires at least 5 char hash prefix, we do the same) */
