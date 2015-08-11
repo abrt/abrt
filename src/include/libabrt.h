@@ -135,7 +135,7 @@ void koops_print_suspicious_strings_filtered(const regex_t **filterout);
 
   Requires authorization
 
-  @return 0 if successfull non-zeru on failure
+  @return 0 if successful; non-zero on failure
 */
 int chown_dir_over_dbus(const char *problem_dir_path);
 
@@ -161,7 +161,8 @@ char *load_text_over_dbus(const char *problem_id, const char *element_name);
  @brief Delets multiple problems specified by their id (as returned from problem_data_save)
 
  @param problem_dir_paths List of problem ids
- @return 0 if operation was successfull, non-zero on failure
+
+ @return 0 if operation was successful, non-zero on failure
 */
 
 int delete_problem_dirs_over_dbus(const GList *problem_dir_paths);
@@ -169,14 +170,14 @@ int delete_problem_dirs_over_dbus(const GList *problem_dir_paths);
 /**
   @brief Fetches problem information for specified problem id
 
-  @return problem_data_t or NULL on failure
+  @return a valid pointer to problem_data_t or ERR_PTR on failure
 */
 problem_data_t *get_problem_data_dbus(const char *problem_dir_path);
 
 /**
   @brief Fetches full problem data for specified problem id
 
-  @return problem_data_t or ERR_PTR on failure
+  @return a valid pointer to problem_data_t or ERR_PTR on failure
 */
 problem_data_t *get_full_problem_data_over_dbus(const char *problem_dir_path);
 
@@ -184,7 +185,8 @@ problem_data_t *get_full_problem_data_over_dbus(const char *problem_dir_path);
   @brief Fetches all problems from problem database
 
   @param authorize If set to true will try to fetch even problems owned by other users (will require root authorization over policy kit)
-  @return List of problem ids or NULL on failure
+
+  @return List of problem ids or ERR_PTR on failure (NULL is an empty list)
 */
 GList *get_problems_over_dbus(bool authorize);
 

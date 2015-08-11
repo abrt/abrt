@@ -132,7 +132,7 @@ problem_data_t *get_problem_data_dbus(const char *problem_dir_path)
     {
         error_msg(_("Can't get problem data from abrt-dbus: %s"), error->message);
         g_error_free(error);
-        return NULL;
+        return ERR_PTR;
     }
 
     problem_data_t *pd = problem_data_new();
