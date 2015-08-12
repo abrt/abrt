@@ -67,6 +67,7 @@ rlJournalStart
         rlAssertEquals "Reads the configuration" "_$(abrt-auto-reporting)" "_$CONF_VALUE"
     rlPhaseEnd
 
+    if ! rlIsRHEL; then
     rlPhaseStartTest "missing rhtsupport.conf"
         [ -f /etc/libreport/plugins/rhtsupport.conf ] && rlRun "mv /etc/libreport/plugins/rhtsupport.conf ~" 0 "backup rhtsupport.conf"
         rlRun "abrt-auto-reporting"
@@ -75,6 +76,7 @@ rlJournalStart
         get_configured_value
         rlAssertEquals "Reads the configuration" "_$(abrt-auto-reporting)" "_$CONF_VALUE"
     rlPhaseEnd
+    fi
 
     rlPhaseStartTest "enabled"
         rlRun "abrt-auto-reporting enabled"
