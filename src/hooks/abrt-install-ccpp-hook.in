@@ -11,9 +11,9 @@ SAVED_PATTERN_DIR="@VAR_RUN@/abrt"
 SAVED_PATTERN_FILE="@VAR_RUN@/abrt/saved_core_pattern"
 HOOK_BIN="@libexecdir@/abrt-hook-ccpp"
 # Must match percent_specifiers[] order in abrt-hook-ccpp.c:
-PATTERN="|$HOOK_BIN %s %c %p %u %g %t %e %P %i"
+PATTERN="|$HOOK_BIN %s %c %p %u %g %t %e %P %I"
 # Same, but with bogus "executable name" parameter
-PATTERN1="|$HOOK_BIN %s %c %p %u %g %t e %P %i"
+PATTERN1="|$HOOK_BIN %s %c %p %u %g %t e %P %I"
 
 # core_pipe_limit specifies how many dump_helpers can run at the same time
 # 0 - means unlimited, but it's not guaranteed that /proc/<pid> of crashing
