@@ -315,23 +315,45 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "String Array from non-default file"
+
+        # get option Interpreters from 'etc/abrt/abrt-action-save-package-data.conf'
+        rlRun "interpreters_conf=`augtool get /files/etc/abrt/abrt-action-save-package-data.conf/Interpreters | cut -d'=' -f2 | tr -d ' '`"
+
+        # get option Interpreters by DBus
         rlRun "confDBusGetProperty abrt Interpreters" 0
-        rlAssertEquals "Get 'Interpreters' value" "_$(confDBusGetProperty abrt Interpreters)" \
-            '_[ string "python2" string "python2.7" string "python" string "python3" string "python3.3" string "python3.4" string "python3.5" string "perl" string "perl5.16.2" ]'
+        interpreters_dbus=$(confDBusGetProperty abrt Interpreters)
+        rlRun "interpreters_dbus=`echo $interpreters_dbus | sed 's/string \"//g' | sed 's/\" ]//g' | tr -d '[] ' | tr '"' ','`"
+        rlAssertEquals "Get 'Interpreters' value" "_$interpreters_dbus" "_$interpreters_conf"
+
         rlRun "confDBusSetProperty abrt Interpreters array:string '[\"foo\",\"blah\",\"panda\"]'" 0
         rlAssertEquals "Failed to set 'Interpreters ' value" "_$(confDBusGetProperty abrt Interpreters)" \
             '_[ string "foo" string "blah" string "panda" ]'
         rlRun "confDBusSetPropertyDefault abrt Interpreters" 0
-        rlAssertEquals "Get 'Interpreters' value" "_$(confDBusGetProperty abrt Interpreters)" \
-            '_[ string "python2" string "python2.7" string "python" string "python3" string "python3.3" string "python3.4" string "python3.5" string "perl" string "perl5.16.2" ]'
+
+        # get option Interpreters from 'etc/abrt/abrt-action-save-package-data.conf'
+        rlRun "interpreters_conf=`augtool get /files/etc/abrt/abrt-action-save-package-data.conf/Interpreters | cut -d'=' -f2 | tr -d ' '`"
+
+        # get option Interpreters by DBus
+        rlRun "confDBusGetProperty abrt Interpreters" 0
+        interpreters_dbus=$(confDBusGetProperty abrt Interpreters)
+        rlRun "interpreters_dbus=`echo $interpreters_dbus | sed 's/string \"//g' | sed 's/\" ]//g' | tr -d '[] ' | tr '"' ','`"
+        rlAssertEquals "Get 'Interpreters' value" "_$interpreters_dbus" "_$interpreters_conf"
     rlPhaseEnd
 
     rlPhaseStartTest "Boolean from non-default file"
-        rlAssertEquals "Get 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_true"
+        # get option 'ProcessUnpackaged' from conf file and translate "no" -> "false" and "yes" -> "true"
+        rlRun "process_unpackaged_conf=`augtool get /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged | cut -d'=' -f2 | tr -d ' ' | sed s/no/false/g | sed s/yes/true/g`"
+        rlAssertEquals "Get 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_$process_unpackaged_conf"
+
         rlRun "confDBusSetProperty abrt ProcessUnpackaged boolean False" 0
         rlAssertEquals "Set 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_false"
+        rlRun "confDBusSetProperty abrt ProcessUnpackaged boolean True" 0
+        rlAssertEquals "Set 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_true"
+
         rlRun "confDBusSetPropertyDefault abrt ProcessUnpackaged" 0
-        rlAssertEquals "Reset 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_true"
+        # get option 'ProcessUnpackaged' from conf file and translate "no" -> "false" and "yes" -> "true"
+        rlRun "process_unpackaged_conf=`augtool get /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged | cut -d'=' -f2 | tr -d ' ' | sed s/no/false/g | sed s/yes/true/g`"
+        rlAssertEquals "Reset 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_$process_unpackaged_conf"
     rlPhaseEnd
 
     rlPhaseStartTest "Empty Int32 Value from non-default file"
