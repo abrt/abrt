@@ -33,6 +33,7 @@ TEST="ccpp-plugin-hook-unwind"
 PACKAGE="abrt"
 
 CFG_FILE="/etc/abrt/plugins/CCpp.conf"
+CFG_FILE_UNPACKAGED="/etc/abrt/abrt-action-save-package-data.conf"
 
 rlJournalStart
     rlPhaseStartSetup
@@ -42,9 +43,12 @@ rlJournalStart
         rlRun "ulimit -c unlimited" 0
 
         TmpDir=$(mktemp -d)
+
+        rlRun "cp will_segfault_in_new_pid.c $TmpDir/"
+
         pushd $TmpDir
 
-        rlFileBackup $CFG_FILE
+        rlFileBackup $CFG_FILE $CFG_FILE_UNPACKAGED
     rlPhaseEnd
 
     rlPhaseStartTest "CreateCoreBacktrace enabled"
@@ -58,6 +62,27 @@ rlJournalStart
 
         rlAssertExists "$crash_PATH/core_backtrace"
         rlAssertExists "$crash_PATH/coredump"
+
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+    rlPhaseEnd
+
+    rlPhaseStartTest "CreateCoreBacktrace enabled - New PID namespace"
+        rlLogInfo "ProcessUnpackaged = yes"
+        rlRun "echo 'ProcessUnpackaged = yes' > $CFG_FILE_UNPACKAGED" 0 "Set ProcessUnpackaged = yes"
+
+        # I did not use 'unshare --fork --pid will_segfault' because unshare
+        # kills itself with the signal the child received.
+        rlLogInfo "Build the binary"
+        rlRun "gcc -std=gnu99 --pedantic -Wall -Wextra -Wno-unused-parameter -o will_segfault_in_new_pid will_segfault_in_new_pid.c"
+
+        prepare
+        rlRun "./will_segfault_in_new_pid"
+        wait_for_hooks
+        get_crash_path
+
+        rlAssertExists "$crash_PATH/core_backtrace"
+        rlAssertExists "$crash_PATH/coredump"
+        rlAssertNotEquals "TID is the global TID" "_1" "_$(cat $crash_PATH/tid)"
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
     rlPhaseEnd
