@@ -57,8 +57,8 @@ rlJournalStart
 
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlAssertExists "$crash_PATH/core_backtrace"
         rlAssertExists "$crash_PATH/coredump"
@@ -95,8 +95,8 @@ rlJournalStart
 
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlAssertExists "$crash_PATH/core_backtrace"
         rlAssertNotExists "$crash_PATH/coredump"
