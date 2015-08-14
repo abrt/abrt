@@ -68,7 +68,7 @@ rlJournalStart
 
     rlPhaseStartTest "CreateCoreBacktrace enabled - New PID namespace"
         rlLogInfo "ProcessUnpackaged = yes"
-        rlRun "echo 'ProcessUnpackaged = yes' > $CFG_FILE_UNPACKAGED" 0 "Set ProcessUnpackaged = yes"
+        rlRun "augtool set /files/etc/abrt/$CFG_FILE_UNPACKAGED/ProcessUnpackaged yes" 0 "Set ProcessUnpackaged"
 
         # I did not use 'unshare --fork --pid will_segfault' because unshare
         # kills itself with the signal the child received.
@@ -79,6 +79,7 @@ rlJournalStart
         rlRun "./will_segfault_in_new_pid"
         wait_for_hooks
         get_crash_path
+        rlRun "killall abrt-hook-ccpp" 1 "Kill hung abrt-hook-ccpp process"
 
         rlAssertExists "$crash_PATH/core_backtrace"
         rlAssertExists "$crash_PATH/coredump"
