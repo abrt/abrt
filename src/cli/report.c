@@ -36,6 +36,15 @@ int _cmd_report(const char **dirs_strv, int remove)
             continue;
         }
 
+        const int not_reportable = test_exist_over_dbus(real_problem_id, FILENAME_NOT_REPORTABLE);
+        if (not_reportable != 0)
+        {
+            error_msg(_("Problem '%s' cannot be reported"), real_problem_id);
+            free(real_problem_id);
+            ++ret;
+            continue;
+        }
+
         const int res = chown_dir_over_dbus(real_problem_id);
         if (res != 0)
         {
