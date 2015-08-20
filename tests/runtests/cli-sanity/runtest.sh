@@ -107,6 +107,22 @@ rlJournalStart
         rlRun "abrt-cli report FAKEDIR" 1
     rlPhaseEnd
 
+    rlPhaseStartTest "report not-reportable"
+        rlRun "touch $crash_PATH/not-reportable"
+
+        cp $crash_PATH/{type,analyzer} ./
+
+        echo "cli_sanity_test_not_reportable" > $crash_PATH/type
+        echo "cli_sanity_test_not_reportable" > $crash_PATH/analyzer
+
+        rlRun "abrt-cli report $crash_PATH 2>&1 | tee abrt-cli-report-not-reportable.log" 0
+        rlAssertGrep "Problem '$crash_PATH' cannot be reported" abrt-cli-report-not-reportable.log
+
+        cp -f type analyzer $crash_PATH
+
+        rlRun "rm -f $crash_PATH/not-reportable"
+    rlPhaseEnd
+
     # This test used to select 1st analyzer (Local GNU Debugger)
     # and run it, then "edit" data with cat (this merely prints data to stdout)
     # and terminate. This was far from reliable (what if analyzer would change?).
