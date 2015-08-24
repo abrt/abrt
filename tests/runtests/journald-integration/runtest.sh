@@ -36,6 +36,7 @@ EXE=morituri
 rlJournalStart
     rlPhaseStartSetup
         rlShowRunningKernel
+        check_prior_crashes
 
         rlFileBackup $CFG_FILE
         sed -i 's/\(ProcessUnpackaged\) = no/\1 = yes/g' $CFG_FILE
@@ -46,6 +47,35 @@ rlJournalStart
         pushd $TmpDir
         rlRun "useradd abrtlogtest -M" 0
 
+    rlPhaseEnd
+
+    rlPhaseStartTest "var_log_messages should not exist because it contains only audit"
+        prepare
+        generate_crash
+        wait_for_hooks
+        get_crash_path
+
+        rlAssertNotExists $crash_PATH/var_log_messages
+
+        if [ -f $crash_PATH/var_log_messages ]; then
+            rlLog "\"var_log_messages: \" `cat $crash_PATH/var_log_messages`"
+        fi
+    rlPhaseEnd
+
+    rlPhaseStartTest "var_log_messages should not exist because it contains -- No entries --"
+        rlRun "rm -f $crash_PATH/var_log_messages" 0
+        rlRun "echo -n CCpp > $crash_PATH/type" 0
+        rlRun "echo -n  /usr/bin/not_existing_executable > $crash_PATH/executable" 0
+        rlRun "rm -f $crash_PATH/pid" 0
+
+        rlRun "report-cli -e post-create $crash_PATH" 0
+        rlAssertNotExists $crash_PATH/var_log_messages
+
+        if [ -f $crash_PATH/var_log_messages ]; then
+            rlLog "\"var_log_messages: \" `cat $crash_PATH/var_log_messages`"
+        fi
+
+        rlRun "abrt-cli rm $crash_PATH" 0 "Removing problem dirs"
     rlPhaseEnd
 
     rlPhaseStartTest
@@ -83,7 +113,7 @@ rlJournalStart
         fi
 
         popd
-
+        rlRun "abrt-cli rm $crash_PATH" 0 "Removing problem dirs"
     rlPhaseEnd
 
     rlPhaseStartTest
@@ -125,13 +155,13 @@ rlJournalStart
         fi
 
         popd
-
+        rlRun "abrt-cli rm $crash_PATH" 0 "Removing problem dirs"
     rlPhaseEnd
 
     rlPhaseStartCleanup
         rlRun "userdel -r -f abrtlogtest" 0
-        rlRun "abrt-cli rm $crash_PATH" 0 "Removing problem dirs"
         rlFileRestore
     rlPhaseEnd
+
     rlJournalPrintText
 rlJournalEnd
