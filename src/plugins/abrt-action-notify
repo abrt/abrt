@@ -116,7 +116,7 @@ def emit_crash_dbus_signal(problem_data):
         bus.send_message(msg)
     except dbus.exceptions.DBusException as ex:
         raise RuntimeError("Failed to emit D-Bus Crash signal: {0}"
-                .format(ex.message))
+                .format(str(ex)))
     finally:
         if bus is not None:
             bus.close()
@@ -213,7 +213,7 @@ if __name__ == "__main__":
         PD = build_notification_problem_data(DIR_PATH)
     except ValueError as ex:
         sys.stderr.write("Cannot notify '{0}': {1}\n".
-                format(DIR_PATH, ex.message))
+                format(DIR_PATH, str(ex)))
         sys.exit(RETURN_FAILURE)
 
     # The execution must continue because we should try to notify via all
@@ -223,13 +223,13 @@ if __name__ == "__main__":
         emit_crash_dbus_signal(PD)
     except RuntimeError as ex:
         sys.stderr.write("Cannot notify '{0}' via D-Bus: {1}\n".
-                format(DIR_PATH, ex.message))
+                format(DIR_PATH, str(ex)))
         return_status = RETURN_FAILURE
     except KeyError as ex:
         # this is a bug in build_notification_problem_data()
         sys.stderr.write("BUG: problem data misses required element '{0}'"
                          " required for D-Bus notification\n"
-                         .format(ex.message))
+                         .format(str(ex)))
 
         return_status = RETURN_FAILURE
 
@@ -247,13 +247,13 @@ if __name__ == "__main__":
                 run_autoreport(PD, event_name)
             except RuntimeError as ex:
                 sys.stderr.write("Cannot notify '{0}' via uReport: {1}\n".
-                        format(DIR_PATH, ex.message))
+                        format(DIR_PATH, str(ex)))
                 return_status = RETURN_FAILURE
             except KeyError as ex:
                 # this is a bug in build_notification_problem_data()
                 sys.stderr.write(
                     "BUG: problem data misses required element '{0}'"
-                    " required for uReport notification\n".format(ex.message))
+                    " required for uReport notification\n".format(str(ex)))
 
                 return_status = RETURN_FAILURE
 
