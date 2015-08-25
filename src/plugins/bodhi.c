@@ -22,6 +22,7 @@
 #include <rpm/rpmcli.h>
 #include <rpm/rpmdb.h>
 #include <rpm/rpmpgp.h>
+#include <hawkey/util.h>
 
 #include <libreport/internal_libreport.h>
 #include <libreport/libreport_curl.h>
@@ -32,85 +33,103 @@
 /* bodhi returns json structure
 
 {
-   "num_items":2,
-   "title":"2 updats found",
-   "tg_flash":null,
-   "updates":[
-      {
-         "status":"stable",
-         "close_bugs":true,
-         "request":null,
-         "date_submitted":"2011-03-18 17:25:14",
-         "unstable_karma":-3,
-         "submitter":"twaugh",
-         "critpath":false,
-         "approved":null,
-         "stable_karma":2,
-         "date_pushed":"2011-03-19 05:34:27",
-         "builds":[
-            {
-               "nvr":"system-config-printer-1.3.2-1.fc15",
-               "package":{
-                  "suggest_reboot":false,
-                  "committers":[
-                     "twaugh",
-                     "jpopelka"
-                  ],
-                  "name":"system-config-printer"
-               }
-            },
-            {
-            ....
-            }
-         ],
-         "title":"system-config-printer-1.3.2-1.fc15",
-         "notes":"This update fixes several bugs and re-enables translations that were accidentally disabled.",
-         "date_modified":null,
-         "nagged":null,
-         "bugs":[
-            {
-               "bz_id":685098,
-               "security":false,
-               "parent":false,
-               "title":"[abrt] system-config-printer-1.3.1-1.fc15: authconn.py:197:_connect:RuntimeError: failed to connect to server"
-            },
-            {
-            ...
-            }
-         ],
-         "comments":[
-            {
-               "group":null,
-               "karma":0,
-               "anonymous":false,
-               "author":"bodhi",
-               "timestamp":"2011-03-18 17:26:34",
-               "text":"This update has been submitted for testing by twaugh. "
-            },
-            {
-            ...
-            }
-         ],
-         "critpath_approved":false,
-         "updateid":"FEDORA-2011-3596",
-         "karma":0,
-         "release":{
-            "dist_tag":"dist-f15",
-            "id_prefix":"FEDORA",
-            "locked":false,
-            "name":"F15",
-            "long_name":"Fedora 15"
-         },
-         "type":"bugfix"
-      },
-      {
-      ...
-      }
-   ]
+ "rows_per_page": 20,
+    "total": 1,
+    "chrome": true,
+    "display_user": true,
+    "pages": 1,
+    "updates": [
+       {
+        "close_bugs": true,
+        "old_updateid": "FEDORA-2015-13720",
+        "pushed": true,
+        "require_testcases": false,
+        "critpath": false,
+        "date_approved": null,
+        "stable_karma": null,
+        "date_pushed": "2015-08-19 04:49:00",
+        "requirements": null,
+        "severity": "unspecified",
+        "title": "hwloc-1.11.0-3.fc22",
+        "suggest": "unspecified",
+        "require_bugs": false,
+        "comments": [
+           {
+            "bug_feedback": [],
+            "user_id": 91,
+            "text": "This update has been submitted for testing by jhladky. ",
+            "testcase_feedback": [],
+            "karma_critpath": 0,
+            "update": 21885,
+            "update_id": 21885,
+            "karma": 0,
+            "anonymous": false,
+            "timestamp": "2015-08-18 13:38:35",
+            "id": 166016,
+            "user": {"stacks": [],
+                "name": "bodhi",
+                "avatar": "https://apps.fedoraproject.org/img/icons/bodhi-24.png"}
+           },
+           {
+           ...
+           }
+        ],
+        "updateid": "FEDORA-2015-13720",
+        "cves": [],
+        "type": "bugfix",
+        "status": "testing",
+        "date_submitted": "2015-08-18 13:37:26",
+        "unstable_karma": null,
+        "submitter": "jhladky",
+        "user":
+           {
+            "stacks": [],
+            "buildroot_overrides": [],
+            "name": "jhladky",
+            "avatar": "https://seccdn.libravatar.org/avatar/b838b78fcf707a13cdaeb1c846d514e614d617cbf2c106718e71cb397607f59b?s=24&d=retro"
+           },
+        "locked": false,
+        "builds": [{"override": null,
+            "nvr": "hwloc-1.11.0-3.fc22"}],
+        "date_modified": null,
+        "test_cases": [],
+        "notes": "Fix for BZ1253977",
+        "request": null,
+        "bugs": [
+           {
+            "bug_id": 1253977,
+            "security": false,
+            "feedback": [],
+            "parent": false,
+            "title": "conflict between hwloc-libs-1.11.0-1.fc22.i686 and hwloc-libs-1.11.0-1.fc22.x86_64"
+           }
+        ],
+        "alias": "FEDORA-2015-13720",
+        "karma": 0,
+        "release":
+           {
+            "dist_tag": "f22",
+            "name": "F22",
+            "testing_tag": "f22-updates-testing",
+            "pending_stable_tag": "f22-updates-pending",
+            "long_name": "Fedora 22",
+            "state": "current",
+            "version": "22",
+            "override_tag": "f22-override",
+            "branch": "f22",
+            "id_prefix": "FEDORA",
+            "pending_testing_tag": "f22-updates-testing-pending",
+            "stable_tag": "f22-updates",
+            "candidate_tag": "f22-updates-candidate"
+           }
+       }
+    ],
+    "display_request": true,
+    "page": 1
 }
 */
 
-static const char *bodhi_url = "https://admin.fedoraproject.org/updates";
+static const char *bodhi_url = "https://bodhi.fedoraproject.org/updates";
 
 struct bodhi {
     char *nvr;
@@ -202,7 +221,7 @@ static GHashTable *bodhi_parse_json(json_object *json, const char *release)
 {
 
     int num_items = 0;
-    bodhi_read_value(json, "num_items", &num_items, BODHI_READ_INT);
+    bodhi_read_value(json, "total", &num_items, BODHI_READ_INT);
     if (num_items <= 0)
         return NULL;
 
@@ -241,13 +260,19 @@ static GHashTable *bodhi_parse_json(json_object *json, const char *release)
             b = xzalloc(sizeof(struct bodhi));
 
             char *name = NULL;
+            long ign_e;
+            char *ign_v, *ign_r, *ign_a;
+
             json_object *build = json_object_array_get_idx(builds_item, k);
 
             bodhi_read_value(build, "nvr", &b->nvr, BODHI_READ_STR);
 
-            json_object *package = NULL;
-            bodhi_read_value(build, "package", &package, BODHI_READ_JSON_OBJ);
-            bodhi_read_value(package, "name", &name, BODHI_READ_STR);
+            if (hy_split_nevra(b->nvr, &name, &ign_e, &ign_v, &ign_r, &ign_a))
+                error_msg_and_die("hawkey failed to parse '%s'", b->nvr);
+
+            free(ign_v);
+            free(ign_r);
+            free(ign_a);
 
             struct bodhi *bodhi_tbl_item = g_hash_table_lookup(bodhi_table, name);
             if (bodhi_tbl_item && rpmvercmp(bodhi_tbl_item->nvr, b->nvr) > 0)
@@ -287,7 +312,7 @@ static GHashTable *bodhi_parse_json(json_object *json, const char *release)
 
 static GHashTable *bodhi_query_list(const char *query, const char *release)
 {
-    char *bodhi_url_bugs = xasprintf("%s/list", bodhi_url);
+    char *bodhi_url_bugs = xasprintf("%s/?%s", bodhi_url, query);
 
     post_state_t *post_state = new_post_state(POST_WANT_BODY
                                               | POST_WANT_SSL_VERIFY
@@ -298,8 +323,8 @@ static GHashTable *bodhi_query_list(const char *query, const char *release)
         NULL
     };
 
-    post_string(post_state, bodhi_url_bugs, "application/x-www-form-urlencoded",
-                     headers, query);
+    get(post_state, bodhi_url_bugs, "application/x-www-form-urlencoded",
+                     headers);
 
     if (post_state->http_resp_code != 200)
     {
@@ -397,7 +422,7 @@ int main(int argc, char **argv)
     {
         if (release)
         {
-            query = strbuf_append_strf(query, "release=%s&", release);
+            query = strbuf_append_strf(query, "releases=%s&", release);
         }
         else
         {
@@ -414,7 +439,7 @@ int main(int argc, char **argv)
             map_string_t *osinfo = new_map_string();
             problem_data_get_osinfo(problem_data, osinfo);
             parse_osinfo_for_rhts(osinfo, &product, &version);
-            query = strbuf_append_strf(query, "release=f%s&", version);
+            query = strbuf_append_strf(query, "releases=f%s&", version);
             free(product);
             free(version);
             free_map_string(osinfo);
@@ -424,7 +449,7 @@ int main(int argc, char **argv)
     if (argv[optind])
     {
         char *escaped = g_uri_escape_string(argv[optind], NULL, 0);
-        query = strbuf_append_strf(query, "package=%s&", escaped);
+        query = strbuf_append_strf(query, "packages=%s&", escaped);
         free(escaped);
     }
 
