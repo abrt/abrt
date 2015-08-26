@@ -422,6 +422,10 @@ int main(int argc, char **argv)
     {
         if (release)
         {
+            /* There are no bodhi updates for Rawhide */
+            if (strcasecmp(release, "rawhide") == 0)
+                error_msg_and_die("Reselase \"%s\" is not supported",release);
+
             query = strbuf_append_strf(query, "releases=%s&", release);
         }
         else
@@ -439,10 +443,21 @@ int main(int argc, char **argv)
             map_string_t *osinfo = new_map_string();
             problem_data_get_osinfo(problem_data, osinfo);
             parse_osinfo_for_rhts(osinfo, &product, &version);
-            query = strbuf_append_strf(query, "releases=f%s&", version);
+
+            /* There are no bodhi updates for Rawhide */
+            bool rawhide = strcasecmp(release, "rawhide") == 0;
+            if (!rawhide)
+                query = strbuf_append_strf(query, "releases=f%s&", version);
+
             free(product);
             free(version);
             free_map_string(osinfo);
+
+            if (rawhide)
+            {
+                strbuf_free(query);
+                error_msg_and_die("Reselase \"Rawhide\" is not supported");
+            }
         }
     }
 
