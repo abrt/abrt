@@ -170,6 +170,12 @@ rlJournalStart
         # Set limit to 1Midk
         rlRun "OLDCRASHSIZE=\"$(augtool print /files/etc/abrt/abrt.conf/MaxCrashReportsSize | tr -d '=\"')\"" 0 "Create a backup of abrt configuration"
         rlRun "augtool set /files/etc/abrt/abrt.conf/MaxCrashReportsSize 1" 0 "Set limit for crash reports to 1MiB"
+
+        # set only if option PrivateReports exists
+        grep -q PrivateReports /etc/abrt/abrt.conf && \
+        old_private_reports_value=`augtool get /files/etc/abrt/abrt.conf/PrivateReports | cut -d'=' -f2` && \
+        rlRun "augtool set /files/etc/abrt/abrt.conf/PrivateReports no" 0 "Set PrivateReports to no"
+
         rlRun "systemctl restart abrtd.service" 0 "Restart abrt service"
 
         load_abrt_conf
@@ -305,6 +311,11 @@ rlJournalStart
     rlPhaseStartCleanup
         rlRun "userdel -r -f abrtdbustestone" 0 "Remove the test user"
         rlRun "userdel -r -f abrtdbustestanother" 0 "Remove the another test user"
+
+        # set only if option PrivateReports exists
+        grep -q PrivateReports /etc/abrt/abrt.conf && \
+        rlRun "augtool set /files/etc/abrt/abrt.conf/PrivateReports $old_private_reports_value" 0 "Set PrivateReports to yes"
+
         if [ -n "$OLDCRASHSIZE" ]; then
             rlRun "augtool set $OLDCRASHSIZE" 0
         else
