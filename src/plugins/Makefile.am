@@ -366,10 +366,12 @@ abrt_bodhi_SOURCES = \
     $(LIBREPORT_WEB_CFLAGS) \
     $(JSON_C_CFLAGS) \
     $(RPM_CFLAGS) \
+    $(HAWKEY_CFLAGS) \
     -D_GNU_SOURCE
  abrt_bodhi_LDADD = \
     $(JSON_C_LIBS) \
     $(RPM_LIBS) \
+    $(HAWKEY_LIBS) \
     $(LIBREPORT_LIBS) \
     $(LIBREPORT_WEB_LIBS)
 endif

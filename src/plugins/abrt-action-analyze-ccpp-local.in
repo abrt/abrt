@@ -39,7 +39,7 @@ if [ $? = 0 ]; then
             bug_id=$(reporter-bugzilla -h "`cat duphash`")
             if $WITH_BODHI; then
                 if test -n "$bug_id"; then
-                    abrt-bodhi -r -b $bug_id
+                    abrt-bodhi -r -b $bug_id || :
                 fi
             fi
         fi
