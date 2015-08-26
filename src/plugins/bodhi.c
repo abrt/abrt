@@ -217,6 +217,58 @@ static void print_bodhi(struct bodhi *b)
 }
 #endif
 
+/* bodhi returns following json structure in case of error
+{
+   "status": "error",
+   "errors":
+              [
+                {
+                   "location": "querystring",
+                   "name": "releases",
+                   "description": "Invalid releases specified: Rawhide"
+                }
+              ]
+}
+*/
+static void bodhi_print_errors_from_json(json_object *json)
+{
+
+    json_object *errors_array = NULL;
+    bodhi_read_value(json, "errors", &errors_array, BODHI_READ_JSON_OBJ);
+    if (!errors_array)
+    {
+        error_msg("Error: unable to read 'errors' array from json");
+        return;
+    }
+
+    int errors_len = json_object_array_length(errors_array);
+    for (int i = 0; i < errors_len; ++i)
+    {
+        json_object *error = json_object_array_get_idx(errors_array, i);
+        if (!error)
+        {
+            error_msg("Error: unable to get 'error[%d]'", i);
+            json_object_put(errors_array);
+            return;
+        }
+
+        char *desc_item = NULL;
+        bodhi_read_value(error, "description", &desc_item, BODHI_READ_STR);
+        if (!desc_item)
+        {
+            error_msg("Error: unable to get 'description' from 'error[%d]'", i);
+            continue;
+        }
+
+        error_msg("Error: %s", desc_item);
+        json_object_put(error);
+        free(desc_item);
+    }
+
+    json_object_put(errors_array);
+    return;
+}
+
 static GHashTable *bodhi_parse_json(json_object *json, const char *release)
 {
 
@@ -326,7 +378,7 @@ static GHashTable *bodhi_query_list(const char *query, const char *release)
     get(post_state, bodhi_url_bugs, "application/x-www-form-urlencoded",
                      headers);
 
-    if (post_state->http_resp_code != 200)
+    if (post_state->http_resp_code != 200 && post_state->http_resp_code != 400)
     {
         char *errmsg = post_state->curl_error_msg;
         if (errmsg && errmsg[0])
@@ -339,6 +391,22 @@ static GHashTable *bodhi_query_list(const char *query, const char *release)
     json_object *json = json_tokener_parse(post_state->body);
     if (is_error(json))
         error_msg_and_die("fatal: unable parse response from bodhi server");
+
+    /* we must check the http_resp_code because only error responses contain
+     * 'status' item. 'bodhi_read_value' function prints an error message in
+     * the case it did not found the item */
+    if (post_state->http_resp_code != 200)
+    {
+        char *status_item = NULL;
+        bodhi_read_value(json, "status", &status_item, BODHI_READ_STR);
+        if (status_item != NULL && strcmp(status_item, "error") == 0)
+        {
+            free(status_item);
+            bodhi_print_errors_from_json(json);
+            json_object_put(json);
+            xfunc_die(); // error_msg are printed in bodhi_print_errors_from_json
+        }
+    }
 
     GHashTable *bodhi_table = bodhi_parse_json(json, release);
     json_object_put(json);
