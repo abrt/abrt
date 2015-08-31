@@ -31,7 +31,7 @@ case "$1" in
 
             if [ "$2" == "--install" ]; then
                 set -x verbose
-                sudo yum install $DEPS_LIST
+                sudo dnf install --setopt=strict=0 $DEPS_LIST
                 set +x verbose
             else
                 echo $DEPS_LIST
