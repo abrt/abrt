@@ -33,6 +33,18 @@ PACKAGE="abrt"
 OOPS_REQUIRED_FILES="kernel uuid duphash
 pkg_name pkg_arch pkg_epoch pkg_release pkg_version"
 EXAMPLES_PATH="../../../examples"
+# abrt should store "xorg-x11-drv-ati" in component file in those test files
+XORG_TEST_FILES="oops1.test oops_not_reportable_no_reliable_frame.test"
+
+function is_xorg_test_file() {
+    for xtf in $XORG_TEST_FILES; do
+        if [ $xtf == $1 ]; then
+            return 0;
+        fi
+    done
+
+    return 1;
+}
 
 rlJournalStart
     rlPhaseStartSetup
@@ -100,7 +112,13 @@ rlJournalStart
             fi
 
             rlAssertGrep "kernel" "$crash_PATH/pkg_name"
-            rlAssertGrep "kernel" "$crash_PATH/component"
+
+            is_xorg_test_file $oops
+            if [ $? -eq 0 ]; then
+                rlAssertGrep "xorg-x11-drv-ati" "$crash_PATH/component"
+            else
+                rlAssertGrep "kernel" "$crash_PATH/component"
+            fi
             rlAssertGrep "$kernel_version" "$crash_PATH/pkg_version"
 
             rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
