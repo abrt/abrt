@@ -50,6 +50,7 @@ rlJournalStart
 
     rlPhaseStartTest
         rlAssertGrep "will-crash" "$crash_PATH/component"
+        rlLog "content of $crash_PATH/component file: $(cat $crash_PATH/component)"
     rlPhaseEnd
 
     rlPhaseStartCleanup
