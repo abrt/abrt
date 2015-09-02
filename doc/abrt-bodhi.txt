@@ -7,7 +7,7 @@ abrt-bodhi - The ABRT bodhi client.
 
 SYNOPSIS
 --------
-'abrt-bodhi' [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]...
+'abrt-bodhi' [-v] [-r[RELEASE]] [-u URL] [-d DIR] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]...
 
 DESCRIPTION
 -----------
@@ -24,6 +24,12 @@ OPTIONS
 
 -b, --bugs ID1,ID2,..
     Specify any number of Bugzilla IDs (--bugs=1234,5678)
+
+-d, --problem-dir DIR::
+    Path to problem directory
+
+-u, --url URL::
+    Specify a bodhi server url
 
 AUTHORS
 -------
