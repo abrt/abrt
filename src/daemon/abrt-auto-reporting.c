@@ -200,6 +200,11 @@ int main(int argc, char *argv[])
             "& [ "STATE_MANUAL" | "STATE_AUTO" | yes | no | 1 | 0 ] \\\n"
             "  [[--anonymous] | [--username USERNAME [--password PASSWORD]] | [--certificate SOURCE]]\n"
             PROGRAM_USAGE_MIDDLE_PART
+            "Example:\n"
+            "Turn on the authentication using rhsm consumer certificate.\n"
+            "\n"
+            "\t# abrt-auto-reporting "STATE_AUTO" --certificate rhsm\n"
+            "\n"
             "See abrt-auto-reporting(1), reporter-ureport(1) and reporter-rhtsupport(1)\n"
             "for more details.\n"
     );
