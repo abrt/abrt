@@ -513,7 +513,7 @@ int main(int argc, char **argv)
             parse_osinfo_for_rhts(osinfo, &product, &version);
 
             /* There are no bodhi updates for Rawhide */
-            bool rawhide = strcasecmp(release, "rawhide") == 0;
+            bool rawhide = strcasecmp(version, "rawhide") == 0;
             if (!rawhide)
                 query = strbuf_append_strf(query, "releases=f%s&", version);
 
