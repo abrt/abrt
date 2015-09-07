@@ -44,7 +44,7 @@ rlJournalStart
 
         TmpDir=$(mktemp -d)
 
-        rlRun "cp will_segfault_in_new_pid.c $TmpDir/"
+        rlRun "cp will_segfault_in_new_pid.c verify_core_backtrace.py $TmpDir/"
 
         pushd $TmpDir
 
@@ -62,6 +62,8 @@ rlJournalStart
 
         rlAssertExists "$crash_PATH/core_backtrace"
         rlAssertExists "$crash_PATH/coredump"
+
+        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace" 0 "All frames must have required members"
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
     rlPhaseEnd
@@ -85,6 +87,8 @@ rlJournalStart
         rlAssertExists "$crash_PATH/coredump"
         rlAssertNotEquals "TID is the global TID" "_1" "_$(cat $crash_PATH/tid)"
 
+        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace" 0 "All frames must have required members"
+
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
     rlPhaseEnd
 
@@ -101,6 +105,27 @@ rlJournalStart
 
         rlAssertExists "$crash_PATH/core_backtrace"
         rlAssertNotExists "$crash_PATH/coredump"
+
+        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace" 0 "All frames must have required members"
+
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+    rlPhaseEnd
+
+    rlPhaseStartTest "glibc function on stack"
+        rlLogInfo "Verify that glibc frames have resolved 'file_name' and 'build_id'"
+
+        prepare
+        sleep 81680083 &
+        SLEEP_PID=$!
+        sleep 1
+        kill -SEGV $SLEEP_PID
+        wait_for_hooks
+        get_crash_path
+
+        rlAssertExists "$crash_PATH/core_backtrace"
+        rlAssertNotExists "$crash_PATH/coredump"
+
+        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace" 0 "All frames must have required members"
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
     rlPhaseEnd
