@@ -41,7 +41,7 @@ rlJournalStart
         rlRun "ulimit -c unlimited" 0
 
         TmpDir=$(mktemp -d)
-        cp verify_core_backtrace.py verify_core_backtrace_length.py $TmpDir
+        cp verify_core_backtrace.py verify_core_backtrace_length.py will_segfault_in_new_pid.c $TmpDir
         pushd $TmpDir
     rlPhaseEnd
 
@@ -111,10 +111,34 @@ EOF
         rlAssertNotGrep "auto-loading has been declined by your" "$crash_PATH/backtrace"
 
         rlRun "rm /var/cache/abrt-di/usr/lib/debug/usr/bin/will_segfault-gdb.py"
+
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+    rlPhaseEnd
+
+    rlPhaseStartTest "crash in a non-init PID NS"
+        # I did not use 'unshare --fork --pid will_segfault' because unshare
+        # kills itself with the signal the child received.
+        rlLogInfo "Build the binary"
+        rlRun "gcc -std=gnu99 --pedantic -Wall -Wextra -Wno-unused-parameter -o will_segfault_in_new_pid will_segfault_in_new_pid.c"
+
+        prepare
+        rlRun "./will_segfault_in_new_pid"
+        wait_for_hooks
+        get_crash_path
+
+        rlRun "killall abrt-hook-ccpp" 1 "Kill hung abrt-hook-ccpp process"
+
+        rlAssertExists "$crash_PATH/coredump"
+        rlAssertExists "$crash_PATH/global_pid"
+        rlAssertNotEquals "Global PID is sane" "_1" "_$(cat $crash_PATH/global_pid)"
+        rlAssertEquals "PID from process' PID NS" "_1" "_$(cat $crash_PATH/pid)"
+        rlAssertGrep "Name:[[:space:]]*will_segfault" $crash_PATH/proc_pid_status
+        rlAssertGrep "will_segfault" $crash_PATH/cmdline
+
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
         rlRun "ulimit -c $old_ulimit" 0
         rlBundleLogs abrt $(echo *_ls) $(echo verify_result*)
         popd # TmpDir
