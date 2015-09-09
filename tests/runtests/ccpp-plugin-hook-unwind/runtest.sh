@@ -70,7 +70,7 @@ rlJournalStart
 
     rlPhaseStartTest "CreateCoreBacktrace enabled - New PID namespace"
         rlLogInfo "ProcessUnpackaged = yes"
-        rlRun "augtool set /files/etc/abrt/$CFG_FILE_UNPACKAGED/ProcessUnpackaged yes" 0 "Set ProcessUnpackaged"
+        rlRun "augtool set /files/$CFG_FILE_UNPACKAGED/ProcessUnpackaged yes" 0 "Set ProcessUnpackaged"
 
         # I did not use 'unshare --fork --pid will_segfault' because unshare
         # kills itself with the signal the child received.
