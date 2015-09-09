@@ -160,13 +160,13 @@ static struct dump_dir *dd;
  * %g - gid
  * %t - UNIX time of dump
  * %e - executable filename
- * %i - crash thread tid
+ * %I - global crash thread tid
  * %% - output one "%"
  */
 /* Hook must be installed with exactly the same sequence of %c specifiers.
  * Last one, %h, may be omitted (we can find it out).
  */
-static const char percent_specifiers[] = "%scpugtei";
+static const char percent_specifiers[] = "%scpugteI";
 static char *core_basename = (char*) "core";
 
 static char* get_executable(pid_t pid, int *fd_p)
@@ -688,7 +688,7 @@ int main(int argc, char** argv)
 
     if (argc < 8)
     {
-        /* percent specifier:         %s   %c              %p  %u  %g  %t   %e          %i */
+        /* percent specifier:         %s   %c              %p  %u  %g  %t   %e          %I */
         /* argv:                  [0] [1]  [2]             [3] [4] [5] [6]  [7]         [8]*/
         error_msg_and_die("Usage: %s SIGNO CORE_SIZE_LIMIT PID UID GID TIME BINARY_NAME [TID]", argv[0]);
     }
