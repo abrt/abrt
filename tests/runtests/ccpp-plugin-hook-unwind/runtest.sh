@@ -33,7 +33,6 @@ TEST="ccpp-plugin-hook-unwind"
 PACKAGE="abrt"
 
 CFG_FILE="/etc/abrt/plugins/CCpp.conf"
-CFG_FILE_UNPACKAGED="/etc/abrt/abrt-action-save-package-data.conf"
 
 rlJournalStart
     rlPhaseStartSetup
@@ -48,7 +47,7 @@ rlJournalStart
 
         pushd $TmpDir
 
-        rlFileBackup $CFG_FILE $CFG_FILE_UNPACKAGED
+        rlFileBackup $CFG_FILE
     rlPhaseEnd
 
     rlPhaseStartTest "CreateCoreBacktrace enabled"
@@ -69,9 +68,6 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "CreateCoreBacktrace enabled - New PID namespace"
-        rlLogInfo "ProcessUnpackaged = yes"
-        rlRun "augtool set /files/$CFG_FILE_UNPACKAGED/ProcessUnpackaged yes" 0 "Set ProcessUnpackaged"
-
         # I did not use 'unshare --fork --pid will_segfault' because unshare
         # kills itself with the signal the child received.
         rlLogInfo "Build the binary"

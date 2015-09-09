@@ -1,3 +1,8 @@
+/* We cannot use 'unshare -f -p will_segfault' because unshare kills itself with
+ * the same signal its child received, thus the command produces two crashes.
+ *
+ * Author: Jakub Filak <jfilak@redhat.com>
+ */
 #define _GNU_SOURCE
 #include <sched.h>
 #include <sys/types.h>
@@ -8,13 +13,10 @@
 #include <unistd.h>
 #include <err.h>
 
-static void try_to_segfault(void)
-{
-    fprintf(NULL, "Going to die!");
-}
-
 int main(int argc, char *argv[])
 {
+    char *const will_segfault_args[] = { "will_segfault", NULL };
+
     int r;
     int status;
     pid_t pid;
@@ -35,9 +37,10 @@ int main(int argc, char *argv[])
         if (tid != 1)
             errx(EXIT_FAILURE, "TID is not 1 : %d", tid);
 
-        try_to_segfault();
+        execv("/usr/bin/will_segfault", will_segfault_args);
+        execvp("will_segfault", will_segfault_args);
 
-        errx(EXIT_FAILURE, "Failed to segfault");
+        err(EXIT_FAILURE, "exec(/usr/bin/will_segfault)");
     }
 
     r = waitpid(pid, &status, 0);
