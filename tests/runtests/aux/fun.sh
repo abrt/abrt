@@ -18,11 +18,13 @@ function run_stage() {
     if [ ${1} = "TEST" ]; then
         echo_success
         echo " $msg"
+        set -o pipefail
         . $script | tee "$dir/stage.log"
         if [ $? != 0 ]; then
             touch "$dir/failed"
         fi
         sed -r -i "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" "$dir/stage.log"
+        set +o pipefail
     else
         . $script &> "$dir/stage.log"
         if [ $? != 0 ]; then
