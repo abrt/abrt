@@ -1,5 +1,0 @@
-To fetch another bodhi response use:
-
-curl -v -H 'Accept: application/json' \
-  -d package=abrt https://admin.fedoraproject.org/updates/list \
-  | python -mjson.tool > new_query

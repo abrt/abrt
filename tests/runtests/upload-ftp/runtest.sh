@@ -26,6 +26,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="upload-ftp"
 PACKAGE="abrt"
@@ -49,7 +50,7 @@ rlJournalStart
 
     rlPhaseStartTest "ftp upload, filename not set"
         rlRun "reporter-upload -d problem_dir -u ftp://localhost:2121/"
-        rlAssertExists $TmpDir/target/abrt-upload*
+        rlAssertExists $TmpDir/target/problem_dir*
     rlPhaseEnd
 
     rlPhaseStartCleanup

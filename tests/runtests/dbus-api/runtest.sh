@@ -26,32 +26,23 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="dbus-api"
 PACKAGE="abrt"
 
 rlJournalStart
     rlPhaseStartSetup
-        rlAssert0 "No prior crashes recorded" $(abrt-cli list | wc -l)
-        if [ ! "_$(abrt-cli list | wc -l)" == "_0" ]; then
-            rlDie "Won't proceed"
-        fi
+        check_prior_crashes
 
         TmpDir=$(mktemp -d)
         pushd $TmpDir
     rlPhaseEnd
 
     rlPhaseStartTest
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
-        rlAssertGreater "Crash recorded" $(abrt-cli list | wc -l) 0
-        crash_PATH="$(abrt-cli list -f | grep Directory | awk '{ print $2 }' | tail -n1)"
-        if [ ! -d "$crash_PATH" ]; then
-            rlDie "No crash dir generated, this shouldn't happen"
-        fi
+        generate_crash
+        get_crash_path
+        wait_for_hooks
 
         rlRun "dbus-send --system --type=method_call --print-reply --dest=com.redhat.abrt /com/redhat/abrt com.redhat.abrt.GetListOfProblems &> dbus_reply.log"
 
@@ -59,13 +50,16 @@ rlJournalStart
         rlAssertGrep "string" dbus_reply.log
         rlAssertGrep "$crash_PATH" dbus_reply.log
 
-        rlLog "Generate second crash"
-        top -b > /dev/null &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
+        # we need to remove core_backtrace so it doesn't
+        # mark next crash as a duplicate
+        rm -f "$crash_PATH/core_backtrace"
+
+        prepare
+        generate_second_crash
+        wait_for_hooks
+
         rlAssertGreater "Second crash recorded" $(abrt-cli list | wc -l) 0
-        crash2_PATH="$(abrt-cli list -f | grep Directory \
+        crash2_PATH="$(abrt-cli list | grep Directory \
             | grep -v "$crash_PATH" \
             | awk '{ print $2 }' | tail -n1)"
         if [ ! -d "$crash2_PATH" ]; then
@@ -82,7 +76,7 @@ rlJournalStart
     rlPhaseStartCleanup
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
         rlRun "abrt-cli rm $crash2_PATH" 0 "Remove second crash directory"
-        rlBundleLogs abrt "*.log"
+        rlBundleLogs abrt *.log
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd

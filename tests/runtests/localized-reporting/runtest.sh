@@ -27,25 +27,21 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="localized-reporting"
 PACKAGE="abrt"
 
 rlJournalStart
     rlPhaseStartSetup
+        check_prior_crashes
+
         TmpDir=$(mktemp -d)
         pushd $TmpDir
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
-        rlLog "abrt-cli: $(abrt-cli list -f)"
-        crash_PATH=$(abrt-cli list -f | grep Directory | tail -n1 | awk '{ print $2 }')
-        if [ ! -d "$crash_PATH" ]; then
-            rlDie "No crash dir generated, this shouldn't happen"
-        fi
-        rlLog "PATH = $crash_PATH"
+
+        generate_crash
+        get_crash_path
+        wait_for_hooks
     rlPhaseEnd
 
     rlPhaseStartTest

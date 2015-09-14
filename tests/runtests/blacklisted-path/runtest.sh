@@ -27,6 +27,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="blacklisted-path"
 PACKAGE="abrt"
@@ -36,10 +37,7 @@ CFG_FNAME="abrt-action-save-package-data.conf"
 
 rlJournalStart
     rlPhaseStartSetup
-        rlAssert0 "No prior crashes recorded" $(abrt-cli list | wc -l)
-        if [ ! "_$(abrt-cli list | wc -l)" == "_0" ]; then
-            rlDie "Won't proceed"
-        fi
+        check_prior_crashes
 
         TmpDir=$(mktemp -d)
         for cfg_file in $(echo $LOCAL_CFGS); do
@@ -47,6 +45,9 @@ rlJournalStart
         done
         pushd $TmpDir
         rlFileBackup "/etc/abrt/$CFG_FNAME"
+        rlRun "mkdir -p /var/blah"
+        rlRun "semanage fcontext -a -t bin_t '/var/blah(/.*)?'"
+        rlRun "restorecon -RvF /var/blah"
     rlPhaseEnd
 
     rlPhaseStartTest "BlackListedPaths in effect"
@@ -55,49 +56,51 @@ rlJournalStart
             BLACKLISTEDPATHS="$(grep BlackListedPaths /etc/abrt/abrt-action-save-package-data.conf |  sed 's/BlackListedPaths\s*=\s*//' )"
             rlLogInfo "Blacklisted paths: $BLACKLISTEDPATHS"
 
-            rlLog "Generate crash (not blacklisted path)"
-            sleep 3m &
-            sleep 2
-            kill -SIGSEGV %1
-            sleep 3
+            # the copied config files has wrong selinux context => fixing..
+            rlRun "restorecon -R /etc/abrt"
 
-            crash_PATH=$(abrt-cli list -f | grep Directory | tail -n1 | awk '{ print $2 }')
-            if [ ! -d "$crash_PATH" ]; then
-                rlDie "No crash dir generated, this shouldn't happen"
+            rlLog "Generate crash (not blacklisted path)"
+            prepare
+
+            cp $( which will_abort ) /var/blah
+            /var/blah/will_abort
+
+            wait_for_hooks
+            get_crash_path
+
+            if [ -n "$crash_PATH" ]; then
+                rlRun "abrt-cli info $crash_PATH"
+                rlRun "abrt-cli rm $crash_PATH"
             fi
-            rlLog "PATH = $crash_PATH"
-            rlRun "abrt-cli info $crash_PATH"
-            rlRun "abrt-cli rm $crash_PATH"
 
             rlLog "Generate second crash (blacklisted path)"
-            yes > /dev/null &
-            sleep 2
-            kill -SIGSEGV %1
-            sleep 3
-            rlAssert0 "No crash recorded" $(abrt-cli list | wc -l)
+            prepare
+            generate_crash
+            # can't use wait_for_hooks as the path is blacklisted
+            # and processing is stopped in post-create hook
+            sleep 0.5
 
-            rlLog "Sleeping for 30 seconds"
-            sleep 30
+            rlAssert0 "No crash recorded" $(abrt-cli list | wc -l)
         done
     rlPhaseEnd
 
     rlPhaseStartTest "empty BlackListedPaths"
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 3
+        # 'will-crash' pack isn't signed on RHEL
+        echo "OpenGPGCheck = no" > "/etc/abrt/$CFG_FNAME"
 
-        crash_PATH=$(abrt-cli list -f | grep Directory | tail -n1 | awk '{ print $2 }')
-        if [ ! -d "$crash_PATH" ]; then
-            rlDie "No crash dir generated, this shouldn't happen"
+        prepare
+        generate_crash
+        wait_for_hooks
+        get_crash_path
+
+        if [ -n "$crash_PATH" ]; then
+            rlRun "abrt-cli info $crash_PATH"
+            rlRun "abrt-cli rm $crash_PATH"
         fi
-        rlLog "PATH = $crash_PATH"
-        rlRun "abrt-cli info $crash_PATH"
-        rlRun "abrt-cli rm $crash_PATH"
     rlPhaseEnd
 
     rlPhaseStartCleanup
+        rlRun "rm -rf /var/blah"
         rlFileRestore
         popd #TmpDir
         rm -rf $TmpDir

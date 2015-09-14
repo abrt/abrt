@@ -1,38 +1,41 @@
 # Order of the tests
 # ------------------
-# - basic build/install tests
-abrt-nightly-build
-run-abrtd
-
-abrt-make-check
-btparser-make-check
-libreport-make-check
 
 # - core
 dbus-message
+abrtd-inotify-flood
+abrt-auto-reporting-sanity
+abrt-auto-reporting-sanity-authenticated
 
 # - addons
 ccpp-plugin
 ccpp-plugin-config
+# Remove me and revert to common python-addon test
+# when rhel6's python hook stops sending "basename=pyhook" item:
 python-addon
 
 # - tools tests
 cli-sanity
+cli-status
+console-notifications
 check-hook-install
 dumpoops
 dbus-api
-bodhi
+abrt-python
 
-# - reporting tests
-bugzilla-bt-reattach
-bugzilla-dupe-search
+rhts-test
 
 mailx-reporting
 localized-reporting
 verify-that-report-edits
 upload-scp
 upload-ftp
+upload-filename
 upload-handling
+ureport
+ureport-attachments
+ureport-machineid
+abrt-action-ureport
 
 blacklisted-package
 blacklisted-path
@@ -42,11 +45,4 @@ bz591504-sparse-core-files-performance-hit
 bz618602-core_pattern-handler-truncates-parameters
 bz636913-abrt-should-ignore-SystemExit-exception
 bz652338-removed-proc-PID
-bz783450-setuid-core-owned-by-root
-
-systemd-init
-
-# - more or less destructive tests
-
-# - outdated tests
-#bz623142-abrt-should-not-report-bugs-against-systems-with-TAINT_HARDWARE_UNSUPPORTED-set
+compat-cores

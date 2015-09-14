@@ -27,6 +27,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="ccpp-plugin-config"
 PACKAGE="abrt"
@@ -36,10 +37,7 @@ EVENT_FILE="/etc/libreport/events.d/ccpp_event.conf"
 
 rlJournalStart
     rlPhaseStartSetup
-        rlAssert0 "No prior crashes recorded" $(abrt-cli list | wc -l)
-        if [ ! "_$(abrt-cli list | wc -l)" == "_0" ]; then
-            rlDie "Won't proceed"
-        fi
+        check_prior_crashes
 
         old_ulimit=$(ulimit -c)
         rlRun "ulimit -c unlimited" 0
@@ -52,11 +50,12 @@ rlJournalStart
 
     rlPhaseStartTest "Disable ccpp"
         rlRun "/usr/sbin/abrt-install-ccpp-hook uninstall" 0 "Uninstall hook"
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
+        rlRun "/usr/sbin/abrt-install-ccpp-hook is-installed" 1 "Is hook uninstalled"
+        rlAssertGrep "core" /proc/sys/kernel/core_pattern
+        rlAssertNotGrep "abrt" /proc/sys/kernel/core_pattern
+
+        generate_crash
+
         rlAssert0 "No crash recorded" $(abrt-cli list | wc -l)
         rlRun "/usr/sbin/abrt-install-ccpp-hook install" 0 "Restore hook"
     rlPhaseEnd
@@ -64,20 +63,12 @@ rlJournalStart
         rm -rf core.*
         rlLogInfo "MakeCompatCore = yes"
         rlRun "echo 'MakeCompatCore = yes' > $CFG_FILE" 0 "Set MakeCompatCore = yes"
-        rlLog "Sleep for 30 seconds"
-        sleep 30
 
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
-        rlAssertGreater "Crash recorded" $(abrt-cli list | wc -l) 0
-        crash_PATH="$(abrt-cli list -f | grep Directory | awk '{ print $2 }' | tail -n1)"
-        if [ ! -d "$crash_PATH" ]; then
-            rlFileRestore # CFG_FILE
-            rlDie "No crash dir generated, this shouldn't happen"
-        fi
+        prepare
+        generate_crash
+        get_crash_path
+        wait_for_hooks
+
         ls core* > make_compat_core_yes_pwd_ls
         core_fname="$(echo core*)"
         rlLog "$core_fname"
@@ -91,20 +82,12 @@ rlJournalStart
 
         rlLogInfo "MakeCompatCore = no"
         rlRun "echo 'MakeCompatCore = no' > $CFG_FILE" 0 "Set MakeCompatCore = no"
-        rlLog "Sleeping for 30 seconds"
-        sleep 30
 
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
-        rlAssertGreater "Crash recorded" $(abrt-cli list | wc -l) 0
-        crash_PATH="$(abrt-cli list -f | grep Directory | awk '{ print $2 }' | tail -n1)"
-        if [ ! -d "$crash_PATH" ]; then
-            rlFileRestore # CFG_FILE
-            rlDie "No crash dir generated, this shouldn't happen"
-        fi
+        prepare
+        generate_crash
+        get_crash_path
+        wait_for_hooks
+
         ls core* > make_compat_core_no_pwd_ls
         core_fname="$(echo core*)"
         rlAssertNotExists "$core_fname"
@@ -117,40 +100,24 @@ rlJournalStart
     rlPhaseStartTest "SaveBinaryImage"
         rlLogInfo "SaveBinaryImage = yes"
         rlRun "echo 'SaveBinaryImage = yes' > $CFG_FILE" 0 "Set SaveBinaryImage = yes"
-        rlLog "Sleep for 30 seconds"
-        sleep 30
 
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
-        rlAssertGreater "Crash recorded" $(abrt-cli list | wc -l) 0
-        crash_PATH="$(abrt-cli list -f | grep Directory | awk '{ print $2 }' | tail -n1)"
-        if [ ! -d "$crash_PATH" ]; then
-            rlFileRestore # CFG_FILE
-            rlDie "No crash dir generated, this shouldn't happen"
-        fi
+        prepare
+        generate_crash
+        get_crash_path
+        wait_for_hooks
+
         ls $crash_PATH > save_binary_image_yes_ls
         rlAssertExists "$crash_PATH/binary"
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
 
         rlLogInfo "SaveBinaryImage = no"
         rlRun "echo 'SaveBinaryImage = no' > $CFG_FILE" 0 "Set SaveBinaryImage = no"
-        rlLog "Sleeping for 30 seconds"
-        sleep 30
 
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
-        rlAssertGreater "Crash recorded" $(abrt-cli list | wc -l) 0
-        crash_PATH="$(abrt-cli list -f | grep Directory | awk '{ print $2 }' | tail -n1)"
-        if [ ! -d "$crash_PATH" ]; then
-            rlFileRestore # CFG_FILE
-            rlDie "No crash dir generated, this shouldn't happen"
-        fi
+        prepare
+        generate_crash
+        get_crash_path
+        wait_for_hooks
+
         ls $crash_PATH > save_binary_image_no_ls
         rlAssertNotExists "$crash_PATH/binary"
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
