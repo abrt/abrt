@@ -1,7 +1,5 @@
 Test is using conf_* configuration files to test different path blacklisting options.
 
 In each of it, /usr is blacklisted differently. After replacing the configuration
-file, two processes are crashed - sleep, which is located in /bin/ and yes which
-is located in /usr/bin/. First should be caught, second skipped.
-
-WARNING: This might stop working in Fedora 17 due to /usr move and $PATH changes
+file, two processes are crashed - will_segfault, which is located in /usr/bin/ and /var/will_abort.
+First should be skipped, second caught.

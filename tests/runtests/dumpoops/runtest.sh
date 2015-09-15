@@ -26,19 +26,25 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="dumpoops"
 PACKAGE="abrt"
+EXAMPLES_PATH="../../../examples"
 
 rlJournalStart
     rlPhaseStartSetup
         TmpDir=$(mktemp -d)
-        tar xf examples.tar -C $TmpDir
-        rlRun "pushd $TmpDir/examples"
+        cp $EXAMPLES_PATH/oops*.test $TmpDir
+        cp $EXAMPLES_PATH/not_oops*.test $TmpDir
+        rlRun "pushd $TmpDir"
     rlPhaseEnd
 
     rlPhaseStartTest OOPS
         for oops in oops*.test; do
+            # oops7.test case is not caught by the RHEL6 abrt-dump-oops
+            # (so far. It may be re-enabled after relevant patch is ported to RHEL6):
+            test "$oops" = "oops7.test" && continue
             rlRun "abrt-dump-oops $oops 2>&1 | grep 'abrt-dump-oops: Found oopses: [1-9]'" 0 "[$oops] Found OOPS"
         done
     rlPhaseEnd

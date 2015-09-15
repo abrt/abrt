@@ -1,45 +1,67 @@
 #!/bin/bash
 
+. ./aux/lib.sh
+
+load_abrt_conf
+
 if [ $1 ]; then
-    # core pattern
-    if ! cat /proc/sys/kernel/core_pattern | grep -q abrt; then
-        if [ -x /usr/sbin/abrt-install-ccpp-hook ]; then
-            /usr/sbin/abrt-install-ccpp-hook install
-            echo "core_pattern: $(cat /proc/sys/kernel/core_pattern)"
+
+    # clenaup BEFORE every test
+    # stop services
+    service abrt-oops stop
+    service abrt-xorg stop
+    service abrtd stop &> /dev/null
+
+    # cleanup
+    echo 'core' > /var/run/abrt/saved_core_pattern
+
+    if [ -x /usr/sbin/abrt-install-ccpp-hook ]; then
+        /usr/sbin/abrt-install-ccpp-hook uninstall
+    fi
+
+    if pidof abrtd; then
+        killall -9 abrtd
+        rm -f /var/run/abrt/abrtd.pid
+    fi
+
+    prepare
+
+    if [ "${REINSTALL_BEFORE_EACH_TEST}" = "1" ]; then
+        echo 'REINSTALL_BEFORE_EACH_TEST set'
+
+        yum -y remove abrt\* libreport\*
+
+        rm -rf /etc/abrt/
+        rm -rf /etc/libreport/
+
+        yum -y install $PACKAGES
+    fi
+
+    if [ "${RESTORE_CONFIGS_BEFORE_EACH_TEST}" = "1" ]; then
+        echo 'RESTORE_CONFIGS_BEFORE_EACH_TEST set'
+
+        if [ -d /tmp/abrt-config ]; then
+            rm -rf /etc/abrt/
+            rm -rf /etc/libreport/
+
+            cp -a /tmp/abrt-config/abrt /etc/abrt
+            cp -a /tmp/abrt-config/libreport /etc/libreport
         else
-            echo "core_pattern: abrt-install-ccpp-hook not present, skipping"
+            echo 'Nothing to restore'
         fi
     fi
 
-    # abrtd
-    dbus_service_name=messagebus
-    if ! pidof abrtd 2>&1 > /dev/null; then
-        if [ -x /usr/sbin/abrtd ]; then
-            if [ -x /bin/systemctl ]; then
-                /bin/systemctl restart $dbus_service_name.service
-            else
-                if [ -x /usr/sbin/service ]; then
-                    /usr/sbin/service $dbus_service_name restart
-                else
-                    /sbin/service $dbus_service_name restart
-                fi
-            fi
-            /usr/sbin/abrtd -s
-            echo "abrtd PID: $(pidof abrtd)"
-        else
-            echo "abrtd: not present, skipping"
-        fi
+    if [ "${CLEAN_SPOOL_BEFORE_EACH_TEST}" = "1" ]; then
+        rm -rf $ABRT_CONF_DUMP_LOCATION/*
     fi
 
-    # abrt-dump-oops
-    if ! pidof abrt-dump-oops 2>&1 > /dev/null; then
-        if [ -x /usr/bin/abrt-dump-oops ]; then
-            /usr/bin/abrt-dump-oops -d /var/spool/abrt -rwx /var/log/messages &
-            echo "abrt-dump-oops PID: $(pidof abrt-dump-oops)"
-        else
-            echo "abrt-dump-oops: not present, skipping"
-        fi
+    if [ "${DUMP_PACKAGE_VERSIONS}" = "1" ]; then
+        rpm -q $PACKAGES
     fi
+
+    service abrtd start
+    service abrt-ccpp start
+    service abrt-oops start
 
     # test delay
     if [ "${DELAY+set}" = "set" ]; then
@@ -51,22 +73,16 @@ if [ $1 ]; then
     # run test
     pushd $(dirname $1)
     echo ":: TEST START MARK ::"
-    ./$(basename $1)
+    if [ -x /usr/bin/time ]; then
+        tmpfile=$( mktemp )
+        /usr/bin/time -v -o $tmpfile ./$(basename $1)
+        cat $tmpfile
+        rm $tmpfile
+    else
+        ./$(basename $1)
+    fi
     echo ":: TEST END MARK ::"
     popd
-
-    # cleanup
-    if [ -x /usr/sbin/abrt-install-ccpp-hook ]; then
-        /usr/sbin/abrt-install-ccpp-hook uninstall
-    fi
-    pidof abrtd && killall abrtd
-    pidof abrt-dump-oops && killall abrt-dump-oops
-
-    if [ -f /var/run/abrt/saved_core_pattern ]; then
-        rm -f /var/run/abrt/saved_core_pattern
-    fi
-
-    rm -f /var/spool/abrt/last-ccpp
 
     exit 0
 else

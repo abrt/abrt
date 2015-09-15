@@ -27,6 +27,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="ccpp-plugin"
 PACKAGE="abrt"
@@ -34,10 +35,7 @@ PACKAGE="abrt"
 
 rlJournalStart
     rlPhaseStartSetup
-        rlAssert0 "No prior crashes recorded" $(abrt-cli list | wc -l)
-        if [ ! "_$(abrt-cli list | wc -l)" == "_0" ]; then
-            rlDie "Won't proceed"
-        fi
+        check_prior_crashes
 
         old_ulimit=$(ulimit -c)
         rlRun "ulimit -c unlimited" 0
@@ -47,16 +45,10 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
-        rlAssertGreater "Crash recorded" $(abrt-cli list | wc -l) 0
-        crash_PATH="$(abrt-cli list -f | grep Directory | awk '{ print $2 }' | tail -n1)"
-        if [ ! -d "$crash_PATH" ]; then
-            rlDie "No crash dir generated, this shouldn't happen"
-        fi
+        generate_crash
+        get_crash_path
+        wait_for_hooks
+
         ls $crash_PATH > crash_dir_ls
 
         rlAssertExists "$crash_PATH/uuid"

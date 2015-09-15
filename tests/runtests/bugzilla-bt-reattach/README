@@ -1,8 +1,0 @@
-This test is faking bugzilla instance via small python script (pyserve)
-which accepts list of files to be served in order of appearance.
-
-Goal is to test, if reporter-bugzilla behaves correctly when
-certain criteria are met:
-- no duplicate bug in bugzilla -> create new bug
-- backtrace in bug has better rating -> do nothing
-- backtrace in bug has worse rating than our -> upload our, better backtrace

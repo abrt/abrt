@@ -46,7 +46,7 @@ rlJournalStart
 
     rlPhaseStartTest "scp upload, filename not set"
         rlRun "reporter-upload -d problem_dir -u scp://root:redhat@localhost$TmpDir/target/"
-        rlAssertExists $TmpDir/target/abrt-upload*
+        rlAssertExists $TmpDir/target/problem_dir*
     rlPhaseEnd
 
     rlPhaseStartCleanup

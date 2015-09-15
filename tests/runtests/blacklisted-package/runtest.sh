@@ -27,6 +27,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="blacklisted-package"
 PACKAGE="abrt"
@@ -35,6 +36,8 @@ CFG_FNAME="abrt-action-save-package-data.conf"
 
 rlJournalStart
     rlPhaseStartSetup
+        check_prior_crashes
+
         TmpDir=$(mktemp -d)
         cp $CFG_FNAME $TmpDir
         pushd $TmpDir
@@ -48,18 +51,21 @@ rlJournalStart
             rlDie "No blacklisted packages; won't proceed."
         fi
         rlAssertGrep "strace" $TmpDir/blacklisted.abrt
+
+        # the copied config files has wrong selinux context => fixing..
+        rlRun "restorecon -R /etc/abrt"
     rlPhaseEnd
 
     rlPhaseStartTest
-        ( sleep 10; killall -11 sleep) &
-        rlRun "strace sleep 3m 2>&1 > /dev/null" 139 "strace process was killed with signal 11"
-        sleep 3
-        rlRun "abrt-cli list -f | grep strace" 1 "No strace in abrt-cli output"
+        ( sleep 1; killall -11 sleep) &
+        strace sleep 3m 2>&1 > /dev/null
+        wait_for_hooks
+        rlRun "abrt-cli list | grep strace" 1 "No strace in abrt-cli output"
     rlPhaseEnd
 
     rlPhaseStartCleanup
         rlFileRestore
-        crash_PATH=$(abrt-cli list -f | grep Directory | tail -n1 | awk '{ print $2 }')
+        get_crash_path
         if [ ! -z "$crash_PATH" ]; then
             rlRun "abrt-cli rm $crash_PATH" 0 "Delete $crash_PATH"
         fi

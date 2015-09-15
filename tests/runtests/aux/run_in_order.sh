@@ -1,7 +1,13 @@
 #!/bin/bash
 
+. ./aux/lib.sh
+
+load_abrt_conf
+
 testlist=$(cat $TEST_LIST | grep '^[^#]\+$')
 crit_test_fail=0
+
+RESULT="PASS"
 
 for test_dir in $testlist; do
     test="$test_dir/runtest.sh"
@@ -22,12 +28,17 @@ for test_dir in $testlist; do
     sleep 1
 
     # save post crashes
-    if [ -d /var/spool/abrt ]; then
-        n_post=$( find /var/spool/abrt/ -mindepth 1 -type d | wc -l )
+    if [ -d "$ABRT_CONF_DUMP_LOCATION" ]; then
+        n_post=$( find $ABRT_CONF_DUMP_LOCATION -mindepth 1 -type d | wc -l )
         if [ $n_post -gt 0 ]; then
             mkdir "$outdir/post_crashes"
-            for dir in $( find /var/spool/abrt/ -mindepth 1 -type d ); do
-                mv "$dir" "$outdir/post_crashes/"
+            for dir in $( find $ABRT_CONF_DUMP_LOCATION  -mindepth 1 -type d ); do
+                # do not store crashes that are too big
+                if [ $( du -s "$dir" | awk '{ print $1 }' ) -lt 100000 ]; then
+                    mv "$dir" "$outdir/post_crashes/"
+                else
+                    rm -rf "$dir"
+                fi
             done
         fi
     fi
@@ -66,10 +77,13 @@ for test_dir in $testlist; do
         rm "$outdir/avc"
     fi
 
-    # append protocol to results
-    echo '' >> $OUTPUT_ROOT/results
-    if [ -f "$outdir/protocol.log" ]; then
-        cat "$outdir/protocol.log" >> $OUTPUT_ROOT/results
+    # collect files stored by beakerlibs rlBundleLogs
+    if stat -t /var/tmp/BEAKERLIB_STORED* &> /dev/null; then
+        tmpdir=$( mktemp -d )
+        tar xzf /var/tmp/BEAKERLIB_STORED* -C $tmpdir
+        find $tmpdir -type f -exec mv {} $outdir \;
+        rm -rf $tmpdir
+        rm -f /var/tmp/BEAKERLIB_STORED*
     fi
 
     # check test result
@@ -80,16 +94,28 @@ for test_dir in $testlist; do
         fi
     fi
 
-    # console reporting
+    # console reporting & fail.log creation
     if [ "$test_result" == "FAIL" ]; then
         touch "$outdir/fail.log"
-        sed -n "1,${protocol_start}p;${protocol_start}q" $logfile \
-            | grep -n FAIL > "$outdir/fail.log"
+        if [ -f "$outdir/protocol.log" ]; then
+            grep -n ' FAIL ' "$outdir/protocol.log" > "$outdir/fail.log"
+        else
+            egrep -n ' (FAIL|FATAL) ' "$logfile" > "$outdir/fail.log"
+        fi
         echo_failure
+        RESULT="FAIL"
     else
         echo_success
     fi
     echo " | $short_testname"
+
+    # append protocol to results, use fail.log if not available
+    echo '' >> $OUTPUT_ROOT/results
+    if [ -f "$outdir/protocol.log" ]; then
+        cat "$outdir/protocol.log" >> $OUTPUT_ROOT/results
+    elif [ -f "$outdir/fail.log" ]; then
+        cat "$outdir/fail.log" >> $OUTPUT_ROOT/results
+    fi
 
     if [ "$test_result" == "FAIL" ]; then
         for ctest in $TEST_CRITICAL; do
@@ -112,14 +138,6 @@ for test_dir in $testlist; do
 
 done
 
-if grep -q FAIL $OUTPUT_ROOT/results; then
-    RESULT="FAIL"
-else
-    RESULT="PASS"
+if [ "$RESULT" == "FAIL" ]; then
+    return 1
 fi
-
-if [ $crit_test_fail -eq 1 ]; then
-    RESULT="FAIL"
-fi
-
-export RESULT

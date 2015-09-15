@@ -26,16 +26,14 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="dbus-message"
 PACKAGE="abrt"
 
 rlJournalStart
     rlPhaseStartSetup
-        rlAssert0 "No prior crashes recorded" $(abrt-cli list | wc -l)
-        if [ ! "_$(abrt-cli list | wc -l)" == "_0" ]; then
-            rlDie "Won't proceed"
-        fi
+        check_prior_crashes
 
         TmpDir=$(mktemp -d)
         pushd $TmpDir
@@ -45,21 +43,13 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %2
-        sleep 5
-        rlAssertGreater "Crash recorded" $(abrt-cli list | wc -l) 0
-        crash_PATH="$(abrt-cli list -f | grep Directory | awk '{ print $2 }' | tail -n1)"
-        if [ ! -d "$crash_PATH" ]; then
-            rlDie "No crash dir generated, this shouldn't happen"
-        fi
+        generate_crash
+        get_crash_path
+        wait_for_hooks
 
-        package="$(abrt-cli list -f | grep -i Package | awk '{ print $2 }' | tail -n1)"
+        package="$(abrt-cli list | grep -i package | awk '{ print $2 }' | tail -n1)"
         user="$( id -u )"
 
-        sleep 10
         kill %1 || kill -9 %1 # kill dbus-monitor
 
         rlAssertGrep "member=Crash" dbus.log
