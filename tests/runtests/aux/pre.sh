@@ -21,11 +21,17 @@ fi
 cat > /etc/libreport/events.d/test_event.conf << _EOF_
 EVENT=notify
         touch /tmp/abrt-done
+EVENT=notify-dup
+        touch /tmp/abrt-done
 _EOF_
 
 if [ "${DISABLE_GPGCHECK}" = "1" ]; then
     sed -i 's/OpenGPGCheck.*=.*yes/OpenGPGCheck = no/' \
         /etc/abrt/abrt-action-save-package-data.conf
+fi
+
+if [ "${DISABLE_AUTOREPORTING}" = "1" ]; then
+    which abrt-auto-reporting && abrt-auto-reporting disabled
 fi
 
 if [ "${STORE_CONFIGS}" = "1" ]; then
