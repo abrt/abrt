@@ -32,19 +32,6 @@ TEST="console-notifications"
 PACKAGE="abrt"
 RELPATH=".cache/abrt/lastnotification"
 LNPATH="$HOME/$RELPATH"
-ABRT_CONF_DUMP_LOCATION="/var/spool/abrt"
-
-function abrtCreateNewProblem() {
-    DUMPDIR_PATH=$ABRT_CONF_DUMP_LOCATION/ccpp-$(date +%F-%T-%N)
-    mkdir $DUMPDIR_PATH
-
-    echo -n "CCpp" > $DUMPDIR_PATH/type
-    echo -n "abrt-ccpp" > $DUMPDIR_PATH/analyzer
-    echo -n "/usr/bin/will_segfault" > $DUMPDIR_PATH/executable
-    echo -n $(date +%s.%N) > $DUMPDIR_PATH/uuid
-    echo -n "will-crash" > $DUMPDIR_PATH/component
-    echo -n $(date +%s) > $DUMPDIR_PATH/time
-}
 
 rlJournalStart
     rlPhaseStartSetup
@@ -194,19 +181,10 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "time out"
-        rlLog "This part of the test can sometimes fail. If this happens, run the test again"
         LOG_NAME="timeout.log"
 
-        # creating massive amounts of dump dirs to ensure 'abrt-cli status'
-        # processing takes longer than console-notification's time out allows
-        num_of_dump_dirs=10000
-        rlLog "Creating $num_of_dump_dirs dumpdirs"
-        for i in $(seq 1 $num_of_dump_dirs); do
-            abrtCreateNewProblem
-            if [ $(($i % $(($num_of_dump_dirs/10)))) -eq 0 ]; then
-                rlLog "Created $i dump dirs from $num_of_dump_dirs"
-            fi
-        done
+        # Use PID 1 that always exist :)
+        rlRun "ln -sf 1 $crash_PATH/.lock"
 
         (sleep 15; killall abrt-cli > killall.log 2>&1) &
 
@@ -215,21 +193,21 @@ rlJournalStart
         sh -l -i -c "echo $CANARY" >$LOG_NAME 2>&1
 
         # ABRT worked as expected
-        rlAssertGrep "'abrt-cli status' timed out|Can't get problem list from abrt-dbus: Timeout was reached
-        " $LOG_NAME -E
+        rlAssertGrep "'abrt-cli status' timed out" $LOG_NAME
         # ABRT didn't break login
         rlAssertGrep "$CANARY" $LOG_NAME
 
         sleep 6
         rlAssertGrep "abrt-cli: no process .*" killall.log
 
-        rlRun "rm -rf $ABRT_CONF_DUMP_LOCATION/*"
+        rlRun "rm $crash_PATH/.lock"
     rlPhaseEnd
 
     rlPhaseStartCleanup
         rlBundleLogs "console_notifications" *.log
         popd # TmpDir
         rm -rf $TmpDir
+        rlRun "abrt-cli rm $crash_PATH"
     rlPhaseEnd
 
     rlJournalPrintText
