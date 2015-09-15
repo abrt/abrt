@@ -160,13 +160,14 @@ static struct dump_dir *dd;
  * %g - gid
  * %t - UNIX time of dump
  * %e - executable filename
- * %i - crash thread tid
+ * %I - global crash thread tid
+ * %P - global pid
  * %% - output one "%"
  */
 /* Hook must be installed with exactly the same sequence of %c specifiers.
  * Last one, %h, may be omitted (we can find it out).
  */
-static const char percent_specifiers[] = "%scpugtei";
+static const char percent_specifiers[] = "%scpugtePI";
 static char *core_basename = (char*) "core";
 
 static char* get_executable(pid_t pid, int *fd_p)
@@ -688,9 +689,9 @@ int main(int argc, char** argv)
 
     if (argc < 8)
     {
-        /* percent specifier:         %s   %c              %p  %u  %g  %t   %e          %i */
-        /* argv:                  [0] [1]  [2]             [3] [4] [5] [6]  [7]         [8]*/
-        error_msg_and_die("Usage: %s SIGNO CORE_SIZE_LIMIT PID UID GID TIME BINARY_NAME [TID]", argv[0]);
+        /* percent specifier:         %s   %c              %p  %u  %g  %t   %e          %P         %I*/
+        /* argv:                  [0] [1]  [2]             [3] [4] [5] [6]  [7]         [8]        [9]*/
+        error_msg_and_die("Usage: %s SIGNO CORE_SIZE_LIMIT PID UID GID TIME BINARY_NAME GLOBAL_PID [TID]", argv[0]);
     }
 
     /* Not needed on 2.6.30.
@@ -718,9 +719,9 @@ int main(int argc, char** argv)
         ulimit_c = ~((off_t)1 << (sizeof(off_t)*8-1));
     }
     const char *pid_str = argv[3];
-    pid_t pid = xatoi_positive(argv[3]);
+    pid_t local_pid = xatoi_positive(argv[3]);
     uid_t uid = xatoi_positive(argv[4]);
-    if (errno || pid <= 0)
+    if (errno || local_pid <= 0)
     {
         perror_msg_and_die("PID '%s' or limit '%s' is bogus", argv[3], argv[2]);
     }
@@ -733,11 +734,13 @@ int main(int argc, char** argv)
         else
             free(s);
     }
+    const char *global_pid_str = argv[8];
+    pid_t pid = xatoi_positive(argv[8]);
 
     pid_t tid = 0;
-    if (argv[8])
+    if (argv[9])
     {
-        tid = xatoi_positive(argv[8]);
+        tid = xatoi_positive(argv[9]);
     }
 
     char path[PATH_MAX];
@@ -914,6 +917,7 @@ int main(int argc, char** argv)
         dd_save_text(dd, FILENAME_TYPE, "CCpp");
         dd_save_text(dd, FILENAME_EXECUTABLE, executable);
         dd_save_text(dd, FILENAME_PID, pid_str);
+        dd_save_text(dd, /*FILENAME_GLOBAL_PID*/"global_pid", global_pid_str);
         dd_save_text(dd, FILENAME_PROC_PID_STATUS, proc_pid_status);
         if (user_pwd)
             dd_save_text(dd, FILENAME_PWD, user_pwd);
