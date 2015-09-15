@@ -2,7 +2,7 @@
 # vim: dict=/usr/share/beakerlib/dictionary.vim cpt=.,w,b,u,t,i,k
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-#   runtest.sh of ureport
+#   runtest.sh of ureport-attachments
 #   Description: Verify that uReport client correctly attaches information to a report on server
 #   Author: Jakub Filak <jfilak@redhat.com>
 #
@@ -28,7 +28,7 @@
 . /usr/share/beakerlib/beakerlib.sh
 . ../aux/lib.sh
 
-TEST="ureport"
+TEST="ureport-attachments"
 PACKAGE="abrt"
 
 rlJournalStart
