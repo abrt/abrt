@@ -34,17 +34,17 @@ PACKAGE="abrt"
 
 rlJournalStart
     rlPhaseStartSetup
+        load_abrt_conf
         TmpDir=$(mktemp -d)
         cp notify_new_path.py $TmpDir
         pushd $TmpDir
-
     rlPhaseEnd
 
     rlPhaseStartTest
         newpath="/this/is/the/testing/problem/path"
         rlRun "./notify_new_path.py $newpath" 0 "Testing notification over socket"
         sleep 1  # give abrt-server a while to print the message to syslog
-        rlAssertGrep "Bad problem directory name '$newpath', should start with: '/var/tmp/abrt'" /var/log/messages
+        rlAssertGrep "Bad problem directory name '$newpath', should start with: '$ABRT_CONF_DUMP_LOCATION'" /var/log/messages
     rlPhaseEnd
 
     rlPhaseStartCleanup

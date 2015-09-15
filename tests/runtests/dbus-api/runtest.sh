@@ -71,11 +71,29 @@ rlJournalStart
         rlAssertGrep "array" dbus_second_reply.log
         rlAssertGrep "$crash_PATH" dbus_second_reply.log
         rlAssertGrep "$crash2_PATH" dbus_second_reply.log
+
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        rlRun "abrt-cli rm $crash2_PATH" 0 "Remove second crash directory"
+    rlPhaseEnd
+
+    rlPhaseStartTest "FindProblemByElementInTimeRange"
+
+        time_from=`date +%s`
+        generate_crash
+        wait_for_hooks
+        get_crash_path
+
+        cmd_line=`cat $crash_PATH/cmdline`
+
+        rlRun "dbus-send --system --type=method_call --print-reply --dest=org.freedesktop.problems /org/freedesktop/problems org.freedesktop.problems.FindProblemByElementInTimeRange string:cmdline string:${cmd_line} int64:${time_from} int64:`date +%s` boolean:true &> dbus_reply.log"
+
+        rlAssertGrep "array" dbus_reply.log
+        rlAssertGrep "$crash_PATH" dbus_reply.log
+
     rlPhaseEnd
 
     rlPhaseStartCleanup
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
-        rlRun "abrt-cli rm $crash2_PATH" 0 "Remove second crash directory"
         rlBundleLogs abrt *.log
         popd # TmpDir
         rm -rf $TmpDir

@@ -36,6 +36,9 @@ EXAMPLES_PATH="../../../examples"
 
 rlJournalStart
     rlPhaseStartSetup
+        load_abrt_conf
+        LANG=""
+        export LANG
         check_prior_crashes
 
         TmpDir=$(mktemp -d)
@@ -68,6 +71,8 @@ rlJournalStart
 
     rlPhaseStartTest OOPS
         for oops in oops*.test; do
+            prepare
+
             installed_kernel="$( rpm -q kernel | tail -n1 )"
             kernel_version="$( rpm -q --qf "%{version}" $installed_kernel )"
             sed -i "s/<KERNEL_VERSION>/$installed_kernel/g" $oops
@@ -82,6 +87,8 @@ rlJournalStart
                 rlAssertExists "$crash_PATH/$f"
             done
 
+            check_dump_dir_attributes $crash_PATH
+
             if [[ "$oops" == *not_reportable* ]]; then
                 rlAssertExists "$crash_PATH/not-reportable"
             else
@@ -89,6 +96,7 @@ rlJournalStart
             fi
 
             rlAssertGrep "kernel" "$crash_PATH/pkg_name"
+            rlAssertGrep "kernel" "$crash_PATH/component"
             rlAssertGrep "$kernel_version" "$crash_PATH/pkg_version"
 
             rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"

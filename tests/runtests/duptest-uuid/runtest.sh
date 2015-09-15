@@ -38,28 +38,35 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
+        prepare
+
         rlLog "Creating problem data."
         dbus-send --system --type=method_call --print-reply \
           --dest=org.freedesktop.problems /org/freedesktop/problems \
           org.freedesktop.problems.NewProblem \
           dict:string:string:analyzer,libreport,reason,"Testing crash",backtrace,"die()",executable,"/usr/bin/true"
-        cd /var/tmp/abrt/libreport*
-        rlLog "Waiting few seconds."
-        sleep 2s
+
+        wait_for_hooks
+
+        rlRun "cd $ABRT_CONF_DUMP_LOCATION/libreport*"
         first_occurrence=`cat last_occurrence`
+
+        prepare
+
         rlLog "Creating different problem data."
         dbus-send --system --type=method_call --print-reply \
           --dest=org.freedesktop.problems /org/freedesktop/problems \
           org.freedesktop.problems.NewProblem \
           dict:string:string:analyzer,libreport,reason,"Testing crash",executable,"/usr/bin/true"
-        rlLog "Waiting few seconds."
-        sleep 2s
+
+        wait_for_hooks
+
         rlAssertEquals "Checking if last_occurrence has been updated" $first_occurrence `cat last_occurrence`
         rlAssertEquals "Checking if abrt counted only a single crash" `cat count` 1
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "rm -rf /var/tmp/abrt/libreport*" 0 "Removing problem dirs"
+        rlRun "rm -rf $ABRT_CONF_DUMP_LOCATION/libreport*" 0 "Removing problem dirs"
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd

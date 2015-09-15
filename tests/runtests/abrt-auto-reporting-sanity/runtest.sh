@@ -67,6 +67,17 @@ rlJournalStart
         rlAssertEquals "Reads the configuration" "_$(abrt-auto-reporting)" "_$CONF_VALUE"
     rlPhaseEnd
 
+    if ! rlIsRHEL; then
+    rlPhaseStartTest "missing rhtsupport.conf"
+        [ -f /etc/libreport/plugins/rhtsupport.conf ] && rlRun "mv /etc/libreport/plugins/rhtsupport.conf ~" 0 "backup rhtsupport.conf"
+        rlRun "abrt-auto-reporting"
+        [ -f ~/rhtsupport.conf ] && rlRun "mv ~/rhtsupport.conf /etc/libreport/plugins/rhtsupport.conf" 0 "restore rhtsupport.conf"
+
+        get_configured_value
+        rlAssertEquals "Reads the configuration" "_$(abrt-auto-reporting)" "_$CONF_VALUE"
+    rlPhaseEnd
+    fi
+
     rlPhaseStartTest "enabled"
         rlRun "abrt-auto-reporting enabled"
 
@@ -108,28 +119,8 @@ rlJournalStart
         done
     rlPhaseEnd
 
-    rlPhaseStartTest "turn SSL Auth on"
-        rlRun "abrt-auto-reporting --certificate rhsm"
-
-        rlAssertGrep "^SSLClientAuth = rhsm$" /etc/libreport/plugins/ureport.conf
-    rlPhaseEnd
-
-    rlPhaseStartTest "turn HTTP Auth on"
-        rlRun "abrt-auto-reporting --username rhn-username --password rhn-password"
-
-        rlAssertGrep "^HTTPAuth = rhts-credentials$" /etc/libreport/plugins/ureport.conf
-        rlAssertGrep "^Login = rhn-username$" /etc/libreport/plugins/rhtsupport.conf
-        rlAssertGrep "^Password = rhn-password$" /etc/libreport/plugins/rhtsupport.conf
-    rlPhaseEnd
-
-    rlPhaseStartTest "turn the Auth off"
-        rlRun "abrt-auto-reporting --anonymous"
-
-        rlAssertNotGrep "^SSLClientAuth" /etc/libreport/plugins/ureport.conf
-        rlAssertNotGrep "^HTTPAuth" /etc/libreport/plugins/ureport.conf
-    rlPhaseEnd
-
     rlPhaseStartCleanup
+        rlRun "abrt-auto-reporting disabled"
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd

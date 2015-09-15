@@ -34,12 +34,13 @@ PACKAGE="abrt"
 rlJournalStart
     rlPhaseStartSetup
         TmpDir=$(mktemp -d)
-        cp -R -- dmesg-efi-* "$TmpDir"
+        cp -R -- right.* dmesg-efi-* "$TmpDir"
         pushd -- "$TmpDir"
     rlPhaseEnd
 
     rlPhaseStartTest "merge pstore oops"
-        rlRun "abrt-merge-pstoreoops -o dmesg-efi-* | grep 'Process Xorg'" 0 "Testing merging"
+        rlRun "abrt-merge-pstoreoops -o dmesg-efi-* > merge.dmesg-efi"
+        rlAssertNotDiffer right.dmesg-efi merge.dmesg-efi
     rlPhaseEnd
 
     rlPhaseStartTest "delete pstore oops"

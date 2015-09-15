@@ -49,6 +49,8 @@ rlJournalStart
         get_crash_path
         wait_for_hooks
 
+        check_dump_dir_attributes $crash_PATH
+
         ls $crash_PATH > crash_dir_ls
 
         rlAssertExists "$crash_PATH/hs_err.log"

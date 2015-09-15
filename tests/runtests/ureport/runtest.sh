@@ -81,6 +81,28 @@ rlJournalStart
         rlRun "abrt-cli rm $crash_PATH"
     rlPhaseEnd
 
+    rlPhaseStartTest "ureport with Authentication data"
+        prepare
+        generate_crash
+        get_crash_path
+        wait_for_hooks
+
+
+        rlRun "augtool set /files/etc/libreport/plugins/ureport.conf/IncludeAuthData yes"
+        rlRun "augtool set /files/etc/libreport/plugins/ureport.conf/AuthDataItems hostname"
+
+        hostname="$(cat $crash_PATH/hostname)"
+
+        ./fakefaf.py &
+        sleep 1
+        rlRun "reporter-ureport -vvv --insecure --url http://localhost:12345/faf -d $crash_PATH &> reporter-ureport.log" 70 "Send uReport"
+        kill %1
+
+        rlAssertGrep "\"auth\": {   \"hostname\": \"$hostname\"" reporter-ureport.log
+
+        rlRun "abrt-cli rm $crash_PATH"
+    rlPhaseEnd
+
     rlPhaseStartCleanup
         rlBundleLogs abrt ccpp_* python_*
         popd # TmpDir
