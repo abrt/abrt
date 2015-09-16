@@ -5,6 +5,7 @@
 # certificates for every test run; in fact it can block for a really long time
 # if run inside a virtual machine that is short on entropy.
 
+
 set -e
 set -x
 
@@ -26,16 +27,36 @@ openssl req \
         -keyout ca_key.pem \
         -out ca_cert.pem
 
-# Generate self-signed server certificate.
+# Generate self-signed CA certificate for Server
 openssl req \
-        -config ssl_server.conf \
+        -config ssl_server_ca.conf \
         -new \
         -x509 \
         -days $DAYS \
         -newkey $NEWKEY \
         -nodes \
+        -keyout server_ca_key.pem \
+        -out server_ca_cert.pem
+
+# Generate server certificate request to be signed by CA.
+openssl req \
+        -config ssl_server.conf \
+        -newkey $NEWKEY \
+        -nodes \
         -keyout server_key.pem \
+        -out server_req.pem
+
+# Sign the server certificate request to obtain the server certificate.
+openssl ca \
+        -config ssl_server_ca.conf \
+        -batch \
+        -days $DAYS \
+        -cert server_ca_cert.pem \
+        -keyfile server_ca_key.pem \
+        -in server_req.pem \
+        -outdir ca \
         -out server_cert.pem
+rm server_req.pem
 
 # Generate client certificate request to be signed by CA.
 openssl req \
