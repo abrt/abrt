@@ -237,6 +237,64 @@ rlJournalStart
         mv ${CFG}_bck ${CFG}
     rlPhaseEnd
 
+    rlPhaseStartTest "rhsm certificate with CA cert-api.access.redhat.com.pem"
+        # setting the http credentials for the configuration file
+        CFG=/etc/libreport/plugins/ureport.conf
+        cp -v $CFG ${CFG}_bck
+
+        export LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH="$(pwd)"
+        cp -v cert/client_cert.pem cert.pem
+        cp -v cert/client_key.pem key.pem
+
+        export LIBREPORT_DEBUG_AUTHORITY_CERT_DIR_PATH="$(pwd)"
+        cp -v cert/server_ca_cert.pem cert-api.access.redhat.com.pem
+
+        rlRun "abrt-auto-reporting --certificate rhsm" 0 "turn on authenticated uReports using customer certificate"
+
+        # CA certificate exists
+        rlLog "CA certificate exists"
+        run_reporter required "" 70
+        rlRun "cp ccpp_reporter rhsm_with_ca.log"
+
+        rlAssertGrep "Using validating server cert: '$TmpDir/cert-api.access.redhat.com.pem'" rhsm_with_ca.log
+        rlAssertGrep "Using client certificate: $TmpDir/cert.pem" rhsm_with_ca.log
+        rlAssertGrep "Using client private key: $TmpDir/key.pem" rhsm_with_ca.log
+
+        rlAssertGrep "curl:   CAfile: $TmpDir/cert-api.access.redhat.com.pem" rhsm_with_ca.log
+        rlAssertGrep "This problem has already been reported." rhsm_with_ca.log
+
+        # CA certificate is broken
+        rlLog "CA certificate is broken"
+        echo "Foo" > cert-api.access.redhat.com.pem
+        run_reporter required "" 1
+        rlRun "cp ccpp_reporter rhsm_with_ca_broken.log"
+
+        rlAssertGrep "Using validating server cert: '$TmpDir/cert-api.access.redhat.com.pem'" rhsm_with_ca_broken.log
+        rlAssertGrep "Using client certificate: $TmpDir/cert.pem" rhsm_with_ca_broken.log
+        rlAssertGrep "Using client private key: $TmpDir/key.pem" rhsm_with_ca_broken.log
+
+        rlAssertGrep "Failed to upload uReport to the server 'https://localhost:12345/faf'" rhsm_with_ca_broken.log
+        rlAssertGrep "Error: curl_easy_perform: Problem with the SSL CA cert (path? access rights?)" rhsm_with_ca_broken.log
+        rlNotAssertGrep "This problem has already been reported." rhsm_with_ca_broken.log
+
+        # CA certificate does not exist
+        rlLog "CA certificate does not exist"
+        rm -f cert-api.access.redhat.com.pem
+        run_reporter required "" 1
+        rlRun "cp ccpp_reporter rhsm_with_ca_not_exist.log"
+
+        rlAssertGrep "Certs validating the server '$TmpDir/cert-api.access.redhat.com.pem' does not exist." rhsm_with_ca_not_exist.log
+        rlAssertGrep "Using client certificate: $TmpDir/cert.pem" rhsm_with_ca_not_exist.log
+        rlAssertGrep "Using client private key: $TmpDir/key.pem" rhsm_with_ca_not_exist.log
+
+        rlAssertGrep "curl_easy_perform: error_msg: curl_easy_perform: Peer certificate cannot be authenticated with given CA certificates" rhsm_with_ca_not_exist.log
+        rlAssertGrep "Failed to upload uReport to the server 'https://localhost:12345/faf' with curl: Peer's Certificate issuer is not recognized." rhsm_with_ca_not_exist.log
+        rlNotAssertGrep "This problem has already been reported." rhsm_with_ca_not_exist.log
+
+        unset LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH
+        unset LIBREPORT_DEBUG_AUTHORITY_CERT_DIR_PATH
+        mv ${CFG}_bck ${CFG}
+    rlPhaseEnd
     rlPhaseStartCleanup
         rlRun "abrt-cli rm $crash_PATH"
         rlBundleLogs ureport_auth_logs ureport.log ureport_no_rhsm_certs.log
