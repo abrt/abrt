@@ -40,7 +40,7 @@ function run_reporter() {
     PYSERVE_PID=$!
     wait_for_server 12345
 
-    rlRun "reporter-ureport -vvv --insecure --url https://localhost:12345/faf -d $crash_PATH $ARGS &> ccpp_reporter" $RET "auth $AUTH, reporter-ureport $ARGS"
+    rlRun "reporter-ureport -vvv --url https://localhost:12345/faf -d $crash_PATH $ARGS &> ccpp_reporter" $RET "auth $AUTH, reporter-ureport $ARGS"
 
     kill $PYSERVE_PID
 }
@@ -61,53 +61,53 @@ rlJournalStart
 
     rlPhaseStartTest "Server auth disabled"
         # server: auth disabled, client: auth disabled
-        run_reporter none "" 70
+        run_reporter none "--insecure" 70
         rlAssertGrep "NOAUTH" server_log
 
         # server: auth disabled, client: invalid cert path
-        run_reporter none "-t /etc/doesnt.pem:/etc/exist.pem" 70
+        run_reporter none "-t /etc/doesnt.pem:/etc/exist.pem --insecure" 70
         rlAssertGrep "NOAUTH" server_log
 
         # server: auth disabled, client: untrusted cert
         # (server cert is self-signed so if used as a client cert it shouldn't be trusted)
-        run_reporter none "-t cert/server_cert.pem:cert/server_key.pem" 70
+        run_reporter none "-t cert/server_cert.pem:cert/server_key.pem --insecure" 70
         rlAssertGrep "NOAUTH" server_log
 
         # server: auth disabled, client: trusted cert
-        run_reporter none "-t cert/client_cert.pem:cert/client_key.pem" 70
+        run_reporter none "-t cert/client_cert.pem:cert/client_key.pem --insecure" 70
         rlAssertGrep "NOAUTH" server_log
     rlPhaseEnd
 
     rlPhaseStartTest "Server auth optional"
         # server: auth optional, client: auth disabled
-        run_reporter optional "" 70
+        run_reporter optional "--insecure" 70
         rlAssertGrep "NOAUTH" server_log
 
         # server: auth optional, client: invalid cert path
-        run_reporter optional "-t /etc/doesnt.pem:/etc/exist.pem" 70
+        run_reporter optional "-t /etc/doesnt.pem:/etc/exist.pem --insecure" 70
         rlAssertGrep "NOAUTH" server_log
 
         # server: auth optional, client: untrusted cert
-        run_reporter optional "-t cert/server_cert.pem:cert/server_key.pem" 70
+        run_reporter optional "-t cert/server_cert.pem:cert/server_key.pem --insecure" 70
         rlAssertGrep "NOAUTH" server_log
 
         # server: auth optional, client: trusted cert
-        run_reporter optional "-t cert/client_cert.pem:cert/client_key.pem" 70
+        run_reporter optional "-t cert/client_cert.pem:cert/client_key.pem --insecure" 70
         rlAssertGrep "AUTH ureport-reporter-cn" server_log
     rlPhaseEnd
 
     rlPhaseStartTest "Server auth required"
         # server: auth required, client: auth disabled
-        run_reporter required "" 1
+        run_reporter required "--insecure" 1
 
         # server: auth required, client: invalid cert path
-        run_reporter required "-t /etc/doesnt.pem:/etc/exist.pem" 1
+        run_reporter required "-t /etc/doesnt.pem:/etc/exist.pem --insecure" 1
 
         # server: auth required, client: untrusted cert
-        run_reporter required "-t cert/server_cert.pem:cert/server_key.pem" 1
+        run_reporter required "-t cert/server_cert.pem:cert/server_key.pem --insecure" 1
 
         # server: auth required, client: trusted cert
-        run_reporter required "-t cert/client_cert.pem:cert/client_key.pem" 70
+        run_reporter required "-t cert/client_cert.pem:cert/client_key.pem --insecure" 70
         rlAssertGrep "AUTH ureport-reporter-cn" server_log
     rlPhaseEnd
 
@@ -116,75 +116,63 @@ rlJournalStart
         CFG=/etc/libreport/plugins/ureport.conf
         mv $CFG conf_backup
         echo "SSLClientAuth = $TmpDir/cert/client_cert.pem:$TmpDir/cert/client_key.pem" > $CFG
-        run_reporter required "" 70
+        run_reporter required "--insecure" 70
         rlAssertGrep "AUTH ureport-reporter-cn" server_log
         mv conf_backup $CFG
 
         # setting certificate via environment
         uReport_SSLClientAuth="$TmpDir/cert/client_cert.pem:$TmpDir/cert/client_key.pem"
         export uReport_SSLClientAuth
-        run_reporter required "" 70
+        run_reporter required "--insecure" 70
         rlAssertGrep "AUTH ureport-reporter-cn" server_log
         uReport_SSLClientAuth=""
         export -n uReport_SSLClientAuth
 
         # setting cert implicitly via "rhsm"
-        RHSM_DIR=/etc/pki/entitlement
-        RHSM_CERT=5244703559636416619.pem
-        RHSM_KEY=5244703559636416619-key.pem
-        if test -d $RHSM_DIR; then
-            rlRun "mv $RHSM_DIR entitlement_backup"
-        fi
+        mkdir rhsm_cert
+        export LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH="$(pwd)/rhsm_cert"
+        cp -v cert/client_cert.pem rhsm_cert/cert.pem
+        cp -v cert/client_key.pem rhsm_cert/key.pem
 
-        rlRun "mkdir -p $RHSM_DIR"
+        run_reporter none "-t rhsm --insecure" 70
+        rlRun "cp ccpp_reporter ssl_setings_rhsm.log"
 
-        # first go with empty $RHSM_DIR
-        run_reporter none "-t rhsm" 70
-        rlRun "cp ccpp_reporter ureport_no_rhsm_certs.log"
-        rlAssertGrep "does not contain a cert-key files pair" ureport_no_rhsm_certs.log
-        rlAssertGrep "Not using client authentication" ureport_no_rhsm_certs.log
+        # only cert.pem
+        rlRun "rm -f $(pwd)/rhsm_cert/*" 0
+        cp -v cert/client_cert.pem rhsm_cert/cert.pem
+        run_reporter none "-t rhsm --insecure" 70
 
-        rlRun "cp cert/$RHSM_CERT $RHSM_DIR"
-        rlRun "cp cert/$RHSM_KEY $RHSM_DIR"
+        rlRun "cp ccpp_reporter ssl_setings_rhsm_only_cert.log"
+        rlAssertGrep "RHSM consumer certificate '$TmpDir/rhsm_cert/key.pem' does not exist." ssl_setings_rhsm_only_cert.log
 
-        rlRun "cp cert/$RHSM_CERT $RHSM_DIR/2$RHSM_CERT"
-        rlRun "cp cert/$RHSM_KEY $RHSM_DIR/2$RHSM_KEY"
+        # only key.pem
+        rlRun "rm -f $(pwd)/rhsm_cert/*" 0
+        cp -v cert/client_key.pem rhsm_cert/key.pem
+        run_reporter none "-t rhsm --insecure" 70
 
-        rlRun "cp cert/$RHSM_CERT $RHSM_DIR/3$RHSM_CERT"
-        rlRun "cp cert/$RHSM_KEY $RHSM_DIR/3$RHSM_KEY"
+        rlRun "cp ccpp_reporter ssl_setings_rhsm_only_key.log"
+        rlAssertGrep "RHSM consumer certificate '$TmpDir/rhsm_cert/cert.pem' does not exist." ssl_setings_rhsm_only_key.log
 
-        run_reporter none "-t rhsm" 70
+        # no certificate in dir
+        rlRun "rm -f $(pwd)/rhsm_cert/*" 0
+        run_reporter none "-t rhsm --insecure" 70
+        rlRun "cp ccpp_reporter ssl_setings_rhsm_no_certificate.log"
+        rlAssertGrep "RHSM consumer certificate '$TmpDir/rhsm_cert/cert.pem' does not exist." ssl_setings_rhsm_no_certificate.log
 
-        rlRun "cp ccpp_reporter ureport.log"
-        cert=$(tr -d '\n' < cert/$RHSM_CERT)
-
-        entit_data=`echo $cert | egrep -o "\-\-\-\-\-BEGIN ENTITLEMENT DATA\-\-\-\-\-.*\-\-\-\-\-END ENTITLEMENT DATA\-\-\-\-\-"`
-        entit_sign=`echo $cert | egrep -o "\-\-\-\-\-BEGIN RSA SIGNATURE\-\-\-\-\-.*\-\-\-\-\-END RSA SIGNATURE\-\-\-\-\-"`
-
-        rlAssertGrep "Host: .*" ureport.log
-        rlAssertGrep "Accept: application/json" ureport.log
-        rlAssertGrep "Connection: close" ureport.log
-        rlAssertGrep "X-RH-Entitlement-Data: $entit_data" ureport.log
-        rlAssertGrep "X-RH-Entitlement-Sig: $entit_sign" ureport.log
-        rlAssertGrep "User-Agent: ABRT/.*" ureport.log
-
-        rlRun "rm -r $RHSM_DIR"
-        if test -d entitlement_backup; then
-            rlRun "mv entitlement_backup $RHSM_DIR"
-        fi
+        rlRun "rm -fr $(pwd)/rhsm_cert" 0
     rlPhaseEnd
 
     rlPhaseStartTest "HTTP Auth"
         # server: http auth required, client: auth disabled
-        run_reporter http_required "" 1
+        run_reporter http_required "--insecure" 1
         rlAssertGrep "prompted for credentials" server_log
 
         # server: http auth required, client: invalid credentials
-        run_reporter http_required "-h invalid:invalid" 1
+        run_reporter http_required "-h invalid:invalid --insecure" 1
         rlAssertGrep "invalid credentials" server_log
 
         # server: http auth required, client: valid credentials
-        run_reporter http_required "-h ureport:password" 70
+        run_reporter http_required "-h ureport:password --insecure" 70
         rlAssertGrep "HTTPAUTH OK" server_log
     rlPhaseEnd
 
@@ -196,7 +184,7 @@ rlJournalStart
         augtool set /files${CFG}/Password "password"
 
         # server: http auth required, client: rhts-credentials
-        run_reporter http_required "-h rhts-credentials" 70
+        run_reporter http_required "-h rhts-credentials --insecure" 70
         rlAssertGrep "HTTPAUTH OK" server_log
 
         mv ${CFG}_bck ${CFG}
@@ -213,7 +201,7 @@ rlJournalStart
         augtool set /files${CFG}/HTTPAuth "ureport:password"
 
         rlLog "Login and password in the ureport conf"
-        run_reporter http_required "" 70
+        run_reporter http_required "--insecure" 70
         rlAssertGrep "HTTPAUTH OK" server_log
 
         augtool set /files${CFG}/HTTPAuth "rhts-credentials"
@@ -221,7 +209,7 @@ rlJournalStart
         augtool set /files${RHTS_CFG}/Password "password"
 
         rlLog "Login and password in the rhts conf"
-        run_reporter http_required "" 70
+        run_reporter http_required "--insecure" 70
         rlAssertGrep "HTTPAUTH OK" server_log
 
         # environment variables
@@ -231,7 +219,7 @@ rlJournalStart
         export uReport_HTTPAuth
 
         rlLog "Login and password in the environment variable"
-        run_reporter http_required "" 70
+        run_reporter http_required "--insecure" 70
         rlAssertGrep "HTTPAUTH OK" server_log
 
         export -n uReport_HTTPAuth
@@ -240,7 +228,7 @@ rlJournalStart
         export uReport_HTTPAuth
 
         rlLog "'rhts-credentials' in the environment variable"
-        run_reporter http_required "" 70
+        run_reporter http_required "--insecure" 70
         rlAssertGrep "HTTPAUTH OK" server_log
 
         export -n uReport_HTTPAuth
@@ -249,9 +237,67 @@ rlJournalStart
         mv ${CFG}_bck ${CFG}
     rlPhaseEnd
 
+    rlPhaseStartTest "rhsm certificate with CA cert-api.access.redhat.com.pem"
+        # setting the http credentials for the configuration file
+        CFG=/etc/libreport/plugins/ureport.conf
+        cp -v $CFG ${CFG}_bck
+
+        export LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH="$(pwd)"
+        cp -v cert/client_cert.pem cert.pem
+        cp -v cert/client_key.pem key.pem
+
+        export LIBREPORT_DEBUG_AUTHORITY_CERT_DIR_PATH="$(pwd)"
+        cp -v cert/server_ca_cert.pem cert-api.access.redhat.com.pem
+
+        rlRun "abrt-auto-reporting --certificate rhsm" 0 "turn on authenticated uReports using customer certificate"
+
+        # CA certificate exists
+        rlLog "CA certificate exists"
+        run_reporter required "" 70
+        rlRun "cp ccpp_reporter rhsm_with_ca.log"
+
+        rlAssertGrep "Using validating server cert: '$TmpDir/cert-api.access.redhat.com.pem'" rhsm_with_ca.log
+        rlAssertGrep "Using client certificate: $TmpDir/cert.pem" rhsm_with_ca.log
+        rlAssertGrep "Using client private key: $TmpDir/key.pem" rhsm_with_ca.log
+
+        rlAssertGrep "curl:   CAfile: $TmpDir/cert-api.access.redhat.com.pem" rhsm_with_ca.log
+        rlAssertGrep "This problem has already been reported." rhsm_with_ca.log
+
+        # CA certificate is broken
+        rlLog "CA certificate is broken"
+        echo "Foo" > cert-api.access.redhat.com.pem
+        run_reporter required "" 1
+        rlRun "cp ccpp_reporter rhsm_with_ca_broken.log"
+
+        rlAssertGrep "Using validating server cert: '$TmpDir/cert-api.access.redhat.com.pem'" rhsm_with_ca_broken.log
+        rlAssertGrep "Using client certificate: $TmpDir/cert.pem" rhsm_with_ca_broken.log
+        rlAssertGrep "Using client private key: $TmpDir/key.pem" rhsm_with_ca_broken.log
+
+        rlAssertGrep "Failed to upload uReport to the server 'https://localhost:12345/faf'" rhsm_with_ca_broken.log
+        rlAssertGrep "Error: curl_easy_perform: Problem with the SSL CA cert (path? access rights?)" rhsm_with_ca_broken.log
+        rlNotAssertGrep "This problem has already been reported." rhsm_with_ca_broken.log
+
+        # CA certificate does not exist
+        rlLog "CA certificate does not exist"
+        rm -f cert-api.access.redhat.com.pem
+        run_reporter required "" 1
+        rlRun "cp ccpp_reporter rhsm_with_ca_not_exist.log"
+
+        rlAssertGrep "Certs validating the server '$TmpDir/cert-api.access.redhat.com.pem' does not exist." rhsm_with_ca_not_exist.log
+        rlAssertGrep "Using client certificate: $TmpDir/cert.pem" rhsm_with_ca_not_exist.log
+        rlAssertGrep "Using client private key: $TmpDir/key.pem" rhsm_with_ca_not_exist.log
+
+        rlAssertGrep "curl_easy_perform: error_msg: curl_easy_perform: Peer certificate cannot be authenticated with given CA certificates" rhsm_with_ca_not_exist.log
+        rlAssertGrep "Failed to upload uReport to the server 'https://localhost:12345/faf' with curl: Peer's Certificate issuer is not recognized." rhsm_with_ca_not_exist.log
+        rlNotAssertGrep "This problem has already been reported." rhsm_with_ca_not_exist.log
+
+        unset LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH
+        unset LIBREPORT_DEBUG_AUTHORITY_CERT_DIR_PATH
+        mv ${CFG}_bck ${CFG}
+    rlPhaseEnd
     rlPhaseStartCleanup
         rlRun "abrt-cli rm $crash_PATH"
-        rlBundleLogs ureport_auth_logs ureport.log ureport_no_rhsm_certs.log
+        rlBundleLogs ureport_auth_logs ureport.log ureport_no_rhsm_certs.log $(ls *.log)
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd
