@@ -297,7 +297,7 @@ rlJournalStart
     rlPhaseEnd
     rlPhaseStartCleanup
         rlRun "abrt-cli rm $crash_PATH"
-        rlBundleLogs ureport_auth_logs ureport.log ureport_no_rhsm_certs.log
+        rlBundleLogs ureport_auth_logs ureport.log ureport_no_rhsm_certs.log $(ls *.log)
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd
