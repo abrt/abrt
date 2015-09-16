@@ -129,49 +129,37 @@ rlJournalStart
         export -n uReport_SSLClientAuth
 
         # setting cert implicitly via "rhsm"
-        RHSM_DIR=/etc/pki/entitlement
-        RHSM_CERT=5244703559636416619.pem
-        RHSM_KEY=5244703559636416619-key.pem
-        if test -d $RHSM_DIR; then
-            rlRun "mv $RHSM_DIR entitlement_backup"
-        fi
+        mkdir rhsm_cert
+        export LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH="$(pwd)/rhsm_cert"
+        cp -v cert/client_cert.pem rhsm_cert/cert.pem
+        cp -v cert/client_key.pem rhsm_cert/key.pem
 
         run_reporter none "-t rhsm --insecure" 70
+        rlRun "cp ccpp_reporter ssl_setings_rhsm.log"
 
-        # first go with empty $RHSM_DIR
-        run_reporter none "-t rhsm" 70
-        rlRun "cp ccpp_reporter ureport_no_rhsm_certs.log"
-        rlAssertGrep "does not contain a cert-key files pair" ureport_no_rhsm_certs.log
-        rlAssertGrep "Not using client authentication" ureport_no_rhsm_certs.log
-
-        rlRun "cp cert/$RHSM_CERT $RHSM_DIR"
-        rlRun "cp cert/$RHSM_KEY $RHSM_DIR"
-
-        rlRun "cp cert/$RHSM_CERT $RHSM_DIR/2$RHSM_CERT"
-        rlRun "cp cert/$RHSM_KEY $RHSM_DIR/2$RHSM_KEY"
-
-        rlRun "cp cert/$RHSM_CERT $RHSM_DIR/3$RHSM_CERT"
-        rlRun "cp cert/$RHSM_KEY $RHSM_DIR/3$RHSM_KEY"
-
+        # only cert.pem
+        rlRun "rm -f $(pwd)/rhsm_cert/*" 0
+        cp -v cert/client_cert.pem rhsm_cert/cert.pem
         run_reporter none "-t rhsm --insecure" 70
 
-        rlRun "cp ccpp_reporter ureport.log"
-        cert=$(tr -d '\n' < cert/$RHSM_CERT)
+        rlRun "cp ccpp_reporter ssl_setings_rhsm_only_cert.log"
+        rlAssertGrep "RHSM consumer certificate '$TmpDir/rhsm_cert/key.pem' does not exist." ssl_setings_rhsm_only_cert.log
 
-        entit_data=`echo $cert | egrep -o "\-\-\-\-\-BEGIN ENTITLEMENT DATA\-\-\-\-\-.*\-\-\-\-\-END ENTITLEMENT DATA\-\-\-\-\-"`
-        entit_sign=`echo $cert | egrep -o "\-\-\-\-\-BEGIN RSA SIGNATURE\-\-\-\-\-.*\-\-\-\-\-END RSA SIGNATURE\-\-\-\-\-"`
+        # only key.pem
+        rlRun "rm -f $(pwd)/rhsm_cert/*" 0
+        cp -v cert/client_key.pem rhsm_cert/key.pem
+        run_reporter none "-t rhsm --insecure" 70
 
-        rlAssertGrep "Host: .*" ureport.log
-        rlAssertGrep "Accept: application/json" ureport.log
-        rlAssertGrep "Connection: close" ureport.log
-        rlAssertGrep "X-RH-Entitlement-Data: $entit_data" ureport.log
-        rlAssertGrep "X-RH-Entitlement-Sig: $entit_sign" ureport.log
-        rlAssertGrep "User-Agent: ABRT/.*" ureport.log
+        rlRun "cp ccpp_reporter ssl_setings_rhsm_only_key.log"
+        rlAssertGrep "RHSM consumer certificate '$TmpDir/rhsm_cert/cert.pem' does not exist." ssl_setings_rhsm_only_key.log
 
-        rlRun "rm -r $RHSM_DIR"
-        if test -d entitlement_backup; then
-            rlRun "mv entitlement_backup $RHSM_DIR"
-        fi
+        # no certificate in dir
+        rlRun "rm -f $(pwd)/rhsm_cert/*" 0
+        run_reporter none "-t rhsm --insecure" 70
+        rlRun "cp ccpp_reporter ssl_setings_rhsm_no_certificate.log"
+        rlAssertGrep "RHSM consumer certificate '$TmpDir/rhsm_cert/cert.pem' does not exist." ssl_setings_rhsm_no_certificate.log
+
+        rlRun "rm -fr $(pwd)/rhsm_cert" 0
     rlPhaseEnd
 
     rlPhaseStartTest "HTTP Auth"
