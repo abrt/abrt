@@ -147,6 +147,7 @@ if __name__ == '__main__':
         httpd = BaseHTTPServer.HTTPServer(("", PORT), SSLAuthHandler)
     elif reqs == ssl.CERT_NONE + ssl.CERT_OPTIONAL + ssl.CERT_REQUIRED:
         httpd = BaseHTTPServer.HTTPServer(("", PORT), HttpAuthHandler)
+        reqs = ssl.CERT_NONE
     else:
         raise Exception('BUG in Server AUTH type configuration')
 
