@@ -39,15 +39,18 @@ rlJournalStart
 
     rlPhaseStartTest "auto-reporting disabled"
         rlRun "abrt-auto-reporting disabled"
-        rlRun "abrt-cli list 2>&1 | grep 'abrt-auto-reporting enabled'"
+        rlRun "abrt-cli list &> out"
+        rlAssertGrep 'abrt-auto-reporting enabled' out
     rlPhaseEnd
 
     rlPhaseStartTest "auto-reporting enabled"
         rlRun "abrt-auto-reporting enabled"
-        rlRun "abrt-cli list 2>&1 | grep -v 'abrt-auto-reporting enabled'"
+        rlRun "abrt-cli list &> out"
+        rlAssertNotGrep 'enabled' out
     rlPhaseEnd
 
     rlPhaseStartCleanup
+        rlRun "abrt-auto-reporting disabled"
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd

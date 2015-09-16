@@ -30,37 +30,108 @@
 
 TEST="journald-integration"
 PACKAGE="abrt"
+CFG_FILE="/etc/abrt/abrt-action-save-package-data.conf"
+EXE=morituri
 
 rlJournalStart
     rlPhaseStartSetup
         rlShowRunningKernel
-        load_abrt_conf
+
+        rlFileBackup $CFG_FILE
+        sed -i 's/\(ProcessUnpackaged\) = no/\1 = yes/g' $CFG_FILE
+
+        TmpDir=$(mktemp -d)
+        chmod a+rwx $TmpDir
+        cp ${EXE}.c $TmpDir
+        pushd $TmpDir
+        rlRun "useradd abrtlogtest -M" 0
+
     rlPhaseEnd
 
     rlPhaseStartTest
-        rlLog "Creating crash data."
-        rlRun "sleep 1000 &" 0 "Running 'sleep' process"
-        rlRun "kill -s SIGSEGV %%" 0 "Kill running process"
-        cd /var/tmp/abrt/ccpp*
+        prepare
 
-        sleep 3s
+        rlRun "gcc -std=c99 morituri.c -o $EXE"
+
+        rlLog "Creating crash data."
+        rlRun "./$EXE" 134
+
+        wait_for_hooks
+        get_crash_path
+
+        pushd $crash_PATH
 
         rlLog "check if we are running a compatible systemd version"
-        if ! journalctl --system >/dev/null
+        if ! journalctl --system -n1 >/dev/null
         then
             rlLog "journald does not have '--system' argument, using /var/log/messages instead"
             rlAssertExists var_log_messages
-            rlAssertNotGrep "System Logs" var_log_messages
+            rlAssertGrep "System Logs" var_log_messages
             rlAssertGrep "sleep" var_log_messages
         else
             rlAssertExists var_log_messages
             rlAssertGrep "System Logs" var_log_messages
-            rlAssertGrep "sleep" var_log_messages
+            rlAssertGrep "User Logs" var_log_messages
         fi
+
+        LINE="./$EXE is on its way to die ..."
+        rlRun "REL_LINES_CNT=`cat var_log_messages | grep -c \"$LINE\"`"
+        if [ -z $REL_LINES_CNT ]; then
+            rlFail "Failed to get relevant lines"
+        else
+            rlAssertGreaterOrEqual "Log lines count" "$REL_LINES_CNT" "7"
+        fi
+
+        popd
+
+    rlPhaseEnd
+
+    rlPhaseStartTest
+        prepare
+
+        SENSITIVE_LINE="a sesnsitive line containing $EXE"
+        rlRun "logger '$SENSITIVE_LINE'"
+
+        rlLog "Creating crash data."
+        rlRun "su abrtlogtest -c ./$EXE" 134
+
+        wait_for_hooks
+        get_crash_path
+
+        pushd $crash_PATH
+
+        rlAssertGrep "System Logs" var_log_messages
+
+        rlLog "check if we are running a compatible systemd version"
+        if ! journalctl --system -n1 >/dev/null
+        then
+            rlLog "journald does not have '--system' argument, using /var/log/messages instead"
+            rlAssertExists var_log_messages
+            rlAssertGrep "sleep" var_log_messages
+        else
+            rlAssertExists var_log_messages
+            rlAssertGrep "System Logs" var_log_messages
+            rlAssertGrep "User Logs" var_log_messages
+        fi
+
+        rlAssertNotGrep "$SENSITIVE_LINE" var_log_messages
+
+        LINE="./$EXE is on its way to die ..."
+        rlRun "REL_LINES_CNT=`cat var_log_messages | grep -c \"$LINE\"`"
+        if [ -z $REL_LINES_CNT ]; then
+            rlFail "Failed to get relevant lines"
+        else
+            rlAssertGreaterOrEqual "Log lines count" "$REL_LINES_CNT" "7"
+        fi
+
+        popd
+
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "rm -rf /var/tmp/abrt/ccpp*" 0 "Removing problem dirs"
+        rlRun "userdel -r -f abrtlogtest" 0
+        rlRun "abrt-cli rm $crash_PATH" 0 "Removing problem dirs"
+        rlFileRestore
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd

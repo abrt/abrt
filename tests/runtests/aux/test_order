@@ -1,12 +1,5 @@
 # Order of the tests
 # ------------------
-# - basic build/install tests
-# abrt-nightly-build
-# run-abrtd
-
-# abrt-make-check
-# btparser-make-check
-# libreport-make-check
 
 # - core
 abrtd-directories
@@ -15,16 +8,23 @@ socket-api
 abrtd-inotify-flood
 symlinks-rhbz-895442
 abrt-auto-reporting-sanity
+abrt-auto-reporting-sanity-authenticated
+meaningful-logs
 
 # - addons
 ccpp-plugin
 ccpp-plugin-java
 ccpp-plugin-config
+ccpp-plugin-hook-unwind
 python-addon
 
 # - tools tests
 cli-sanity
 cli-status
+cli-authentication
+cli-list-suggest-autoreporting
+cli-list-rhtsupport
+console-notifications
 check-hook-install
 dumpoops
 dumpxorg
@@ -32,11 +32,12 @@ dbus-api
 dbus-NewProblem
 dbus-elements-handling
 dbus-configuration
-bodhi
+dbus-argument-validation
 oops-processing
 abrt-python
 python-bindings
 kernel-vmcore-harvest
+abrt-action-install-debuginfo
 
 # - problem data tests
 duptest-occurrence
@@ -61,6 +62,8 @@ upload-handling
 upload-watcher-stress-test
 ureport
 ureport-attachments
+ureport-machineid
+abrt-action-ureport
 
 blacklisted-package
 blacklisted-path
@@ -72,7 +75,7 @@ bz591504-sparse-core-files-performance-hit
 bz618602-core_pattern-handler-truncates-parameters
 bz636913-abrt-should-ignore-SystemExit-exception
 bz652338-removed-proc-PID
-bz783450-setuid-core-owned-by-root
+compat-cores
 
 systemd-init
 journald-integration
@@ -80,7 +83,6 @@ journald-integration
 pstoreoops
 pstoreoops-harvest
 
-# - more or less destructive tests
+event-configuration
 
-# - outdated tests
-#bz623142-abrt-should-not-report-bugs-against-systems-with-TAINT_HARDWARE_UNSUPPORTED-set
+non-fatal-mce

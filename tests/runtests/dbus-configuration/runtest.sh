@@ -50,7 +50,7 @@ function confDBusSetPropertyDefault() {
 function confDBusGetProperty() {
     dbus-send --system --type=method_call --print-reply \
               --dest=com.redhat.problems.configuration /com/redhat/problems/configuration/$1 org.freedesktop.DBus.Properties.Get \
-              string:"com.redhat.problems.configuration.$1" string:$2 | sed 1d | tr "\n" " " | tr -s " " | cut -f 4- -d ' '
+              string:"com.redhat.problems.configuration.$1" string:$2 | sed 1d | tr -d "\n" | tr -s " " | cut -f 4- -d ' '
 }
 
 rlJournalStart
@@ -59,6 +59,20 @@ rlJournalStart
 
         INTERFACES_DIR=`pkg-config --variable=problemsconfigurationdir abrt`
         export INTERFACES_DIR
+
+        rlRun "DEFAULT_AUTO_REPORTING=\"$(augtool get /files/usr/share/abrt/conf.d/abrt.conf/AutoreportingEnabled | cut -d' ' -f3)\"" 0
+        rlRun "ABRT_AUTO_REPORTING=\"$(augtool get /files/etc/abrt/abrt.conf/AutoreportingEnabled | cut -d' ' -f3)\"" 0
+        rlRun "augtool set /files/etc/abrt/abrt.conf/AutoreportingEnabled $DEFAULT_AUTO_REPORTING" 0
+
+        if [ "xyes" == "x$DEFAULT_AUTO_REPORTING" ]; then
+            DEFAULT_AUTO_REPORTING="true"
+            SETTO_AUTO_REPORTING="False"
+            MODIFIED_AUTO_REPORTING="false"
+        else
+            DEFAULT_AUTO_REPORTING="false"
+            SETTO_AUTO_REPORTING="True"
+            MODIFIED_AUTO_REPORTING="true"
+        fi
     rlPhaseEnd
 
     rlPhaseStartTest "Invalid XML interface file"
@@ -203,12 +217,14 @@ rlJournalStart
 
         rlRun "abrt-configuration >$LOG_FILE 2>&1 &"
 
-        rlAssertEquals "Get 'AutoreportingEnabled' value" "_$(confDBusGetProperty blah AutoreportingEnabled)" "_false"
-        rlRun "confDBusSetProperty blah AutoreportingEnabled boolean True" 0
+        rlAssertEquals "Get 'AutoreportingEnabled' value" "_$(confDBusGetProperty blah AutoreportingEnabled)" "_$DEFAULT_AUTO_REPORTING"
+        rlRun "confDBusSetProperty blah AutoreportingEnabled boolean $SETTO_AUTO_REPORTING" 0
 
         rlAssertExists "/tmp/abrt.conf"
 
-        rlAssertEquals "Get 'AutoreportingEnabled' value" "_$(confDBusGetProperty blah AutoreportingEnabled)" "_true"
+        rlAssertEquals "Get 'AutoreportingEnabled' value" "_$(confDBusGetProperty blah AutoreportingEnabled)" "_$MODIFIED_AUTO_REPORTING"
+        rlRun "confDBusSetPropertyDefault blah AutoreportingEnabled" 0
+        rlAssertEquals "Reset 'AutoreportingEnabled' value" "_$(confDBusGetProperty blah AutoreportingEnabled)" "_$DEFAULT_AUTO_REPORTING"
 
         killall abrt-configuration
 
@@ -275,11 +291,11 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "Boolean"
-        rlAssertEquals "Get 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_false"
-        rlRun "confDBusSetProperty abrt AutoreportingEnabled boolean True" 0
-        rlAssertEquals "Set 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_true"
+        rlAssertEquals "Get 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_$DEFAULT_AUTO_REPORTING"
+        rlRun "confDBusSetProperty abrt AutoreportingEnabled boolean $SETTO_AUTO_REPORTING" 0
+        rlAssertEquals "Set 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_$MODIFIED_AUTO_REPORTING"
         rlRun "confDBusSetPropertyDefault abrt AutoreportingEnabled" 0
-        rlAssertEquals "Reset 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_false"
+        rlAssertEquals "Reset 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_$DEFAULT_AUTO_REPORTING"
     rlPhaseEnd
 
     rlPhaseStartTest "String"
@@ -299,23 +315,45 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "String Array from non-default file"
+
+        # get option Interpreters from 'etc/abrt/abrt-action-save-package-data.conf'
+        rlRun "interpreters_conf=`augtool get /files/etc/abrt/abrt-action-save-package-data.conf/Interpreters | cut -d'=' -f2 | tr -d ' '`"
+
+        # get option Interpreters by DBus
         rlRun "confDBusGetProperty abrt Interpreters" 0
-        rlAssertEquals "Get 'Interpreters' value" "_$(confDBusGetProperty abrt Interpreters)" \
-            '_[ string "python2" string "python2.7" string "python" string "python3" string "python3.3" string "perl" string "perl5.16.2" ]'
+        interpreters_dbus=$(confDBusGetProperty abrt Interpreters)
+        rlRun "interpreters_dbus=`echo $interpreters_dbus | sed 's/string \"//g' | sed 's/\" ]//g' | tr -d '[] ' | tr '"' ','`"
+        rlAssertEquals "Get 'Interpreters' value" "_$interpreters_dbus" "_$interpreters_conf"
+
         rlRun "confDBusSetProperty abrt Interpreters array:string '[\"foo\",\"blah\",\"panda\"]'" 0
         rlAssertEquals "Failed to set 'Interpreters ' value" "_$(confDBusGetProperty abrt Interpreters)" \
             '_[ string "foo" string "blah" string "panda" ]'
         rlRun "confDBusSetPropertyDefault abrt Interpreters" 0
-        rlAssertEquals "Get 'Interpreters' value" "_$(confDBusGetProperty abrt Interpreters)" \
-            '_[ string "python2" string "python2.7" string "python" string "python3" string "python3.3" string "perl" string "perl5.16.2" ]'
+
+        # get option Interpreters from 'etc/abrt/abrt-action-save-package-data.conf'
+        rlRun "interpreters_conf=`augtool get /files/etc/abrt/abrt-action-save-package-data.conf/Interpreters | cut -d'=' -f2 | tr -d ' '`"
+
+        # get option Interpreters by DBus
+        rlRun "confDBusGetProperty abrt Interpreters" 0
+        interpreters_dbus=$(confDBusGetProperty abrt Interpreters)
+        rlRun "interpreters_dbus=`echo $interpreters_dbus | sed 's/string \"//g' | sed 's/\" ]//g' | tr -d '[] ' | tr '"' ','`"
+        rlAssertEquals "Get 'Interpreters' value" "_$interpreters_dbus" "_$interpreters_conf"
     rlPhaseEnd
 
     rlPhaseStartTest "Boolean from non-default file"
-        rlAssertEquals "Get 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_false"
+        # get option 'ProcessUnpackaged' from conf file and translate "no" -> "false" and "yes" -> "true"
+        rlRun "process_unpackaged_conf=`augtool get /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged | cut -d'=' -f2 | tr -d ' ' | sed s/no/false/g | sed s/yes/true/g`"
+        rlAssertEquals "Get 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_$process_unpackaged_conf"
+
+        rlRun "confDBusSetProperty abrt ProcessUnpackaged boolean False" 0
+        rlAssertEquals "Set 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_false"
         rlRun "confDBusSetProperty abrt ProcessUnpackaged boolean True" 0
         rlAssertEquals "Set 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_true"
+
         rlRun "confDBusSetPropertyDefault abrt ProcessUnpackaged" 0
-        rlAssertEquals "Reset 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_false"
+        # get option 'ProcessUnpackaged' from conf file and translate "no" -> "false" and "yes" -> "true"
+        rlRun "process_unpackaged_conf=`augtool get /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged | cut -d'=' -f2 | tr -d ' ' | sed s/no/false/g | sed s/yes/true/g`"
+        rlAssertEquals "Reset 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_$process_unpackaged_conf"
     rlPhaseEnd
 
     rlPhaseStartTest "Empty Int32 Value from non-default file"
@@ -354,6 +392,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
+        rlRun "augtool set /files/etc/abrt/abrt.conf/AutoreportingEnabled $ABRT_AUTO_REPORTING" 0 "Restore AutoreportingEnabled"
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd

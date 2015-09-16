@@ -45,6 +45,9 @@ rlJournalStart
         done
         pushd $TmpDir
         rlFileBackup "/etc/abrt/$CFG_FNAME"
+        rlRun "mkdir -p /var/blah"
+        rlRun "semanage fcontext -a -t bin_t '/var/blah(/.*)?'"
+        rlRun "restorecon -RvF /var/blah"
     rlPhaseEnd
 
     rlPhaseStartTest "BlackListedPaths in effect"
@@ -59,8 +62,8 @@ rlJournalStart
             rlLog "Generate crash (not blacklisted path)"
             prepare
 
-            cp $( which will_abort ) /var
-            /var/will_abort
+            cp $( which will_abort ) /var/blah
+            /var/blah/will_abort
 
             wait_for_hooks
             get_crash_path
@@ -97,6 +100,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
+        rlRun "rm -rf /var/blah"
         rlFileRestore
         popd #TmpDir
         rm -rf $TmpDir

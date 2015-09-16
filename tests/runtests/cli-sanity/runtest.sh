@@ -33,6 +33,9 @@ PACKAGE="abrt"
 
 rlJournalStart
     rlPhaseStartSetup
+
+        LANG=""
+        export LANG
         check_prior_crashes
 
         TmpDir=$(mktemp -d)
@@ -49,23 +52,75 @@ rlJournalStart
         rlRun "abrt-cli --help 2>&1 | grep 'Usage: abrt-cli'"
     rlPhaseEnd
 
+    rlPhaseStartTest "list the same as ls"
+        abrt-cli list &> param_cmd
+        abrt-cli ls &> param_abbrev
+        rlAssertNotDiffer param_cmd param_abbrev
+    rlPhaseEnd
+
+    rlPhaseStartTest "remove the same as rm"
+        abrt-cli remove &> param_cmd
+        abrt-cli rm &> param_abbrev
+        rlAssertNotDiffer param_cmd param_abbrev
+    rlPhaseEnd
+
+    rlPhaseStartTest "report the same as e"
+        abrt-cli report &> param_cmd
+        abrt-cli e &> param_abbrev
+        rlAssertNotDiffer param_cmd param_abbrev
+    rlPhaseEnd
+
+    rlPhaseStartTest "info the same as i"
+        abrt-cli info &> param_cmd
+        abrt-cli i &> param_abbrev
+        rlAssertNotDiffer param_cmd param_abbrev
+    rlPhaseEnd
+
+    rlPhaseStartTest "status the same as st"
+        abrt-cli status &> param_cmd
+        abrt-cli st &> param_abbrev
+        rlAssertNotDiffer param_cmd param_abbrev
+    rlPhaseEnd
+
+    rlPhaseStartTest "process the same as p"
+        abrt-cli process &> param_cmd
+        abrt-cli p &> param_abbrev
+        rlAssertNotDiffer param_cmd param_abbrev
+    rlPhaseEnd
+
 
     rlPhaseStartTest "list"
         generate_crash
         get_crash_path
         wait_for_hooks
 
-        rlRun "abrt-cli list | grep -i 'Executable'"
+        rlRun "abrt-cli list | grep -i 'cmdline'"
         rlRun "abrt-cli list | grep -i 'Package'"
     rlPhaseEnd
 
     rlPhaseStartTest "list -n" # list not-reported
-        rlRun "abrt-cli list -n | grep -i 'Executable'"
+        rlRun "abrt-cli list -n | grep -i 'cmdline'"
         rlRun "abrt-cli list -n | grep -i 'Package'"
     rlPhaseEnd
 
     rlPhaseStartTest "report FAKEDIR"
         rlRun "abrt-cli report FAKEDIR" 1
+    rlPhaseEnd
+
+    rlPhaseStartTest "report not-reportable"
+        rlRun "touch $crash_PATH/not-reportable"
+
+        cp $crash_PATH/{type,analyzer} ./
+
+        echo "cli_sanity_test_not_reportable" > $crash_PATH/type
+        echo "cli_sanity_test_not_reportable" > $crash_PATH/analyzer
+
+        rlRun "abrt-cli report $crash_PATH 2>&1 | tee abrt-cli-report-not-reportable.log" 0
+        rlAssertGrep "Problem '$crash_PATH' cannot be reported" abrt-cli-report-not-reportable.log
+
+        cp -f type analyzer $crash_PATH
+
+        rlRun "rm -f $crash_PATH/not-reportable"
     rlPhaseEnd
 
     # This test used to select 1st analyzer (Local GNU Debugger)
@@ -97,7 +152,7 @@ rlJournalStart
         # this should ensure that ABRT will consider the problem as reported
         rlRun "reporter-print -r -d $DIR -o /dev/null"
 
-        rlRun "abrt-cli list | grep -i 'Executable'"
+        rlRun "abrt-cli list | grep -i 'cmdline'"
         rlRun "abrt-cli list | grep -i 'Package'"
 
         # this expects that reporter-print works and adds an URL to

@@ -1,0 +1,47 @@
+#!/usr/bin/expect -f
+
+if {[lindex $argv 2] == "process"} {
+    set action [lindex $argv end]
+    set argv [lreplace $argv end end]
+}
+
+spawn {*}$argv
+
+set timeout 10
+set identity 100
+
+# timeout handler
+proc itstime {args} {
+    puts "!! expect timeout !!"
+        exit 1
+}
+
+while {1} {
+    expect {
+
+        eof {
+            break
+        }
+
+        timeout {
+            itstime
+        }
+
+        -regexp {[[:space:]]+([[:digit:]]+)\.[[:space:]]+abrt-unprivileged} {
+            set identity $expect_out(1,string)
+        }
+
+        "Choose identity to authenticate as" {
+            send "$identity\n"
+        }
+
+        "Actions: remove(rm), report(e), info(i), skip(s):" {
+            send "$action\n"
+        }
+
+        "Password:" {
+            send "ribbit\n"
+        }
+    }
+}
+

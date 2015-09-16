@@ -24,7 +24,8 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.end_headers()
 
         if self.path != '/faf/reports/new/':
-            self.save_ureport.write('{"invalid_request_path": "%s"}' % self.path)
+            with open(self.save_ureport, 'w') as fh:
+                fh.write('{"invalid_request_path": "%s"}' % self.path)
             return
 
         ureport = json.load(form['file'].file)
@@ -53,6 +54,6 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 PORT = 12345
 print "Serving at port", PORT
 
-Handler.save_ureport = sys.argv[1] if len(sys.argv) > 0 else 'ureport.json'
+Handler.save_ureport = sys.argv[1] if len(sys.argv) > 1 else 'ureport.json'
 httpd = BaseHTTPServer.HTTPServer(("", PORT), Handler)
 httpd.serve_forever()
