@@ -492,7 +492,7 @@ int main(int argc, char **argv)
         {
             /* There are no bodhi updates for Rawhide */
             if (strcasecmp(release, "rawhide") == 0)
-                error_msg_and_die("Reselase \"%s\" is not supported",release);
+                error_msg_and_die("Release \"%s\" is not supported",release);
 
             query = strbuf_append_strf(query, "releases=%s&", release);
         }
@@ -524,7 +524,7 @@ int main(int argc, char **argv)
             if (rawhide)
             {
                 strbuf_free(query);
-                error_msg_and_die("Reselase \"Rawhide\" is not supported");
+                error_msg_and_die("Release \"Rawhide\" is not supported");
             }
         }
     }
