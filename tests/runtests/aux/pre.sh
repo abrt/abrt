@@ -10,7 +10,8 @@ yum clean metadata
 if [ "${REINSTALL_PRE}" = "1" ]; then
     echo 'REINSTALL_PRE set'
 
-    yum -y remove abrt\* libreport\*
+    rpm -qa abrt\* libreport\* satyr\* will-crash\* \
+        | xargs rpm -e --nodeps
 
     rm -rf /etc/abrt/
     rm -rf /etc/libreport/
