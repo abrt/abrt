@@ -51,8 +51,19 @@ static char *skip_pfx(char *p)
     char *q = strchr(p, ']');
     if (!q)
         return p;
+
     if (q[1] == ' ')
-        return q + 2;
+    {
+        q += 2;
+        /* if there is (EE), ignore it */
+        if (strncmp(q, "(EE)", 4) == 0)
+        {
+            /* if ' ' follows (EE), ignore it too */
+            return q + (4 + (q[4] == ' '));
+        }
+
+        return q;
+    }
     return p;
 }
 
@@ -114,24 +125,24 @@ static void save_bt_to_dump_dir(const char *bt, const char *exe, const char *rea
 /* Called after "Backtrace:" line was read.
  * Example (yes, stray newline before 'B' is real):
 [ 86985.879]<space>
-Backtrace:
-[ 86985.880] 0: /usr/bin/Xorg (xorg_backtrace+0x2f) [0x462d8f]
-[ 86985.880] 1: /usr/bin/Xorg (0x400000+0x67b56) [0x467b56]
-[ 86985.880] 2: /lib64/libpthread.so.0 (0x30a5800000+0xf4f0) [0x30a580f4f0]
-[ 86985.880] 3: /usr/lib64/xorg/modules/extensions/librecord.so (0x7ff6c225e000+0x26c3) [0x7ff6c22606c3]
-[ 86985.880] 4: /usr/bin/Xorg (_CallCallbacks+0x3c) [0x43820c]
-[ 86985.880] 5: /usr/bin/Xorg (WriteToClient+0x1f5) [0x466315]
-[ 86985.880] 6: /usr/lib64/xorg/modules/extensions/libdri2.so (ProcDRI2WaitMSCReply+0x4f) [0x7ff6c1e4feef]
-[ 86985.880] 7: /usr/lib64/xorg/modules/extensions/libdri2.so (DRI2WaitMSCComplete+0x52) [0x7ff6c1e4e6d2]
-[ 86985.880] 8: /usr/lib64/xorg/modules/drivers/intel_drv.so (0x7ff6c1bfb000+0x25ae4) [0x7ff6c1c20ae4]
-[ 86985.880] 9: /usr/lib64/libdrm.so.2 (drmHandleEvent+0xa3) [0x376b407513]
-[ 86985.880] 10: /usr/bin/Xorg (WakeupHandler+0x6b) [0x4379db]
-[ 86985.880] 11: /usr/bin/Xorg (WaitForSomething+0x1a9) [0x460289]
-[ 86985.880] 12: /usr/bin/Xorg (0x400000+0x3379a) [0x43379a]
-[ 86985.880] 13: /usr/bin/Xorg (0x400000+0x22dc5) [0x422dc5]
-[ 86985.880] 14: /lib64/libc.so.6 (__libc_start_main+0xed) [0x30a542169d]
-[ 86985.880] 15: /usr/bin/Xorg (0x400000+0x230b1) [0x4230b1]
-[ 86985.880] Segmentation fault at address 0x7ff6bf09e010
+[ 60244.259] (EE) Backtrace:
+[ 60244.262] (EE) 0: /usr/libexec/Xorg (OsLookupColor+0x139) [0x59add9]
+[ 60244.264] (EE) 1: /lib64/libc.so.6 (__restore_rt+0x0) [0x7f61be425b1f]
+[ 60244.266] (EE) 2: /usr/lib64/xorg/modules/drivers/intel_drv.so (_init+0xa9fc) [0x7f61b903116c]
+[ 60244.267] (EE) 3: /usr/lib64/xorg/modules/drivers/intel_drv.so (_init+0xbe27) [0x7f61b90339a7]
+[ 60244.268] (EE) 4: /usr/lib64/xorg/modules/drivers/intel_drv.so (_init+0x31060) [0x7f61b907db00]
+[ 60244.269] (EE) 5: /usr/lib64/xorg/modules/drivers/intel_drv.so (_init+0x3fb73) [0x7f61b909b0c3]
+[ 60244.270] (EE) 6: /usr/lib64/xorg/modules/drivers/intel_drv.so (_init+0x3fe1a) [0x7f61b909b77a]
+[ 60244.270] (EE) 7: /usr/libexec/Xorg (DamageRegionAppend+0x3783) [0x525003]
+[ 60244.270] (EE) 8: /usr/libexec/Xorg (SendGraphicsExpose+0xeb3) [0x4340b3]
+[ 60244.270] (EE) 9: /usr/libexec/Xorg (SendErrorToClient+0x2df) [0x43684f]
+[ 60244.271] (EE) 10: /usr/libexec/Xorg (remove_fs_handlers+0x453) [0x43a893]
+[ 60244.272] (EE) 11: /lib64/libc.so.6 (__libc_start_main+0xf0) [0x7f61be411580]
+[ 60244.272] (EE) 12: /usr/libexec/Xorg (_start+0x29) [0x424b79]
+[ 60244.273] (EE) 13: ? (?+0x29) [0x29]
+[ 60244.273] (EE) 
+[ 60244.273] (EE) Segmentation fault at address 0x7f61d93f6160
+[ 60244.273] (EE) 
  */
 static void process_xorg_bt(void)
 {
@@ -143,6 +154,14 @@ static void process_xorg_bt(void)
     while ((line = xmalloc_fgetline(stdin)) != NULL)
     {
         char *p = skip_pfx(line);
+
+        /* ignore empty lines
+         * [ 60244.273] (EE) 13: ? (?+0x29) [0x29]
+         * [ 60244.273] (EE) <---
+         * [ 60244.273] (EE) Segmentation fault at address 0x7f61d93f6160
+         */
+        if (*p == '\0')
+            continue;
 
         /* xorg-server-1.12.0/os/osinit.c:
          * if (sip->si_code == SI_USER) {
