@@ -118,7 +118,7 @@ rlJournalStart
         echo "SSLClientAuth = $TmpDir/cert/client_cert.pem:$TmpDir/cert/client_key.pem" > $CFG
         run_reporter required "--insecure" 70
         rlAssertGrep "AUTH ureport-reporter-cn" server_log
-        mv conf_backup $CFG
+        mv -f conf_backup $CFG
 
         # setting certificate via environment
         uReport_SSLClientAuth="$TmpDir/cert/client_cert.pem:$TmpDir/cert/client_key.pem"
@@ -187,7 +187,7 @@ rlJournalStart
         run_reporter http_required "-h rhts-credentials --insecure" 70
         rlAssertGrep "HTTPAUTH OK" server_log
 
-        mv ${CFG}_bck ${CFG}
+        mv -f ${CFG}_bck ${CFG}
     rlPhaseEnd
 
     rlPhaseStartTest "HTTP Auth Settings"
@@ -213,7 +213,7 @@ rlJournalStart
         rlAssertGrep "HTTPAUTH OK" server_log
 
         # environment variables
-        cp ${CFG}_bck ${CFG}
+        cp -f ${CFG}_bck ${CFG}
 
         uReport_HTTPAuth="ureport:password"
         export uReport_HTTPAuth
@@ -233,8 +233,8 @@ rlJournalStart
 
         export -n uReport_HTTPAuth
 
-        mv ${RHTS_CFG}_bck ${RHTS_CFG}
-        mv ${CFG}_bck ${CFG}
+        mv -f ${RHTS_CFG}_bck ${RHTS_CFG}
+        mv -f ${CFG}_bck ${CFG}
     rlPhaseEnd
 
     rlPhaseStartTest "rhsm certificate with CA cert-api.access.redhat.com.pem"
@@ -293,7 +293,7 @@ rlJournalStart
 
         unset LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH
         unset LIBREPORT_DEBUG_AUTHORITY_CERT_DIR_PATH
-        mv ${CFG}_bck ${CFG}
+        mv -f ${CFG}_bck ${CFG}
     rlPhaseEnd
     rlPhaseStartCleanup
         rlRun "abrt-cli rm $crash_PATH"
