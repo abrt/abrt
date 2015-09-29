@@ -51,6 +51,7 @@ export DUMP_PACKAGE_VERSIONS=1
 
 # - misc
 export PACKAGES="abrt \
+                 abrt-addon-* \
                  abrt-desktop \
                  abrt-cli \
                  abrt-devel \
