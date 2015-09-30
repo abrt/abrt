@@ -718,7 +718,8 @@ int main(int argc, char** argv)
         if (snprintf(path, sizeof(path), "%s/%s-coredump", g_settings_dump_location, last_slash) >= sizeof(path))
             error_msg_and_die("Error saving '%s': truncated long file path", path);
 
-        int abrt_core_fd = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+        unlink(path);
+        int abrt_core_fd = xopen3(path, O_WRONLY | O_CREAT | O_EXCL, 0600);
         off_t core_size = copyfd_eof(STDIN_FILENO, abrt_core_fd, COPYFD_SPARSE);
         if (core_size < 0 || fsync(abrt_core_fd) != 0)
         {
