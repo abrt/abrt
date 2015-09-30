@@ -371,6 +371,7 @@ abrt_action_install_debuginfo_to_abrt_cache_CPPFLAGS = \
     -D_GNU_SOURCE \
     -DBIN_DIR=\"$(bindir)\" \
     -DSBIN_DIR=\"$(sbindir)\" \
+    -DLARGE_DATA_TMP_DIR=\"$(LARGE_DATA_TMP_DIR)\" \
     $(LIBREPORT_CFLAGS) \
     -Wall -Wwrite-strings \
     -fPIE
