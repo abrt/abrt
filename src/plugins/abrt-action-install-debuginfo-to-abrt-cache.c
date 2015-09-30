@@ -108,8 +108,14 @@ int main(int argc, char **argv)
         build_ids_self_fd = xasprintf("/proc/self/fd/%d", build_ids_fd);
     }
 
-    /* name, -v, --ids, -, -y, -e, EXACT, -r, REPO, --, NULL */
-    const char *args[11];
+    char tmp_directory[] = LARGE_DATA_TMP_DIR"/abrt-tmp-debuginfo.XXXXXX";
+    if (mkdtemp(tmp_directory) == NULL)
+        perror_msg_and_die("Failed to create working directory");
+
+    log_info("Created working directory: %s", tmp_directory);
+
+    /* name, -v, --ids, -, -y, -e, EXACT, -r, REPO, -t, PATH, --, NULL */
+    const char *args[13];
     {
         const char *verbs[] = { "", "-v", "-vv", "-vvv" };
         unsigned i = 0;
@@ -130,6 +136,8 @@ int main(int argc, char **argv)
             args[i++] = "--repo";
             args[i++] = repo;
         }
+        args[i++] = "--tmpdir";
+        args[i++] = tmp_directory;
         args[i++] = "--";
         args[i] = NULL;
     }
@@ -204,6 +212,31 @@ int main(int argc, char **argv)
         umask(0022);
     }
 
-    execvp(EXECUTABLE, (char **)args);
-    error_msg_and_die("Can't execute %s", EXECUTABLE);
+    pid_t pid = fork();
+    if (pid < 0)
+        perror_msg_and_die("fork");
+
+    if (pid == 0)
+    {
+        execvp(EXECUTABLE, (char **)args);
+        error_msg_and_die("Can't execute %s", EXECUTABLE);
+    }
+
+    int status;
+    if (safe_waitpid(pid, &status, 0) < 0)
+        perror_msg_and_die("waitpid");
+
+    if (rmdir(tmp_directory) >= 0)
+        log_info("Removed working directory: %s", tmp_directory);
+    else if (errno != ENOENT)
+        perror_msg("Failed to remove working directory");
+
+    /* Normal execution should exit here. */
+    if (WIFEXITED(status))
+        return WEXITSTATUS(status);
+
+    if (WIFSIGNALED(status))
+        error_msg_and_die("Child terminated with signal %d", WTERMSIG(status));
+
+    error_msg_and_die("Child exit failed");
 }
