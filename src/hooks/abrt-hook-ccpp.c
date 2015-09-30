@@ -703,6 +703,13 @@ int main(int argc, char** argv)
     const char *last_slash = strrchr(executable, '/');
     if (last_slash && strncmp(++last_slash, "abrt", 4) == 0)
     {
+        if (g_settings_debug_level == 0)
+        {
+            log_warning("Ignoring crash of %s (SIG%s).",
+                        executable, signame ? signame : signal_str);
+            goto cleanup_and_exit;
+        }
+
         /* If abrtd/abrt-foo crashes, we don't want to create a _directory_,
          * since that can make new copy of abrtd to process it,
          * and maybe crash again...
