@@ -70,6 +70,8 @@ extern char *        g_settings_autoreporting_event;
 extern bool          g_settings_shortenedreporting;
 #define g_settings_privatereports abrt_g_settings_privatereports
 extern bool          g_settings_privatereports;
+#define g_settings_debug_level abrt_g_settings_debug_level
+extern unsigned int  g_settings_debug_level;
 
 
 #define load_abrt_conf abrt_load_abrt_conf
