@@ -28,6 +28,7 @@ bool          g_settings_autoreporting = 0;
 char *        g_settings_autoreporting_event = NULL;
 bool          g_settings_shortenedreporting = 0;
 bool          g_settings_explorechroots = 0;
+unsigned int  g_settings_debug_level = 0;
 
 void free_abrt_conf_data()
 {
@@ -115,6 +116,19 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     }
     else
         g_settings_explorechroots = false;
+
+    value = get_map_string_item_or_NULL(settings, "DebugLevel");
+    if (value)
+    {
+        char *end;
+        errno = 0;
+        unsigned long ul = strtoul(value, &end, 10);
+        if (errno || end == value || *end != '\0' || ul > INT_MAX)
+            error_msg("Error parsing %s setting: '%s'", "DebugLevel", value);
+        else
+            g_settings_debug_level = ul;
+        remove_map_string_item(settings, "DebugLevel");
+    }
 
     GHashTableIter iter;
     const char *name;

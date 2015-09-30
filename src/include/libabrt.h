@@ -77,6 +77,8 @@ extern char *        g_settings_autoreporting_event;
 extern bool          g_settings_shortenedreporting;
 #define g_settings_explorechroots abrt_g_settings_explorechroots
 extern bool          g_settings_explorechroots;
+#define g_settings_debug_level abrt_g_settings_debug_level
+extern unsigned int  g_settings_debug_level;
 
 
 #define load_abrt_conf abrt_load_abrt_conf
