@@ -428,6 +428,52 @@ char* problem_data_save(problem_data_t *pd)
     return problem_id;
 }
 
+void ensure_writable_dir_uid_gid(const char *dir, mode_t mode, uid_t uid, gid_t gid)
+{
+    struct stat sb;
+    int dir_fd;
+
+    if (mkdir(dir, mode) != 0 && errno != EEXIST)
+        perror_msg_and_die("Can't create '%s'", dir);
+
+    dir_fd = open(dir, O_DIRECTORY | O_NOFOLLOW);
+    if (dir_fd < 0)
+        perror_msg_and_die("Can't open directory '%s'", dir);
+
+    if (fstat(dir_fd, &sb) != 0)
+        perror_msg_and_die("Can't stat directory '%s'", dir);
+
+    if ((sb.st_uid != uid || sb.st_gid != gid) && fchown(dir_fd, uid, gid) != 0)
+        perror_msg_and_die("Can't set owner %u:%u on '%s'", (unsigned int)uid, (unsigned int)gid, dir);
+
+    if ((sb.st_mode & 07777) != mode && fchmod(dir_fd, mode) != 0)
+        perror_msg_and_die("Can't set mode %o on '%s'", mode, dir);
+
+    close(dir_fd);
+}
+
+void ensure_writable_dir(const char *dir, mode_t mode, const char *user)
+{
+    struct passwd *pw = getpwnam(user);
+    if (!pw)
+        perror_msg_and_die("Can't find user '%s'", user);
+
+    ensure_writable_dir_uid_gid(dir, mode, pw->pw_uid, pw->pw_gid);
+}
+
+void ensure_writable_dir_group(const char *dir, mode_t mode, const char *user, const char *group)
+{
+    struct passwd *pw = getpwnam(user);
+    if (!pw)
+        perror_msg_and_die("Can't find user '%s'", user);
+
+    struct group *gr = getgrnam(group);
+    if (!gr)
+        perror_msg_and_die("Can't find group '%s'", group);
+
+    ensure_writable_dir_uid_gid(dir, mode, pw->pw_uid, gr->gr_gid);
+}
+
 bool dir_is_in_dump_location(const char *dir_name)
 {
     unsigned len = strlen(g_settings_dump_location);
