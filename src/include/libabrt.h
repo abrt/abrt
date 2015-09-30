@@ -42,8 +42,12 @@ int low_free_space(unsigned setting_MaxCrashReportsSize, const char *dump_locati
 
 #define trim_problem_dirs abrt_trim_problem_dirs
 void trim_problem_dirs(const char *dirname, double cap_size, const char *exclude_path);
+#define ensure_writable_dir_id abrt_ensure_writable_dir_uid_git
+void ensure_writable_dir_uid_gid(const char *dir, mode_t mode, uid_t uid, gid_t gid);
 #define ensure_writable_dir abrt_ensure_writable_dir
 void ensure_writable_dir(const char *dir, mode_t mode, const char *user);
+#define ensure_writable_dir_group abrt_ensure_writable_dir_group
+void ensure_writable_dir_group(const char *dir, mode_t mode, const char *user, const char *group);
 #define run_unstrip_n abrt_run_unstrip_n
 char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec);
 #define get_backtrace abrt_get_backtrace
