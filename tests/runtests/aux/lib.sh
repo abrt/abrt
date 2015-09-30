@@ -39,6 +39,12 @@ function get_crash_path() {
     rlAssertGreater "Crash recorded" $(abrt-cli list 2> /dev/null | wc -l) 0
     crash_PATH="$(abrt-cli list 2> /dev/null | grep Directory | awk '{ print $2 }' | tail -n1)"
     if [ ! -d "$crash_PATH" ]; then
+        echo "Dump location listing:"
+        ls -l $ABRT_CONF_DUMP_LOCATION
+        echo "abrt-cli list:"
+        abrt-cli list
+        echo "Syslog:"
+        print_syslog 10
         rlDie "No crash dir generated, this shouldn't happen"
     fi
     rlLog "PATH = $crash_PATH"
@@ -139,6 +145,15 @@ function prepare() {
 
     rm -f -- $ABRT_CONF_DUMP_LOCATION/last-ccpp
     rm -f "/tmp/abrt-done"
+}
+
+function print_syslog {
+    COUNT=${1:-10}
+    if [ grep -q ' 6\.' /etc/redhat-release 2>/dev/null ] ; then
+        cat /var/log/messages | grep abrt | tail -n $COUNT
+    else
+        journalctl | grep abrt | tail -n $COUNT
+    fi
 }
 
 # should be faster than "sleep 1"
