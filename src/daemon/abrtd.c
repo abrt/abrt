@@ -195,7 +195,7 @@ static void sanitize_dump_dir_rights(void)
      * us with thousands of bogus or malicious dumps */
     /* 07000 bits are setuid, setgit, and sticky, and they must be unset */
     /* 00777 bits are usual "rwxrwxrwx" access rights */
-    ensure_writable_dir(g_settings_dump_location, DEFAULT_DUMP_LOCATION_MODE, "abrt");
+    ensure_writable_dir_group(g_settings_dump_location, DEFAULT_DUMP_LOCATION_MODE, "root", "abrt");
     /* temp dir */
     ensure_writable_dir(VAR_RUN"/abrt", 0755, "root");
 }
