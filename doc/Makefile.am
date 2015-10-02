@@ -37,6 +37,7 @@ MAN1_TXT += abrt-upload-watch.txt
 MAN1_TXT += system-config-abrt.txt
 if BUILD_BODHI
 MAN1_TXT += abrt-bodhi.txt
+MAN1_TXT += abrt-action-find-bodhi-update.txt
 endif
 
 

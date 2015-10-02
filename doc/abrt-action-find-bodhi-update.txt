@@ -1,0 +1,40 @@
+abrt-action-find-bodhi-update(1)
+================================
+
+NAME
+----
+abrt-action-find-bodhi-update - find bodhi update based on ABRT's problem dir
+
+SYNOPSIS
+--------
+'abrt-action-notify' [-v] [-d PROBLEM_DIR] [-b]
+
+DESCRIPTION
+-----------
+The tool reads 'duphash' file in problem directory and searches for a new
+updates according to the crash.
+
+OPTIONS
+-------
+-v, --verbose::
+   Be verbose
+
+-b, --without-bodhi::
+   Run without abrt-bodhi. Prints only Bugzilla bug id of duplicate bug, if exists.
+
+-d, --problem-dir PROBLEM_DIR::
+   Problem directory [Default: current directory]
+
+ENVIRONMENT VARIABLES
+---------------------
+'Bugzilla_Product'::
+   Product bug field value. Useful if you needed different product than
+   specified in PROBLEM_DIR/os_info
+
+SEE ALSO
+--------
+abrt-bodhi(1), reporter-bugzilla(1)
+
+AUTHORS
+-------
+* ABRT team
