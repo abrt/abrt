@@ -37,11 +37,11 @@ def init_gettext():
 
 import problem
 
-def write_str_to(filename, s, uid, gid, mode):
+def write_bytes_to(filename, b, uid, gid, mode):
     fd = os.open(filename, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, mode)
     if fd >= 0:
         os.fchown(fd, uid, gid)
-        os.write(fd, s)
+        os.write(fd, b)
         os.close(fd)
 
 
@@ -90,7 +90,7 @@ def validate_transform_move_and_notify(uploaded_dir_path, problem_dir_path, dest
 
     # overwrite remote if it exists
     remote_path = os.path.join(uploaded_dir_path, "remote")
-    write_str_to(remote_path, "1", fsuid, fsgid, @DEFAULT_DUMP_DIR_MODE@)
+    write_bytes_to(remote_path, b"1", fsuid, fsgid, @DEFAULT_DUMP_DIR_MODE@)
 
     # abrtd would increment count value and abrt-server refuses to process
     # problem directories containing 'count' element when PrivateReports is on.
