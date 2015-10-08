@@ -256,9 +256,9 @@ struct retrace_settings *get_settings()
         else if (0 == strcasecmp("max_running_tasks", row))
             settings->max_running_tasks = atoi(value);
         else if (0 == strcasecmp("max_packed_size", row))
-            settings->max_packed_size = atoi(value) * 1024 * 1024;
+            settings->max_packed_size = atoll(value) * 1024 * 1024;
         else if (0 == strcasecmp("max_unpacked_size", row))
-            settings->max_unpacked_size = atoi(value) * 1024 * 1024;
+            settings->max_unpacked_size = atoll(value) * 1024 * 1024;
         else if (0 == strcasecmp("supported_formats", row))
         {
             char *space;
