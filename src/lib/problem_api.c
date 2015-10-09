@@ -143,14 +143,12 @@ GList *get_problem_dirs_not_accessible_by_uid(uid_t uid, const char *dump_locati
 
 GList *get_problem_storages(void)
 {
-    GList *pths = NULL;
+    GList *paths = NULL;
     load_abrt_conf();
-    pths = g_list_append(pths, xstrdup(g_settings_dump_location));
-    //not needed, we don't steal directories anymore
-    pths = g_list_append(pths, concat_path_file(g_get_user_cache_dir(), "abrt/spool"));
+    paths = g_list_append(pths, xstrdup(g_settings_dump_location));
     free_abrt_conf_data();
 
-    return pths;
+    return paths;
 }
 
 int problem_dump_dir_is_complete(struct dump_dir *dd)
