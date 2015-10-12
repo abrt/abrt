@@ -449,14 +449,14 @@ Starting abrt daemon:                                      [  OK  ]</screen>
         To view detected problems, enter the <command>abrt-cli list</command> command:
       </para>
       <screen>~]#&#160;<command>abrt-cli list</command>
-Directory:      /var/tmp/abrt/ccpp-2011-09-13-10:18:14-2895
+Directory:      /var/spool/abrt/ccpp-2011-09-13-10:18:14-2895
 count:          2
 executable:     /usr/bin/gdb
 package:        gdb-7.2-48.el6
 time:           Tue 13 Sep 2011 10:18:14 AM CEST
 uid:            500
 
-Directory:      /var/tmp/abrt/ccpp-2011-09-21-18:18:07-2841
+Directory:      /var/spool/abrt/ccpp-2011-09-21-18:18:07-2841
 count:          1
 executable:     /bin/bash
 package:        bash-4.1.2-8.el6
@@ -631,7 +631,7 @@ uid:            500</screen>
       <para>...where <replaceable>directory</replaceable> stands for the <emphasis
           role="bold">problem data directory</emphasis> of the problem that is being reported. For example:
       </para>
-      <screen>~]$&#160;<command>abrt-cli report</command>&#160;<filename>/var/tmp/abrt/ccpp-2011-09-13-10:18:14-2895</filename>
+      <screen>~]$&#160;<command>abrt-cli report</command>&#160;<filename>/var/spool/abrt/ccpp-2011-09-13-10:18:14-2895</filename>
 How you would like to analyze the problem?
 1) Collect .xsession-errors
 2) Local GNU Debugger
@@ -710,8 +710,8 @@ Select reporter(s): _</screen>
       <para>
         ...where <replaceable>directory</replaceable> stands for the problem data directory of the problem being deleted. For example:
       </para>
-      <screen>~]$ <command>abrt-cli rm</command> <filename>/var/tmp/abrt/ccpp-2011-09-12-18:37:24-4413</filename>
-rm '/var/tmp/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
+      <screen>~]$ <command>abrt-cli rm</command> <filename>/var/spool/abrt/ccpp-2011-09-12-18:37:24-4413</filename>
+rm '/var/spool/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
       <note>
         <title>Deletion of a problem can lead to frequent ABRT notification</title>
         <para>
@@ -1234,11 +1234,11 @@ rm '/var/tmp/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
         </varlistentry>
         <varlistentry>
           <term>
-            DumpLocation = /var/tmp/abrt/
+            DumpLocation = /var/spool/abrt/
           </term>
           <listitem>
             <para>
-              This directive is commented out by default. It specifies the location where problem data directories are created and in which problem core dumps and all other problem data are stored. The default location is set to the <filename>/var/tmp/abrt/</filename> directory. Whichever directory you specify in this directive, you must ensure that it exists and it is writable for <systemitem class="daemon">abrtd</systemitem>. If you change the default value of this option, be aware that in order to ensure proper functionality of <application>ABRT</application>, this directory <emphasis role="bold">must not</emphasis> be the same as the directory specified for the <option>WatchCrashdumpArchiveDir</option> option.
+              This directive is commented out by default. It specifies the location where problem data directories are created and in which problem core dumps and all other problem data are stored. The default location is set to the <filename>/var/spool/abrt/</filename> directory (deprecated location <filename>/var/tmp/abrt/</filename> is used on some systems). Whichever directory you specify in this directive, you must ensure that it exists and it is writable for <systemitem class="daemon">abrtd</systemitem>. If you change the default value of this option, be aware that in order to ensure proper functionality of <application>ABRT</application>, this directory <emphasis role="bold">must not</emphasis> be the same as the directory specified for the <option>WatchCrashdumpArchiveDir</option> option.
             </para>
             <warning>
               <title>Do not modify this option in SELinux</title>
@@ -1330,7 +1330,7 @@ rm '/var/tmp/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
     <section id="sect-abrt-configuration-kernel_panic_detection">
       <title>Configuring ABRT to Detect a Kernel Panic</title>
       <para>
-        With Red Hat Enterprise Linux 6.3, <application>ABRT</application> can detect a kernel panic using the <systemitem class="service">abrt-vmcore</systemitem> service, which is provided by the <package>abrt-addon-vmcore</package> package. The service starts automatically on system boot and searches for a core dump file in the <filename>/var/crash/</filename> directory. If a core dump file is found, <systemitem class="service">abrt-vmcore</systemitem> creates the <systemitem>problem data directory</systemitem> in the <filename>/var/tmp/abrt/</filename> directory and moves the core dump file to the newly created problem data directory. After the <filename>/var/crash/</filename> directory is searched through, the service is stopped until the next system boot.
+        With Red Hat Enterprise Linux 6.3, <application>ABRT</application> can detect a kernel panic using the <systemitem class="service">abrt-vmcore</systemitem> service, which is provided by the <package>abrt-addon-vmcore</package> package. The service starts automatically on system boot and searches for a core dump file in the <filename>/var/crash/</filename> directory. If a core dump file is found, <systemitem class="service">abrt-vmcore</systemitem> creates the <systemitem>problem data directory</systemitem> in the <filename>/var/spool/abrt/</filename> directory (deprecated location <filename>/var/tmp/abrt/</filename> is used on some systems) and moves the core dump file to the newly created problem data directory. After the <filename>/var/crash/</filename> directory is searched through, the service is stopped until the next system boot.
       </para>
       <para>
         To configure <application>ABRT</application> to detect a kernel panic, perform the following steps:
@@ -1357,7 +1357,7 @@ rm '/var/tmp/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
         </listitem>
       </orderedlist>
       <para>
-        Unless <application>ABRT</application> is configured differently, problem data for any detected kernel panic is now stored in the <filename>/var/tmp/abrt/</filename> directory and can be further processed by <application>ABRT</application> just as any other detected kernel oops.
+        Unless <application>ABRT</application> is configured differently, problem data for any detected kernel panic is now stored in the <filename>/var/spool/abrt/</filename> directory (deprecated location <filename>/var/tmp/abrt/</filename> is used on some systems) and can be further processed by <application>ABRT</application> just as any other detected kernel oops.
       </para>
     </section>
     <section id="sect-abrt-configuration-debuginfo">
@@ -1447,7 +1447,7 @@ rm '/var/tmp/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
           <note>
             <title>The abrt user and group</title>
             <para>
-              When the <package>abrt-desktop</package> package is installed, it creates a new system user and a group, both named <systemitem class="username">abrt</systemitem>. This user is used by the <systemitem class="daemon">abrtd</systemitem> daemon, for example, as the owner:group of <filename>/var/tmp/abrt/*</filename> directories.
+              When the <package>abrt-desktop</package> package is installed, it creates a new system user and a group, both named <systemitem class="username">abrt</systemitem>. This user is used by the <systemitem class="daemon">abrtd</systemitem> daemon, for example, as the owner:group of <filename>/var/spool/abrt/*</filename> directories (deprecated location <filename>/var/tmp/abrt/</filename> is used on some systems).
             </para>
           </note>
         </listitem>
@@ -1612,7 +1612,7 @@ ftp> <command>quit</command></screen>
 [1] 2823
 ~]$ <command>kill -s SEGV 2823</command></screen>
       <para>
-        <application>ABRT</application> should detect a crash shortly after executing the <command>kill</command> command. Check that the crash was detected by <application>ABRT</application> on the client system (this can be checked by examining the appropriate syslog file, by running the <command>abrt-cli list --full</command> command, or by examining the crash dump created in the <filename>/var/tmp/abrt</filename> directory), copied to the server system, unpacked on the server system and can be seen and acted upon using <command>abrt-cli</command> or <command>abrt-gui</command> on the server system.
+        <application>ABRT</application> should detect a crash shortly after executing the <command>kill</command> command. Check that the crash was detected by <application>ABRT</application> on the client system (this can be checked by examining the appropriate syslog file, by running the <command>abrt-cli list --full</command> command, or by examining the crash dump created in the <filename>/var/spool/abrt</filename> directory. On some systems <filename>/var/tmp/abrt</filename> directory is used), copied to the server system, unpacked on the server system and can be seen and acted upon using <command>abrt-cli</command> or <command>abrt-gui</command> on the server system.
       </para>
     </section>
   </section>
