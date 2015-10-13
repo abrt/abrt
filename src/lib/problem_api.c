@@ -145,7 +145,7 @@ GList *get_problem_storages(void)
 {
     GList *paths = NULL;
     load_abrt_conf();
-    paths = g_list_append(pths, xstrdup(g_settings_dump_location));
+    paths = g_list_append(paths, xstrdup(g_settings_dump_location));
     free_abrt_conf_data();
 
     return paths;
