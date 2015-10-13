@@ -78,6 +78,90 @@ rlJournalStart
         [ $TESTPERFORMED -eq 0 ] && rlWarn "No actual testing happened"
     rlPhaseEnd
 
+    rlPhaseStartTest "The wrapper creates a new temporary directory"
+        ABRT_BINARY=/usr/bin/abrt-action-install-debuginfo
+        ABRT_BINARY_BACKUP=$ABRT_BINARY"_wrapped"
+
+        mv $ABRT_BINARY $ABRT_BINARY_BACKUP
+
+cat > $ABRT_BINARY <<EOF
+#!/usr/bin/bash
+function test_log
+{
+    echo "abrt-test-wrapper:" \$@
+}
+
+test_log "Executing abrt-action-install-debuginfo test wrapper"
+
+TMPDIRECTORY=""
+argn=1
+while [ \$argn -lt \$# ]
+do
+    case \${!argn} in
+        "--tmpdir")
+            test -n "\$TMPDIRECTORY" && {
+                test_log "The tmp directory is already configured"
+                exit 7
+            }
+
+            argn=\$((argn+1))
+
+            TMPDIRECTORY=\${!argn}
+        ;;
+    esac
+
+    argn=\$((argn+1))
+done
+
+test -z "\$TMPDIRECTORY" && {
+    test_log "The wrapper did not pass --tmpdir argument"
+    exit 17
+}
+
+echo "\$TMPDIRECTORY" | grep -q "^/var/tmp/abrt-tmp-debuginfo\.......$" || {
+    test_log "The passed tmp directory path does not match the expected pattern"
+    exit 27
+}
+
+test -d "\$TMPDIRECTORY" || {
+    test_log "The passed tmp directory does not exist"
+    exit 37
+}
+
+test -n "\$(ls -A -- \$TMPDIRECTORY)" && {
+    test_log "The passed tmp directory is not empty"
+    exit 47
+}
+
+STAT=\$(stat --printf "%a %G %U" -- \$TMPDIRECTORY)
+test "700 abrt abrt" = "\$STAT" || {
+    test_log "The passed tmp directory is not of '700 abrt abrt' (\$STAT)"
+    exit 57
+}
+
+test_log "The tmp directory looks OK. Going to run the wrapped executable."
+
+$ABRT_BINARY_BACKUP \$@ || {
+    test_log "The abrt-action-install-debuginfo command has failed"
+    exit 67
+}
+
+test -d "\$TMPDIRECTORY" && {
+    test_log "The tmp directory has not been removed. Was the directory ignored?"
+    exit 77
+}
+
+test_log "The tmp directory has been removed, so the directory wasn't ignored."
+exit 0
+EOF
+        chmod +rx $ABRT_BINARY
+        ls -al $ABRT_BINARY $ABRT_BINARY_BACKUP
+
+        rlRun "/usr/libexec/abrt-action-install-debuginfo-to-abrt-cache --ids=$crash_PATH/build_ids -y" 0 "Temporary directory was used"
+
+        mv $ABRT_BINARY_BACKUP $ABRT_BINARY
+    rlPhaseEnd
+
     rlPhaseStartTest "The wrapper does not read inaccessible files"
         rlRun "chown -R testuser:abrt $crash_PATH"
         ls -l $crash_PATH/build_ids
