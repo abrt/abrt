@@ -623,6 +623,11 @@ int main(int argc, char** argv)
                         (long)pid, executable);
     }
 
+    const char *signame = NULL;
+    const int fatal_signal = signal_is_fatal(signal_no, &signame);
+
+    log_notice("Processing '%s' got signal SIG%s", executable, signame);
+
     user_pwd = get_cwd(pid); /* may be NULL on error */
     log_notice("user_pwd:'%s'", user_pwd);
 
@@ -665,9 +670,10 @@ int main(int argc, char** argv)
         return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
-    const char *signame = NULL;
-    if (!signal_is_fatal(signal_no, &signame))
-        return create_user_core(user_core_fd, pid, ulimit_c); // not a signal we care about
+    if (!fatal_signal) { // not a signal we care about
+        log_debug("Non-fatal signal, ignoring");
+        return create_user_core(user_core_fd, pid, ulimit_c);
+    }
 
     const int abrtd_running = daemon_is_ok();
     if (!setting_StandaloneHook && !abrtd_running)

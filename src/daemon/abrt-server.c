@@ -340,7 +340,7 @@ static int run_post_create(const char *dirname)
                 (dup_of_dir ? "notify-dup" : "notify"),
                 &fd
     );
-    //log("Started notify, fd %d -> %d", fd, child_stdout_fd);
+    //log_debug("Started notify, fd %d -> %d", fd, child_stdout_fd);
     xmove_fd(fd, child_stdout_fd);
     child_is_post_create = 0;
     strbuf_clear(cmd_output);
@@ -356,6 +356,7 @@ static int run_post_create(const char *dirname)
     strbuf_free(cmd_output);
     free(dup_of_dir);
     close(child_stdout_fd);
+    log_debug("Done processing");
     return 0;
 }
 
