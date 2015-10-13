@@ -89,18 +89,6 @@ static int core_backtrace_is_duplicate(struct sr_stacktrace *bt1,
         goto end;
     }
 
-    /* This is an ugly workaround for https://github.com/abrt/btparser/issues/6 */
-    /*
-    int length1 = sr_core_thread_get_frame_count(thread1);
-
-    if (length1 <= 2 || length2 <= 2)
-    {
-        log_notice("Backtraces too short, falling back on full comparison");
-        result = (sr_core_thread_cmp(thread1, thread2) == 0);
-        goto end;
-    }
-    */
-
     float distance = sr_distance(SR_DISTANCE_DAMERAU_LEVENSHTEIN, thread1, thread2);
     log_info("Distance between backtraces: %f", distance);
     result = (distance <= BACKTRACE_DUP_THRESHOLD);
