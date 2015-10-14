@@ -48,6 +48,7 @@ rlJournalStart
     rlPhaseStartTest
         # abrtd creates the dump location
         rlRun "systemctl restart abrtd"
+        rlRun "systemctl restart abrt-ccpp.service"
 
         rlAssertExists "$ABRT_CONF_DUMP_LOCATION"
 
