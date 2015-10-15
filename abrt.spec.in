@@ -1118,6 +1118,13 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Thu Oct 15 2015 Matej Habrnal <mhabrnal@redhat.com> 2.7.0-1
+- abrt-python: add problem.chown
+- a-a-a-ccpp-local don't delete build_ids
+- update .gitignore
+- spec: add cli-ng
+- cli-ng: initial
+
 * Thu Oct 15 2015 Matej Habrnal <mhabrnal@redhat.com> 2.6.3-1
 - bodhi: introduce wrapper for 'reporter-bugzilla -h' and 'abrt-bodhi'
 - remove random code example from abrt-server
