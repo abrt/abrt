@@ -1041,7 +1041,9 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %files plugin-bodhi
 %defattr(-,root,root,-)
 %{_bindir}/abrt-bodhi
+%{_bindir}/abrt-action-find-bodhi-update
 %{_mandir}/man1/abrt-bodhi.1.gz
+%{_mandir}/man1/abrt-action-find-bodhi-update.1.gz
 %endif
 
 %files dbus

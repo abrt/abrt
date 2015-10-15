@@ -1,7 +1,7 @@
 #!/bin/sh
 
 INSTALL_DI=true
-WITH_BODHI=true
+FIND_BODHI_UPDATE_ARGS=""
 # if bz is set to false it also disables bodhi, because it needs it's result
 WITH_BUGZILLA=true
 for opt in "$@"; do
@@ -14,7 +14,7 @@ for opt in "$@"; do
     fi
 
     if [ x"$opt" = x"--without-bodhi" ]; then
-        WITH_BODHI=false
+        FIND_BODHI_UPDATE_ARGS="--without-bodhi"
     fi
 done
 
@@ -36,12 +36,7 @@ if [ $? = 0 ]; then
     abrt-action-analyze-backtrace
     if [ "$?" == "0" ]; then
         if $WITH_BUGZILLA; then
-            bug_id=$(reporter-bugzilla -h "`cat duphash`")
-            if $WITH_BODHI; then
-                if test -n "$bug_id"; then
-                    abrt-bodhi -r -b $bug_id || :
-                fi
-            fi
+            abrt-action-find-bodhi-update $FIND_BODHI_UPDATE_ARGS
         fi
     fi
 fi

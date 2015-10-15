@@ -10,6 +10,11 @@ bin_SCRIPTS = \
     abrt-action-analyze-ccpp-local \
     abrt-action-notify
 
+if BUILD_BODHI
+bin_SCRIPTS += \
+    abrt-action-find-bodhi-update
+endif
+
 bin_PROGRAMS = \
     abrt-watch-log \
     abrt-dump-oops \
@@ -78,6 +83,11 @@ PYTHON_FILES = \
     abrt-action-check-oops-for-hw-error.in \
     abrt-action-perform-ccpp-analysis.in \
     abrt-action-notify
+
+if BUILD_BODHI
+PYTHON_FILES += \
+    abrt-action-find-bodhi-update
+endif
 
 EXTRA_DIST = \
     $(PYTHON_FILES) \

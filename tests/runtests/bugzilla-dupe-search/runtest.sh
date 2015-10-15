@@ -48,6 +48,30 @@ rlJournalStart
         rlAssertGrep "768647" output
     rlPhaseEnd
 
+    rlPhaseStartTest "simple dupehash search with parameter -p"
+        rlLog "Parameter -pProduct_parameter"
+        rlRun "reporter-bugzilla -vvv --duphash=$DUPHASH -c bugzilla.conf -pProduct_parameter &> parameter_p.log" 0 "Finding dupe for dupehash: $DUPHASH"
+
+        rlAssertGrep "Using Bugzilla product 'Product_parameter' to find duplicate bug" parameter_p.log
+        rlAssertGrep "search for 'ALL whiteboard:\"abrt_hash:5d25425e3589df3280ac8331554b2b1fa8384e49\" product:\"Product_parameter\"'" parameter_p.log
+
+        rlLog "Only parameter -p (get product from /etc/os-release)"
+        rlRun "reporter-bugzilla -vvv --duphash=$DUPHASH -c bugzilla.conf -p &> only_parameter_p.log" 0 "Finding dupe for dupehash: $DUPHASH"
+
+        rlRun "source /etc/os-release"
+        rlAssertGrep "os-release:.*: parsed line: 'REDHAT_BUGZILLA_PRODUCT'" only_parameter_p.log -E
+        rlAssertGrep "Using Bugzilla product '$REDHAT_BUGZILLA_PRODUCT' to find duplicate bug" only_parameter_p.log -E
+        rlAssertGrep "search for 'ALL whiteboard:\"abrt_hash:5d25425e3589df3280ac8331554b2b1fa8384e49\" product:\".*\"'" only_parameter_p.log -E
+
+        rlLog "Only parameter -p (get product from environment variable)"
+        rlRun "export Bugzilla_Product='Product_env'" 0
+        rlRun "reporter-bugzilla -vvv --duphash=$DUPHASH -c bugzilla.conf -p &> only_parameter_p_env.log" 0 "Finding dupe for dupehash: $DUPHASH"
+
+        rlAssertGrep "Using Bugzilla product 'Product_env' to find duplicate bug" only_parameter_p_env.log -E
+        rlAssertGrep "search for 'ALL whiteboard:\"abrt_hash:5d25425e3589df3280ac8331554b2b1fa8384e49\" product:\"Product_env\"'" only_parameter_p_env.log -E
+        rlRun "unset Bugzilla_Product" 0
+    rlPhaseEnd
+
     rlPhaseStartTest "avc reporting"
         rlRun "reporter-bugzilla -d $AVCPROBLEMDIR -c bugzilla.conf &> output" 0 "Reporting already reported AVC"
         # Tired of tracking ever-changing rhbz#s: it was bug 755535,
@@ -58,6 +82,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
+        rlBundleLogs abrt output $(ls *.log)
         rlRun "popd"
         rlRun "rm -r $AVCPROBLEMDIR/reported_to" 0 "Removing reported_to"
         rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
