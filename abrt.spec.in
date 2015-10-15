@@ -1089,6 +1089,53 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Thu Oct 15 2015 Matej Habrnal <mhabrnal@redhat.com> 2.6.3-1
+- bodhi: introduce wrapper for 'reporter-bugzilla -h' and 'abrt-bodhi'
+- remove random code example from abrt-server
+- spec: introduce abrt-action-find-bodhi-update
+- api: fix pths -> paths rename
+- handle-event: remove obsolete workaround
+- remove 'not needed' code
+- events: fix example wording
+- doc: change /var/tmp/abrt to /var/spool/abrt
+- doc: actualize core_pattern content in documentation
+- doc: fix default DumpLocation in abrt.conf man page
+- events: improve example
+- events: comments not needed anymore
+- abrt-retrace-client: use atoll for _size conversion
+- abrt-dump-xorg: support Xorg log backtraces prefixed by (EE)
+- runtests: more verbose fail in get_crash_path
+- ureport-auth: force cp/mv when restoring configuration
+- runtests: stick to new BZ password rules
+- bodhi: fix typo in error messages
+- bodhi: fix a segfault when testing an os-release opt for 'rawhide'
+- doc: actualize the abrt-bodhi man page
+- autogen: use dnf instead of yum to install dependencies
+- bodhi: add parsing of error responses
+- bodhi: add ignoring of Rawhide
+- ccpp: do not break the reporting if a-bodhi fails
+- spec: add hawkey to BRs of abrt-bodhi
+- introduce bodhi2 to abrt-bodhi
+- a-handle-upload: pass bytes to file.write()
+- upload a problem data in the EVENT 'notify'
+- turn off several post-create scripts for remote problems
+- convert all 'ex.message' stmts to 'str(ex)'
+- cli: don't start reporting of not-reportable problems
+- a-a-s-p-d: add bash on the package blacklist
+- correct usage of abrt-gdb-exploitable
+- testsutie: first wait_for_hooks, then get_crash_path
+- ccpp: use global TID
+- ccpp: fix comment related to 'MakeCompatCore' option in CCpp.conf
+- cli: fix testing of DBus API return codes
+- dbus-api: unify reporting of errors
+- doc: fix related to conditional compilation of man page
+- abrt-auto-reporting: fix related to conditional compilation
+- vmcore: read vmcore by chunks
+- pass encoded Unicode to hashlib.sha1.update()
+- abrt-merge-pstoreoops: merge files in descending order
+- use gettext instead of lgettext in all python scripts
+- gitignore: add a generated man page source file
+
 * Fri Jul 17 2015 Jakub Filak <jfilak@redhat.com> 2.6.2-1
 - applet: do not crash if the new problem has no command_line
 - ccpp: do not crash if generate_core_backtrace fails
