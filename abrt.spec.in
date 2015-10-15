@@ -88,6 +88,12 @@ BuildRequires: systemd-python
 BuildRequires: python3-systemd
 BuildRequires: augeas
 BuildRequires: libselinux-devel
+BuildRequires: python-argcomplete
+BuildRequires: python3-argcomplete
+BuildRequires: python-argh
+BuildRequires: python3-argh
+BuildRequires: python-humanize
+BuildRequires: python3-humanize
 
 Requires: libreport >= %{libreport_ver}
 Requires: satyr >= %{satyr_ver}
@@ -318,6 +324,22 @@ Requires: abrt-dbus
 %description tui
 This package contains a simple command line client for processing abrt reports
 in command line environment.
+
+%package cli-ng
+Summary: %{name}'s improved command line interface
+Group: User Interface/Desktops
+Requires: %{name} = %{version}-%{release}
+Requires: libreport-cli >= %{libreport_ver}
+Requires: abrt-libs = %{version}-%{release}
+Requires: abrt-dbus
+Requires: abrt-python
+Requires: abrt-addon-ccpp
+Requires: python-argh
+Requires: python-argcomplete
+Requires: python-humanize
+
+%description cli-ng
+New generation command line interface for ABRT
 
 %package cli
 Summary: Virtual package to make easy default installation on non-graphical environments
@@ -1021,6 +1043,13 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %defattr(-,root,root,-)
 %{_bindir}/abrt-cli
 %{_mandir}/man1/abrt-cli.1.gz
+
+%files cli-ng
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/bash_completion.d/abrt.bash_completion
+%{_bindir}/abrt
+%{python_sitearch}/abrtcli/
+%{_mandir}/man1/abrt.1.gz
 
 %files desktop
 %defattr(-,root,root,-)

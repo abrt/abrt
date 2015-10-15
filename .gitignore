@@ -11,6 +11,7 @@
 src/applet/abrt-applet
 src/configuration-gui/system-config-abrt
 src/daemon/abrt-action-save-package-data
+src/daemon/abrt-action-save-container-data
 src/daemon/abrt-auto-reporting
 src/daemon/abrt-server
 src/daemon/abrtd
@@ -37,12 +38,14 @@ src/plugins/abrt-action-perform-ccpp-analysis
 src/plugins/abrt-action-trim-files
 src/plugins/abrt-watch-log
 src/plugins/abrt-dump-oops
-src/plugins/abrt-journal-dump-oops
+src/plugins/abrt-dump-journal-oops
+src/plugins/abrt-dump-journal-core
 src/plugins/abrt-dump-xorg
 src/plugins/abrt-retrace-client
 src/plugins/abrt-action-install-debuginfo
 src/plugins/abrt-action-generate-core-backtrace
 src/plugins/abrt-bodhi
+src/plugins/libabrt-journal.a
 src/python-problem/problem/config.py
 src/python-problem/tests/*.log
 src/python-problem/tests/*.trs
@@ -165,3 +168,9 @@ tests/package.m4
 # python API docs builddir
 src/python-problem/doc/_build/
 build/*
+
+# python tests and generated files
+*.trs
+.coverage
+toolswtf
+src/cli-ng/abrtcli/config.py

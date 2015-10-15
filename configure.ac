@@ -424,6 +424,10 @@ AC_CONFIG_FILES([
 	src/hooks/Makefile
 	src/applet/Makefile
 	src/cli/Makefile
+	src/cli-ng/Makefile
+	src/cli-ng/abrtcli/Makefile
+	src/cli-ng/tests/Makefile
+	src/cli-ng/tests/clitests/Makefile
 	src/configuration-gui/Makefile
 	src/configuration-gui/abrt_gui.pc
 	src/dbus/Makefile

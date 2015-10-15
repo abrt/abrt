@@ -280,6 +280,11 @@ class Problem(object):
             self._probdir = None
             self._dirty_data = {}
 
+    def chown(self):
+        ''' Assures ownership of a problem for the caller '''
+        if self._persisted:
+            self._proxy.chown(self._probdir)
+
 
 class Java(Problem):
     ''' Java problem '''
