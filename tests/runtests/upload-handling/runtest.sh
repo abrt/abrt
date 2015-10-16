@@ -88,7 +88,7 @@ rlJournalStart
         rm -f "/var/spool/abrt-upload/upload.tar.gz"
 
         rlRun "touch $TmpDir/abrt_upload_test && ln -sf $TmpDir/abrt_upload_test problem_dir/malicious && mkdir -p problem_dir/dangerous && touch problem_dir/dangerous/contents"
-        rlRun "tar -czf $TmpDir/upload.tar.gz problem_dir && tar -tvzf $TmpDir/upload.tar.gz && mv $TmpDir/upload.tar.gz /var/spool/abrt-upload"
+        rlRun "tar -czf $TmpDir/upload.tar.gz problem_dir && tar -tvzf $TmpDir/upload.tar.gz && cp $TmpDir/upload.tar.gz /var/spool/abrt-upload"
 
         wait_for_hooks
 
