@@ -46,6 +46,7 @@ rlJournalStart
         rlRun "echo testing > /var/crash/test/vmcore" 0 "Creating vmcore"
         rlLogInfo "Restarting abrtd"
         systemctl restart  abrtd.service
+        systemctl restart  abrt-vmcore.service
 
         wait_for_hooks
 
@@ -73,6 +74,7 @@ rlJournalStart
 
         rlLogInfo "Restarting abrtd"
         systemctl restart  abrtd.service
+        systemctl restart  abrt-vmcore.service
 
         wait_for_hooks
 

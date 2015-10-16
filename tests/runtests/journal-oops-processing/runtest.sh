@@ -128,7 +128,6 @@ rlJournalStart
 
         sed "s/2.6.27.9-159.fc10.i686/<KERNEL_VERSION>/" \
             $EXAMPLES_PATH/oops1.right \
-            | sed "s/^ *//" \
             | grep -v "abrt-dump-oops:" \
             | grep -v "Version:" > \
             $TmpDir/oops1.right
@@ -141,7 +140,6 @@ rlJournalStart
 
         sed "s/2.6.27.9-159.fc10.i686/<KERNEL_VERSION>/" \
             $EXAMPLES_PATH/oops_no_reliable_frame.right \
-            | sed "s/^ *//" \
             | grep -v "abrt-dump-oops:" \
             | grep -v "Version:" > \
             $TmpDir/oops_not_reportable_no_reliable_frame.right
@@ -152,7 +150,6 @@ rlJournalStart
 
         sed "s/3.0.0-1.fc16.i686/<KERNEL_VERSION>/" \
             $EXAMPLES_PATH/oops5.right \
-            | sed "s/^ *//" \
             | grep -v "abrt-dump-oops:" \
             | grep -v "Version:" > \
             $TmpDir/oops5.right
@@ -163,7 +160,6 @@ rlJournalStart
 
         sed "s/3.10.0-33.el7.ppc64/<KERNEL_VERSION>/" \
         $EXAMPLES_PATH/oops8_ppc64.right \
-            | sed "s/^ *//" \
             | grep -v "abrt-dump-oops:" \
             | grep -v "Version:" > \
             $TmpDir/oops8_ppc64.right
@@ -184,7 +180,6 @@ rlJournalStart
 
         sed "s/3.10.0-41.el7.x86_64/<KERNEL_VERSION>/" \
             $EXAMPLES_PATH/oops_unsupported_hw.right \
-            | sed "s/^ *//" \
             | grep -v "abrt-dump-oops:" \
             | grep -v "Version:" > \
             $TmpDir/oops_not_reportable_unsupported_hw.right
@@ -195,7 +190,6 @@ rlJournalStart
 
         sed "s/2.6.35.6-45.fc14.x86_64/<KERNEL_VERSION>/" \
             $EXAMPLES_PATH/oops_broken_bios.right \
-            | sed "s/^ *//" \
             | grep -v "abrt-dump-oops:" \
             | grep -v "Version:" > \
             $TmpDir/oops_not_reportable_broken_bios.right
