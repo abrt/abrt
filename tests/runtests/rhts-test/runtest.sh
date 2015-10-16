@@ -126,7 +126,7 @@ rlJournalStart
         rlAssertGrep "curl sent header: 'POST /rs/telemetry/abrt/reports/attach/ HTTP/1" client_create3
 
         rlAssertGrep "(Attaching problem data to case)|(Adding comment to case) 'http://127.0.0.1:12345/rs/cases/00809787/attachments/382c3498-0f19-3edc-aa56-580cf0bc7251'" client_create3 -E
-        rlAssertGrep "curl sent header: 'POST /rs/cases/[0-9]*/attachments/.*/comments HTTP/1" client_create3
+        rlAssertGrep "curl sent header: 'POST /rs/cases/[0-9]*/attachments/.*/attachments HTTP/1" client_create3
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
         rlRun "rm -rf $ABRT_CONF_DUMP_LOCATION/last-ccpp"
@@ -172,7 +172,7 @@ rlJournalStart
         rlAssertGrep "post('http://127.0.0.1:12345/rs/telemetry/abrt/reports/attach/','{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"email\", \"data\": \"abrt@email.com\" }')" client_create4
 
         rlAssertGrep "(Attaching problem data to case)|(Adding comment to case) 'http://127.0.0.1:12345/rs/cases/00809787/attachments/382c3498-0f19-3edc-aa56-580cf0bc7251'" client_create4 -E
-        rlAssertGrep "curl sent header: 'POST /rs/cases/[0-9]*/attachments/.*/comments HTTP/1" client_create4
+        rlAssertGrep "curl sent header: 'POST /rs/cases/[0-9]*/attachments/.*/attachments HTTP/1" client_create4
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
         rlRun "rm -rf $ABRT_CONF_DUMP_LOCATION/last-ccpp"
@@ -219,7 +219,7 @@ rlJournalStart
         rlAssertGrep "post('http://127.0.0.1:12345/rs/telemetry/abrt/reports/attach/','{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"email\", \"data\": \"abrt@email.com\" }')" client_create5
 
         rlAssertGrep "(Attaching problem data to case)|(Adding comment to case) 'http://127.0.0.1:12345/rs/cases/00809787/attachments/382c3498-0f19-3edc-aa56-580cf0bc7251'" client_create5 -E
-        rlAssertGrep "curl sent header: 'POST /rs/cases/[0-9]*/attachments/.*/comments HTTP/1" client_create5
+        rlAssertGrep "curl sent header: 'POST /rs/cases/[0-9]*/attachments/.*/attachments HTTP/1" client_create5
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
         rlRun "rm -rf $ABRT_CONF_DUMP_LOCATION/last-ccpp"
@@ -267,7 +267,7 @@ rlJournalStart
         rlAssertNOTGrep "post('http://127.0.0.1:12345/rs/telemetry/abrt/reports/attach/','{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"email\", \"data\": \"abrt@email.com\" }')" client_create6
 
         rlAssertGrep "(Attaching problem data to case)|(Adding comment to case) 'http://127.0.0.1:12345/rs/cases/00809787/attachments/382c3498-0f19-3edc-aa56-580cf0bc7251'" client_create6 -E
-        rlAssertGrep "curl sent header: 'POST /rs/cases/[0-9]*/attachments/.*/comments HTTP/1" client_create6
+        rlAssertGrep "curl sent header: 'POST /rs/cases/[0-9]*/attachments/.*/attachments HTTP/1" client_create6
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
     rlPhaseEnd
