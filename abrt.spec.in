@@ -980,7 +980,9 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_initrddir}/abrt-xorg
 %endif
 %{_bindir}/abrt-dump-xorg
+%{_bindir}/abrt-dump-journal-xorg
 %{_mandir}/man1/abrt-dump-xorg.1*
+%{_mandir}/man1/abrt-dump-journal-xorg.1*
 
 %if %{?have_kexec_tools} == 1
 %files addon-vmcore
