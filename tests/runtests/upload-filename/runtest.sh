@@ -30,6 +30,7 @@
 
 TEST="upload-filename"
 PACKAGE="abrt"
+REPORTED_TO=problem_dir/reported_to
 
 rlJournalStart
     rlPhaseStartSetup
@@ -39,7 +40,15 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "ftp upload, filename set"
+        rlLog "Remove old reported_to file"
+        rm -rf $REPORTED_TO
+
         rlRun "reporter-upload -d problem_dir -u file://$TmpDir/"
+
+        rlAssertExists $REPORTED_TO
+        cat $REPORTED_TO
+        rlAssertEquals "Correct report result" "_upload: URL=file://$TmpDir/problem_dir.tar.gz" "_$(tail -1 $REPORTED_TO)"
+
         rlAssertExists "$TmpDir/problem_dir.tar.gz"
     rlPhaseEnd
 
