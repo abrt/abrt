@@ -66,7 +66,23 @@ rlJournalStart
         rlRun "reporter-ureport -a DEADBEAF -o \"$uReport_UserComment\" -d ex_crash_dir"
         rlRun "reporter-ureport -a DEADBEAF -O -d ex_crash_dir"
 
+        rlRun "reporter-ureport -A -l \"http://bugzilla.redhat.com/1000000\" -T \"url1\" -d ex_crash_dir"
+        rlRun "reporter-ureport -a DEADBEAF -l \"http://bugzilla.redhat.com/1000001\" -T \"url2\""
+
+        rlRun "reporter-ureport -A -L \"URL\" -r \"Bugzilla\" -T \"url3\" -d ex_crash_dir"
+        rlRun "reporter-ureport -a DEADBEAF -L \"URL\" -r \"Bugzilla\" -T \"url4\" -d ex_crash_dir"
+
         kill %1
+    rlPhaseEnd
+
+    rlPhaseStartTest "Dealing with invalid arguments"
+
+        rlRun "reporter-ureport -A -l \"http://bugzilla.redhat.com/1000000\" -d ex_crash_dir" 1
+        rlRun "reporter-ureport -A -L -l \"http://bugzilla.redhat.com/1000000\" -T \"url\" -d ex_crash_dir" 1
+        rlRun "reporter-ureport -A -L \"msg\" -d ex_crash_dir" 1
+        rlRun "reporter-ureport -A -L \"URL\" -T \"url\" -d ex_crash_dir" 1
+        rlRun "reporter-ureport -A -L \"URL\" -r \"Bugzilla\" -d ex_crash_dir" 1
+
     rlPhaseEnd
 
     rlPhaseStartCleanup
