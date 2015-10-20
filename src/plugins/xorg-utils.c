@@ -49,28 +49,24 @@ void xorg_crash_info_free(struct xorg_crash_info *crash_info)
     free(crash_info);
 }
 
-/* TODO */
-char *skip_pfx(char *p)
+char *skip_pfx(char *str)
 {
-    if (p[0] != '[')
-        return p;
-    char *q = strchr(p, ']');
-    if (!q)
-        return p;
-
-    if (q[1] == ' ')
+    if (str[0] == '[')
     {
-        q += 2;
-        /* if there is (EE), ignore it */
-        if (strncmp(q, "(EE)", 4) == 0)
-        {
-            /* if ' ' follows (EE), ignore it too */
-            return q + (4 + (q[4] == ' '));
-        }
-
-        return q;
+        char *q = strchr(str, ']');
+        if (q)
+            str = q + 1;
     }
-    return p;
+
+    if (str[0] == ' ')
+        ++str;
+
+    /* if there is (EE), ignore it */
+    if (strncmp(str, "(EE)", 4) == 0)
+        /* if ' ' follows (EE), ignore it too */
+        return str + (4 + (str[4] == ' '));
+
+    return str;
 }
 
 static char *list2lines(GList *list)
