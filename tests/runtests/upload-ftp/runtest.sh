@@ -30,6 +30,7 @@
 
 TEST="upload-ftp"
 PACKAGE="abrt"
+REPORTED_TO=problem_dir/reported_to
 
 rlJournalStart
     rlPhaseStartSetup
@@ -43,13 +44,29 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "ftp upload, filename set"
+        rlLog "Remove old reported_to file"
+        rm -rf $REPORTED_TO
+
         rlRun "reporter-upload -d problem_dir -u ftp://localhost:2121/upload.tar.gz"
+
+        rlAssertExists $REPORTED_TO
+        cat $REPORTED_TO
+        rlAssertEquals "Correct report result" "_upload: URL=ftp://localhost:2121/upload.tar.gz" "_$(tail -1 $REPORTED_TO)"
+
         rlAssertExists "$TmpDir/target/upload.tar.gz"
         rm -rf "$TmpDir/target/upload.tar.gz"
     rlPhaseEnd
 
     rlPhaseStartTest "ftp upload, filename not set"
+        rlLog "Remove old reported_to file"
+        rm -rf $REPORTED_TO
+
         rlRun "reporter-upload -d problem_dir -u ftp://localhost:2121/"
+
+        rlAssertExists $REPORTED_TO
+        cat $REPORTED_TO
+        rlAssertEquals "Correct report result" "_upload: URL=ftp://localhost:2121/problem_dir.tar.gz" "_$(tail -1 problem_dir/reported_to)"
+
         rlAssertExists $TmpDir/target/problem_dir*
     rlPhaseEnd
 

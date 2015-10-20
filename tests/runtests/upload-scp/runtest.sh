@@ -29,6 +29,7 @@
 
 TEST="upload-scp"
 PACKAGE="abrt"
+REPORTED_TO=problem_dir/reported_to
 
 rlJournalStart
     rlPhaseStartSetup
@@ -39,13 +40,29 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "scp upload, filename set"
+        rlLog "Remove old reported_to file"
+        rm -rf $REPORTED_TO
+
         rlRun "reporter-upload -d problem_dir -u scp://root:redhat@localhost$TmpDir/target/upload.tar.gz"
+
+        rlAssertExists $REPORTED_TO
+        cat $REPORTED_TO
+        rlAssertEquals "Correct report result" "_upload: URL=scp://localhost$TmpDir/target/upload.tar.gz" "_$(tail -1 $REPORTED_TO)"
+
         rlAssertExists "$TmpDir/target/upload.tar.gz"
         rm -rf "$TmpDir/target/upload.tar.gz"
     rlPhaseEnd
 
     rlPhaseStartTest "scp upload, filename not set"
+        rlLog "Remove old reported_to file"
+        rm -rf $REPORTED_TO
+
         rlRun "reporter-upload -d problem_dir -u scp://root:redhat@localhost$TmpDir/target/"
+
+        rlAssertExists $REPORTED_TO
+        cat $REPORTED_TO
+        rlAssertEquals "Correct report result" "_upload: URL=scp://localhost$TmpDir/target/problem_dir.tar.gz" "_$(tail -1 $REPORTED_TO)"
+
         rlAssertExists $TmpDir/target/problem_dir*
     rlPhaseEnd
 
