@@ -47,7 +47,6 @@ rlJournalStart
 
         rlRun "reporter-ureport -a DEADBEAF -B -d ex_crash_dir"
         rlRun "reporter-ureport -a DEADBEAF -b 12345 -d ex_crash_dir"
-
         uReport_ContactEmail="environment@redhta.com"
         export uReport_ContactEmail
 
@@ -57,16 +56,23 @@ rlJournalStart
         rlRun "reporter-ureport -a DEADBEAF -e argument@redhat.com -d ex_crash_dir"
         rlRun "reporter-ureport -a DEADBEAF -E -d ex_crash_dir"
 
-        uReport_UserComment="command line user comment"
-        export uReport_UserComment
+        rlRun "reporter-ureport -A -l \"http://bugzilla.redhat.com/1000000\" -T \"url1\" -d ex_crash_dir"
+        rlRun "reporter-ureport -a DEADBEAF -l \"http://bugzilla.redhat.com/1000001\" -T \"url2\""
 
-        rlRun "reporter-ureport -A -o \"$uReport_UserComment\" -d ex_crash_dir"
-        rlRun "reporter-ureport -A -O -d ex_crash_dir"
-
-        rlRun "reporter-ureport -a DEADBEAF -o \"$uReport_UserComment\" -d ex_crash_dir"
-        rlRun "reporter-ureport -a DEADBEAF -O -d ex_crash_dir"
+        rlRun "reporter-ureport -A -L \"URL\" -r \"Bugzilla\" -T \"url3\" -d ex_crash_dir"
+        rlRun "reporter-ureport -a DEADBEAF -L \"URL\" -r \"Bugzilla\" -T \"url4\" -d ex_crash_dir"
 
         kill %1
+    rlPhaseEnd
+
+    rlPhaseStartTest "Dealing with invalid arguments"
+
+        rlRun "reporter-ureport -A -l \"http://bugzilla.redhat.com/1000000\" -d ex_crash_dir" 1
+        rlRun "reporter-ureport -A -L -l \"http://bugzilla.redhat.com/1000000\" -T \"url\" -d ex_crash_dir" 1
+        rlRun "reporter-ureport -A -L \"msg\" -d ex_crash_dir" 1
+        rlRun "reporter-ureport -A -L \"URL\" -T \"url\" -d ex_crash_dir" 1
+        rlRun "reporter-ureport -A -L \"URL\" -r \"Bugzilla\" -d ex_crash_dir" 1
+
     rlPhaseEnd
 
     rlPhaseStartCleanup
