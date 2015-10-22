@@ -209,6 +209,15 @@ char *abrt_journal_get_log_line(abrt_journal_t *journal)
     return abrt_journal_get_string_field(journal, "MESSAGE", NULL);
 }
 
+char *abrt_journal_get_next_log_line(void *data)
+{
+    abrt_journal_t *journal = (abrt_journal_t *)data;
+    if (abrt_journal_next(journal) <= 0)
+        return NULL;
+
+    return abrt_journal_get_log_line(journal);
+}
+
 int abrt_journal_get_cursor(abrt_journal_t *journal, char **cursor)
 {
     const int r = sd_journal_get_cursor(journal->j, cursor);

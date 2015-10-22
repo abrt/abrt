@@ -68,6 +68,8 @@ char *abrt_journal_get_string_field(abrt_journal_t *journal,
 
 char *abrt_journal_get_log_line(abrt_journal_t *journal);
 
+char *abrt_journal_get_next_log_line(void *data);
+
 int abrt_journal_get_cursor(abrt_journal_t *journal, char **cursor);
 
 int abrt_journal_set_cursor(abrt_journal_t *journal, const char *cursor);
