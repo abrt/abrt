@@ -29,6 +29,7 @@ TESTSUITE_AT = \
   testsuite.at \
   pyhook.at \
   koops-parser.at \
+  xorg-utils.at \
   ignored_problems.at \
   hooklib.at
 

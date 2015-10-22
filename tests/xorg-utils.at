@@ -1,0 +1,35 @@
+# -*- Autotest -*-
+
+AT_BANNER([xorg utils lib])
+
+AT_TESTCFUN([xorg_utils_skip_pfx],
+        [$XORG_UTILS_CFLAGS],
+        [$XORG_UTILS_LDFLAGS],
+[[
+#include "libabrt.h"
+#include "xorg-utils.h"
+
+int main(void)
+{
+    const char *str[] = {
+        "[xxx xxx] (EE) Foo",
+        " (EE) Foo",
+        "(EE) Foo",
+        " Foo",
+        "Foo",
+        NULL
+    };
+
+    for (int i = 0; str[i] != NULL; ++i)
+    {
+        char *result = skip_pfx((char *)str[i]);
+        if (strcmp(result, "Foo") != 0)
+        {
+            printf("Error: expected: 'Foo' got: '%s'\n", result);
+            return 1;
+        }
+    }
+
+    return 0;
+}
+]])

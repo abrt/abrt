@@ -13,3 +13,7 @@ LDFLAGS="@LDFLAGS@ $abs_top_builddir/src/lib/libabrt.la"
 
 # Are special libraries needed?
 LIBS="@LIBS@ @LIBREPORT_LIBS@"
+
+# compile with xorg-utils lib
+XORG_UTILS_CFLAGS="-I$abs_top_builddir/src/plugins"
+XORG_UTILS_LDFLAGS="$abs_top_builddir/src/plugins/libxorg-utils.a"
