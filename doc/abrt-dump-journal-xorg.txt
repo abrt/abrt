@@ -1,0 +1,66 @@
+abrt-dump-journal-xorg(1)
+=========================
+
+NAME
+----
+abrt-dump-journal-xorg - Extract Xorg crashes from systemd-journal
+
+SYNOPSIS
+--------
+'abrt-dump-journal-xorg' [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]
+
+DESCRIPTION
+-----------
+This tool creates problem directory from Xorg crash extracted from
+systemd-journal.
+The tool can follow systemd-journal and extract Xorg crashes in time of their
+occurrence.
+
+The following start from the last seen cursor. If the last seen cursor file
+does not exist, the following start by scanning the entire sytemd-journal or
+from the end if '-e' option is specified.
+
+FILES
+-----
+/var/lib/abrt/abrt-dump-journal-xorg.state::
+   State file where systemd-journal cursor to the last seen message is saved
+
+OPTIONS
+-------
+-v, --verbose::
+   Be more verbose. Can be given multiple times.
+
+-s::
+   Log to syslog
+
+-o::
+   Print found Xorg crashes on standard output
+
+-d DIR::
+   Create new problem directory in DIR for every Xorg crash found
+
+-D::
+   Same as -d DumpLocation, DumpLocation is specified in abrt.conf
+
+-s CURSOR::
+   Starts scannig systemd-journal from CURSOR
+
+-e::
+   Starts following systemd-journal from the end
+
+-x::
+   Make the problem directory world readable. Usable only with -d/-D
+
+-t::
+   Throttle problem directory creation to 1 per second
+
+-f::
+   Follow systemd-journal
+
+SEE ALSO
+--------
+abrt.conf(5), journalctl(1)
+
+AUTHORS
+-------
+* ABRT team

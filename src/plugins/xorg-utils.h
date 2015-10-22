@@ -27,6 +27,8 @@
 extern "C" {
 #endif
 
+#define XORG_SEARCH_STRING "Backtrace:"
+
 enum {
     ABRT_XORG_THROTTLE_CREATION = 1 << 0,
     ABRT_XORG_WORLD_READABLE    = 1 << 1,

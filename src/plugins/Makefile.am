@@ -21,6 +21,7 @@ bin_PROGRAMS = \
     abrt-dump-journal-core \
     abrt-dump-journal-oops \
     abrt-dump-xorg \
+    abrt-dump-journal-xorg \
     abrt-action-analyze-c \
     abrt-action-analyze-python \
     abrt-action-analyze-oops \
@@ -202,6 +203,24 @@ abrt_dump_journal_oops_CPPFLAGS = \
     -D_GNU_SOURCE
 abrt_dump_journal_oops_LDADD = \
     libabrt-journal.a \
+    $(GLIB_LIBS) \
+    $(LIBREPORT_LIBS) \
+    $(SYSTEMD_JOURNAL_LIBS) \
+    ../lib/libabrt.la
+
+abrt_dump_journal_xorg_SOURCES = \
+    abrt-dump-journal-xorg.c
+abrt_dump_journal_xorg_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
+    -DVAR_STATE=\"$(VAR_STATE)\" \
+    -D_GNU_SOURCE
+abrt_dump_journal_xorg_LDADD = \
+    libabrt-journal.a \
+    libxorg-utils.a \
     $(GLIB_LIBS) \
     $(LIBREPORT_LIBS) \
     $(SYSTEMD_JOURNAL_LIBS) \
