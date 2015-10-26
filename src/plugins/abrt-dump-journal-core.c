@@ -302,7 +302,7 @@ save_systemd_coredump_in_dump_directory(struct dump_dir *dd, struct crash_info *
 static int
 abrt_journal_core_to_abrt_problem(struct crash_info *info, const char *dump_location)
 {
-    struct dump_dir *dd = create_dump_dir(dump_location, "ccpp", info->ci_uid,
+    struct dump_dir *dd = create_dump_dir(dump_location, "ccpp", /*fs owner*/0,
             (save_data_call_back)save_systemd_coredump_in_dump_directory, info);
 
     if (dd != NULL)
