@@ -62,6 +62,10 @@ Handler.expected_iter = [
 '{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "comment", "data": "dir user comment" }',
 '{ "bthash": "DEADBEAF", "type": "comment", "data": "command line user comment" }',
 '{ "bthash": "DEADBEAF", "type": "comment", "data": "dir user comment" }',
+'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "url1", "data": "http:\/\/bugzilla.redhat.com\/1000000" }',
+'{ "bthash": "DEADBEAF", "type": "url2", "data": "http:\/\/bugzilla.redhat.com\/1000001" }',
+'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "url3", "data": "https:\/\/bugzilla.redhat.com\/show_bug.cgi?id=851210" }',
+'{ "bthash": "DEADBEAF", "type": "url4", "data": "https:\/\/bugzilla.redhat.com\/show_bug.cgi?id=851210" }',
 ].__iter__()
 
 httpd = BaseHTTPServer.HTTPServer(("", PORT), Handler)
