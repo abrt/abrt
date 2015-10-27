@@ -1,0 +1,65 @@
+abrt-dump-journal-core(1)
+=========================
+
+NAME
+----
+abrt-dump-journal-core - Extract coredumps from systemd-journal
+
+SYNOPSIS
+--------
+'abrt-dump-journal-core' [-vsf] [-e]/[-c CURSOR] [-t INT]/[-T] [-d DIR]/[-D]
+
+DESCRIPTION
+-----------
+This tool creates problem directory from coredumps extracted from
+systemd-journal.
+The tool can follow systemd-journal and extract coredumps in time of their
+occurrence.
+
+The following start from the last seen cursor. If the last seen cursor file
+does not exist, the following start by scanning the entire sytemd-journal or
+from the end if '-e' option is specified.
+
+-c and -e options conflicts because both specifies the first read message.
+
+-e is useful only for -f because the following of journal starts by reading
+the entire journal if the last seen possition is not available.
+
+FILES
+-----
+/var/lib/abrt/abrt-dump-journal-core.state::
+   State file where systemd-journal cursor to the last seen message is saved
+
+OPTIONS
+-------
+-v, --verbose::
+   Be more verbose. Can be given multiple times.
+
+-s::
+   Log to syslog
+
+-d DIR::
+   Create new problem directory in DIR for every coredump
+
+-D::
+   Same as -d DumpLocation, DumpLocation is specified in abrt.conf
+
+-e::
+   Starts following systemd-journal from the end
+
+-t INT::
+   Throttle problem directory creation to 1 per INT second
+
+-T::
+   Same as -t INT, INT is specified in plugins/CCpp.conf
+
+-f::
+   Follow systemd-journal from the last seen position (if available)
+
+SEE ALSO
+--------
+abrt.conf(5), journalctl(1)
+
+AUTHORS
+-------
+* ABRT team
