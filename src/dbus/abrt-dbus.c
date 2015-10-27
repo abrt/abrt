@@ -625,8 +625,8 @@ static void handle_method_call(GDBusConnection *connection,
 
             g_variant_builder_add(response_builder, "{s(its)}",
                                                     element_name,
-                                                    element_info->flags,
-                                                    size,
+                                                    (gint32)element_info->flags,
+                                                    (guint64)size,
                                                     element_info->content);
         }
 
