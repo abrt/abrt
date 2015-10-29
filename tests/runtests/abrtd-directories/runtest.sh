@@ -33,6 +33,8 @@ TEST="abrtd-directories"
 PACKAGE="abrt"
 
 
+
+
 rlJournalStart
     rlPhaseStartSetup
         prepare
@@ -50,16 +52,19 @@ rlJournalStart
         rlRun "systemctl restart abrtd"
 
         rlAssertExists "$ABRT_CONF_DUMP_LOCATION"
+        rlAssertEquals "Dump location has proper stat" "_$(stat --format='%A %U %G' $ABRT_CONF_DUMP_LOCATION)" "_drwxr-x--x root abrt"
 
         rlRun "rm -rf -- $ABRT_CONF_DUMP_LOCATION" "0" "Remove the dump location for 1st time"
         sleep 1
         rlAssertEquals "abrtd recreated the dump location once" "_"$((RECREATION_CNT + 1)) "_"$(grep -c "Recreating deleted dump location '$ABRT_CONF_DUMP_LOCATION'" /var/log/messages)
         rlAssertExists $ABRT_CONF_DUMP_LOCATION
+        rlAssertEquals "Dump location has proper stat" "_$(stat --format='%A %U %G' $ABRT_CONF_DUMP_LOCATION)" "_drwxr-x--x root abrt"
 
         rlRun "rm -rf -- $ABRT_CONF_DUMP_LOCATION" "0" "Remove the dump location for 2nd time"
         sleep 1
         rlAssertEquals "abrtd recreated the dump location twice" "_"$((RECREATION_CNT + 2)) "_"$(grep -c "Recreating deleted dump location '$ABRT_CONF_DUMP_LOCATION'" /var/log/messages)
         rlAssertExists "$ABRT_CONF_DUMP_LOCATION"
+        rlAssertEquals "Dump location has proper stat" "_$(stat --format='%A %U %G' $ABRT_CONF_DUMP_LOCATION)" "_drwxr-x--x root abrt"
 
         # check if inotify works and abrtd will find a new dump directory
         will_segfault
