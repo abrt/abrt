@@ -92,20 +92,18 @@ void abrt_journal_free(abrt_journal_t *journal)
     free(journal);
 }
 
-int abrt_journal_set_journal_filter(abrt_journal_t *journal, const char *const *journal_filter_list)
+int abrt_journal_set_journal_filter(abrt_journal_t *journal, GList *journal_filter_list)
 {
-    const char *const *cursor = journal_filter_list;
-
-    while (*cursor)
+    for (GList *l = journal_filter_list; l != NULL; l = l->next)
     {
-        const int r = sd_journal_add_match(journal->j, *cursor, strlen(*cursor));
+        const char *filter = l->data;
+        const int r = sd_journal_add_match(journal->j, filter, strlen(filter));
         if (r < 0)
         {
-            log_notice("Failed to set journal filter: %s", strerror(-r));
+            log_notice("Failed to set journal filter '%s': %s", filter,  strerror(-r));
             return r;
         }
-
-        ++cursor;
+        log_debug("Using journal match: '%s'", filter);
     }
 
     return 0;

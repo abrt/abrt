@@ -266,9 +266,9 @@ int main(int argc, char *argv[])
         oops_utils_flags |= ABRT_OOPS_PRINT_STDOUT;
 
     const char *const env_journal_filter = getenv("ABRT_DUMP_JOURNAL_OOPS_DEBUG_FILTER");
-    static const char *kernel_journal_filter[2] = { 0 };
-    kernel_journal_filter[0] = (env_journal_filter ? env_journal_filter : "SYSLOG_IDENTIFIER=kernel");
-    log_debug("Using journal match: '%s'", kernel_journal_filter[0]);
+    GList *kernel_journal_filter = NULL;
+    kernel_journal_filter = g_list_append(kernel_journal_filter,
+            (env_journal_filter ? (gpointer)env_journal_filter : (gpointer)"SYSLOG_IDENTIFIER=kernel"));
 
     abrt_journal_t *journal = NULL;
     if ((opts & OPT_J))
@@ -286,6 +286,8 @@ int main(int argc, char *argv[])
 
     if (abrt_journal_set_journal_filter(journal, kernel_journal_filter) < 0)
         error_msg_and_die(_("Cannot filter systemd-journal to kernel data only"));
+
+    g_list_free(kernel_journal_filter);
 
     if ((opts & OPT_e) && abrt_journal_seek_tail(journal) < 0)
         error_msg_and_die(_("Cannot seek to the end of journal"));

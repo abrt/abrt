@@ -216,11 +216,10 @@ int main(int argc, char *argv[])
     if ((opts & OPT_o))
         xorg_utils_flags |= ABRT_XORG_PRINT_STDOUT;
 
-    const char *const env_journal_filter = getenv("ABRT_DUMP_JOURNAL_XORG_DEBUG_FILTER");
-    static const char *xorg_journal_filter[2] = { 0 };
+    char *env_journal_filter = getenv("ABRT_DUMP_JOURNAL_XORG_DEBUG_FILTER");
+    GList *xorg_journal_filter = NULL;
     /* _COMM=gdm-x-session works for Fedora 22+ */
-    xorg_journal_filter[0] = (env_journal_filter ? env_journal_filter : "_COMM=gdm-x-session");
-    log_debug("Using journal match: '%s'", xorg_journal_filter[0]);
+    xorg_journal_filter = g_list_append(xorg_journal_filter, (env_journal_filter ? env_journal_filter : (char *)"_COMM=gdm-x-session"));
 
     abrt_journal_t *journal = NULL;
     if ((opts & OPT_J))
