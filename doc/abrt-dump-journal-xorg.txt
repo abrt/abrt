@@ -7,7 +7,7 @@ abrt-dump-journal-xorg - Extract Xorg crashes from systemd-journal
 
 SYNOPSIS
 --------
-'abrt-dump-journal-xorg' [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]
+'abrt-dump-journal-xorg' [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D] [-j FILTER]
 
 DESCRIPTION
 -----------
@@ -20,10 +20,23 @@ The following start from the last seen cursor. If the last seen cursor file
 does not exist, the following start by scanning the entire sytemd-journal or
 from the end if '-e' option is specified.
 
+Journal filter is required parameter and must be specified either by parameter
+-j or in xorg.conf conf file.
+
 FILES
 -----
 /var/lib/abrt/abrt-dump-journal-xorg.state::
-   State file where systemd-journal cursor to the last seen message is saved
+   State file where systemd-journal cursor to the last seen message is saved.
+
+Configuration file
+~~~~~~~~~~~~~~~~~~
+The conf file is located in /etc/abrt/plugins/xorg.conf.
+Configuration file lines should have 'PARAM = VALUE' format. The parameters for
+abrt-dump-jounral-xorg are:
+
+'JournalFilters'::
+   Specify list of comma separated filters which are used for searching Xorg
+   crashes in jounral (e.g. JournalFilters = _COMM=gdm-x-session, [...])
 
 OPTIONS
 -------
@@ -56,6 +69,9 @@ OPTIONS
 
 -f::
    Follow systemd-journal
+
+-j::
+   Set journal filter (may be given many times)
 
 SEE ALSO
 --------

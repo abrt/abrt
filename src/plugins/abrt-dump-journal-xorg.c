@@ -16,6 +16,8 @@
 #include "abrt-journal.h"
 #include "xorg-utils.h"
 #define ABRT_JOURNAL_XORG_WATCH_STATE_FILE VAR_STATE"/abrt-dump-journal-xorg.state"
+#define XORG_CONF "xorg.conf"
+#define XORG_CONF_PATH "/etc/abrt/plugins/"XORG_CONF
 
 static void
 abrt_xorg_process_list_of_crashes(GList *crashes, const char *dump_location, int flags)
@@ -136,7 +138,8 @@ int main(int argc, char *argv[])
     abrt_init(argv);
 
     /* Can't keep these strings/structs static: _() doesn't support that */
-    const char *program_usage_string = _(
+
+    const char *program_usage_string_template = _(
         "& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
         "\n"
         "Extract Xorg crash from systemd-journal\n"
@@ -146,8 +149,18 @@ int main(int argc, char *argv[])
         "-e is useful only for -f because the following of journal starts by reading \n"
         "the entire journal if the last seen possition is not available.\n"
         "\n"
-        "The last seen position is saved in "ABRT_JOURNAL_XORG_WATCH_STATE_FILE"\n"
+        "The last seen position is saved in %s\n"
+        "\n"
+        "Journal filter is required parameter and must be specified either by parameter\n"
+        "-j or in %s conf file.\n"
     );
+
+    char program_usage_string[strlen(program_usage_string_template)
+                            + strlen(ABRT_JOURNAL_XORG_WATCH_STATE_FILE)
+                            + strlen(XORG_CONF_PATH)];
+    sprintf(program_usage_string, program_usage_string_template,
+            ABRT_JOURNAL_XORG_WATCH_STATE_FILE, XORG_CONF_PATH);
+
     enum {
         OPT_v = 1 << 0,
         OPT_s = 1 << 1,
@@ -161,11 +174,13 @@ int main(int argc, char *argv[])
         OPT_f = 1 << 9,
         OPT_a = 1 << 10,
         OPT_J = 1 << 11,
+        OPT_j = 1 << 12,
     };
 
     char *cursor = NULL;
     char *dump_location = NULL;
     char *journal_dir = NULL;
+    GList *journal_filters = NULL;
 
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -181,6 +196,7 @@ int main(int argc, char *argv[])
         OPT_BOOL(  'f', NULL, NULL, _("Follow systemd-journal from the last seen position (if available)")),
         OPT_BOOL(  'a', NULL, NULL, _("Read journal files from all machines")),
         OPT_STRING('J', NULL, &journal_dir,  "PATH", _("Read all journal files from directory at PATH")),
+        OPT_LIST(  'j', NULL, &journal_filters,  "FILTER", _("Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -216,10 +232,37 @@ int main(int argc, char *argv[])
     if ((opts & OPT_o))
         xorg_utils_flags |= ABRT_XORG_PRINT_STDOUT;
 
-    char *env_journal_filter = getenv("ABRT_DUMP_JOURNAL_XORG_DEBUG_FILTER");
+    /* get journal filters */
+    const char *const env_journal_filter = getenv("ABRT_DUMP_JOURNAL_XORG_DEBUG_FILTER");
+    bool free_filter_list_data = false;
     GList *xorg_journal_filter = NULL;
-    /* _COMM=gdm-x-session works for Fedora 22+ */
-    xorg_journal_filter = g_list_append(xorg_journal_filter, (env_journal_filter ? env_journal_filter : (char *)"_COMM=gdm-x-session"));
+    if (env_journal_filter != NULL)
+    {
+        xorg_journal_filter = g_list_append(xorg_journal_filter, (gpointer)env_journal_filter);
+        log_debug("Using journal filter from environment variable");
+    }
+    else if (journal_filters != NULL)
+    {
+        xorg_journal_filter = journal_filters;
+        log_debug("Using journal filter passed by parameter -j");
+    }
+    else
+    {
+        map_string_t *settings = new_map_string();
+        log_notice("Loading settings from '%s'", XORG_CONF);
+        load_abrt_plugin_conf_file(XORG_CONF, settings);
+        log_debug("Loaded '%s'", XORG_CONF);
+        const char *conf_journal_filters = get_map_string_item_or_NULL(settings, "JournalFilters");
+        xorg_journal_filter = parse_list(conf_journal_filters);
+        /* list data will be free by g_list_free_full */
+        free_filter_list_data = true;
+        free_map_string(settings);
+        if (xorg_journal_filter)
+            log_debug("Using journal filter from conf file %s", XORG_CONF);
+    }
+
+    if (xorg_journal_filter == NULL)
+        error_msg_and_die(_("Journal filter must be specified either by parameter -j or stored in /etc/abrt/plugins/xorg.conf file"));
 
     abrt_journal_t *journal = NULL;
     if ((opts & OPT_J))
@@ -237,6 +280,12 @@ int main(int argc, char *argv[])
 
     if (abrt_journal_set_journal_filter(journal, xorg_journal_filter) < 0)
         error_msg_and_die(_("Cannot filter systemd-journal to Xorg data only"));
+
+    /* free filter list */
+    if (free_filter_list_data)
+        g_list_free_full(xorg_journal_filter, free);
+    else
+        g_list_free(xorg_journal_filter);
 
     if ((opts & OPT_e) && abrt_journal_seek_tail(journal) < 0)
         error_msg_and_die(_("Cannot seek to the end of journal"));
