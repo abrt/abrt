@@ -93,6 +93,12 @@ AC_ARG_WITH([systemdsystemunitdir],
 AC_SUBST([systemdsystemunitdir], [$with_systemdsystemunitdir])
 AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$with_systemdsystemunitdir"])
 
+AC_ARG_WITH(largedatatmpdir,                                                     
+            [AS_HELP_STRING([--with-largedatatmpdir=DIR],                        
+                           [Directory where potentially large data are created (default: /var/tmp)])],
+            [], [with_largedatatmpdir="/var/tmp"])                               
+AC_SUBST([LARGE_DATA_TMP_DIR], [$with_largedatatmpdir])
+
 AC_CHECK_HEADER([sys/inotify.h], [],
    [AC_MSG_ERROR([sys/inotify.h is needed to build abrt])])
 
@@ -161,6 +167,7 @@ AC_CONFIG_FILES([
 	src/plugins/Makefile
 	src/Makefile
 	src/daemon/Makefile
+	src/daemon/abrt-handle-upload
 	src/hooks/Makefile
 	src/applet/Makefile
 	src/gui-gtk/Makefile

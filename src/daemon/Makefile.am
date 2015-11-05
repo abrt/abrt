@@ -127,7 +127,7 @@ dist_defaultdaemonconf_DATA = \
 
 comredhatabrtservicedir = ${datadir}/dbus-1/system-services
 dist_comredhatabrtservice_DATA = com.redhat.abrt.service
-EXTRA_DIST = abrt-handle-upload
+EXTRA_DIST = abrt-handle-upload.in
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
