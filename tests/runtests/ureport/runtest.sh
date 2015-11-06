@@ -41,14 +41,15 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "ccpp"
+        prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         ./fakefaf.py ccpp_ureport &
         sleep 1
         # 70 is EXIT_STOP_EVENT_RUN
-        rlRun "reporter-ureport -v --insecure --url http://localhost:12345/faf -d $crash_PATH &> ccpp_reporter" 70 "Send uReport"
+        rlRun "reporter-ureport -vvv --insecure --url http://localhost:12345/faf -d $crash_PATH &> ccpp_reporter" 70 "Send uReport"
         kill %1
 
         rlRun "./ureport-valid.py ccpp_ureport" 70 "Validate uReport contents"
@@ -62,13 +63,14 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "python"
+        prepare
         generate_python_exception
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         ./fakefaf.py python_ureport &
         sleep 1
-        rlRun "reporter-ureport -v --insecure --url http://localhost:12345/faf -d $crash_PATH &> python_reporter" 70 "Send uReport"
+        rlRun "reporter-ureport -vvv --insecure --url http://localhost:12345/faf -d $crash_PATH &> python_reporter" 70 "Send uReport"
         kill %1
 
         rlRun "./ureport-valid.py python_ureport" 70 "Validate uReport contents"
@@ -84,8 +86,8 @@ rlJournalStart
     rlPhaseStartTest "ureport with Authentication data"
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
 
         rlRun "augtool set /files/etc/libreport/plugins/ureport.conf/IncludeAuthData yes"
