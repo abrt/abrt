@@ -21,6 +21,7 @@ bin_PROGRAMS = \
     abrt-dump-journal-core \
     abrt-dump-journal-oops \
     abrt-dump-xorg \
+    abrt-dump-journal-xorg \
     abrt-action-analyze-c \
     abrt-action-analyze-python \
     abrt-action-analyze-oops \
@@ -105,6 +106,7 @@ EXTRA_DIST = \
     abrt-gdb-exploitable \
     https-utils.h \
     oops-utils.h \
+    xorg-utils.h \
     abrt-journal.h \
     post_report.xml.in \
     abrt-action-analyze-ccpp-local.in
@@ -176,6 +178,18 @@ libabrt_journal_a_CFLAGS = \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE
 
+noinst_LIBRARIES += libxorg-utils.a
+libxorg_utils_a_SOURCES = \
+    xorg-utils.c \
+    xorg-utils.h
+libxorg_utils_a_CFLAGS = \
+    -I$(srcdir)/../include \
+    $(SYSTEMD_JOURNAL_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    $(GLIB_CFLAGS) \
+    -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
+    -D_GNU_SOURCE
+
 abrt_dump_journal_oops_SOURCES = \
     oops-utils.c \
     abrt-dump-journal-oops.c
@@ -194,6 +208,24 @@ abrt_dump_journal_oops_LDADD = \
     $(SYSTEMD_JOURNAL_LIBS) \
     ../lib/libabrt.la
 
+abrt_dump_journal_xorg_SOURCES = \
+    abrt-dump-journal-xorg.c
+abrt_dump_journal_xorg_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
+    -DVAR_STATE=\"$(VAR_STATE)\" \
+    -D_GNU_SOURCE
+abrt_dump_journal_xorg_LDADD = \
+    libabrt-journal.a \
+    libxorg-utils.a \
+    $(GLIB_LIBS) \
+    $(LIBREPORT_LIBS) \
+    $(SYSTEMD_JOURNAL_LIBS) \
+    ../lib/libabrt.la
+
 abrt_dump_xorg_SOURCES = \
     abrt-dump-xorg.c
 abrt_dump_xorg_CPPFLAGS = \
@@ -204,6 +236,7 @@ abrt_dump_xorg_CPPFLAGS = \
     -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
     -D_GNU_SOURCE
 abrt_dump_xorg_LDADD = \
+    libxorg-utils.a \
     $(GLIB_LIBS) \
     $(LIBREPORT_LIBS) \
     ../lib/libabrt.la

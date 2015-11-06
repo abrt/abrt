@@ -1,0 +1,125 @@
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE)
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE) Backtrace:
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE) 0: /usr/libexec/Xorg (OsLookupColor+0x139) [0x59ab89]
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE) 1: /lib64/libc.so.6 (__restore_rt+0x0) [0x7f2b13545b1f]
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE) 2: /lib64/libc.so.6 (__select_nocancel+0xa) [0x7f2b13609e7a]
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE) 3: /usr/libexec/Xorg (WaitForSomething+0x1c8) [0x593568]
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE) 4: /usr/libexec/Xorg (SendErrorToClient+0x111) [0x43a3a1]
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE) 5: /usr/libexec/Xorg (remove_fs_handlers+0x41b) [0x43e68b]
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE) 6: /lib64/libc.so.6 (__libc_start_main+0xf0) [0x7f2b13531580]
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE) 7: /usr/libexec/Xorg (_start+0x29) [0x428a49]
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE) 8: ? (?+0x29) [0x29]
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE)
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE) Received signal 11 sent by process 4025, uid 0
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE)
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: Fatal server error:
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE) Caught signal 11 (Segmentation fault). Server aborting
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE)
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE)
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: Please consult the Fedora Project support
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: at http://wiki.x.org
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: for help.
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE) Please also check the log file at "/var/log/Xorg.0.log" for additional information.
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE)
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (**) Option "fd" "14"
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com audit[4024]: USER_END pid=4024 uid=0 auid=1000 ses=2 subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 msg='op=PAM:session_close grantors=pam_keyinit,pam_limits,pam_keyinit,pam_limits,pam_systemd,pam_unix acct="root" exe="/usr/bin/sudo" hostname=? addr=? terminal=/dev/pts/1 res=success'
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com audit[4024]: CRED_DISP pid=4024 uid=0 auid=1000 ses=2 subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 msg='op=PAM:setcred grantors=pam_env,pam_fprintd acct="root" exe="/usr/bin/sudo" hostname=? addr=? terminal=/dev/pts/1 res=success'
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (**) Option "fd" "17"
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (**) Option "fd" "18"
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (**) Option "fd" "19"
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (**) Option "fd" "20"
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (**) Option "fd" "21"
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1115]: (EE) Server terminated with error (1). Closing log file.
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com audit[1130]: ANOM_ABEND auid=4294967295 uid=42 gid=42 ses=4294967295 subj=system_u:system_r:xserver_t:s0-s0:c0.c1023 pid=1130 comm="Xorg" exe="/usr/libexec/Xorg" sig=6
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com gnome-session[1259]: (gnome-settings-daemon:1331): Gdk-WARNING **: gnome-settings-daemon: Fatal IO error 11 (Resource temporarily unavailable) on X server :0.
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com org.a11y.atspi.Registry[1292]: XIO:  fatal IO error 11 (Resource temporarily unavailable) on X server ":0"
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com org.a11y.atspi.Registry[1292]: after 27 requests (27 known processed) with 0 events remaining.
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com org.gtk.vfs.Daemon[1256]: A connection to the bus can't be made
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got pause for 13:67
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got pause for 13:65
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got pause for 13:69
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got pause for 13:64
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got pause for 13:68
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got pause for 13:66
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com gnome-session[1259]: gnome-session[1259]: WARNING: Lost name on bus: org.gnome.SessionManager
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com gnome-session[1259]: WARNING: Lost name on bus: org.gnome.SessionManager
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com gdm-launch-environment][1055]: pam_unix(gdm-launch-environment:session): session closed for user gdm
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com audit[1055]: USER_END pid=1055 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:xdm_t:s0-s0:c0.c1023 msg='op=PAM:session_close grantors=pam_keyinit,pam_keyinit,pam_limits,pam_systemd,pam_unix acct="gdm" exe="/usr/libexec/gdm-session-worker" hostname=? addr=? terminal=/dev/tty1 res=success'
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com audit[1055]: CRED_DISP pid=1055 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:xdm_t:s0-s0:c0.c1023 msg='op=PAM:setcred grantors=pam_permit acct="gdm" exe="/usr/libexec/gdm-session-worker" hostname=? addr=? terminal=/dev/tty1 res=success'
+Sep 21 16:36:22 dhcp-24-159.brq.redhat.com polkitd[698]: Unregistered Authentication Agent for unix-session:c2 (system bus name :1.36, object path /org/freedesktop/PolicyKit1/AuthenticationAgent, locale en_US.UTF-8) (disconnected from bus)
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd-logind[653]: Removed session c2.
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1]: Stopping User Manager for UID 42...
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1083]: Reached target Shutdown.
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1083]: Starting Shutdown.
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1083]: Starting Exit the Session...
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1083]: Stopped target Default.
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1090]: pam_unix(systemd-user:session): session closed for user gdm
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1083]: Stopping Default.
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com audit[1]: USER_AVC pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='Unknown permission stop for class system exe="/usr/lib/systemd/systemd" sauid=0 hostname=? addr=? terminal=?'
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1083]: Stopped target Basic System.
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com audit[1]: USER_AVC pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='Unknown permission stop for class system exe="/usr/lib/systemd/systemd" sauid=0 hostname=? addr=? terminal=?'
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1083]: Stopping Basic System.
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com audit[1]: SERVICE_STOP pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=user@42 comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1083]: Stopped target Sockets.
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1083]: Stopping Sockets.
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1083]: Stopped target Timers.
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1083]: Stopping Timers.
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1083]: Stopped target Paths.
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1083]: Stopping Paths.
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1083]: Received SIGRTMIN+24 from PID 4198 (kill).
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1]: Stopped User Manager for UID 42.
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1]: Removed slice user-42.slice.
+Sep 21 16:36:42 dhcp-24-159.brq.redhat.com systemd[1]: Stopping user-42.slice.
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got resume for 13:67
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) VESA(0): Setting up VESA Mode 0x144 (1024x768)
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'ImExPS/2 Generic Explorer Mouse', /dev/input/event3 is tagged by udev as: Mouse
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com gnome-session[1962]: (gnome-settings-daemon:2097): color-plugin-WARNING **: unable to get EDID for xrandr-default: unable to get EDID for output
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'ImExPS/2 Generic Explorer Mouse', /dev/input/event3 is a pointer caps
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got resume for 13:65
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'Sleep Button', /dev/input/event1 is tagged by udev as: Keyboard
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'Sleep Button', /dev/input/event1 is a keyboard
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got resume for 13:69
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'Video Bus', /dev/input/event5 is tagged by udev as: Keyboard
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'Video Bus', /dev/input/event5 is a keyboard
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got resume for 13:64
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'Power Button', /dev/input/event0 is tagged by udev as: Keyboard
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'Power Button', /dev/input/event0 is a keyboard
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got resume for 13:68
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'VirtualBox USB Tablet', /dev/input/event4 is tagged by udev as: Mouse
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'VirtualBox USB Tablet', /dev/input/event4 is a pointer caps
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got resume for 13:66
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'AT Translated Set 2 keyboard', /dev/input/event2 is tagged by udev as: Keyboard
+Sep 21 16:38:58 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'AT Translated Set 2 keyboard', /dev/input/event2 is a keyboard
+Sep 21 16:38:59 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (**) Option "fd" "18"
+Sep 21 16:38:59 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (**) Option "fd" "31"
+Sep 21 16:38:59 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (**) Option "fd" "14"
+Sep 21 16:38:59 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (**) Option "fd" "19"
+Sep 21 16:38:59 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (**) Option "fd" "20"
+Sep 21 16:38:59 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (**) Option "fd" "17"
+Sep 21 16:38:59 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got pause for 13:67
+Sep 21 16:38:59 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got pause for 13:65
+Sep 21 16:38:59 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got pause for 13:69
+Sep 21 16:38:59 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got pause for 13:64
+Sep 21 16:38:59 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got pause for 13:68
+Sep 21 16:38:59 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got pause for 13:66
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got resume for 13:67
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) VESA(0): Setting up VESA Mode 0x144 (1024x768)
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com gnome-session[1962]: (gnome-settings-daemon:2097): color-plugin-WARNING **: unable to get EDID for xrandr-default: unable to get EDID for output
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'ImExPS/2 Generic Explorer Mouse', /dev/input/event3 is tagged by udev as: Mouse
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'ImExPS/2 Generic Explorer Mouse', /dev/input/event3 is a pointer caps
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got resume for 13:65
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'Sleep Button', /dev/input/event1 is tagged by udev as: Keyboard
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'Sleep Button', /dev/input/event1 is a keyboard
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got resume for 13:69
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'Video Bus', /dev/input/event5 is tagged by udev as: Keyboard
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'Video Bus', /dev/input/event5 is a keyboard
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got resume for 13:64
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'Power Button', /dev/input/event0 is tagged by udev as: Keyboard
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'Power Button', /dev/input/event0 is a keyboard
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got resume for 13:68
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'VirtualBox USB Tablet', /dev/input/event4 is tagged by udev as: Mouse
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'VirtualBox USB Tablet', /dev/input/event4 is a pointer caps
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) systemd-logind: got resume for 13:66
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'AT Translated Set 2 keyboard', /dev/input/event2 is tagged by udev as: Keyboard
+Sep 21 16:39:00 dhcp-24-159.brq.redhat.com /usr/libexec/gdm-x-session[1895]: (II) input device 'AT Translated Set 2 keyboard', /dev/input/event2 is a keyboard
+

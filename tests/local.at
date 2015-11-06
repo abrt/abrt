@@ -1,13 +1,12 @@
 # Source: bison local.at
 
-# ----------------------------------------
-# AT_COMPILE(OUTPUT, [SOURCES = OUTPUT.c])
-# ----------------------------------------
+# ---------------------------------------------------------
+# AT_COMPILE(OUTPUT, CFLAGS, LDFLAGS, [SOURCES = OUTPUT.c])
+# ---------------------------------------------------------
 # Compile SOURCES into OUTPUT.  If OUTPUT does not contain '.',
 # assume that we are linking too; this is a hack.
 m4_define([AT_COMPILE],
-[AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS m4_bmatch([$1], [[.]], [], [$LDFLAGS ])-o $1 m4_default([$2], [$1.c])[]m4_bmatch([$1], [[.]], [], [ $LIBS])],
-          0, [ignore], [ignore])])
+[AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS [$2 ][$3 ]m4_bmatch([$1], [[.]], [], [$LDFLAGS ])-o $1 m4_default([$4], [$1.c])[]m4_bmatch([$1], [[.]], [], [ $LIBS])], 0, [ignore], [ignore])])
 
 # ------------------------
 # AT_TESTFUN(NAME, SOURCE)
@@ -19,7 +18,21 @@ m4_define([AT_COMPILE],
 m4_define([AT_TESTFUN],
 [AT_SETUP([$1])
 AT_DATA([$1.c], [$2])
-AT_COMPILE([$1])
+AT_COMPILE([$1], [], [])
+AT_CHECK([$PRE_AT_CHECK ./$1], 0, [ignore], [ignore])
+AT_CLEANUP])
+
+# ------------------------------------------
+# AT_TESTCFUN(NAME, CFLAGS, LDFLAGS, SOURCE)
+# ------------------------------------------
+
+# Create a test named NAME by compiling and running C file with
+# contents SOURCE.  The stdout and stderr output of the C program is
+# ignored by Autotest.
+m4_define([AT_TESTCFUN],
+[AT_SETUP([$1])
+AT_DATA([$1.c], [$4])
+AT_COMPILE([$1], [$2], [$3])
 AT_CHECK([$PRE_AT_CHECK ./$1], 0, [ignore], [ignore])
 AT_CLEANUP])
 

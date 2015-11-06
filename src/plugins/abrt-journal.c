@@ -92,20 +92,18 @@ void abrt_journal_free(abrt_journal_t *journal)
     free(journal);
 }
 
-int abrt_journal_set_journal_filter(abrt_journal_t *journal, const char *const *journal_filter_list)
+int abrt_journal_set_journal_filter(abrt_journal_t *journal, GList *journal_filter_list)
 {
-    const char *const *cursor = journal_filter_list;
-
-    while (*cursor)
+    for (GList *l = journal_filter_list; l != NULL; l = l->next)
     {
-        const int r = sd_journal_add_match(journal->j, *cursor, strlen(*cursor));
+        const char *filter = l->data;
+        const int r = sd_journal_add_match(journal->j, filter, strlen(filter));
         if (r < 0)
         {
-            log_notice("Failed to set journal filter: %s", strerror(-r));
+            log_notice("Failed to set journal filter '%s': %s", filter,  strerror(-r));
             return r;
         }
-
-        ++cursor;
+        log_debug("Using journal match: '%s'", filter);
     }
 
     return 0;
@@ -207,6 +205,15 @@ char *abrt_journal_get_string_field(abrt_journal_t *journal, const char *field, 
 char *abrt_journal_get_log_line(abrt_journal_t *journal)
 {
     return abrt_journal_get_string_field(journal, "MESSAGE", NULL);
+}
+
+char *abrt_journal_get_next_log_line(void *data)
+{
+    abrt_journal_t *journal = (abrt_journal_t *)data;
+    if (abrt_journal_next(journal) <= 0)
+        return NULL;
+
+    return abrt_journal_get_log_line(journal);
 }
 
 int abrt_journal_get_cursor(abrt_journal_t *journal, char **cursor)

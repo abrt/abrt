@@ -45,7 +45,7 @@ int abrt_journal_open_directory(abrt_journal_t **journal, const char *directory)
 void abrt_journal_free(abrt_journal_t *journal);
 
 int abrt_journal_set_journal_filter(abrt_journal_t *journal,
-                                    const char *const *journal_filter_list);
+                                    GList *journal_filter_list);
 
 int abrt_journal_get_field(abrt_journal_t *journal,
                            const char *field,
@@ -67,6 +67,8 @@ char *abrt_journal_get_string_field(abrt_journal_t *journal,
                                   char *value);
 
 char *abrt_journal_get_log_line(abrt_journal_t *journal);
+
+char *abrt_journal_get_next_log_line(void *data);
 
 int abrt_journal_get_cursor(abrt_journal_t *journal, char **cursor);
 
