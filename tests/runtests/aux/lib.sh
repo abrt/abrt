@@ -149,7 +149,7 @@ function prepare() {
 
 function print_syslog {
     COUNT=${1:-10}
-    if [ grep -q ' 6\.' /etc/redhat-release 2>/dev/null ] ; then
+    if grep -q ' 6\.' /etc/redhat-release 2>/dev/null; then
         cat /var/log/messages | grep abrt | tail -n $COUNT
     else
         journalctl | grep abrt | tail -n $COUNT
