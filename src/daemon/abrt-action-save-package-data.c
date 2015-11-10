@@ -88,7 +88,7 @@ static void load_gpg_keys(void)
     }
 
     const char *gpg_keys_dir = get_map_string_item_or_NULL(settings, "GPGKeysDir");
-    if (strcmp(gpg_keys_dir, "") != 0)
+    if (gpg_keys_dir != NULL && strcmp(gpg_keys_dir, "") != 0)
     {
         log_debug("Reading gpg keys from '%s'", gpg_keys_dir);
         GHashTable *done_set = g_hash_table_new(g_str_hash, g_str_equal);
