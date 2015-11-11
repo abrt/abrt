@@ -41,7 +41,7 @@ rlJournalStart
         rlRun "ulimit -c unlimited" 0
 
         TmpDir=$(mktemp -d)
-        cp verify_core_backtrace.py verify_core_backtrace_length.py will_segfault_in_new_pid.c $TmpDir
+        cp verify_core_backtrace.py verify_core_backtrace_length.py will_segfault_in_new_pid.c will_segfault_locked_memory.c $TmpDir
         pushd $TmpDir
     rlPhaseEnd
 
@@ -134,6 +134,24 @@ EOF
         rlAssertEquals "PID from process' PID NS" "_1" "_$(cat $crash_PATH/pid)"
         rlAssertGrep "Name:[[:space:]]*will_segfault" $crash_PATH/proc_pid_status
         rlAssertGrep "will_segfault" $crash_PATH/cmdline
+
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+    rlPhaseEnd
+
+    rlPhaseStartTest "crash of a process with locked memory"
+        EXECUTABLE=will_segfault_locked_memory
+        rlLogInfo "Build the binary"
+        rlRun "gcc -std=gnu99 --pedantic -Wall -Wextra -Wno-unused-parameter -o $EXECUTABLE $EXECUTABLE.c"
+
+        prepare
+        rlRun "./$EXECUTABLE" 134
+        wait_for_hooks
+        get_crash_path
+
+        rlAssertExists "$crash_PATH/not-reportable"
+        rlAssertGrep "locked memory" "$crash_PATH/not-reportable"
+        rlAssertEquals "Detected the right process" "_./$EXECUTABLE" "_$(cat $crash_PATH/cmdline)"
+        rlRun "grep VmLck $crash_PATH/proc_pid_status"
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
     rlPhaseEnd
