@@ -152,7 +152,7 @@ function print_syslog {
     if grep -q ' 6\.' /etc/redhat-release 2>/dev/null; then
         cat /var/log/messages | grep abrt | tail -n $COUNT
     else
-        journalctl | grep abrt | tail -n $COUNT
+        journalctl -b | grep abrt | tail -n $COUNT
     fi
 }
 

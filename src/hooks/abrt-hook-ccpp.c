@@ -868,6 +868,27 @@ int main(int argc, char** argv)
 
         dd_save_text(dd, FILENAME_ABRT_VERSION, VERSION);
 
+        /* In case of errors, treat the process as if it has locked memory */
+        long unsigned lck_bytes = ULONG_MAX;
+        const char *vmlck = strstr(proc_pid_status, "VmLck:");
+        if (vmlck == NULL)
+            error_msg("/proc/%s/status does not contain 'VmLck:' line", pid_str);
+        else if (1 != sscanf(vmlck + 6, "%lu kB\n", &lck_bytes))
+            error_msg("Failed to parse 'VmLck:' line in /proc/%s/status", pid_str);
+
+        if (lck_bytes)
+        {
+            log_notice("Process %s of user %lu has locked memory",
+                        pid_str, (long unsigned)uid);
+
+            dd_mark_as_notreportable(dd, "The process had locked memory "
+                    "which usually indicates efforts to protect sensitive "
+                    "data (passwords) from being written to disk.\n"
+                    "In order to avoid sensitive information leakages, "
+                    "ABRT will not allow you to report this problem to "
+                    "bug tracking tools");
+        }
+
         if (setting_SaveBinaryImage)
         {
             if (save_crashing_binary(pid, dd))
