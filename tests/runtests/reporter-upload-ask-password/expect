@@ -1,0 +1,39 @@
+#!/usr/bin/expect
+
+set timeout 10
+set username [lindex $argv 0]
+set i [lindex $argv 1]
+
+spawn sudo -u $username EDITOR=cat report-cli -vvv -e report_Uploader problem_dir
+
+# timeout handler
+proc itstime {args} {
+    puts "!! expect timeout !!"
+    exit 1
+}
+
+while {1} {
+    expect {
+
+        eof {break}
+
+        timeout { itstime }
+
+        "Please enter user name for" {
+            send "$username\n"
+        }
+        "Please enter password for '" {
+            if { $i > 0 } {
+                set i [expr $i - 1];
+                send "foo\n";
+            } else {
+                send "redhat\n";
+            }
+        }
+        "Please enter password for uploading:" {
+            send "foo\n"
+        }
+    }
+}
+
+
