@@ -1,0 +1,26 @@
+policy_module(abrt_ccpp_test_policy, 1.2)
+
+require {
+    type unconfined_t;
+    role unconfined_r;
+}
+
+type abrt_test_dir_t;
+type abrt_test_file_t;
+type abrt_test_bin_exec_t;
+type abrt_test_bin_t;
+
+files_type(abrt_test_dir_t)
+files_type(abrt_test_file_t)
+files_type(abrt_test_bin_exec_t)
+
+domain_type(abrt_test_bin_t)
+domain_entry_file(abrt_test_bin_t, abrt_test_bin_exec_t)
+domain_auto_trans(unconfined_t, abrt_test_bin_exec_t, abrt_test_bin_t)
+
+role unconfined_r types abrt_test_bin_t;
+
+type_transition abrt_test_bin_t abrt_test_dir_t : file abrt_test_file_t;
+
+manage_dirs_pattern(abrt_test_bin_t, abrt_test_dir_t, abrt_test_dir_t)
+manage_files_pattern(abrt_test_bin_t, abrt_test_file_t, abrt_test_file_t)
