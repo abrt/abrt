@@ -56,6 +56,7 @@ export PACKAGES="abrt \
                  abrt-cli \
                  abrt-devel \
                  abrt-python \
+                 abrt-cli-ng \
                  abrt-console-notification \
                  libreport \
                  libreport-plugin-bugzilla \
