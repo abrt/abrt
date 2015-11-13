@@ -1,0 +1,22 @@
+[New LWP 10303]
+warning: File "/usr/lib64/perl5/CORE/libperl.so" has a different build-id, file skipped
+Missing separate debuginfo for /usr/lib64/freetype-freeworld/libfreetype.so.6
+Try: yum --disablerepo='*' --enablerepo='*-debuginfo' install /usr/lib/debug/.build-id/32/e3c32575e6fd2a16d5db151377c140c1130f3e
+
+Thread 1 (Thread 0x7f7badf717e0 (LWP 10303)):
+#0  0x0000000000420240 in rxvt_term::selection_delimit_word (this=0x12e7ee0, dirn=DN, mark=<optimized out>, ret=0x12e8154) at screen.C:3047
+        bound = {row = 44, col = 139}
+#1  0x00000000004209ec in rxvt_term::selection_extend_colrow (this=0x12e7ee0, col=<optimized out>, row=<optimized out>, button3=<optimized out>, buttonpress=<optimized out>, clickchange=<optimized out>) at screen.C:3279
+        closeto = rxvt_term::RIGHT
+#2  0x000000000040f368 in rxvt_term::button_press (this=0x12e7ee0, ev=...) at command.C:1938
+        reportmode = 0
+        clickintime = <optimized out>
+#3  0x000000000041148b in rxvt_term::x_cb (this=0x12e7ee0, ev=...) at command.C:1365
+        dpy = 0x10f1800
+#4  0x0000000000429c8a in call (a1=..., this=<optimized out>) at ./callback.h:83
+#5  rxvt_display::flush_cb (this=0x10f15f0, w=..., revents=<optimized out>) at rxvttoolkit.C:585
+#6  0x000000000042cf04 in ev_invoke_pending () at ../libev/ev.c:2117
+        p = <optimized out>
+#7  0x000000000042e233 in ev_run (flags=0) at ../libev/ev.c:2392
+No locals.
+End of assembler dump.
