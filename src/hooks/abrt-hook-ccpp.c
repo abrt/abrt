@@ -18,6 +18,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include <fnmatch.h>
 #include <sys/utsname.h>
 #include "libabrt.h"
 #include <selinux/selinux.h>
@@ -457,6 +458,19 @@ finito:
     return err;
 }
 
+static bool is_path_ignored(const GList *list, const char *path)
+{
+    const GList *li;
+    for (li = list; li != NULL; li = g_list_next(li))
+    {
+        if (fnmatch((char*)li->data, path, /*flags:*/ 0) == 0)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 static int test_configuration(bool setting_SaveFullCore, bool setting_CreateCoreBacktrace)
 {
     if (!setting_SaveFullCore && !setting_CreateCoreBacktrace)
@@ -497,6 +511,26 @@ static int save_crashing_binary(pid_t pid, struct dump_dir *dd)
     return fsync(dst_fd) != 0 || close(dst_fd) != 0 || sz < 0;
 }
 
+static void error_msg_not_process_crash(const char *pid_str, const char *process_str,
+        long unsigned uid, int signal_no, const char *signame, const char *message, ...)
+{
+    va_list p;
+    va_start(p, message);
+    char *message_full = xvasprintf(message, p);
+    va_end(p);
+
+    if (signame)
+        error_msg("Process %s (%s) of user %lu killed by SIG%s - %s", pid_str,
+                        process_str, uid, signame, message_full);
+    else
+        error_msg("Process %s (%s) of user %lu killed by signal %d - %s", pid_str,
+                        process_str, uid, signal_no, message_full);
+
+    free(message_full);
+
+    return;
+}
+
 int main(int argc, char** argv)
 {
     /* Kernel starts us with all fd's closed.
@@ -522,6 +556,7 @@ int main(int argc, char** argv)
     bool setting_CreateCoreBacktrace;
     bool setting_SaveContainerizedPackageData;
     bool setting_StandaloneHook;
+    GList *setting_ignored_paths = NULL;
     {
         map_string_t *settings = new_map_string();
         load_abrt_plugin_conf_file("CCpp.conf", settings);
@@ -534,6 +569,9 @@ int main(int argc, char** argv)
         setting_SaveFullCore = value ? string_to_bool(value) : true;
         value = get_map_string_item_or_NULL(settings, "CreateCoreBacktrace");
         setting_CreateCoreBacktrace = value ? string_to_bool(value) : true;
+        value = get_map_string_item_or_NULL(settings, "IgnoredPaths");
+        if (value)
+            setting_ignored_paths = parse_list(value);
 
         value = get_map_string_item_or_NULL(settings, "SaveContainerizedPackageData");
         setting_SaveContainerizedPackageData = value && string_to_bool(value);
@@ -582,6 +620,8 @@ int main(int argc, char** argv)
     errno = 0;
     const char* signal_str = argv[1];
     int signal_no = xatoi_positive(signal_str);
+    const char *signame = NULL;
+    bool signal_is_fatal_bool = signal_is_fatal(signal_no, &signame);
     off_t ulimit_c = strtoull(argv[2], NULL, 10);
     if (ulimit_c < 0) /* unlimited? */
     {
@@ -621,6 +661,14 @@ int main(int argc, char** argv)
     {
         error_msg_and_die("PID %lu is '%s', not dumping it to avoid recursion",
                         (long)pid, executable);
+    }
+
+    if (executable && is_path_ignored(setting_ignored_paths, executable))
+    {
+        error_msg_not_process_crash(pid_str, argv[7], (long unsigned)uid, signal_no,
+                signame, "ignoring (listed in 'IgnoredPaths')");
+
+        return 0;
     }
 
     user_pwd = get_cwd(pid); /* may be NULL on error */
@@ -665,8 +713,7 @@ int main(int argc, char** argv)
         return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
-    const char *signame = NULL;
-    if (!signal_is_fatal(signal_no, &signame))
+    if (!signal_is_fatal_bool)
         return create_user_core(user_core_fd, pid, ulimit_c); // not a signal we care about
 
     const int abrtd_running = daemon_is_ok();
