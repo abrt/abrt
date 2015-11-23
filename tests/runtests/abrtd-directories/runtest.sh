@@ -41,7 +41,6 @@ rlJournalStart
 
         systemctl stop abrtd
         rlRun "rm -rf $ABRT_CONF_DUMP_LOCATION" "0" "Prepare to force abrtd to create the dump location at startup"
-        RECREATION_CNT=$( grep -c "Recreating deleted dump location '$ABRT_CONF_DUMP_LOCATION'" /var/log/messages )
 
         TmpDir=$(mktemp -d)
         pushd $TmpDir
@@ -54,15 +53,20 @@ rlJournalStart
         rlAssertExists "$ABRT_CONF_DUMP_LOCATION"
         rlAssertEquals "Dump location has proper stat" "_$(stat --format='%A %U %G' $ABRT_CONF_DUMP_LOCATION)" "_drwxr-x--x root abrt"
 
+        SINCE=$(date +"%Y-%m-%d %T")
         rlRun "rm -rf -- $ABRT_CONF_DUMP_LOCATION" "0" "Remove the dump location for 1st time"
         sleep 1
-        rlAssertEquals "abrtd recreated the dump location once" "_"$((RECREATION_CNT + 1)) "_"$(grep -c "Recreating deleted dump location '$ABRT_CONF_DUMP_LOCATION'" /var/log/messages)
+        journalctl SYSLOG_IDENTIFIER=abrtd --since="$SINCE" | tee recreate_first_time.log
+        rlAssertGrep "Recreating deleted dump location '$ABRT_CONF_DUMP_LOCATION'" recreate_first_time.log
         rlAssertExists $ABRT_CONF_DUMP_LOCATION
         rlAssertEquals "Dump location has proper stat" "_$(stat --format='%A %U %G' $ABRT_CONF_DUMP_LOCATION)" "_drwxr-x--x root abrt"
 
+        sleep 1
+        SINCE=$(date +"%Y-%m-%d %T")
         rlRun "rm -rf -- $ABRT_CONF_DUMP_LOCATION" "0" "Remove the dump location for 2nd time"
         sleep 1
-        rlAssertEquals "abrtd recreated the dump location twice" "_"$((RECREATION_CNT + 2)) "_"$(grep -c "Recreating deleted dump location '$ABRT_CONF_DUMP_LOCATION'" /var/log/messages)
+        journalctl SYSLOG_IDENTIFIER=abrtd --since="$SINCE" | tee recreate_second_time.log
+        rlAssertGrep "Recreating deleted dump location '$ABRT_CONF_DUMP_LOCATION'" recreate_second_time.log
         rlAssertExists "$ABRT_CONF_DUMP_LOCATION"
         rlAssertEquals "Dump location has proper stat" "_$(stat --format='%A %U %G' $ABRT_CONF_DUMP_LOCATION)" "_drwxr-x--x root abrt"
 
@@ -74,6 +78,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
+        rlBundleLogs abrt $(ls *.log)
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
         popd # TmpDir
         rm -rf $TmpDir
