@@ -1121,6 +1121,31 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Mon Nov 23 2015 Jakub Filak <jfilak@redhat.com> 2.7.1-1
+- spec: switch owner of the dump location to 'root'
+- abrtd: switch owner of the dump location to 'root'
+- lib: add convenient wrappers for ensuring writable dir
+- ccpp: save abrt core files only to new files
+- ccpp: ignore crashes of ABRT binaries if DebugLevel == 0
+- conf: introduce DebugLevel
+- a-a-i-d-to-abrt-cache: make own random temporary directory
+- update .gitignore
+- ccpp: make crashes of processes with locked memory not-reportable
+- a-a-s-p-data: fix segfault if GPGKeysDir isn't configured
+- a-dump-journal-xorg: make journal filter configurable
+- doc: a-a-analyze-xorg fix path to conf file
+- abrt-journal: use GList instead of char** in abrt_journal_set_journal_filter()
+- xorg: introduce tool abrt-dump-journal-xorg
+- abrt-xorg.service: change due to abrt-dump-journal-xorg
+- journal: add function abrt_journal_get_next_log_line
+- spec: add abrt-dump-journal-xorg to spec file
+- xorg: rewrite skip_pfx() function to work with journal msgs
+- xorg: introduce library xorg-utils
+- dbus: ensure expected bytes width of DBus numbers
+- a-d-journal-core: set root owner for created dump directory
+- doc: add missing man page for abrt-dump-journal-core
+- spec: add missing man page for abrt-dump-journal-core
+
 * Thu Oct 15 2015 Matej Habrnal <mhabrnal@redhat.com> 2.7.0-1
 - abrt-python: add problem.chown
 - a-a-a-ccpp-local don't delete build_ids
