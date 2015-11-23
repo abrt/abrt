@@ -234,7 +234,7 @@ rlJournalStart
 
     rlPhaseStartCleanup
         rlFileRestore
-        rlBundleLogs abrt $(echo *_ls)
+        rlBundleLogs abrt $(ls *.log)
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd
