@@ -73,7 +73,7 @@ rlJournalStart
         check_prior_crashes
         load_abrt_conf
 
-        ABRT_BINARY_COREDUMP=$ABRT_CONF_DUMP_LOCATION/$ABRT_BINARY_NAME"-coredump"
+        ABRT_BINARY_COREDUMP=$(echo $ABRT_CONF_DUMP_LOCATION/$ABRT_BINARY_NAME"-coredump" | sed 's/\/\//\//g')
 
         TmpDir=$(mktemp -d)
         cp $(which will_segfault) $TmpDir/$ABRT_BINARY_NAME
