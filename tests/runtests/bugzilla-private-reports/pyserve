@@ -60,20 +60,23 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
                         print_method_param_member(member, logf)
                         print_method_param_member(member, sys.stdout)
 
-        response = "<invalid pyserve response>"
+        response = "#! invalid pyserve response"
         if not self.filelist:
             sys.stderr.write("No more files to serve\n")
         else:
-            name, response = self.filelist.pop()
-            sys.stdout.write("Response: ");
-            sys.stdout.write(name);
-            sys.stdout.write("\n")
+            name, tmp_response = self.filelist.pop()
             if not name.startswith(method_name + ".response"):
                 sys.stderr.write("Received an unexpected method call: ")
                 sys.stderr.write(method_name)
                 sys.stderr.write(" vs. ")
                 sys.stderr.write(name)
                 sys.stderr.write("\n")
+            else:
+                sys.stdout.write("Response: ")
+                sys.stdout.write(name)
+                sys.stdout.write("\n")
+                response = tmp_response
+
 
         sys.stderr.flush()
         sys.stdout.flush()
