@@ -77,55 +77,6 @@ static void print_crash(problem_data_t *problem_data, int detailed, int text_siz
                             /*names_to_skip:*/ NULL,
                             /*max_text_size:*/ text_size,
                             MAKEDESC_SHOW_ONLY_LIST | MAKEDESC_SHOW_URLS);
-
-        /*
-         * If the problem is reportable and has not yet been reported into RHTS
-         * and there is at least one applicable Workflow which contains
-         * 'report_RHTSupport' event, then append a short message informing
-         * user that he can create a new case in Red Hat Customer Portal.
-         */
-        const char *const not_reportable =  problem_data_get_content_or_NULL(problem_data, FILENAME_NOT_REPORTABLE);
-        const char *const reported_to    =  not_reportable            ? NULL : problem_data_get_content_or_NULL(problem_data, FILENAME_REPORTED_TO);
-        report_result_t *const report    = !reported_to               ? NULL : find_in_reported_to_data(reported_to, "RHTSupport");
-
-        if (!not_reportable && !report)
-        {
-            /* The lines below should be replaced by something simpler, I'd
-             * like to see:
-             * GHashTable *possible_worfklows = load_applicable_workflows_for_dump();
-             *
-             * However, this feature (rhbz#1055565) is intended for RHEL only
-             * and I'm not sure whether it's worth to file another bug against
-             * libreport and try to improve libreport public API.
-             */
-            const char *const dump_dir_name = problem_data_get_content_or_NULL(problem_data, CD_DUMPDIR);
-            GList *const wf_names = list_possible_events_problem_data_glist(problem_data, dump_dir_name, "workflow");
-            GHashTable *const possible_workflows = load_workflow_config_data_from_list(wf_names, WORKFLOWS_DIR);
-            g_list_free_full(wf_names, free);
-
-            int event_found = 0;
-
-            GHashTableIter iter;
-            gpointer key = NULL;
-            gpointer value = NULL;
-
-            g_hash_table_iter_init(&iter, possible_workflows);
-            while (!event_found && g_hash_table_iter_next(&iter, &key, &value))
-            {
-                GList *const event_names = wf_get_event_names((workflow_t *)value);
-                event_found = !!g_list_find_custom(event_names, "report_RHTSupport", (GCompareFunc)g_strcmp0);
-                g_list_free_full(event_names, free);
-            }
-
-            g_hash_table_destroy(possible_workflows);
-
-            if (event_found)
-            {
-                char *tmp = xasprintf(_("%sRun 'abrt-cli report %s' for creating a case in Red Hat Customer Portal\n"), desc, dump_dir_name);
-                free(desc);
-                desc = tmp;
-            }
-        }
     }
     fputs(desc, stdout);
     free(desc);

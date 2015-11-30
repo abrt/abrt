@@ -17,8 +17,7 @@ abrt_cli_CFLAGS = \
 	-I$(srcdir)/../include \
 	-I$(srcdir)/../lib \
 	$(LIBREPORT_CFLAGS) \
-	$(POLKIT_AGENT_CFLAGS) \
-	-DWORKFLOWS_DIR=\"${WORKFLOWS_DIR}\"
+	$(POLKIT_AGENT_CFLAGS)
 
 if SUGGEST_AUTOREPORTING
 abrt_cli_CFLAGS += -DSUGGEST_AUTOREPORTING=1
