@@ -44,7 +44,6 @@ int check_recent_crash_file(const char *filename, const char *executable)
             buf[sz] = '\0';
             if (strcmp(executable, buf) == 0)
             {
-                error_msg("Not saving repeating crash in '%s'", executable);
                 close(fd);
                 return 1;
             }
