@@ -33,48 +33,82 @@ PACKAGE="abrt"
 
 function test_create_dir {
 
+    CRASH_APP=${1:-"will_segfault"}
+    UID=$(id -u)
+
     journal_time=$(date +%R:%S)
     prepare
-    generate_crash
+    ${CRASH_APP} &
+    PID=$!
     wait_for_hooks
     # get_crash_path checks if the crash was created
     get_crash_path
 
     journalctl --since="$journal_time" >abrt_journal.log
 
-    rlAssertNotGrep "Process [0-9][0-9]* \(will_segfault\) of user [0-9][0-9]* killed by SIGSEGV - ignoring \(listed in 'IgnoredPaths'\)" abrt_journal.log -E
+    rlAssertNotGrep "Process $PID \(${CRASH_APP##*/}\) of user $UID killed by SIGSEGV - ignoring" abrt_journal.log -E
 
-    rlAssertGrep "Process [0-9][0-9]* \(will_segfault\) of user [0-9][0-9]* killed by SIGSEGV - dumping core" abrt_journal.log -E
-
+    rlAssertGrep "Process $PID \(${CRASH_APP##*/}\) of user $UID killed by SIGSEGV - dumping core" abrt_journal.log -E
 
     rlRun "abrt-cli rm $crash_PATH" 0 "Removing problem dirs"
 }
 
 function test_not_create_dir {
 
+    CRASH_APP=${1:-"will_segfault"}
+    shift
+    REASON=${1:-"listed in 'IgnoredPaths'"}
+
     journal_time=$(date +%R:%S)
     prepare
-    generate_crash
+    rlLog "Crash generating"
+    ${CRASH_APP} &
+    PID=$!
+
     sleep 3
 
     journalctl -b --since="$journal_time" >abrt_journal.log
 
-    rlAssertGrep "Process [0-9][0-9]* \(will_segfault\) of user [0-9][0-9]* killed by SIGSEGV - ignoring \(listed in 'IgnoredPaths'\)" abrt_journal.log -E
-    rlAssertNotGrep "Process [0-9][0-9]* \(will_segfault\) of user [0-9][0-9]* killed by SIGSEGV - dumping core" abrt_journal.log -E
+    rlAssertGrep "Process $PID \(${CRASH_APP##*/}\) of user $UID killed by SIGSEGV - ignoring \(${REASON}\)" abrt_journal.log -E
+    rlAssertNotGrep "Process $PID \(${CRASH_APP##*/}\) of user $UID killed by SIGSEGV - dumping core" abrt_journal.log -E
 
     # no crash is generated
     rlAssert0 "Crash should not be generated" $(abrt-cli list 2> /dev/null | wc -l)
 }
 
+function test_duplicate_crash {
+
+    REASON="repeated crash"
+    journal_time=$(date +%R:%S)
+    prepare
+    rlLog "Crashes generating"
+    will_segfault &
+    PID1=$!
+    sleep 3
+    will_segfault &
+    PID2=$!
+    sleep 3
+
+    journalctl -b --since="$journal_time" >abrt_journal.log
+
+    rlAssertGrep "Process $PID1 \(will_segfault\) of user $UID killed by SIGSEGV - dumping core" abrt_journal.log -E
+    rlAssertGrep "Process $PID2 \(will_segfault\) of user $UID killed by SIGSEGV - ignoring \(${REASON}\)" abrt_journal.log -E
+
+    get_crash_path
+    rlRun "abrt-cli rm $crash_PATH" 0 "Removing problem dirs"
+}
+
 rlJournalStart
     rlPhaseStartSetup
         check_prior_crashes
-
         TmpDir=$(mktemp -d)
+        cp failing_code.c $TmpDir
         pushd $TmpDir
+        gcc failing_code.c -o abrt-hook-ccpp
+        gcc failing_code.c -o abrt-binary
     rlPhaseEnd
 
-    rlPhaseStartTest "Ignoring will_segfault"
+    rlPhaseStartTest "Ignoring will_segfault listed in 'IgnoredPaths'"
         OLD_BLACKLIST=$(augtool print /files/etc/abrt/plugins/CCpp.conf/IgnoredPaths | cut -d'=' -f2 | tr -d ' ')
         rlLog "Storing CCpp.conf IgnoredPaths value '$OLD_BLACKLIST'"
         rlRun "augtool set /files/etc/abrt/plugins/CCpp.conf/IgnoredPaths foo,*will_segfault,foo2" 0 "Set IgnoredPaths"
@@ -102,6 +136,28 @@ rlJournalStart
 
         # will_segfault works without ignoring
         test_create_dir
+    rlPhaseEnd
+
+    rlPhaseStartTest "ignoring of abrt-hook-ccpp"
+        # using our failing abrt-hook-ccpp
+        test_not_create_dir "./abrt-hook-ccpp" "avoid recursion"
+    rlPhaseEnd
+
+    rlPhaseStartTest "ignoring of abrt's binaries"
+        test_not_create_dir "./abrt-binary" "'DebugLevel' == 0"
+    rlPhaseEnd
+
+    rlPhaseStartTest "ignoring of repeated crashes"
+        test_duplicate_crash
+    rlPhaseEnd
+
+    rlPhaseStartTest "abrtd is not running"
+        # kill abrtd
+        pkill abrtd
+
+        test_not_create_dir "will_segfault" "abrtd is not running"
+
+        systemctl start abrtd
     rlPhaseEnd
 
     rlPhaseStartCleanup
