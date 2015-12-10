@@ -33,6 +33,7 @@ libabrt_gui_la_LDFLAGS = \
 	-version-info 0:1:0
 
 libabrt_gui_la_LIBADD = \
+	../lib/libabrt.la \
 	$(GLIB_LIBS) \
 	$(GTK_LIBS) \
 	$(LIBREPORT_LIBS)
