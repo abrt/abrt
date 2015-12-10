@@ -757,7 +757,10 @@ static int perform_http_xact(void)
         int repeating_crash = check_recent_crash_file(last_file, executable);
         free(last_file);
         if (repeating_crash) /* Only pretend that we saved it */
+        {
+            error_msg("Not saving repeating crash in '%s'", executable);
             goto out; /* ret is 0: "success" */
+        }
     }
 
 #if 0
