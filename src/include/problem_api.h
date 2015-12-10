@@ -18,7 +18,7 @@
 */
 
 #include <glib.h>
-#include <libabrt.h>
+#include "libabrt.h"
 
 
 /*

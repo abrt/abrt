@@ -18,7 +18,7 @@
 #include "system-config-abrt.h"
 
 #include <stdlib.h>
-#include <libabrt.h>
+#include "libabrt.h"
 
 #define APP_NAME "System Config ABRT"
 
