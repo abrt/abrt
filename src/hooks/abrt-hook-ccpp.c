@@ -519,13 +519,16 @@ static void error_msg_process_crash(const char *pid_str, const char *process_str
     char *message_full = xvasprintf(message, p);
     va_end(p);
 
-    if (signame)
-        error_msg("Process %s (%s) of user %lu killed by SIG%s - %s", pid_str,
-                        process_str, uid, signame, message_full);
-    else
-        error_msg("Process %s (%s) of user %lu killed by signal %d - %s", pid_str,
-                        process_str, uid, signal_no, message_full);
+    char *process_name = (process_str) ?  xasprintf(" (%s)", process_str) : xstrdup("");
 
+    if (signame)
+        error_msg("Process %s%s of user %lu killed by SIG%s - %s", pid_str,
+                        process_name, uid, signame, message_full);
+    else
+        error_msg("Process %s%s of user %lu killed by signal %d - %s", pid_str,
+                        process_name, uid, signal_no, message_full);
+
+    free(process_name);
     free(message_full);
 
     return;
@@ -631,10 +634,17 @@ int main(int argc, char** argv)
         }
     }
 
-    errno = 0;
     const char* signal_str = argv[1];
     int signal_no = xatoi_positive(signal_str);
+    errno = 0;
     off_t ulimit_c = strtoull(argv[2], NULL, 10);
+    if (errno)
+    {
+        error_msg_ignore_crash(pid_str, NULL, (long unsigned)uid, signal_no,
+                signame, "limit '%s' is bogus", argv[2]);
+        xfunc_die();
+    }
+
     if (ulimit_c < 0) /* unlimited? */
     {
         /* set to max possible >0 value */
@@ -646,17 +656,13 @@ int main(int argc, char** argv)
     pid_t pid = xatoi_positive(argv[8]);
 
     const char *pid_str = argv[3];
-    pid_t local_pid = xatoi_positive(argv[3]);
 
+    /* xatoi_positive() handles errors */
+    pid_t local_pid = xatoi_positive(argv[3]);
     uid_t uid = xatoi_positive(argv[4]);
 
     user_pwd = get_cwd(pid); /* may be NULL on error */
     log_notice("user_pwd:'%s'", user_pwd);
-
-    if (errno || local_pid <= 0)
-    {
-        perror_msg_and_die("PID '%s' or limit '%s' is bogus", argv[3], argv[2]);
-    }
 
     {
         char *s = xmalloc_fopen_fgetline_fclose(VAR_RUN"/abrt/saved_core_pattern");
@@ -675,11 +681,19 @@ int main(int argc, char** argv)
     uid_t fsuid = uid;
     uid_t tmp_fsuid = get_fsuid(proc_pid_status);
     if (tmp_fsuid < 0)
-        perror_msg_and_die("Can't parse 'Uid: line' in /proc/%lu/status", (long)pid);
+    {
+        error_msg_ignore_crash(pid_str, NULL, (long unsigned)uid, signal_no,
+                signame, "parsing error");
+        xfunc_die();
+    }
 
     const int fsgid = get_fsgid(proc_pid_status);
     if (fsgid < 0)
-        error_msg_and_die("Can't parse 'Gid: line' in /proc/%lu/status", (long)pid);
+    {
+        error_msg_ignore_crash(pid_str, NULL, (long unsigned)uid, signal_no,
+                signame, "parsing error");
+        xfunc_die();
+    }
 
     int suid_policy = dump_suid_policy();
     if (tmp_fsuid != uid)
@@ -707,7 +721,8 @@ int main(int argc, char** argv)
     if (executable == NULL)
     {
         /* readlink on /proc/$PID/exe failed, don't create abrt dump dir */
-        error_msg("Can't read /proc/%lu/exe link", (long)pid);
+        error_msg_ignore_crash(pid_str, NULL, (long unsigned)uid, signal_no,
+                signame, "Can't read /proc/%lu/exe link", (long)pid);
         return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
