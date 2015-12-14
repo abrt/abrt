@@ -471,6 +471,44 @@ static bool is_path_ignored(const GList *list, const char *path)
     return false;
 }
 
+static bool is_user_allowed(uid_t uid, const GList *list)
+{
+    const GList *li;
+    for (li = list; li != NULL; li = g_list_next(li))
+    {
+        const char *username = (const char*)li->data;
+        struct passwd *pw = getpwnam(username);
+        if (pw == NULL)
+        {
+            log_warning("can't get uid of user '%s' (listed in 'AllowedUsers')", username);
+            continue;
+        }
+
+        if(pw->pw_uid == uid)
+            return true;
+    }
+    return false;
+}
+
+static bool is_user_in_allowed_group(uid_t uid, const GList *list)
+{
+    const GList *li;
+    for (li = list; li != NULL; li = g_list_next(li))
+    {
+        const char *groupname = (const char*)li->data;
+        struct group *gr = getgrnam(groupname);
+        if (gr == NULL)
+        {
+            log_warning("can't get gid of group '%s' (listed in 'AllowedGroups')", groupname);
+            continue;
+        }
+
+        if(uid_in_group(uid, gr->gr_gid))
+            return true;
+    }
+    return false;
+}
+
 static int test_configuration(bool setting_SaveFullCore, bool setting_CreateCoreBacktrace)
 {
     if (!setting_SaveFullCore && !setting_CreateCoreBacktrace)
@@ -571,6 +609,8 @@ int main(int argc, char** argv)
     bool setting_SaveContainerizedPackageData;
     bool setting_StandaloneHook;
     GList *setting_ignored_paths = NULL;
+    GList *setting_allowed_users = NULL;
+    GList *setting_allowed_groups = NULL;
     {
         map_string_t *settings = new_map_string();
         load_abrt_plugin_conf_file("CCpp.conf", settings);
@@ -586,6 +626,13 @@ int main(int argc, char** argv)
         value = get_map_string_item_or_NULL(settings, "IgnoredPaths");
         if (value)
             setting_ignored_paths = parse_list(value);
+
+        value = get_map_string_item_or_NULL(settings, "AllowedUsers");
+        if (value)
+            setting_allowed_users = parse_list(value);
+        value = get_map_string_item_or_NULL(settings, "AllowedGroups");
+        if (value)
+            setting_allowed_groups = parse_list(value);
 
         value = get_map_string_item_or_NULL(settings, "SaveContainerizedPackageData");
         setting_SaveContainerizedPackageData = value && string_to_bool(value);
@@ -763,6 +810,23 @@ int main(int argc, char** argv)
         );
         return create_user_core(user_core_fd, pid, ulimit_c);
     }
+
+    /* dumping core for user, if allowed */
+    if (setting_allowed_users || setting_allowed_groups)
+    {
+        if (setting_allowed_users && is_user_allowed(uid, setting_allowed_users))
+            log_debug("User %lu is listed in 'AllowedUsers'", (long unsigned)uid);
+        else if (setting_allowed_groups && is_user_in_allowed_group(uid, setting_allowed_groups))
+            log_debug("User %lu is member of group listed in 'AllowedGroups'", (long unsigned)uid);
+        else
+        {
+            error_msg_ignore_crash(pid_str, last_slash, (long unsigned)uid, signal_no,
+                signame, "not allowed in 'AllowedUsers' nor 'AllowedGroups'");
+
+            xfunc_die();
+        }
+    }
+
     /* low free space */
     if (g_settings_nMaxCrashReportsSize > 0)
     {
