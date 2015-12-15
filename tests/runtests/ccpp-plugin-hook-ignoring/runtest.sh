@@ -34,21 +34,23 @@ PACKAGE="abrt"
 function test_create_dir {
 
     CRASH_APP=${1:-"will_segfault"}
-    UID=$(id -u)
+    shift
+    USER_PARAM=$1
+
+    USER_UID=$(id -u $USER_PARAM)
 
     journal_time=$(date +%R:%S)
     prepare
-    ${CRASH_APP} &
-    PID=$!
+    PID=$(su -c "${CRASH_APP} &>/dev/null & echo \$!" $USER_PARAM)
     wait_for_hooks
     # get_crash_path checks if the crash was created
     get_crash_path
 
     journalctl --since="$journal_time" >abrt_journal.log
 
-    rlAssertNotGrep "Process $PID \(${CRASH_APP##*/}\) of user $UID killed by SIGSEGV - ignoring" abrt_journal.log -E
+    rlAssertNotGrep "Process $PID \(${CRASH_APP##*/}\) of user $USER_UID killed by SIGSEGV - ignoring" abrt_journal.log -E
 
-    rlAssertGrep "Process $PID \(${CRASH_APP##*/}\) of user $UID killed by SIGSEGV - dumping core" abrt_journal.log -E
+    rlAssertGrep "Process $PID \(${CRASH_APP##*/}\) of user $USER_UID killed by SIGSEGV - dumping core" abrt_journal.log -E
 
     rlRun "abrt-cli rm $crash_PATH" 0 "Removing problem dirs"
 }
@@ -58,19 +60,22 @@ function test_not_create_dir {
     CRASH_APP=${1:-"will_segfault"}
     shift
     REASON=${1:-"listed in 'IgnoredPaths'"}
+    shift
+    USER_PARAM=$1
+
+    USER_UID=$(id -u $USER_PARAM)
 
     journal_time=$(date +%R:%S)
     prepare
     rlLog "Crash generating"
-    ${CRASH_APP} &
-    PID=$!
+    PID=$(su -c "${CRASH_APP} &>/dev/null & echo \$!" $USER_PARAM)
 
     sleep 3
 
     journalctl -b --since="$journal_time" >abrt_journal.log
 
-    rlAssertGrep "Process $PID \(${CRASH_APP##*/}\) of user $UID killed by SIGSEGV - ignoring \(${REASON}\)" abrt_journal.log -E
-    rlAssertNotGrep "Process $PID \(${CRASH_APP##*/}\) of user $UID killed by SIGSEGV - dumping core" abrt_journal.log -E
+    rlAssertGrep "Process $PID \(${CRASH_APP##*/}\) of user $USER_UID killed by SIGSEGV - ignoring \(${REASON}\)" abrt_journal.log -E
+    rlAssertNotGrep "Process $PID \(${CRASH_APP##*/}\) of user $USER_UID killed by SIGSEGV - dumping core" abrt_journal.log -E
 
     # no crash is generated
     rlAssert0 "Crash should not be generated" $(abrt-cli list 2> /dev/null | wc -l)
@@ -136,6 +141,88 @@ rlJournalStart
 
         # will_segfault works without ignoring
         test_create_dir
+    rlPhaseEnd
+
+    rlPhaseStartTest "Ignoring due to either AllowedUsers or AllowedGroups"
+
+        # add user $TEST_USER and add the user to $TEST_GROUP
+        TEST_USER=abrt_user_allowed
+        TEST_USER2=abrt_user_allowed2
+        TEST_GROUP=abrt_group_allowed
+        CONF_FILE="/etc/abrt/plugins/CCpp.conf"
+        REASON_ALLOW="not allowed in 'AllowedUsers' nor 'AllowedGroups'"
+
+        rlRun "useradd -M $TEST_USER"
+        rlRun "useradd -M $TEST_USER2"
+        rlRun "groupadd -f $TEST_GROUP"
+        rlRun "usermod -aG $TEST_GROUP $TEST_USER"
+        rlLog "$(id $TEST_USER)"
+        rlLog "$(id $TEST_USER2)"
+
+        rlRun "cp -fv $CONF_FILE ${CONF_FILE}.backup"
+        rlRun "grep -v -e AllowedGroups -e AllowedUsers $CONF_FILE > ${CONF_FILE}.no_allowing"
+        rlRun "cp -fv ${CONF_FILE}.no_allowing $CONF_FILE"
+
+        # will_segfault is processed, if no user allowing is defined
+        test_create_dir
+
+        rlLog "===================================================================="
+        # $TEST_USER is not allowed
+        rlRun "echo \"AllowedUsers = $TEST_USER2,root\" >> ${CONF_FILE}"
+
+        #                   $crashing_app  $reason          $username
+        test_not_create_dir will_segfault  "$REASON_ALLOW"  $TEST_USER
+
+        rlLog "===================================================================="
+        rlRun "cp -fv ${CONF_FILE}.no_allowing $CONF_FILE"
+        rlRun "echo \"AllowedGroups = $TEST_USER2\" >> ${CONF_FILE}"
+
+        #                   $crashing_app     $reason          $username
+        test_not_create_dir will_segfault     "$REASON_ALLOW"  $TEST_USER
+
+        rlLog "===================================================================="
+        rlRun "cp -fv ${CONF_FILE}.no_allowing $CONF_FILE"
+        rlRun "echo \"AllowedUsers = $TEST_USER2,root\" >> ${CONF_FILE}"
+        rlRun "echo \"AllowedGroups = $TEST_USER2,root\" >> ${CONF_FILE}"
+
+        #                   $crashing_app     $reason          $username
+        test_not_create_dir will_segfault     "$REASON_ALLOW"  $TEST_USER
+
+        rlLog "===================================================================="
+        # $TEST_USER is not allowed
+        rlRun "cp -fv ${CONF_FILE}.no_allowing $CONF_FILE"
+        rlRun "echo \"AllowedUsers = $TEST_USER,$TEST_USER2\" >> ${CONF_FILE}"
+
+        #               $crashing_app  $username
+        test_create_dir will_segfault  $TEST_USER
+
+        rlLog "===================================================================="
+        rlRun "cp -fv ${CONF_FILE}.no_allowing $CONF_FILE"
+        rlRun "echo \"AllowedGroups = $TEST_USER2,$TEST_USER\" >> ${CONF_FILE}"
+
+        #               $crashing_app     $username
+        test_create_dir will_segfault     $TEST_USER
+
+        rlLog "===================================================================="
+        rlRun "cp -fv ${CONF_FILE}.no_allowing $CONF_FILE"
+        rlRun "echo \"AllowedGroups = $TEST_USER2,$TEST_GROUP\" >> ${CONF_FILE}"
+
+        #               $crashing_app  $username
+        test_create_dir will_segfault  $TEST_USER
+
+        rlLog "===================================================================="
+        rlRun "cp -fv ${CONF_FILE}.no_allowing $CONF_FILE"
+        rlRun "echo \"AllowedUsers = $TEST_USER2,$TEST_USER\" >> ${CONF_FILE}"
+        rlRun "echo \"AllowedGroups = $TEST_USER2,$TEST_USER\" >> ${CONF_FILE}"
+
+        #               $crashing_app     $username
+        test_create_dir will_segfault     $TEST_USER
+
+        rlRun "cp -fv ${CONF_FILE}.no_allowing $CONF_FILE"
+
+        rlRun "userdel -f $TEST_USER"
+        rlRun "userdel -f $TEST_USER2"
+        rlRUn "groupdel $TEST_GROUP"
     rlPhaseEnd
 
     rlPhaseStartTest "ignoring of abrt-hook-ccpp"
