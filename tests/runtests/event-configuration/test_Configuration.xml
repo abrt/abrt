@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event>
+    <name>Test Configuration</name>
+    <description>Test Configuration</description>
+    <long-description>Test Configuration</long-description>
+    <gui-review-elements>no</gui-review-elements>
+    <sending-sensitive-data>no</sending-sensitive-data>
+    <options>
+        <option type="text" name="TEST_OPTION_TEXT">
+           <label>Text</label>
+           <description>Test text options</description>
+           <default-value>default text</default-value>
+        </option>
+        <option type="bool" name="TEST_OPTION_BOOL">
+           <label>Boolean</label>
+           <description>Test boolean options</description>
+           <default-value>no</default-value>
+        </option>
+        <option type="password" name="TEST_OPTION_PASSWORD">
+           <label>Password</label>
+           <description>Test password options</description>
+           <default-value>default password</default-value>
+        </option>
+        <option type="number" name="TEST_OPTION_NUMBER">
+           <label>Number</label>
+           <description>Test number options</description>
+           <default-value>0</default-value>
+        </option>
+    </options>
+</event>
