@@ -50,6 +50,9 @@ rlJournalStart
         # abrtd creates the dump location
         rlRun "systemctl restart abrtd"
 
+        # normalize the path for greping
+        ABRT_CONF_DUMP_LOCATION=$(echo $ABRT_CONF_DUMP_LOCATION | sed 's/\/*$//')
+
         rlAssertExists "$ABRT_CONF_DUMP_LOCATION"
         rlAssertEquals "Dump location has proper stat" "_$(stat --format='%A %U %G' $ABRT_CONF_DUMP_LOCATION)" "_drwxr-x--x root abrt"
 
