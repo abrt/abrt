@@ -13,39 +13,38 @@ _ = gettext.gettext
 
 def file_has_string(filename, string):
     try:
-        f = open(filename, "r")
-    except IOError as e:
-        #print e
-        return False
-    for line in f:
-        if string in line:
-            f.close()
-            return True
-    f.close()
+        with open(filename, "r") as f:
+            for line in f:
+                if string in line:
+                    return True
+    except OSError as ex:
+        sys.stderr.write("Failed to read file '%s': %s\n"
+                         % (filename, str(ex)))
+    except ValueError as ex:
+        sys.stderr.write("Invalid data in file '%s': %s\n"
+                         % (filename, str(ex)))
     return False
 
 
 def tail_with_search(filename, string, maxlen):
+    # return empty list on error
+    retval = []
     try:
-        f = open(filename, "r")
-    except IOError as e:
-        #print e
-        return []
-    l = []
-    try:
-        for line in f:
-            if string in line:
-                l.append(line)
-                if len(l) > maxlen:
-                    del l[0]
-    except ValueError as ex:
+        with open(filename, "r") as f:
+            l = []
+            for line in f:
+                if string in line:
+                    l.append(line)
+                    if len(l) > maxlen:
+                        del l[0]
+            retval = l
+    except OSError as ex:
         sys.stderr.write("Failed to read file '%s': %s\n"
                          % (filename, str(ex)))
-        # ignore invalid input - return empty list on error
-        l = []
-    finally:
-        f.close()
-    return l
+    except ValueError as ex:
+        sys.stderr.write("Invalid data in file '%s': %s\n"
+                         % (filename, str(ex)))
+    return retval
 
 
 def open_or_die(filename, mode):
