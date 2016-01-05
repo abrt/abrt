@@ -1,0 +1,28 @@
+#!/usr/bin/expect
+
+set timeout 20
+set response [lindex $argv 0]
+set argv [lreplace $argv 0 0]
+
+spawn {*}$argv
+
+# timeout handler
+proc itstime {args} {
+    puts "!! expect timeout !!"
+    exit 1
+}
+
+while {1} {
+    expect {
+
+        eof {break}
+
+        timeout { itstime }
+
+        "You have requested to make your data accessible only to a specific group and this bug is a duplicate of bug: http://localhost:12345/851210 In case of bug duplicates a new comment is added to the original bug report but access to the comments cannot be restricted to a specific group. Would you like to open a new bug report and close it as DUPLICATE of the original one? Otherwise, the bug reporting procedure will be terminated." {
+            send "$response\n"
+        }
+    }
+}
+
+
