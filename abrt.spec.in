@@ -35,7 +35,7 @@ BuildRequires: libtool
 BuildRequires: nss-devel
 BuildRequires: asciidoc
 BuildRequires: xmlto
-BuildRequires: libreport-devel > 2.0.6
+BuildRequires: libreport-devel > 2.0.9-28
 BuildRequires: satyr-devel >= 0.11
 BuildRequires: elfutils-devel
 BuildRequires: elfutils-libelf-devel
@@ -43,7 +43,7 @@ BuildRequires: binutils-devel
 BuildRequires: augeas
 BuildRequires: libselinux-devel
 
-Requires: libreport >=  2.0.6
+Requires: libreport >=  2.0.9-28
 Requires: satyr >= 0.11
 
 %if %{with systemd}
