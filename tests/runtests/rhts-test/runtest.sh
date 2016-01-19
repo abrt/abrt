@@ -31,6 +31,37 @@
 TEST="rhts-test"
 PACKAGE="abrt"
 
+function new_dump_dir
+{
+    mkdir $1
+    date +%s              > $1/time
+    echo $TEST            > $1/type
+    echo $TEST            > $1/analyzer
+    echo 2                > $1/count
+    echo "/bin/sleep"     > $1/executable
+    rpm -qf `which sleep` > $1/package
+    echo "Red Hat, Inc."  > $1/pkg_vendor
+    echo "coreutils"      > $1/component
+    echo "Red Hat Enterprise Linux Server release 6.8" > $1/os_release
+}
+
+function run_without_interruption
+{
+    rlRun "./expect ? reporter-rhtsupport -vvv -c rhtsupport_local.conf -d $1 &>$1.log"
+    rlAssertNotGrep "GOT QUESTION:" $1.log
+}
+
+function run_with_question
+{
+    rlRun "./expect no reporter-rhtsupport -vvv -c rhtsupport_local.conf -d $2 &>$2_no.log"
+    rlAssertGrep "GOT QUESTION: $1" $2_no.log
+    rlAssertEquals "Exactly one question" "_1" "_$(grep -c 'GOT QUESTION:' $2_no.log)"
+
+    rlRun "./expect yes reporter-rhtsupport -vvv -c rhtsupport_local.conf -d $2 &>$2_yes.log"
+    rlAssertGrep "GOT QUESTION: $1" $2_yes.log
+    rlAssertEquals "Exactly one question" "_1" "_$(grep -c 'GOT QUESTION:' $2_yes.log)"
+}
+
 rlJournalStart
     rlPhaseStartSetup
         load_abrt_conf
@@ -42,13 +73,95 @@ rlJournalStart
         TmpDir=$(mktemp -d)
         cp -R -- queries/*   "$TmpDir"
         cp -R -- problem_dir "$TmpDir"
-        cp -- pyserve *.conf "$TmpDir"
+        cp -- pyserve *.conf expect "$TmpDir"
         pushd "$TmpDir"
     rlPhaseEnd
 
     rlPhaseStartTest "sanity"
         rlRun "reporter-rhtsupport --help >/dev/null 2>&1"
         rlRun "reporter-rhtsupport --help 2>&1 | grep 'Usage:'"
+
+        new_dump_dir reportable_dump_directory
+        run_without_interruption reportable_dump_directory
+    rlPhaseEnd
+
+    rlPhaseStartTest "Vendor check"
+        rlLog "No Vendor"
+        new_dump_dir no_vendor
+        rm -f no_vendor/pkg_vendor
+        run_without_interruption no_vendor
+
+        rlLog "Fedora Project"
+        new_dump_dir fedora_vendor
+        echo "Fedora Project" > fedora_vendor/pkg_vendor
+        run_with_question vendor fedora_vendor
+    rlPhaseEnd
+
+    rlPhaseStartTest "Local occurence counter check"
+        rlLog "No count"
+        new_dump_dir no_count
+        rm -f no_count/count
+
+        rlLog "Not a number"
+        new_dump_dir not_a_number
+        echo "nan" > not_a_number/count
+        run_without_interruption
+
+        rlLog "Count == 0"
+        new_dump_dir  count_zero
+        echo 0 > count_zero/count
+        run_without_interruption
+
+        rlLog "Count == 99999999999999999"
+        new_dump_dir count_huge
+        echo 99999999999999999 > count_huge/count
+        run_without_interruption
+
+        rlLog "Count == 1"
+        new_dump_dir  count_one
+        echo 1 > count_one/count
+        run_with_question count count_one
+
+        rlLog "Count > 1 && unknown reproducible"
+        new_dump_dir unknown_reproducible
+        echo 1 > unknown_reproducible/count
+        echo "Not sure how to reproduce the problem" > unknown_reproducible/reproducible
+        run_with_question count unknown_reproducible
+
+        rlLog "Count == 1 && reproducible"
+        new_dump_dir reproducible
+        echo 1 > reproducible/count
+        echo "The problem is reproducible" > reproducible/reproducible
+        run_without_interruption
+
+        rlLog "Count == 1 && recurrent"
+        new_dump_dir recurrent
+        echo 1 > recurrent/count
+        echo "The problem occurs regularly" > recurrent/reproducible
+        run_without_interruption
+
+        rlLog "Count == 1 && not supported reproducible"
+        new_dump_dir not_supported_reproducible
+        echo 1 > not_supported_reproducible/count
+        echo "Random text" > not_supported_reproducible/reproducible
+        run_with_question count not_supported_reproducible
+    rlPhaseEnd
+
+    rlPhaseStartTest "Packaged check"
+        rlLog "No Package"
+        new_dump_dir no_package
+        rm -f no_package/package
+        run_with_question package no_package
+    rlPhaseEnd
+
+    rlPhaseStartCleanup
+        rlBundleLogs interaction $(ls *.log)
+        rm -f *.log
+    rlPhaseEnd
+
+    rlPhaseStartSetup
+#REPORT_CLIENT_NONINTERACTIVE=1
+#        export REPORT_CLIENT_NONINTERACTIVE
     rlPhaseEnd
 
     rlPhaseStartTest "rhtsupport create"
@@ -107,6 +220,8 @@ rlJournalStart
                 >server_create 2>&1 &
         sleep 1
 
+        echo 2 > $crash_PATH/count
+        echo "Red Hat, Inc." > $crash_PATH/pkg_vendor
         rlRun "reporter-rhtsupport -vvv -u -c rhtsupport.conf -d $crash_PATH &> client_create3"
 
         kill %1
@@ -150,6 +265,8 @@ rlJournalStart
                 >server_create 2>&1 &
         sleep 1
 
+        echo 2 > $crash_PATH/count
+        echo "Red Hat, Inc." > $crash_PATH/pkg_vendor
         rlRun "reporter-rhtsupport -vvv -u -c rhtsupport.conf -d $crash_PATH &> client_create4"
 
         kill %1
@@ -195,6 +312,8 @@ rlJournalStart
                 >server_create 2>&1 &
         sleep 1
 
+        echo 2 > $crash_PATH/count
+        echo "Red Hat, Inc." > $crash_PATH/pkg_vendor
         rlRun "reporter-rhtsupport -vvv -u -c rhtsupport.conf -d $crash_PATH &> client_create5"
 
         kill %1
@@ -243,6 +362,8 @@ rlJournalStart
                 >server_create 2>&1 &
         sleep 1
 
+        echo 2 > $crash_PATH/count
+        echo "Red Hat, Inc." > $crash_PATH/pkg_vendor
         rlRun "reporter-rhtsupport -vvv -u -c rhtsupport.conf -d $crash_PATH &> client_create6"
 
         kill %1
