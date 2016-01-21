@@ -38,6 +38,7 @@ struct pkg_envra {
     char *p_version;
     char *p_release;
     char *p_arch;
+    char *p_vendor;
 };
 
 void free_pkg_envra(struct pkg_envra *p);
@@ -67,6 +68,20 @@ void rpm_load_gpgkey(const char* filename);
  * @return 1 if valid, otherwise (invalid, or error) 0
  */
 int rpm_chk_fingerprint(const char* pkg);
+
+/**
+ * A function, which checks if the given finger print is imported.
+ * @param pkg A package name.
+ * @return 1 if imported, otherwise (not-imported, or error) 0
+ */
+int rpm_fingerprint_is_imported(const char* fingerprint);
+
+/**
+ * A function, which returns package's finger print
+ * @param pkg A package name.
+ * @return NULL if not-valid, otherwise malloced NULL-terminated string.
+ */
+char *rpm_get_fingerprint(const char* pkg);
 
 /**
  * Gets a package name. This package contains particular
