@@ -681,8 +681,15 @@ int main(int argc, char** argv)
         }
     }
 
+    const char *pid_str = argv[3];
+    /* xatoi_positive() handles errors */
+    uid_t uid = xatoi_positive(argv[4]);
+
     const char* signal_str = argv[1];
     int signal_no = xatoi_positive(signal_str);
+    const char *signame = NULL;
+    bool signal_is_fatal_bool = signal_is_fatal(signal_no, &signame);
+
     errno = 0;
     off_t ulimit_c = strtoull(argv[2], NULL, 10);
     if (errno)
@@ -697,16 +704,8 @@ int main(int argc, char** argv)
         /* set to max possible >0 value */
         ulimit_c = ~((off_t)1 << (sizeof(off_t)*8-1));
     }
-    const char *signame = NULL;
-    bool signal_is_fatal_bool = signal_is_fatal(signal_no, &signame);
     const char *global_pid_str = argv[8];
     pid_t pid = xatoi_positive(argv[8]);
-
-    const char *pid_str = argv[3];
-
-    /* xatoi_positive() handles errors */
-    pid_t local_pid = xatoi_positive(argv[3]);
-    uid_t uid = xatoi_positive(argv[4]);
 
     user_pwd = get_cwd(pid); /* may be NULL on error */
     log_notice("user_pwd:'%s'", user_pwd);
