@@ -33,6 +33,12 @@ REPORTED_TO=problem_dir/reported_to
 
 rlJournalStart
     rlPhaseStartSetup
+        USER_NAME="abrt-scp-user"
+        USER_PASS="redhat"
+        USER_HOME="/home/${USER_NAME}"
+        rlRun "adduser $USER_NAME"
+        rlRun "echo $USER_PASS | passwd --stdin $USER_NAME"
+
         TmpDir=$(mktemp -d)
         cp -R problem_dir $TmpDir
         pushd $TmpDir
@@ -43,30 +49,32 @@ rlJournalStart
         rlLog "Remove old reported_to file"
         rm -rf $REPORTED_TO
 
-        rlRun "reporter-upload -d problem_dir -u scp://root:redhat@localhost$TmpDir/target/upload.tar.gz"
+        rlRun "reporter-upload -d problem_dir -u scp://${USER_NAME}:${USER_PASS}@localhost${USER_HOME}/upload.tar.gz"
 
         rlAssertExists $REPORTED_TO
         cat $REPORTED_TO
-        rlAssertEquals "Correct report result" "_upload: URL=scp://localhost$TmpDir/target/upload.tar.gz" "_$(tail -1 $REPORTED_TO)"
+        rlAssertEquals "Correct report result" "_upload: URL=scp://localhost${USER_HOME}/upload.tar.gz" "_$(tail -1 $REPORTED_TO)"
 
-        rlAssertExists "$TmpDir/target/upload.tar.gz"
-        rm -rf "$TmpDir/target/upload.tar.gz"
+        rlAssertExists "${USER_HOME}/upload.tar.gz"
+        rm -rf "${USER_HOME}/upload.tar.gz"
     rlPhaseEnd
 
     rlPhaseStartTest "scp upload, filename not set"
         rlLog "Remove old reported_to file"
         rm -rf $REPORTED_TO
 
-        rlRun "reporter-upload -d problem_dir -u scp://root:redhat@localhost$TmpDir/target/"
+        rlRun "reporter-upload -d problem_dir -u scp://${USER_NAME}:${USER_PASS}@localhost${USER_HOME}/"
 
         rlAssertExists $REPORTED_TO
         cat $REPORTED_TO
-        rlAssertEquals "Correct report result" "_upload: URL=scp://localhost$TmpDir/target/problem_dir.tar.gz" "_$(tail -1 $REPORTED_TO)"
+        rlAssertEquals "Correct report result" "_upload: URL=scp://localhost${USER_HOME}/problem_dir.tar.gz" "_$(tail -1 $REPORTED_TO)"
 
-        rlAssertExists $TmpDir/target/problem_dir*
+        rlAssertExists ${USER_HOME}/problem_dir*
     rlPhaseEnd
 
     rlPhaseStartCleanup
+        rlRun "userdel -fr $USER_NAME"
+
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd
