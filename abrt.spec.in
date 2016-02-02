@@ -1121,6 +1121,21 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Tue Feb 02 2016 Matej Habrnal <mhabrnal@redhat.com> 2.7.2-1
+- ccpp: bug fix - undefined variables
+- a-a-c-o-f-hw-error: fix unicode error
+- ccpp: use error_msg_ignore_crash() instead of error_msg()
+- ccpp: add AllowedUsers and AllowedGroups feature
+- doc: fix formatting in abrt.conf man page
+- ccpp: use executable name from pid
+- a-a-c-o-f-hw-error: do not crash on invalid unicode
+- Use %s instead of %d.
+- configui: link GUI library with libabrt.so
+- Do not include system libabrt.h
+- ccpp: unify log message of ignored crashes
+- ccpp: add IgnoredPath option
+- lib: check_recent_crash_file do not produce error_msg
+
 * Mon Nov 23 2015 Jakub Filak <jfilak@redhat.com> 2.7.1-1
 - spec: switch owner of the dump location to 'root'
 - abrtd: switch owner of the dump location to 'root'
