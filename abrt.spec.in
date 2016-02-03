@@ -1121,6 +1121,9 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Wed Feb 03 2016 Matej Habrnal <mhabrnal@redhat.com> 2.8.0-1
+- a-a-save-package-data: do not blacklist firefox
+
 * Tue Feb 02 2016 Matej Habrnal <mhabrnal@redhat.com> 2.7.2-1
 - ccpp: bug fix - undefined variables
 - a-a-c-o-f-hw-error: fix unicode error
