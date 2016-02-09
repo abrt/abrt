@@ -143,9 +143,9 @@ static struct dump_dir *dd;
  * %u - uid
  * %g - gid
  * %t - UNIX time of dump
- * %e - executable filename
- * %i - crash thread tid
  * %P - global pid
+ * %I - crash thread tid
+ * %e - executable filename (can contain white spaces)
  * %% - output one "%"
  */
 /* Hook must be installed with exactly the same sequence of %c specifiers.
@@ -661,9 +661,9 @@ int main(int argc, char** argv)
 
     if (argc < 8)
     {
-        /* percent specifier:         %s   %c              %p  %u  %g  %t   %e          %P         %i*/
-        /* argv:                  [0] [1]  [2]             [3] [4] [5] [6]  [7]         [8]        [9]*/
-        error_msg_and_die("Usage: %s SIGNO CORE_SIZE_LIMIT PID UID GID TIME BINARY_NAME GLOBAL_PID [TID]", argv[0]);
+        /* percent specifier:         %s   %c              %p  %u  %g  %t   %P         %T        */
+        /* argv:                  [0] [1]  [2]             [3] [4] [5] [6]  [7]        [8]       */
+        error_msg_and_die("Usage: %s SIGNO CORE_SIZE_LIMIT PID UID GID TIME GLOBAL_PID GLOBAL_TID", argv[0]);
     }
 
     /* Not needed on 2.6.30.
@@ -704,8 +704,8 @@ int main(int argc, char** argv)
         /* set to max possible >0 value */
         ulimit_c = ~((off_t)1 << (sizeof(off_t)*8-1));
     }
-    const char *global_pid_str = argv[8];
-    pid_t pid = xatoi_positive(argv[8]);
+    const char *global_pid_str = argv[7];
+    pid_t pid = xatoi_positive(argv[7]);
 
     user_pwd = get_cwd(pid); /* may be NULL on error */
     log_notice("user_pwd:'%s'", user_pwd);
@@ -867,7 +867,7 @@ int main(int argc, char** argv)
                 signal_no, signame, "dumping core");
 
     pid_t tid = -1;
-    const char *tid_str = argv[9];
+    const char *tid_str = argv[8];
     if (tid_str)
     {
         tid = xatoi_positive(tid_str);
