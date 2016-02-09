@@ -156,6 +156,22 @@ EOF
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
     rlPhaseEnd
 
+    rlPhaseStartTest "crash of a process with white space in its name"
+        EXECUTABLE="white spaced name"
+        rlRun "cp `which will_segfault` \"$EXECUTABLE\""
+
+        prepare
+        rlRun "./\"$EXECUTABLE\"" 139
+        wait_for_hooks
+        get_crash_path
+
+        rlAssertEquals "Correct cmdline" "_'./$EXECUTABLE'" "_$(cat $crash_PATH/cmdline)"
+        rlAssertEquals "Correct executable" "_$(pwd)/$EXECUTABLE" "_$(cat $crash_PATH/executable)"
+        rlAssertEquals "Correct reason" "_$EXECUTABLE killed by SIGSEGV" "_$(cat $crash_PATH/reason)"
+
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+    rlPhaseEnd
+
     rlPhaseStartCleanup
         rlRun "ulimit -c $old_ulimit" 0
         rlBundleLogs abrt $(echo *_ls) $(echo verify_result*)
