@@ -31,7 +31,7 @@
 TEST="oops_processing"
 PACKAGE="abrt"
 OOPS_REQUIRED_FILES="kernel uuid duphash
-pkg_name pkg_arch pkg_epoch pkg_release pkg_version"
+pkg_name pkg_arch pkg_epoch pkg_release pkg_version pkg_vendor pkg_fingerprint"
 EXAMPLES_PATH="../../../examples"
 
 rlJournalStart
@@ -98,6 +98,7 @@ rlJournalStart
             rlAssertGrep "kernel" "$crash_PATH/pkg_name"
             rlAssertGrep "kernel" "$crash_PATH/component"
             rlAssertGrep "$kernel_version" "$crash_PATH/pkg_version"
+            rlRun "cat $crash_PATH/pkg_fingerprint"
 
             rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
         done
