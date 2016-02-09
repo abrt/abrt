@@ -76,3 +76,9 @@ rpm --root $ROOT -q --qf "%{release}\n" "$package" > pkg_release
 epoch="$( rpm --root $ROOT -q --qf "%{epoch}" "$package" )"
 test "$epoch" = "(none)"  && epoch=0
 echo "$epoch" > pkg_epoch
+rpm -q --qf "%{vendor}\n" "$package" > pkg_vendor
+
+FINGERPRINT=$(rpm -q --qf "%|SIGGPG?{%{SIGGPG:pgpsig}}:{%{SIGPGP:pgpsig}}|" "$package" 2>/dev/null | tail -1)
+if [ -n "$FINGERPRINT" -a "_(none)" != "_$FINGERPRINT" ]; then
+    echo $FINGERPRINT | sed 's/.*Key ID \(....\)\(....\)\(....\)\(....\)$/\U\1 \U\2 \U\3 \U\4/' > pkg_fingerprint
+fi
