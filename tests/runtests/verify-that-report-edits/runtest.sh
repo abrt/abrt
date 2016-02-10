@@ -79,7 +79,7 @@ rlJournalStart
         #
         #rlAssertGrep "/tmp/abrt.log" out
         #rlAssertGrep "$smart_quote" "/tmp/abrt.log"
-        rlAssertGrep "Successfully sent .* to $Upload_URL" out
+        rlAssertGrep "Successfully created.* $Upload_URL" out
         rlRun "tar xf $TmpDir/out.tar.gz -O comment | grep -qF '$smart_quote'" \
                 0 "Comment is edited in saved tarball"
     rlPhaseEnd
