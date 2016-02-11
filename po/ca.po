@@ -8,20 +8,21 @@
 # Josep Torné <josep@substantiu.com>, 2014
 # Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2014. #zanata
 # Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2015. #zanata
+# Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2016. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2015-04-08 13:09+0200\n"
+"POT-Creation-Date: 2016-02-11 12:54+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-03-28 03:29-0400\n"
+"PO-Revision-Date: 2016-01-25 06:37-0500\n"
 "Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>\n"
 "Language-Team: Catalan <fedora@llistes.softcatala.org>\n"
 "Language: ca\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 3.5.1\n"
+"X-Generator: Zanata 3.8.2\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -31,34 +32,34 @@ msgstr "Presentació d'informes del problema"
 msgid "View and report application crashes"
 msgstr "Visualitzeu i informeu de les fallides en les aplicacions"
 
-#: ../src/applet/applet.c:157
+#: ../src/applet/applet.c:260 ../src/cli/report.c:51
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr "No es pot ser el propietari de '%s'"
+msgstr "No es pot ser el propietari de «%s»"
 
-#: ../src/applet/applet.c:165
+#: ../src/applet/applet.c:268
 #, c-format
 msgid "Can't open directory for writing '%s'"
-msgstr "No es pot obrir el directori per a l'escriptura '%s'"
+msgstr "No es pot obrir el directori per a l'escriptura «%s»"
 
-#: ../src/applet/applet.c:442 ../src/applet/applet.c:461
+#: ../src/applet/applet.c:546 ../src/applet/applet.c:564
 #, c-format
 msgid "Can't close notification: %s"
 msgstr "No es pot tancar la notificació: %s"
 
-#: ../src/applet/applet.c:496
+#: ../src/applet/applet.c:598
 msgid "Oops!"
 msgstr "Oops!"
 
-#: ../src/applet/applet.c:514
+#: ../src/applet/applet.c:616
 msgid "Report"
 msgstr "Informa"
 
-#: ../src/applet/applet.c:523
+#: ../src/applet/applet.c:625
 msgid "Restart"
 msgstr "Reinicia"
 
-#: ../src/applet/applet.c:588
+#: ../src/applet/applet.c:694
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
@@ -67,7 +68,7 @@ msgstr ""
 "Ho sentim, sembla que %s ha tingut pana. El problema ha estat informat "
 "automàticament."
 
-#: ../src/applet/applet.c:593
+#: ../src/applet/applet.c:699
 #, c-format
 msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
@@ -76,26 +77,26 @@ msgstr ""
 "Ho sentim, sembla que %s ha tingut pana. El problema serà informat que hi "
 "hagi disponible una connexió a Internet."
 
-#: ../src/applet/applet.c:599 ../src/applet/applet.c:613
-#: ../src/applet/applet.c:641
+#: ../src/applet/applet.c:705 ../src/applet/applet.c:719
+#: ../src/applet/applet.c:747
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
 msgstr ""
 "Ho sentim, sembla que %s ha tingut pana. Si us plau, poseu-vos en contacte "
-"amb el desenvolupador si voleu informar-li d'aquesta incidència."
+"amb el desenvolupador si voleu informar-lo d'aquesta incidència."
 
-#: ../src/applet/applet.c:607
+#: ../src/applet/applet.c:713
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
 msgstr ""
-"Ho sentim, sembla que %s ha tingut pana. Si voleu ajudar a què es solucioni, "
-"si us plau envieu un informe."
+"Ho sentim, sembla que %s ha tingut pana. Si voleu ajudar a solucionar-ho, si "
+"us plau, envieu un informe."
 
-#: ../src/applet/applet.c:626
+#: ../src/applet/applet.c:732
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
@@ -103,7 +104,7 @@ msgstr ""
 "Ho sentim, sembla que hi va haver un problema amb un component. El problema "
 "ha estat informat automàticament."
 
-#: ../src/applet/applet.c:630
+#: ../src/applet/applet.c:736
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
@@ -111,36 +112,36 @@ msgstr ""
 "Ho sentim, sembla que hi va haver un problema amb un component. El problema "
 "serà informat que hi hagi disponible una connexió a Internet."
 
-#: ../src/applet/applet.c:635
+#: ../src/applet/applet.c:741
 msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
 msgstr ""
 "Ho sentim, sembla que hi va haver un problema amb un component. Si voleu "
-"ajudar a què es solucioni, si us plau envieu un informe."
+"ajudar a solucionar-ho, si us plau, envieu un informe."
 
-#: ../src/applet/applet.c:680
+#: ../src/applet/applet.c:786
 #, c-format
 msgid "Can't show notification: %s"
 msgstr "No es pot mostrar la notificació: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:712 ../src/daemon/abrt-upload-watch.c:168
+#: ../src/applet/applet.c:818 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr "No es pot llegir des del canal gio: '%s'"
+msgstr "No es pot llegir des del canal gio: «%s»"
 
-#: ../src/applet/applet.c:790
+#: ../src/applet/applet.c:896
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "No es pot establir la codificació en el canal gio: %s"
 
-#: ../src/applet/applet.c:794
+#: ../src/applet/applet.c:900
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "No es pot engegar el mode no-bloquejant per al canal gio: %s"
 
-#: ../src/applet/applet.c:1090
+#: ../src/applet/applet.c:1186
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -150,6 +151,17 @@ msgstr ""
 "\n"
 "Miniaplicació que notifica a l'usuari d'un nou problema detectat per "
 "l'ABRT\n"
+
+#: ../src/configuration-gui/abrt-config-widget.c:483
+msgid ""
+"The configuration option above has been moved to GSettings and the switch is "
+"linked to the value of the setting 'report-technical-problems' from the "
+"schema 'org.gnome.desktop.privacy'."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.c:501
+msgid "The configuration option above can be configured in"
+msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
@@ -172,13 +184,10 @@ msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
 "space consuming operation. ABRT provides a service which generates the stack "
 "trace from the coredump but you have to upload the coredump to this service. "
-"With this option disabled ABRT will upload the coredump without asking."
+"With option 'Always' ABRT will always upload the coredump without asking. "
+"With option 'Never' the stack trace will be always generated locally. With "
+"option 'Ask' ABRT will always ask the user."
 msgstr ""
-"El fitxer del bolcat de memòria és necessari per generar la traça de la "
-"pila, que és una operació que consumeix temps i espai. L'ABRT proporciona un "
-"servei que genera la traça de la pila des del bolcat de memòria, però heu de "
-"pujar el bolcat de memòria a aquest servei. Amb aquesta opció inhabilitada "
-"l'ABRT pujarà el bolcat de memòria sense preguntar."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -200,10 +209,10 @@ msgid ""
 "uReports are sent automatically immediately after problem detection."
 msgstr ""
 "L'uReport és la descripció breu i completament anònima d'un problema. L'ABRT "
-"utilitza els uReport per a la ràpida detecció de duplicats a nivell global. "
-"En la configuració per defecte l'uReport és enviat al començament del procés "
-"de presentació d'informes. Amb aquesta opció habilitada els uReports són "
-"enviats automàticament tot just després de la detecció del problema."
+"utilitza els uReport per a la ràpida detecció global de duplicats. En la "
+"configuració per defecte l'uReport és enviat al començament del procés "
+"informador. Amb aquesta opció habilitada els uReports són enviats "
+"automàticament tot just després de la detecció del problema."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
@@ -226,10 +235,6 @@ msgstr ""
 "d'informes reduïts."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
-msgid "Ask before uploading coredump"
-msgstr "Pregunta abans de pujar un bolcat de memòria"
-
-#: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
@@ -237,23 +242,39 @@ msgstr ""
 "Amb aquesta opció habilitada l'ABRT sempre crea el tiquet de l'error amb "
 "accés restringit si es detecten possibles dades sensibles."
 
-#: ../src/configuration-gui/abrt-config-widget.glade.h:12
+#: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid "Request private ticket for sensitive information"
-msgstr "Sol·licita un tiquet privat per a informació sensible"
+msgstr "Sol·licita un tiquet privat per a la informació sensible"
 
-#: ../src/configuration-gui/abrt-config-widget.glade.h:13
+#: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Notify incomplete problems"
 msgstr "Notifica problemes incomplets"
 
-#: ../src/configuration-gui/abrt-config-widget.glade.h:14
+#: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
 msgstr ""
-"El problemes incomplets es detecten mentre l'ordinador s'està aturant o "
+"Els problemes incomplets es detecten mentre l'ordinador s'està aturant o "
 "s'està tancant la sessió d'un usuari. A fi de proporcionar informes de "
 "problemes valuosos, l'ABRT no us permetrà enviar aquests problemes."
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:14
+msgid "Always"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:15
+msgid "Never"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:16
+msgid "Ask"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:17
+msgid "Upload coredump for backtrace generation"
+msgstr ""
 
 #: ../src/configuration-gui/system-config-abrt.c:79
 msgid "_Close"
@@ -280,7 +301,7 @@ msgstr "Sobre"
 msgid "Quit"
 msgstr "Surt"
 
-#: ../src/daemon/abrt-action-save-package-data.c:390
+#: ../src/daemon/abrt-action-save-package-data.c:393
 msgid ""
 "& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 "\n"
@@ -291,7 +312,7 @@ msgstr ""
 "Consulta a la base de dades dels paquets i desa el nom del paquet i del "
 "component"
 
-#: ../src/daemon/abrt-action-save-package-data.c:403
+#: ../src/daemon/abrt-action-save-package-data.c:406
 #: ../src/daemon/abrt-action-save-container-data.c:210
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
 #: ../src/plugins/abrt-action-analyze-c.c:141
@@ -303,11 +324,11 @@ msgstr ""
 msgid "Problem directory"
 msgstr "Directori del problema"
 
-#: ../src/daemon/abrt-action-save-package-data.c:404
+#: ../src/daemon/abrt-action-save-package-data.c:407
 msgid "Configuration file"
 msgstr "Fitxer de configuració"
 
-#: ../src/daemon/abrt-action-save-package-data.c:405
+#: ../src/daemon/abrt-action-save-package-data.c:408
 msgid "Use this directory as RPM root"
 msgstr "Utilitza aquest directori com a l'arrel dels RPM"
 
@@ -323,24 +344,25 @@ msgstr "& [-v] -d DIR\n"
 msgid "Root directory for running container commands"
 msgstr "El directori arrel per a l'execució de les ordres del contenidor"
 
-#: ../src/daemon/abrt-server.c:785 ../src/dbus/abrt-dbus.c:891
+#: ../src/daemon/abrt-server.c:796 ../src/dbus/abrt-dbus.c:894
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:444
 msgid "& [options]"
 msgstr "& [opcions]"
 
-#: ../src/daemon/abrt-server.c:796
+#: ../src/daemon/abrt-server.c:807
 msgid "Use NUM as client uid"
-msgstr "Utilitza el NUM com a uid de client"
+msgstr "Utilitza el NÚM com a uid de client"
 
-#: ../src/daemon/abrt-server.c:797 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/daemon/abrt-server.c:808 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:97
 #: ../src/plugins/abrt-dump-journal-core.c:477
 #: ../src/plugins/abrt-dump-journal-oops.c:219
-#: ../src/plugins/abrt-dump-xorg.c:244
+#: ../src/plugins/abrt-dump-journal-xorg.c:188
+#: ../src/plugins/abrt-dump-xorg.c:52
 msgid "Log to syslog"
 msgstr "Enregistra a syslog"
 
-#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrtd.c:460
+#: ../src/daemon/abrt-server.c:809 ../src/daemon/abrtd.c:460
 msgid "Add program names to log"
 msgstr "Afegeix els noms dels programes al registre"
 
@@ -348,77 +370,67 @@ msgstr "Afegeix els noms dels programes al registre"
 msgid "Unknown error"
 msgstr "Error desconegut"
 
-#: ../src/dbus/abrt-dbus.c:197
+#: ../src/dbus/abrt-dbus.c:167
+#, c-format
+msgid "'%s' is not a valid element name"
+msgstr "«%s» no és un nom d'element vàlid"
+
+#: ../src/dbus/abrt-dbus.c:219
 #, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr "'%s' no es un directori del problema vàlid"
+msgstr "«%s» no és un directori del problema vàlid"
 
-#: ../src/dbus/abrt-dbus.c:232
-#, c-format
-msgid "'%s' element can't be modified"
-msgstr "L'element '%s' no es pot modificar "
-
-#: ../src/dbus/abrt-dbus.c:253 ../src/dbus/abrt-dbus.c:455
-#: ../src/dbus/abrt-dbus.c:507 ../src/dbus/abrt-dbus.c:571
-#: ../src/dbus/abrt-dbus.c:737 ../src/dbus/abrt-configuration.c:618
-#: ../src/dbus/abrt-configuration.c:683
+#: ../src/dbus/abrt-dbus.c:272 ../src/dbus/abrt-dbus.c:520
+#: ../src/dbus/abrt-configuration.c:618 ../src/dbus/abrt-configuration.c:683
 #, c-format
 msgid "Not Authorized"
 msgstr "No autoritzat"
 
-#: ../src/dbus/abrt-dbus.c:265
-msgid "Can't access the problem for modification"
-msgstr "No es pot accedir al problema per a la notificació"
+#: ../src/dbus/abrt-dbus.c:285
+msgid "Can't open the problem"
+msgstr ""
 
-#: ../src/dbus/abrt-dbus.c:470
+#: ../src/dbus/abrt-dbus.c:317
+#, c-format
+msgid "'%s' element can't be modified"
+msgstr "L'element «%s» no es pot modificar "
+
+#: ../src/dbus/abrt-dbus.c:536
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
 "Error en canviar el propietari del directori. Reviseu els registres del "
 "sistema per a més detalls."
 
-#: ../src/dbus/abrt-dbus.c:581
-msgid "Can't access the problem for reading"
-msgstr "No es pot accedir a la lectura del problema"
-
-#: ../src/dbus/abrt-dbus.c:630
-#, c-format
-msgid "'%s' is not a valid element name"
-msgstr "'%s' no és un nom d'element vàlid"
-
-#: ../src/dbus/abrt-dbus.c:651
+#: ../src/dbus/abrt-dbus.c:665
 #, c-format
 msgid "Can't get size of '%s'"
-msgstr "No es pot obtenir la mida de '%s'"
+msgstr "No es pot obtenir la mida de «%s»"
 
-#: ../src/dbus/abrt-dbus.c:666
+#: ../src/dbus/abrt-dbus.c:680
 msgid "No problem space left"
 msgstr "No queda espai per al problema"
 
-#: ../src/dbus/abrt-dbus.c:698
+#: ../src/dbus/abrt-dbus.c:715
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr "No es pot eliminar l'element '%s' del directori del problema '%s'"
+msgstr "No es pot eliminar l'element «%s» del directori del problema «%s»"
 
-#: ../src/dbus/abrt-dbus.c:725
-msgid "Can't access the problem"
-msgstr ""
-
-#: ../src/dbus/abrt-dbus.c:873 ../src/dbus/abrt-configuration.c:983
+#: ../src/dbus/abrt-dbus.c:876 ../src/dbus/abrt-configuration.c:983
 #: ../src/daemon/abrtd.c:426
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr ""
-"S'ha perdut el nom '%s', comproveu que no s'estigui executant un altre "
+"S'ha perdut el nom «%s», comproveu que no s'estigui executant un altre "
 "servei que sigui el propietari del nom.\n"
 
-#: ../src/dbus/abrt-dbus.c:900 ../src/dbus/abrt-configuration.c:1011
+#: ../src/dbus/abrt-dbus.c:903 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:459
 msgid "Exit after NUM seconds of inactivity"
-msgstr "Surt després de NUM segons d'inactivitat"
+msgstr "Surt després de NÚM segons d'inactivitat"
 
-#: ../src/dbus/abrt-dbus.c:918 ../src/dbus/abrt-configuration.c:1021
+#: ../src/dbus/abrt-dbus.c:921 ../src/dbus/abrt-configuration.c:1021
 msgid "This program must be run as root."
 msgstr "Aquest programa cal executar-lo com a root."
 
@@ -445,24 +457,28 @@ msgstr "No en facis un dimoni"
 msgid "Log to syslog even with -d"
 msgstr "Enregistra a syslog inclús amb -d"
 
-#: ../src/daemon/abrt-handle-event.c:406
-msgid "& [-v -i] -e|--event EVENT DIR..."
-msgstr "& [-v -i] -e|--event EVENT DIR..."
+#: ../src/daemon/abrt-handle-event.c:394
+msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
+msgstr ""
 
-#: ../src/daemon/abrt-handle-event.c:414
+#: ../src/daemon/abrt-handle-event.c:403
 msgid "Run EVENT on DIR"
-msgstr "Executa EVENT a DIR"
+msgstr "Executa l'ESDEVENIMENT al DIR"
 
-#: ../src/daemon/abrt-handle-event.c:415
+#: ../src/daemon/abrt-handle-event.c:404
 msgid "Communicate directly to the user"
 msgstr "Comuniqueu-vos directament amb l'usuari"
+
+#: ../src/daemon/abrt-handle-event.c:405
+msgid "Increment the nice value by INCREMENT"
+msgstr ""
 
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
 msgstr ""
 "No hi ha cap treballador lliure i la memòria intermèdia està plena. S'està "
-"ometent l'arxiu '%s'"
+"ometent l'arxiu «%s»"
 
 #: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
@@ -475,7 +491,7 @@ msgid ""
 "If UPLOAD_DIRECTORY is not provided, uses a value of\n"
 "WatchCrashdumpArchiveDir option from abrt.conf"
 msgstr ""
-"& [-vs] [-w NUM] [-c MiB] [DIRECTORI_DE_PUJADA]\n"
+"& [-vs] [-w NÚM] [-c MiB] [DIRECTORI_DE_PUJADA]\n"
 "\n"
 "\n"
 "Observa el DIRECTORI_DE_PUJADA i desempaqueta els arxius d'entrada al "
@@ -491,81 +507,82 @@ msgstr "Endimonia"
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr "El nombre de treballs concurrents. Per defecte són "
+msgstr "El nombre de treballs concurrents. El valor per defecte és "
 
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr "La mida màxima de la memòria cau en MiB. Per defecte són "
+msgstr "La mida màxima de la memòria cau en MiB. El valor per defecte és "
 
-#: ../src/daemon/abrt-auto-reporting.c:176
+#: ../src/daemon/abrt-auto-reporting.c:198
+#: ../src/daemon/abrt-auto-reporting.c:206
 msgid "& [ "
 msgstr "& ["
 
-#: ../src/daemon/abrt-auto-reporting.c:213
+#: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
 msgstr "Desactiva l'autenticació"
 
-#: ../src/daemon/abrt-auto-reporting.c:214
+#: ../src/daemon/abrt-auto-reporting.c:234
 msgid "Red Hat Support user name"
 msgstr "nom d'usuari del Red Hat Support"
 
-#: ../src/daemon/abrt-auto-reporting.c:215
+#: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
 msgstr ""
-"Contrasenya de Red Hat Support, si no es proporciona se us preguntarà per "
+"Contrasenya de Red Hat Support, si no es proporciona, se us preguntarà per "
 "ella"
 
-#: ../src/daemon/abrt-auto-reporting.c:216
+#: ../src/daemon/abrt-auto-reporting.c:236
 msgid "uReport SSL certificate paths or certificate type"
 msgstr "Els camins als certificats SSL de l'uReport o el tipus de certificat"
 
-#: ../src/daemon/abrt-auto-reporting.c:227
+#: ../src/daemon/abrt-auto-reporting.c:252
 msgid "You also need to specify --username for --password"
 msgstr "També heu d'especificar --username per a --password"
 
-#: ../src/daemon/abrt-auto-reporting.c:233
+#: ../src/daemon/abrt-auto-reporting.c:258
 msgid "You can use either --username or --certificate"
 msgstr "Podeu utilitzar tant --username com --certificate"
 
-#: ../src/daemon/abrt-auto-reporting.c:239
+#: ../src/daemon/abrt-auto-reporting.c:264
 msgid "You can use either --username or --anonymous"
 msgstr "Podeu utilitzar tant --username com --anonymous"
 
-#: ../src/daemon/abrt-auto-reporting.c:245
+#: ../src/daemon/abrt-auto-reporting.c:270
 msgid "You can use either --anonymous or --certificate"
 msgstr "Podeu utilitzar tant --anonymous com --certificate"
 
-#: ../src/daemon/abrt-auto-reporting.c:251
+#: ../src/daemon/abrt-auto-reporting.c:277
 msgid "Invalid number of arguments"
 msgstr "El nombre d'arguments no és vàlid"
 
-#: ../src/daemon/abrt-auto-reporting.c:270
+#: ../src/daemon/abrt-auto-reporting.c:296
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr "Valor d'opció desconeguda: '%s'\n"
+msgstr "Valor d'opció desconeguda: «%s»\n"
 
-#: ../src/daemon/abrt-auto-reporting.c:305
+#: ../src/daemon/abrt-auto-reporting.c:336
 msgid "Password:"
 msgstr "Contrasenya:"
 
-#: ../src/daemon/abrt-auto-reporting.c:308
+#: ../src/daemon/abrt-auto-reporting.c:339
 msgid "Cannot continue without password\n"
 msgstr "No es pot continuar sense la contrasenya\n"
 
 #. Print only the part before ':' of a string like "username:password"
-#: ../src/daemon/abrt-auto-reporting.c:347
+#: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
 msgstr "presentació automàtica d'informes d'HTTP autentificat"
 
-#: ../src/daemon/abrt-auto-reporting.c:349
+#: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
 msgstr "presentació automàtica d'informes de client autentificat SSL"
 
-#: ../src/daemon/abrt-auto-reporting.c:351
+#: ../src/daemon/abrt-auto-reporting.c:384
 msgid "anonymous auto reporting"
 msgstr "presentació anònima dels informes"
 
-#: ../src/daemon/abrt-handle-upload.in:69
+#: ../src/daemon/abrt-handle-upload.in:135
 #, c-format
 msgid ""
 "Usage: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
@@ -584,68 +601,68 @@ msgstr ""
 "   UPLOAD_DIR     - Directori on són emmagatzemats els arxius pujats\n"
 "   FILENAME       - Nom del fitxer de l'arxiu pujat\n"
 
-#: ../src/daemon/abrt-handle-upload.in:105
-#: ../src/daemon/abrt-handle-upload.in:108
+#: ../src/daemon/abrt-handle-upload.in:171
+#: ../src/daemon/abrt-handle-upload.in:174
 msgid "Not a directory: '{0}'"
 msgstr "No és un directori: '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:111
+#: ../src/daemon/abrt-handle-upload.in:177
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr "S'està ometent: '{0}' (comença amb barra invertida)"
+msgstr "S'ignora: '{0}' (comença amb barra invertida)"
 
-#: ../src/daemon/abrt-handle-upload.in:114
+#: ../src/daemon/abrt-handle-upload.in:180
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr "S'està ometent: '{0}' (comença amb punt)"
+msgstr "S'ignora: '{0}' (comença amb punt)"
 
-#: ../src/daemon/abrt-handle-upload.in:117
+#: ../src/daemon/abrt-handle-upload.in:183
 msgid "Skipping: '{0}' (contains ..)"
-msgstr "S'està ometent: '{0}' (conté ..)"
+msgstr "S'ignora: '{0}' (conté ..)"
 
-#: ../src/daemon/abrt-handle-upload.in:120
+#: ../src/daemon/abrt-handle-upload.in:186
 msgid "Skipping: '{0}' (contains space)"
-msgstr "S'està ometent: '{0}' (conté espai)"
+msgstr "S'ignora: '{0}' (conté espai)"
 
-#: ../src/daemon/abrt-handle-upload.in:123
+#: ../src/daemon/abrt-handle-upload.in:189
 msgid "Skipping: '{0}' (contains tab)"
-msgstr "S'està ometent: '{0}' (conté tabulador)"
+msgstr "S'ignora: '{0}' (conté tabulador)"
 
-#: ../src/daemon/abrt-handle-upload.in:128
+#: ../src/daemon/abrt-handle-upload.in:194
 msgid "Can't change directory to '{0}'"
 msgstr "No es pot canviar el directori '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:139
+#: ../src/daemon/abrt-handle-upload.in:205
 msgid "Unknown file type: '{0}'"
 msgstr "Tipus de fitxer desconegut: '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:144
+#: ../src/daemon/abrt-handle-upload.in:210
 msgid "Can't create working directory in '{0}'"
 msgstr "No es pot crear el directori de treball en '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:155
+#: ../src/daemon/abrt-handle-upload.in:221
 msgid "Can't move '{0}' to '{1}'"
 msgstr "No es pot moure '{0}' a '{1}'"
 
-#: ../src/daemon/abrt-handle-upload.in:160
+#: ../src/daemon/abrt-handle-upload.in:226
 msgid "Can't copy '{0}' to '{1}'"
 msgstr "No es pot copiar '{0}' a '{1}'"
 
-#: ../src/daemon/abrt-handle-upload.in:164
+#: ../src/daemon/abrt-handle-upload.in:230
 msgid "Verification error on '{0}'"
 msgstr "Error de verificació en '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:166
+#: ../src/daemon/abrt-handle-upload.in:232
 msgid "Unpacking '{0}'"
 msgstr "S'està desempaquetant '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:170
+#: ../src/daemon/abrt-handle-upload.in:236
 msgid "Can't create '{0}' directory"
 msgstr "No es pot crear el directori '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:174
+#: ../src/daemon/abrt-handle-upload.in:240
 msgid "Can't unpack '{0}'"
 msgstr "No es pot desempaquetar '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:198
+#: ../src/daemon/abrt-handle-upload.in:260
 msgid "'{0}' processed successfully"
 msgstr "'{0}' s'ha processat amb èxit"
 
@@ -662,33 +679,41 @@ msgstr "No es pot connectar al DBus del sistema: %s"
 #: ../src/lib/problem_api_dbus.c:68
 #, c-format
 msgid "Can't chown '%s': %s"
-msgstr "No es pot canviar el propietari '%s': %s"
+msgstr "No es pot canviar el propietari «%s»: %s"
 
 #: ../src/lib/problem_api_dbus.c:97
 #, c-format
 msgid "Deleting problem directory failed: %s"
 msgstr "Error en eliminar el directori del problema: %s"
 
-#: ../src/lib/problem_api_dbus.c:133 ../src/lib/problem_api_dbus.c:206
-#: ../src/lib/problem_api_dbus.c:286
+#: ../src/lib/problem_api_dbus.c:131
 #, c-format
-msgid "Can't get problem data from abrt-dbus: %s"
-msgstr "No es poden obtenir les dades del problema des de l'abrt-dbus: %s"
+msgid "D-Bus GetInfo method call failed: %s"
+msgstr ""
 
-#: ../src/lib/problem_api_dbus.c:169
+#: ../src/lib/problem_api_dbus.c:166
+msgid "Can't get problem data from abrt-dbus"
+msgstr ""
+
+#: ../src/lib/problem_api_dbus.c:193
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
 msgstr "No es pot obtenir el llistat de problemes des de l'abrt-dbus: %s"
 
-#: ../src/lib/problem_api_dbus.c:250
+#: ../src/lib/problem_api_dbus.c:230 ../src/lib/problem_api_dbus.c:315
+#, c-format
+msgid "Can't get problem data from abrt-dbus: %s"
+msgstr "No es poden obtenir les dades del problema des de l'abrt-dbus: %s"
+
+#: ../src/lib/problem_api_dbus.c:274
 #, c-format
 msgid "Can't test whether the element exists over abrt-dbus: %s"
-msgstr ""
+msgstr "No es pot provar si l'element existeix sobre l'abrt-dbus: %s"
 
 #: ../src/lib/ignored_problems.c:233
 #, c-format
 msgid "Can't create temporary file '%s'"
-msgstr "No es pot crear el fitxer temporal '%s'"
+msgstr "No es pot crear el fitxer temporal «%s»"
 
 #: ../src/lib/ignored_problems.c:250
 #, c-format
@@ -696,14 +721,14 @@ msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
 "problems '%s'"
 msgstr ""
-"No es pot escriure en '%s'. El problema '%s' no es traurà dels problemes "
-"ignorats '%s'"
+"No es pot escriure en «%s». El problema «%s» no es traurà dels problemes "
+"ignorats «%s»"
 
 #. Something nefarious happened
 #: ../src/lib/ignored_problems.c:264
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
-msgstr "No es pot reanomenar '%s' a '%s'. Error en eliminar el problema '%s'"
+msgstr "No es pot reanomenar «%s» a «%s». Error en eliminar el problema «%s»"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:41
 msgid ""
@@ -728,7 +753,7 @@ msgstr ""
 msgid "Backtrace parsing failed for %s"
 msgstr "Error en analitzar la traça inversa per %s"
 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:146
+#: ../src/plugins/abrt-action-analyze-backtrace.c:150
 msgid "Crash thread not found"
 msgstr "No s'ha trobat el fil d'execució de la pana"
 
@@ -740,18 +765,18 @@ msgid ""
 msgstr ""
 "& [-v] -d DIR\n"
 "\n"
-"Calcula i desa el UUID del bolcat de memòria en el directori del problema "
+"Calcula i desa l'UUID del bolc de la memòria en el directori del problema "
 "DIR"
 
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr "S'està analitzant el bolcat de memòria '%s'"
+msgstr "S'està analitzant el bolc de la memòria «%s»"
 
 #: ../src/plugins/abrt-action-analyze-core.in:110
 #, c-format
 msgid "Missing build id: %s"
-msgstr "Falta l'Id. de la contrucció: %s"
+msgstr "Falta l'id. de la construcció: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:142
 #, c-format
@@ -770,7 +795,8 @@ msgid ""
 msgstr ""
 "& [-v] -d DIR\n"
 "\n"
-"Calcula i desa el UUID i el DUPHASH per al directori del problema oops DIR"
+"Calcula i desa l'UUID i el DUPHASH per al directori DIR del problema de "
+"l'oops"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:79
 msgid ""
@@ -793,12 +819,12 @@ msgid ""
 msgstr ""
 "& [-v] -d DIR\n"
 "\n"
-"Calcula i desa el UUID i el DUPHASH per al directori del problema xorg DIR"
+"Calcula i desa l'UUID i el DUPHASH per al directori del problema xorg DIR"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:113
 #, c-format
 msgid "Module '%s' was loaded - won't report this crash"
-msgstr "El mòdul '%s' estava carregat - no s'informarà d'aquesta pana"
+msgstr "El mòdul «%s» estava carregat - no s'informarà d'aquesta pana"
 
 #: ../src/plugins/abrt-action-analyze-python.c:36
 msgid ""
@@ -808,7 +834,7 @@ msgid ""
 msgstr ""
 "& [-v] -d DIR\n"
 "\n"
-"Calcula i desa el UUID i el DUPHASH dels bolcats de les panes de Python"
+"Calcula i desa l'UUID i el DUPHASH dels bolcs de les panes de Python"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:52
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
@@ -820,7 +846,7 @@ msgstr "El fitxer {0} no existeix"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:82
 msgid "Extracting the oops text from core"
-msgstr "S'estan extraient el text dels ops des del nucli"
+msgstr "S'estan extraient el text de l'oops des del nucli"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
 msgid "Can't process {0}:\n"
@@ -830,13 +856,13 @@ msgstr "No es pot processar {0}:\n"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "Can't extract the oops message: '{0}'"
-msgstr "No es pot extraure el missatge oops: '{0}'"
+msgstr "No es pot extraure el missatge de l'oops: '{0}'"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:98
 msgid "Oops text extracted successfully"
-msgstr "El text dels oop s'ha extret am èxit"
+msgstr "El text de l'oops s'ha extret amb èxit"
 
-#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:89
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
@@ -844,6 +870,38 @@ msgstr ""
 "El registre del nucli del sistema operatiu indica que es van detectar errors "
 "de maquinari.\n"
 "El més probable és que no sigui un problema de programari.\n"
+
+#: ../src/plugins/abrt-action-find-bodhi-update:88
+msgid "cannot open problem directory '{0}'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:102
+msgid "Problem directory error: {0}"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:117
+msgid "Using product '{0}' from /etc/os-release."
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:119
+msgid "Using product {0}."
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:121
+msgid "Using product version {0}."
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:133
+msgid "Duplicate bugzilla bug '#{0}' was found"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:135
+msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:140
+msgid "Warning: abrt-bodhi do not support Product version 'Rawhide'"
+msgstr ""
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
@@ -853,7 +911,7 @@ msgid ""
 msgstr ""
 "& [opcions] -d DIR\n"
 "\n"
-"Analitza el bolcat de memòria en el directori del problema DIR, genera i "
+"Analitza el bolc de la memòria en el directori del problema DIR, genera i "
 "desa la traça inversa"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
@@ -862,7 +920,7 @@ msgstr "Directoris debuginfo addicionals"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:57
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr "Mata al gdb si s'executa més de NUM segons"
+msgstr "Mata al gdb si s'executa més de NÚM segons"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
@@ -880,7 +938,7 @@ msgid ""
 msgstr ""
 "& [-v] [-r] -d DIR\n"
 "\n"
-"Crea una traça inversa a nivell de bolcat de memòria des del bolcat de "
+"Crea una traça inversa a escala de bolc de la memòria des del bolc de la "
 "memòria i el corresponent binari"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
@@ -946,7 +1004,7 @@ msgstr ""
 "Es llegeix la configuració de /etc/abrt/plugins/CCpp.conf\n"
 "\n"
 "    -v          Mostra informació detallada\n"
-"    -y          No interactiu, assumeix 'Si' a totes les preguntes\n"
+"    -y          No interactiu, s'assumeix 'Sí' a totes les preguntes\n"
 "    --ids       Per defecte: build_ids\n"
 "    --tmpdir    Per defecte: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
 "RANDOM_SUFFIX\n"
@@ -954,7 +1012,7 @@ msgstr ""
 "    --size_mb   Per defecte: 4096\n"
 "    --pkgmgr   Per defecte: PackageManager des de CCpp.conf o 'dnf'\n"
 "    -e,--exact  Baixa tan sols els paquets especificats\n"
-"    --repo      Patró a utilitzar quan es cerquen dipòsits.\n"
+"    --repo      Patró a utilitzar quan se cerquen dipòsits.\n"
 "                Per defecte: *debug*\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:175
@@ -964,7 +1022,7 @@ msgstr "No es pot obrir {0}: {1}"
 #: ../src/plugins/abrt-action-install-debuginfo.in:212
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr ""
-"El bolcat de memòria fa referència a {0} fitxers debuginfo, {1} dels quals "
+"El bolc de la memòria fa referència a {0} fitxers debuginfo, {1} dels quals "
 "no estan instal·lats"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:215
@@ -976,7 +1034,7 @@ msgstr "{0} dels fitxers debuginfo no estan instal·lats"
 msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
 msgstr ""
 "configuració no vàlida del complement CCpp, el gestor de paquets no està "
-"suportat: '%s'"
+"suportat: «%s»"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:249
 msgid "Missing requested file: {0}"
@@ -990,24 +1048,53 @@ msgstr "Falta el fitxer debuginfo: {0}"
 msgid "All debuginfo files are available"
 msgstr "Tots els fitxers debuginfo estan disponibles"
 
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:43
+msgid ""
+"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+"\t[-r REPO]\n"
+"\n"
+"Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
+"ABRT system cache."
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:66
+msgid "Noninteractive, assume 'Yes' to all questions"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:67
+msgid "- means STDIN, default: build_ids"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
+msgid "Download only specified files"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
+msgid "Pattern to use when searching for repos, default: *debug*"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
+msgid "Ignored option"
+msgstr ""
+
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:63
 msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
 msgstr ""
-"Esteu d'acord en pujar el bolcat de memòria? (Pot contenir dades sensibles). "
-"Si la vostra resposta és 'No' aleshores es generà localment una traça de la "
-"pila. (pot baixar una gran quantitat de dades)."
+"Esteu d'acord en pujar el bolc de la memòria? (Pot contenir dades sensibles)."
+" Si la vostra resposta és «No», aleshores es generà localment una traça de "
+"la pila. (pot baixar una gran quantitat de dades)."
 
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:72
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
 msgstr ""
-"Voleu generar a nivell local una traça de la pila? (Es poden baixar una gran "
-"quantitat de dades, però la presentació d'informes no pot continuar sense la "
-"traça de la pila)."
+"Voleu generar localment una traça de la pila? (Pot baixar una gran quantitat "
+"de dades, però la presentació d'informes no pot continuar sense la traça de "
+"la pila)."
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -1038,12 +1125,12 @@ msgstr "Preserva aquest directori"
 #: ../src/plugins/abrt-action-ureport:59
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr "Incapaç d'iniciar '%s', el missatge d'error va ser: '%s'"
+msgstr "Incapaç d'iniciar «%s», el missatge d'error va ser: «%s»"
 
 #: ../src/plugins/abrt-action-ureport:70
 #, c-format
 msgid "Not a number in file '%s'"
-msgstr "No és un número al fitxer '%s'"
+msgstr "No és un número al fitxer «%s»"
 
 #: ../src/plugins/abrt-action-ureport:99
 #, c-format
@@ -1053,8 +1140,8 @@ msgstr "Ús: %s [-v]"
 #: ../src/plugins/abrt-action-ureport:120
 msgid "Unable to get current working directory as it was probably deleted"
 msgstr ""
-"No s'ha pogut obtenir el directori de treball actual com probablement hagi "
-"estat eliminat"
+"No s'ha pogut obtenir el directori de treball actual, probablement es va "
+"eliminar"
 
 #: ../src/plugins/abrt-action-ureport:148
 msgid "A bug was already filed about this problem:"
@@ -1075,15 +1162,15 @@ msgstr "El reporter-ureport va fer fallida amb el codi de sortida %d"
 
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
-msgstr "Senyal enviada pel codi de l'espai d'usuari"
+msgstr "Senyal enviat pel codi de l'espai d'usuari"
 
 #: ../src/plugins/abrt-gdb-exploitable:533
 msgid "Signal sent by timer/IO/async event"
-msgstr "Senyal enviada per l'esdeveniment timer/IO/async"
+msgstr "Senyal enviat per l'esdeveniment timer/IO/async"
 
 #: ../src/plugins/abrt-gdb-exploitable:541
 msgid "Signal has siginfo.si_code = SI_USER"
-msgstr "La senyal té siginfo.si_code = SI_USER"
+msgstr "El senyal té siginfo.si_code = SI_USER"
 
 #: ../src/plugins/abrt-gdb-exploitable:544
 msgid "Signal due to write to closed pipe"
@@ -1092,22 +1179,22 @@ msgstr "Senyal a causa de l'escriptura en una canonada tancada"
 #: ../src/plugins/abrt-gdb-exploitable:550
 #: ../src/plugins/abrt-gdb-exploitable:575
 msgid "Signal sent by keyboard"
-msgstr "Senyal enviada pel tecla"
+msgstr "Senyal enviat pel teclat"
 
 #: ../src/plugins/abrt-gdb-exploitable:554
 #: ../src/plugins/abrt-gdb-exploitable:579
 msgid "Job control signal sent by kernel"
-msgstr "Senyal de control de treball enviada pel nucli del sistema operatiu"
+msgstr "Senyal de control de treball enviat pel nucli del sistema operatiu"
 
 #: ../src/plugins/abrt-gdb-exploitable:558
 #: ../src/plugins/abrt-gdb-exploitable:587
 msgid "Signal sent by window resize"
-msgstr "Senyal enviada pel redimensionament de la finestra"
+msgstr "Senyal enviat pel redimensionament de la finestra"
 
 #: ../src/plugins/abrt-gdb-exploitable:562
 #: ../src/plugins/abrt-gdb-exploitable:591
 msgid "Signal sent by alarm(N) expiration"
-msgstr "Senyal enviada per l'expiració d'alarm(N)"
+msgstr "Senyal enviat per l'expiració d'alarm(N)"
 
 #: ../src/plugins/abrt-gdb-exploitable:583
 msgid "Signal due to write to broken pipe"
@@ -1147,7 +1234,7 @@ msgstr "Instrucció il·legal (salta a una adreça aleatòria?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:647
 msgid "Non-crash related signal"
-msgstr "Senyal relacionada amb cap pana"
+msgstr "Senyal relacionat amb cap pana"
 
 #: ../src/plugins/abrt-gdb-exploitable:652
 msgid "Stack overflow"
@@ -1216,12 +1303,12 @@ msgid ""
 msgstr ""
 "& [-vusoxm] [-d DIR]/[-D] [FITXER]\n"
 "\n"
-"Extreu els oop des del FITXER (o entrada estàndard)"
+"Extreu els oops del FITXER (o entrada estàndard)"
 
 #: ../src/plugins/abrt-dump-oops.c:98
 #: ../src/plugins/abrt-dump-journal-oops.c:220
 msgid "Print found oopses on standard output"
-msgstr "Imprimeix els oop que s'han trobat en la sortida estàndard"
+msgstr "Imprimeix els oops que s'han trobat en la sortida estàndard"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
@@ -1230,12 +1317,13 @@ msgstr "Imprimeix els oop que s'han trobat en la sortida estàndard"
 #: ../src/plugins/abrt-dump-journal-oops.c:224
 msgid "Create new problem directory in DIR for every oops found"
 msgstr ""
-"Crea el nou directori del problema al DIR per a cadascun dels oop trobats"
+"Crea el nou directori del problema en DIR per a cadascun dels oops trobats"
 
 #: ../src/plugins/abrt-dump-oops.c:103
 #: ../src/plugins/abrt-dump-journal-core.c:479
 #: ../src/plugins/abrt-dump-journal-oops.c:225
-#: ../src/plugins/abrt-dump-xorg.c:247
+#: ../src/plugins/abrt-dump-journal-xorg.c:191
+#: ../src/plugins/abrt-dump-xorg.c:55
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "El mateix que -d DumpLocation, DumpLocation s'especifica en abrt.conf"
 
@@ -1245,16 +1333,18 @@ msgstr "Desa la informació extreta en PROBLEM"
 
 #: ../src/plugins/abrt-dump-oops.c:105
 #: ../src/plugins/abrt-dump-journal-oops.c:226
-#: ../src/plugins/abrt-dump-xorg.c:248
+#: ../src/plugins/abrt-dump-journal-xorg.c:192
+#: ../src/plugins/abrt-dump-xorg.c:56
 msgid "Make the problem directory world readable"
 msgstr "Fes que el directori del problema el pugui llegir tot el món"
 
 #: ../src/plugins/abrt-dump-oops.c:106
 #: ../src/plugins/abrt-dump-journal-oops.c:227
+#: ../src/plugins/abrt-dump-journal-xorg.c:193
 msgid "Throttle problem directory creation to 1 per second"
 msgstr "Regula la creació del directori del problema a 1 per segon"
 
-#: ../src/plugins/abrt-dump-oops.c:107 ../src/plugins/abrt-dump-xorg.c:249
+#: ../src/plugins/abrt-dump-oops.c:107 ../src/plugins/abrt-dump-xorg.c:57
 msgid "Print search string(s) to stdout and exit"
 msgstr "Imprimeix les cadenes de text de cerca a l'stdout i surt"
 
@@ -1263,14 +1353,18 @@ msgstr "Imprimeix les cadenes de text de cerca a l'stdout i surt"
 msgid "Failed to compile regex"
 msgstr "Error en compilar l'expressió regular"
 
-#: ../src/plugins/abrt-dump-oops.c:186
-msgid "Can't update the problem: more than one oops found"
-msgstr "No es pot actualitzar el problema: s'han trobat més d'un oops"
+#: ../src/plugins/abrt-dump-oops.c:177
+msgid "Can't update the problem: no oops found"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-oops.c:183
+msgid "More oopses found: process only the first one"
+msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-core.c:341
 #: ../src/plugins/abrt-dump-journal-core.c:377
 msgid "Failed to obtain all required information from journald"
-msgstr "Ha fallat l'obtenció de tota la informació solicitada del journald"
+msgstr "Ha fallat l'obtenció de tota la informació sol·licitada del journald"
 
 #. We don't want to update the counter here.
 #: ../src/plugins/abrt-dump-journal-core.c:401
@@ -1286,6 +1380,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-core.c:427
 #: ../src/plugins/abrt-dump-journal-oops.c:165
+#: ../src/plugins/abrt-dump-journal-xorg.c:121
 msgid "Failed to initialize systemd-journal watch"
 msgstr "Error en inicialitzar l'observació de systemd-journal"
 
@@ -1304,7 +1399,7 @@ msgid ""
 msgstr ""
 "& [-vsf] [-e]/[-c CURSOR] [-t INT]/[-T] [-d DIR]/[-D]\n"
 "\n"
-"Extreu els bolcats de memòria des de systemd-journal\n"
+"Extreu els bolcs de la memòria des de systemd-journal\n"
 "\n"
 "les opcions -c i -e entren en conflicte perquè ambdós especifiquen la "
 "lectura del primer missatge.\n"
@@ -1318,18 +1413,20 @@ msgstr ""
 #: ../src/plugins/abrt-dump-journal-core.c:478
 msgid "Create new problem directory in DIR for every coredump"
 msgstr ""
-"Crea un nou directori del problema al DIR per a cadascun dels bolcats de "
+"Crea un nou directori del problema al DIR per a cadascun dels bolcs de la "
 "memòria"
 
 #: ../src/plugins/abrt-dump-journal-core.c:480
 #: ../src/plugins/abrt-dump-journal-oops.c:228
+#: ../src/plugins/abrt-dump-journal-xorg.c:194
 msgid "Start reading systemd-journal from the CURSOR position"
-msgstr "Inicia la lectuta de systemd-journal des de la posició del CURSOR"
+msgstr "Inicia la lectura de systemd-journal des de la posició del CURSOR"
 
 #: ../src/plugins/abrt-dump-journal-core.c:481
 #: ../src/plugins/abrt-dump-journal-oops.c:229
+#: ../src/plugins/abrt-dump-journal-xorg.c:195
 msgid "Start reading systemd-journal from the end"
-msgstr "Inicia la lectuta de systemd-journal des del final"
+msgstr "Inicia la lectura de systemd-journal des del final"
 
 #: ../src/plugins/abrt-dump-journal-core.c:482
 msgid "Throttle problem directory creation to 1 per INT second"
@@ -1341,17 +1438,20 @@ msgstr "El mateix que -t INT, INT s'especifica en plugins/CCpp.conf"
 
 #: ../src/plugins/abrt-dump-journal-core.c:484
 #: ../src/plugins/abrt-dump-journal-oops.c:230
+#: ../src/plugins/abrt-dump-journal-xorg.c:196
 msgid "Follow systemd-journal from the last seen position (if available)"
 msgstr ""
 "Segueix systemd-journal des de la darrera posició vista (si n'hi hagués)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:495
 #: ../src/plugins/abrt-dump-journal-oops.c:246
+#: ../src/plugins/abrt-dump-journal-xorg.c:213
 msgid "You need to specify either -c CURSOR or -e"
 msgstr "Heu d'especificar -c CURSOR o bé -e"
 
 #: ../src/plugins/abrt-dump-journal-core.c:541
 #: ../src/plugins/abrt-dump-journal-oops.c:284
+#: ../src/plugins/abrt-dump-journal-xorg.c:278
 msgid "Cannot open systemd-journal"
 msgstr "No es pot obrir systemd-journal"
 
@@ -1360,18 +1460,21 @@ msgid "Cannot filter systemd-journal to systemd-coredump data only"
 msgstr ""
 "No es pot filtrar systemd-journal a únicament les dades systemd-coredump"
 
-#: ../src/plugins/abrt-dump-journal-core.c:547
-#: ../src/plugins/abrt-dump-journal-oops.c:291
+#: ../src/plugins/abrt-dump-journal-core.c:549
+#: ../src/plugins/abrt-dump-journal-oops.c:293
+#: ../src/plugins/abrt-dump-journal-xorg.c:291
 msgid "Cannot seek to the end of journal"
 msgstr "No es pot buscar fins al final de la publicació"
 
-#: ../src/plugins/abrt-dump-journal-core.c:550
-#: ../src/plugins/abrt-dump-journal-oops.c:307
+#: ../src/plugins/abrt-dump-journal-core.c:552
+#: ../src/plugins/abrt-dump-journal-oops.c:309
+#: ../src/plugins/abrt-dump-journal-xorg.c:307
 #, c-format
 msgid "Failed to set systemd-journal cursor '%s'"
-msgstr "Error en establir el cursor de systemd-journal '%s'"
+msgstr "Error en establir el cursor de systemd-journal «%s»"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:40
+#: ../src/plugins/abrt-dump-journal-xorg.c:52
 msgid "Cannot read journal data."
 msgstr "No es poden llegir les dades de la publicació."
 
@@ -1390,7 +1493,7 @@ msgid ""
 msgstr ""
 "& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
 "\n"
-"Extrau els oops des del systemd-journal\n"
+"Extrau l'oops des del systemd-journal\n"
 "\n"
 "les opcions -c i -e entren en conflicte perquè ambdós especifiquen el primer "
 "missatge llegit.\n"
@@ -1402,17 +1505,20 @@ msgstr ""
 "La darrera posició vista està desada en "
 
 #: ../src/plugins/abrt-dump-journal-oops.c:231
+#: ../src/plugins/abrt-dump-journal-xorg.c:197
 msgid "Read journal files from all machines"
 msgstr "Llegeix els fitxers de publicació des de totes les màquines"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:232
+#: ../src/plugins/abrt-dump-journal-xorg.c:198
 msgid "Read all journal files from directory at PATH"
-msgstr ""
+msgstr "Llegeix tots els fitxers de publicació del directori ubicat al CAMÍ"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:279
+#: ../src/plugins/abrt-dump-journal-xorg.c:273
 #, c-format
 msgid "Cannot initialize systemd-journal in directory '%s'"
-msgstr ""
+msgstr "No es pot inicialitzar systemd-journal al directori «%s»"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:288
 msgid "Cannot filter systemd-journal to kernel data only"
@@ -1420,96 +1526,146 @@ msgstr ""
 "No es pot filtrar systemd-journal únicament a dades del nucli del sistema "
 "operatiu"
 
-#: ../src/plugins/abrt-dump-journal-oops.c:298
+#: ../src/plugins/abrt-dump-journal-oops.c:300
+#: ../src/plugins/abrt-dump-journal-xorg.c:298
 #, c-format
 msgid "Failed to start watch from cursor '%s'"
-msgstr "Error en iniciar l'observació des del cursor '%s'"
+msgstr "Error en iniciar l'observació des del cursor «%s»"
 
-#: ../src/plugins/abrt-dump-xorg.c:237
+#: ../src/plugins/abrt-dump-journal-xorg.c:61
+msgid "Failed to parse Backtrace from journal"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:143
+#, c-format
+msgid ""
+"& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
+"\n"
+"Extract Xorg crash from systemd-journal\n"
+"\n"
+"-c and -e options conflicts because both specifies the first read message.\n"
+"\n"
+"-e is useful only for -f because the following of journal starts by reading \n"
+"the entire journal if the last seen possition is not available.\n"
+"\n"
+"The last seen position is saved in %s\n"
+"\n"
+"Journal filter is required parameter and must be specified either by "
+"parameter\n"
+"-j or in %s conf file.\n"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:189
+msgid "Print found crashes on standard output"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:190
+msgid "Create new problem directory in DIR for every crash found"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:199
+msgid "Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:265
+msgid ""
+"Journal filter must be specified either by parameter -j or stored in /etc/"
+"abrt/plugins/xorg.conf file"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:282
+msgid "Cannot filter systemd-journal to Xorg data only"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-xorg.c:35
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
 msgstr ""
-"& [-vsoxm] [-d DIR]/[-D] [FITXER]\n"
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
-"Extreu la pana d'Xorg des del FITXER (o entrada estàndard)"
+"Extreu la fallida Xorg des de FILE (o entrada estàndard)"
 
-#: ../src/plugins/abrt-dump-xorg.c:245
+#: ../src/plugins/abrt-dump-xorg.c:53
 msgid "Print found crash data on standard output"
 msgstr ""
 "Imprimeix les dades de les panes que s'han trobat en la sortida estàndard"
 
-#: ../src/plugins/abrt-dump-xorg.c:246
+#: ../src/plugins/abrt-dump-xorg.c:54
 msgid "Create problem directory in DIR for every crash found"
 msgstr ""
 "Crea el directori del problema al DIR per a cadascuna de les panes trobades"
 
+#: ../src/plugins/abrt-dump-xorg.c:108
+msgid "Failed to parse Backtrace from log file"
+msgstr ""
+
 #. abrt_journal_set_cursor() prints error message in verbose mode
-#: ../src/plugins/abrt-journal.c:267
+#: ../src/plugins/abrt-journal.c:274
 msgid "Cannot save journal watch's position"
 msgstr "No es pot desar la posició d'observació de la publicació"
 
-#: ../src/plugins/abrt-journal.c:277
+#: ../src/plugins/abrt-journal.c:284
 #, c-format
 msgid "Cannot save journal watch's position: open('%s')"
 msgstr "No es pot desar la posició d'observació de la publicació: open('%s')"
 
 #. Only notice because this is expected
-#: ../src/plugins/abrt-journal.c:295
+#: ../src/plugins/abrt-journal.c:302
 #, c-format
 msgid "Not restoring journal watch's position: file '%s' does not exist"
 msgstr ""
-"No es restaura la posició d'observació de la publicació: el fitxer '%s' no "
+"No es restaura la posició d'observació de la publicació: el fitxer «%s» no "
 "existeix"
 
-#: ../src/plugins/abrt-journal.c:297
+#: ../src/plugins/abrt-journal.c:304
 #, c-format
 msgid "Cannot restore journal watch's position form file '%s'"
 msgstr ""
 "No es pot restaurar la posició d'observació de la publicació des del fitxer "
-"'%s'"
+"«%s»"
 
-#: ../src/plugins/abrt-journal.c:304
+#: ../src/plugins/abrt-journal.c:311
 #, c-format
 msgid "Cannot restore journal watch's position: path '%s' is not regular file"
 msgstr ""
-"No es pot restaurar la posició d'observació de la publicació: el camí '%s' "
+"No es pot restaurar la posició d'observació de la publicació: el camí «%s» "
 "no és un fitxer normal"
 
-#: ../src/plugins/abrt-journal.c:310
+#: ../src/plugins/abrt-journal.c:317
 #, c-format
 msgid ""
 "Cannot restore journal watch's position: file '%s' exceeds %dB size limit"
 msgstr ""
-"No es pot restaurar la posició d'observació de la publicació: el fitxer '%s' "
-"supera el límit de la mida %dB"
+"No es pot restaurar la posició d'observació de la publicació: el fitxer «%s» "
+"supera el límit de la mida %d B"
 
-#: ../src/plugins/abrt-journal.c:318
+#: ../src/plugins/abrt-journal.c:325
 #, c-format
 msgid "Cannot restore journal watch's position: open('%s')"
 msgstr ""
 "No es pot restaurar la posició d'observació de la publicació: open('%s')"
 
-#: ../src/plugins/abrt-journal.c:327
+#: ../src/plugins/abrt-journal.c:334
 #, c-format
 msgid "Cannot restore journal watch's position: cannot read entire file '%s'"
 msgstr ""
 "No es pot restaurar la posició d'observació del servei de publicació: no es "
-"pot llegir el fitxer sencer '%s'"
+"pot llegir el fitxer sencer «%s»"
 
 #. abrt_journal_set_cursor() prints error message in verbose mode
-#: ../src/plugins/abrt-journal.c:339
+#: ../src/plugins/abrt-journal.c:346
 #, c-format
 msgid "Failed to move the journal to a cursor from file '%s'"
-msgstr "Error en moure el cursor de la publicació des del fitxer '%s'"
+msgstr "Error en moure el cursor de la publicació des del fitxer «%s»"
 
 #: ../src/plugins/abrt-retrace-client.c:70
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
 msgstr ""
-"No es pot utilitzar el servidor de resseguiment, a causa de que la mida del "
+"No es pot utilitzar el servidor de resseguiment, a causa que la mida del "
 "fitxer de la pana és massa gran. Proveu amb un resseguiment local."
 
 #. Hopefully, by this time child emitted more meaningful
@@ -1565,8 +1721,8 @@ msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official '%s' repositories?"
 msgstr ""
-"El servidor de resseguiment no es capaç de processar el paquet '%s.%s'.\n"
-"Forma part dels dipòsits oficials de '%s'?"
+"El servidor de resseguiment no és capaç de processar el paquet «%s.%s».\n"
+"Forma part dels dipòsits oficials de «%s»?"
 
 #: ../src/plugins/abrt-retrace-client.c:444
 msgid "Querying server settings"
@@ -1585,7 +1741,7 @@ msgstr "El servidor ha rebutjat la vostra sol·licitud."
 #, c-format
 msgid "'%s' must be a regular file in order to use Retrace server."
 msgstr ""
-"'%s' ha de ser un fitxer normal per a poder utilitzar un servidor de "
+"«%s» ha de ser un fitxer normal per a poder utilitzar un servidor de "
 "resseguiment."
 
 #: ../src/plugins/abrt-retrace-client.c:520
@@ -1599,12 +1755,12 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:540
 msgid "The server does not support xz-compressed tarballs."
-msgstr "El servidor no és compatible amb els tarballs comprimits amb xz."
+msgstr "El servidor no és compatible amb els arxius tar comprimits amb xz."
 
 #: ../src/plugins/abrt-retrace-client.c:577
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
-msgstr "El llançament '%s' no està suportat pel servidor de resseguiment."
+msgstr "El llançament «%s» no està suportat pel servidor de resseguiment."
 
 #: ../src/plugins/abrt-retrace-client.c:581
 msgid "The server is not able to handle your request."
@@ -1624,8 +1780,8 @@ msgid ""
 "The size of your archive is %s, but the retrace server only accepts archives "
 "smaller or equal to %s."
 msgstr ""
-"La mida del vostre arxiu es de %s, però el servidor de resseguiment "
-"únicament accepta arxius més petits o iguals de %s."
+"La mida del vostre arxiu és de %s, però el servidor de resseguiment "
+"únicament accepta arxius més petits o iguals a %s."
 
 #: ../src/plugins/abrt-retrace-client.c:640
 #, c-format
@@ -1648,7 +1804,7 @@ msgstr "S'està pujant %d%%\n"
 
 #: ../src/plugins/abrt-retrace-client.c:721
 msgid "Failed to read from a pipe"
-msgstr "Error en llegir de d'una canonada"
+msgstr "Error en llegir d'una canonada"
 
 #: ../src/plugins/abrt-retrace-client.c:734
 #, c-format
@@ -1677,11 +1833,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:782
 msgid "Invalid response from server: missing X-Task-Id."
-msgstr "La resposta del servidor no és vàlida: falta l'X-Task-Id."
+msgstr "La resposta del servidor no és vàlida: falta X-Task-Id."
 
 #: ../src/plugins/abrt-retrace-client.c:788
 msgid "Invalid response from server: missing X-Task-Password."
-msgstr "La resposta del servidor no és vàlida: falta l'X-Task-Password."
+msgstr "La resposta del servidor no és vàlida: falta X-Task-Password."
 
 #: ../src/plugins/abrt-retrace-client.c:795
 msgid "Retrace job started"
@@ -1696,7 +1852,7 @@ msgstr "Id. de la tasca: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:866
 msgid "Invalid response from server: missing X-Task-Status."
-msgstr "La resposta del servidor no és vàlida: falta l'X-Task-Status."
+msgstr "La resposta del servidor no és vàlida: falta X-Task-Status."
 
 #: ../src/plugins/abrt-retrace-client.c:878
 #, c-format
@@ -1718,8 +1874,8 @@ msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
 msgstr ""
-"Error en el resseguiment. Proveu-ho de nou més tard i si el problema perdura "
-"informeu d'aquesta incidència."
+"Error en el resseguiment. Proveu-ho de nou més tard i si el problema "
+"perdura, informeu d'aquesta incidència."
 
 #: ../src/plugins/abrt-retrace-client.c:1217
 msgid "log to syslog"
@@ -1759,7 +1915,7 @@ msgstr "llegeix les dades des del directori del problema de l'ABRT"
 
 #: ../src/plugins/abrt-retrace-client.c:1233
 msgid "read data from coredump"
-msgstr "llegeix les dades des del bolcat de memòria"
+msgstr "llegeix les dades des del bolc de la memòria"
 
 #: ../src/plugins/abrt-retrace-client.c:1235
 msgid "Delay for polling operations"
@@ -1769,7 +1925,7 @@ msgstr "Retard per a les operacions de sondeig"
 msgid "(debug) do not delete temporary archive created from dump dir in "
 msgstr ""
 "(depuració) no eliminis els arxius temporals que s'hagin creat des del "
-"directori del bolcat en "
+"directori del bolc en "
 
 #: ../src/plugins/abrt-retrace-client.c:1239
 msgid "For status, backtrace, and log operations"
@@ -1794,7 +1950,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:1292
 #: ../src/plugins/abrt-retrace-client.c:1298
 msgid "Either problem directory or coredump is needed."
-msgstr "Es necessita el directori del problema o bé el bolcat de memòria."
+msgstr "Es necessita el directori del problema o bé el bolc de la memòria."
 
 #: ../src/plugins/abrt-retrace-client.c:1304
 #: ../src/plugins/abrt-retrace-client.c:1312
@@ -1822,8 +1978,8 @@ msgstr "Depurador GNU local"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgstr ""
-"Baixa els paquets debuginfo i genera a nivell local la traça inversa "
-"mitjançant GDB"
+"Baixa els paquets debuginfo i genera localment la traça inversa mitjançant "
+"GDB"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
@@ -1831,14 +1987,15 @@ msgid ""
 "and take up disk space. However, unlike RetraceServer, doesn't send coredump "
 "to remote machines."
 msgstr ""
-"Necessita baixar els paquets debuginfo, els quals prenen un temps "
-"significant i espai de de disc. No obstant, a diferència dels servidors de "
-"resseguiment, no envia els bolcats de la memòria a màquines remotes."
+"Necessita baixar els paquets debuginfo, els quals prenen un temps i espai de "
+"disc considerable. No obstant això, a diferència dels servidors de "
+"resseguiment, no envia els bolcs de la memòria a màquines remotes."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
 msgstr ""
-"Envia el bolcat de memòria al servidor remot de resseguiment per a l'anàlisi"
+"Envia el bolc de la memòria al servidor remot de resseguiment per a "
+"l'anàlisi"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
@@ -1848,12 +2005,12 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
-"Puja el bolcat de memòria a un servidor que genera una traça inversa i la "
-"retorna. Pros: no hi hi la necessitat de baixar els debuginfo. La base de "
+"Puja el bolc de la memòria a un servidor que genera una traça inversa i la "
+"retorna. Pros: no hi ha la necessitat de baixar els debuginfo. La base de "
 "dades dels debuginfo del servidor de resseguiment és més completa. El "
 "servidor de resseguiment pot generar millor les traces inverses. Cons: el "
-"bolcat de memòria que pugeu conté totes les dades del programa que ha tingut "
-"pana, que inclouen les vostres dades privades, si fos el cas."
+"bolc de la memòria que pugeu conté totes les dades del programa que ha "
+"tingut pana, que inclouen les vostres dades privades, si fos el cas."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Retrace server URL"
@@ -1887,7 +2044,7 @@ msgstr "Recull .xsession-errors"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
-msgstr "Desa les línies rellevants del fitxer ~/.xsession-errors"
+msgstr "Desa les línies apropiades del fitxer ~/.xsession-errors"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:3
 msgid ""
@@ -1905,7 +2062,7 @@ msgstr "S'ha produït un error en el cantó del servidor."
 #: ../src/plugins/https-utils.c:65
 #, c-format
 msgid "A server-side error occurred on '%s'"
-msgstr "S'ha produït un error en el cantó del servidor en '%s'"
+msgstr "S'ha produït un error en el cantó del servidor en «%s»"
 
 #: ../src/plugins/https-utils.c:74
 msgid "An error occurred while connecting to the server"
@@ -1914,7 +2071,7 @@ msgstr "S'ha produït un error mentre es connectava amb el servidor"
 #: ../src/plugins/https-utils.c:77
 #, c-format
 msgid "An error occurred while connecting to '%s'"
-msgstr "S'ha produït un error mentre es connectava a '%s'"
+msgstr "S'ha produït un error mentre es connectava a «%s»"
 
 #: ../src/plugins/https-utils.c:97
 #, c-format
@@ -1932,7 +2089,7 @@ msgstr ""
 msgid "Certificate subject name '%s' does not match target host name '%s'."
 msgstr ""
 "El nom del subjecte del certificat '%s' no coincideix amb el nom de "
-"l'amfitrió de destinació '%s'."
+"l'amfitrió de destinació «%s»."
 
 #: ../src/plugins/https-utils.c:107
 msgid "Remote certificate has expired."
@@ -1941,12 +2098,12 @@ msgstr "El certificat remot ha expirat."
 #: ../src/plugins/https-utils.c:110
 #, c-format
 msgid "Certificate issuer is not recognized: '%s'."
-msgstr "No s'ha reconegut l'emissor del certificat: '%s'."
+msgstr "No s'ha reconegut l'emissor del certificat: «%s»."
 
 #: ../src/plugins/https-utils.c:113
 #, c-format
 msgid "Bad certificate received. Subject '%s', issuer '%s'."
-msgstr "S'ha rebut un certificat dolent. Subjecte '%s', emissor '%s'."
+msgstr "S'ha rebut un certificat dolent. Subjecte «%s», emissor «%s»."
 
 #: ../src/plugins/https-utils.c:149
 #, c-format
@@ -1956,13 +2113,13 @@ msgstr "Error en obtenir la ranura 'PEM Token #0': %d."
 #: ../src/plugins/https-utils.c:182
 #, c-format
 msgid "Can't resolve host name '%s'. NSS error %d."
-msgstr "No es pot resoldre el nom de l'amfitrió '%s'. error de NSS %d."
+msgstr "No es pot resoldre el nom de l'amfitrió «%s». error de NSS %d."
 
 #. Host exists, but has neither IPv4 nor IPv6??
 #: ../src/plugins/https-utils.c:203
 #, c-format
 msgid "Can't resolve host name '%s'."
-msgstr "No es pot resoldre el nom de l'amfitrió '%s'."
+msgstr "No es pot resoldre el nom de l'amfitrió «%s»."
 
 #: ../src/plugins/https-utils.c:210
 msgid "Failed to set socket blocking mode."
@@ -1986,12 +2143,12 @@ msgstr "L'habilitació de TLS ha fallat."
 
 #: ../src/plugins/https-utils.c:224
 msgid "Failed to set URL to SSL socket."
-msgstr "Error en establir la URL al sòcol SSL."
+msgstr "Error en establir l'URL al sòcol SSL."
 
 #: ../src/plugins/https-utils.c:233
 #, c-format
 msgid "Can't connect to '%s'"
-msgstr "No es pot connectar a '%s'"
+msgstr "No es pot connectar a «%s»"
 
 #: ../src/plugins/https-utils.c:241
 msgid "Failed to set certificate hook."
@@ -2003,7 +2160,7 @@ msgstr "Ha fallat l'establiment del retorn de la salutació."
 
 #: ../src/plugins/https-utils.c:251
 msgid "Failed to reset handshake."
-msgstr "Error en resetejar la salutació."
+msgstr "Error en restablir la salutació."
 
 #: ../src/plugins/https-utils.c:258
 #, c-format
@@ -2017,7 +2174,7 @@ msgstr "Error en tancar el sòcol SSL."
 #: ../src/plugins/https-utils.c:332
 #, c-format
 msgid "Malformed HTTP response header: '%s'"
-msgstr "Capçalera de resposta HTTP amb format incorrecte: '%s'"
+msgstr "Capçalera de resposta HTTP amb format incorrecte: «%s»"
 
 #: ../src/plugins/https-utils.c:369
 #, c-format
@@ -2045,7 +2202,7 @@ msgstr "Error en aturar NSS."
 msgid "Sleeping for %d seconds"
 msgstr "S'està dormint durant %d segons"
 
-#: ../src/plugins/oops-utils.c:207
+#: ../src/plugins/oops-utils.c:200
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
@@ -2054,7 +2211,7 @@ msgstr ""
 "trencada, per desgràcia aquests problemes no es poden corregir pels "
 "mantenidors del nucli del sistema operatiu."
 
-#: ../src/plugins/oops-utils.c:212
+#: ../src/plugins/oops-utils.c:205
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
@@ -2063,7 +2220,7 @@ msgstr ""
 "maquinari no és compatible, per tant els mantenidors del nucli del sistema "
 "operatiu no poden corregir-ho."
 
-#: ../src/plugins/oops-utils.c:227
+#: ../src/plugins/oops-utils.c:220
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
@@ -2073,24 +2230,24 @@ msgstr ""
 "nucli ha estat contaminat (marcadors: %s). Els mantenidors del nucli del "
 "sistema operatiu no poden fer diagnòstics amb informes contaminats."
 
-#: ../src/plugins/oops-utils.c:235
+#: ../src/plugins/oops-utils.c:228
 #, c-format
 msgid " Tainted modules: %s."
 msgstr "Mòduls contaminats: %s."
 
-#: ../src/plugins/bodhi.c:375
+#: ../src/plugins/bodhi.c:468
 msgid "List of bug ids"
 msgstr "Llistat dels Id. dels errors"
 
-#: ../src/plugins/bodhi.c:376
+#: ../src/plugins/bodhi.c:469
 msgid "Specify a bodhi server url"
 msgstr "Especifica un servidor bodhi"
 
-#: ../src/plugins/bodhi.c:377
+#: ../src/plugins/bodhi.c:470
 msgid "Specify a release"
 msgstr "Especifica un llançament"
 
-#: ../src/plugins/bodhi.c:382
+#: ../src/plugins/bodhi.c:475
 msgid ""
 "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
 "\n"
@@ -2100,22 +2257,22 @@ msgstr ""
 "\n"
 "Cerca si hi ha actualitzacions en el servidor bodhi"
 
-#: ../src/plugins/bodhi.c:434
+#: ../src/plugins/bodhi.c:542
 msgid "Searching for updates"
 msgstr "S'està cercant si hi ha actualitzacions"
 
-#: ../src/plugins/bodhi.c:440
+#: ../src/plugins/bodhi.c:548
 msgid "No updates for this package found"
 msgstr "No s'han trobat actualitzacions per aquest paquet"
 
 #. strbuf_free(q);
-#: ../src/plugins/bodhi.c:469
+#: ../src/plugins/bodhi.c:577
 msgid "Local version of the package is newer than available updates"
 msgstr ""
 "La versió local del paquet és més recent que la de les actualitzacions "
 "disponibles"
 
-#: ../src/plugins/bodhi.c:486
+#: ../src/plugins/bodhi.c:594
 #, c-format
 msgid ""
 "An update exists which might fix your problem. You can install it by running:"
@@ -2133,79 +2290,80 @@ msgid ""
 msgstr ""
 "& [-v] [-od] FITXER...\n"
 "\n"
-"Escaneja els fitxers per a dividir els missatges oop. Pot imprimir-los i/o "
-"eliminar-los."
+"Escaneja els fitxers per a dividir el missatge de l'oops. Pot imprimir-los i/"
+"o eliminar-los."
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:97
 msgid "Print found oopses"
-msgstr "Imprimeix els oop que s'han trobat"
+msgstr "Imprimeix els oops que s'han trobat"
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:98
 msgid "Delete files with found oopses"
-msgstr "Elimina els fitxers amb els oop que s'han trobat"
+msgstr "Elimina els fitxers amb els oops que s'han trobat"
 
-#: ../src/cli/abrt-cli-core.c:89
+#: ../src/cli/abrt-cli-core.c:100
 #, c-format
 msgid "'%s' identifies more than one problem directory"
-msgstr "'%s' fa referència a més d'un directori de problema"
+msgstr "«%s» fa referència a més d'un directori de problema"
 
-#: ../src/cli/abrt-cli.c:144
-msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
-msgstr "Ús: abrt-cli [--version] ORDRE [DIR]..."
+#: ../src/cli/abrt-cli.c:130
+msgid "Usage: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
+msgstr ""
 
-#: ../src/cli/abrt-cli.c:148
+#: ../src/cli/abrt-cli.c:134
 msgid "List problems [in DIRs]"
 msgstr "Llista els problemes [als DIRs]"
 
-#: ../src/cli/abrt-cli.c:149
+#: ../src/cli/abrt-cli.c:135
 msgid "Remove problem directory DIR"
 msgstr "Elimina el directori del problema DIR"
 
-#: ../src/cli/abrt-cli.c:150
+#: ../src/cli/abrt-cli.c:136
 msgid "Analyze and report problem data in DIR"
 msgstr "Analitza i informa de les dades del problema al DIR"
 
-#: ../src/cli/abrt-cli.c:151
+#: ../src/cli/abrt-cli.c:137
 msgid "Print information about DIR"
 msgstr "Imprimeix informació sobre el DIR"
 
-#: ../src/cli/abrt-cli.c:152
+#: ../src/cli/abrt-cli.c:138
 msgid "Print the count of the recent crashes"
 msgstr "Imprimeix el compte de les panes recents"
 
-#: ../src/cli/abrt-cli.c:153
+#: ../src/cli/abrt-cli.c:139
 msgid "Process multiple problems"
 msgstr "Processa múltiples problemes"
 
-#: ../src/cli/abrt-cli.c:168
+#: ../src/cli/abrt-cli.c:162
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "Consulteu 'abrt-cli ORDRE --help' per a més informació"
 
-#: ../src/cli/list.c:125
+#: ../src/cli/list.c:127
 msgid "& list [options]"
-msgstr ""
+msgstr "& list [opcions]"
 
-#: ../src/cli/list.c:134
+#: ../src/cli/list.c:136 ../src/cli-ng/abrtcli/cli.py:121
+#: ../src/cli-ng/abrtcli/cli.py:264
 msgid "List only not-reported problems"
 msgstr "Llista únicament els problemes que s'hagin informat"
 
 #. deprecate -d option with --pretty=full
-#: ../src/cli/list.c:136 ../src/cli/list.c:181
+#: ../src/cli/list.c:138 ../src/cli/list.c:191
 msgid "Show detailed report"
 msgstr "Mostra informes detallats"
 
-#: ../src/cli/list.c:137
+#: ../src/cli/list.c:139 ../src/cli-ng/abrtcli/cli.py:113
 msgid "List only the problems more recent than specified timestamp"
 msgstr ""
 "Llista únicament els problemes que siguin més recents que la marca de temps "
 "especificada"
 
-#: ../src/cli/list.c:138
+#: ../src/cli/list.c:140 ../src/cli-ng/abrtcli/cli.py:115
 msgid "List only the problems older than specified timestamp"
 msgstr ""
 "Llista únicament els problemes anteriors a la marca de temps especificada"
 
-#: ../src/cli/list.c:162
+#: ../src/cli/list.c:166
 #, c-format
 msgid ""
 "The Autoreporting feature is disabled. Please consider enabling it by "
@@ -2216,52 +2374,62 @@ msgstr ""
 "Considereu habilitar-ho\n"
 "amb 'abrt-auto-reporting enabled' com a usuari amb els privilegis de root\n"
 
-#: ../src/cli/list.c:173
+#: ../src/cli/list.c:183
 msgid "& info [options] DIR..."
 msgstr "& info [opcions] DIR..."
 
-#: ../src/cli/list.c:182
+#: ../src/cli/list.c:192
 msgid "Text larger than this will be shown abridged"
 msgstr "El text que sigui més gran que aquest es mostrarà abreujat"
 
-#: ../src/cli/list.c:202
+#: ../src/cli/list.c:212
 #, c-format
 msgid "No such problem directory '%s'"
-msgstr "El directori del problema '%s' no existeix"
+msgstr "El directori del problema «%s» no existeix"
 
-#: ../src/cli/status.c:62
+#: ../src/cli/status.c:66
 msgid "& status"
-msgstr ""
+msgstr "& status"
 
-#: ../src/cli/status.c:70
+#: ../src/cli/status.c:74 ../src/cli-ng/abrtcli/cli.py:260
 msgid "Print only the problem count without any message"
 msgstr "Imprimeix únicament el compte dels problemes sense cap missatge"
 
-#: ../src/cli/status.c:71
+#: ../src/cli/status.c:75 ../src/cli-ng/abrtcli/cli.py:262
 msgid "Print only the problems more recent than specified timestamp"
 msgstr ""
 "Imprimeix únicament els problemes que siguin més recents que la marca de "
 "temps especificada"
 
-#: ../src/cli/status.c:87
+#: ../src/cli/status.c:91
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
 msgstr ""
-"ABRT ha detectat %u problem[a|es]. Per a més informació executeu: abrt-cli "
+"ABRT ha detectat %u problem[a/es]. Per a més informació executeu: abrt-cli "
 "list%s\n"
 
-#: ../src/cli/report.c:28
+#: ../src/cli/report.c:34
+#, c-format
+msgid "Can't find problem '%s'"
+msgstr ""
+
+#: ../src/cli/report.c:42
+#, c-format
+msgid "Problem '%s' cannot be reported"
+msgstr ""
+
+#: ../src/cli/report.c:63 ../src/cli/process.c:70
+#, c-format
+msgid "Deleting '%s'"
+msgstr "S'està eliminant «%s»"
+
+#: ../src/cli/report.c:79
 msgid "& report [options] DIR..."
 msgstr "& report [opcions] DIR..."
 
-#: ../src/cli/report.c:38
+#: ../src/cli/report.c:89
 msgid "Remove PROBLEM_DIR after reporting"
 msgstr "Elimina PROBLEM_DIR després de la presentació d'informes"
-
-#: ../src/cli/report.c:71 ../src/cli/process.c:70
-#, c-format
-msgid "Deleting '%s'"
-msgstr "S'està eliminant '%s'"
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
@@ -2271,33 +2439,188 @@ msgstr "Accions: remove(rm), info(i), skip(s):"
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
 msgstr "Accions: remove(rm), report(e), info(i), skip(s):"
 
-#: ../src/cli/process.c:77
+#: ../src/cli/process.c:78
 #, c-format
 msgid "Reporting '%s'"
-msgstr "S'està informant '%s'"
+msgstr "S'està informant «%s»"
 
 #. dummy must be free because the function ask allocate memory
-#: ../src/cli/process.c:133
+#: ../src/cli/process.c:127
 msgid "For next problem press ENTER:"
 msgstr "Per al següent problema premeu RETORN:"
 
-#: ../src/cli/process.c:144
+#: ../src/cli/process.c:138
 msgid "Without --since argument, iterates over all detected problems."
 msgstr "Sense l'argument --since, s'itera sobre tots els problemes detectats."
 
-#: ../src/cli/process.c:150
+#: ../src/cli/process.c:144
 msgid "Selects only problems detected after timestamp"
 msgstr ""
 "Selecciona únicament els problemes que es van detectar després de la marca "
 "de temps"
+
+#: ../src/cli-ng/abrtcli/cli.py:33
+msgid "Problem has no backtrace"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:35
+msgid "Start retracing process?"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:40
+msgid "Show backtrace of a problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:50
+msgid "This"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:52
+msgid "Last"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:54
+msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:64 ../src/cli-ng/abrtcli/cli.py:99
+msgid ""
+"Permission denied: '{}'\n"
+"If this is a system problem try running this command as root"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:71
+msgid "Install required debuginfo for given problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:106
+msgid "Run GDB against a problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:117 ../src/cli-ng/abrtcli/cli.py:153
+msgid "Output format"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:119 ../src/cli-ng/abrtcli/cli.py:155
+msgid "Built-in output format"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:145 ../src/cli-ng/abrtcli/match.py:89
+msgid "No problems"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:147
+msgid "List problems"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:167
+msgid "Print information about problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:173
+msgid "Prompt before removal"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:174
+msgid "Do not prompt before removal"
+msgstr ""
+
+#. force prompt for last problem to avoid accidents
+#: ../src/cli-ng/abrtcli/cli.py:182
+msgid "Are you sure you want to delete this problem?"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:186
+msgid "Removed"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:188
+msgid "Remove problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:199
+msgid "Report problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:204
+msgid "Perform local retracing"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:206
+msgid "Perform remote retracing using retrace server"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:208
+msgid "Force retracing even if backtrace already exists"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:223
+msgid "Problem already has a backtrace"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:224
+msgid "Run abrt retrace with -f/--force to retrace again"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:225
+msgid "Show backtrace?"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:229
+msgid "No retracing possible for this problem type"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:233
+msgid ""
+"Upload core dump and perform remote retracing? (It may contain sensitive "
+"data). If your answer is 'No', a stack trace will be generated locally. "
+"Local retracing requires downloading potentially large amount of debuginfo "
+"data"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:248
+msgid "Remote retracing"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:251
+msgid "Local retracing"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:255
+msgid "Generate backtrace from coredump"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:280
+msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:283
+msgid "Print count of the recent crashes"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:292
+msgid "Authenticate and show all problems on this machine"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/match.py:96
+msgid "No problem(s) matched"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/match.py:116
+msgid "Ambiguous match specified resulting in multiple problems:"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/utils.py:78
+msgid "Not reportable"
+msgstr ""
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
 msgstr ""
-"Envia el bolcat de memòria a un servidor remot de resseguiment per a "
-"l'anàlisi o per a la realització de l'anàlisis local si es produeix un error "
+"Envia el bolc de la memòria a un servidor remot de resseguiment per a "
+"l'anàlisi o per a la realització de l'anàlisi local si es produeix un error "
 "en el servidor remot de l'anàlisi"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
@@ -2310,15 +2633,14 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
-"Puja el bolcat de memòria a un servidor que genera una traça inversa i la "
-"retorna. Si l'usuari no vol pujar el seu bolcat de memòria enlloc, "
-"l'esdeveniment realitza l'anàlisi a nivell local. L'anàlisi local s'executa "
-"si l'anàlisi remot falla. Pros: no hi hi la necessitat de baixar els "
-"debuginfo. La base de dades dels debuginfo del servidor de resseguiment és "
-"més completa. El servidor de resseguiment pot generar millor les traces "
-"inverses. Cons: el bolcat de memòria que pugeu conté totes les dades del "
-"programa que ha ha tingut pana, que inclouen les vostres dades privades, si "
-"fos el cas."
+"Puja el bolc de la memòria a un servidor que genera una traça inversa i la "
+"retorna. Si l'usuari no vol pujar el seu bolc de la memòria enlloc, "
+"l'esdeveniment realitza localment l'anàlisi. L'anàlisi local s'executa si "
+"falla l'anàlisi remota. Pros: no hi ha la necessitat de baixar els debuginfo."
+" La base de dades dels debuginfo del servidor de resseguiment és més "
+"completa. El servidor de resseguiment pot generar millor les traces inverses."
+" Cons: el bolc de la memòria que pugeu conté totes les dades del programa "
+"que ha tingut pana, que inclouen les vostres dades privades, si fos el cas."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -2329,7 +2651,7 @@ msgid ""
 "Install kernel debuginfo packages, generate kernel log and oops message"
 msgstr ""
 "Instal·la els paquets debuginfo del nucli del sistema operatiu, genera "
-"registres del nucli del sistema operatiu i missatges oops"
+"registres del nucli del sistema operatiu i missatges de l'oops"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
@@ -2337,7 +2659,7 @@ msgid ""
 "time, and take up disk space."
 msgstr ""
 "Necessita instal·lar els paquets debuginfo del nucli del sistema operatiu, "
-"els quals prenen un temps significant i espai de de disc."
+"els quals prenen un temps i espai de disc considerable."
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
@@ -2352,8 +2674,8 @@ msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
 msgstr ""
-"Executa gconftool-2 --recursive-list /apps/executable i desa-ho com element "
-"de 'gconf_subtree'."
+"Executa gconftool-2 --recursive-list /apps/executable i ho desa com a "
+"element de 'gconf_subtree'."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"

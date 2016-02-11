@@ -9,126 +9,127 @@
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
 #   <raypoatssium@gmail.com>, 2011-2012
 #   <raypoatssium@gmail.com>, 2011-2012, 2013
+# MinWoo Joh <igtzhsou@naver.com>, 2015. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2015-04-08 13:09+0200\n"
+"POT-Creation-Date: 2016-02-11 12:54+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-10-06 07:45-0400\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"PO-Revision-Date: 2015-07-30 11:38-0400\n"
+"Last-Translator: MinWoo Joh <igtzhsou@naver.com>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/ko/)\n"
 "Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Zanata 3.5.1\n"
+"X-Generator: Zanata 3.8.2\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
-msgstr ""
+msgstr "문제 보고"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr ""
+msgstr "애플리케이션 충돌을 확인 및 보고합니다"
 
-#: ../src/applet/applet.c:157
+#: ../src/applet/applet.c:260 ../src/cli/report.c:51
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "'%s'의 소유 권한을 갖을 수 없음 "
 
-#: ../src/applet/applet.c:165
+#: ../src/applet/applet.c:268
 #, c-format
 msgid "Can't open directory for writing '%s'"
 msgstr "'%s'을 작성하기 위해 디렉토리를 열 수 없습니다 "
 
-#: ../src/applet/applet.c:442 ../src/applet/applet.c:461
+#: ../src/applet/applet.c:546 ../src/applet/applet.c:564
 #, c-format
 msgid "Can't close notification: %s"
 msgstr "통지를 종료할 수 없음: %s"
 
-#: ../src/applet/applet.c:496
+#: ../src/applet/applet.c:598
 msgid "Oops!"
 msgstr ""
 
-#: ../src/applet/applet.c:514
+#: ../src/applet/applet.c:616
 msgid "Report"
 msgstr "보고  "
 
-#: ../src/applet/applet.c:523
+#: ../src/applet/applet.c:625
 msgid "Restart"
-msgstr ""
+msgstr "재시작"
 
-#: ../src/applet/applet.c:588
+#: ../src/applet/applet.c:694
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
 "reported."
-msgstr ""
+msgstr "죄송합니다. %s 가 충돌했습니다. 문제는 자동으로 보고됩니다."
 
-#: ../src/applet/applet.c:593
+#: ../src/applet/applet.c:699
 #, c-format
 msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
 "internet is available."
-msgstr ""
+msgstr "죄송합니다. %s 가 충돌했습니다. 인터넷 연결이 활성화되면 문제는 자동으로 보고됩니다."
 
-#: ../src/applet/applet.c:599 ../src/applet/applet.c:613
-#: ../src/applet/applet.c:641
+#: ../src/applet/applet.c:705 ../src/applet/applet.c:719
+#: ../src/applet/applet.c:747
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
-msgstr ""
+msgstr "죄송합니다. %s 가 충돌했습니다. 문제를 보고하려면 개발자에게 문의하십시오."
 
-#: ../src/applet/applet.c:607
+#: ../src/applet/applet.c:713
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
-msgstr ""
+msgstr "죄송합니다. %s 가 충돌했습니다.  문제 보고서를 전송하시면, 문제 해결에 도움이 됩니다."
 
-#: ../src/applet/applet.c:626
+#: ../src/applet/applet.c:732
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
-msgstr ""
+msgstr "죄송합니다.  내부 구성에 문제가 발생하였습니다. 문제는 자동으로 보고되었습니다."
 
-#: ../src/applet/applet.c:630
+#: ../src/applet/applet.c:736
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
-msgstr ""
+msgstr "죄송합니다. 내부 구성에 문제가 발생하였습니다. 인터넷 연결이 활성화되면 문제는 자동으로 보고됩니다."
 
-#: ../src/applet/applet.c:635
+#: ../src/applet/applet.c:741
 msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
-msgstr ""
+msgstr "죄송합니다. 문제가 발생했습니다. 문제 보고서를 전송하시면, 문제 해결에 도움이 됩니다."
 
-#: ../src/applet/applet.c:680
+#: ../src/applet/applet.c:786
 #, c-format
 msgid "Can't show notification: %s"
 msgstr "통지를 표시할 수 없음: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:712 ../src/daemon/abrt-upload-watch.c:168
+#: ../src/applet/applet.c:818 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "gio 채널에서 읽을 수 없음: '%s'"
 
-#: ../src/applet/applet.c:790
+#: ../src/applet/applet.c:896
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "gio 채널에서 인코딩을 설정할 수 없음: %s"
 
-#: ../src/applet/applet.c:794
+#: ../src/applet/applet.c:900
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "gio 채널의 비 차단 모드를 활성화할 수 없습니다: %s"
 
-#: ../src/applet/applet.c:1090
+#: ../src/applet/applet.c:1186
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -136,6 +137,17 @@ msgid ""
 msgstr "& [-v] [DIR]...\n"
 "\n"
 "ABRT가 새로운 문제를 감지할 경우 사용자에게 통지하는 애플릿\n"
+
+#: ../src/configuration-gui/abrt-config-widget.c:483
+msgid ""
+"The configuration option above has been moved to GSettings and the switch is "
+"linked to the value of the setting 'report-technical-problems' from the "
+"schema 'org.gnome.desktop.privacy'."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.c:501
+msgid "The configuration option above can be configured in"
+msgstr ""
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
@@ -157,17 +169,15 @@ msgstr "단축형 보고서 "
 msgid "Silent shortened reporting"
 msgstr "자동 단축형 보고서 "
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
 "space consuming operation. ABRT provides a service which generates the stack "
 "trace from the coredump but you have to upload the coredump to this service. "
-"With this option disabled ABRT will upload the coredump without asking."
+"With option 'Always' ABRT will always upload the coredump without asking. "
+"With option 'Never' the stack trace will be always generated locally. With "
+"option 'Ask' ABRT will always ask the user."
 msgstr ""
-"코어 덤프 파일은 시간 및 공간을 많이 사용하는 작업인 스택 트레이스 생성에 필요합니다. ABRT는 코어덤프에서 스택 트레이스를 생성하는 "
-"서비스를 제공하지만 이 서비스에 코어 덤프를 업로드해야 합니다. 이 옵션을 사용하지 않으면 ABRT는 묻지 않고 코어 덤프를 업로드합니다."
-" "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
@@ -208,29 +218,24 @@ msgid ""
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr "이 옵션을 사용하면 ABRT는 보고된 문제에 대해 알림을 표시하지 않습니다. 단축형 보고가 유효한 경우에만 실행됩니다. "
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
-msgid "Ask before uploading coredump"
-msgstr "coredump를 업로드하기 전 묻습니다 "
-
-#: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
-msgstr ""
+msgstr "이 옵션이 적용되면 ABRT는 민감한 데이터가 감지되었을 경우 항상 엑세스가 제한된 버크 티켓을 생성합니다."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/configuration-gui/abrt-config-widget.glade.h:12
+#: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid "Request private ticket for sensitive information"
 msgstr "민감한 정보에 대해 비공개 티켓을 요청합니다 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/configuration-gui/abrt-config-widget.glade.h:13
+#: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Notify incomplete problems"
 msgstr "완료하지 않은 문제를 알려줍니다 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/configuration-gui/abrt-config-widget.glade.h:14
+#: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
@@ -238,6 +243,22 @@ msgid ""
 msgstr ""
 "컴퓨터 종료시 또는 사용자 로그 아웃 시에 완료하지 않은 문제가 감지되었습니다. 정확한 문제 보고서를 제출하기 위해 ABRT는 이러한 "
 "문제에 대해 보고 허용하지 않습니다."
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:14
+msgid "Always"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:15
+msgid "Never"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:16
+msgid "Ask"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:17
+msgid "Upload coredump for backtrace generation"
+msgstr ""
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/system-config-abrt.c:79
@@ -270,14 +291,17 @@ msgstr "ABRT에 대해 "
 msgid "Quit"
 msgstr "종료 "
 
-#: ../src/daemon/abrt-action-save-package-data.c:390
+#: ../src/daemon/abrt-action-save-package-data.c:393
 msgid ""
 "& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
 msgstr ""
+"& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
+"\n"
+"패키지 데이터베이스를 쿼리하고 패키지 및 구성요소의 이름을 저장합니다."
 
-#: ../src/daemon/abrt-action-save-package-data.c:403
+#: ../src/daemon/abrt-action-save-package-data.c:406
 #: ../src/daemon/abrt-action-save-container-data.c:210
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
 #: ../src/plugins/abrt-action-analyze-c.c:141
@@ -289,42 +313,45 @@ msgstr ""
 msgid "Problem directory"
 msgstr "문제가 있는 디렉토리 "
 
-#: ../src/daemon/abrt-action-save-package-data.c:404
+#: ../src/daemon/abrt-action-save-package-data.c:407
 msgid "Configuration file"
 msgstr "설정 파일 "
 
-#: ../src/daemon/abrt-action-save-package-data.c:405
+#: ../src/daemon/abrt-action-save-package-data.c:408
 msgid "Use this directory as RPM root"
-msgstr ""
+msgstr "이 디렉토리를 RPM Root로 사용합니다."
 
 #: ../src/daemon/abrt-action-save-container-data.c:199
 msgid "& [-v] -d DIR\n"
 "\n"
 "Save container metadata"
-msgstr ""
+msgstr "& [-v] -d DIR\n"
+"\n"
+"저장소의 메타데이터를 저장합니다."
 
 #: ../src/daemon/abrt-action-save-container-data.c:211
 msgid "Root directory for running container commands"
-msgstr ""
+msgstr "저장소 명령을 실행하기 위한 루트 디렉토리"
 
-#: ../src/daemon/abrt-server.c:785 ../src/dbus/abrt-dbus.c:891
+#: ../src/daemon/abrt-server.c:796 ../src/dbus/abrt-dbus.c:894
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:444
 msgid "& [options]"
 msgstr "& [options]"
 
-#: ../src/daemon/abrt-server.c:796
+#: ../src/daemon/abrt-server.c:807
 msgid "Use NUM as client uid"
 msgstr "NUM을 클라이언트 uid로 사용 "
 
-#: ../src/daemon/abrt-server.c:797 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/daemon/abrt-server.c:808 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:97
 #: ../src/plugins/abrt-dump-journal-core.c:477
 #: ../src/plugins/abrt-dump-journal-oops.c:219
-#: ../src/plugins/abrt-dump-xorg.c:244
+#: ../src/plugins/abrt-dump-journal-xorg.c:188
+#: ../src/plugins/abrt-dump-xorg.c:52
 msgid "Log to syslog"
 msgstr "syslog에 로그   "
 
-#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrtd.c:460
+#: ../src/daemon/abrt-server.c:809 ../src/daemon/abrtd.c:460
 msgid "Add program names to log"
 msgstr "로그에 프로그램 이름 추가 "
 
@@ -332,60 +359,50 @@ msgstr "로그에 프로그램 이름 추가 "
 msgid "Unknown error"
 msgstr "알 수 없는 오류"
 
-#: ../src/dbus/abrt-dbus.c:197
-#, c-format
-msgid "'%s' is not a valid problem directory"
-msgstr "'%s'는 유효한 문제 디렉토리가 아닙니다"
-
-#: ../src/dbus/abrt-dbus.c:232
-#, c-format
-msgid "'%s' element can't be modified"
-msgstr "'%s' 요소를 수정할 수 없습니다 "
-
-#: ../src/dbus/abrt-dbus.c:253 ../src/dbus/abrt-dbus.c:455
-#: ../src/dbus/abrt-dbus.c:507 ../src/dbus/abrt-dbus.c:571
-#: ../src/dbus/abrt-dbus.c:737 ../src/dbus/abrt-configuration.c:618
-#: ../src/dbus/abrt-configuration.c:683
-#, c-format
-msgid "Not Authorized"
-msgstr "권한이 없습니다 "
-
-#: ../src/dbus/abrt-dbus.c:265
-msgid "Can't access the problem for modification"
-msgstr "수정하기 위해 문제에 액세스할 수 없습니다 "
-
-#: ../src/dbus/abrt-dbus.c:470
-msgid "Chowning directory failed. Check system logs for more details."
-msgstr "디렉토리의 소유자 변경에 실패했습니다. 보다 자세한 내용은 시스템 로그를 확인하십시오. "
-
-#: ../src/dbus/abrt-dbus.c:581
-msgid "Can't access the problem for reading"
-msgstr ""
-
-#: ../src/dbus/abrt-dbus.c:630
+#: ../src/dbus/abrt-dbus.c:167
 #, c-format
 msgid "'%s' is not a valid element name"
 msgstr "'%s'은 유효한 요소 이름이 아닙니다 "
 
-#: ../src/dbus/abrt-dbus.c:651
+#: ../src/dbus/abrt-dbus.c:219
+#, c-format
+msgid "'%s' is not a valid problem directory"
+msgstr "'%s'는 유효한 문제 디렉토리가 아닙니다"
+
+#: ../src/dbus/abrt-dbus.c:272 ../src/dbus/abrt-dbus.c:520
+#: ../src/dbus/abrt-configuration.c:618 ../src/dbus/abrt-configuration.c:683
+#, c-format
+msgid "Not Authorized"
+msgstr "권한이 없습니다 "
+
+#: ../src/dbus/abrt-dbus.c:285
+msgid "Can't open the problem"
+msgstr ""
+
+#: ../src/dbus/abrt-dbus.c:317
+#, c-format
+msgid "'%s' element can't be modified"
+msgstr "'%s' 요소를 수정할 수 없습니다 "
+
+#: ../src/dbus/abrt-dbus.c:536
+msgid "Chowning directory failed. Check system logs for more details."
+msgstr "디렉토리의 소유자 변경에 실패했습니다. 보다 자세한 내용은 시스템 로그를 확인하십시오. "
+
+#: ../src/dbus/abrt-dbus.c:665
 #, c-format
 msgid "Can't get size of '%s'"
 msgstr "'%s' 용량을 얻을 수 없습니다 "
 
-#: ../src/dbus/abrt-dbus.c:666
+#: ../src/dbus/abrt-dbus.c:680
 msgid "No problem space left"
 msgstr "남은 문제 공간이 없음 "
 
-#: ../src/dbus/abrt-dbus.c:698
+#: ../src/dbus/abrt-dbus.c:715
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
 msgstr "문제 디렉토리 '%s'에서 요소 '%s'를 삭제할 수 없습니다 "
 
-#: ../src/dbus/abrt-dbus.c:725
-msgid "Can't access the problem"
-msgstr ""
-
-#: ../src/dbus/abrt-dbus.c:873 ../src/dbus/abrt-configuration.c:983
+#: ../src/dbus/abrt-dbus.c:876 ../src/dbus/abrt-configuration.c:983
 #: ../src/daemon/abrtd.c:426
 #, c-format
 msgid ""
@@ -393,12 +410,12 @@ msgid ""
 "is not running.\n"
 msgstr "'%s'의 이름이 분실되었습니다. 이 이름을 갖는 다른 서비스가 실행되고 있지 않은지 확인하십시오.\n"
 
-#: ../src/dbus/abrt-dbus.c:900 ../src/dbus/abrt-configuration.c:1011
+#: ../src/dbus/abrt-dbus.c:903 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:459
 msgid "Exit after NUM seconds of inactivity"
 msgstr "NUM 초 동안 동작하지 않을 경우 종료합니다 "
 
-#: ../src/dbus/abrt-dbus.c:918 ../src/dbus/abrt-configuration.c:1021
+#: ../src/dbus/abrt-dbus.c:921 ../src/dbus/abrt-configuration.c:1021
 msgid "This program must be run as root."
 msgstr "이 프로그램은 root로 실행해야 합니다."
 
@@ -423,17 +440,21 @@ msgstr "데몬화하지 않습니다 "
 msgid "Log to syslog even with -d"
 msgstr "-d를 사용하여 syslog에 로그 "
 
-#: ../src/daemon/abrt-handle-event.c:406
-msgid "& [-v -i] -e|--event EVENT DIR..."
-msgstr "& [-v -i] -e|--event EVENT DIR..."
+#: ../src/daemon/abrt-handle-event.c:394
+msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
+msgstr ""
 
-#: ../src/daemon/abrt-handle-event.c:414
+#: ../src/daemon/abrt-handle-event.c:403
 msgid "Run EVENT on DIR"
 msgstr "DIR에서 EVENT 실행 "
 
-#: ../src/daemon/abrt-handle-event.c:415
+#: ../src/daemon/abrt-handle-event.c:404
 msgid "Communicate directly to the user"
 msgstr "사용자에게 직접 통신 "
+
+#: ../src/daemon/abrt-handle-event.c:405
+msgid "Increment the nice value by INCREMENT"
+msgstr ""
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-upload-watch.c:118
@@ -478,76 +499,77 @@ msgid "Maximal cache size in MiB. Default is "
 msgstr "MiB 단위의 최대 캐시 용량입니다. 기본값은 다음과 같습니다 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-auto-reporting.c:176
+#: ../src/daemon/abrt-auto-reporting.c:198
+#: ../src/daemon/abrt-auto-reporting.c:206
 msgid "& [ "
 msgstr "& [ "
 
-#: ../src/daemon/abrt-auto-reporting.c:213
-msgid "Turns the authentication off"
-msgstr ""
-
-#: ../src/daemon/abrt-auto-reporting.c:214
-msgid "Red Hat Support user name"
-msgstr ""
-
-#: ../src/daemon/abrt-auto-reporting.c:215
-msgid "Red Hat Support password, if not given, a prompt for it will be issued"
-msgstr ""
-
-#: ../src/daemon/abrt-auto-reporting.c:216
-msgid "uReport SSL certificate paths or certificate type"
-msgstr ""
-
-#: ../src/daemon/abrt-auto-reporting.c:227
-msgid "You also need to specify --username for --password"
-msgstr ""
-
 #: ../src/daemon/abrt-auto-reporting.c:233
+msgid "Turns the authentication off"
+msgstr "인증을 해제합니다."
+
+#: ../src/daemon/abrt-auto-reporting.c:234
+msgid "Red Hat Support user name"
+msgstr "Red Hat Support 사용자 이름"
+
+#: ../src/daemon/abrt-auto-reporting.c:235
+msgid "Red Hat Support password, if not given, a prompt for it will be issued"
+msgstr "Red Hat Support 암호, 지정하지 않은 경우, 이를 요청하는 메세지가 나타납니다."
+
+#: ../src/daemon/abrt-auto-reporting.c:236
+msgid "uReport SSL certificate paths or certificate type"
+msgstr "uReport SSL 인증서 경로 또는 인증서 유형"
+
+#: ../src/daemon/abrt-auto-reporting.c:252
+msgid "You also need to specify --username for --password"
+msgstr "--password에 대한  --username을 지정하십시오."
+
+#: ../src/daemon/abrt-auto-reporting.c:258
 msgid "You can use either --username or --certificate"
-msgstr ""
+msgstr "--username 또는 --certificate 중 하나를 사용할 수 있습니다."
 
-#: ../src/daemon/abrt-auto-reporting.c:239
+#: ../src/daemon/abrt-auto-reporting.c:264
 msgid "You can use either --username or --anonymous"
-msgstr ""
+msgstr "--username 또는 --anonymous 중 하나를 사용할 수 있습니다"
 
-#: ../src/daemon/abrt-auto-reporting.c:245
+#: ../src/daemon/abrt-auto-reporting.c:270
 msgid "You can use either --anonymous or --certificate"
-msgstr ""
+msgstr "--anonymous 또는 --certificate 중 하나를 사용할 수 있습니다"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-auto-reporting.c:251
+#: ../src/daemon/abrt-auto-reporting.c:277
 msgid "Invalid number of arguments"
 msgstr "잘못된 인수 개수 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-auto-reporting.c:270
+#: ../src/daemon/abrt-auto-reporting.c:296
 #, c-format
 msgid "Unknown option value: '%s'\n"
 msgstr "알 수 없는 옵션 값: '%s'\n"
 
-#: ../src/daemon/abrt-auto-reporting.c:305
+#: ../src/daemon/abrt-auto-reporting.c:336
 msgid "Password:"
-msgstr ""
+msgstr "암호:"
 
-#: ../src/daemon/abrt-auto-reporting.c:308
+#: ../src/daemon/abrt-auto-reporting.c:339
 msgid "Cannot continue without password\n"
-msgstr ""
+msgstr "암호없이 계속 진행할 수 없습니다\n"
 
 #. Print only the part before ':' of a string like "username:password"
-#: ../src/daemon/abrt-auto-reporting.c:347
+#: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
-msgstr ""
+msgstr "HTTP 인증 자동 보고"
 
-#: ../src/daemon/abrt-auto-reporting.c:349
+#: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
-msgstr ""
+msgstr "SSL 클라이언트 인증 자동 보고"
 
-#: ../src/daemon/abrt-auto-reporting.c:351
+#: ../src/daemon/abrt-auto-reporting.c:384
 msgid "anonymous auto reporting"
-msgstr ""
+msgstr "익명으로 자동 보고"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:69
+#: ../src/daemon/abrt-handle-upload.in:135
 #, c-format
 msgid ""
 "Usage: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
@@ -567,83 +589,83 @@ msgstr ""
 "   FILENAME       - 업로드된 아카이브 파일 이름 \n"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:105
-#: ../src/daemon/abrt-handle-upload.in:108
+#: ../src/daemon/abrt-handle-upload.in:171
+#: ../src/daemon/abrt-handle-upload.in:174
 msgid "Not a directory: '{0}'"
 msgstr "디렉토리가 아닙니다: '{0}'"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:111
+#: ../src/daemon/abrt-handle-upload.in:177
 msgid "Skipping: '{0}' (starts with slash)"
 msgstr "생략 중: '{0}' (슬래시로 시작)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:114
+#: ../src/daemon/abrt-handle-upload.in:180
 msgid "Skipping: '{0}' (starts with dot)"
 msgstr "생략 중: '{0}' (점으로 시작)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:117
+#: ../src/daemon/abrt-handle-upload.in:183
 msgid "Skipping: '{0}' (contains ..)"
 msgstr "생략 중: '{0}' (.. 포함)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:120
+#: ../src/daemon/abrt-handle-upload.in:186
 msgid "Skipping: '{0}' (contains space)"
 msgstr "생략 중: '{0}' (공백 포함)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:123
+#: ../src/daemon/abrt-handle-upload.in:189
 msgid "Skipping: '{0}' (contains tab)"
 msgstr "생략 중: '{0}' (탭 포함)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:128
+#: ../src/daemon/abrt-handle-upload.in:194
 msgid "Can't change directory to '{0}'"
 msgstr "'{0}'로 디렉토리를 변경할 수 없습니다 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:139
+#: ../src/daemon/abrt-handle-upload.in:205
 msgid "Unknown file type: '{0}'"
 msgstr "알 수 없는 파일 형식: '{0}'"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:144
+#: ../src/daemon/abrt-handle-upload.in:210
 msgid "Can't create working directory in '{0}'"
 msgstr "'{0}'에 작업 디렉토리를 생성할 수 없습니다 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:155
+#: ../src/daemon/abrt-handle-upload.in:221
 msgid "Can't move '{0}' to '{1}'"
 msgstr "'{0}'을 '{1}'로 이동할 수 없습니다 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:160
+#: ../src/daemon/abrt-handle-upload.in:226
 msgid "Can't copy '{0}' to '{1}'"
 msgstr "'{0}'을 '{1}'에 복사할 수 없습니다 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:164
+#: ../src/daemon/abrt-handle-upload.in:230
 msgid "Verification error on '{0}'"
 msgstr "'{0}'에서 확인 오류 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:166
+#: ../src/daemon/abrt-handle-upload.in:232
 msgid "Unpacking '{0}'"
 msgstr "'{0}' 압축 해제 중 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:170
+#: ../src/daemon/abrt-handle-upload.in:236
 msgid "Can't create '{0}' directory"
 msgstr "'{0}' 디렉토리를 생성할 수 없습니다 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:174
+#: ../src/daemon/abrt-handle-upload.in:240
 msgid "Can't unpack '{0}'"
 msgstr "'{0}'을 압축 해제할 수 없습니다 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:198
+#: ../src/daemon/abrt-handle-upload.in:260
 msgid "'{0}' processed successfully"
 msgstr "'{0}'이 성공적으로 처리되었습니다 "
 
@@ -667,21 +689,29 @@ msgstr "'%s'의 chown할 수 없음: %s"
 msgid "Deleting problem directory failed: %s"
 msgstr "문제 디렉토리 삭제 실패: %s"
 
-#: ../src/lib/problem_api_dbus.c:133 ../src/lib/problem_api_dbus.c:206
-#: ../src/lib/problem_api_dbus.c:286
+#: ../src/lib/problem_api_dbus.c:131
 #, c-format
-msgid "Can't get problem data from abrt-dbus: %s"
-msgstr "abrt-dbus에서 문제 데이터를 가져올 수 없음: %s"
+msgid "D-Bus GetInfo method call failed: %s"
+msgstr ""
 
-#: ../src/lib/problem_api_dbus.c:169
+#: ../src/lib/problem_api_dbus.c:166
+msgid "Can't get problem data from abrt-dbus"
+msgstr ""
+
+#: ../src/lib/problem_api_dbus.c:193
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
 msgstr "abrt-dbus에서 문제 목록을 가져올 수 없음: %s"
 
-#: ../src/lib/problem_api_dbus.c:250
+#: ../src/lib/problem_api_dbus.c:230 ../src/lib/problem_api_dbus.c:315
+#, c-format
+msgid "Can't get problem data from abrt-dbus: %s"
+msgstr "abrt-dbus에서 문제 데이터를 가져올 수 없음: %s"
+
+#: ../src/lib/problem_api_dbus.c:274
 #, c-format
 msgid "Can't test whether the element exists over abrt-dbus: %s"
-msgstr ""
+msgstr " abrt-dbus에서 요소가 존재하는지 여부를 검증할 수 없습니다: %s"
 
 #: ../src/lib/ignored_problems.c:233
 #, c-format
@@ -724,7 +754,7 @@ msgid "Backtrace parsing failed for %s"
 msgstr "%s 용 백트레이스 구문 분석 실패 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/abrt-action-analyze-backtrace.c:146
+#: ../src/plugins/abrt-action-analyze-backtrace.c:150
 msgid "Crash thread not found"
 msgstr "충돌 스레드를 찾을 수 없습니다 "
 
@@ -830,12 +860,44 @@ msgid "Oops text extracted successfully"
 msgstr "Oops 텍스트가 성공적으로 추출되었습니다 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:89
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
 msgstr "커널 로그에 하드웨어 관련 오류가 발견된 것으로 표시됩니다.\n"
 "이는 소프트웨어 문제는 아닌것 같습니다.\n"
+
+#: ../src/plugins/abrt-action-find-bodhi-update:88
+msgid "cannot open problem directory '{0}'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:102
+msgid "Problem directory error: {0}"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:117
+msgid "Using product '{0}' from /etc/os-release."
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:119
+msgid "Using product {0}."
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:121
+msgid "Using product version {0}."
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:133
+msgid "Duplicate bugzilla bug '#{0}' was found"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:135
+msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:140
+msgid "Warning: abrt-bodhi do not support Product version 'Rawhide'"
+msgstr ""
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
@@ -923,6 +985,28 @@ msgid ""
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
 msgstr ""
+"사용법: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"    \n"
+"       [-e, --exact=PATH[:PATH]...]\n"
+"\n"
+"TMPDIR을 임시 준비 영역으로 사용하여 CASHEDIR에 BUILD_IDS_FILE에 나열된 모든 빌드 ID의 디버그 정보를 "
+"설치합니다. \n"
+"CACHEDIR에 있는 오래된 파일은 SIZE보다 작게될 때 까지 삭제됩니다.\n"
+"\n"
+"/etc/abrt/plugins/CCpp.conf 로부터 설정을 읽어들입니다.\n"
+"\n"
+"    -v          대화식으로 실행합니다.\n"
+"    -y          비 대화식으로, 모든 옵션에 대해 '예'라고 가정합니다.\n"
+"    --ids       기본ID: build_id들\n"
+"    --tmpdir    기본위치: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     기본위치: /var/cache/abrt-di\n"
+"    --size_mb   기본크기: 4096\n"
+"    --pkgmgr   기본: PackageManager from CCpp.conf or 'dnf'\n"
+"    -e,--exact  지정된 파일만 다운로드 합니다.\n"
+"    --repo      리포지터리 검색시 사용할 규칙\n"
+"                기본: *debug*\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:175
 msgid "Can't open {0}: {1}"
@@ -940,7 +1024,7 @@ msgstr "{0} debuginfo 파일이 설치되어 있지 않습니다 "
 #: ../src/plugins/abrt-action-install-debuginfo.in:234
 #, c-format
 msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
-msgstr ""
+msgstr "CCpp 애드온의 잘못된 설정, 지원되지 않는 패키지 관리자 : '%s'"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:249
@@ -955,7 +1039,36 @@ msgstr "debuginfo 파일이 누락되어 있습니다: {0}"
 msgid "All debuginfo files are available"
 msgstr "모든 debuginfo 파일이 사용 가능합니다"
 
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:43
+msgid ""
+"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+"\t[-r REPO]\n"
+"\n"
+"Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
+"ABRT system cache."
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:66
+msgid "Noninteractive, assume 'Yes' to all questions"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:67
+msgid "- means STDIN, default: build_ids"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
+msgid "Download only specified files"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
+msgid "Pattern to use when searching for repos, default: *debug*"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
+msgid "Ignored option"
+msgstr ""
+
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:63
 msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
@@ -964,7 +1077,7 @@ msgstr ""
 "코어 덤프를 업로드해도 되겠습니까? (민감한 데이터가 포함되어 있을 수 있습니다). '아니요'로 대답할 경우 스택 추적이 로컬에 "
 "생성됩니다. (이는 거대한 용량의 데이터를 다운로드할 수 있습니다)."
 
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:72
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
@@ -1032,7 +1145,7 @@ msgstr "uReport가 이미 전송되어 있기때문에 다시 전송되지 않�
 
 #: ../src/plugins/abrt-action-ureport:179
 msgid "Adding you to CC List of the existing bugzilla bug"
-msgstr ""
+msgstr "존재하는 Bugzilla bug 의 CC목록에 추가합니다.  "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-ureport:193
@@ -1226,7 +1339,8 @@ msgstr "발견된 모든 oops에 대해 DIR에 새로운 문제 디렉토리를 
 #: ../src/plugins/abrt-dump-oops.c:103
 #: ../src/plugins/abrt-dump-journal-core.c:479
 #: ../src/plugins/abrt-dump-journal-oops.c:225
-#: ../src/plugins/abrt-dump-xorg.c:247
+#: ../src/plugins/abrt-dump-journal-xorg.c:191
+#: ../src/plugins/abrt-dump-xorg.c:55
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "-d DumpLocation과 동일, DumpLocation은 abrt.conf에 지정됩니다 "
 
@@ -1237,17 +1351,19 @@ msgstr "추출한 정보를 PROBLEM에 저장합니다 "
 
 #: ../src/plugins/abrt-dump-oops.c:105
 #: ../src/plugins/abrt-dump-journal-oops.c:226
-#: ../src/plugins/abrt-dump-xorg.c:248
+#: ../src/plugins/abrt-dump-journal-xorg.c:192
+#: ../src/plugins/abrt-dump-xorg.c:56
 msgid "Make the problem directory world readable"
 msgstr "문제 디렉토리를 전역에서 읽기 가능하게 합니다 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-dump-oops.c:106
 #: ../src/plugins/abrt-dump-journal-oops.c:227
+#: ../src/plugins/abrt-dump-journal-xorg.c:193
 msgid "Throttle problem directory creation to 1 per second"
 msgstr "1 초당 한 개로 문제 디렉토리 생성 제한 "
 
-#: ../src/plugins/abrt-dump-oops.c:107 ../src/plugins/abrt-dump-xorg.c:249
+#: ../src/plugins/abrt-dump-oops.c:107 ../src/plugins/abrt-dump-xorg.c:57
 msgid "Print search string(s) to stdout and exit"
 msgstr "검색 문자열을 표준 출력에 인쇄하고 종료 "
 
@@ -1257,15 +1373,18 @@ msgstr "검색 문자열을 표준 출력에 인쇄하고 종료 "
 msgid "Failed to compile regex"
 msgstr "regex 컴파일에 실패했습니다 "
 
-# translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/abrt-dump-oops.c:186
-msgid "Can't update the problem: more than one oops found"
-msgstr "문제를 업데이트할 수 없습니다: 하나 이상의 oops 발견 "
+#: ../src/plugins/abrt-dump-oops.c:177
+msgid "Can't update the problem: no oops found"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-oops.c:183
+msgid "More oopses found: process only the first one"
+msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-core.c:341
 #: ../src/plugins/abrt-dump-journal-core.c:377
 msgid "Failed to obtain all required information from journald"
-msgstr ""
+msgstr "journald로부터 필요한 모든 정보를 얻는데 실패했습니다."
 
 #. We don't want to update the counter here.
 #: ../src/plugins/abrt-dump-journal-core.c:401
@@ -1275,10 +1394,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-core.c:407
 msgid "Failed to save detect problem data in abrt database"
-msgstr ""
+msgstr "abrt 데이터베이스에 문제 감지 데이터를 저장하는데에 실패했습니다."
 
 #: ../src/plugins/abrt-dump-journal-core.c:427
 #: ../src/plugins/abrt-dump-journal-oops.c:165
+#: ../src/plugins/abrt-dump-journal-xorg.c:121
 msgid "Failed to initialize systemd-journal watch"
 msgstr ""
 
@@ -1298,59 +1418,67 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-core.c:478
 msgid "Create new problem directory in DIR for every coredump"
-msgstr ""
+msgstr "모든 코어덤프에 대해 DIR에 새로운 문제 디렉토리를 생성"
 
 #: ../src/plugins/abrt-dump-journal-core.c:480
 #: ../src/plugins/abrt-dump-journal-oops.c:228
+#: ../src/plugins/abrt-dump-journal-xorg.c:194
 msgid "Start reading systemd-journal from the CURSOR position"
-msgstr ""
+msgstr "CURSOR의 위치에서 systemd-journal을 읽기 시작"
 
 #: ../src/plugins/abrt-dump-journal-core.c:481
 #: ../src/plugins/abrt-dump-journal-oops.c:229
+#: ../src/plugins/abrt-dump-journal-xorg.c:195
 msgid "Start reading systemd-journal from the end"
-msgstr ""
+msgstr "뒤에서 부터 systemd-journal을 읽기 시작 "
 
 #: ../src/plugins/abrt-dump-journal-core.c:482
 msgid "Throttle problem directory creation to 1 per INT second"
-msgstr ""
+msgstr "1 초당 한 개로 문제 디렉토리 생성 제한 "
 
 #: ../src/plugins/abrt-dump-journal-core.c:483
 msgid "Same as -t INT, INT is specified in plugins/CCpp.conf"
-msgstr ""
+msgstr "-t INT와 같이,  INT는 plugins/CCpp.conf에 정의되어 있습니다."
 
 #: ../src/plugins/abrt-dump-journal-core.c:484
 #: ../src/plugins/abrt-dump-journal-oops.c:230
+#: ../src/plugins/abrt-dump-journal-xorg.c:196
 msgid "Follow systemd-journal from the last seen position (if available)"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-core.c:495
 #: ../src/plugins/abrt-dump-journal-oops.c:246
+#: ../src/plugins/abrt-dump-journal-xorg.c:213
 msgid "You need to specify either -c CURSOR or -e"
-msgstr ""
+msgstr "-c CURSOR 또는 -e 중 하나를 지정해야 합니다."
 
 #: ../src/plugins/abrt-dump-journal-core.c:541
 #: ../src/plugins/abrt-dump-journal-oops.c:284
+#: ../src/plugins/abrt-dump-journal-xorg.c:278
 msgid "Cannot open systemd-journal"
-msgstr ""
+msgstr "systemd-journal을 열 수 없습니다."
 
 #: ../src/plugins/abrt-dump-journal-core.c:544
 msgid "Cannot filter systemd-journal to systemd-coredump data only"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:547
-#: ../src/plugins/abrt-dump-journal-oops.c:291
+#: ../src/plugins/abrt-dump-journal-core.c:549
+#: ../src/plugins/abrt-dump-journal-oops.c:293
+#: ../src/plugins/abrt-dump-journal-xorg.c:291
 msgid "Cannot seek to the end of journal"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:550
-#: ../src/plugins/abrt-dump-journal-oops.c:307
+#: ../src/plugins/abrt-dump-journal-core.c:552
+#: ../src/plugins/abrt-dump-journal-oops.c:309
+#: ../src/plugins/abrt-dump-journal-xorg.c:307
 #, c-format
 msgid "Failed to set systemd-journal cursor '%s'"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-oops.c:40
+#: ../src/plugins/abrt-dump-journal-xorg.c:52
 msgid "Cannot read journal data."
-msgstr ""
+msgstr "저널 데이터를 읽을 수 없습니다."
 
 #: ../src/plugins/abrt-dump-journal-oops.c:186
 msgid ""
@@ -1367,14 +1495,17 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-oops.c:231
+#: ../src/plugins/abrt-dump-journal-xorg.c:197
 msgid "Read journal files from all machines"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-oops.c:232
+#: ../src/plugins/abrt-dump-journal-xorg.c:198
 msgid "Read all journal files from directory at PATH"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-oops.c:279
+#: ../src/plugins/abrt-dump-journal-xorg.c:273
 #, c-format
 msgid "Cannot initialize systemd-journal in directory '%s'"
 msgstr ""
@@ -1383,12 +1514,58 @@ msgstr ""
 msgid "Cannot filter systemd-journal to kernel data only"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-oops.c:298
+#: ../src/plugins/abrt-dump-journal-oops.c:300
+#: ../src/plugins/abrt-dump-journal-xorg.c:298
 #, c-format
 msgid "Failed to start watch from cursor '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-xorg.c:237
+#: ../src/plugins/abrt-dump-journal-xorg.c:61
+msgid "Failed to parse Backtrace from journal"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:143
+#, c-format
+msgid ""
+"& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
+"\n"
+"Extract Xorg crash from systemd-journal\n"
+"\n"
+"-c and -e options conflicts because both specifies the first read message.\n"
+"\n"
+"-e is useful only for -f because the following of journal starts by reading \n"
+"the entire journal if the last seen possition is not available.\n"
+"\n"
+"The last seen position is saved in %s\n"
+"\n"
+"Journal filter is required parameter and must be specified either by "
+"parameter\n"
+"-j or in %s conf file.\n"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:189
+msgid "Print found crashes on standard output"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:190
+msgid "Create new problem directory in DIR for every crash found"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:199
+msgid "Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:265
+msgid ""
+"Journal filter must be specified either by parameter -j or stored in /etc/"
+"abrt/plugins/xorg.conf file"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:282
+msgid "Cannot filter systemd-journal to Xorg data only"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-xorg.c:35
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
@@ -1397,58 +1574,62 @@ msgstr "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "FILE (또는 표준 입력)에서 Xorg 크래시를 추출합니다"
 
-#: ../src/plugins/abrt-dump-xorg.c:245
+#: ../src/plugins/abrt-dump-xorg.c:53
 msgid "Print found crash data on standard output"
 msgstr "검색된 크래시 데이터를 표준 출력에 인쇄 "
 
-#: ../src/plugins/abrt-dump-xorg.c:246
+#: ../src/plugins/abrt-dump-xorg.c:54
 msgid "Create problem directory in DIR for every crash found"
 msgstr "발견된 모든 크래시에 대해 DIR에 문제 디렉토리를 생성"
 
+#: ../src/plugins/abrt-dump-xorg.c:108
+msgid "Failed to parse Backtrace from log file"
+msgstr ""
+
 #. abrt_journal_set_cursor() prints error message in verbose mode
-#: ../src/plugins/abrt-journal.c:267
+#: ../src/plugins/abrt-journal.c:274
 msgid "Cannot save journal watch's position"
 msgstr ""
 
-#: ../src/plugins/abrt-journal.c:277
+#: ../src/plugins/abrt-journal.c:284
 #, c-format
 msgid "Cannot save journal watch's position: open('%s')"
 msgstr ""
 
 #. Only notice because this is expected
-#: ../src/plugins/abrt-journal.c:295
+#: ../src/plugins/abrt-journal.c:302
 #, c-format
 msgid "Not restoring journal watch's position: file '%s' does not exist"
 msgstr ""
 
-#: ../src/plugins/abrt-journal.c:297
+#: ../src/plugins/abrt-journal.c:304
 #, c-format
 msgid "Cannot restore journal watch's position form file '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-journal.c:304
+#: ../src/plugins/abrt-journal.c:311
 #, c-format
 msgid "Cannot restore journal watch's position: path '%s' is not regular file"
 msgstr ""
 
-#: ../src/plugins/abrt-journal.c:310
+#: ../src/plugins/abrt-journal.c:317
 #, c-format
 msgid ""
 "Cannot restore journal watch's position: file '%s' exceeds %dB size limit"
 msgstr ""
 
-#: ../src/plugins/abrt-journal.c:318
+#: ../src/plugins/abrt-journal.c:325
 #, c-format
 msgid "Cannot restore journal watch's position: open('%s')"
 msgstr ""
 
-#: ../src/plugins/abrt-journal.c:327
+#: ../src/plugins/abrt-journal.c:334
 #, c-format
 msgid "Cannot restore journal watch's position: cannot read entire file '%s'"
 msgstr ""
 
 #. abrt_journal_set_cursor() prints error message in verbose mode
-#: ../src/plugins/abrt-journal.c:339
+#: ../src/plugins/abrt-journal.c:346
 #, c-format
 msgid "Failed to move the journal to a cursor from file '%s'"
 msgstr ""
@@ -1968,44 +2149,44 @@ msgid "Sleeping for %d seconds"
 msgstr "%d 초 동안 절전 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/oops-utils.c:207
+#: ../src/plugins/oops-utils.c:200
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
 msgstr "BIOS 손상으로 인해 커널 관련 문제가 발생했습니다. 불행히도 이러한 문제는 커널 관리자에 의해 수정될 수 없습니다."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/oops-utils.c:212
+#: ../src/plugins/oops-utils.c:205
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
 msgstr "커널 관련 문제가 발생했지만 해당 하드웨어가 지원되지 않기 때문에 커널 관리자는 이 문제를 수정할 수 없습니다."
 
-#: ../src/plugins/oops-utils.c:227
+#: ../src/plugins/oops-utils.c:220
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr "커널에 문제가 발생했지만 커널 자체가 손상되어 있습니다 (플래그: %s). 커널 관리자는 손상된 보고를 진단할 수 없습니다."
 
-#: ../src/plugins/oops-utils.c:235
+#: ../src/plugins/oops-utils.c:228
 #, c-format
 msgid " Tainted modules: %s."
 msgstr "잘못된 모듈: %s."
 
-#: ../src/plugins/bodhi.c:375
+#: ../src/plugins/bodhi.c:468
 msgid "List of bug ids"
 msgstr "버그 ID 목록"
 
-#: ../src/plugins/bodhi.c:376
+#: ../src/plugins/bodhi.c:469
 msgid "Specify a bodhi server url"
 msgstr "bodhi 서버 url 지정"
 
-#: ../src/plugins/bodhi.c:377
+#: ../src/plugins/bodhi.c:470
 msgid "Specify a release"
 msgstr "릴리즈 지정"
 
-#: ../src/plugins/bodhi.c:382
+#: ../src/plugins/bodhi.c:475
 msgid ""
 "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
 "\n"
@@ -2015,20 +2196,20 @@ msgstr ""
 "\n"
 "bodhi 서버에서 업데이트 검색"
 
-#: ../src/plugins/bodhi.c:434
+#: ../src/plugins/bodhi.c:542
 msgid "Searching for updates"
 msgstr "업데이트 검색 중"
 
-#: ../src/plugins/bodhi.c:440
+#: ../src/plugins/bodhi.c:548
 msgid "No updates for this package found"
 msgstr "이 패키지에 대한 업데이트를 찾을 수 없음"
 
 #. strbuf_free(q);
-#: ../src/plugins/bodhi.c:469
+#: ../src/plugins/bodhi.c:577
 msgid "Local version of the package is newer than available updates"
 msgstr "패키지의 로컬 버전은 사용 가능한 업데이트 보다 새로운 버전입니다"
 
-#: ../src/plugins/bodhi.c:486
+#: ../src/plugins/bodhi.c:594
 #, c-format
 msgid ""
 "An update exists which might fix your problem. You can install it by running:"
@@ -2058,72 +2239,73 @@ msgid "Delete files with found oopses"
 msgstr "검색된 oopses가 있는 파일을 삭제합니다 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/abrt-cli-core.c:89
+#: ../src/cli/abrt-cli-core.c:100
 #, c-format
 msgid "'%s' identifies more than one problem directory"
 msgstr "'%s'가 하나 이상의 문제 디렉토리를 확인했습니다 "
 
-#: ../src/cli/abrt-cli.c:144
-msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
-msgstr "사용법: abrt-cli [--version] COMMAND [DIR]... "
+#: ../src/cli/abrt-cli.c:130
+msgid "Usage: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
+msgstr ""
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/abrt-cli.c:148
+#: ../src/cli/abrt-cli.c:134
 msgid "List problems [in DIRs]"
 msgstr " [in DIRs]에 문제 나열 "
 
-#: ../src/cli/abrt-cli.c:149
+#: ../src/cli/abrt-cli.c:135
 msgid "Remove problem directory DIR"
 msgstr "문제 디렉토리 DIR 제거 "
 
-#: ../src/cli/abrt-cli.c:150
+#: ../src/cli/abrt-cli.c:136
 msgid "Analyze and report problem data in DIR"
 msgstr "DIR에 문제가 있는 데이터를 분석 및 보고 "
 
-#: ../src/cli/abrt-cli.c:151
+#: ../src/cli/abrt-cli.c:137
 msgid "Print information about DIR"
 msgstr "DIR에 관한 정보 출력 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/abrt-cli.c:152
+#: ../src/cli/abrt-cli.c:138
 msgid "Print the count of the recent crashes"
 msgstr "최근 충돌 횟수를 출력"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/abrt-cli.c:153
+#: ../src/cli/abrt-cli.c:139
 msgid "Process multiple problems"
 msgstr "여러 문제 처리 "
 
-#: ../src/cli/abrt-cli.c:168
+#: ../src/cli/abrt-cli.c:162
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "보다 자세한 내용은 'abrt-cli COMMAND --help'에서 참조하십시오 "
 
-#: ../src/cli/list.c:125
+#: ../src/cli/list.c:127
 msgid "& list [options]"
 msgstr ""
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/list.c:134
+#: ../src/cli/list.c:136 ../src/cli-ng/abrtcli/cli.py:121
+#: ../src/cli-ng/abrtcli/cli.py:264
 msgid "List only not-reported problems"
 msgstr "보고되지 않는 문제만 나열합니다 "
 
 #. deprecate -d option with --pretty=full
-#: ../src/cli/list.c:136 ../src/cli/list.c:181
+#: ../src/cli/list.c:138 ../src/cli/list.c:191
 msgid "Show detailed report"
 msgstr "상세 보고를 표시합니다 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/list.c:137
+#: ../src/cli/list.c:139 ../src/cli-ng/abrtcli/cli.py:113
 msgid "List only the problems more recent than specified timestamp"
 msgstr "지정된 타임 스탬프 보다 최신의 문제만 나열 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/list.c:138
+#: ../src/cli/list.c:140 ../src/cli-ng/abrtcli/cli.py:115
 msgid "List only the problems older than specified timestamp"
 msgstr "지정된 타임 스탬프보다 오래된 문제만 나열합니다 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/list.c:162
+#: ../src/cli/list.c:166
 #, c-format
 msgid ""
 "The Autoreporting feature is disabled. Please consider enabling it by "
@@ -2133,57 +2315,67 @@ msgstr ""
 "자동보고 기능은 비활성화되어 있습니다. root 권한을 가진 사용자로\n"
 "'abrt-auto-reporting enabled'를 실행하여 이를 활성화합니다\n"
 
-#: ../src/cli/list.c:173
+#: ../src/cli/list.c:183
 msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/list.c:182
+#: ../src/cli/list.c:192
 msgid "Text larger than this will be shown abridged"
 msgstr "이보다 더 큰 텍스트는 요약하여 표시됩니다"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/list.c:202
+#: ../src/cli/list.c:212
 #, c-format
 msgid "No such problem directory '%s'"
 msgstr "이러한 문제 디렉토리 '%s'가 없음 "
 
-#: ../src/cli/status.c:62
+#: ../src/cli/status.c:66
 msgid "& status"
 msgstr ""
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/status.c:70
+#: ../src/cli/status.c:74 ../src/cli-ng/abrtcli/cli.py:260
 msgid "Print only the problem count without any message"
 msgstr "아무 메세지를 표시하지 않고 문제의 건수만 출력 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/status.c:71
+#: ../src/cli/status.c:75 ../src/cli-ng/abrtcli/cli.py:262
 msgid "Print only the problems more recent than specified timestamp"
 msgstr "지정된 타임 스탬프 보다 최신의 문제만 출력"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/status.c:87
+#: ../src/cli/status.c:91
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
 msgstr ""
 "ABRT에 의해 '%u' 건의 문제가 발견되었습니다. (다음을 실행하여 보다 자세한 내용을 확인합니다: abrt-cli list%s\n"
 
+#: ../src/cli/report.c:34
+#, c-format
+msgid "Can't find problem '%s'"
+msgstr ""
+
+#: ../src/cli/report.c:42
+#, c-format
+msgid "Problem '%s' cannot be reported"
+msgstr ""
+
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/report.c:28
+#: ../src/cli/report.c:63 ../src/cli/process.c:70
+#, c-format
+msgid "Deleting '%s'"
+msgstr "'%s' 삭제 중 "
+
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/cli/report.c:79
 msgid "& report [options] DIR..."
 msgstr "& report [options] DIR..."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/report.c:38
+#: ../src/cli/report.c:89
 msgid "Remove PROBLEM_DIR after reporting"
 msgstr "보고 후 PROBLEM_DIR 삭제 "
-
-# translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/report.c:71 ../src/cli/process.c:70
-#, c-format
-msgid "Deleting '%s'"
-msgstr "'%s' 삭제 중 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/process.c:64
@@ -2196,26 +2388,181 @@ msgid "Actions: remove(rm), report(e), info(i), skip(s):"
 msgstr "동작: 삭제(rm), 보고 (e), 정보(i), 생략(s):"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/process.c:77
+#: ../src/cli/process.c:78
 #, c-format
 msgid "Reporting '%s'"
 msgstr "'%s' 보고 중 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #. dummy must be free because the function ask allocate memory
-#: ../src/cli/process.c:133
+#: ../src/cli/process.c:127
 msgid "For next problem press ENTER:"
 msgstr "다음 문제로 이동하려면 ENTER를 누릅니다: "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/process.c:144
+#: ../src/cli/process.c:138
 msgid "Without --since argument, iterates over all detected problems."
 msgstr "--since 인수가 없으면 감지된 모든 문제를 반복합니다 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/process.c:150
+#: ../src/cli/process.c:144
 msgid "Selects only problems detected after timestamp"
 msgstr "타임 스탬프 후 감지된 문제만 선택합니다 "
+
+#: ../src/cli-ng/abrtcli/cli.py:33
+msgid "Problem has no backtrace"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:35
+msgid "Start retracing process?"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:40
+msgid "Show backtrace of a problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:50
+msgid "This"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:52
+msgid "Last"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:54
+msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:64 ../src/cli-ng/abrtcli/cli.py:99
+msgid ""
+"Permission denied: '{}'\n"
+"If this is a system problem try running this command as root"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:71
+msgid "Install required debuginfo for given problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:106
+msgid "Run GDB against a problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:117 ../src/cli-ng/abrtcli/cli.py:153
+msgid "Output format"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:119 ../src/cli-ng/abrtcli/cli.py:155
+msgid "Built-in output format"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:145 ../src/cli-ng/abrtcli/match.py:89
+msgid "No problems"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:147
+msgid "List problems"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:167
+msgid "Print information about problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:173
+msgid "Prompt before removal"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:174
+msgid "Do not prompt before removal"
+msgstr ""
+
+#. force prompt for last problem to avoid accidents
+#: ../src/cli-ng/abrtcli/cli.py:182
+msgid "Are you sure you want to delete this problem?"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:186
+msgid "Removed"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:188
+msgid "Remove problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:199
+msgid "Report problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:204
+msgid "Perform local retracing"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:206
+msgid "Perform remote retracing using retrace server"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:208
+msgid "Force retracing even if backtrace already exists"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:223
+msgid "Problem already has a backtrace"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:224
+msgid "Run abrt retrace with -f/--force to retrace again"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:225
+msgid "Show backtrace?"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:229
+msgid "No retracing possible for this problem type"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:233
+msgid ""
+"Upload core dump and perform remote retracing? (It may contain sensitive "
+"data). If your answer is 'No', a stack trace will be generated locally. "
+"Local retracing requires downloading potentially large amount of debuginfo "
+"data"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:248
+msgid "Remote retracing"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:251
+msgid "Local retracing"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:255
+msgid "Generate backtrace from coredump"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:280
+msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:283
+msgid "Print count of the recent crashes"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:292
+msgid "Authenticate and show all problems on this machine"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/match.py:96
+msgid "No problem(s) matched"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/match.py:116
+msgid "Ambiguous match specified resulting in multiple problems:"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/utils.py:78
+msgid "Not reportable"
+msgstr ""
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""

@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2015-04-08 13:09+0200\n"
+"POT-Creation-Date: 2016-02-11 12:54+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,7 +24,7 @@ msgstr ""
 "language/kn/)\n"
 "Language: kn\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Zanata 3.5.1\n"
+"X-Generator: Zanata 3.8.2\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -34,103 +34,103 @@ msgstr ""
 msgid "View and report application crashes"
 msgstr ""
 
-#: ../src/applet/applet.c:157
+#: ../src/applet/applet.c:260 ../src/cli/report.c:51
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "'%s' ನ ಮಾಲಿಕತ್ವವನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/applet/applet.c:165
+#: ../src/applet/applet.c:268
 #, c-format
 msgid "Can't open directory for writing '%s'"
 msgstr "ಕೋಶವನ್ನು '%s' ಬರೆಯುವ ಸಲುವಾಗಿ ತೆರೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ "
 
-#: ../src/applet/applet.c:442 ../src/applet/applet.c:461
+#: ../src/applet/applet.c:546 ../src/applet/applet.c:564
 #, c-format
 msgid "Can't close notification: %s"
 msgstr "ಸೂಚನೆಯನ್ನು ಮುಚ್ಚಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
-#: ../src/applet/applet.c:496
+#: ../src/applet/applet.c:598
 msgid "Oops!"
 msgstr ""
 
-#: ../src/applet/applet.c:514
+#: ../src/applet/applet.c:616
 msgid "Report"
 msgstr "ವರದಿ"
 
-#: ../src/applet/applet.c:523
+#: ../src/applet/applet.c:625
 msgid "Restart"
 msgstr ""
 
-#: ../src/applet/applet.c:588
+#: ../src/applet/applet.c:694
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
 "reported."
 msgstr ""
 
-#: ../src/applet/applet.c:593
+#: ../src/applet/applet.c:699
 #, c-format
 msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
 "internet is available."
 msgstr ""
 
-#: ../src/applet/applet.c:599 ../src/applet/applet.c:613
-#: ../src/applet/applet.c:641
+#: ../src/applet/applet.c:705 ../src/applet/applet.c:719
+#: ../src/applet/applet.c:747
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
 msgstr ""
 
-#: ../src/applet/applet.c:607
+#: ../src/applet/applet.c:713
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
 msgstr ""
 
-#: ../src/applet/applet.c:626
+#: ../src/applet/applet.c:732
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
 msgstr ""
 
-#: ../src/applet/applet.c:630
+#: ../src/applet/applet.c:736
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
 msgstr ""
 
-#: ../src/applet/applet.c:635
+#: ../src/applet/applet.c:741
 msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
 msgstr ""
 
-#: ../src/applet/applet.c:680
+#: ../src/applet/applet.c:786
 #, c-format
 msgid "Can't show notification: %s"
 msgstr "ಸೂಚನೆಯನ್ನು ತೋರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:712 ../src/daemon/abrt-upload-watch.c:168
+#: ../src/applet/applet.c:818 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "gio ಮಾರ್ಗದಿಂದ ಓದಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: '%s'"
 
-#: ../src/applet/applet.c:790
+#: ../src/applet/applet.c:896
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "gio ಚಾನಲ್‌ನಲ್ಲಿ ಎನ್ಕೋಡಿಂಗ್ ಅನ್ನು ಹೊಂದಿಸಲಾಗಿಲ್ಲ: %s"
 
-#: ../src/applet/applet.c:794
+#: ../src/applet/applet.c:900
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr ""
 "gio ಚಾನಲ್‌ಗಾಗಿ ಬ್ಲಾಕಿಂಗ್ ಸ್ಥಿತಿಯಲ್ಲದ ಕ್ರಮವನ್ನು ಆನ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ: %s"
 
-#: ../src/applet/applet.c:1090
+#: ../src/applet/applet.c:1186
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -139,6 +139,17 @@ msgstr ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
+
+#: ../src/configuration-gui/abrt-config-widget.c:483
+msgid ""
+"The configuration option above has been moved to GSettings and the switch is "
+"linked to the value of the setting 'report-technical-problems' from the "
+"schema 'org.gnome.desktop.privacy'."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.c:501
+msgid "The configuration option above can be configured in"
+msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
@@ -161,13 +172,10 @@ msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
 "space consuming operation. ABRT provides a service which generates the stack "
 "trace from the coredump but you have to upload the coredump to this service. "
-"With this option disabled ABRT will upload the coredump without asking."
+"With option 'Always' ABRT will always upload the coredump without asking. "
+"With option 'Never' the stack trace will be always generated locally. With "
+"option 'Ask' ABRT will always ask the user."
 msgstr ""
-"ಕೋರ್‌ಡಂಪ್ ಕಡತವು ಸ್ಟಾಕ್‌ ಟ್ರೇಸ್ ಅನ್ನು ರಚಿಸಲು ಅಗತ್ಯವಿರುತ್ತದೆ ಆದರೆ ಇದಕ್ಕಾಗಿ "
-"ಹೆಚ್ಚಿನ ಸಮಯ ಹಾಗು ಸ್ಥಳವು ಬೇಕಿರುತ್ತದೆ. ABRT ಯು ಕೋರ್‌ಡಂಪ್‌ನಿಂದ ಸ್ಟಾಕ್‌ ಟ್ರೇಸ್ "
-"ಅನ್ನು ಉತ್ಪಾದಿಸುವ ಒಂದು ಸೇವೆಯನ್ನು ಒದಗಿಸುತ್ತದೆ ಆದರೆ ಈ ಸೇವೆಗಾಗಿ ನೀವು ಕೋರ್‌ಡಂಪ್ "
-"ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಬೇಕಿರುತ್ತದೆ. ಈ ಆಯ್ಕೆಯನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿದಲ್ಲಿ ABRT "
-"ನಿಮ್ಮನ್ನು ಕೇಳದೆ ಕೋರ್‌ಡಂಪ್ ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -215,10 +223,6 @@ msgstr ""
 "ಸಕ್ರಿಯಗೊಳಿಸಿದ್ದಲ್ಲಿ ಮಾತ್ರ ಕಾರ್ಯರೂಪಕ್ಕೆ ಬರುತ್ತದೆ."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
-msgid "Ask before uploading coredump"
-msgstr "ಕೋರ್‌ಡಂಪ್ ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡುವ ಮೊದಲು ನನ್ನನ್ನು ಕೇಳು"
-
-#: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
@@ -226,15 +230,15 @@ msgstr ""
 "ಈ ಆಯ್ಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದಲ್ಲಿ ABRT ಯು, ಸೂಕ್ಷ್ಮಸಂವೇದಿ ಮಾಹಿತಿಯು ಕಂಡುಬಂದಲ್ಲಿ "
 "ಯಾವಾಗಲೂ ಸಹ ನಿರ್ಬಂಧಿತ ನಿಲುಕನ್ನು ಹೊಂದಿರುವ ದೋಷದ ಟಿಕೆಟ್ ಅನ್ನು ರಚಿಸುತ್ತದೆ."
 
-#: ../src/configuration-gui/abrt-config-widget.glade.h:12
+#: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid "Request private ticket for sensitive information"
 msgstr "ಸೂಕ್ಷ್ಮಸಂವೇದಿ ಮಾಹಿತಿಗಾಗಿ ಖಾಸಗಿ ಟಿಕೆಟ್‌ಗಾಗಿನ ಮನವಿ"
 
-#: ../src/configuration-gui/abrt-config-widget.glade.h:13
+#: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Notify incomplete problems"
 msgstr "ಅಪೂರ್ಣವಾದ ಸಮಸ್ಯೆಗಳನ್ನು ಸೂಚಿಸು"
 
-#: ../src/configuration-gui/abrt-config-widget.glade.h:14
+#: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
@@ -243,6 +247,22 @@ msgstr ""
 "ಗಣಕವನ್ನು ಸ್ಥಗಿತಗೊಳಿಸುತ್ತಿದ್ದರೆ ಅಥವ ಬಳಕೆದಾರರು ನಿರ್ಗಮಿಸುತ್ತಿದ್ದರೆ ಅಪೂರ್ಣವಾದ "
 "ಸಮಸ್ಯೆಗಲು ಕಂಡುಬರಬಹುದು. ಮೌಲ್ಯಯುತವಾದ ಸಮಸ್ಯೆಯ ವರದಿಗಳನ್ನು ಒದಗಿಸಲು, ABRT ಈ "
 "ಸಮಸ್ಯೆಗಳನ್ನು ಸಲ್ಲಿಸಲು ನಿಮಗೆ ಅನುಮತಿಸುವುದಿಲ್ಲ."
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:14
+msgid "Always"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:15
+msgid "Never"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:16
+msgid "Ask"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:17
+msgid "Upload coredump for backtrace generation"
+msgstr ""
 
 #: ../src/configuration-gui/system-config-abrt.c:79
 msgid "_Close"
@@ -269,14 +289,14 @@ msgstr "ಕುರಿತು"
 msgid "Quit"
 msgstr "ನಿರ್ಗಮಿಸು"
 
-#: ../src/daemon/abrt-action-save-package-data.c:390
+#: ../src/daemon/abrt-action-save-package-data.c:393
 msgid ""
 "& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
 msgstr ""
 
-#: ../src/daemon/abrt-action-save-package-data.c:403
+#: ../src/daemon/abrt-action-save-package-data.c:406
 #: ../src/daemon/abrt-action-save-container-data.c:210
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
 #: ../src/plugins/abrt-action-analyze-c.c:141
@@ -288,11 +308,11 @@ msgstr ""
 msgid "Problem directory"
 msgstr "ತೊಂದರೆಯ ಕೋಶ"
 
-#: ../src/daemon/abrt-action-save-package-data.c:404
+#: ../src/daemon/abrt-action-save-package-data.c:407
 msgid "Configuration file"
 msgstr "ಸಂರಚನಾ ಕಡತ"
 
-#: ../src/daemon/abrt-action-save-package-data.c:405
+#: ../src/daemon/abrt-action-save-package-data.c:408
 msgid "Use this directory as RPM root"
 msgstr ""
 
@@ -306,24 +326,25 @@ msgstr ""
 msgid "Root directory for running container commands"
 msgstr ""
 
-#: ../src/daemon/abrt-server.c:785 ../src/dbus/abrt-dbus.c:891
+#: ../src/daemon/abrt-server.c:796 ../src/dbus/abrt-dbus.c:894
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:444
 msgid "& [options]"
 msgstr "& [ಆಯ್ಕೆಗಳು]"
 
-#: ../src/daemon/abrt-server.c:796
+#: ../src/daemon/abrt-server.c:807
 msgid "Use NUM as client uid"
 msgstr "NUM ಅನ್ನು ಕ್ಲೈಂಟ್ uid ಆಗಿ ಬಳಸು"
 
-#: ../src/daemon/abrt-server.c:797 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/daemon/abrt-server.c:808 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:97
 #: ../src/plugins/abrt-dump-journal-core.c:477
 #: ../src/plugins/abrt-dump-journal-oops.c:219
-#: ../src/plugins/abrt-dump-xorg.c:244
+#: ../src/plugins/abrt-dump-journal-xorg.c:188
+#: ../src/plugins/abrt-dump-xorg.c:52
 msgid "Log to syslog"
 msgstr "syslog ಗೆ ದಾಖಲಿಸು"
 
-#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrtd.c:460
+#: ../src/daemon/abrt-server.c:809 ../src/daemon/abrtd.c:460
 msgid "Add program names to log"
 msgstr "ಪ್ರೊಗ್ರಾಮ್‌ನ ಹೆಸರುಗಳನ್ನು ದಾಖಲೆಗೆ ಸೇರಿಸು"
 
@@ -331,62 +352,52 @@ msgstr "ಪ್ರೊಗ್ರಾಮ್‌ನ ಹೆಸರುಗಳನ್ನು �
 msgid "Unknown error"
 msgstr "ಗೊತ್ತಿರದ ದೋಷ"
 
-#: ../src/dbus/abrt-dbus.c:197
+#: ../src/dbus/abrt-dbus.c:167
+#, c-format
+msgid "'%s' is not a valid element name"
+msgstr "'%s' ಎನ್ವುವುದು ಒಂದು ಮಾನ್ಯವಾದ ಘಟಕದ ಹೆಸರಾಗಿಲ್ಲ"
+
+#: ../src/dbus/abrt-dbus.c:219
 #, c-format
 msgid "'%s' is not a valid problem directory"
 msgstr "'%s' ಎನ್ನುವುದು ಒಂದು ಮಾನ್ಯವಾದ ತೊಂದರೆಯ ಕೋಶವಾಗಿಲ್ಲ"
 
-#: ../src/dbus/abrt-dbus.c:232
-#, c-format
-msgid "'%s' element can't be modified"
-msgstr "'%s' ಘಟಕವನ್ನು ಮಾರ್ಪಡಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
-
-#: ../src/dbus/abrt-dbus.c:253 ../src/dbus/abrt-dbus.c:455
-#: ../src/dbus/abrt-dbus.c:507 ../src/dbus/abrt-dbus.c:571
-#: ../src/dbus/abrt-dbus.c:737 ../src/dbus/abrt-configuration.c:618
-#: ../src/dbus/abrt-configuration.c:683
+#: ../src/dbus/abrt-dbus.c:272 ../src/dbus/abrt-dbus.c:520
+#: ../src/dbus/abrt-configuration.c:618 ../src/dbus/abrt-configuration.c:683
 #, c-format
 msgid "Not Authorized"
 msgstr "ಅಧಿಕಾರವಿಲ್ಲ"
 
-#: ../src/dbus/abrt-dbus.c:265
-msgid "Can't access the problem for modification"
-msgstr "ಮಾರ್ಪಡಿಸುವ ಸಲುವಾಗಿ ತೊಂದರೆಯನ್ನು ತಲುಪಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
+#: ../src/dbus/abrt-dbus.c:285
+msgid "Can't open the problem"
+msgstr ""
 
-#: ../src/dbus/abrt-dbus.c:470
+#: ../src/dbus/abrt-dbus.c:317
+#, c-format
+msgid "'%s' element can't be modified"
+msgstr "'%s' ಘಟಕವನ್ನು ಮಾರ್ಪಡಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
+
+#: ../src/dbus/abrt-dbus.c:536
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
 "ಕೋಶವನ್ನು chown ಮಾಡುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ. ಹೆಚ್ಚಿನ ವಿವರಗಳಿಗಾಗಿ ವ್ಯವಸ್ಥೆಯ "
 "ದಾಖಲೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ."
 
-#: ../src/dbus/abrt-dbus.c:581
-msgid "Can't access the problem for reading"
-msgstr ""
-
-#: ../src/dbus/abrt-dbus.c:630
-#, c-format
-msgid "'%s' is not a valid element name"
-msgstr "'%s' ಎನ್ವುವುದು ಒಂದು ಮಾನ್ಯವಾದ ಘಟಕದ ಹೆಸರಾಗಿಲ್ಲ"
-
-#: ../src/dbus/abrt-dbus.c:651
+#: ../src/dbus/abrt-dbus.c:665
 #, c-format
 msgid "Can't get size of '%s'"
 msgstr "'%s' ಗಾತ್ರವನ್ನು ಪಡೆಯಲಾಗಿಲ್ಲ"
 
-#: ../src/dbus/abrt-dbus.c:666
+#: ../src/dbus/abrt-dbus.c:680
 msgid "No problem space left"
 msgstr "ಯಾವುದೆ ತೊಂದರೆ ಸ್ಥಳವು ಉಳಿದಿಲ್ಲ"
 
-#: ../src/dbus/abrt-dbus.c:698
+#: ../src/dbus/abrt-dbus.c:715
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
 msgstr "'%s' ಘಟಕವನ್ನು '%s' ತೊಂದರೆಯ ಕೋಶದಿಂದ ಅಳಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/dbus/abrt-dbus.c:725
-msgid "Can't access the problem"
-msgstr ""
-
-#: ../src/dbus/abrt-dbus.c:873 ../src/dbus/abrt-configuration.c:983
+#: ../src/dbus/abrt-dbus.c:876 ../src/dbus/abrt-configuration.c:983
 #: ../src/daemon/abrtd.c:426
 #, c-format
 msgid ""
@@ -396,12 +407,12 @@ msgstr ""
 "'%s' ಎಂಬ ಹೆಸರು ಕಾಣೆಯಾಗಿದೆ, ಇದೇ ಹೆಸರಿನ ಇನ್ನೊಂದು ಸೇವೆಯು ಚಾಲನೆಯಲ್ಲಿಲ್ಲವೆ ಎಂದು "
 "ಪರೀಕ್ಷಿಸಿ.\n"
 
-#: ../src/dbus/abrt-dbus.c:900 ../src/dbus/abrt-configuration.c:1011
+#: ../src/dbus/abrt-dbus.c:903 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:459
 msgid "Exit after NUM seconds of inactivity"
 msgstr "NUM ಸೆಕೆಂಡುಗಳ ನಿಷ್ಕ್ರಿಯತೆಯ ನಂತರ ನಿರ್ಗಮಿಸು"
 
-#: ../src/dbus/abrt-dbus.c:918 ../src/dbus/abrt-configuration.c:1021
+#: ../src/dbus/abrt-dbus.c:921 ../src/dbus/abrt-configuration.c:1021
 msgid "This program must be run as root."
 msgstr "ಈ ಪ್ರೊಗ್ರಾಮ್ ಅನ್ನು ನಿರ್ವಾಹಕರಾಗಿ ಚಲಾಯಿಸಬೇಕು."
 
@@ -427,17 +438,21 @@ msgstr "ಡೆಮನ್‌ ಆಗಿ ಮಾಡಬೇಡ"
 msgid "Log to syslog even with -d"
 msgstr "-d ಯೊಂದಿಗೂ ಸಹ syslog ಗೆ ದಾಖಲಿಸಿ"
 
-#: ../src/daemon/abrt-handle-event.c:406
-msgid "& [-v -i] -e|--event EVENT DIR..."
-msgstr "& [-v -i] -e|--event EVENT DIR..."
+#: ../src/daemon/abrt-handle-event.c:394
+msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
+msgstr ""
 
-#: ../src/daemon/abrt-handle-event.c:414
+#: ../src/daemon/abrt-handle-event.c:403
 msgid "Run EVENT on DIR"
 msgstr "DIR ನಲ್ಲಿ EVENT ಅನ್ನು ಚಲಾಯಿಸಿ"
 
-#: ../src/daemon/abrt-handle-event.c:415
+#: ../src/daemon/abrt-handle-event.c:404
 msgid "Communicate directly to the user"
 msgstr "ಬಳಕೆದಾರರೊಂದಿಗೆ ನೇರವಾಗಿ ವ್ಯವಹರಿಸು"
+
+#: ../src/daemon/abrt-handle-event.c:405
+msgid "Increment the nice value by INCREMENT"
+msgstr ""
 
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
@@ -479,89 +494,90 @@ msgstr "ಏಕಕಾಲದ ಕೆಲಸಗಾರರ ಸಂಖ್ಯೆ. ಪೂ�
 msgid "Maximal cache size in MiB. Default is "
 msgstr "ಕ್ಯಾಶೆಯ ಗರಿಷ್ಟ ಗಾತ್ರ, MiB ಯಲ್ಲಿ. ಪೂರ್ವನಿಯೋಜಿತವು ಹೀಗಿದೆ"
 
-#: ../src/daemon/abrt-auto-reporting.c:176
+#: ../src/daemon/abrt-auto-reporting.c:198
+#: ../src/daemon/abrt-auto-reporting.c:206
 msgid "& [ "
 msgstr "& [ "
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author Shankar Prasad
-#: ../src/daemon/abrt-auto-reporting.c:213
+#: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
 msgstr "ದೃಢೀಕರಣವನ್ನು ಆಫ್ ಮಾಡುತ್ತದೆ"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author Shankar Prasad
-#: ../src/daemon/abrt-auto-reporting.c:214
+#: ../src/daemon/abrt-auto-reporting.c:234
 msgid "Red Hat Support user name"
 msgstr "Red Hat ಸಪೋರ್ಟ್‌ನ ಬಳಕೆದಾರ ಹೆಸರು"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author Shankar Prasad
-#: ../src/daemon/abrt-auto-reporting.c:215
+#: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
 msgstr ""
 "Red Hat ಸಪೋರ್ಟ್‌ಗಾಗಿನ ಗುಪ್ತಪದ, ನೀಡಲಾಗಿರದೆ ಇದ್ದರೆ, ಒಂದು ಪ್ರಾಂಪ್ಟ್ ಅನ್ನು "
 "ನೀಡಲಾಗುತ್ತದೆ"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author Shankar Prasad
-#: ../src/daemon/abrt-auto-reporting.c:216
+#: ../src/daemon/abrt-auto-reporting.c:236
 msgid "uReport SSL certificate paths or certificate type"
 msgstr "uReport SSL ಪ್ರಮಾಣಪತ್ರದ ಮಾರ್ಗಗಳು ಅಥವ ಪ್ರಮಾಣಪತ್ರದ ಬಗೆ"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author Shankar Prasad
-#: ../src/daemon/abrt-auto-reporting.c:227
+#: ../src/daemon/abrt-auto-reporting.c:252
 msgid "You also need to specify --username for --password"
 msgstr "--password ಕ್ಕಾಗಿ ನೀವು --username ಅನ್ನೂ ಸಹ ಒದಗಿಸಬೇಕು"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author Shankar Prasad
-#: ../src/daemon/abrt-auto-reporting.c:233
+#: ../src/daemon/abrt-auto-reporting.c:258
 msgid "You can use either --username or --certificate"
 msgstr "ನೀವು --username ಮತ್ತು --certificate ನಲ್ಲಿ ಒಂದನ್ನು ಬಳಸಬಹುದು"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author Shankar Prasad
-#: ../src/daemon/abrt-auto-reporting.c:239
+#: ../src/daemon/abrt-auto-reporting.c:264
 msgid "You can use either --username or --anonymous"
 msgstr "ನೀವು --username ಮತ್ತು --anonymous ನಲ್ಲಿ ಒಂದನ್ನು ಬಳಸಬಹುದು"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author Shankar Prasad
-#: ../src/daemon/abrt-auto-reporting.c:245
+#: ../src/daemon/abrt-auto-reporting.c:270
 msgid "You can use either --anonymous or --certificate"
 msgstr "ನೀವು --anonymous ಮತ್ತು --certificate ನಲ್ಲಿ ಒಂದನ್ನು ಬಳಸಬಹುದು"
 
-#: ../src/daemon/abrt-auto-reporting.c:251
+#: ../src/daemon/abrt-auto-reporting.c:277
 msgid "Invalid number of arguments"
 msgstr "ಅಮಾನ್ಯವಾದ ಆರ್ಗ್ಯುಮೆಂಟ್‌ಗಳ ಸಂಖ್ಯೆ"
 
-#: ../src/daemon/abrt-auto-reporting.c:270
+#: ../src/daemon/abrt-auto-reporting.c:296
 #, c-format
 msgid "Unknown option value: '%s'\n"
 msgstr "ಗೊತ್ತಿರದ ಆಯ್ಕೆ ಮೌಲ್ಯ: '%s'\n"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author Shankar Prasad
-#: ../src/daemon/abrt-auto-reporting.c:305
+#: ../src/daemon/abrt-auto-reporting.c:336
 msgid "Password:"
 msgstr "ಗುಪ್ತಪದ:"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author Shankar Prasad
-#: ../src/daemon/abrt-auto-reporting.c:308
+#: ../src/daemon/abrt-auto-reporting.c:339
 msgid "Cannot continue without password\n"
 msgstr "ಗುಪ್ತಪದವಿಲ್ಲದೆ ಮುಂದುವರೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ\n"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author Shankar Prasad
 #. Print only the part before ':' of a string like "username:password"
-#: ../src/daemon/abrt-auto-reporting.c:347
+#: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
 msgstr "HTTP ಯು ಸ್ವಯಂ ವರದಿ ಮಾಡುವಿಕೆಯನ್ನು ದೃಢೀಕರಿಸಿದೆ"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author Shankar Prasad
-#: ../src/daemon/abrt-auto-reporting.c:349
+#: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
 msgstr "SSL ಕ್ಲೈಂಟ್‌ ಸ್ವಯಂ ವರದಿ ಮಾಡುವಿಕೆಯನ್ನು ದೃಢೀಕರಿಸಿದೆ"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author Shankar Prasad
-#: ../src/daemon/abrt-auto-reporting.c:351
+#: ../src/daemon/abrt-auto-reporting.c:384
 msgid "anonymous auto reporting"
 msgstr "ಅನಾಮಧೇಯವಾಗಿ ಸ್ವಯಂ ವರದಿ ಮಾಡುವಿಕೆ"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:69
+#: ../src/daemon/abrt-handle-upload.in:135
 #, c-format
 msgid ""
 "Usage: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
@@ -582,83 +598,83 @@ msgstr ""
 "   FILENAME       - ಅಪ್‌ಲೋಡ್ ಆರ್ಕೈವ್‌ ಕಡತದ ಹೆಸರು\n"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:105
-#: ../src/daemon/abrt-handle-upload.in:108
+#: ../src/daemon/abrt-handle-upload.in:171
+#: ../src/daemon/abrt-handle-upload.in:174
 msgid "Not a directory: '{0}'"
 msgstr "ಒಂದು ಕೋಶವಲ್ಲ: '{0}'"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:111
+#: ../src/daemon/abrt-handle-upload.in:177
 msgid "Skipping: '{0}' (starts with slash)"
 msgstr "ಕಡೆಗಣಿಸಲಾಗುತ್ತಿದೆ: '{0}' (ಅಡ್ಡಗೆರೆಯಿಂದ ಆರಂಭಗೊಳ್ಳುತ್ತದೆ)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:114
+#: ../src/daemon/abrt-handle-upload.in:180
 msgid "Skipping: '{0}' (starts with dot)"
 msgstr "ಕಡೆಗಣಿಸಲಾಗುತ್ತಿದೆ: '{0}' (ಚುಕ್ಕಿಯಿಂದ ಆರಂಭಗೊಳ್ಳುತ್ತದೆ)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:117
+#: ../src/daemon/abrt-handle-upload.in:183
 msgid "Skipping: '{0}' (contains ..)"
 msgstr "ಕಡೆಗಣಿಸಲಾಗುತ್ತಿದೆ: '{0}' (.. ಅನ್ನು ಹೊಂದಿದೆ)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:120
+#: ../src/daemon/abrt-handle-upload.in:186
 msgid "Skipping: '{0}' (contains space)"
 msgstr "ಕಡೆಗಣಿಸಲಾಗುತ್ತಿದೆ: '{0}' (ಖಾಲಿಸ್ಥಳವನ್ನು ಹೊಂದಿದೆ)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:123
+#: ../src/daemon/abrt-handle-upload.in:189
 msgid "Skipping: '{0}' (contains tab)"
 msgstr "ಕಡೆಗಣಿಸಲಾಗುತ್ತಿದೆ: '{0}' (ಟ್ಯಾಬ್ ಅನ್ನು ಹೊಂದಿದೆ)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:128
+#: ../src/daemon/abrt-handle-upload.in:194
 msgid "Can't change directory to '{0}'"
 msgstr "ಕೋಶವನ್ನು '{0}' ಗೆ ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:139
+#: ../src/daemon/abrt-handle-upload.in:205
 msgid "Unknown file type: '{0}'"
 msgstr "ಗೊತ್ತಿರದ ಕಡತದ ಬಗೆ: '{0}'"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:144
+#: ../src/daemon/abrt-handle-upload.in:210
 msgid "Can't create working directory in '{0}'"
 msgstr "'{0}' ನಲ್ಲಿ ಕೆಲಸ ಕೋಶವನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:155
+#: ../src/daemon/abrt-handle-upload.in:221
 msgid "Can't move '{0}' to '{1}'"
 msgstr "'{0}' ಅನ್ನು '{1}' ಗೆ ಸ್ಥಳಾಂತರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:160
+#: ../src/daemon/abrt-handle-upload.in:226
 msgid "Can't copy '{0}' to '{1}'"
 msgstr "'{0}' ಅನ್ನು '{1}' ಗೆ ಪ್ರತಿಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:164
+#: ../src/daemon/abrt-handle-upload.in:230
 msgid "Verification error on '{0}'"
 msgstr "'{0}' ನಲ್ಲಿ ಪರಿಶೀಲನಾ ದೋಷ"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:166
+#: ../src/daemon/abrt-handle-upload.in:232
 msgid "Unpacking '{0}'"
 msgstr "'{0}' ಅನ್ನು ಅನ್‌ಪ್ಯಾಕ್‌ ಮಾಡಲಾಗುತ್ತಿದೆ"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:170
+#: ../src/daemon/abrt-handle-upload.in:236
 msgid "Can't create '{0}' directory"
 msgstr "'{0}' ನಲ್ಲಿ ಕೋಶವನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:174
+#: ../src/daemon/abrt-handle-upload.in:240
 msgid "Can't unpack '{0}'"
 msgstr "'{0}' ಅನ್ನು ಹೊರತೆಗೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:198
+#: ../src/daemon/abrt-handle-upload.in:260
 msgid "'{0}' processed successfully"
 msgstr "'{0}' ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಸಂಸ್ಕರಿಸಲಾಗಿದೆ"
 
@@ -682,18 +698,26 @@ msgstr "'%s' ಅನ್ನು chown ಮಾಡಲಾಗಿಲ್ಲ: %s"
 msgid "Deleting problem directory failed: %s"
 msgstr "ತೊಂದರೆಯ ಕೋಶವನ್ನು ಅಳಿಸುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ: %s"
 
-#: ../src/lib/problem_api_dbus.c:133 ../src/lib/problem_api_dbus.c:206
-#: ../src/lib/problem_api_dbus.c:286
+#: ../src/lib/problem_api_dbus.c:131
 #, c-format
-msgid "Can't get problem data from abrt-dbus: %s"
-msgstr "abrt-dbus ಇಂದ ತೊಂದರೆಯ ದತ್ತಾಂಶವನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
+msgid "D-Bus GetInfo method call failed: %s"
+msgstr ""
 
-#: ../src/lib/problem_api_dbus.c:169
+#: ../src/lib/problem_api_dbus.c:166
+msgid "Can't get problem data from abrt-dbus"
+msgstr ""
+
+#: ../src/lib/problem_api_dbus.c:193
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
 msgstr "abrt-dbus ಇಂದ ತೊಂದರೆಯ ಪಟ್ಟಿಯನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
-#: ../src/lib/problem_api_dbus.c:250
+#: ../src/lib/problem_api_dbus.c:230 ../src/lib/problem_api_dbus.c:315
+#, c-format
+msgid "Can't get problem data from abrt-dbus: %s"
+msgstr "abrt-dbus ಇಂದ ತೊಂದರೆಯ ದತ್ತಾಂಶವನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
+
+#: ../src/lib/problem_api_dbus.c:274
 #, c-format
 msgid "Can't test whether the element exists over abrt-dbus: %s"
 msgstr ""
@@ -742,7 +766,7 @@ msgstr ""
 msgid "Backtrace parsing failed for %s"
 msgstr "%s ಗಾಗಿ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಪಾರ್ಸಿಂಗ್ ವಿಫಲಗೊಂಡಿದೆ"
 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:146
+#: ../src/plugins/abrt-action-analyze-backtrace.c:150
 msgid "Crash thread not found"
 msgstr "ಕುಸಿತದ ಎಳೆಯು (ತ್ರೆಡ್‌) ಕಂಡುಬಂದಿಲ್ಲ"
 
@@ -850,13 +874,45 @@ msgstr "ಸಂದೇಶವನ್ನು ಹೊರತೆಗೆಯಲು ಸಾಧ�
 msgid "Oops text extracted successfully"
 msgstr "Oops ಪಠ್ಯವನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಹೊರತೆಗೆಯಲಾಗಿದೆ"
 
-#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:89
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
 msgstr ""
 "ಯಂತ್ರಾಂಶ ದೋಷಗಳು ಕಂಡುಬಂದಿವೆ ಎಂದು ಕರ್ನಲ್ ಲಾಗ್ ಸೂಚಿಸಿದೆ.\n"
 "ಇದು ಬಹುಷಃ ತಂತ್ರಾಂಶದ ತೊಂದರೆಯಾಗಿಲ್ಲ.\n"
+
+#: ../src/plugins/abrt-action-find-bodhi-update:88
+msgid "cannot open problem directory '{0}'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:102
+msgid "Problem directory error: {0}"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:117
+msgid "Using product '{0}' from /etc/os-release."
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:119
+msgid "Using product {0}."
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:121
+msgid "Using product version {0}."
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:133
+msgid "Duplicate bugzilla bug '#{0}' was found"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:135
+msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:140
+msgid "Warning: abrt-bodhi do not support Product version 'Rawhide'"
+msgstr ""
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
@@ -975,7 +1031,36 @@ msgstr "debuginfo ಕಡತವು ಕಾಣಿಸುತ್ತಿಲ್ಲ: {0}"
 msgid "All debuginfo files are available"
 msgstr "debuginfo ಕಡತಗಳಿಗಾಗಿ ಪ್ಯಾಕೇಜುಗಳನ್ನು ಪತ್ತೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:43
+msgid ""
+"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+"\t[-r REPO]\n"
+"\n"
+"Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
+"ABRT system cache."
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:66
+msgid "Noninteractive, assume 'Yes' to all questions"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:67
+msgid "- means STDIN, default: build_ids"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
+msgid "Download only specified files"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
+msgid "Pattern to use when searching for repos, default: *debug*"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
+msgid "Ignored option"
+msgstr ""
+
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:63
 msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
@@ -985,7 +1070,7 @@ msgstr ""
 "ನಿಮ್ಮ ಉತ್ತರವು 'ಇಲ್ಲ' ಆಗಿದ್ದಲ್ಲಿ, ಸ್ಥಳೀಯವಾಗಿ ಒಂದು ಸ್ಟ್ಯಾಕ್ ಟ್ರೇಸ್‌ ಅನ್ನು "
 "ಉತ್ಪಾದಿಸಲಾಗುತ್ತದೆ. (ಇದು ದೊಡ್ಡ ಮೊತ್ತದ ದತ್ತಾಂಶವನ್ನು ಇಳಿಸಿಕೊಳ್ಳಬಹುದು)."
 
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:72
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
@@ -1227,7 +1312,8 @@ msgstr "ಕಂಡುಬಂದ ಪ್ರತಿಯೊಂದು oops ಗೂ ಸಹ 
 #: ../src/plugins/abrt-dump-oops.c:103
 #: ../src/plugins/abrt-dump-journal-core.c:479
 #: ../src/plugins/abrt-dump-journal-oops.c:225
-#: ../src/plugins/abrt-dump-xorg.c:247
+#: ../src/plugins/abrt-dump-journal-xorg.c:191
+#: ../src/plugins/abrt-dump-xorg.c:55
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
 "-d DumpLocation ನಂತೆಯೆ, abrt.conf ನಲ್ಲಿ DumpLocation ಅನ್ನು ಸೂಚಿಸಲಾಗಿರುತ್ತದೆ"
@@ -1238,16 +1324,18 @@ msgstr "ಹೊರತೆಗೆಯಲಾದ ಮಾಹಿತಿಯನ್ನು PROB
 
 #: ../src/plugins/abrt-dump-oops.c:105
 #: ../src/plugins/abrt-dump-journal-oops.c:226
-#: ../src/plugins/abrt-dump-xorg.c:248
+#: ../src/plugins/abrt-dump-journal-xorg.c:192
+#: ../src/plugins/abrt-dump-xorg.c:56
 msgid "Make the problem directory world readable"
 msgstr "ದೋಷದ ಕೋಶವನ್ನು ಜಗತ್ತು ಓದುವ ರೀತಿಯಲ್ಲಿ ಮಾಡಿ"
 
 #: ../src/plugins/abrt-dump-oops.c:106
 #: ../src/plugins/abrt-dump-journal-oops.c:227
+#: ../src/plugins/abrt-dump-journal-xorg.c:193
 msgid "Throttle problem directory creation to 1 per second"
 msgstr "ತೊಂದರೆ ಕೋಶದ ರಚನೆಯು ಪ್ರತಿ ಸೆಕೆಂಡಿಗೆ 1 ಇರುವಂತೆ ಹತೋಟಿಯಲ್ಲಿಡು"
 
-#: ../src/plugins/abrt-dump-oops.c:107 ../src/plugins/abrt-dump-xorg.c:249
+#: ../src/plugins/abrt-dump-oops.c:107 ../src/plugins/abrt-dump-xorg.c:57
 msgid "Print search string(s) to stdout and exit"
 msgstr "ಹುಡುಕು ವಾಕ್ಯಾಂಶವನ್ನು(ಗಳನ್ನು) stdout ಗೆ ಮುದ್ರಿಸು ಮತ್ತು ನಿರ್ಗಮಿಸು"
 
@@ -1257,10 +1345,13 @@ msgstr "ಹುಡುಕು ವಾಕ್ಯಾಂಶವನ್ನು(ಗಳನ್�
 msgid "Failed to compile regex"
 msgstr "regex ಅನ್ನು ಕಂಪೈಲ್ ಮಾಡಲು ವಿಫಲಗೊಂಡಿದೆ"
 
-#: ../src/plugins/abrt-dump-oops.c:186
-msgid "Can't update the problem: more than one oops found"
+#: ../src/plugins/abrt-dump-oops.c:177
+msgid "Can't update the problem: no oops found"
 msgstr ""
-"ತೊಂದರೆಯನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ; ಒಂದಕ್ಕಿಂತ ಹೆಚ್ಚಿನ oops ಕಂಡುಬಂದಿದೆ"
+
+#: ../src/plugins/abrt-dump-oops.c:183
+msgid "More oopses found: process only the first one"
+msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-core.c:341
 #: ../src/plugins/abrt-dump-journal-core.c:377
@@ -1279,6 +1370,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-core.c:427
 #: ../src/plugins/abrt-dump-journal-oops.c:165
+#: ../src/plugins/abrt-dump-journal-xorg.c:121
 msgid "Failed to initialize systemd-journal watch"
 msgstr ""
 
@@ -1302,11 +1394,13 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-core.c:480
 #: ../src/plugins/abrt-dump-journal-oops.c:228
+#: ../src/plugins/abrt-dump-journal-xorg.c:194
 msgid "Start reading systemd-journal from the CURSOR position"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-core.c:481
 #: ../src/plugins/abrt-dump-journal-oops.c:229
+#: ../src/plugins/abrt-dump-journal-xorg.c:195
 msgid "Start reading systemd-journal from the end"
 msgstr ""
 
@@ -1320,16 +1414,19 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-core.c:484
 #: ../src/plugins/abrt-dump-journal-oops.c:230
+#: ../src/plugins/abrt-dump-journal-xorg.c:196
 msgid "Follow systemd-journal from the last seen position (if available)"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-core.c:495
 #: ../src/plugins/abrt-dump-journal-oops.c:246
+#: ../src/plugins/abrt-dump-journal-xorg.c:213
 msgid "You need to specify either -c CURSOR or -e"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-core.c:541
 #: ../src/plugins/abrt-dump-journal-oops.c:284
+#: ../src/plugins/abrt-dump-journal-xorg.c:278
 msgid "Cannot open systemd-journal"
 msgstr ""
 
@@ -1337,18 +1434,21 @@ msgstr ""
 msgid "Cannot filter systemd-journal to systemd-coredump data only"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:547
-#: ../src/plugins/abrt-dump-journal-oops.c:291
+#: ../src/plugins/abrt-dump-journal-core.c:549
+#: ../src/plugins/abrt-dump-journal-oops.c:293
+#: ../src/plugins/abrt-dump-journal-xorg.c:291
 msgid "Cannot seek to the end of journal"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:550
-#: ../src/plugins/abrt-dump-journal-oops.c:307
+#: ../src/plugins/abrt-dump-journal-core.c:552
+#: ../src/plugins/abrt-dump-journal-oops.c:309
+#: ../src/plugins/abrt-dump-journal-xorg.c:307
 #, c-format
 msgid "Failed to set systemd-journal cursor '%s'"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-oops.c:40
+#: ../src/plugins/abrt-dump-journal-xorg.c:52
 msgid "Cannot read journal data."
 msgstr ""
 
@@ -1367,14 +1467,17 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-oops.c:231
+#: ../src/plugins/abrt-dump-journal-xorg.c:197
 msgid "Read journal files from all machines"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-oops.c:232
+#: ../src/plugins/abrt-dump-journal-xorg.c:198
 msgid "Read all journal files from directory at PATH"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-oops.c:279
+#: ../src/plugins/abrt-dump-journal-xorg.c:273
 #, c-format
 msgid "Cannot initialize systemd-journal in directory '%s'"
 msgstr ""
@@ -1383,12 +1486,58 @@ msgstr ""
 msgid "Cannot filter systemd-journal to kernel data only"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-oops.c:298
+#: ../src/plugins/abrt-dump-journal-oops.c:300
+#: ../src/plugins/abrt-dump-journal-xorg.c:298
 #, c-format
 msgid "Failed to start watch from cursor '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-xorg.c:237
+#: ../src/plugins/abrt-dump-journal-xorg.c:61
+msgid "Failed to parse Backtrace from journal"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:143
+#, c-format
+msgid ""
+"& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
+"\n"
+"Extract Xorg crash from systemd-journal\n"
+"\n"
+"-c and -e options conflicts because both specifies the first read message.\n"
+"\n"
+"-e is useful only for -f because the following of journal starts by reading \n"
+"the entire journal if the last seen possition is not available.\n"
+"\n"
+"The last seen position is saved in %s\n"
+"\n"
+"Journal filter is required parameter and must be specified either by "
+"parameter\n"
+"-j or in %s conf file.\n"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:189
+msgid "Print found crashes on standard output"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:190
+msgid "Create new problem directory in DIR for every crash found"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:199
+msgid "Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:265
+msgid ""
+"Journal filter must be specified either by parameter -j or stored in /etc/"
+"abrt/plugins/xorg.conf file"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:282
+msgid "Cannot filter systemd-journal to Xorg data only"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-xorg.c:35
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
@@ -1398,58 +1547,62 @@ msgstr ""
 "\n"
 "Xorg ಕುಸಿತವನ್ನು FILE (ಅಥವ ಶಿಷ್ಟವಾದ ಇನ್‌ಪುಟ್‌) ಇಂದ ಹೊರತೆಗೆ"
 
-#: ../src/plugins/abrt-dump-xorg.c:245
+#: ../src/plugins/abrt-dump-xorg.c:53
 msgid "Print found crash data on standard output"
 msgstr "ಕಂಡು ಬಂದ ಕುಸಿತದ ದತ್ತಾಂಶವನ್ನು ಶಿಷ್ಟವಾದ ಔಟ್‌ಪುಟ್‌ಗೆ ಮುದ್ರಿಸು"
 
-#: ../src/plugins/abrt-dump-xorg.c:246
+#: ../src/plugins/abrt-dump-xorg.c:54
 msgid "Create problem directory in DIR for every crash found"
 msgstr "ಕಂಡುಬಂದ ಪ್ರತಿಯೊಂದು oops ಗೂ ಸಹ DIR ಯಲ್ಲಿ ಕುಸಿತ ಕೋಶವನ್ನು ರಚಿಸು"
 
+#: ../src/plugins/abrt-dump-xorg.c:108
+msgid "Failed to parse Backtrace from log file"
+msgstr ""
+
 #. abrt_journal_set_cursor() prints error message in verbose mode
-#: ../src/plugins/abrt-journal.c:267
+#: ../src/plugins/abrt-journal.c:274
 msgid "Cannot save journal watch's position"
 msgstr ""
 
-#: ../src/plugins/abrt-journal.c:277
+#: ../src/plugins/abrt-journal.c:284
 #, c-format
 msgid "Cannot save journal watch's position: open('%s')"
 msgstr ""
 
 #. Only notice because this is expected
-#: ../src/plugins/abrt-journal.c:295
+#: ../src/plugins/abrt-journal.c:302
 #, c-format
 msgid "Not restoring journal watch's position: file '%s' does not exist"
 msgstr ""
 
-#: ../src/plugins/abrt-journal.c:297
+#: ../src/plugins/abrt-journal.c:304
 #, c-format
 msgid "Cannot restore journal watch's position form file '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-journal.c:304
+#: ../src/plugins/abrt-journal.c:311
 #, c-format
 msgid "Cannot restore journal watch's position: path '%s' is not regular file"
 msgstr ""
 
-#: ../src/plugins/abrt-journal.c:310
+#: ../src/plugins/abrt-journal.c:317
 #, c-format
 msgid ""
 "Cannot restore journal watch's position: file '%s' exceeds %dB size limit"
 msgstr ""
 
-#: ../src/plugins/abrt-journal.c:318
+#: ../src/plugins/abrt-journal.c:325
 #, c-format
 msgid "Cannot restore journal watch's position: open('%s')"
 msgstr ""
 
-#: ../src/plugins/abrt-journal.c:327
+#: ../src/plugins/abrt-journal.c:334
 #, c-format
 msgid "Cannot restore journal watch's position: cannot read entire file '%s'"
 msgstr ""
 
 #. abrt_journal_set_cursor() prints error message in verbose mode
-#: ../src/plugins/abrt-journal.c:339
+#: ../src/plugins/abrt-journal.c:346
 #, c-format
 msgid "Failed to move the journal to a cursor from file '%s'"
 msgstr ""
@@ -1991,7 +2144,7 @@ msgstr "NSS ಅನ್ನು ಸ್ಥಗಿತಗೊಳಿಸಲು ವಿಫಲ
 msgid "Sleeping for %d seconds"
 msgstr "%d ಸೆಕೆಂಡುಗಳವರೆಗೆ ಜಡವಾಗಿರುತ್ತದೆ"
 
-#: ../src/plugins/oops-utils.c:207
+#: ../src/plugins/oops-utils.c:200
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
@@ -1999,7 +2152,7 @@ msgstr ""
 "ಹಾಳಾಗಿರುವ BIOS ಕಾರಣದಿಂದಾಗಿ ಒಂದು ಕರ್ನಲ್ ತೊಂದರೆ ಕಾಣಿಸಿಕೊಂಡಿದೆ. ದುರದೃಷ್ಟವಶಾತ್, "
 "ಆ ತೊಂದರೆಗಳನ್ನು ಕರ್ನಲ್ ಮೇಲ್ವಿಚಾರಕಗಳಿಂದ ಸರಿಪಡಿಸಲು ಸಾಧ್ಯವಿರುವುದಿಲ್ಲ."
 
-#: ../src/plugins/oops-utils.c:212
+#: ../src/plugins/oops-utils.c:205
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
@@ -2007,7 +2160,7 @@ msgstr ""
 "ಕರ್ನಲ್ ತೊಂದರೆ ಉಂಟಾಗಿದೆ, ಆದರೆ ನಿಮ್ಮ ಯಂತ್ರಾಂಶವು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ, ಆದ್ದರಿಂದ ಆ "
 "ತೊಂದರೆಗಳನ್ನು ಕರ್ನಲ್ ಮೇಲ್ವಿಚಾರಕಗಳಿಂದ ಸರಿಪಡಿಸಲು ಸಾಧ್ಯವಿರುವುದಿಲ್ಲ."
 
-#: ../src/plugins/oops-utils.c:227
+#: ../src/plugins/oops-utils.c:220
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
@@ -2016,24 +2169,24 @@ msgstr ""
 "ಒಂದು ಕರ್ನಲ್ ತೊಂದರೆ ಎದುರಾಗಿದೆ, ಆದರೆ ಕರ್ನಲ್‌ಗೆ ಸೋಂಕು ಹಿಡಿದಿದೆ (flags:%s). "
 "ಕರ್ನಲ್ ಮೇಲ್ವಿಚಾರಕರಿಂದ ಸೋಂಕು ವರದಿಗಳನ್ನು ತಪಾಸಣೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
 
-#: ../src/plugins/oops-utils.c:235
+#: ../src/plugins/oops-utils.c:228
 #, c-format
 msgid " Tainted modules: %s."
 msgstr " ಪರವಾನಗಿ ಸರಿ ಇರದ ಮಾಡ್ಯೂಲ್‌ಗಳು: %s."
 
-#: ../src/plugins/bodhi.c:375
+#: ../src/plugins/bodhi.c:468
 msgid "List of bug ids"
 msgstr "ದೋಷದ idಗಳ ಪಟ್ಟಿ"
 
-#: ../src/plugins/bodhi.c:376
+#: ../src/plugins/bodhi.c:469
 msgid "Specify a bodhi server url"
 msgstr "ಒಂದು ಬೋಧಿ ಪೂರೈಕೆಗಣಕ url ಅನ್ನು ಸೂಚಿಸಿ"
 
-#: ../src/plugins/bodhi.c:377
+#: ../src/plugins/bodhi.c:470
 msgid "Specify a release"
 msgstr "ಒಂದು ಬಿಡುಗಡೆಯನ್ನು ಸೂಚಿಸಿ"
 
-#: ../src/plugins/bodhi.c:382
+#: ../src/plugins/bodhi.c:475
 msgid ""
 "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
 "\n"
@@ -2043,22 +2196,22 @@ msgstr ""
 "\n"
 "ಬೋಧಿ ಪೂರೈಕೆಗಣಕದಲ್ಲಿ ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಹುಡುಕಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/bodhi.c:434
+#: ../src/plugins/bodhi.c:542
 msgid "Searching for updates"
 msgstr "ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಹುಡುಕಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/bodhi.c:440
+#: ../src/plugins/bodhi.c:548
 msgid "No updates for this package found"
 msgstr "ಈ ಪ್ಯಾಕೇಜಿಗೆ ಯಾವುದೆ ಅಪ್‌ಡೇಟ್‌ಗಳಿಲ್ಲ"
 
 #. strbuf_free(q);
-#: ../src/plugins/bodhi.c:469
+#: ../src/plugins/bodhi.c:577
 msgid "Local version of the package is newer than available updates"
 msgstr ""
 "ಪ್ಯಾಕೇಜಿನ ಸ್ಥಳೀಯ ಆವೃತ್ತಿಯು ಲಭ್ಯವಿರುವ ಅಪ್‌ಡೇಟ್‌ನ ಇತ್ತೀಚಿನ ಆವೃತ್ತಿಗಿಂತ "
 "ಹೊಸತಾಗಿದೆ"
 
-#: ../src/plugins/bodhi.c:486
+#: ../src/plugins/bodhi.c:594
 #, c-format
 msgid ""
 "An update exists which might fix your problem. You can install it by running:"
@@ -2087,69 +2240,70 @@ msgstr "ಕಂಡುಬಂದ oopses ಅನ್ನು ಮುದ್ರಿಸು"
 msgid "Delete files with found oopses"
 msgstr "ಕಂಡುಬಂದ oopses ಗಳಿಂದ ಕಡತಗಳನ್ನು ಅಳಿಸು"
 
-#: ../src/cli/abrt-cli-core.c:89
+#: ../src/cli/abrt-cli-core.c:100
 #, c-format
 msgid "'%s' identifies more than one problem directory"
 msgstr "'%s' ಒಂದಕ್ಕಿಂತ ಹೆಚ್ಚಿನ ತೊಂದರೆ ಕೋಶವನ್ನು ಗುರುತಿಸುತ್ತದೆ"
 
-#: ../src/cli/abrt-cli.c:144
-msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
-msgstr "ಬಳಕೆ: abrt-cli [--version] COMMAND [DIR]..."
+#: ../src/cli/abrt-cli.c:130
+msgid "Usage: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
+msgstr ""
 
-#: ../src/cli/abrt-cli.c:148
+#: ../src/cli/abrt-cli.c:134
 msgid "List problems [in DIRs]"
 msgstr "ತೊಂದರೆಗಳನ್ನು ಪಟ್ಟಿ ಮಾಡು [DIR ಗಳಲ್ಲಿ]"
 
-#: ../src/cli/abrt-cli.c:149
+#: ../src/cli/abrt-cli.c:135
 msgid "Remove problem directory DIR"
 msgstr "ತೊಂದರೆಯ ಕೋಶ DIR ಅನ್ನು ತೆಗೆದುಹಾಕು"
 
-#: ../src/cli/abrt-cli.c:150
+#: ../src/cli/abrt-cli.c:136
 msgid "Analyze and report problem data in DIR"
 msgstr "ತೊಂದರೆಯ ಮಾಹಿತಿಯನ್ನು DIR ನಲ್ಲಿ ವಿಶ್ಲೇಷಿಸು ಹಾಗು ವರದಿ ಮಾಡು"
 
-#: ../src/cli/abrt-cli.c:151
+#: ../src/cli/abrt-cli.c:137
 msgid "Print information about DIR"
 msgstr "DIR ಬಗೆಗಿನ ಮಾಹಿತಿಯನ್ನು ಮುದ್ರಿಸು"
 
-#: ../src/cli/abrt-cli.c:152
+#: ../src/cli/abrt-cli.c:138
 msgid "Print the count of the recent crashes"
 msgstr "ಇತ್ತೀಚಿನ ಕ್ರಾಶ್‌ಗಳ ಎಣಿಕೆಯನ್ನು ಮುದ್ರಿಸಲಾಗುತ್ತಿದೆ"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/abrt-cli.c:153
+#: ../src/cli/abrt-cli.c:139
 msgid "Process multiple problems"
 msgstr "ಅನೇಕ ತೊಂದರೆಗಳನ್ನು ಸಂಸ್ಕರಿಸಿ"
 
-#: ../src/cli/abrt-cli.c:168
+#: ../src/cli/abrt-cli.c:162
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "ಹೆಚ್ಚಿನ ಮಾಹಿತಿಗಾಗಿ 'abrt-cli COMMAND --help' ಅನ್ನು ನೋಡಿ"
 
-#: ../src/cli/list.c:125
+#: ../src/cli/list.c:127
 msgid "& list [options]"
 msgstr ""
 
-#: ../src/cli/list.c:134
+#: ../src/cli/list.c:136 ../src/cli-ng/abrtcli/cli.py:121
+#: ../src/cli-ng/abrtcli/cli.py:264
 msgid "List only not-reported problems"
 msgstr "ವರದಿ-ಮಾಡದೆ ಇರುವ ತೊಂದರೆಗಳನ್ನು ಮಾತ್ರ ಪಟ್ಟಿ ಮಾಡು"
 
 #. deprecate -d option with --pretty=full
-#: ../src/cli/list.c:136 ../src/cli/list.c:181
+#: ../src/cli/list.c:138 ../src/cli/list.c:191
 msgid "Show detailed report"
 msgstr "ವಿವರವಾದ ವರದಿಯನ್ನು ತೋರಿಸು"
 
-#: ../src/cli/list.c:137
+#: ../src/cli/list.c:139 ../src/cli-ng/abrtcli/cli.py:113
 msgid "List only the problems more recent than specified timestamp"
 msgstr ""
 "ನಿರ್ದಿಷ್ಟ ಸಮಯಮುದ್ರೆಯ ಬದಲಿಗೆ ಅತ್ಯಂತ ಇತ್ತೀಚಿನ ತೊಂದರೆಯ ಎಣಿಕೆ ಪಟ್ಟಿಯನ್ನು ಮಾತ್ರ "
 "ತೋರಿಸು"
 
-#: ../src/cli/list.c:138
+#: ../src/cli/list.c:140 ../src/cli-ng/abrtcli/cli.py:115
 msgid "List only the problems older than specified timestamp"
 msgstr ""
 "ನಿರ್ದಿಷ್ಟ ಸಮಯಮುದ್ರೆಯ ಬದಲಿಗೆ ಹಳೆಯ ತೊಂದರೆಯ ಎಣಿಕೆ ಪಟ್ಟಿಯನ್ನು ಮಾತ್ರ ತೋರಿಸು"
 
-#: ../src/cli/list.c:162
+#: ../src/cli/list.c:166
 #, c-format
 msgid ""
 "The Autoreporting feature is disabled. Please consider enabling it by "
@@ -2160,55 +2314,65 @@ msgstr ""
 "ಅಧಿಕಾರಗಳನ್ನು ಹೊಂದಿರುವ ಬಳಕೆದಾರರ\n"
 "ಮೂಲಕ 'abrt-auto-reporting enabled' ಅನ್ನು ಚಲಾಯಿಸುವ ಮೂಲಕ ಇದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ\n"
 
-#: ../src/cli/list.c:173
+#: ../src/cli/list.c:183
 msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
 
-#: ../src/cli/list.c:182
+#: ../src/cli/list.c:192
 msgid "Text larger than this will be shown abridged"
 msgstr "ಇದಕ್ಕಿಂತ ದೊಡ್ಡದಾದ ಪಠ್ಯವನ್ನು ಸಂಕ್ಷೇಪವಾಗಿ ತೋರಿಸಲಾಗುತ್ತದೆ"
 
-#: ../src/cli/list.c:202
+#: ../src/cli/list.c:212
 #, c-format
 msgid "No such problem directory '%s'"
 msgstr "ಅಂತಹ ಯಾವುದೆ ತೊಂದರೆ ಕೋಶ'%s' ಇಲ್ಲ"
 
-#: ../src/cli/status.c:62
+#: ../src/cli/status.c:66
 msgid "& status"
 msgstr ""
 
-#: ../src/cli/status.c:70
+#: ../src/cli/status.c:74 ../src/cli-ng/abrtcli/cli.py:260
 msgid "Print only the problem count without any message"
 msgstr "ಯಾವುದೆ ಸಂದೇಶವಿಲ್ಲದೆ ಕೇವಲ ತೊಂದರೆಯ ಎಣಿಕೆಯನ್ನು ಮಾತ್ರ ಮುದ್ರಿಸು"
 
-#: ../src/cli/status.c:71
+#: ../src/cli/status.c:75 ../src/cli-ng/abrtcli/cli.py:262
 msgid "Print only the problems more recent than specified timestamp"
 msgstr ""
 "ನಿರ್ದಿಷ್ಟ ಸಮಯಮುದ್ರೆಯ ಬದಲಿಗೆ ಅತ್ಯಂತ ಇತ್ತೀಚಿನ ತೊಂದರೆಯ ಎಣಿಕೆಯನ್ನು ಮಾತ್ರ "
 "ಮುದ್ರಿಸು"
 
-#: ../src/cli/status.c:87
+#: ../src/cli/status.c:91
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
 msgstr ""
 "ABRT ಗೆ %u ತೊಂದರೆ(ಗಳು) ಕಂಡುಬಂದಿದೆ. (ಹೆಚ್ಚಿನ ಮಾಹಿತಿಗಾಗಿ ಇದನ್ನು ಚಲಾಯಿಸಿ: abrt-"
 "cli list%s\n"
 
+#: ../src/cli/report.c:34
+#, c-format
+msgid "Can't find problem '%s'"
+msgstr ""
+
+#: ../src/cli/report.c:42
+#, c-format
+msgid "Problem '%s' cannot be reported"
+msgstr ""
+
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/report.c:28
+#: ../src/cli/report.c:63 ../src/cli/process.c:70
+#, c-format
+msgid "Deleting '%s'"
+msgstr "'%s' ಅನ್ನು ಅಳಿಸಲಾಗುತ್ತಿದೆ"
+
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/cli/report.c:79
 msgid "& report [options] DIR..."
 msgstr "ಮತ್ತು ವರದಿ [ಆಯ್ಕೆಗಳು] DIR..."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/report.c:38
+#: ../src/cli/report.c:89
 msgid "Remove PROBLEM_DIR after reporting"
 msgstr "ವರದಿ ಮಾಡಿದ ನಂತರ PROBLEM_DIR ಅನ್ನು ತೆಗೆದುಹಾಕು"
-
-# translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/report.c:71 ../src/cli/process.c:70
-#, c-format
-msgid "Deleting '%s'"
-msgstr "'%s' ಅನ್ನು ಅಳಿಸಲಾಗುತ್ತಿದೆ"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/process.c:64
@@ -2221,27 +2385,182 @@ msgid "Actions: remove(rm), report(e), info(i), skip(s):"
 msgstr "ಕ್ರಿಯೆಗಳು: remove(rm), report(e), info(i), skip(s):"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/process.c:77
+#: ../src/cli/process.c:78
 #, c-format
 msgid "Reporting '%s'"
 msgstr "'%s' ಅನ್ನು ವರದಿ ಮಾಡಲಾಗುತ್ತಿದೆ"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #. dummy must be free because the function ask allocate memory
-#: ../src/cli/process.c:133
+#: ../src/cli/process.c:127
 msgid "For next problem press ENTER:"
 msgstr "ಮುಂದಿನ ಸಮಸ್ಯೆಗಾಗಿ ENTER ಅನ್ನು ಒತ್ತಿ:"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/process.c:144
+#: ../src/cli/process.c:138
 msgid "Without --since argument, iterates over all detected problems."
 msgstr ""
 "--since ಆರ್ಗ್ಯುಮೆಂಟ್ ಇಲ್ಲದೆ, ಅಳಿಸಲಾದ ಎಲ್ಲಾ ಸಮಸ್ಯೆಗಳ ಮೇಲೆ ಪುನರಾವರ್ತಿಸುತ್ತದೆ."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/process.c:150
+#: ../src/cli/process.c:144
 msgid "Selects only problems detected after timestamp"
 msgstr "ಈ ಸಮಯಮುದ್ರೆಯ ನಂತರ ಕಂಡುಬಂದ ಸಮಸ್ಯೆಗಳನ್ನು ಮಾತ್ರ ಆರಿಸು"
+
+#: ../src/cli-ng/abrtcli/cli.py:33
+msgid "Problem has no backtrace"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:35
+msgid "Start retracing process?"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:40
+msgid "Show backtrace of a problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:50
+msgid "This"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:52
+msgid "Last"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:54
+msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:64 ../src/cli-ng/abrtcli/cli.py:99
+msgid ""
+"Permission denied: '{}'\n"
+"If this is a system problem try running this command as root"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:71
+msgid "Install required debuginfo for given problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:106
+msgid "Run GDB against a problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:117 ../src/cli-ng/abrtcli/cli.py:153
+msgid "Output format"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:119 ../src/cli-ng/abrtcli/cli.py:155
+msgid "Built-in output format"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:145 ../src/cli-ng/abrtcli/match.py:89
+msgid "No problems"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:147
+msgid "List problems"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:167
+msgid "Print information about problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:173
+msgid "Prompt before removal"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:174
+msgid "Do not prompt before removal"
+msgstr ""
+
+#. force prompt for last problem to avoid accidents
+#: ../src/cli-ng/abrtcli/cli.py:182
+msgid "Are you sure you want to delete this problem?"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:186
+msgid "Removed"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:188
+msgid "Remove problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:199
+msgid "Report problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:204
+msgid "Perform local retracing"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:206
+msgid "Perform remote retracing using retrace server"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:208
+msgid "Force retracing even if backtrace already exists"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:223
+msgid "Problem already has a backtrace"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:224
+msgid "Run abrt retrace with -f/--force to retrace again"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:225
+msgid "Show backtrace?"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:229
+msgid "No retracing possible for this problem type"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:233
+msgid ""
+"Upload core dump and perform remote retracing? (It may contain sensitive "
+"data). If your answer is 'No', a stack trace will be generated locally. "
+"Local retracing requires downloading potentially large amount of debuginfo "
+"data"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:248
+msgid "Remote retracing"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:251
+msgid "Local retracing"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:255
+msgid "Generate backtrace from coredump"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:280
+msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:283
+msgid "Print count of the recent crashes"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:292
+msgid "Authenticate and show all problems on this machine"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/match.py:96
+msgid "No problem(s) matched"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/match.py:116
+msgid "Ambiguous match specified resulting in multiple problems:"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/utils.py:78
+msgid "Not reportable"
+msgstr ""
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""

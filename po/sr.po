@@ -4,155 +4,185 @@
 # 
 # Translators:
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
+# Momcilo Medic <medicmomcilo@gmail.com>, 2015. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2015-04-08 13:09+0200\n"
+"POT-Creation-Date: 2016-02-11 12:54+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-10-06 07:45-0400\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"PO-Revision-Date: 2015-09-17 07:58-0400\n"
+"Last-Translator: Momcilo Medic <medicmomcilo@gmail.com>\n"
 "Language-Team: Serbian (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/sr/)\n"
 "Language: sr\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Zanata 3.5.1\n"
+"X-Generator: Zanata 3.8.2\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
-msgstr ""
+msgstr "Пријављивање проблема"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr ""
+msgstr "Види и пријави програмски пад"
 
-#: ../src/applet/applet.c:157
+#: ../src/applet/applet.c:260 ../src/cli/report.c:51
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr ""
+msgstr "Не могу да преузмем власништво над '%s'"
 
-#: ../src/applet/applet.c:165
+#: ../src/applet/applet.c:268
 #, c-format
 msgid "Can't open directory for writing '%s'"
-msgstr ""
+msgstr "Не могу да отворим директоријум за упис '%s'"
 
-#: ../src/applet/applet.c:442 ../src/applet/applet.c:461
+#: ../src/applet/applet.c:546 ../src/applet/applet.c:564
 #, c-format
 msgid "Can't close notification: %s"
-msgstr ""
+msgstr "Не могу да затворим обавештење: %s"
 
-#: ../src/applet/applet.c:496
+#: ../src/applet/applet.c:598
 msgid "Oops!"
-msgstr ""
+msgstr "Упс!"
 
-#: ../src/applet/applet.c:514
+#: ../src/applet/applet.c:616
 msgid "Report"
 msgstr "Пријава"
 
-#: ../src/applet/applet.c:523
+#: ../src/applet/applet.c:625
 msgid "Restart"
-msgstr ""
+msgstr "Покрени поново"
 
-#: ../src/applet/applet.c:588
+#: ../src/applet/applet.c:694
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
 "reported."
 msgstr ""
+"Нажалост, изгледа да се %s срушио. Овај проблем је аутоматски пријављен."
 
-#: ../src/applet/applet.c:593
+#: ../src/applet/applet.c:699
 #, c-format
 msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
 "internet is available."
 msgstr ""
+"Нажалост, изгледа да се %s срушио. Овај проблем ће бити аутоматски пријављен "
+"чим интернет буде доступан."
 
-#: ../src/applet/applet.c:599 ../src/applet/applet.c:613
-#: ../src/applet/applet.c:641
+#: ../src/applet/applet.c:705 ../src/applet/applet.c:719
+#: ../src/applet/applet.c:747
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
 msgstr ""
+"Нажалост, изгледа да се %s срушио. Молим да контактирате програмера ако "
+"желите пријавити проблем."
 
-#: ../src/applet/applet.c:607
+#: ../src/applet/applet.c:713
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
 msgstr ""
+"Нажалост, изгледа да се %s срушио. Ако желите да помогнете у решавању овог "
+"проблема, молим да пошаљете извештај."
 
-#: ../src/applet/applet.c:626
+#: ../src/applet/applet.c:732
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
 msgstr ""
+"Нажалост, изгледа да се догодио проблем у компоненти. Овај проблем је "
+"аутоматски пријављен."
 
-#: ../src/applet/applet.c:630
+#: ../src/applet/applet.c:736
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
 msgstr ""
+"Нажалост, изгледа да се догодио проблем у компоненти. Овај проблем ће бити "
+"пријављен аутоматски чим интернет буде доступан."
 
-#: ../src/applet/applet.c:635
+#: ../src/applet/applet.c:741
 msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
 msgstr ""
+"Нажалост, изгледа да се догодио проблем. Ако желите да помогнете у решавању "
+"овог проблема, молим да пошаљете извештај."
 
-#: ../src/applet/applet.c:680
+#: ../src/applet/applet.c:786
 #, c-format
 msgid "Can't show notification: %s"
-msgstr ""
+msgstr "Не могу да прикажем обавештење: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:712 ../src/daemon/abrt-upload-watch.c:168
+#: ../src/applet/applet.c:818 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr ""
+msgstr "Не могу да читам са gio канала: '%s'"
 
-#: ../src/applet/applet.c:790
+#: ../src/applet/applet.c:896
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr ""
+msgstr "Не могу да поставим кодирање на gio каналу: %s"
 
-#: ../src/applet/applet.c:794
+#: ../src/applet/applet.c:900
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr ""
+msgstr "Не могу да укључим неблокирајући режим за gio каналу: %s"
 
-#: ../src/applet/applet.c:1090
+#: ../src/applet/applet.c:1186
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr ""
+"& [-v] [DIR]...\n"
+"\n"
+"Програмчић који обавештава корисника када ABRT открије нове проблеме\n"
+
+#: ../src/configuration-gui/abrt-config-widget.c:483
+msgid ""
+"The configuration option above has been moved to GSettings and the switch is "
+"linked to the value of the setting 'report-technical-problems' from the "
+"schema 'org.gnome.desktop.privacy'."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.c:501
+msgid "The configuration option above can be configured in"
+msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr ""
+msgstr "Питати пре крађе директоријума"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
-msgstr ""
+msgstr "Аутоматски пошаљи uReport"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
-msgstr ""
+msgstr "Скраћено пријављивање"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
-msgstr ""
+msgstr "Тихо скраћено пријављивање"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
 "space consuming operation. ABRT provides a service which generates the stack "
 "trace from the coredump but you have to upload the coredump to this service. "
-"With this option disabled ABRT will upload the coredump without asking."
+"With option 'Always' ABRT will always upload the coredump without asking. "
+"With option 'Never' the stack trace will be always generated locally. With "
+"option 'Ask' ABRT will always ask the user."
 msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
@@ -162,6 +192,10 @@ msgid ""
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
 msgstr ""
+"ABRT чува податке о проблему у директоријумима. Кад год је ABRT-у неопходан "
+"директоријум за упис, директоријум ће бити премештен са системске локације у "
+"ваш лични директоријум. Када је ова опција онемогућена ABRT ће преместити "
+"директоријум проблема без питања."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
@@ -170,6 +204,10 @@ msgid ""
 "uReport is sent at beginning of reporting process. With this option enabled "
 "uReports are sent automatically immediately after problem detection."
 msgstr ""
+"uReport је кратки и потпуно анонимни опис проблема. ABRT користи uReport-ове "
+"за брзо глобално откривање дупликата. У подразумеваној конфигурацији uReport "
+"се шаље на почету процеса пријављивања. Када је ова опција омогућена uReport "
+"се шаљу аутоматски одмах након откривања проблема."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
@@ -177,71 +215,98 @@ msgid ""
 "in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
+"Када је ова опција омогућена поступак пријављивања започет кликом на Пријави "
+"дугме у балону обавештења о проблему, ће бити прекинут након што је uReport "
+"послат. Можете увек употребити подразумевани прегледач проблема да направите "
+"комплетну пријаву."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
+"Када је ова опција омогућена ABRT никад не приказује обавештења о "
+"пријављеним проблемима. Има ефекта само када је омогућено скраћено "
+"пријављивање."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
-msgid "Ask before uploading coredump"
-msgstr ""
-
-#: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
 msgstr ""
+"Када је ова опција омогућена ABRT увек прави карту програмске грешке са "
+"ограниченим приступом ако су откривени могући осетљиви подаци."
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:11
+msgid "Request private ticket for sensitive information"
+msgstr "Захтевати приватну карту за осетљиве информације"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
-msgid "Request private ticket for sensitive information"
-msgstr ""
+msgid "Notify incomplete problems"
+msgstr "Обавести о непотпуним проблемима"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
-msgid "Notify incomplete problems"
-msgstr ""
-
-#: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
 msgstr ""
+"Непотпуни проблеми су откривени када се рачунар искључује или се корисник "
+"одјављује. Да би се пружили корисни извештаји о проблемима, ABRT вам неће "
+"дозволити да пошаљете ове проблеме."
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:14
+msgid "Always"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:15
+msgid "Never"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:16
+msgid "Ask"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:17
+msgid "Upload coredump for backtrace generation"
+msgstr ""
 
 #: ../src/configuration-gui/system-config-abrt.c:79
 msgid "_Close"
-msgstr ""
+msgstr "_Затвори"
 
 #: ../src/configuration-gui/system-config-abrt.c:88
 msgid "_Defaults"
-msgstr ""
+msgstr "_Подразумеване вредности"
 
 #: ../src/configuration-gui/system-config-abrt.c:116
 #: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
-msgstr ""
+msgstr "Подешавање пријављивања проблема"
 
 #: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
-msgstr ""
+msgstr "О програму за системско подешавање ABRT-а"
 
 #: ../src/configuration-gui/main.c:105
 msgid "About"
-msgstr ""
+msgstr "О програму"
 
 #: ../src/configuration-gui/main.c:106
 msgid "Quit"
-msgstr ""
+msgstr "Излаз"
 
-#: ../src/daemon/abrt-action-save-package-data.c:390
+#: ../src/daemon/abrt-action-save-package-data.c:393
 msgid ""
 "& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
 msgstr ""
+"& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
+"\n"
+"Пошаљи упит бази података пакета и сними име пакета и компоненте"
 
-#: ../src/daemon/abrt-action-save-package-data.c:403
+#: ../src/daemon/abrt-action-save-package-data.c:406
 #: ../src/daemon/abrt-action-save-container-data.c:210
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
 #: ../src/plugins/abrt-action-analyze-c.c:141
@@ -251,120 +316,117 @@ msgstr ""
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
 msgid "Problem directory"
-msgstr ""
+msgstr "Директоријум проблема"
 
-#: ../src/daemon/abrt-action-save-package-data.c:404
+#: ../src/daemon/abrt-action-save-package-data.c:407
 msgid "Configuration file"
-msgstr ""
+msgstr "Датотека подешавања"
 
-#: ../src/daemon/abrt-action-save-package-data.c:405
+#: ../src/daemon/abrt-action-save-package-data.c:408
 msgid "Use this directory as RPM root"
-msgstr ""
+msgstr "Користи овај директоријум као RPM корен"
 
 #: ../src/daemon/abrt-action-save-container-data.c:199
 msgid "& [-v] -d DIR\n"
 "\n"
 "Save container metadata"
-msgstr ""
+msgstr "& [-v] -d DIR\n"
+"\n"
+"Сачувај метаподатке контејнера"
 
 #: ../src/daemon/abrt-action-save-container-data.c:211
 msgid "Root directory for running container commands"
-msgstr ""
+msgstr "Корени директоријум за извршавање контејнер команди"
 
-#: ../src/daemon/abrt-server.c:785 ../src/dbus/abrt-dbus.c:891
+#: ../src/daemon/abrt-server.c:796 ../src/dbus/abrt-dbus.c:894
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:444
 msgid "& [options]"
-msgstr ""
+msgstr "& [опције]"
 
-#: ../src/daemon/abrt-server.c:796
+#: ../src/daemon/abrt-server.c:807
 msgid "Use NUM as client uid"
-msgstr ""
+msgstr "Користи NUM као uid клијента"
 
-#: ../src/daemon/abrt-server.c:797 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/daemon/abrt-server.c:808 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:97
 #: ../src/plugins/abrt-dump-journal-core.c:477
 #: ../src/plugins/abrt-dump-journal-oops.c:219
-#: ../src/plugins/abrt-dump-xorg.c:244
+#: ../src/plugins/abrt-dump-journal-xorg.c:188
+#: ../src/plugins/abrt-dump-xorg.c:52
 msgid "Log to syslog"
-msgstr ""
+msgstr "Записник у syslog"
 
-#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrtd.c:460
+#: ../src/daemon/abrt-server.c:809 ../src/daemon/abrtd.c:460
 msgid "Add program names to log"
-msgstr ""
+msgstr "Додај имена програма у записник"
 
 #: ../src/dbus/abrt-dbus.c:132
 msgid "Unknown error"
-msgstr ""
+msgstr "Непозната грешка"
 
-#: ../src/dbus/abrt-dbus.c:197
-#, c-format
-msgid "'%s' is not a valid problem directory"
-msgstr ""
-
-#: ../src/dbus/abrt-dbus.c:232
-#, c-format
-msgid "'%s' element can't be modified"
-msgstr ""
-
-#: ../src/dbus/abrt-dbus.c:253 ../src/dbus/abrt-dbus.c:455
-#: ../src/dbus/abrt-dbus.c:507 ../src/dbus/abrt-dbus.c:571
-#: ../src/dbus/abrt-dbus.c:737 ../src/dbus/abrt-configuration.c:618
-#: ../src/dbus/abrt-configuration.c:683
-#, c-format
-msgid "Not Authorized"
-msgstr ""
-
-#: ../src/dbus/abrt-dbus.c:265
-msgid "Can't access the problem for modification"
-msgstr ""
-
-#: ../src/dbus/abrt-dbus.c:470
-msgid "Chowning directory failed. Check system logs for more details."
-msgstr ""
-
-#: ../src/dbus/abrt-dbus.c:581
-msgid "Can't access the problem for reading"
-msgstr ""
-
-#: ../src/dbus/abrt-dbus.c:630
+#: ../src/dbus/abrt-dbus.c:167
 #, c-format
 msgid "'%s' is not a valid element name"
+msgstr "'%s' није исправно име елемента"
+
+#: ../src/dbus/abrt-dbus.c:219
+#, c-format
+msgid "'%s' is not a valid problem directory"
+msgstr "'%s' није исправан директоријум проблема"
+
+#: ../src/dbus/abrt-dbus.c:272 ../src/dbus/abrt-dbus.c:520
+#: ../src/dbus/abrt-configuration.c:618 ../src/dbus/abrt-configuration.c:683
+#, c-format
+msgid "Not Authorized"
+msgstr "Неовлашћен"
+
+#: ../src/dbus/abrt-dbus.c:285
+msgid "Can't open the problem"
 msgstr ""
 
-#: ../src/dbus/abrt-dbus.c:651
+#: ../src/dbus/abrt-dbus.c:317
+#, c-format
+msgid "'%s' element can't be modified"
+msgstr "'%s' елемент не може бити измењен"
+
+#: ../src/dbus/abrt-dbus.c:536
+msgid "Chowning directory failed. Check system logs for more details."
+msgstr ""
+"Промена власништва директоријума неуспешна. Проверите системске записе за "
+"више детаља."
+
+#: ../src/dbus/abrt-dbus.c:665
 #, c-format
 msgid "Can't get size of '%s'"
-msgstr ""
+msgstr "Не могу да добијем величину '%s'"
 
-#: ../src/dbus/abrt-dbus.c:666
+#: ../src/dbus/abrt-dbus.c:680
 msgid "No problem space left"
-msgstr ""
+msgstr "Није остало места за проблеме"
 
-#: ../src/dbus/abrt-dbus.c:698
+#: ../src/dbus/abrt-dbus.c:715
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr ""
+msgstr "Не могу да обришем елемент '%s' из директоријума проблема '%s'"
 
-#: ../src/dbus/abrt-dbus.c:725
-msgid "Can't access the problem"
-msgstr ""
-
-#: ../src/dbus/abrt-dbus.c:873 ../src/dbus/abrt-configuration.c:983
+#: ../src/dbus/abrt-dbus.c:876 ../src/dbus/abrt-configuration.c:983
 #: ../src/daemon/abrtd.c:426
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr ""
+"Име '%s' је изгубљено, молим проверите да ли други сервис са власништвом над "
+"именом није покренут.\n"
 
-#: ../src/dbus/abrt-dbus.c:900 ../src/dbus/abrt-configuration.c:1011
+#: ../src/dbus/abrt-dbus.c:903 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:459
 msgid "Exit after NUM seconds of inactivity"
-msgstr ""
+msgstr "Изађи након NUM секунди неактивности"
 
-#: ../src/dbus/abrt-dbus.c:918 ../src/dbus/abrt-configuration.c:1021
+#: ../src/dbus/abrt-dbus.c:921 ../src/dbus/abrt-configuration.c:1021
 msgid "This program must be run as root."
-msgstr ""
+msgstr "Овај програм мора бити извршен под root налогом."
 
 #: ../src/daemon/abrtd.c:389
 msgid ""
@@ -374,31 +436,40 @@ msgid ""
 "problem. If you have time and want to help the developers in their effort to "
 "sort out this problem, please contact them directly."
 msgstr ""
+"Подаци о проблему су непотпуни. Ово се обично дешава када се открије проблем "
+"док се рачунар искључује или се корисник одјављује. Да би се пружили корисни "
+"извештаји о проблемима, ABRT вам неће дозволити да пошаљете овај проблем. "
+"Ако имате времена и желите да помогнете програмерима у њиховом настојању да "
+"реше овај проблем, молим да их контактирате директно."
 
 #: ../src/daemon/abrtd.c:457
 msgid "Do not daemonize"
-msgstr ""
+msgstr "Немој покренути као сервис"
 
 #: ../src/daemon/abrtd.c:458
 msgid "Log to syslog even with -d"
+msgstr "Записуј у syslog чак и са -d"
+
+#: ../src/daemon/abrt-handle-event.c:394
+msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
 msgstr ""
 
-#: ../src/daemon/abrt-handle-event.c:406
-msgid "& [-v -i] -e|--event EVENT DIR..."
-msgstr ""
-
-#: ../src/daemon/abrt-handle-event.c:414
+#: ../src/daemon/abrt-handle-event.c:403
 msgid "Run EVENT on DIR"
-msgstr ""
+msgstr "Изврши EVENT над DIR-ом"
 
-#: ../src/daemon/abrt-handle-event.c:415
+#: ../src/daemon/abrt-handle-event.c:404
 msgid "Communicate directly to the user"
+msgstr "Пренеси директно са кориснику"
+
+#: ../src/daemon/abrt-handle-event.c:405
+msgid "Increment the nice value by INCREMENT"
 msgstr ""
 
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
-msgstr ""
+msgstr "Нема слободних радника и бафер је пун. Прескачем архиву '%s'"
 
 #: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
@@ -411,86 +482,96 @@ msgid ""
 "If UPLOAD_DIRECTORY is not provided, uses a value of\n"
 "WatchCrashdumpArchiveDir option from abrt.conf"
 msgstr ""
+"& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
+"\n"
+"\n"
+"Прати UPLOAD_DIRECTORY и отпакује архиве које пристижу у DumpLocation\n"
+"назначену у abrt.conf\n"
+"\n"
+"Ако UPLOAD_DIRECTORY није задат, користи вредност\n"
+"WatchCrashdumpArchiveDir опције из abrt.conf"
 
 #: ../src/daemon/abrt-upload-watch.c:281
 msgid "Daemize"
-msgstr ""
+msgstr "Као сервис"
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr ""
+msgstr "Број упоредних радника. Подразумевано је "
 
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr ""
+msgstr "Максимална величина кеша у MiB. Подразумевано је "
 
-#: ../src/daemon/abrt-auto-reporting.c:176
+#: ../src/daemon/abrt-auto-reporting.c:198
+#: ../src/daemon/abrt-auto-reporting.c:206
 msgid "& [ "
-msgstr ""
-
-#: ../src/daemon/abrt-auto-reporting.c:213
-msgid "Turns the authentication off"
-msgstr ""
-
-#: ../src/daemon/abrt-auto-reporting.c:214
-msgid "Red Hat Support user name"
-msgstr ""
-
-#: ../src/daemon/abrt-auto-reporting.c:215
-msgid "Red Hat Support password, if not given, a prompt for it will be issued"
-msgstr ""
-
-#: ../src/daemon/abrt-auto-reporting.c:216
-msgid "uReport SSL certificate paths or certificate type"
-msgstr ""
-
-#: ../src/daemon/abrt-auto-reporting.c:227
-msgid "You also need to specify --username for --password"
-msgstr ""
+msgstr "& [ "
 
 #: ../src/daemon/abrt-auto-reporting.c:233
+msgid "Turns the authentication off"
+msgstr "Искључује аутентификацију"
+
+#: ../src/daemon/abrt-auto-reporting.c:234
+msgid "Red Hat Support user name"
+msgstr "Red Hat Support корисничко име"
+
+#: ../src/daemon/abrt-auto-reporting.c:235
+msgid "Red Hat Support password, if not given, a prompt for it will be issued"
+msgstr ""
+"Red Hat Support лозинка, ако није задата, онда ће бити издат упит за њу"
+
+#: ../src/daemon/abrt-auto-reporting.c:236
+msgid "uReport SSL certificate paths or certificate type"
+msgstr "uReport SSL путање сертификата или врста сертификата"
+
+#: ../src/daemon/abrt-auto-reporting.c:252
+msgid "You also need to specify --username for --password"
+msgstr "Такође је потребно да назначите --username за --password"
+
+#: ../src/daemon/abrt-auto-reporting.c:258
 msgid "You can use either --username or --certificate"
-msgstr ""
+msgstr "Можете користити или --username или --certificate"
 
-#: ../src/daemon/abrt-auto-reporting.c:239
+#: ../src/daemon/abrt-auto-reporting.c:264
 msgid "You can use either --username or --anonymous"
-msgstr ""
-
-#: ../src/daemon/abrt-auto-reporting.c:245
-msgid "You can use either --anonymous or --certificate"
-msgstr ""
-
-#: ../src/daemon/abrt-auto-reporting.c:251
-msgid "Invalid number of arguments"
-msgstr ""
+msgstr "Можете користити или --username или --anonymous"
 
 #: ../src/daemon/abrt-auto-reporting.c:270
+msgid "You can use either --anonymous or --certificate"
+msgstr "Можете користити или --anonymous или --certificate"
+
+#: ../src/daemon/abrt-auto-reporting.c:277
+msgid "Invalid number of arguments"
+msgstr "Неисправан број аргумената"
+
+#: ../src/daemon/abrt-auto-reporting.c:296
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "Непозната вредност опције: '%s'\n"
 
-#: ../src/daemon/abrt-auto-reporting.c:305
+#: ../src/daemon/abrt-auto-reporting.c:336
 msgid "Password:"
-msgstr ""
+msgstr "Лозинка:"
 
-#: ../src/daemon/abrt-auto-reporting.c:308
+#: ../src/daemon/abrt-auto-reporting.c:339
 msgid "Cannot continue without password\n"
-msgstr ""
+msgstr "Не могу наставити без лозинке\n"
 
 #. Print only the part before ':' of a string like "username:password"
-#: ../src/daemon/abrt-auto-reporting.c:347
+#: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
-msgstr ""
+msgstr "HTTP аутентификовано аутоматско пријављивање"
 
-#: ../src/daemon/abrt-auto-reporting.c:349
+#: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
-msgstr ""
+msgstr "SSL Client аутентификовано аутоматско пријављивање"
 
-#: ../src/daemon/abrt-auto-reporting.c:351
+#: ../src/daemon/abrt-auto-reporting.c:384
 msgid "anonymous auto reporting"
-msgstr ""
+msgstr "анонимно аутоматско пријављивање"
 
-#: ../src/daemon/abrt-handle-upload.in:69
+#: ../src/daemon/abrt-handle-upload.in:135
 #, c-format
 msgid ""
 "Usage: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
@@ -501,112 +582,127 @@ msgid ""
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
 msgstr ""
+"Употреба: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
+"\n"
+"   -v             - Брбљивост\n"
+"   -d             - Обриши послату архиву\n"
+"   ABRT_SPOOL_DIR - Директоријум где се отпакују исправне послате архиве\n"
+"   UPLOAD_DIR     - Директоријум где се чувају послате архиве\n"
+"   FILENAME       - Име датотеке послате архиве\n"
 
-#: ../src/daemon/abrt-handle-upload.in:105
-#: ../src/daemon/abrt-handle-upload.in:108
-msgid "Not a directory: '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:111
-msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:114
-msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:117
-msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:120
-msgid "Skipping: '{0}' (contains space)"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:123
-msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:128
-msgid "Can't change directory to '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:139
-msgid "Unknown file type: '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:144
-msgid "Can't create working directory in '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:155
-msgid "Can't move '{0}' to '{1}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:160
-msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:164
-msgid "Verification error on '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:166
-msgid "Unpacking '{0}'"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-upload.in:170
-msgid "Can't create '{0}' directory"
-msgstr ""
-
+#: ../src/daemon/abrt-handle-upload.in:171
 #: ../src/daemon/abrt-handle-upload.in:174
-msgid "Can't unpack '{0}'"
-msgstr ""
+msgid "Not a directory: '{0}'"
+msgstr "Није директоријум: '{0}'"
 
-#: ../src/daemon/abrt-handle-upload.in:198
+#: ../src/daemon/abrt-handle-upload.in:177
+msgid "Skipping: '{0}' (starts with slash)"
+msgstr "Прескачем: '{0}' (почиње косом цртом)"
+
+#: ../src/daemon/abrt-handle-upload.in:180
+msgid "Skipping: '{0}' (starts with dot)"
+msgstr "Прескачем: '{0}' (почиње тачком)"
+
+#: ../src/daemon/abrt-handle-upload.in:183
+msgid "Skipping: '{0}' (contains ..)"
+msgstr "Прескачем: '{0}' (садржи ..)"
+
+#: ../src/daemon/abrt-handle-upload.in:186
+msgid "Skipping: '{0}' (contains space)"
+msgstr "Прескачем: '{0}' (садржи размак)"
+
+#: ../src/daemon/abrt-handle-upload.in:189
+msgid "Skipping: '{0}' (contains tab)"
+msgstr "Прескачем: '{0}' (садржи таб)"
+
+#: ../src/daemon/abrt-handle-upload.in:194
+msgid "Can't change directory to '{0}'"
+msgstr "Не могу променити директоријум на '{0}'"
+
+#: ../src/daemon/abrt-handle-upload.in:205
+msgid "Unknown file type: '{0}'"
+msgstr "Непозната врста датотеке: '{0}'"
+
+#: ../src/daemon/abrt-handle-upload.in:210
+msgid "Can't create working directory in '{0}'"
+msgstr "Не могу да направим радни директоријум у '{0}'"
+
+#: ../src/daemon/abrt-handle-upload.in:221
+msgid "Can't move '{0}' to '{1}'"
+msgstr "Не могу преместити '{0}' на '{1}'"
+
+#: ../src/daemon/abrt-handle-upload.in:226
+msgid "Can't copy '{0}' to '{1}'"
+msgstr "Не могу копирати '{0}' на '{1}'"
+
+#: ../src/daemon/abrt-handle-upload.in:230
+msgid "Verification error on '{0}'"
+msgstr "Грешка при провери '{0}'"
+
+#: ../src/daemon/abrt-handle-upload.in:232
+msgid "Unpacking '{0}'"
+msgstr "Отпакујем '{0}'"
+
+#: ../src/daemon/abrt-handle-upload.in:236
+msgid "Can't create '{0}' directory"
+msgstr "Не могу да направим '{0}' директоријум"
+
+#: ../src/daemon/abrt-handle-upload.in:240
+msgid "Can't unpack '{0}'"
+msgstr "Не могу да отпакујем '{0}'"
+
+#: ../src/daemon/abrt-handle-upload.in:260
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' успешно обрађено"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
 msgid "Generating backtrace"
-msgstr ""
+msgstr "Стварам стабло позивања"
 
 #: ../src/lib/problem_api_dbus.c:42
 #, c-format
 msgid "Can't connect to system DBus: %s"
-msgstr ""
+msgstr "Не могу да се повежем на системски DBus: %s"
 
 #: ../src/lib/problem_api_dbus.c:68
 #, c-format
 msgid "Can't chown '%s': %s"
-msgstr ""
+msgstr "Не могу да chown-ујем '%s': %s"
 
 #: ../src/lib/problem_api_dbus.c:97
 #, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr ""
+msgstr "Грешка при брисању директоријума проблема: %s"
 
-#: ../src/lib/problem_api_dbus.c:133 ../src/lib/problem_api_dbus.c:206
-#: ../src/lib/problem_api_dbus.c:286
+#: ../src/lib/problem_api_dbus.c:131
 #, c-format
-msgid "Can't get problem data from abrt-dbus: %s"
+msgid "D-Bus GetInfo method call failed: %s"
 msgstr ""
 
-#: ../src/lib/problem_api_dbus.c:169
+#: ../src/lib/problem_api_dbus.c:166
+msgid "Can't get problem data from abrt-dbus"
+msgstr ""
+
+#: ../src/lib/problem_api_dbus.c:193
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
-msgstr ""
+msgstr "Не могу преузети списак проблема од abrt-dbus: %s"
 
-#: ../src/lib/problem_api_dbus.c:250
+#: ../src/lib/problem_api_dbus.c:230 ../src/lib/problem_api_dbus.c:315
+#, c-format
+msgid "Can't get problem data from abrt-dbus: %s"
+msgstr "Не могу да преузмем податке о проблему од abrt-dbus: %s"
+
+#: ../src/lib/problem_api_dbus.c:274
 #, c-format
 msgid "Can't test whether the element exists over abrt-dbus: %s"
-msgstr ""
+msgstr "Не могу испробати да ли елемент постоји преко abrt-dbus: %s"
 
 #: ../src/lib/ignored_problems.c:233
 #, c-format
 msgid "Can't create temporary file '%s'"
-msgstr ""
+msgstr "Не могу направити привремену датотеку '%s'"
 
 #: ../src/lib/ignored_problems.c:250
 #, c-format
@@ -614,12 +710,14 @@ msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
 "problems '%s'"
 msgstr ""
+"Не могу да упишем у '%s'. Проблем '%s' неће бити уклоњен из занемарених "
+"проблема '%s'"
 
 #. Something nefarious happened
 #: ../src/lib/ignored_problems.c:264
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
-msgstr ""
+msgstr "Не могу да преименујем '%s' у '%s'. Грешка при уклањању проблема '%s'"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:41
 msgid ""
@@ -628,6 +726,11 @@ msgid ""
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
 msgstr ""
+"& [опције] -d DIR\n"
+"\n"
+"Анализира C/C++ стабло позивања, ствара збир понављања, оцену стабла "
+"позивања\n"
+"и идентификује срушену функцију у директоријуму проблема DIR"
 
 #. 
 #. * The parser failed. Compute the duphash from the executable
@@ -637,11 +740,11 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "Неуспешна обрада стабла позивања за %s"
 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:146
+#: ../src/plugins/abrt-action-analyze-backtrace.c:150
 msgid "Crash thread not found"
-msgstr ""
+msgstr "Срушена нит није пронађена"
 
 #: ../src/plugins/abrt-action-analyze-c.c:130
 msgid ""
@@ -649,25 +752,28 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Израчунава и чува UUID coredump-а у директоријуму проблема DIR"
 
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "Анализирам coredump '%s'"
 
 #: ../src/plugins/abrt-action-analyze-core.in:110
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "Недостаје id изградње: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:142
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr ""
+msgstr "Употреба: %s [-v] [-o OUTFILE] -c COREFILE"
 
 #: ../src/plugins/abrt-action-analyze-core.in:164
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "COREFILE није назначен"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
@@ -675,6 +781,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Израчунава и чува UUID и DUPHASH за директоријум oops проблема DIR"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:79
 msgid ""
@@ -683,6 +792,11 @@ msgid ""
 "your computer. ABRT will not allow you to create a report in a bug tracking "
 "system but you can contact kernel maintainers via e-mail."
 msgstr ""
+"Стабло развоја не садржи довољно смислених оквира функције да би било "
+"пријављено. Ово је непријатно али не указује обавезно на проблем са вашим "
+"рачунаром. ABRT вам неће дозволити да направите извештај у систему праћења "
+"програмских грешака али можете контактирати програмере језгра преко "
+"електронске поште."
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:73
 msgid ""
@@ -690,11 +804,14 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Израчунава и чува UUID и DUPHASH за директоријум xorg проблема DIR"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:113
 #, c-format
 msgid "Module '%s' was loaded - won't report this crash"
-msgstr ""
+msgstr "Модул '%s' је био учитан - нећу пријавити овај крах"
 
 #: ../src/plugins/abrt-action-analyze-python.c:36
 msgid ""
@@ -702,36 +819,74 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Израчунава и чува UUID и DUPHASH за python crash dump-ове"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:52
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
-msgstr ""
+msgstr "Употреба: {0} [-v[v]] [--core=VMCORE]"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:79
 msgid "File {0} doesn't exist"
-msgstr ""
+msgstr "Датотека {0} не постоји"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:82
 msgid "Extracting the oops text from core"
-msgstr ""
+msgstr "Извлачим oops текст из језгра"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
 msgid "Can't process {0}:\n"
 "{1}"
-msgstr ""
+msgstr "Не могу да обрадим {0}:\n"
+"{1}"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "Can't extract the oops message: '{0}'"
-msgstr ""
+msgstr "Не могу да извучем oops поруку: '{0}'"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:98
 msgid "Oops text extracted successfully"
-msgstr ""
+msgstr "Oops текст успешно извучен"
 
-#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:89
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
+msgstr ""
+"Запис језгра указује на пронађене хардверске грешке.\n"
+"Ово највероватније није програмски проблем.\n"
+
+#: ../src/plugins/abrt-action-find-bodhi-update:88
+msgid "cannot open problem directory '{0}'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:102
+msgid "Problem directory error: {0}"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:117
+msgid "Using product '{0}' from /etc/os-release."
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:119
+msgid "Using product {0}."
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:121
+msgid "Using product version {0}."
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:133
+msgid "Duplicate bugzilla bug '#{0}' was found"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:135
+msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:140
+msgid "Warning: abrt-bodhi do not support Product version 'Rawhide'"
 msgstr ""
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
@@ -740,14 +895,18 @@ msgid ""
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
 msgstr ""
+"& [опције] -d DIR\n"
+"\n"
+"Анализира coredump у директоријуму проблема DIR, ствара и чува стабло "
+"развоја"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
-msgstr ""
+msgstr "Додатни debuginfo директоријуми"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:57
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr ""
+msgstr "Убиј gdb ако се извршава дуже од NUM секунди"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
@@ -755,7 +914,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr ""
+msgstr "Стабло развоја је направљено и сачувано, %u бајтова"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:40
 msgid ""
@@ -763,28 +922,32 @@ msgid ""
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
 msgstr ""
+"& [-v] [-r] -d DIR\n"
+"\n"
+"Ствара стабло развоја coredump нивоа из core dump-а и одговарајуће бинарне "
+"датотеке"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
-msgstr ""
+msgstr "Немој правити збир отисака"
 
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
 msgid "Generating core_backtrace"
-msgstr ""
+msgstr "Правим core_backtrace"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:81
 msgid "Error: GDB did not return any data"
-msgstr ""
+msgstr "Грешка: GDB није вратио никакве податке"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:95
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Грешка: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:51
 msgid "Exiting on user command"
-msgstr ""
+msgstr "Излазим по команди корисника"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:89
 #, c-format
@@ -812,48 +975,104 @@ msgid ""
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
 msgstr ""
+"Употреба: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH[:PATH]...]\n"
+"\n"
+"Инсталира debuginfos за све build-id-ове наведене у  BUILD_IDS_FILE\n"
+"у CACHEDIR, користећи TMPDIR као привремени простор за постављање.\n"
+"Старе датотеке у CACHEDIR се бришу све док не постање мањи од SIZE.\n"
+"\n"
+"Reads configuration from /etc/abrt/plugins/CCpp.conf\n"
+"\n"
+"    -v          Буди брбљив\n"
+"    -y          Без интеракције, претпостави 'Да' за сва питања\n"
+"    --ids       Подразумевано: build_ids\n"
+"    --tmpdir    Подразумевано: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
+"    --cache     Подразумевано: /var/cache/abrt-di\n"
+"    --size_mb   Подразумевано: 4096\n"
+"    --pkgmgr   Подразумевано: PackageManager из CCpp.conf или 'dnf'\n"
+"    -e,--exact  Преузми само назначене датотеке\n"
+"    --repo      Шаблон који се користи када се траже ризнице.\n"
+"                Подразумевано: *debug*\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:175
 msgid "Can't open {0}: {1}"
-msgstr ""
+msgstr "Не могу да отворим {0}: {1}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:212
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
-msgstr ""
+msgstr "Coredump помиње {0} debuginfo датотека, {1} од њих није инсталирано"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:215
 msgid "{0} of debuginfo files are not installed"
-msgstr ""
+msgstr "{0} debuginfo датотека није инсталирано"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:234
 #, c-format
 msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
-msgstr ""
+msgstr "Неисправно подешавање CCpp додатка, неподржан управник пакетима: '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:249
 msgid "Missing requested file: {0}"
-msgstr ""
+msgstr "Недостаје захтевана датотека: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:254
 msgid "Missing debuginfo file: {0}"
-msgstr ""
+msgstr "Недостаје debuginfo датотека: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:257
 msgid "All debuginfo files are available"
+msgstr "Све debuginfo датотеке су доступне"
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:43
+msgid ""
+"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+"\t[-r REPO]\n"
+"\n"
+"Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
+"ABRT system cache."
 msgstr ""
 
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:66
+msgid "Noninteractive, assume 'Yes' to all questions"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:67
+msgid "- means STDIN, default: build_ids"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
+msgid "Download only specified files"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
+msgid "Pattern to use when searching for repos, default: *debug*"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
+msgid "Ignored option"
+msgstr ""
+
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:63
 msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
 msgstr ""
+"Да ли је у реду послати coredump? (Може садржати осетљиве податке). Ако је "
+"ваш одговор 'Не', траг стека ће бити створен локално. (Можда ће преузети "
+"огромну количину података)."
 
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:72
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
 msgstr ""
+"Да ли желите створити траг стека локално? (Можда ће преузети огромну "
+"количину података али извештај не може наставити без трага стека)."
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -863,172 +1082,180 @@ msgid ""
 "SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
+"& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
+"\n"
+"Брише проблематичне директоријуме (-d) или датотеке (-f) у DIR-екторијумима "
+"све док не буду мањи од SIZE.\n"
+"FILE-ови су очувани (никад обрисани)."
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
-msgstr ""
+msgstr "Обриши све директоријуме проблема"
 
 #: ../src/plugins/abrt-action-trim-files.c:237
 msgid "Delete files inside this directory"
-msgstr ""
+msgstr "Обриши датотеке унутар овог директоријума"
 
 #: ../src/plugins/abrt-action-trim-files.c:238
 msgid "Preserve this directory"
-msgstr ""
+msgstr "Очувај овај директоријум"
 
 #: ../src/plugins/abrt-action-ureport:59
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr "Не могу да покренем '%s', порука о грешки је: '%s'"
 
 #: ../src/plugins/abrt-action-ureport:70
 #, c-format
 msgid "Not a number in file '%s'"
-msgstr ""
+msgstr "Није број у датотеци '%s'"
 
 #: ../src/plugins/abrt-action-ureport:99
 #, c-format
 msgid "Usage: %s [-v]"
-msgstr ""
+msgstr "Употреба: %s [-v]"
 
 #: ../src/plugins/abrt-action-ureport:120
 msgid "Unable to get current working directory as it was probably deleted"
 msgstr ""
+"Не могу да добијем тренутни радни директоријум јер је вероватно обрисан"
 
 #: ../src/plugins/abrt-action-ureport:148
 msgid "A bug was already filed about this problem:"
-msgstr ""
+msgstr "Већ је пријављена програмска грешка у вези са овим проблемом:"
 
 #: ../src/plugins/abrt-action-ureport:158
 msgid "uReport was already sent, not sending it again"
-msgstr ""
+msgstr "uReport је већ послат, не шаљем га поново"
 
 #: ../src/plugins/abrt-action-ureport:179
 msgid "Adding you to CC List of the existing bugzilla bug"
-msgstr ""
+msgstr "Додајем те на CC списак тренутне програмске грешке на bugzilla-и"
 
 #: ../src/plugins/abrt-action-ureport:193
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
-msgstr ""
+msgstr "reporter-ureport неуспешан са излазним кодом %d"
 
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
-msgstr ""
+msgstr "Сигнал послат од стране кода из корисничког простора"
 
 #: ../src/plugins/abrt-gdb-exploitable:533
 msgid "Signal sent by timer/IO/async event"
-msgstr ""
+msgstr "Сигнал послат од стране timer/IO/async догађаја"
 
 #: ../src/plugins/abrt-gdb-exploitable:541
 msgid "Signal has siginfo.si_code = SI_USER"
-msgstr ""
+msgstr "Сигнал има siginfo.si_code = SI_USER"
 
 #: ../src/plugins/abrt-gdb-exploitable:544
 msgid "Signal due to write to closed pipe"
-msgstr ""
+msgstr "Сигнал приспео за упис на затворен канал"
 
 #: ../src/plugins/abrt-gdb-exploitable:550
 #: ../src/plugins/abrt-gdb-exploitable:575
 msgid "Signal sent by keyboard"
-msgstr ""
+msgstr "Сигнал послат од стране тастатуре"
 
 #: ../src/plugins/abrt-gdb-exploitable:554
 #: ../src/plugins/abrt-gdb-exploitable:579
 msgid "Job control signal sent by kernel"
-msgstr ""
+msgstr "Сигнал контроле послова послат од кернела"
 
 #: ../src/plugins/abrt-gdb-exploitable:558
 #: ../src/plugins/abrt-gdb-exploitable:587
 msgid "Signal sent by window resize"
-msgstr ""
+msgstr "Сигнал послат променом величине прозора"
 
 #: ../src/plugins/abrt-gdb-exploitable:562
 #: ../src/plugins/abrt-gdb-exploitable:591
 msgid "Signal sent by alarm(N) expiration"
-msgstr ""
+msgstr "Сигнал послат истицањем аларма(N)"
 
 #: ../src/plugins/abrt-gdb-exploitable:583
 msgid "Signal due to write to broken pipe"
-msgstr ""
+msgstr "Сигнал приспео за упис на покварен канал"
 
 #: ../src/plugins/abrt-gdb-exploitable:607
 msgid "ABRT signal (abort() was called?)"
-msgstr ""
+msgstr "ABRT сигнал (abort() је позван?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:616
 msgid "XCPU signal (over CPU time limit)"
-msgstr ""
+msgstr "XCPU сигнал (преко CPU временског ограничења)"
 
 #: ../src/plugins/abrt-gdb-exploitable:620
 msgid "XFSZ signal (over file size limit)"
-msgstr ""
+msgstr "XFSZ сигнал (преко ограничења величине датотеке)"
 
 #: ../src/plugins/abrt-gdb-exploitable:624
 msgid "TRAP signal (can be a bug in a debugger/tracer)"
-msgstr ""
+msgstr "TRAP сигнал (може бити програмска грешка у октлањачу грешака/трагачу)"
 
 #: ../src/plugins/abrt-gdb-exploitable:628
 msgid "SYS signal (unknown syscall was called?)"
-msgstr ""
+msgstr "SYS сигнал (непознат системски позив је позван?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:633
 msgid "Arithmetic exception"
-msgstr ""
+msgstr "Аритметичка грешка"
 
 #: ../src/plugins/abrt-gdb-exploitable:637
 msgid "Division by zero"
-msgstr ""
+msgstr "Дељење нулом"
 
 #: ../src/plugins/abrt-gdb-exploitable:641
 msgid "Illegal instruction (jump to a random address?)"
-msgstr ""
+msgstr "Неправилна инструкција (скок на насумичну адресу?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:647
 msgid "Non-crash related signal"
-msgstr ""
+msgstr "Сигнал који није узрокован отказивањем"
 
 #: ../src/plugins/abrt-gdb-exploitable:652
 msgid "Stack overflow"
-msgstr ""
+msgstr "Преливање стека"
 
 #: ../src/plugins/abrt-gdb-exploitable:656
 msgid "Write to an invalid address"
-msgstr ""
+msgstr "Упис на неисправну адресу"
 
 #: ../src/plugins/abrt-gdb-exploitable:660
 msgid "Subroutine return to an invalid address (corrupted stack?)"
-msgstr ""
+msgstr "Подрутина се вратила на неисправну адресу (оштећен стек?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:666
 #: ../src/plugins/abrt-gdb-exploitable:670
 msgid "Jump to an invalid address"
-msgstr ""
+msgstr "Скок на неисправну адресу"
 
 #: ../src/plugins/abrt-gdb-exploitable:674
 msgid ""
 "Access past the end of mapped file, invalid address, unaligned access, etc"
 msgstr ""
+"Приступ након завршетка мапиране датотеке, неисправна адреса, приступ ван "
+"поравнања, итд"
 
 #: ../src/plugins/abrt-gdb-exploitable:693
 msgid "Can't get signal no and do exploitability analysis\n"
-msgstr ""
+msgstr "Не могу да примим сигнал не и урадим анализу злоупотребе\n"
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Likely crash reason: "
-msgstr ""
+msgstr "Вероватни узрок отказивања:"
 
 #: ../src/plugins/abrt-gdb-exploitable:707
 msgid "Exploitable rating (0-9 scale): "
-msgstr ""
+msgstr "Рејтинг злоупотребе (скала 0-9):"
 
 #: ../src/plugins/abrt-gdb-exploitable:709
 msgid "Current instruction: "
-msgstr ""
+msgstr "Тренутна инструкција:"
 
 #: ../src/plugins/abrt-gdb-exploitable:711
 msgid "Exploitability analysis came up empty\n"
-msgstr ""
+msgstr "Анализа злоупотребе није ништа пронашла\n"
 
 #: ../src/plugins/abrt-watch-log.c:142
 msgid ""
@@ -1036,10 +1263,13 @@ msgid ""
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
 msgstr ""
+"& [-vs] [-F STR]... FILE PROG [ARGS]\n"
+"\n"
+"Прати датотеку записа FILE, изврши PROG када порасте или буде замењена"
 
 #: ../src/plugins/abrt-watch-log.c:154
 msgid "Don't run PROG if STRs aren't found"
-msgstr ""
+msgstr "Немој покренути PROG ако STR-ови нису пронађени"
 
 #: ../src/plugins/abrt-dump-oops.c:77
 msgid ""
@@ -1047,11 +1277,14 @@ msgid ""
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr ""
+"& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"Извуци oops из FILE (или стандардног улаза)"
 
 #: ../src/plugins/abrt-dump-oops.c:98
 #: ../src/plugins/abrt-dump-journal-oops.c:220
 msgid "Print found oopses on standard output"
-msgstr ""
+msgstr "Испиши пронађене oops-еве на стандардни излаз"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
@@ -1059,62 +1292,70 @@ msgstr ""
 #: ../src/plugins/abrt-dump-oops.c:102
 #: ../src/plugins/abrt-dump-journal-oops.c:224
 msgid "Create new problem directory in DIR for every oops found"
-msgstr ""
+msgstr "Направи нови директоријум проблема у DIR за сваки пронађени oops"
 
 #: ../src/plugins/abrt-dump-oops.c:103
 #: ../src/plugins/abrt-dump-journal-core.c:479
 #: ../src/plugins/abrt-dump-journal-oops.c:225
-#: ../src/plugins/abrt-dump-xorg.c:247
+#: ../src/plugins/abrt-dump-journal-xorg.c:191
+#: ../src/plugins/abrt-dump-xorg.c:55
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
-msgstr ""
+msgstr "Исто као -d DumpLocation, DumpLocation је назначена у abrt.conf"
 
 #: ../src/plugins/abrt-dump-oops.c:104
 msgid "Save the extracted information in PROBLEM"
-msgstr ""
+msgstr "Сачувај извучене информације у PROBLEM"
 
 #: ../src/plugins/abrt-dump-oops.c:105
 #: ../src/plugins/abrt-dump-journal-oops.c:226
-#: ../src/plugins/abrt-dump-xorg.c:248
+#: ../src/plugins/abrt-dump-journal-xorg.c:192
+#: ../src/plugins/abrt-dump-xorg.c:56
 msgid "Make the problem directory world readable"
-msgstr ""
+msgstr "Учини директоријум проблема читљивим за свет"
 
 #: ../src/plugins/abrt-dump-oops.c:106
 #: ../src/plugins/abrt-dump-journal-oops.c:227
+#: ../src/plugins/abrt-dump-journal-xorg.c:193
 msgid "Throttle problem directory creation to 1 per second"
-msgstr ""
+msgstr "Успори стварање директоријума проблема на један по секунди"
 
-#: ../src/plugins/abrt-dump-oops.c:107 ../src/plugins/abrt-dump-xorg.c:249
+#: ../src/plugins/abrt-dump-oops.c:107 ../src/plugins/abrt-dump-xorg.c:57
 msgid "Print search string(s) to stdout and exit"
-msgstr ""
+msgstr "Испиши текст(ове) претраге на стандардни излаз и изађи"
 
 #: ../src/plugins/abrt-dump-oops.c:127
 #: ../src/plugins/abrt-dump-journal-oops.c:128
 msgid "Failed to compile regex"
+msgstr "Неуспешна изградња регуларног израза"
+
+#: ../src/plugins/abrt-dump-oops.c:177
+msgid "Can't update the problem: no oops found"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:186
-msgid "Can't update the problem: more than one oops found"
+#: ../src/plugins/abrt-dump-oops.c:183
+msgid "More oopses found: process only the first one"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-core.c:341
 #: ../src/plugins/abrt-dump-journal-core.c:377
 msgid "Failed to obtain all required information from journald"
-msgstr ""
+msgstr "Неуспешно преузимање свих неопходних информација од  journald-а"
 
 #. We don't want to update the counter here.
 #: ../src/plugins/abrt-dump-journal-core.c:401
 #, c-format
 msgid "Not saving repeating crash after %ds (limit is %ds)"
-msgstr ""
+msgstr "Не чувам поновне крахове након %ds (граница је %ds)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:407
 msgid "Failed to save detect problem data in abrt database"
-msgstr ""
+msgstr "Неуспешно чување података откривеног проблема у abrt бази података"
 
 #: ../src/plugins/abrt-dump-journal-core.c:427
 #: ../src/plugins/abrt-dump-journal-oops.c:165
+#: ../src/plugins/abrt-dump-journal-xorg.c:121
 msgid "Failed to initialize systemd-journal watch"
-msgstr ""
+msgstr "Неуспешна иницијализација systemd-journal надзора"
 
 #: ../src/plugins/abrt-dump-journal-core.c:447
 msgid ""
@@ -1129,62 +1370,80 @@ msgid ""
 "\n"
 "The last seen position is saved in "
 msgstr ""
+"& [-vsf] [-e]/[-c CURSOR] [-t INT]/[-T] [-d DIR]/[-D]\n"
+"\n"
+"Извуци coredump-ове из systemd-journal\n"
+"\n"
+"опције -c и -e су у конфликту јер обе назначавају прву прочитану поруку.\n"
+"\n"
+"-e је корисно само за -f зато што праћење дневника почиње читањем \n"
+"целог дневника ако последња прегледана позиција није доступна.\n"
+"\n"
+"Последња прегледана позиција је сачувана у "
 
 #: ../src/plugins/abrt-dump-journal-core.c:478
 msgid "Create new problem directory in DIR for every coredump"
-msgstr ""
+msgstr "Направи нови директоријум проблема у DIR за сваки coredump"
 
 #: ../src/plugins/abrt-dump-journal-core.c:480
 #: ../src/plugins/abrt-dump-journal-oops.c:228
+#: ../src/plugins/abrt-dump-journal-xorg.c:194
 msgid "Start reading systemd-journal from the CURSOR position"
-msgstr ""
+msgstr "Почни читање systemd-journal од позиције CURSOR"
 
 #: ../src/plugins/abrt-dump-journal-core.c:481
 #: ../src/plugins/abrt-dump-journal-oops.c:229
+#: ../src/plugins/abrt-dump-journal-xorg.c:195
 msgid "Start reading systemd-journal from the end"
-msgstr ""
+msgstr "Почни читање systemd-journal од краја"
 
 #: ../src/plugins/abrt-dump-journal-core.c:482
 msgid "Throttle problem directory creation to 1 per INT second"
-msgstr ""
+msgstr "Успори стварање директоријума проблема на један по INT секунди"
 
 #: ../src/plugins/abrt-dump-journal-core.c:483
 msgid "Same as -t INT, INT is specified in plugins/CCpp.conf"
-msgstr ""
+msgstr "Исто као -t INT, INT је назначен у plugins/CCpp.conf"
 
 #: ../src/plugins/abrt-dump-journal-core.c:484
 #: ../src/plugins/abrt-dump-journal-oops.c:230
+#: ../src/plugins/abrt-dump-journal-xorg.c:196
 msgid "Follow systemd-journal from the last seen position (if available)"
-msgstr ""
+msgstr "Прати systemd-journal од последње виђене позиције (ако је доступна)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:495
 #: ../src/plugins/abrt-dump-journal-oops.c:246
+#: ../src/plugins/abrt-dump-journal-xorg.c:213
 msgid "You need to specify either -c CURSOR or -e"
-msgstr ""
+msgstr "Потребно је да назначите или -c CURSOR или -e"
 
 #: ../src/plugins/abrt-dump-journal-core.c:541
 #: ../src/plugins/abrt-dump-journal-oops.c:284
+#: ../src/plugins/abrt-dump-journal-xorg.c:278
 msgid "Cannot open systemd-journal"
-msgstr ""
+msgstr "Не могу да отворим systemd-journal"
 
 #: ../src/plugins/abrt-dump-journal-core.c:544
 msgid "Cannot filter systemd-journal to systemd-coredump data only"
-msgstr ""
+msgstr "Не могу да филтрирам systemd-journal на само systemd-coredump податке"
 
-#: ../src/plugins/abrt-dump-journal-core.c:547
-#: ../src/plugins/abrt-dump-journal-oops.c:291
+#: ../src/plugins/abrt-dump-journal-core.c:549
+#: ../src/plugins/abrt-dump-journal-oops.c:293
+#: ../src/plugins/abrt-dump-journal-xorg.c:291
 msgid "Cannot seek to the end of journal"
-msgstr ""
+msgstr "Не могу да пређем на крај дневника"
 
-#: ../src/plugins/abrt-dump-journal-core.c:550
-#: ../src/plugins/abrt-dump-journal-oops.c:307
+#: ../src/plugins/abrt-dump-journal-core.c:552
+#: ../src/plugins/abrt-dump-journal-oops.c:309
+#: ../src/plugins/abrt-dump-journal-xorg.c:307
 #, c-format
 msgid "Failed to set systemd-journal cursor '%s'"
-msgstr ""
+msgstr "Неуспешно постављање systemd-journal курсора '%s'"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:40
+#: ../src/plugins/abrt-dump-journal-xorg.c:52
 msgid "Cannot read journal data."
-msgstr ""
+msgstr "Не могу да прочитам податке дневника."
 
 #: ../src/plugins/abrt-dump-journal-oops.c:186
 msgid ""
@@ -1199,97 +1458,171 @@ msgid ""
 "\n"
 "The last seen position is saved in "
 msgstr ""
+"& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
+"\n"
+"Извуци oops из systemd-journal\n"
+"\n"
+"опције -c и -e су у конфликту јер обе назначавају прву прочитану поруку.\n"
+"\n"
+"-e је корисно само за -f зато што праћење дневника почиње читањем \n"
+"целог дневника ако последња прегледана позиција није доступна.\n"
+"\n"
+"Последња прегледана позиција је сачувана у "
 
 #: ../src/plugins/abrt-dump-journal-oops.c:231
+#: ../src/plugins/abrt-dump-journal-xorg.c:197
 msgid "Read journal files from all machines"
-msgstr ""
+msgstr "Прочитај датотеке дневника са свих машина"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:232
+#: ../src/plugins/abrt-dump-journal-xorg.c:198
 msgid "Read all journal files from directory at PATH"
-msgstr ""
+msgstr "Прочитај све датотеке дневника из директоријума на PATH"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:279
+#: ../src/plugins/abrt-dump-journal-xorg.c:273
 #, c-format
 msgid "Cannot initialize systemd-journal in directory '%s'"
-msgstr ""
+msgstr "Не могу да иницијализујем systemd-journal у директоријуму '%s'"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:288
 msgid "Cannot filter systemd-journal to kernel data only"
-msgstr ""
+msgstr "Не могу да филтрирам systemd-journal на само податке о језгру"
 
-#: ../src/plugins/abrt-dump-journal-oops.c:298
+#: ../src/plugins/abrt-dump-journal-oops.c:300
+#: ../src/plugins/abrt-dump-journal-xorg.c:298
 #, c-format
 msgid "Failed to start watch from cursor '%s'"
+msgstr "Неуспешно започињање прегледа од курсора '%s'"
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:61
+msgid "Failed to parse Backtrace from journal"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-xorg.c:237
+#: ../src/plugins/abrt-dump-journal-xorg.c:143
+#, c-format
+msgid ""
+"& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
+"\n"
+"Extract Xorg crash from systemd-journal\n"
+"\n"
+"-c and -e options conflicts because both specifies the first read message.\n"
+"\n"
+"-e is useful only for -f because the following of journal starts by reading \n"
+"the entire journal if the last seen possition is not available.\n"
+"\n"
+"The last seen position is saved in %s\n"
+"\n"
+"Journal filter is required parameter and must be specified either by "
+"parameter\n"
+"-j or in %s conf file.\n"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:189
+msgid "Print found crashes on standard output"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:190
+msgid "Create new problem directory in DIR for every crash found"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:199
+msgid "Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:265
+msgid ""
+"Journal filter must be specified either by parameter -j or stored in /etc/"
+"abrt/plugins/xorg.conf file"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:282
+msgid "Cannot filter systemd-journal to Xorg data only"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-xorg.c:35
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
 msgstr ""
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"Извуци Xorg крах из FILE (или стандардног улаза)"
 
-#: ../src/plugins/abrt-dump-xorg.c:245
+#: ../src/plugins/abrt-dump-xorg.c:53
 msgid "Print found crash data on standard output"
-msgstr ""
+msgstr "Испиши пронађене податке о краху на стандардни излаз"
 
-#: ../src/plugins/abrt-dump-xorg.c:246
+#: ../src/plugins/abrt-dump-xorg.c:54
 msgid "Create problem directory in DIR for every crash found"
+msgstr "Направи директоријум проблема у DIR за сваки пронађени крах"
+
+#: ../src/plugins/abrt-dump-xorg.c:108
+msgid "Failed to parse Backtrace from log file"
 msgstr ""
 
 #. abrt_journal_set_cursor() prints error message in verbose mode
-#: ../src/plugins/abrt-journal.c:267
+#: ../src/plugins/abrt-journal.c:274
 msgid "Cannot save journal watch's position"
-msgstr ""
+msgstr "Не могу да снимим позицију прегледача дневника"
 
-#: ../src/plugins/abrt-journal.c:277
+#: ../src/plugins/abrt-journal.c:284
 #, c-format
 msgid "Cannot save journal watch's position: open('%s')"
-msgstr ""
+msgstr "Не могу да снимим позицију прегледача дневника: open('%s')"
 
 #. Only notice because this is expected
-#: ../src/plugins/abrt-journal.c:295
+#: ../src/plugins/abrt-journal.c:302
 #, c-format
 msgid "Not restoring journal watch's position: file '%s' does not exist"
-msgstr ""
-
-#: ../src/plugins/abrt-journal.c:297
-#, c-format
-msgid "Cannot restore journal watch's position form file '%s'"
-msgstr ""
+msgstr "Не враћам позицију прегледања дневника: датотека '%s' не постоји"
 
 #: ../src/plugins/abrt-journal.c:304
 #, c-format
+msgid "Cannot restore journal watch's position form file '%s'"
+msgstr "Не могу да вратим позицију прегледања дневника из датотеке '%s'"
+
+#: ../src/plugins/abrt-journal.c:311
+#, c-format
 msgid "Cannot restore journal watch's position: path '%s' is not regular file"
 msgstr ""
+"Не могу да вратим позицију прегледања дневника: путања '%s' није редовна "
+"датотека"
 
-#: ../src/plugins/abrt-journal.c:310
+#: ../src/plugins/abrt-journal.c:317
 #, c-format
 msgid ""
 "Cannot restore journal watch's position: file '%s' exceeds %dB size limit"
 msgstr ""
+"Не могу да вратим позицију прегледања дневника: датотека '%s' превазилази "
+"%dB ограничење величине"
 
-#: ../src/plugins/abrt-journal.c:318
+#: ../src/plugins/abrt-journal.c:325
 #, c-format
 msgid "Cannot restore journal watch's position: open('%s')"
-msgstr ""
+msgstr "Не могу да вратим позицију прегледања дневника: open('%s')"
 
-#: ../src/plugins/abrt-journal.c:327
+#: ../src/plugins/abrt-journal.c:334
 #, c-format
 msgid "Cannot restore journal watch's position: cannot read entire file '%s'"
 msgstr ""
+"Не могу да вратим позицију прегледања дневника: не могу прочитати целу "
+"датотеку '%s'"
 
 #. abrt_journal_set_cursor() prints error message in verbose mode
-#: ../src/plugins/abrt-journal.c:339
+#: ../src/plugins/abrt-journal.c:346
 #, c-format
 msgid "Failed to move the journal to a cursor from file '%s'"
-msgstr ""
+msgstr "Неуспешно померање дневника на курсор из датотеке '%s'"
 
 #: ../src/plugins/abrt-retrace-client.c:70
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
 msgstr ""
+"Сервер за поновни траг не може бити употревљен, зато што је крах превелик. "
+"Покушајте локално поновно трагање."
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
@@ -1298,13 +1631,13 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
 msgid "Can't create temporary file in "
-msgstr ""
+msgstr "Не могу направити привремену датотеку у "
 
 #: ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
 #, c-format
 msgid "Can't execute '%s'"
-msgstr ""
+msgstr "Не могу извршити '%s'"
 
 #: ../src/plugins/abrt-retrace-client.c:211
 #: ../src/plugins/abrt-retrace-client.c:398
@@ -1312,7 +1645,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:842
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr ""
+msgstr "Неуспешно слање HTTP заглавља дужине %d: NSS грешка %d"
 
 #: ../src/plugins/abrt-retrace-client.c:223
 #: ../src/plugins/abrt-retrace-client.c:412
@@ -1324,7 +1657,8 @@ msgstr ""
 #, c-format
 msgid "Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr ""
+msgstr "Неочекивани HTTP одговор од сервера: %d\n"
+"%s"
 
 #: ../src/plugins/abrt-retrace-client.c:232
 #: ../src/plugins/abrt-retrace-client.c:755
@@ -1333,7 +1667,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:992
 #: ../src/plugins/abrt-retrace-client.c:1062
 msgid "Invalid response from server: missing HTTP message body."
-msgstr ""
+msgstr "Неисправан одговор од сервера: недостаје HTTP тело поруке."
 
 #: ../src/plugins/abrt-retrace-client.c:424
 #, c-format
@@ -1341,24 +1675,27 @@ msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official '%s' repositories?"
 msgstr ""
+"Сервер поновног трага не успева да обради пакет '%s.%s.'\n"
+"Да ли је то део званичних '%s' ризница?"
 
 #: ../src/plugins/abrt-retrace-client.c:444
 msgid "Querying server settings"
-msgstr ""
+msgstr "Захтевам поставке сервера"
 
 #: ../src/plugins/abrt-retrace-client.c:452
 msgid "The server is fully occupied. Try again later."
-msgstr ""
+msgstr "Сервер је потпуно заузет. Покушајте поново касније."
 
 #: ../src/plugins/abrt-retrace-client.c:453
 msgid "The server denied your request."
-msgstr ""
+msgstr "Сервер је одбио ваш захтев."
 
 #: ../src/plugins/abrt-retrace-client.c:484
 #: ../src/plugins/abrt-retrace-client.c:500
 #, c-format
 msgid "'%s' must be a regular file in order to use Retrace server."
 msgstr ""
+"'%s' мора бити редовна датотека да бисте користили сервер за поновни траг."
 
 #: ../src/plugins/abrt-retrace-client.c:520
 #, c-format
@@ -1366,27 +1703,29 @@ msgid ""
 "The size of your crash is %s, but the retrace server only accepts crashes "
 "smaller or equal to %s."
 msgstr ""
+"Величина вашег краха је %s, али сервер за поновни траг прихвата само крахове "
+"мање или једнаке са %s."
 
 #: ../src/plugins/abrt-retrace-client.c:540
 msgid "The server does not support xz-compressed tarballs."
-msgstr ""
+msgstr "Сервер не подржава xz-компресоване tarball-ове."
 
 #: ../src/plugins/abrt-retrace-client.c:577
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
-msgstr ""
+msgstr "Издање '%s' није подржано од стране сервера за поновни траг."
 
 #: ../src/plugins/abrt-retrace-client.c:581
 msgid "The server is not able to handle your request."
-msgstr ""
+msgstr "Сервер не може да обради ваш захтев."
 
 #: ../src/plugins/abrt-retrace-client.c:600
 msgid "Unknown package sent to Retrace server."
-msgstr ""
+msgstr "Непознат пакет послат серверу за поновни траг."
 
 #: ../src/plugins/abrt-retrace-client.c:609
 msgid "Preparing an archive to upload"
-msgstr ""
+msgstr "Припремање архиве за слање"
 
 #: ../src/plugins/abrt-retrace-client.c:628
 #, c-format
@@ -1394,187 +1733,204 @@ msgid ""
 "The size of your archive is %s, but the retrace server only accepts archives "
 "smaller or equal to %s."
 msgstr ""
+"Величина ваше архиве је %s, али сервер за поновни траг прихвата само архиве "
+"мање или једнаке са %s."
 
 #: ../src/plugins/abrt-retrace-client.c:640
 #, c-format
 msgid "You are going to upload %s. Continue?"
-msgstr ""
+msgstr "Послаћете %s. Наставити?"
 
 #: ../src/plugins/abrt-retrace-client.c:649
 msgid "Cancelled by user"
-msgstr ""
+msgstr "Отказано од стране корисника"
 
 #: ../src/plugins/abrt-retrace-client.c:683
 #, c-format
 msgid "Uploading %s\n"
-msgstr ""
+msgstr "Шаљем %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:709
 #, c-format
 msgid "Uploading %d%%\n"
-msgstr ""
+msgstr "Шаљем %d%%\n"
 
 #: ../src/plugins/abrt-retrace-client.c:721
 msgid "Failed to read from a pipe"
-msgstr ""
+msgstr "Неуспешно читање са тунела"
 
 #: ../src/plugins/abrt-retrace-client.c:734
 #, c-format
 msgid "Failed to send data: NSS error %d (%s): %s"
-msgstr ""
+msgstr "Неуспешно слање података: NSS грешка %d (%s): %s"
 
 #: ../src/plugins/abrt-retrace-client.c:745
 msgid "Upload successful"
-msgstr ""
+msgstr "Успешно слање"
 
 #: ../src/plugins/abrt-retrace-client.c:767
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
 msgstr ""
+"Ваш директоријум проблема је оштећен и не може бити обрађен од стране "
+"сервера за поновни траг."
 
 #: ../src/plugins/abrt-retrace-client.c:769
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
 msgstr ""
+"Архива садржи злонамерне датотеке (као што су симболички линкови) те не може "
+"бити обрађена."
 
 #: ../src/plugins/abrt-retrace-client.c:782
 msgid "Invalid response from server: missing X-Task-Id."
-msgstr ""
+msgstr "Неисправан одговор од сервера: недостаје X-Task-Id."
 
 #: ../src/plugins/abrt-retrace-client.c:788
 msgid "Invalid response from server: missing X-Task-Password."
-msgstr ""
+msgstr "Неисправан одговор од сервера: недостаје X-Task-Password."
 
 #: ../src/plugins/abrt-retrace-client.c:795
 msgid "Retrace job started"
-msgstr ""
+msgstr "Започет посао поновног трага"
 
 #: ../src/plugins/abrt-retrace-client.c:808
 #, c-format
 msgid "Task Id: %s\n"
 "Task Password: %s\n"
-msgstr ""
+msgstr "Id задатка: %s\n"
+"Лозинка задатка: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:866
 msgid "Invalid response from server: missing X-Task-Status."
-msgstr ""
+msgstr "Неисправан одговор од сервера: недостаје X-Task-Status."
 
 #: ../src/plugins/abrt-retrace-client.c:878
 #, c-format
 msgid "Task Status: %s\n"
 "%s\n"
-msgstr ""
+msgstr "Стање задатка: %s\n"
+"%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:909
 #: ../src/plugins/abrt-retrace-client.c:983
 #: ../src/plugins/abrt-retrace-client.c:1053
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr ""
+msgstr "Неуспешно слање HTTP заглавља дужине %d: NSS грешка %d."
 
 #: ../src/plugins/abrt-retrace-client.c:1170
 msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
 msgstr ""
+"Неуспешан поновни траг. Покушајте поново касније и ако и даље постоји "
+"проблем молим да га пријавите."
 
 #: ../src/plugins/abrt-retrace-client.c:1217
 msgid "log to syslog"
-msgstr ""
+msgstr "записник у syslog"
 
 #: ../src/plugins/abrt-retrace-client.c:1219
 msgid "allow insecure connection to retrace server"
-msgstr ""
+msgstr "дозволи несигурне везе до сервера поновног трага"
 
 #: ../src/plugins/abrt-retrace-client.c:1221
 msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
 msgstr ""
+"немој проверавати да ли је сервер поновног трага способан да обради дати "
+"пакет пре но што се пошаље архива"
 
 #: ../src/plugins/abrt-retrace-client.c:1224
 msgid "retrace server URL"
-msgstr ""
+msgstr "URL сервера поновног трага"
 
 #: ../src/plugins/abrt-retrace-client.c:1226
 msgid "retrace server port"
-msgstr ""
+msgstr "порт сервера поновног трага"
 
 #: ../src/plugins/abrt-retrace-client.c:1228
 msgid "(debug) show received HTTP headers"
-msgstr ""
+msgstr "(откривање програмских грешака) прикажи примљена HTTP заглавља"
 
 #: ../src/plugins/abrt-retrace-client.c:1229
 msgid "For create and batch operations"
-msgstr ""
+msgstr "За стварање и обједињене операције"
 
 #: ../src/plugins/abrt-retrace-client.c:1231
 msgid "read data from ABRT problem directory"
-msgstr ""
+msgstr "читај податке из ABRT директоријума проблема"
 
 #: ../src/plugins/abrt-retrace-client.c:1233
 msgid "read data from coredump"
-msgstr ""
+msgstr "читај податке из coredump-а"
 
 #: ../src/plugins/abrt-retrace-client.c:1235
 msgid "Delay for polling operations"
-msgstr ""
+msgstr "Пауза за операције упита"
 
 #: ../src/plugins/abrt-retrace-client.c:1237
 msgid "(debug) do not delete temporary archive created from dump dir in "
 msgstr ""
+"(отклањање програмских грешака) немој брисати привремене архиве створене из "
+"директоријума излаза у "
 
 #: ../src/plugins/abrt-retrace-client.c:1239
 msgid "For status, backtrace, and log operations"
-msgstr ""
+msgstr "За стање, стабло позивања и запис операција"
 
 #: ../src/plugins/abrt-retrace-client.c:1241
 msgid "id of your task on server"
-msgstr ""
+msgstr "id вашег задатка на серверу"
 
 #: ../src/plugins/abrt-retrace-client.c:1243
 msgid "password of your task on server"
-msgstr ""
+msgstr "лозинка вашег задатка на серверу"
 
 #: ../src/plugins/abrt-retrace-client.c:1247
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch/exploitable"
 msgstr ""
+"abrt-retrace-client <operation> [опције]\n"
+"Операције: create/status/backtrace/log/batch/exploitable"
 
 #: ../src/plugins/abrt-retrace-client.c:1292
 #: ../src/plugins/abrt-retrace-client.c:1298
 msgid "Either problem directory or coredump is needed."
-msgstr ""
+msgstr "Потребан је или директоријум проблема или coredump."
 
 #: ../src/plugins/abrt-retrace-client.c:1304
 #: ../src/plugins/abrt-retrace-client.c:1312
 #: ../src/plugins/abrt-retrace-client.c:1320
 #: ../src/plugins/abrt-retrace-client.c:1328
 msgid "Task id is needed."
-msgstr ""
+msgstr "Id задатка је неопходан."
 
 #: ../src/plugins/abrt-retrace-client.c:1306
 #: ../src/plugins/abrt-retrace-client.c:1314
 #: ../src/plugins/abrt-retrace-client.c:1322
 #: ../src/plugins/abrt-retrace-client.c:1330
 msgid "Task password is needed."
-msgstr ""
+msgstr "Лозинка задатка је неопходна."
 
 #: ../src/plugins/abrt-retrace-client.c:1334
 #, c-format
 msgid "Unknown operation: %s."
-msgstr ""
+msgstr "Непозната операција: %s."
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
-msgstr ""
+msgstr "Локални GNU програм за отклањање програмских грешака"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgstr ""
+"Преузми debuginfo пакете и створи стабло позивања локално користећи GDB"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
@@ -1582,10 +1938,13 @@ msgid ""
 "and take up disk space. However, unlike RetraceServer, doesn't send coredump "
 "to remote machines."
 msgstr ""
+"Потребно је преузети debuginfo пакете, што може захтевати значајан период "
+"времена, и заузимати простор на диску. Међутим, за разлику од RetraceServer-"
+"а, не шаље coredump на удаљене машине."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
-msgstr ""
+msgstr "Пошаљи coredump на удаљени сервер за поновни траг на анализу"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
@@ -1595,22 +1954,27 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
+"Шаље coredump на сервер, који ствара стабло позивања и враћа га. Предности: "
+"нема потребе за преузимањем debuginfo-а. База података debuginfo-а сервера "
+"за поновни траг је комплетнија. Сервер за поновни траг може створити боља "
+"стабла позивања. Мане: coredump који шаљете садржи све податке о срушеном "
+"програму, укључујући и ваше приватне податке, ако их има."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Retrace server URL"
-msgstr ""
+msgstr "URL сервера поновног трага"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Address of the retrace server"
-msgstr ""
+msgstr "Адреса сервера поновног трага"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:5
 msgid "Insecure"
-msgstr ""
+msgstr "Несигурно"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 msgid "Whether or not to use insecure connection"
-msgstr ""
+msgstr "Да ли да користи несигурну везу или не"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
@@ -1618,227 +1982,244 @@ msgid ""
 "fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
 "&gt;(warning)&lt;/a&gt;"
 msgstr ""
+"Напиши \"insecure\" да дозволите несигурну везу &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
+"&gt;(warning)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
-msgstr ""
+msgstr "Скупи .xsession-errors"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
-msgstr ""
+msgstr "Сачувај значајне линије из ~/.xsession-errors датотеке"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:3
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
 msgstr ""
+"Скенира кроз ~/.xsession-errors датотеку и снима оне линије које садрже име "
+"извршне датотеке. Резултат је сачуван као 'xsession_errors' елемент."
 
 #: ../src/plugins/https-utils.c:62
 msgid "An error occurred on the server side."
-msgstr ""
+msgstr "Догодила се грешка са серверске стране."
 
 #: ../src/plugins/https-utils.c:65
 #, c-format
 msgid "A server-side error occurred on '%s'"
-msgstr ""
+msgstr "На серверској страни се догодила грешка на '%s'"
 
 #: ../src/plugins/https-utils.c:74
 msgid "An error occurred while connecting to the server"
-msgstr ""
+msgstr "Догодила се грешка при повезивању на сервер"
 
 #: ../src/plugins/https-utils.c:77
 #, c-format
 msgid "An error occurred while connecting to '%s'"
-msgstr ""
+msgstr "Грешка се догодила при повезивању на '%s'"
 
 #: ../src/plugins/https-utils.c:97
 #, c-format
 msgid "Issuer certificate is invalid: '%s'."
-msgstr ""
+msgstr "Издавач сертификата није исправан: '%s'."
 
 #: ../src/plugins/https-utils.c:100
 #, c-format
 msgid "Certificate is signed by an untrusted issuer: '%s'."
-msgstr ""
+msgstr "Сертификат је потписан од издавача који није поуздан: '%s'."
 
 #: ../src/plugins/https-utils.c:103
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
 msgstr ""
+"Име наслова сертификата '%s' се не подудара са циљним именом домаћина '%s'."
 
 #: ../src/plugins/https-utils.c:107
 msgid "Remote certificate has expired."
-msgstr ""
+msgstr "Удаљени сертификат је истекао."
 
 #: ../src/plugins/https-utils.c:110
 #, c-format
 msgid "Certificate issuer is not recognized: '%s'."
-msgstr ""
+msgstr "Издавач сертификата није препознат: '%s'."
 
 #: ../src/plugins/https-utils.c:113
 #, c-format
 msgid "Bad certificate received. Subject '%s', issuer '%s'."
-msgstr ""
+msgstr "Примљен лош сертификат. Наслов '%s', издавач '%s'."
 
 #: ../src/plugins/https-utils.c:149
 #, c-format
 msgid "Failed to get slot 'PEM Token #0': %d."
-msgstr ""
+msgstr "Грешка при примању слота 'PEM Token #0': %d."
 
 #: ../src/plugins/https-utils.c:182
 #, c-format
 msgid "Can't resolve host name '%s'. NSS error %d."
-msgstr ""
+msgstr "Не могу да разрешим име домаћина '%s'. NSS грешка %d."
 
 #. Host exists, but has neither IPv4 nor IPv6??
 #: ../src/plugins/https-utils.c:203
 #, c-format
 msgid "Can't resolve host name '%s'."
-msgstr ""
+msgstr "Не могу да разрешим име домаћина '%s'."
 
 #: ../src/plugins/https-utils.c:210
 msgid "Failed to set socket blocking mode."
-msgstr ""
+msgstr "Неуспешно постављање блокирајућег режима."
 
 #: ../src/plugins/https-utils.c:213
 msgid "Failed to wrap TCP socket by SSL."
-msgstr ""
+msgstr "Неуспешно умотавање TCP прикључка SSL-ом."
 
 #: ../src/plugins/https-utils.c:215
 msgid "Failed to enable client handshake to SSL socket."
-msgstr ""
+msgstr "Неуспешно омогућавање клијентског руковања са SSL прикључком."
 
 #: ../src/plugins/https-utils.c:220
 msgid "Failed to enable SSL3."
-msgstr ""
+msgstr "Неуспешно омогућавање SSL3."
 
 #: ../src/plugins/https-utils.c:222
 msgid "Failed to enable TLS."
-msgstr ""
+msgstr "Неуспешно омогућавање TLS-а."
 
 #: ../src/plugins/https-utils.c:224
 msgid "Failed to set URL to SSL socket."
-msgstr ""
+msgstr "Неуспешно постављање URL-а на SSL прикључак."
 
 #: ../src/plugins/https-utils.c:233
 #, c-format
 msgid "Can't connect to '%s'"
-msgstr ""
+msgstr "Не могу да се повежем на '%s'"
 
 #: ../src/plugins/https-utils.c:241
 msgid "Failed to set certificate hook."
-msgstr ""
+msgstr "Неуспешно постављање прикључка сертификата."
 
 #: ../src/plugins/https-utils.c:247
 msgid "Failed to set handshake callback."
-msgstr ""
+msgstr "Неуспешно постављање руковања повратног позива."
 
 #: ../src/plugins/https-utils.c:251
 msgid "Failed to reset handshake."
-msgstr ""
+msgstr "Неуспешно поновно постављање руковања."
 
 #: ../src/plugins/https-utils.c:258
 #, c-format
 msgid "Failed to complete SSL handshake: NSS error %d."
-msgstr ""
+msgstr "Неуспешно завршавање SSL руковања: NSS грешка %d."
 
 #: ../src/plugins/https-utils.c:267
 msgid "Failed to close SSL socket."
-msgstr ""
+msgstr "Неуспешно затварање SSL прикључка."
 
 #: ../src/plugins/https-utils.c:332
 #, c-format
 msgid "Malformed HTTP response header: '%s'"
-msgstr ""
+msgstr "Лоше HTTP заглавље одговора : '%s'"
 
 #: ../src/plugins/https-utils.c:369
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
-msgstr ""
+msgstr "Примање података неуспешно: NSS грешка %d."
 
 #: ../src/plugins/https-utils.c:398
 msgid "Malformed chunked response."
-msgstr ""
+msgstr "Лош збирни одговор."
 
 #: ../src/plugins/https-utils.c:423
 msgid "Failed to initialize NSS."
-msgstr ""
+msgstr "Неуспешна иницијализација NSS-а."
 
 #: ../src/plugins/https-utils.c:429
 msgid "Failed to initialize security module."
-msgstr ""
+msgstr "Неуспешна иницијализација сигурносног модула."
 
 #: ../src/plugins/https-utils.c:444
 msgid "Failed to shutdown NSS."
-msgstr ""
+msgstr "Неуспешно искључивање NSS-а."
 
 #: ../src/plugins/oops-utils.c:73
 #, c-format
 msgid "Sleeping for %d seconds"
-msgstr ""
+msgstr "Спавање %d секунди"
 
-#: ../src/plugins/oops-utils.c:207
+#: ../src/plugins/oops-utils.c:200
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
 msgstr ""
+"Догодио се проблем са кернелом због неисправног BIOS-а. Нажалост, такви "
+"проблеми не могу бити поправљени од стране кернел програмера."
 
-#: ../src/plugins/oops-utils.c:212
+#: ../src/plugins/oops-utils.c:205
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
 msgstr ""
+"Догодио се проблем са кернелом, али ваш хардвер није подржан, стога кернел "
+"програмери не могу да поправе овај проблем."
 
-#: ../src/plugins/oops-utils.c:227
+#: ../src/plugins/oops-utils.c:220
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
+"Догодио се проблем са кернелом, али ваш кернел је укаљан (flags:%s). Кернел "
+"програмери не могу да установе дијагнозу укаљаних извештаја."
 
-#: ../src/plugins/oops-utils.c:235
+#: ../src/plugins/oops-utils.c:228
 #, c-format
 msgid " Tainted modules: %s."
-msgstr ""
+msgstr "Укаљани модули: %s."
 
-#: ../src/plugins/bodhi.c:375
+#: ../src/plugins/bodhi.c:468
 msgid "List of bug ids"
-msgstr ""
+msgstr "Списак идентификатора програмских грешака"
 
-#: ../src/plugins/bodhi.c:376
+#: ../src/plugins/bodhi.c:469
 msgid "Specify a bodhi server url"
-msgstr ""
+msgstr "Назначите URL bodhi сервера"
 
-#: ../src/plugins/bodhi.c:377
+#: ../src/plugins/bodhi.c:470
 msgid "Specify a release"
-msgstr ""
+msgstr "Назначите издање"
 
-#: ../src/plugins/bodhi.c:382
+#: ../src/plugins/bodhi.c:475
 msgid ""
 "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
 "\n"
 "Search for updates on bodhi server"
 msgstr ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"\n"
+"Потражите ажурирања на bodhi серверу"
 
-#: ../src/plugins/bodhi.c:434
+#: ../src/plugins/bodhi.c:542
 msgid "Searching for updates"
-msgstr ""
+msgstr "Тражим ажурирања"
 
-#: ../src/plugins/bodhi.c:440
+#: ../src/plugins/bodhi.c:548
 msgid "No updates for this package found"
-msgstr ""
+msgstr "Нису пронађена ажурирања за овај пакет"
 
 #. strbuf_free(q);
-#: ../src/plugins/bodhi.c:469
+#: ../src/plugins/bodhi.c:577
 msgid "Local version of the package is newer than available updates"
-msgstr ""
+msgstr "Локална верзија пакета је новија него доступна ажурирања"
 
-#: ../src/plugins/bodhi.c:486
+#: ../src/plugins/bodhi.c:594
 #, c-format
 msgid ""
 "An update exists which might fix your problem. You can install it by running:"
 " %s. Do you want to continue with reporting the bug?"
 msgstr ""
+"Постоји ажурирање које би могло решити ваш проблем. Можете га инсталирати "
+"извршавањем: %s. Да ли желите наставити са пријавом програмске грешке?"
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
 msgid ""
@@ -1846,148 +2227,323 @@ msgid ""
 "\n"
 "Scans files for split oops message. Can print and/or delete them."
 msgstr ""
+"& [-v] [-od] ДАТОТЕКА...\n"
+"\n"
+"Претражује датотеке за раздељеном oops поруком. Може је исписати и/или "
+"обрисати."
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:97
 msgid "Print found oopses"
-msgstr ""
+msgstr "Исписује пронађене oops-еве"
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:98
 msgid "Delete files with found oopses"
-msgstr ""
+msgstr "Обриши датотеке са пронађеним oops-евима"
 
-#: ../src/cli/abrt-cli-core.c:89
+#: ../src/cli/abrt-cli-core.c:100
 #, c-format
 msgid "'%s' identifies more than one problem directory"
+msgstr "'%s' показује на више од једног директоријума проблема"
+
+#: ../src/cli/abrt-cli.c:130
+msgid "Usage: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:144
-msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
-msgstr ""
-
-#: ../src/cli/abrt-cli.c:148
+#: ../src/cli/abrt-cli.c:134
 msgid "List problems [in DIRs]"
-msgstr ""
+msgstr "Листај проблеме [у DIR-овима]"
 
-#: ../src/cli/abrt-cli.c:149
+#: ../src/cli/abrt-cli.c:135
 msgid "Remove problem directory DIR"
-msgstr ""
+msgstr "Уклони директоријум проблема DIR"
 
-#: ../src/cli/abrt-cli.c:150
+#: ../src/cli/abrt-cli.c:136
 msgid "Analyze and report problem data in DIR"
-msgstr ""
+msgstr "Анализирај и пријави податке проблема у DIR-у"
 
-#: ../src/cli/abrt-cli.c:151
+#: ../src/cli/abrt-cli.c:137
 msgid "Print information about DIR"
-msgstr ""
+msgstr "Прикажи информације о DIR-у"
 
-#: ../src/cli/abrt-cli.c:152
+#: ../src/cli/abrt-cli.c:138
 msgid "Print the count of the recent crashes"
-msgstr ""
+msgstr "Прикажи број недавних крахова"
 
-#: ../src/cli/abrt-cli.c:153
+#: ../src/cli/abrt-cli.c:139
 msgid "Process multiple problems"
-msgstr ""
+msgstr "Обради више проблема"
 
-#: ../src/cli/abrt-cli.c:168
+#: ../src/cli/abrt-cli.c:162
 msgid "See 'abrt-cli COMMAND --help' for more information"
-msgstr ""
+msgstr "Погледајте 'abrt-cli КОМАНДА --help' за више информација"
 
-#: ../src/cli/list.c:125
+#: ../src/cli/list.c:127
 msgid "& list [options]"
-msgstr ""
+msgstr "& list [опције]"
 
-#: ../src/cli/list.c:134
+#: ../src/cli/list.c:136 ../src/cli-ng/abrtcli/cli.py:121
+#: ../src/cli-ng/abrtcli/cli.py:264
 msgid "List only not-reported problems"
-msgstr ""
+msgstr "Прикажи само проблеме који нису пријављени"
 
 #. deprecate -d option with --pretty=full
-#: ../src/cli/list.c:136 ../src/cli/list.c:181
+#: ../src/cli/list.c:138 ../src/cli/list.c:191
 msgid "Show detailed report"
-msgstr ""
+msgstr "Прикажи детаљан извештај"
 
-#: ../src/cli/list.c:137
+#: ../src/cli/list.c:139 ../src/cli-ng/abrtcli/cli.py:113
 msgid "List only the problems more recent than specified timestamp"
-msgstr ""
+msgstr "Прикажи само проблеме млађе од наведеног момента у времену"
 
-#: ../src/cli/list.c:138
+#: ../src/cli/list.c:140 ../src/cli-ng/abrtcli/cli.py:115
 msgid "List only the problems older than specified timestamp"
-msgstr ""
+msgstr "Прикажи само проблеме старије од наведеног момента у времену"
 
-#: ../src/cli/list.c:162
+#: ../src/cli/list.c:166
 #, c-format
 msgid ""
 "The Autoreporting feature is disabled. Please consider enabling it by "
 "issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
 msgstr ""
+"Могућност аутоматског пријављивања је онемогућена. Молим да размотрите "
+"омогућавање исте извршавањем\n"
+"'abrt-auto-reporting enabled' као корисник са root привилегијама\n"
 
-#: ../src/cli/list.c:173
+#: ../src/cli/list.c:183
 msgid "& info [options] DIR..."
-msgstr ""
+msgstr "& info [опције] DIR..."
 
-#: ../src/cli/list.c:182
+#: ../src/cli/list.c:192
 msgid "Text larger than this will be shown abridged"
-msgstr ""
+msgstr "Текст већи од овога ће бити приказан сажето"
 
-#: ../src/cli/list.c:202
+#: ../src/cli/list.c:212
 #, c-format
 msgid "No such problem directory '%s'"
-msgstr ""
+msgstr "Не постоји директоријум проблема '%s'"
 
-#: ../src/cli/status.c:62
+#: ../src/cli/status.c:66
 msgid "& status"
-msgstr ""
+msgstr "& status"
 
-#: ../src/cli/status.c:70
+#: ../src/cli/status.c:74 ../src/cli-ng/abrtcli/cli.py:260
 msgid "Print only the problem count without any message"
-msgstr ""
+msgstr "Прикажи само број проблема без икакве поруке"
 
-#: ../src/cli/status.c:71
+#: ../src/cli/status.c:75 ../src/cli-ng/abrtcli/cli.py:262
 msgid "Print only the problems more recent than specified timestamp"
-msgstr ""
+msgstr "Прикажи само проблеме млађе од наведеног момента у времену"
 
-#: ../src/cli/status.c:87
+#: ../src/cli/status.c:91
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
 msgstr ""
+"ABRT је открио %u проблем(а). За више информација извршите: abrt-cli "
+"list%s\n"
 
-#: ../src/cli/report.c:28
-msgid "& report [options] DIR..."
+#: ../src/cli/report.c:34
+#, c-format
+msgid "Can't find problem '%s'"
 msgstr ""
 
-#: ../src/cli/report.c:38
-msgid "Remove PROBLEM_DIR after reporting"
+#: ../src/cli/report.c:42
+#, c-format
+msgid "Problem '%s' cannot be reported"
 msgstr ""
 
-#: ../src/cli/report.c:71 ../src/cli/process.c:70
+#: ../src/cli/report.c:63 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "Уклањам '%s'"
+
+#: ../src/cli/report.c:79
+msgid "& report [options] DIR..."
+msgstr "& report [опције] DIR..."
+
+#: ../src/cli/report.c:89
+msgid "Remove PROBLEM_DIR after reporting"
+msgstr "Уклони PROBLEM_DIR након пријављивања"
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
-msgstr ""
+msgstr "Акције: уклони(rm), инфо(i), прескочи(s):"
 
 #: ../src/cli/process.c:66
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
-msgstr ""
+msgstr "Акције: уклони(rm), извештај(e), инфо(i), прескочи(s):"
 
-#: ../src/cli/process.c:77
+#: ../src/cli/process.c:78
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "Пријављујем '%s'"
 
 #. dummy must be free because the function ask allocate memory
-#: ../src/cli/process.c:133
+#: ../src/cli/process.c:127
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "За следећи проблем притисните ЕНТЕР:"
+
+#: ../src/cli/process.c:138
+msgid "Without --since argument, iterates over all detected problems."
+msgstr "Без --since аргумента, пролази кроз све откривене проблеме."
 
 #: ../src/cli/process.c:144
-msgid "Without --since argument, iterates over all detected problems."
+msgid "Selects only problems detected after timestamp"
+msgstr "Означава само проблеме откривене након момента у времену"
+
+#: ../src/cli-ng/abrtcli/cli.py:33
+msgid "Problem has no backtrace"
 msgstr ""
 
-#: ../src/cli/process.c:150
-msgid "Selects only problems detected after timestamp"
+#: ../src/cli-ng/abrtcli/cli.py:35
+msgid "Start retracing process?"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:40
+msgid "Show backtrace of a problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:50
+msgid "This"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:52
+msgid "Last"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:54
+msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:64 ../src/cli-ng/abrtcli/cli.py:99
+msgid ""
+"Permission denied: '{}'\n"
+"If this is a system problem try running this command as root"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:71
+msgid "Install required debuginfo for given problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:106
+msgid "Run GDB against a problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:117 ../src/cli-ng/abrtcli/cli.py:153
+msgid "Output format"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:119 ../src/cli-ng/abrtcli/cli.py:155
+msgid "Built-in output format"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:145 ../src/cli-ng/abrtcli/match.py:89
+msgid "No problems"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:147
+msgid "List problems"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:167
+msgid "Print information about problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:173
+msgid "Prompt before removal"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:174
+msgid "Do not prompt before removal"
+msgstr ""
+
+#. force prompt for last problem to avoid accidents
+#: ../src/cli-ng/abrtcli/cli.py:182
+msgid "Are you sure you want to delete this problem?"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:186
+msgid "Removed"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:188
+msgid "Remove problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:199
+msgid "Report problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:204
+msgid "Perform local retracing"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:206
+msgid "Perform remote retracing using retrace server"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:208
+msgid "Force retracing even if backtrace already exists"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:223
+msgid "Problem already has a backtrace"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:224
+msgid "Run abrt retrace with -f/--force to retrace again"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:225
+msgid "Show backtrace?"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:229
+msgid "No retracing possible for this problem type"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:233
+msgid ""
+"Upload core dump and perform remote retracing? (It may contain sensitive "
+"data). If your answer is 'No', a stack trace will be generated locally. "
+"Local retracing requires downloading potentially large amount of debuginfo "
+"data"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:248
+msgid "Remote retracing"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:251
+msgid "Local retracing"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:255
+msgid "Generate backtrace from coredump"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:280
+msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:283
+msgid "Print count of the recent crashes"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:292
+msgid "Authenticate and show all problems on this machine"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/match.py:96
+msgid "No problem(s) matched"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/match.py:116
+msgid "Ambiguous match specified resulting in multiple problems:"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/utils.py:78
+msgid "Not reportable"
 msgstr ""
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
@@ -1995,6 +2551,8 @@ msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
 msgstr ""
+"Пошаљи coredump на удаљени сервер за поновни траг на анализу или изврши "
+"локалну анализу ако удаљена анализа није успешна"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
 msgid ""
@@ -2006,72 +2564,89 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
+"Шаље coredump на сервер, који ствара стабло позивања и враћа га. Ако "
+"корисник не жели да пошаље свој coredump нигде овај догађај ће извршити "
+"локалну анализу. Локална анализа се извршава и у случају да удаљена анализа "
+"није успешна. Предности: нема потребе за преузимањем debuginfo-а. База "
+"података debuginfo-а сервера за поновни траг је комплетнија. Сервер за "
+"поновни траг може створити боља стабла позивања. Мане: coredump који шаљете "
+"садржи све податке о срушеном програму, укључујући и ваше приватне податке, "
+"ако их има."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
-msgstr ""
+msgstr "Анализирај VM језгро"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
 msgid ""
 "Install kernel debuginfo packages, generate kernel log and oops message"
 msgstr ""
+"Инсталирај кернел debuginfo пакете, створи запис кернела и oops поруку"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
 "Needs to install kernel debuginfo packages, which might take significant "
 "time, and take up disk space."
 msgstr ""
+"Потребно је инсталирати кернел debuginfo пакете, што може захтевати значајан "
+"период времена, и заузимати простор на диску."
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
-msgstr ""
+msgstr "Сакупи GConf подешавања"
 
 #: ../src/plugins/collect_GConf.xml.in.h:2
 msgid "Save configuration from application's GConf directory"
-msgstr ""
+msgstr "Сачувај подешавања из GConf директоријума програма"
 
 #: ../src/plugins/collect_GConf.xml.in.h:3
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
 msgstr ""
+"Извршава gconftool-2 --recursive-list /apps/executable и чува га као "
+"'gconf_subtree' елеменат."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
-msgstr ""
+msgstr "Сакупља датотеке за подешавање vim-а на системском нивоу"
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:2
 msgid "Save /etc/vimrc and /etc/gvimrc"
-msgstr ""
+msgstr "Сачувај /etc/vimrc и /etc/gvimrc"
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:3
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
 msgstr ""
+"Проверава да ли постоје vimrc и gvimrc датотеке у /etc и чува их као "
+"system_vimrc и system_gvimrc, респективно."
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid "Collect yours vim configuration files"
-msgstr ""
+msgstr "Скупља ваше vim датотеке за подешавање"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:2
 msgid "Save .vimrc and .gvimrc from your home directory"
-msgstr ""
+msgstr "Чува .vimrc и .gvimrc из вашег личног директоријума"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
 "Checks if there are .vimrc and .gvimrc in your home directory and saves them "
 "as user_vimrc and user_gvimrc, respectively."
 msgstr ""
+"Проверава да ли постоје vimrc и gvimrc датотеке у вашем личном директоријуму "
+"и чува их као user_vimrc и user_gvimrc, респективно."
 
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"
-msgstr ""
+msgstr "Након извештаја"
 
 #: ../src/plugins/post_report.xml.in.h:2
 msgid "Executed after the reporting is finished"
-msgstr ""
+msgstr "Извршава се након што је пријављивање завршено"
 
 #: ../src/plugins/post_report.xml.in.h:3
 msgid "Used for updating of the databases"
-msgstr ""
+msgstr "Користи се за освежавање база података"

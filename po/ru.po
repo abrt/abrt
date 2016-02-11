@@ -4,15 +4,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2015-04-08 13:09+0200\n"
+"POT-Creation-Date: 2016-02-11 12:54+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-04-06 04:10-0400\n"
-"Last-Translator: Igor Gorbounov <igor.gorbounov@gmail.com>\n"
+"PO-Revision-Date: 2015-07-20 08:46-0400\n"
+"Last-Translator: yuliya <ypoyarko@redhat.com>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"X-Generator: Zanata 3.5.1\n"
+"X-Generator: Zanata 3.8.2\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
@@ -25,37 +25,37 @@ msgid "View and report application crashes"
 msgstr "Просмотреть сбои приложения и создать отчет"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/applet/applet.c:157
+#: ../src/applet/applet.c:260 ../src/cli/report.c:51
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "Не удается стать владельцем «%s»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/applet/applet.c:165
+#: ../src/applet/applet.c:268
 #, c-format
 msgid "Can't open directory for writing '%s'"
 msgstr "Не удалось открыть каталог для записи «%s»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/applet/applet.c:442 ../src/applet/applet.c:461
+#: ../src/applet/applet.c:546 ../src/applet/applet.c:564
 #, c-format
 msgid "Can't close notification: %s"
 msgstr "Не удалось закрыть уведомление: %s"
 
-#: ../src/applet/applet.c:496
+#: ../src/applet/applet.c:598
 msgid "Oops!"
 msgstr "Ой!"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/applet/applet.c:514
+#: ../src/applet/applet.c:616
 msgid "Report"
 msgstr "Сообщить"
 
-#: ../src/applet/applet.c:523
+#: ../src/applet/applet.c:625
 msgid "Restart"
 msgstr "Перезапуск"
 
-#: ../src/applet/applet.c:588
+#: ../src/applet/applet.c:694
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
@@ -64,7 +64,7 @@ msgstr ""
 "Похоже, что, к сожалению, произошел сбой %s. Отчет об этой ошибке "
 "автоматически отправлен."
 
-#: ../src/applet/applet.c:593
+#: ../src/applet/applet.c:699
 #, c-format
 msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
@@ -73,8 +73,8 @@ msgstr ""
 "Похоже, что, к сожалению, произошел сбой %s. Отчет об этой ошибке будет "
 "отправлен, когда будет доступ к Интернету."
 
-#: ../src/applet/applet.c:599 ../src/applet/applet.c:613
-#: ../src/applet/applet.c:641
+#: ../src/applet/applet.c:705 ../src/applet/applet.c:719
+#: ../src/applet/applet.c:747
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
@@ -83,7 +83,7 @@ msgstr ""
 "Похоже, что, к сожалению, произошел сбой %s. Свяжитесь с разработчиком, если "
 "вы хотите сообщить о проблеме."
 
-#: ../src/applet/applet.c:607
+#: ../src/applet/applet.c:713
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
@@ -92,7 +92,7 @@ msgstr ""
 "Похоже, что, к сожалению, произошел сбой %s. Если вы хотите помочь решить "
 "проблему, отправьте отчет."
 
-#: ../src/applet/applet.c:626
+#: ../src/applet/applet.c:732
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
@@ -100,7 +100,7 @@ msgstr ""
 "Похоже, что, к сожалению, произошел сбой компонента. Автоматически отправлен "
 "отчет об этой проблеме."
 
-#: ../src/applet/applet.c:630
+#: ../src/applet/applet.c:736
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
@@ -108,7 +108,7 @@ msgstr ""
 "Похоже, что, к сожалению, произошел сбой компонента. Отчет об этой проблеме "
 "будет отправлен, когда будет доступ к Интернету."
 
-#: ../src/applet/applet.c:635
+#: ../src/applet/applet.c:741
 msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
@@ -117,32 +117,32 @@ msgstr ""
 "проблемы, отправьте отчет."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/applet/applet.c:680
+#: ../src/applet/applet.c:786
 #, c-format
 msgid "Can't show notification: %s"
 msgstr "Не удалось показать уведомление: %s"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:712 ../src/daemon/abrt-upload-watch.c:168
+#: ../src/applet/applet.c:818 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "Не удалось выполнить чтение из канала gio: «%s»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/applet/applet.c:790
+#: ../src/applet/applet.c:896
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "Не удалось изменить шифрование в канале gio: %s"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/applet/applet.c:794
+#: ../src/applet/applet.c:900
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "Не удалось включить неблокирующий режим для канала gio: %s"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/applet/applet.c:1090
+#: ../src/applet/applet.c:1186
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -151,10 +151,21 @@ msgstr "& [-v] [DIR]...\n"
 "\n"
 "Модуль оповещения о неполадках, обнаруженных ABRT\n"
 
+#: ../src/configuration-gui/abrt-config-widget.c:483
+msgid ""
+"The configuration option above has been moved to GSettings and the switch is "
+"linked to the value of the setting 'report-technical-problems' from the "
+"schema 'org.gnome.desktop.privacy'."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.c:501
+msgid "The configuration option above can be configured in"
+msgstr ""
+
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr "Спрашивать перед перехватом каталога"
+msgstr "Подтверждать перемещение каталога"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
@@ -171,18 +182,15 @@ msgstr "Сокращенный отчет"
 msgid "Silent shortened reporting"
 msgstr "Сокращенный отчет без подтверждения"
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
 "space consuming operation. ABRT provides a service which generates the stack "
 "trace from the coredump but you have to upload the coredump to this service. "
-"With this option disabled ABRT will upload the coredump without asking."
+"With option 'Always' ABRT will always upload the coredump without asking. "
+"With option 'Never' the stack trace will be always generated locally. With "
+"option 'Ask' ABRT will always ask the user."
 msgstr ""
-"Файл дампа памяти нужен для создания трассировки стека. На эту операцию "
-"требуется достаточно много времени и места. ABRT предоставляет службу "
-"создания трассировки стека из предварительно загруженного дампа памяти. Если "
-"этот параметр выключен, ABRT будет отправлять дамп без подтверждения."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
@@ -205,7 +213,7 @@ msgid ""
 "uReports are sent automatically immediately after problem detection."
 msgstr ""
 "uReport содержит краткое и полностью анонимное описание проблемы. ABRT "
-"использует отчеты uReport для быстрого обнаружения дубликатов. В стандартной "
+"использует отчеты uReport для быстрого поиска дубликатов. В стандартной "
 "конфигурации uReport отправляется в начале процесса формирования отчетности. "
 "Если этот параметр включен, отчеты uReport отправляются автоматически сразу "
 "после обнаружения проблемы."
@@ -218,9 +226,8 @@ msgid ""
 "You can always use the default problem browser to make complete report."
 msgstr ""
 "Если этот параметр включен, процесс создания отчета, запущенный нажатием "
-"кнопки «Отчет» во всплывающем сообщении о сбое, будет прерван после "
-"отправления отчета uReport. Для создания полного отчета можно "
-"воспользоваться стандартным средством просмотра проблем."
+"кнопки «Отчет» во всплывающем сообщении о сбое, ограничится отправкой отчета "
+"uReport. Полный отчет можно создать в окне просмотра обнаруженных ошибок."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
@@ -228,44 +235,54 @@ msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
-"Если этот параметр включен, ABRT не будет показывать уведомления о "
-"сообщенных проблемах. Действует, только если включен сокращенный формат "
-"отчетов."
+"Если этот параметр включен, ABRT не будет показывать уведомления об отправке "
+"отчетов. Действует, если включен сокращенный формат."
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
-msgid "Ask before uploading coredump"
-msgstr "Спрашивать перед выгрузкой дампа памяти"
-
-#: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
 msgstr ""
-"Если этот параметр включен, ABRT будет создавать отчет об ошибке с "
-"ограниченным доступом, если обнаружена вероятность попадания в отчет "
-"конфиденциальных данных."
+"Если этот параметр включен, ABRT будет создавать отчет с ограниченным "
+"доступом, если обнаружена вероятность попадания в отчет конфиденциальных "
+"данных."
+
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/configuration-gui/abrt-config-widget.glade.h:11
+msgid "Request private ticket for sensitive information"
+msgstr "Ограничение доступа к отчету"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
-msgid "Request private ticket for sensitive information"
-msgstr "Запросить доступ к закрытому билету с конфиденциальными данными"
+msgid "Notify incomplete problems"
+msgstr "Уведомлять о неполных данных"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
-msgid "Notify incomplete problems"
-msgstr "Уведомлять о неполных данных по проблеме"
-
-# translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
 msgstr ""
-"Обнаружены неполные данные об ошибках вследствие выключения компьютера или "
-"выхода пользователя из системы. С целью обеспечения содержательности отчетов "
-"ABRT не отправит отчет об этих ошибках."
+"Если обнаружены неполные данные об ошибках (вследствие выключения компьютера "
+"или выхода пользователя из системы), то в целях обеспечения информативности "
+"ABRT не позволит отправлять неполные отчеты."
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:14
+msgid "Always"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:15
+msgid "Never"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:16
+msgid "Ask"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:17
+msgid "Upload coredump for backtrace generation"
+msgstr ""
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/system-config-abrt.c:79
@@ -281,12 +298,12 @@ msgstr "По _умолчанию"
 #: ../src/configuration-gui/system-config-abrt.c:116
 #: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
-msgstr "Конфигурация отчетов о сбоях"
+msgstr "Конфигурация отчетов об ошибках"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
-msgstr "О System Config ABRT"
+msgstr "О программе system-config-abrt"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/main.c:105
@@ -298,7 +315,7 @@ msgstr "О программе"
 msgid "Quit"
 msgstr "Выход"
 
-#: ../src/daemon/abrt-action-save-package-data.c:390
+#: ../src/daemon/abrt-action-save-package-data.c:393
 msgid ""
 "& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 "\n"
@@ -306,10 +323,10 @@ msgid ""
 msgstr ""
 "& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 "\n"
-"Запросить в базе данных и сохранить название пакета и компонента"
+"Сделать запрос к базе данных и сохранить название пакета и компонента"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-action-save-package-data.c:403
+#: ../src/daemon/abrt-action-save-package-data.c:406
 #: ../src/daemon/abrt-action-save-container-data.c:210
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
 #: ../src/plugins/abrt-action-analyze-c.c:141
@@ -322,11 +339,11 @@ msgid "Problem directory"
 msgstr "Каталог с данными сбоя"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-action-save-package-data.c:404
+#: ../src/daemon/abrt-action-save-package-data.c:407
 msgid "Configuration file"
 msgstr "Файл конфигурации"
 
-#: ../src/daemon/abrt-action-save-package-data.c:405
+#: ../src/daemon/abrt-action-save-package-data.c:408
 msgid "Use this directory as RPM root"
 msgstr "Использовать этот каталог в качестве корневого для RPM"
 
@@ -343,27 +360,28 @@ msgid "Root directory for running container commands"
 msgstr "Корневой каталог для выполнения команд для контейнера"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-server.c:785 ../src/dbus/abrt-dbus.c:891
+#: ../src/daemon/abrt-server.c:796 ../src/dbus/abrt-dbus.c:894
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:444
 msgid "& [options]"
 msgstr "& [параметры]"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-server.c:796
+#: ../src/daemon/abrt-server.c:807
 msgid "Use NUM as client uid"
 msgstr "Использовать NUM как uid клиента"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-server.c:797 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/daemon/abrt-server.c:808 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:97
 #: ../src/plugins/abrt-dump-journal-core.c:477
 #: ../src/plugins/abrt-dump-journal-oops.c:219
-#: ../src/plugins/abrt-dump-xorg.c:244
+#: ../src/plugins/abrt-dump-journal-xorg.c:188
+#: ../src/plugins/abrt-dump-xorg.c:52
 msgid "Log to syslog"
 msgstr "Запись в журнал"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrtd.c:460
+#: ../src/daemon/abrt-server.c:809 ../src/daemon/abrtd.c:460
 msgid "Add program names to log"
 msgstr "Добавить названия программ в журнал"
 
@@ -373,69 +391,58 @@ msgid "Unknown error"
 msgstr "Неизвестная ошибка"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/dbus/abrt-dbus.c:197
-#, c-format
-msgid "'%s' is not a valid problem directory"
-msgstr "«%s» не является правильным каталогом для данных о сбое"
-
-# translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/dbus/abrt-dbus.c:232
-#, c-format
-msgid "'%s' element can't be modified"
-msgstr "Элемент «%s» не может быть изменен"
-
-# translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/dbus/abrt-dbus.c:253 ../src/dbus/abrt-dbus.c:455
-#: ../src/dbus/abrt-dbus.c:507 ../src/dbus/abrt-dbus.c:571
-#: ../src/dbus/abrt-dbus.c:737 ../src/dbus/abrt-configuration.c:618
-#: ../src/dbus/abrt-configuration.c:683
-#, c-format
-msgid "Not Authorized"
-msgstr "Не разрешено"
-
-# translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/dbus/abrt-dbus.c:265
-msgid "Can't access the problem for modification"
-msgstr "Ошибка доступа к проблеме с целью ее изменения"
-
-# translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/dbus/abrt-dbus.c:470
-msgid "Chowning directory failed. Check system logs for more details."
-msgstr "Не удалось изменить владельца каталога. Проверьте журналы."
-
-#: ../src/dbus/abrt-dbus.c:581
-msgid "Can't access the problem for reading"
-msgstr "Не удается получить доступ к данным сбоя для чтения"
-
-# translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/dbus/abrt-dbus.c:630
+#: ../src/dbus/abrt-dbus.c:167
 #, c-format
 msgid "'%s' is not a valid element name"
 msgstr "Недопустимое имя элемента:  «%s»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/dbus/abrt-dbus.c:651
+#: ../src/dbus/abrt-dbus.c:219
+#, c-format
+msgid "'%s' is not a valid problem directory"
+msgstr "Недопустимый каталог с данными сбоя: «%s»"
+
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/dbus/abrt-dbus.c:272 ../src/dbus/abrt-dbus.c:520
+#: ../src/dbus/abrt-configuration.c:618 ../src/dbus/abrt-configuration.c:683
+#, c-format
+msgid "Not Authorized"
+msgstr "Не разрешено"
+
+#: ../src/dbus/abrt-dbus.c:285
+msgid "Can't open the problem"
+msgstr ""
+
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/dbus/abrt-dbus.c:317
+#, c-format
+msgid "'%s' element can't be modified"
+msgstr "Элемент «%s» не может быть изменен"
+
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/dbus/abrt-dbus.c:536
+msgid "Chowning directory failed. Check system logs for more details."
+msgstr "Не удалось изменить владельца каталога. Проверьте журналы."
+
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/dbus/abrt-dbus.c:665
 #, c-format
 msgid "Can't get size of '%s'"
 msgstr "Не удалось определить размер «%s»."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/dbus/abrt-dbus.c:666
+#: ../src/dbus/abrt-dbus.c:680
 msgid "No problem space left"
 msgstr "Недостаточно места"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/dbus/abrt-dbus.c:698
+#: ../src/dbus/abrt-dbus.c:715
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
 msgstr "Ошибка удаления элемента «%s» из каталога «%s»"
 
-#: ../src/dbus/abrt-dbus.c:725
-msgid "Can't access the problem"
-msgstr ""
-
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/dbus/abrt-dbus.c:873 ../src/dbus/abrt-configuration.c:983
+#: ../src/dbus/abrt-dbus.c:876 ../src/dbus/abrt-configuration.c:983
 #: ../src/daemon/abrtd.c:426
 #, c-format
 msgid ""
@@ -446,13 +453,13 @@ msgstr ""
 "использующая это имя.\n"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/dbus/abrt-dbus.c:900 ../src/dbus/abrt-configuration.c:1011
+#: ../src/dbus/abrt-dbus.c:903 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:459
 msgid "Exit after NUM seconds of inactivity"
 msgstr "Выйти после NUM секунд бездействия"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/dbus/abrt-dbus.c:918 ../src/dbus/abrt-configuration.c:1021
+#: ../src/dbus/abrt-dbus.c:921 ../src/dbus/abrt-configuration.c:1021
 msgid "This program must be run as root."
 msgstr ""
 "Эта программа должна запускаться от имени привелигированного пользователя."
@@ -482,20 +489,23 @@ msgstr "Не выполнять как службу"
 msgid "Log to syslog even with -d"
 msgstr "Запись в журнал даже с -d"
 
-# translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-event.c:406
-msgid "& [-v -i] -e|--event EVENT DIR..."
-msgstr "& [-v -i] -e|--event EVENT DIR..."
+#: ../src/daemon/abrt-handle-event.c:394
+msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
+msgstr ""
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-event.c:414
+#: ../src/daemon/abrt-handle-event.c:403
 msgid "Run EVENT on DIR"
 msgstr "Запуск EVENT в DIR"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-event.c:415
+#: ../src/daemon/abrt-handle-event.c:404
 msgid "Communicate directly to the user"
 msgstr "Взаимодействие с пользователем напрямую"
+
+#: ../src/daemon/abrt-handle-event.c:405
+msgid "Increment the nice value by INCREMENT"
+msgstr ""
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-upload-watch.c:118
@@ -519,8 +529,8 @@ msgstr ""
 "& [-vs] [-w НОМЕР] [-c МиБ] [КАТАЛОГ]\n"
 "\n"
 "\n"
-"Следит за указанным каналогом и распаковывает поступающие\n"
-"архивы в место, определенное в выражении DumpLocation в abrt.conf\n"
+"Следит за указанным каталогом и распаковывает поступающие\n"
+"архивы в место, определенное значением DumpLocation в abrt.conf\n"
 "\n"
 "Если КАТАЛОГ не определен, будет выбрано значение \n"
 "WatchCrashdumpArchiveDir из abrt.conf"
@@ -541,91 +551,92 @@ msgid "Maximal cache size in MiB. Default is "
 msgstr "Максимальный размер кэша в МиБ. По умолчанию:"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-auto-reporting.c:176
+#: ../src/daemon/abrt-auto-reporting.c:198
+#: ../src/daemon/abrt-auto-reporting.c:206
 msgid "& [ "
 msgstr "& [ "
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/daemon/abrt-auto-reporting.c:213
+#: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
 msgstr "Отключает аутентификацию"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/daemon/abrt-auto-reporting.c:214
+#: ../src/daemon/abrt-auto-reporting.c:234
 msgid "Red Hat Support user name"
 msgstr "Имя пользователя в системе поддержки Red Hat"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/daemon/abrt-auto-reporting.c:215
+#: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
 msgstr ""
 "Пароль доступа к системе поддержки Red Hat. Если не указан, будет предложено "
 "его ввести вручную"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/daemon/abrt-auto-reporting.c:216
+#: ../src/daemon/abrt-auto-reporting.c:236
 msgid "uReport SSL certificate paths or certificate type"
 msgstr "Путь к SSL-сертификату uReport или тип сертификата"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/daemon/abrt-auto-reporting.c:227
+#: ../src/daemon/abrt-auto-reporting.c:252
 msgid "You also need to specify --username for --password"
-msgstr "Если задан пароль, необходимо определить --username"
+msgstr "Если пароль задан, необходимо определить --username"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/daemon/abrt-auto-reporting.c:233
+#: ../src/daemon/abrt-auto-reporting.c:258
 msgid "You can use either --username or --certificate"
 msgstr "Укажите --username или --certificate "
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/daemon/abrt-auto-reporting.c:239
+#: ../src/daemon/abrt-auto-reporting.c:264
 msgid "You can use either --username or --anonymous"
 msgstr "Укажите --username или --anonymous"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/daemon/abrt-auto-reporting.c:245
+#: ../src/daemon/abrt-auto-reporting.c:270
 msgid "You can use either --anonymous or --certificate"
 msgstr "Укажите --anonymous или --certificate"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-auto-reporting.c:251
+#: ../src/daemon/abrt-auto-reporting.c:277
 msgid "Invalid number of arguments"
 msgstr "Недопустимое число аргументов"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-auto-reporting.c:270
+#: ../src/daemon/abrt-auto-reporting.c:296
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr "Неизвестное значение параметра: «%s»\n"
+msgstr "Неизвестное значение: «%s»\n"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/daemon/abrt-auto-reporting.c:305
+#: ../src/daemon/abrt-auto-reporting.c:336
 msgid "Password:"
 msgstr "Пароль:"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/daemon/abrt-auto-reporting.c:308
+#: ../src/daemon/abrt-auto-reporting.c:339
 msgid "Cannot continue without password\n"
 msgstr "Для продолжения необходимо ввести пароль.\n"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
 #. Print only the part before ':' of a string like "username:password"
-#: ../src/daemon/abrt-auto-reporting.c:347
+#: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
 msgstr "Автоматический отчет для HTTP-подключений"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/daemon/abrt-auto-reporting.c:349
+#: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
 msgstr "Автоматический отчет для SSL-подключений"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/daemon/abrt-auto-reporting.c:351
+#: ../src/daemon/abrt-auto-reporting.c:384
 msgid "anonymous auto reporting"
 msgstr "Автоматический отчет для анонимных подключений"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/daemon/abrt-handle-upload.in:69
+#: ../src/daemon/abrt-handle-upload.in:135
 #, c-format
 msgid ""
 "Usage: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
@@ -645,83 +656,83 @@ msgstr ""
 "   ФАЙЛ       - имя файла отправляемого архива\n"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:105
-#: ../src/daemon/abrt-handle-upload.in:108
+#: ../src/daemon/abrt-handle-upload.in:171
+#: ../src/daemon/abrt-handle-upload.in:174
 msgid "Not a directory: '{0}'"
 msgstr "Не является каталогом: «{0}»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:111
+#: ../src/daemon/abrt-handle-upload.in:177
 msgid "Skipping: '{0}' (starts with slash)"
 msgstr "Пропускается: «{0}» (начинается с косой черты)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:114
+#: ../src/daemon/abrt-handle-upload.in:180
 msgid "Skipping: '{0}' (starts with dot)"
 msgstr "Пропускается: «{0}» (начинается с точки)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:117
+#: ../src/daemon/abrt-handle-upload.in:183
 msgid "Skipping: '{0}' (contains ..)"
 msgstr "Пропускается: «{0}» (содержит ..)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:120
+#: ../src/daemon/abrt-handle-upload.in:186
 msgid "Skipping: '{0}' (contains space)"
 msgstr "Пропускается: «{0}» (содержит пробел)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:123
+#: ../src/daemon/abrt-handle-upload.in:189
 msgid "Skipping: '{0}' (contains tab)"
 msgstr "Пропускается: «{0}» (содержит знак табуляции)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:128
+#: ../src/daemon/abrt-handle-upload.in:194
 msgid "Can't change directory to '{0}'"
 msgstr "Не удалось изменить каталог на «{0}»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:139
+#: ../src/daemon/abrt-handle-upload.in:205
 msgid "Unknown file type: '{0}'"
 msgstr "Неизвестный тип файла: «{0}»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:144
+#: ../src/daemon/abrt-handle-upload.in:210
 msgid "Can't create working directory in '{0}'"
 msgstr "Не удалось создать рабочий каталог в «{0}»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:155
+#: ../src/daemon/abrt-handle-upload.in:221
 msgid "Can't move '{0}' to '{1}'"
 msgstr "Не удалось переместить «{0}» в «{1}»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:160
+#: ../src/daemon/abrt-handle-upload.in:226
 msgid "Can't copy '{0}' to '{1}'"
 msgstr "Не удалось скопировать «{0}» в «{1}»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:164
+#: ../src/daemon/abrt-handle-upload.in:230
 msgid "Verification error on '{0}'"
 msgstr "Ошибка проверки «{0}»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:166
+#: ../src/daemon/abrt-handle-upload.in:232
 msgid "Unpacking '{0}'"
 msgstr "Распаковка «{0}»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:170
+#: ../src/daemon/abrt-handle-upload.in:236
 msgid "Can't create '{0}' directory"
 msgstr "Не удалось создать каталог «{0}»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:174
+#: ../src/daemon/abrt-handle-upload.in:240
 msgid "Can't unpack '{0}'"
 msgstr "Не удалось распаковать «{0}»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/daemon/abrt-handle-upload.in:198
+#: ../src/daemon/abrt-handle-upload.in:260
 msgid "'{0}' processed successfully"
 msgstr "'{0}' обработан успешно"
 
@@ -749,23 +760,31 @@ msgstr "Не удается сменить владельца «%s»: %s"
 msgid "Deleting problem directory failed: %s"
 msgstr "Не удалось удалить каталог с данными о сбоях: %s"
 
-# translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/lib/problem_api_dbus.c:133 ../src/lib/problem_api_dbus.c:206
-#: ../src/lib/problem_api_dbus.c:286
+#: ../src/lib/problem_api_dbus.c:131
 #, c-format
-msgid "Can't get problem data from abrt-dbus: %s"
-msgstr "Не удается получить данные об ошибке от abrt-dbus: %s"
+msgid "D-Bus GetInfo method call failed: %s"
+msgstr ""
+
+#: ../src/lib/problem_api_dbus.c:166
+msgid "Can't get problem data from abrt-dbus"
+msgstr ""
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/lib/problem_api_dbus.c:169
+#: ../src/lib/problem_api_dbus.c:193
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
 msgstr "Не удается получить список ошибок от abrt-dbus: %s"
 
-#: ../src/lib/problem_api_dbus.c:250
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/lib/problem_api_dbus.c:230 ../src/lib/problem_api_dbus.c:315
+#, c-format
+msgid "Can't get problem data from abrt-dbus: %s"
+msgstr "Не удается получить данные об ошибке от abrt-dbus: %s"
+
+#: ../src/lib/problem_api_dbus.c:274
 #, c-format
 msgid "Can't test whether the element exists over abrt-dbus: %s"
-msgstr ""
+msgstr "Не удается проверить, существует ли элемент, через  abrt-dbus: %s"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/lib/ignored_problems.c:233
@@ -780,8 +799,8 @@ msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
 "problems '%s'"
 msgstr ""
-"Ошибка записи в «%s». Не удалось удалить проблему «%s» из списка "
-"игнорируемых проблем «%s»."
+"Ошибка записи в «%s». Не удалось удалить «%s» из списка игнорируемых проблем "
+"«%s»."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #. Something nefarious happened
@@ -817,7 +836,7 @@ msgid "Backtrace parsing failed for %s"
 msgstr "Ошибка разбора протокола сбоя %s"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/abrt-action-analyze-backtrace.c:146
+#: ../src/plugins/abrt-action-analyze-backtrace.c:150
 msgid "Crash thread not found"
 msgstr "Поток сбоя не найден"
 
@@ -939,13 +958,45 @@ msgid "Oops text extracted successfully"
 msgstr "Текст ошибки ядра извлечен успешно"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:89
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
 msgstr ""
 "kernel.log сообщает об ошибках оборудования.\n"
 "Это, скорее всего, не проблема программного обеспечения.\n"
+
+#: ../src/plugins/abrt-action-find-bodhi-update:88
+msgid "cannot open problem directory '{0}'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:102
+msgid "Problem directory error: {0}"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:117
+msgid "Using product '{0}' from /etc/os-release."
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:119
+msgid "Using product {0}."
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:121
+msgid "Using product version {0}."
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:133
+msgid "Duplicate bugzilla bug '#{0}' was found"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:135
+msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-find-bodhi-update:140
+msgid "Warning: abrt-bodhi do not support Product version 'Rawhide'"
+msgstr ""
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
@@ -1105,8 +1156,37 @@ msgstr "Отсутствует файл debuginfo: {0}"
 msgid "All debuginfo files are available"
 msgstr "Все отладочные пакеты доступны"
 
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:43
+msgid ""
+"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+"\t[-r REPO]\n"
+"\n"
+"Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
+"ABRT system cache."
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:66
+msgid "Noninteractive, assume 'Yes' to all questions"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:67
+msgid "- means STDIN, default: build_ids"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
+msgid "Download only specified files"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
+msgid "Pattern to use when searching for repos, default: *debug*"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
+msgid "Ignored option"
+msgstr ""
+
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:63
 msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
@@ -1117,7 +1197,7 @@ msgstr ""
 "значительного объема данных."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:72
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
@@ -1243,7 +1323,7 @@ msgstr "Сигнал, вызванный изменением размеров �
 #: ../src/plugins/abrt-gdb-exploitable:562
 #: ../src/plugins/abrt-gdb-exploitable:591
 msgid "Signal sent by alarm(N) expiration"
-msgstr "Сигнал по истечении "
+msgstr "Сигнал по завершении alarm(N) "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:583
@@ -1396,7 +1476,8 @@ msgstr "Создавать каталог в DIR для каждого сбоя 
 #: ../src/plugins/abrt-dump-oops.c:103
 #: ../src/plugins/abrt-dump-journal-core.c:479
 #: ../src/plugins/abrt-dump-journal-oops.c:225
-#: ../src/plugins/abrt-dump-xorg.c:247
+#: ../src/plugins/abrt-dump-journal-xorg.c:191
+#: ../src/plugins/abrt-dump-xorg.c:55
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "То же, что и \"-d DumpLocation\", \"DumpLocation\" задается в abrt.conf"
 
@@ -1408,18 +1489,20 @@ msgstr "Сохранить извлеченную информацию в PROBLE
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-dump-oops.c:105
 #: ../src/plugins/abrt-dump-journal-oops.c:226
-#: ../src/plugins/abrt-dump-xorg.c:248
+#: ../src/plugins/abrt-dump-journal-xorg.c:192
+#: ../src/plugins/abrt-dump-xorg.c:56
 msgid "Make the problem directory world readable"
 msgstr "Открыть доступ чтения к каталогу сбоев"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-dump-oops.c:106
 #: ../src/plugins/abrt-dump-journal-oops.c:227
+#: ../src/plugins/abrt-dump-journal-xorg.c:193
 msgid "Throttle problem directory creation to 1 per second"
 msgstr "Повторить создание каталога через 1 секунду"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/abrt-dump-oops.c:107 ../src/plugins/abrt-dump-xorg.c:249
+#: ../src/plugins/abrt-dump-oops.c:107 ../src/plugins/abrt-dump-xorg.c:57
 msgid "Print search string(s) to stdout and exit"
 msgstr "Вывести строку (строки) поиска в stdout и выйти"
 
@@ -1429,10 +1512,13 @@ msgstr "Вывести строку (строки) поиска в stdout и в�
 msgid "Failed to compile regex"
 msgstr "Не удалось скомпилировать регулярное выражение"
 
-# translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/abrt-dump-oops.c:186
-msgid "Can't update the problem: more than one oops found"
-msgstr "Не удалось обновить проблему: найдено несколько ошибок"
+#: ../src/plugins/abrt-dump-oops.c:177
+msgid "Can't update the problem: no oops found"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-oops.c:183
+msgid "More oopses found: process only the first one"
+msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-core.c:341
 #: ../src/plugins/abrt-dump-journal-core.c:377
@@ -1451,6 +1537,7 @@ msgstr "Не удалось сохранить данные по обнаруж�
 
 #: ../src/plugins/abrt-dump-journal-core.c:427
 #: ../src/plugins/abrt-dump-journal-oops.c:165
+#: ../src/plugins/abrt-dump-journal-xorg.c:121
 msgid "Failed to initialize systemd-journal watch"
 msgstr "Не удалось инициализировать отслеживание systemd-journal"
 
@@ -1485,11 +1572,13 @@ msgstr "Создавать новый каталог для сбоя в DIR дл
 
 #: ../src/plugins/abrt-dump-journal-core.c:480
 #: ../src/plugins/abrt-dump-journal-oops.c:228
+#: ../src/plugins/abrt-dump-journal-xorg.c:194
 msgid "Start reading systemd-journal from the CURSOR position"
 msgstr "Начать чтение журнала systemd с позиции курсора"
 
 #: ../src/plugins/abrt-dump-journal-core.c:481
 #: ../src/plugins/abrt-dump-journal-oops.c:229
+#: ../src/plugins/abrt-dump-journal-xorg.c:195
 msgid "Start reading systemd-journal from the end"
 msgstr "Начать чтение журнала systemd с конца"
 
@@ -1503,16 +1592,19 @@ msgstr "То же, что и -t INT, INT указывается в plugins/CCpp.
 
 #: ../src/plugins/abrt-dump-journal-core.c:484
 #: ../src/plugins/abrt-dump-journal-oops.c:230
+#: ../src/plugins/abrt-dump-journal-xorg.c:196
 msgid "Follow systemd-journal from the last seen position (if available)"
 msgstr "Следить за журналом systemd с последней позиции просмотра (если есть)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:495
 #: ../src/plugins/abrt-dump-journal-oops.c:246
+#: ../src/plugins/abrt-dump-journal-xorg.c:213
 msgid "You need to specify either -c CURSOR or -e"
 msgstr "Необходимо указать либо -c CURSOR, либо -e"
 
 #: ../src/plugins/abrt-dump-journal-core.c:541
 #: ../src/plugins/abrt-dump-journal-oops.c:284
+#: ../src/plugins/abrt-dump-journal-xorg.c:278
 msgid "Cannot open systemd-journal"
 msgstr "Не удается открыть журнал systemd"
 
@@ -1520,18 +1612,21 @@ msgstr "Не удается открыть журнал systemd"
 msgid "Cannot filter systemd-journal to systemd-coredump data only"
 msgstr "Не удается отобрать из журнала systemd только данные systemd-coredump"
 
-#: ../src/plugins/abrt-dump-journal-core.c:547
-#: ../src/plugins/abrt-dump-journal-oops.c:291
+#: ../src/plugins/abrt-dump-journal-core.c:549
+#: ../src/plugins/abrt-dump-journal-oops.c:293
+#: ../src/plugins/abrt-dump-journal-xorg.c:291
 msgid "Cannot seek to the end of journal"
 msgstr "Не удается перейти в конец журнала "
 
-#: ../src/plugins/abrt-dump-journal-core.c:550
-#: ../src/plugins/abrt-dump-journal-oops.c:307
+#: ../src/plugins/abrt-dump-journal-core.c:552
+#: ../src/plugins/abrt-dump-journal-oops.c:309
+#: ../src/plugins/abrt-dump-journal-xorg.c:307
 #, c-format
 msgid "Failed to set systemd-journal cursor '%s'"
 msgstr "Не удалось установить курсор журнала systemd «%s»"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:40
+#: ../src/plugins/abrt-dump-journal-xorg.c:52
 msgid "Cannot read journal data."
 msgstr "Не удается чтение данных журнала."
 
@@ -1562,29 +1657,78 @@ msgstr ""
 "Последняя позиция просмотра сохраняется в "
 
 #: ../src/plugins/abrt-dump-journal-oops.c:231
+#: ../src/plugins/abrt-dump-journal-xorg.c:197
 msgid "Read journal files from all machines"
 msgstr "Читать файлы журнала со всех машин"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:232
+#: ../src/plugins/abrt-dump-journal-xorg.c:198
 msgid "Read all journal files from directory at PATH"
-msgstr ""
+msgstr "Читать все файлы журнала из каталога в PATH"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:279
+#: ../src/plugins/abrt-dump-journal-xorg.c:273
 #, c-format
 msgid "Cannot initialize systemd-journal in directory '%s'"
-msgstr ""
+msgstr "Не удается инициализация systemd-journal в каталоге «%s»"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:288
 msgid "Cannot filter systemd-journal to kernel data only"
 msgstr "Не удается отобрать из журнала systemd-journal только данные ядра"
 
-#: ../src/plugins/abrt-dump-journal-oops.c:298
+#: ../src/plugins/abrt-dump-journal-oops.c:300
+#: ../src/plugins/abrt-dump-journal-xorg.c:298
 #, c-format
 msgid "Failed to start watch from cursor '%s'"
 msgstr "Не удалось начать наблюдение с курсора «%s»"
 
+#: ../src/plugins/abrt-dump-journal-xorg.c:61
+msgid "Failed to parse Backtrace from journal"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:143
+#, c-format
+msgid ""
+"& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
+"\n"
+"Extract Xorg crash from systemd-journal\n"
+"\n"
+"-c and -e options conflicts because both specifies the first read message.\n"
+"\n"
+"-e is useful only for -f because the following of journal starts by reading \n"
+"the entire journal if the last seen possition is not available.\n"
+"\n"
+"The last seen position is saved in %s\n"
+"\n"
+"Journal filter is required parameter and must be specified either by "
+"parameter\n"
+"-j or in %s conf file.\n"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:189
+msgid "Print found crashes on standard output"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:190
+msgid "Create new problem directory in DIR for every crash found"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:199
+msgid "Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:265
+msgid ""
+"Journal filter must be specified either by parameter -j or stored in /etc/"
+"abrt/plugins/xorg.conf file"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-xorg.c:282
+msgid "Cannot filter systemd-journal to Xorg data only"
+msgstr ""
+
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/abrt-dump-xorg.c:237
+#: ../src/plugins/abrt-dump-xorg.c:35
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
@@ -1595,45 +1739,49 @@ msgstr ""
 "Извлекать данные о сбое Xorg из FILE (или стандартного ввода)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/abrt-dump-xorg.c:245
+#: ../src/plugins/abrt-dump-xorg.c:53
 msgid "Print found crash data on standard output"
 msgstr "Вывести найденные данные о сбое в стандартный вывод"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/abrt-dump-xorg.c:246
+#: ../src/plugins/abrt-dump-xorg.c:54
 msgid "Create problem directory in DIR for every crash found"
 msgstr "Создавать каталог в DIR для каждого сбоя"
 
+#: ../src/plugins/abrt-dump-xorg.c:108
+msgid "Failed to parse Backtrace from log file"
+msgstr ""
+
 #. abrt_journal_set_cursor() prints error message in verbose mode
-#: ../src/plugins/abrt-journal.c:267
+#: ../src/plugins/abrt-journal.c:274
 msgid "Cannot save journal watch's position"
 msgstr "Не удается сохранить точку отслеживания журнала"
 
-#: ../src/plugins/abrt-journal.c:277
+#: ../src/plugins/abrt-journal.c:284
 #, c-format
 msgid "Cannot save journal watch's position: open('%s')"
 msgstr "Не удается сохранить точку отслеживания журнала: открывание(«%s»)"
 
 #. Only notice because this is expected
-#: ../src/plugins/abrt-journal.c:295
+#: ../src/plugins/abrt-journal.c:302
 #, c-format
 msgid "Not restoring journal watch's position: file '%s' does not exist"
 msgstr ""
 "Не восстанавливается точка отслеживания журнала: файл «%s» не существует"
 
-#: ../src/plugins/abrt-journal.c:297
+#: ../src/plugins/abrt-journal.c:304
 #, c-format
 msgid "Cannot restore journal watch's position form file '%s'"
 msgstr "Не удается восстановить точку отслеживания журнала из файла «%s»"
 
-#: ../src/plugins/abrt-journal.c:304
+#: ../src/plugins/abrt-journal.c:311
 #, c-format
 msgid "Cannot restore journal watch's position: path '%s' is not regular file"
 msgstr ""
 "Не удается восстановить точку отслеживания журнала: путь «%s» не является "
 "обычным файлом"
 
-#: ../src/plugins/abrt-journal.c:310
+#: ../src/plugins/abrt-journal.c:317
 #, c-format
 msgid ""
 "Cannot restore journal watch's position: file '%s' exceeds %dB size limit"
@@ -1641,12 +1789,12 @@ msgstr ""
 "Не удается восстановить точку отслеживания журнала: файл «%s» превышает "
 "предельный размер %dБ"
 
-#: ../src/plugins/abrt-journal.c:318
+#: ../src/plugins/abrt-journal.c:325
 #, c-format
 msgid "Cannot restore journal watch's position: open('%s')"
 msgstr "Не удается восстановить точку отслеживания журнала: открывание(«%s»)"
 
-#: ../src/plugins/abrt-journal.c:327
+#: ../src/plugins/abrt-journal.c:334
 #, c-format
 msgid "Cannot restore journal watch's position: cannot read entire file '%s'"
 msgstr ""
@@ -1654,7 +1802,7 @@ msgstr ""
 "весь файл «%s»"
 
 #. abrt_journal_set_cursor() prints error message in verbose mode
-#: ../src/plugins/abrt-journal.c:339
+#: ../src/plugins/abrt-journal.c:346
 #, c-format
 msgid "Failed to move the journal to a cursor from file '%s'"
 msgstr "Не удалось переместить журнал в позицию курсора из файла «%s»"
@@ -2051,7 +2199,7 @@ msgid ""
 "private data, if any."
 msgstr ""
 "Отправляет дамп памяти на сервер для генерации протокола сбоя. Достоинства: "
-"не требуется загружать debuginfo. База данных на остлеживающем сервер более "
+"не требуется загружать debuginfo. База данных на отслеживающем сервере более "
 "подробная, поэтому сервер может создавать более точные отчёты. Недостатки: "
 "отправляемый дамп содержит все данные сбойной программы, в том числе и "
 "личные."
@@ -2284,7 +2432,7 @@ msgid "Sleeping for %d seconds"
 msgstr "Переход в режим ожидания на %d сек."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/oops-utils.c:207
+#: ../src/plugins/oops-utils.c:200
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
@@ -2293,7 +2441,7 @@ msgstr ""
 "проблемы не решаются на уровне ядра."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/oops-utils.c:212
+#: ../src/plugins/oops-utils.c:205
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
@@ -2302,7 +2450,7 @@ msgstr ""
 "проблема не может быть решена на уровне ядра."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/oops-utils.c:227
+#: ../src/plugins/oops-utils.c:220
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
@@ -2313,28 +2461,28 @@ msgstr ""
 "диагностировать проблему в таких ядрах."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/oops-utils.c:235
+#: ../src/plugins/oops-utils.c:228
 #, c-format
 msgid " Tainted modules: %s."
 msgstr "Поврежденные модули: %s."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/bodhi.c:375
+#: ../src/plugins/bodhi.c:468
 msgid "List of bug ids"
 msgstr "Список идентификторов ошибок"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/bodhi.c:376
+#: ../src/plugins/bodhi.c:469
 msgid "Specify a bodhi server url"
 msgstr "Указать адрес bodhi-сервера"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/bodhi.c:377
+#: ../src/plugins/bodhi.c:470
 msgid "Specify a release"
 msgstr "Указать версию"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/bodhi.c:382
+#: ../src/plugins/bodhi.c:475
 msgid ""
 "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
 "\n"
@@ -2345,23 +2493,23 @@ msgstr ""
 "Искать обновления на bodhi-сервере"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/bodhi.c:434
+#: ../src/plugins/bodhi.c:542
 msgid "Searching for updates"
 msgstr "Поиск обновлений"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/plugins/bodhi.c:440
+#: ../src/plugins/bodhi.c:548
 msgid "No updates for this package found"
 msgstr "Нет обновлений этого пакета"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
 #. strbuf_free(q);
-#: ../src/plugins/bodhi.c:469
+#: ../src/plugins/bodhi.c:577
 msgid "Local version of the package is newer than available updates"
 msgstr "Локальная версия пакета новее обнаруженных обновлений"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/bodhi.c:486
+#: ../src/plugins/bodhi.c:594
 #, c-format
 msgid ""
 "An update exists which might fix your problem. You can install it by running:"
@@ -2392,79 +2540,79 @@ msgid "Delete files with found oopses"
 msgstr "Удалить файлы с найденными сбоями"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/abrt-cli-core.c:89
+#: ../src/cli/abrt-cli-core.c:100
 #, c-format
 msgid "'%s' identifies more than one problem directory"
 msgstr "«%s» обнаружил несколько проблемных каталогов"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/cli/abrt-cli.c:144
-msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
-msgstr "Формат: abrt-cli [--version] КОМАНДА [DIR]..."
+#: ../src/cli/abrt-cli.c:130
+msgid "Usage: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
+msgstr ""
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/abrt-cli.c:148
+#: ../src/cli/abrt-cli.c:134
 msgid "List problems [in DIRs]"
 msgstr "Показать ошибки [в DIR]"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/abrt-cli.c:149
+#: ../src/cli/abrt-cli.c:135
 msgid "Remove problem directory DIR"
 msgstr "Удалить каталог DIR"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/cli/abrt-cli.c:150
+#: ../src/cli/abrt-cli.c:136
 msgid "Analyze and report problem data in DIR"
 msgstr "Анализировать и предоставить отчет по ошибкам в DIR"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/abrt-cli.c:151
+#: ../src/cli/abrt-cli.c:137
 msgid "Print information about DIR"
 msgstr "Вывод информации о DIR"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/cli/abrt-cli.c:152
+#: ../src/cli/abrt-cli.c:138
 msgid "Print the count of the recent crashes"
 msgstr "Вывод числа недавних сбоев"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/abrt-cli.c:153
+#: ../src/cli/abrt-cli.c:139
 msgid "Process multiple problems"
 msgstr "Обработка нескольких проблем"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/cli/abrt-cli.c:168
+#: ../src/cli/abrt-cli.c:162
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr ""
 "Для получения дополнительной информации выполните «abrt-cli КОМАНДА --help»"
 
-#: ../src/cli/list.c:125
+#: ../src/cli/list.c:127
 msgid "& list [options]"
-msgstr ""
+msgstr "& list [параметры]"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/list.c:134
+#: ../src/cli/list.c:136 ../src/cli-ng/abrtcli/cli.py:121
+#: ../src/cli-ng/abrtcli/cli.py:264
 msgid "List only not-reported problems"
 msgstr "Показать ошибки, о которых еще не сообщалось"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #. deprecate -d option with --pretty=full
-#: ../src/cli/list.c:136 ../src/cli/list.c:181
+#: ../src/cli/list.c:138 ../src/cli/list.c:191
 msgid "Show detailed report"
 msgstr "Показать подробный отчёт"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/cli/list.c:137
+#: ../src/cli/list.c:139 ../src/cli-ng/abrtcli/cli.py:113
 msgid "List only the problems more recent than specified timestamp"
 msgstr "Дать список сбоев, обнаруженных после указанного момента времени"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/cli/list.c:138
+#: ../src/cli/list.c:140 ../src/cli-ng/abrtcli/cli.py:115
 msgid "List only the problems older than specified timestamp"
 msgstr "Дать список сбоев, обнаруженных до указанного момента времени"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/list.c:162
+#: ../src/cli/list.c:166
 #, c-format
 msgid ""
 "The Autoreporting feature is disabled. Please consider enabling it by "
@@ -2475,58 +2623,68 @@ msgstr ""
 "Чтобы их включить, в режиме root выполните: abrt-auto-reporting enabled\n"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/list.c:173
+#: ../src/cli/list.c:183
 msgid "& info [options] DIR..."
 msgstr "& info [параметры] DIR..."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/list.c:182
+#: ../src/cli/list.c:192
 msgid "Text larger than this will be shown abridged"
 msgstr "Текст, длина которого превышает указанную, будет усечен"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/list.c:202
+#: ../src/cli/list.c:212
 #, c-format
 msgid "No such problem directory '%s'"
 msgstr "Нет такого каталога:  «%s»."
 
-#: ../src/cli/status.c:62
+#: ../src/cli/status.c:66
 msgid "& status"
-msgstr ""
+msgstr "& status"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/cli/status.c:70
+#: ../src/cli/status.c:74 ../src/cli-ng/abrtcli/cli.py:260
 msgid "Print only the problem count without any message"
 msgstr "Вывод только числа сбоев"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/cli/status.c:71
+#: ../src/cli/status.c:75 ../src/cli-ng/abrtcli/cli.py:262
 msgid "Print only the problems more recent than specified timestamp"
 msgstr "Вывод сбоев, обнаруженных после указанного момента времени"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/cli/status.c:87
+#: ../src/cli/status.c:91
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
 msgstr ""
 "ABRT обнаружил %u сбой (сбоев). Для получения дополнительной информации "
 "выполните: abrt-cli list%s\n"
 
+#: ../src/cli/report.c:34
+#, c-format
+msgid "Can't find problem '%s'"
+msgstr ""
+
+#: ../src/cli/report.c:42
+#, c-format
+msgid "Problem '%s' cannot be reported"
+msgstr ""
+
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/report.c:28
+#: ../src/cli/report.c:63 ../src/cli/process.c:70
+#, c-format
+msgid "Deleting '%s'"
+msgstr "Удаление «%s»"
+
+# translation auto-copied from project abrt, version rhel7, document abrt
+#: ../src/cli/report.c:79
 msgid "& report [options] DIR..."
 msgstr "& report [параметры] DIR..."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/report.c:38
+#: ../src/cli/report.c:89
 msgid "Remove PROBLEM_DIR after reporting"
 msgstr "Удалить PROBLEM_DIR после отправки отчета"
-
-# translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/report.c:71 ../src/cli/process.c:70
-#, c-format
-msgid "Deleting '%s'"
-msgstr "Удаление «%s»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/process.c:64
@@ -2539,28 +2697,183 @@ msgid "Actions: remove(rm), report(e), info(i), skip(s):"
 msgstr "Действия: удалить (rm), сообщить (e), информация (i), пропустить (s):"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/process.c:77
+#: ../src/cli/process.c:78
 #, c-format
 msgid "Reporting '%s'"
 msgstr "Отчет по «%s»..."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #. dummy must be free because the function ask allocate memory
-#: ../src/cli/process.c:133
+#: ../src/cli/process.c:127
 msgid "For next problem press ENTER:"
 msgstr "Для перехода к следующей проблеме нажмите ENTER:"
 
 # translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
-#: ../src/cli/process.c:144
+#: ../src/cli/process.c:138
 msgid "Without --since argument, iterates over all detected problems."
 msgstr ""
 "Если аргумент --since не указан, обнаруженные ошибки будут обрабатываться "
 "последовательно"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/cli/process.c:150
+#: ../src/cli/process.c:144
 msgid "Selects only problems detected after timestamp"
 msgstr "Выбор сбоев, обнаруженных после заданного момента времени"
+
+#: ../src/cli-ng/abrtcli/cli.py:33
+msgid "Problem has no backtrace"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:35
+msgid "Start retracing process?"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:40
+msgid "Show backtrace of a problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:50
+msgid "This"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:52
+msgid "Last"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:54
+msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:64 ../src/cli-ng/abrtcli/cli.py:99
+msgid ""
+"Permission denied: '{}'\n"
+"If this is a system problem try running this command as root"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:71
+msgid "Install required debuginfo for given problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:106
+msgid "Run GDB against a problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:117 ../src/cli-ng/abrtcli/cli.py:153
+msgid "Output format"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:119 ../src/cli-ng/abrtcli/cli.py:155
+msgid "Built-in output format"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:145 ../src/cli-ng/abrtcli/match.py:89
+msgid "No problems"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:147
+msgid "List problems"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:167
+msgid "Print information about problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:173
+msgid "Prompt before removal"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:174
+msgid "Do not prompt before removal"
+msgstr ""
+
+#. force prompt for last problem to avoid accidents
+#: ../src/cli-ng/abrtcli/cli.py:182
+msgid "Are you sure you want to delete this problem?"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:186
+msgid "Removed"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:188
+msgid "Remove problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:199
+msgid "Report problem"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:204
+msgid "Perform local retracing"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:206
+msgid "Perform remote retracing using retrace server"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:208
+msgid "Force retracing even if backtrace already exists"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:223
+msgid "Problem already has a backtrace"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:224
+msgid "Run abrt retrace with -f/--force to retrace again"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:225
+msgid "Show backtrace?"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:229
+msgid "No retracing possible for this problem type"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:233
+msgid ""
+"Upload core dump and perform remote retracing? (It may contain sensitive "
+"data). If your answer is 'No', a stack trace will be generated locally. "
+"Local retracing requires downloading potentially large amount of debuginfo "
+"data"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:248
+msgid "Remote retracing"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:251
+msgid "Local retracing"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:255
+msgid "Generate backtrace from coredump"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:280
+msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:283
+msgid "Print count of the recent crashes"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/cli.py:292
+msgid "Authenticate and show all problems on this machine"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/match.py:96
+msgid "No problem(s) matched"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/match.py:116
+msgid "Ambiguous match specified resulting in multiple problems:"
+msgstr ""
+
+#: ../src/cli-ng/abrtcli/utils.py:78
+msgid "Not reportable"
+msgstr ""
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
