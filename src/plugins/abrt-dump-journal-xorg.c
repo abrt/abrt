@@ -147,7 +147,7 @@ int main(int argc, char *argv[])
         "-c and -e options conflicts because both specifies the first read message.\n"
         "\n"
         "-e is useful only for -f because the following of journal starts by reading \n"
-        "the entire journal if the last seen possition is not available.\n"
+        "the entire journal if the last seen position is not available.\n"
         "\n"
         "The last seen position is saved in %s\n"
         "\n"
