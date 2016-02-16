@@ -149,10 +149,10 @@ static int create_debug_dump()
     load_abrt_conf();
     if (g_settings_nMaxCrashReportsSize > 0)
     {
-        /* x1.25 and round up to 64m: go a bit up, so that usual in-daemon trimming
+        /* x1.5 and round up to 64m: go a bit up, so that usual in-daemon trimming
          * kicks in first, and we don't "fight" with it:
          */
-        unsigned maxsize = g_settings_nMaxCrashReportsSize + g_settings_nMaxCrashReportsSize / 4;
+        unsigned maxsize = g_settings_nMaxCrashReportsSize + g_settings_nMaxCrashReportsSize / 2;
         maxsize |= 63;
         check_free_space(maxsize, g_settings_dump_location);
         trim_problem_dirs(g_settings_dump_location, maxsize * (double)(1024*1024), path);
