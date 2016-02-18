@@ -416,8 +416,15 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
     /* Load problem_data (from the *first dir* if this one is a dup) */
     struct dump_dir *dd = dd_opendir(work_dir, /*flags:*/ 0);
     if (!dd)
-        /* dd_opendir already emitted error msg */
-        goto delete_bad_dir;
+    {
+        /* dd_opendir already emitted error msg, but the message has no
+         * context so the next message will provide it. */
+        log("Failed to open processed directory %s", state->dirname);
+
+        /* If the directory cannot be opened, then it cannot be deleted.
+         * Hence we will not even try it. */
+        goto ret;
+    }
 
     /* Reset mode/uig/gid to correct values for all files created by event run */
     dd_sanitize_mode_and_owner(dd);
@@ -624,32 +631,59 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         char *dirpath = concat_path_file(g_settings_dump_location, name);
         if (!dir_has_correct_permissions(dirpath))
         {
-            error_msg("New directory '%s' has invalid owner or owner", name);
+            error_msg("New directory '%s' has invalid owner or group", name);
             free(dirpath);
             continue;
         }
 
         log("Directory '%s' creation detected", name);
 
+        const bool empty_queue = s_dir_queue == NULL;
         if (g_settings_nMaxCrashReportsSize > 0)
         {
+            /* We must not delete currently processed directory. */
+            const char *ignored = empty_queue ? name : (strrchr(s_dir_queue->data, '/') + 1);
+
+            bool current_one = false;
             char *worst_dir = NULL;
             while (g_settings_nMaxCrashReportsSize > 0
-             && get_dirsize_find_largest_dir(g_settings_dump_location, &worst_dir, name) / (1024*1024) >= g_settings_nMaxCrashReportsSize
+             && get_dirsize_find_largest_dir(g_settings_dump_location, &worst_dir, ignored) / (1024*1024) >= g_settings_nMaxCrashReportsSize
              && worst_dir
             ) {
-                log("Size of '%s' >= %u MB, deleting '%s'",
-                    g_settings_dump_location, g_settings_nMaxCrashReportsSize, worst_dir);
-                /* deletes both directory and DB record */
-                char *d = concat_path_file(g_settings_dump_location, worst_dir);
+                const char *kind = "old";
+                GList *worst_dir_queue = NULL;
+                char *deleted = concat_path_file(g_settings_dump_location, worst_dir);
+                if (strcmp(worst_dir, name) == 0)
+                {
+                    kind = "new";
+                    current_one = true;
+                }
+                else if ((worst_dir_queue = g_list_find_custom(s_dir_queue, deleted, (GCompareFunc)strcmp)))
+                {
+                    kind = "unprocessed";
+                    free(worst_dir_queue->data);
+                    s_dir_queue = g_list_delete_link(s_dir_queue, worst_dir_queue);
+                }
+
+                log("Size of '%s' >= %u MB (MaxCrashReportsSize), deleting %s directory '%s'",
+                    g_settings_dump_location, g_settings_nMaxCrashReportsSize,
+                    kind, worst_dir);
+
                 free(worst_dir);
                 worst_dir = NULL;
-                delete_dump_dir(d);
-                free(d);
+
+                struct dump_dir *dd = dd_opendir(deleted, DD_FAIL_QUIETLY_ENOENT);
+                if (dd != NULL)
+                    dd_delete(dd);
+
+                free(deleted);
             }
+
+            /* Do not start processing nor push it to the incoming queue. */
+            if (current_one)
+                continue;
         }
 
-        const bool empty_queue = s_dir_queue == NULL;
         /* push the new directory to the end of the incoming queue */
         s_dir_queue = g_list_append(s_dir_queue, dirpath);
 
