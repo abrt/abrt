@@ -36,6 +36,8 @@ EXTRA_DIST = doc/coding-style abrt.spec.in abrt.pc.in \
 	abrt-version asciidoc.conf init-scripts/* $(TESTSUITE_FILES) \
 	augeas/test_abrt.aug
 
+dist_doc_DATA = README.md
+
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = abrt.pc
 
