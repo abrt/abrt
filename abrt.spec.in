@@ -762,7 +762,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
-%doc README COPYING
+%doc README.md COPYING
 %if %{with systemd}
 %{_unitdir}/abrtd.service
 %{_tmpfilesdir}/abrt.conf
