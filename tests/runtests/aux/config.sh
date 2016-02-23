@@ -32,7 +32,7 @@ export DISABLE_AUTOREPORTING=1
 export STORE_CONFIGS=1
 
 # - mailx script config -
-export MAILTO='rmarko@redhat.com'
+export MAILTO='jfilak@redhat.com'
 export MAILFROM='abrt-testsuite-bot@redhat.com'
 
 # - scp script config -
