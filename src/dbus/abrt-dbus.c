@@ -1,3 +1,4 @@
+#include <dbus/dbus.h>
 #include <gio/gio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -9,10 +10,16 @@
 #include <libreport/dump_dir.h>
 #include "problem_api.h"
 
+#include "abrt_problems2_entry.h"
+#include "abrt_problems2_service.h"
+
+
 static GMainLoop *loop;
 static guint g_timeout_source;
 /* default, settable with -t: */
 static unsigned g_timeout_value = 120;
+static guint g_signal_crash;
+static guint g_signal_dup_crash;
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -81,65 +88,26 @@ static const gchar introspection_xml[] =
 /* forward */
 static gboolean on_timeout_cb(gpointer user_data);
 
-static void reset_timeout(void)
+static void kill_timeout(void)
 {
-    if (g_timeout_source > 0)
-    {
-        log_info("Removing timeout");
-        g_source_remove(g_timeout_source);
-    }
+    if (g_timeout_source == 0)
+        return;
+
+    log_info("Removing timeout");
+    guint tm = g_timeout_source;
+    g_timeout_source = 0;
+    g_source_remove(tm);
+}
+
+static void run_timeout(void)
+{
+    if (g_timeout_source != 0)
+        return;
+
     log_info("Setting a new timeout");
     g_timeout_source = g_timeout_add_seconds(g_timeout_value, on_timeout_cb, NULL);
 }
 
-static uid_t get_caller_uid(GDBusConnection *connection, GDBusMethodInvocation *invocation, const char *caller)
-{
-    GError *error = NULL;
-    guint caller_uid;
-
-    GDBusProxy * proxy = g_dbus_proxy_new_sync(connection,
-                                     G_DBUS_PROXY_FLAGS_NONE,
-                                     NULL,
-                                     "org.freedesktop.DBus",
-                                     "/org/freedesktop/DBus",
-                                     "org.freedesktop.DBus",
-                                     NULL,
-                                     &error);
-
-    GVariant *result = g_dbus_proxy_call_sync(proxy,
-                                     "GetConnectionUnixUser",
-                                     g_variant_new ("(s)", caller),
-                                     G_DBUS_CALL_FLAGS_NONE,
-                                     -1,
-                                     NULL,
-                                     &error);
-
-    if (result == NULL)
-    {
-        /* we failed to get the uid, so return (uid_t) -1 to indicate the error
-         */
-        if (error)
-        {
-            g_dbus_method_invocation_return_dbus_error(invocation,
-                                      "org.freedesktop.problems.InvalidUser",
-                                      error->message);
-            g_error_free(error);
-        }
-        else
-        {
-            g_dbus_method_invocation_return_dbus_error(invocation,
-                                      "org.freedesktop.problems.InvalidUser",
-                                      _("Unknown error"));
-        }
-        return (uid_t) -1;
-    }
-
-    g_variant_get(result, "(u)", &caller_uid);
-    g_variant_unref(result);
-
-    log_info("Caller uid: %i", caller_uid);
-    return caller_uid;
-}
 
 bool allowed_problem_dir(const char *dir_name)
 {
@@ -392,17 +360,19 @@ static void handle_method_call(GDBusConnection *connection,
                         GDBusMethodInvocation *invocation,
                         gpointer    user_data)
 {
-    reset_timeout();
-
     uid_t caller_uid;
     GVariant *response;
 
-    caller_uid = get_caller_uid(connection, invocation, caller);
+    GError *error = NULL;
+    caller_uid = abrt_p2_service_caller_uid(ABRT_P2_SERVICE(user_data), caller, &error);
+    if (caller_uid == (uid_t) -1)
+    {
+        g_dbus_method_invocation_return_gerror(invocation, error);
+        g_error_free(error);
+        return;
+    }
 
     log_notice("caller_uid:%ld method:'%s'", (long)caller_uid, method_name);
-
-    if (caller_uid == (uid_t) -1)
-        return;
 
     if (g_strcmp0(method_name, "NewProblem") == 0)
     {
@@ -830,6 +800,66 @@ static void handle_method_call(GDBusConnection *connection,
     }
 }
 
+static void handle_abrtd_problem_signals(GDBusConnection *connection,
+            const gchar     *sender_name,
+            const gchar     *object_path,
+            const gchar     *interface_name,
+            const gchar     *signal_name,
+            GVariant        *parameters,
+            gpointer         user_data)
+{
+    const char *dir;
+    g_variant_get (parameters, "(&s)", &dir);
+
+    log_debug("Caught '%s' signal from abrtd: '%s'", signal_name, dir);
+    AbrtP2Service *service = ABRT_P2_SERVICE(user_data);
+
+    GError *error = NULL;
+    AbrtP2Object *obj = abrt_p2_service_get_entry_for_problem(service,
+                                                              dir,
+                                                              ABRT_P2_SERVICE_ENTRY_LOOKUP_OPTIONAL,
+                                                              &error);
+    if (error)
+    {
+        log_warning("Cannot notify '%s': failed to find entry: %s", dir, error->message);
+        g_error_free(error);
+        return;
+    }
+
+    if (obj == NULL)
+    {
+        AbrtP2Entry *entry = abrt_p2_entry_new_with_state(xstrdup(dir), ABRT_P2_ENTRY_STATE_COMPLETE);
+        if (entry == NULL)
+        {
+            log_warning("Cannot notify '%s': failed to access data", dir);
+            return;
+        }
+
+        obj = abrt_p2_service_register_entry(service, entry, &error);
+        if (error)
+        {
+            log_warning("Cannot notify '%s': failed to register entry: %s", dir, error->message);
+            g_error_free(error);
+            return;
+        }
+    }
+
+    AbrtP2Entry *entry = ABRT_P2_ENTRY(abrt_p2_object_get_node(obj));
+    if (abrt_p2_entry_state(entry) != ABRT_P2_ENTRY_STATE_COMPLETE)
+    {
+        log_debug("Not notifying temporary/deleted problem directory: %s", dir);
+        return;
+    }
+
+    abrt_p2_service_notify_entry_object(service, obj, &error);
+    if (error)
+    {
+        log_warning("Failed to notify '%s': %s", dir, error->message);
+        g_error_free(error);
+        return;
+    }
+}
+
 static gboolean on_timeout_cb(gpointer user_data)
 {
     g_main_loop_quit(loop);
@@ -853,12 +883,44 @@ static void on_bus_acquired(GDBusConnection *connection,
                                                        ABRT_DBUS_OBJECT,
                                                        introspection_data->interfaces[0],
                                                        &interface_vtable,
-                                                       NULL,  /* user_data */
+                                                       user_data,
                                                        NULL,  /* user_data_free_func */
                                                        NULL); /* GError** */
     g_assert(registration_id > 0);
 
-    reset_timeout();
+    GError *error = NULL;
+
+    int r = abrt_p2_service_register_objects(ABRT_P2_SERVICE(user_data), connection, &error);
+    if (r == 0 || r == -EALREADY)
+    {
+        g_signal_crash = g_dbus_connection_signal_subscribe(connection,
+                                                            NULL,
+                                                            "org.freedesktop.Problems2",
+                                                            "ImportProblem",
+                                                            "/org/freedesktop/Problems2",
+                                                            NULL,
+                                                            G_DBUS_SIGNAL_FLAGS_NONE,
+                                                            handle_abrtd_problem_signals,
+                                                            user_data, NULL);
+
+        g_signal_dup_crash = g_dbus_connection_signal_subscribe(connection,
+                                                            NULL,
+                                                            "org.freedesktop.Problems2",
+                                                            "ReloadProblem",
+                                                            "/org/freedesktop/Problems2",
+                                                            NULL,
+                                                            G_DBUS_SIGNAL_FLAGS_NONE,
+                                                            handle_abrtd_problem_signals,
+                                                            user_data, NULL);
+
+        run_timeout();
+        return;
+    }
+
+    error_msg("Failed to register Problems2 Objects: %s", error->message);
+    g_error_free(error);
+
+    g_main_loop_quit(loop);
 }
 
 /* not used
@@ -876,6 +938,64 @@ static void on_name_lost(GDBusConnection *connection,
     g_print(_("The name '%s' has been lost, please check if other "
               "service owning the name is not running.\n"), name);
     exit(1);
+}
+
+void configure_problems2_service(AbrtP2Service *p2_service)
+{
+    struct env_option {
+        const char *name;
+        void (*setter_unsigned)(AbrtP2Service *s, uid_t u, unsigned v);
+        void (*setter_off_t)(AbrtP2Service *s, uid_t u, off_t v);
+    } env_options[] = {
+        {   .name = "ABRT_DBUS_USER_CLIENTS",
+            .setter_unsigned = abrt_p2_service_set_user_clients_limit,
+        },
+        {   .name = "ABRT_DBUS_ELEMENTS_LIMIT",
+             .setter_unsigned = abrt_p2_service_set_elements_limit,
+        },
+        {   .name = "ABRT_DBUS_PROBLEMS_LIMIT",
+            .setter_unsigned = abrt_p2_service_set_user_problems_limit,
+        },
+        {   .name = "ABRT_DBUS_NEW_PROBLEM_THROTTLING_MAGNITUDE",
+            .setter_unsigned = abrt_p2_service_set_new_problem_throttling_magnitude,
+        },
+        {   .name = "ABRT_DBUS_NEW_PROBLEMS_BATCH",
+            .setter_unsigned = abrt_p2_service_set_new_problems_batch,
+        },
+        {   .name = "ABRT_DBUS_DATA_SIZE_LIMIT",
+            .setter_off_t = abrt_p2_service_set_data_size_limit,
+        },
+    };
+
+    for (size_t i = 0; i < sizeof(env_options)/sizeof(env_options[0]); ++i)
+    {
+        const char *value = getenv(env_options[i].name);
+        if (value == NULL)
+            continue;
+
+        errno = 0;
+        char *end = NULL;
+        const unsigned long limit = strtoul(value, &end, 10);
+        if (errno || value == end || *end != '\0')
+            error_msg_and_die("not a number in environment '%s': %s", env_options[i].name, value);
+
+        if (env_options[i].setter_unsigned)
+        {
+            if (limit > UINT_MAX)
+                error_msg_and_die("an out of range number in environment '%s': %s", env_options[i].name, value);
+
+            env_options[i].setter_unsigned(p2_service, (uid_t)-1, (unsigned int)limit);
+        }
+        else if (env_options[i].setter_off_t)
+        {
+            const off_t off_t_limit = limit;
+            env_options[i].setter_off_t(p2_service, (uid_t)-1, off_t_limit);
+        }
+        else
+            error_msg_and_die("Bug: invalid parser of environment values");
+
+        log_debug("Used environment variable: %s", env_options[i].name);
+    }
 }
 
 int main(int argc, char *argv[])
@@ -931,14 +1051,41 @@ int main(int argc, char *argv[])
     if (err != NULL)
         error_msg_and_die("Invalid D-Bus interface: %s", err->message);
 
+    AbrtP2Service *p2_service = abrt_p2_service_new(&err);
+    if (p2_service == NULL)
+        error_msg_and_die("Failed to initialize Problems2 service: %s", err->message);
+
+    g_signal_connect(p2_service, "new-client-connected", G_CALLBACK(kill_timeout), NULL);
+    g_signal_connect(p2_service, "all-clients-disconnected", G_CALLBACK(run_timeout), NULL);
+
+    DBusConnection *con = dbus_connection_open("org.freedesktop.DBus", NULL);
+
+    /* FIXME: I'm sorry but I'm not able to find out why the maximum message
+     * length limit is around 200kiB but the official configuration says
+     * something about 128MiB. Is it a bug in this code? */
+    /*long max_message_size = DBUS_MAXIMUM_MESSAGE_LENGTH;*/
+
+    long max_message_unix_fds = 16;
+    if (con != NULL)
+    {
+        /*max_message_size = dbus_connection_get_max_message_size(con);*/
+        max_message_unix_fds = dbus_connection_get_max_message_unix_fds(con);
+        dbus_connection_close(con);
+    }
+    /*abrt_p2_service_set_max_message_size(p2_service, max_message_size);*/
+    abrt_p2_service_set_max_message_size(p2_service, 200000L);
+    abrt_p2_service_set_max_message_unix_fds(p2_service, max_message_unix_fds);
+
+    configure_problems2_service(p2_service);
+
     owner_id = g_bus_own_name(G_BUS_TYPE_SYSTEM,
                              ABRT_DBUS_NAME,
                              G_BUS_NAME_OWNER_FLAGS_NONE,
                              on_bus_acquired,
                              NULL,
                              on_name_lost,
-                             NULL,
-                             NULL);
+                             p2_service,
+                             g_object_unref);
 
     /* initialize the g_settings_dump_location */
     load_abrt_conf();
