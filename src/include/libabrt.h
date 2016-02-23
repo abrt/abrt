@@ -119,6 +119,17 @@ int daemon_is_ok(void);
 #define notify_new_path abrt_notify_new_path
 void notify_new_path(const char *path);
 
+/**
+@brief Sends notification to abrtd that a new problem has been detected and
+wait for the reply
+
+@param path Path to the problem directory containing the problem data
+@param message The abrtd reply
+@return -errno on error otherwise return value of abrtd
+*/
+#define notify_new_path_with_reponse abrt_notify_new_path_with_response
+int notify_new_path_with_reponse(const char *path, char **message);
+
 /* Note: should be public since unit tests need to call it */
 #define koops_extract_version abrt_koops_extract_version
 char *koops_extract_version(const char *line);

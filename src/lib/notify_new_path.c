@@ -20,11 +20,19 @@
 
 void notify_new_path(const char *path)
 {
+    /* Ignore results and don't wait for response -> NULL */
+    notify_new_path_with_reponse(path, NULL);
+}
+
+int notify_new_path_with_reponse(const char *path, char **message)
+{
+    int retval;
     int fd = socket(AF_UNIX, SOCK_STREAM, 0);
     if (fd < 0)
     {
+        retval = -errno;
         perror_msg("socket(AF_UNIX)");
-        return;
+        return retval;
     }
 
     struct sockaddr_un sunx;
@@ -34,18 +42,67 @@ void notify_new_path(const char *path)
 
     if (connect(fd, (struct sockaddr *)&sunx, sizeof(sunx)))
     {
+        retval = -errno;
         perror_msg("connect('%s')", sunx.sun_path);
         close(fd);
-        return;
+        return retval;
     }
 
     full_write_str(fd, "POST /creation_notification HTTP/1.1\r\n\r\n");
     full_write_str(fd, path);
+
     /*
      * This sends FIN packet. Without it, close() may result in RST instead.
      * Not really needed on AF_UNIX, just a bit of TCP-induced paranoia
      * aka "good practice".
      */
     shutdown(fd, SHUT_WR);
+    if (message == NULL)
+    {
+        close(fd);
+        return 0;
+    }
+
+    *message = xmalloc_read(fd, NULL);
+    if (*message == NULL)
+    {
+        log_info("abrtd response could not be received");
+        return -EBADMSG;
+    }
+
     close(fd);
+
+    unsigned code = 0;
+
+    if (sscanf(*message, "HTTP/1.1 %u ", &code) != 1)
+    {
+        log_info("abrtd response does not contain HTTP code");
+        return -EBADMSG;
+    }
+
+    /* Verify possible casting to int. */
+    if (code > INT_MAX)
+    {
+        log_info("abrtd response HTTP code is out of range");
+        return -EBADMSG;
+    }
+
+    char *data = strchr(*message, '\n');
+    if (data == NULL)
+    {
+        log_info("abrtd response is missing the first new line");
+        return -EBADMSG;
+    }
+
+    data = strchr(data + 1, '\n');
+    if (data == NULL)
+    {
+        log_info("abrtd response is missing the second new line");
+        return -EBADMSG;
+    }
+
+    memmove(*message, data + 1, strlen(data));
+
+    /* If code is greater than INT_MAX, -EBADMSG is returned. */
+    return (int)code;
 }
