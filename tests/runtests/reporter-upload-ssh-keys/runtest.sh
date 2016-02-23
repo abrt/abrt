@@ -42,6 +42,7 @@ function test() {
     rlRun "mkdir recieved_dir"
     rlRun "tar zxvf upload.tar.gz -C recieved_dir"
 
+    rlRun "rm problem_dir/reported_to" 0 "remove reported_to created after uploading"
     rlRun "diff -r problem_dir recieved_dir &> dir_diff.log"
     rlLog $(cat dir_diff.log)
 
