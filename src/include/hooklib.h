@@ -30,6 +30,18 @@
  */
 char *problem_data_save(problem_data_t *pd);
 
+/**
+ @brief Checks if the name is used in post-create EVENT conditions
+
+ Regular users should be prevented from creating these entries with certain
+ values.
+
+ @param[in] name The entry name
+ @return true if the given name can should be under special treatment; otherwise
+ false.
+ */
+bool problem_entry_is_post_create_condition(const char *name);
+
 #define  DUMP_SUID_UNSAFE 1
 #define  DUMP_SUID_SAFE 2
 
