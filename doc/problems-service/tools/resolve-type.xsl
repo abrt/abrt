@@ -50,48 +50,183 @@
         <xsl:value-of select="translate(translate($unstripped, ' ', ''), '&#xa;', '')"/>
     </xsl:template>
 
+    <xsl:template name="DBusTypeSuffix">
+        <xsl:param name="type"/>
+        <xsl:param name="closure"/>
+
+        <xsl:if test="starts-with($closure, '.')">
+        &gt;
+            <xsl:call-template name="DBusType">
+                <xsl:with-param name="type" select="substring($type, 2)"/>
+                <xsl:with-param name="closure" select="substring($closure, 2)"/>
+            </xsl:call-template>
+        </xsl:if>
+        <xsl:if test="not(starts-with($closure, '.'))">
+            <xsl:call-template name="DBusType">
+                <xsl:with-param name="type" select="substring($type, 2)"/>
+                <xsl:with-param name="closure" select="$closure"/>
+            </xsl:call-template>
+        </xsl:if>
+    </xsl:template>
+
     <!-- Map a D-Bus type to its EggDBus counterpart -->
     <xsl:template name="DBusType">
         <xsl:param name="type"/>
-        <xsl:choose>
-            <xsl:when test="$type='o'">ObjectPath</xsl:when>
-            <xsl:when test="$type='s'">String</xsl:when>
-            <xsl:when test="$type='y'">Byte</xsl:when>
-            <xsl:when test="$type='b'">Boolean</xsl:when>
-            <xsl:when test="$type='n'">Int16</xsl:when>
-            <xsl:when test="$type='q'">UInt16</xsl:when>
-            <xsl:when test="$type='i'">Int32</xsl:when>
-            <xsl:when test="$type='u'">UInt32</xsl:when>
-            <xsl:when test="$type='x'">Int64</xsl:when>
-            <xsl:when test="$type='t'">UInt64</xsl:when>
-            <xsl:when test="$type='d'">Double</xsl:when>
-            <xsl:when test="$type='g'">Signature</xsl:when>
-            <xsl:when test="$type='v'">Variant</xsl:when>
-            <xsl:when test="starts-with($type, 'a{')">
-                Dict&lt;
-                <xsl:call-template name="DBusType">
-                    <xsl:with-param name="type" select="substring($type, 3, 1)"/>
-                </xsl:call-template>
-                ,
-                <xsl:call-template name="DBusType">
-                    <xsl:with-param name="type" select="substring($type, 4, 1)"/>
-                </xsl:call-template>
-                &gt;
-            </xsl:when>
-            <xsl:when test="starts-with($type, 'a')">
-                Array&lt;
-                <xsl:call-template name="DBusType">
-                    <xsl:with-param name="type" select="substring($type, 2)"/>
-                </xsl:call-template>
-                &gt;
-            </xsl:when>
-            <!-- TODO: doesn't implement dict-entries and structs -->
-            <xsl:otherwise>
-                <xsl:message terminate="yes">
-                    Unknown DBus Type <xsl:value-of select="$type"/>
-                </xsl:message>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:param name="closure"/>
+        <xsl:param name="start"/>
+
+        <xsl:if test="$type!=''">
+            <xsl:choose>
+                <xsl:when test="starts-with($type, 'o')">
+                    <xsl:if test="$closure!='' and $start=''">,</xsl:if>
+                    ObjectPath
+                    <xsl:call-template name="DBusTypeSuffix">
+                        <xsl:with-param name="type" select="$type"/>
+                        <xsl:with-param name="closure" select="$closure"/>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="starts-with($type, 's')">
+                    <xsl:if test="$closure!='' and $start=''">,</xsl:if>
+                    String
+                    <xsl:call-template name="DBusTypeSuffix">
+                        <xsl:with-param name="type" select="$type"/>
+                        <xsl:with-param name="closure" select="$closure"/>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="starts-with($type, 'y')">
+                    <xsl:if test="$closure!='' and $start=''">,</xsl:if>
+                    Byte
+                    <xsl:call-template name="DBusTypeSuffix">
+                        <xsl:with-param name="type" select="$type"/>
+                        <xsl:with-param name="closure" select="$closure"/>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="starts-with($type, 'b')">
+                    <xsl:if test="$closure!='' and $start=''">,</xsl:if>
+                    Boolean
+                    <xsl:call-template name="DBusTypeSuffix">
+                        <xsl:with-param name="type" select="$type"/>
+                        <xsl:with-param name="closure" select="$closure"/>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="starts-with($type, 'n')">
+                    <xsl:if test="$closure!='' and $start=''">,</xsl:if>
+                    Int16
+                    <xsl:call-template name="DBusTypeSuffix">
+                        <xsl:with-param name="type" select="$type"/>
+                        <xsl:with-param name="closure" select="$closure"/>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="starts-with($type, 'q')">
+                    <xsl:if test="$closure!='' and $start=''">,</xsl:if>
+                    UInt16
+                    <xsl:call-template name="DBusTypeSuffix">
+                        <xsl:with-param name="type" select="$type"/>
+                        <xsl:with-param name="closure" select="$closure"/>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="starts-with($type, 'i')">
+                    <xsl:if test="$closure!='' and $start=''">,</xsl:if>
+                    Int32
+                    <xsl:call-template name="DBusTypeSuffix">
+                        <xsl:with-param name="type" select="$type"/>
+                        <xsl:with-param name="closure" select="$closure"/>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="starts-with($type, 'u')">
+                    <xsl:if test="$closure!='' and $start=''">,</xsl:if>
+                    UInt32
+                    <xsl:call-template name="DBusTypeSuffix">
+                        <xsl:with-param name="type" select="$type"/>
+                        <xsl:with-param name="closure" select="$closure"/>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="starts-with($type, 'x')">
+                    <xsl:if test="$closure!='' and $start=''">,</xsl:if>
+                    Int64
+                    <xsl:call-template name="DBusTypeSuffix">
+                        <xsl:with-param name="type" select="$type"/>
+                        <xsl:with-param name="closure" select="$closure"/>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="starts-with($type, 't')">
+                    <xsl:if test="$closure!='' and $start=''">,</xsl:if>
+                    UInt64
+                    <xsl:call-template name="DBusTypeSuffix">
+                        <xsl:with-param name="type" select="$type"/>
+                        <xsl:with-param name="closure" select="$closure"/>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="starts-with($type, 'd')">
+                    <xsl:if test="$closure!='' and $start=''">,</xsl:if>
+                    Double
+                    <xsl:call-template name="DBusTypeSuffix">
+                        <xsl:with-param name="type" select="$type"/>
+                        <xsl:with-param name="closure" select="$closure"/>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="starts-with($type, 'g')">
+                    <xsl:if test="$closure!='' and $start=''">,</xsl:if>
+                    Signature
+                    <xsl:call-template name="DBusTypeSuffix">
+                        <xsl:with-param name="type" select="$type"/>
+                        <xsl:with-param name="closure" select="$closure"/>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="starts-with($type, 'v')">
+                    <xsl:if test="$closure!='' and $start=''">,</xsl:if>
+                    Variant
+                    <xsl:call-template name="DBusTypeSuffix">
+                        <xsl:with-param name="type" select="$type"/>
+                        <xsl:with-param name="closure" select="$closure"/>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="starts-with($type, 'a{')">
+                    <xsl:if test="$closure!='' and $start=''">,</xsl:if>
+                    Dict&lt;
+                    <xsl:call-template name="DBusType">
+                        <xsl:with-param name="type" select="substring($type, 3)"/>
+                        <xsl:with-param name="closure">}<xsl:value-of select="$closure"/></xsl:with-param>
+                        <xsl:with-param name="start">1</xsl:with-param>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="starts-with($type, 'a')">
+                    <xsl:if test="$closure!='' and $start=''">,</xsl:if>
+                    Array&lt;
+                    <xsl:call-template name="DBusType">
+                        <xsl:with-param name="type" select="substring($type, 2)"/>
+                        <xsl:with-param name="closure">.<xsl:value-of select="$closure"/></xsl:with-param>
+                        <xsl:with-param name="start">1</xsl:with-param>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="starts-with($type, '(')">
+                    <xsl:if test="$closure!='' and $start=''">,</xsl:if>
+                    Struct&lt;
+                    <xsl:call-template name="DBusType">
+                        <xsl:with-param name="type" select="substring($type, 2)"/>
+                        <xsl:with-param name="closure">)<xsl:value-of select="$closure"/></xsl:with-param>
+                        <xsl:with-param name="start">1</xsl:with-param>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="starts-with($type, substring($closure, 1, 1))">
+                    &gt;
+                    <xsl:call-template name="DBusTypeSuffix">
+                        <xsl:with-param name="type" select="$type"/>
+                        <xsl:with-param name="closure" select="substring($closure, 2)"/>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:if test="$closure=''">
+                        <xsl:message terminate="yes">
+                            Unknown DBus Type <xsl:value-of select="$type"/>
+                        </xsl:message>
+                    </xsl:if>
+                    <xsl:message terminate="yes">
+                        Expected <xsl:value-of select="substring($closure, 1, 1)"/>, got <xsl:value-of select="substring($type, 1, 1)"/>
+                    </xsl:message>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:if>
     </xsl:template>
 
     <!-- Resolve tp:type attributes by searching for matching tp:struct
