@@ -53,6 +53,7 @@ int for_each_problem_in_dir(const char *path,
         if (dd == NULL)
         {
             VERB2 perror_msg("can't open problem directory '%s'", full_name);
+            free(full_name);
             continue;
         }
 

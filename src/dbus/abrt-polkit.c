@@ -59,8 +59,10 @@ static PolkitResult do_check(PolkitSubject *subject, const char *action_id)
                 POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION,
                 cancellable,
                 &error);
+    g_object_unref(cancellable);
     g_object_unref(authority);
     g_source_remove(cancel_timeout);
+    g_object_unref(subject);
     if (error)
     {
         g_error_free(error);
