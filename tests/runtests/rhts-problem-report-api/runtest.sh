@@ -56,7 +56,12 @@ rlJournalStart
     rlPhaseStartTest "default formatting string"
         LOG_FILE="default_formatting.log"
         rlRun "reporter-rhtsupport -D -d problem_dir &> $LOG_FILE"
-        rlAssertGrep "$(cat default.right)" $LOG_FILE -E
+
+        # remove reporter because it depends on instaled libreport's version
+        sed "s/^reporter:.*$//g" ${LOG_FILE} > sed.log
+        rlAssertNotDiffer default.right sed.log
+
+        rm sed.log
     rlPhaseEnd
 
     rlPhaseStartTest "formatting file"

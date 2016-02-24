@@ -3,6 +3,21 @@ summary: [abrt] pkg_name_content: Process /usr/bin/gnote was killed by signal 11
 Description of problem:
 abrt testing, please disregard
 
+Additional info:
+count:          5
+reason:         Process /usr/bin/gnote was killed by signal 11 (SIGSEGV)
+package:        gnote-0.6.3-3.el6
+pkg_vendor:     Red Hat, Inc.
+cmdline:        cmdline_text
+executable:     /usr/bin/gnote
+
+
+How reproducible:
+The problem is reproducible
+
+Steps to reproduce:
+I am reproducer
+
 Truncated backtrace:
 [New Thread 2703]
 [Thread debugging using libthread_db enabled]
@@ -20,15 +35,6 @@ No symbol table info available.
 No symbol table info available.
 #4  0x080b26cf in main
 No symbol table info available.
-
-
-Additional info:
-count:          5
-reason:         Process /usr/bin/gnote was killed by signal 11 (SIGSEGV)
-package:        gnote-0.6.3-3.el6
-cmdline:        cmdline_text
-executable:     /usr/bin/gnote
-reporter:       libreport.*
 
 sosreport and other files were attached as 'problem_dir.tar.gz' to the case.
 For more details about elements collected by ABRT see:
