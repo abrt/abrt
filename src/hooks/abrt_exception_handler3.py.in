@@ -173,8 +173,8 @@ def handle_exception(etype, value, tb):
 
         if tb is not None and etype != IndentationError:
             tblast = traceback.extract_tb(tb, limit=None)
-            if len(tblast):
-                tblast = tblast[len(tblast) - 1]
+            if tblast:
+                tblast = tuple(tblast[-1])
             extxt = traceback.format_exception_only(etype, value)
             if tblast and len(tblast) > 3:
                 ll = []
