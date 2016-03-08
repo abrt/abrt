@@ -20,7 +20,8 @@ import problem
 RETURN_OK = 0
 # serious problem, should be logged somewhere
 RETURN_FAILURE = 2
-
+# path to tmp directory has to be global because of clean_up()
+TMPDIR = None
 
 GETTEXT_PROGNAME = "abrt"
 import locale
@@ -43,11 +44,11 @@ def init_gettext():
     gettext.textdomain(GETTEXT_PROGNAME)
 
 def sigterm_handler(signum, frame):
-    clean_up()
+    clean_up(TMPDIR)
     exit(RETURN_OK)
 
 def sigint_handler(signum, frame):
-    clean_up()
+    clean_up(TMPDIR)
     print("\n{0}".format(_("Exiting on user command")))
     sys.stdout.flush()
     # ??! without "sys.", I am getting segv!
@@ -63,7 +64,6 @@ if __name__ == "__main__":
     fbuild_ids = "build_ids"
     cachedirs = []
     size_mb = 4096
-    tmpdir = None
     keeprpms = False
     noninteractive = False
     b_ids = []
@@ -135,7 +135,7 @@ if __name__ == "__main__":
             except:
                 pass
         elif opt == "--tmpdir":
-            tmpdir = arg
+            TMPDIR = arg
         elif opt == "--keeprpms":
             keeprpms = True
         # --exact takes precendece over --ids
@@ -159,11 +159,11 @@ if __name__ == "__main__":
 
         if not cachedirs:
             cachedirs = ["/var/cache/abrt-di"]
-    if not tmpdir:
+    if not TMPDIR:
         # security people prefer temp subdirs in app's private dir, like /var/run/abrt
         # and we switched to /tmp but Fedora feature tmp-on-tmpfs appeared, hence we must
         # not use /tmp for potential big data anymore
-        tmpdir = "@LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-%s.%u" % (time.strftime("%Y-%m-%d-%H:%M:%S"), os.getpid())
+        TMPDIR = "@LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-%s.%u" % (time.strftime("%Y-%m-%d-%H:%M:%S"), os.getpid())
 
 
     if missing == None:
@@ -235,7 +235,7 @@ if __name__ == "__main__":
             sys.exit(RETURN_FAILURE)
 
         # TODO: should we pass keep_rpms=keeprpms to DebugInfoDownload here??
-        downloader = download_class(cache=cachedirs[0], tmp=tmpdir,
+        downloader = download_class(cache=cachedirs[0], tmp=TMPDIR,
                                     noninteractive=noninteractive,
                                     repo_pattern=repo_pattern)
         try:
