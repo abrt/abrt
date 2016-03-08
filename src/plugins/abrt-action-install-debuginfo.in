@@ -44,7 +44,7 @@ def init_gettext():
     gettext.textdomain(GETTEXT_PROGNAME)
 
 def sigterm_handler(signum, frame):
-    clean_up(TMPDIR)
+    clean_up(TMPDIR, silent=True)
     exit(RETURN_OK)
 
 def sigint_handler(signum, frame):
@@ -241,6 +241,9 @@ if __name__ == "__main__":
         try:
             result = downloader.download(missing, download_exact_files=exact_fls)
         except Exception as ex:
+            if ex.errno == errno.EPIPE:
+                clean_up(TMPDIR, silent=True)
+                exit(RETURN_FAILURE)
             error_msg_and_die("Can't download debuginfos: %s", ex)
 
         if exact_fls:
