@@ -94,14 +94,15 @@ rlJournalStart
         SINCE=$(date +"%Y-%m-%d %T")
 
         rlLog "Generate crash"
-        ./$ABRT_BINARY_NAME
+        PID=$(./$ABRT_BINARY_NAME & echo $!)
         wait_for_process "abrt-hook-ccpp"
 
         # "total 1" + last-ccpp
         assert_number_of_files $ABRT_CONF_DUMP_LOCATION 2 "Crash of ABRT binary caused a new file in the dump location"
 
+        UID=$(id -u)
         journalctl SYSLOG_IDENTIFIER=abrt-hook-ccpp --since="$SINCE" | tee no_debug.log
-        rlAssertGrep "Ignoring crash of $TmpDir/$ABRT_BINARY_NAME .SIGSEGV." no_debug.log
+        rlAssertGrep "Process $PID ($ABRT_BINARY_NAME) of user $UID killed by SIGSEGV - ignoring ('DebugLevel' == 0)" no_debug.log
     rlPhaseEnd
 
     rlPhaseStartTest "DebugLevel=1 -> core dump created"
