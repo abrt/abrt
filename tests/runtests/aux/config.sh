@@ -51,7 +51,15 @@ export DUMP_PACKAGE_VERSIONS=1
 
 # - misc
 export PACKAGES="abrt \
-                 abrt-addon-* \
+                 abrt-addon-ccpp \
+                 abrt-addon-coredump-helper \
+                 abrt-addon-kerneloops \
+                 abrt-addon-pstoreoops \
+                 abrt-addon-python \
+                 abrt-addon-python3 \
+                 abrt-addon-upload-watch \
+                 abrt-addon-vmcore \
+                 abrt-addon-xorg \
                  abrt-desktop \
                  abrt-cli \
                  abrt-devel \
