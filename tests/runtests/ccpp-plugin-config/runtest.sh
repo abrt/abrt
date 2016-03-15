@@ -61,8 +61,9 @@ rlJournalStart
     rlPhaseEnd
     rlPhaseStartTest "MakeCompatCore"
         rm -rf core.*
+
         rlLogInfo "MakeCompatCore = yes"
-        rlRun "echo 'MakeCompatCore = yes' > $CFG_FILE" 0 "Set MakeCompatCore = yes"
+        sed -i 's/\(MakeCompatCore\) = no/\1 = yes/g' $CFG_FILE
 
         prepare
         generate_crash
@@ -81,7 +82,7 @@ rlJournalStart
         unset core_fname
 
         rlLogInfo "MakeCompatCore = no"
-        rlRun "echo 'MakeCompatCore = no' > $CFG_FILE" 0 "Set MakeCompatCore = no"
+        sed -i 's/\(MakeCompatCore\) = yes$/\1 = no/g' $CFG_FILE
 
         prepare
         generate_crash

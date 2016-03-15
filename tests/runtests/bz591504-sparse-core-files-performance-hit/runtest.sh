@@ -32,6 +32,7 @@ TEST="bz591504-sparse-core-files-performance-hit"
 PACKAGE="abrt"
 
 CFG_FILE="/etc/abrt/abrt-action-save-package-data.conf"
+CCPP_CFG_FILE="/etc/abrt/plugins/CCpp.conf"
 
 rlJournalStart
     rlPhaseStartSetup
@@ -40,8 +41,9 @@ rlJournalStart
         pushd $TmpDir
         rlRun "ulimit -c unlimited"
 
-        rlFileBackup $CFG_FILE
+        rlFileBackup $CFG_FILE $CCPP_CFG_FILE
         sed -i 's/ProcessUnpackaged = no/ProcessUnpackaged = yes/g' $CFG_FILE
+        sed -i 's/\(MakeCompatCore\) = no/\1 = yes/g' $CCPP_CFG_FILE
     rlPhaseEnd
 
     rlPhaseStartTest
@@ -67,7 +69,7 @@ rlJournalStart
 
         popd # $TmpDir
         rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
-        rlFileRestore # CFG_FILE
+        rlFileRestore # CFG_FILE CCPP_CFG_FILE
     rlPhaseEnd
 rlJournalPrintText
 rlJournalEnd

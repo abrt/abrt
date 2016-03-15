@@ -51,6 +51,7 @@ rlJournalStart
         semodule -i $SelinuxPolicyBuildDir/$SELINUX_POLICY.pp || rlDie "Failed to load SELinux policy"
 
         rlFileBackup $CFG_FILE $CCPP_CFG_FILE
+        sed -i 's/\(MakeCompatCore\) = no/\1 = yes/g' $CCPP_CFG_FILE
 
         old_ulimit=$(ulimit -c)
         rlRun "ulimit -c unlimited" 0

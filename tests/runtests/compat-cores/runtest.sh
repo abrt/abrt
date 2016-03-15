@@ -33,12 +33,14 @@ TEST="compat-cores"
 PACKAGE="abrt"
 SUIDEDEXE="suidedexecutable"
 CFG_FILE="/etc/abrt/abrt-action-save-package-data.conf"
+CFG_CCPP_FILE="/etc/abrt/plugins/CCpp.conf"
 
 rlJournalStart
     rlPhaseStartSetup
         check_prior_crashes
 
         rlFileBackup $CFG_FILE
+        rlFileBackup $CFG_CCPP_FILE
 
         old_ulimit=$(ulimit -c)
         rlRun "ulimit -c unlimited" 0
@@ -51,6 +53,7 @@ rlJournalStart
         rlRun "echo \"kokotice\" | passwd abrt-suid-test --stdin"
 
         sed -i 's/\(ProcessUnpackaged\) = no/\1 = yes/g' $CFG_FILE
+        sed -i 's/\(MakeCompatCore\) = no/\1 = yes/g' $CFG_CCPP_FILE
 
     rlPhaseEnd
 
@@ -274,6 +277,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
+        rlFileRestore # CFG_CCPP_FILE
         rlFileRestore # CFG_FILE
         rlRun "ulimit -c $old_ulimit" 0
         rlRun "userdel -r -f abrt-suid-test" 0
