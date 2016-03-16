@@ -41,7 +41,7 @@ rlJournalStart
         pushd $TmpDir
         core_pipe_limit_bkp="$(cat /proc/sys/kernel/core_pipe_limit)"
         rlRun "echo 1 > /proc/sys/kernel/core_pipe_limit" 0 "Set core_pipe_limit to 1 from previous $core_pipe_limit_bkp"
-        rlRun "yum install -y mlocate procps" 0 "Install locate, updatedb & top binaries"
+        rlRun "dnf install -y mlocate procps" 0 "Install locate, updatedb & top binaries"
     rlPhaseEnd
 
     rlPhaseStartTest

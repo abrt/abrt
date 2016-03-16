@@ -51,7 +51,7 @@ rlJournalStart
 
         # the upload watcher is not installed by default, but we need it for this test
         upload_watch_pkg="abrt-addon-upload-watch"
-        rlRun "rpm -q $upload_watch_pkg >/dev/null || yum install $upload_watch_pkg -y"
+        rlRun "rpm -q $upload_watch_pkg >/dev/null || dnf install $upload_watch_pkg -y"
         # Adding $PWD to PATH in order to override abrt-handle-upload
         # by a local script
         # Use 60 workers and in the worst case 1GiB for cache

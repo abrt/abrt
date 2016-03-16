@@ -44,7 +44,7 @@ rlPhaseStartSetup
         rlFileBackup $CFG_FILE
         sed -i 's/ProcessUnpackaged = no/ProcessUnpackaged = yes/g' $CFG_FILE
 
-        rlRun "yum install -y abrt-devel libreport-devel" 0 "installed required devel packages"
+        rlRun "dnf install -y abrt-devel libreport-devel" 0 "installed required devel packages"
 
         TmpDir=$(mktemp -d)
         cp $TEST_APP_SRC $TmpDir

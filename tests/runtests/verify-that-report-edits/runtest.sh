@@ -39,7 +39,7 @@ rlJournalStart
         cp test_event_*.xml  /usr/share/libreport/events || exit $?
 
         TmpDir=$(mktemp -d)
-#        rlRun "yum -y install expect" 0 "Install expect"
+#        rlRun "dnf -y install expect" 0 "Install expect"
         cp "./fakeditor.sh" $TmpDir
         cp "./expect" $TmpDir
         pushd $TmpDir

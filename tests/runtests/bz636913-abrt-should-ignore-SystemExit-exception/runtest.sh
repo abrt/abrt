@@ -36,7 +36,7 @@ rlJournalStart
     rlPhaseStartTest
         CRASHES_BEFORE="$(abrt-cli list | grep Directory | wc -l)"
         rlLog "Crashes before our attempt: $CRASHES_BEFORE"
-        rlRun "PYTHONINSPECT=YES yum <<<quit" 1 "yum exits with SystemExit=1"
+        rlRun "PYTHONINSPECT=YES dnf repolist <<<quit" 1 "DNF exits with SystemExit=1"
 
         sleep 1
 

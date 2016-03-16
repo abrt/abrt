@@ -4,9 +4,9 @@ export > $OUTPUT_ROOT/pre/envs.log
 cp /var/log/messages $OUTPUT_ROOT/pre/messages
 dmesg -c > $OUTPUT_ROOT/pre/dmesg_pre
 
-yum clean metadata
+dnf clean metadata
 
-#yum install -y beakerlib dejagnu time createrepo mock expect
+#dnf install -y beakerlib dejagnu time createrepo mock expect
 if [ "${REINSTALL_PRE}" = "1" ]; then
     echo 'REINSTALL_PRE set'
 
@@ -16,7 +16,7 @@ if [ "${REINSTALL_PRE}" = "1" ]; then
     rm -rf /etc/abrt/
     rm -rf /etc/libreport/
 
-    yum -y install $PACKAGES
+    dnf -y install $PACKAGES
 fi
 
 cat > /etc/libreport/events.d/test_event.conf << _EOF_
@@ -46,12 +46,12 @@ fi
 
 if [ "${UPDATE_PACKAGES}" = "1" ]; then
     echo 'UPDATE_PACKAGES set'
-    yum -y update $PACKAGES
+    dnf -y update $PACKAGES
 fi
 
 if [ "${UPDATE_SYSTEM}" = "1" ]; then
     echo 'UPDATE_SYSTEM set'
-    yum -y update
+    dnf -y update
 fi
 
 if [ "${DISABLE_NOAUDIT}" = "1" ]; then

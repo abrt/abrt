@@ -46,8 +46,8 @@ rlJournalStart
 
         # install upload watcher if available (not required on rhel6)
         upload_watch_pkg="abrt-addon-upload-watch"
-        if yum info $upload_watch_pkg &> /dev/null; then
-          yum -y install $upload_watch_pkg
+        if dnf info $upload_watch_pkg &> /dev/null; then
+          dnf -y install $upload_watch_pkg
           rlRun "service abrt-upload-watch restart" 0 "Starting abrt-upload-watch"
         fi
         rlRun "service abrt-ccpp restart" 0 "Start abrt-ccpp"

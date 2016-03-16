@@ -32,7 +32,7 @@ PACKAGE="abrt"
 
 rlJournalStart
     rlPhaseStartSetup
-        rlRun "yum -y install expect" 0 "Install expect"
+        rlRun "dnf -y install expect" 0 "Install expect"
         TmpDir=$(mktemp -d)
         cp "./fakeditor.sh" $TmpDir
         cp "./expect" $TmpDir

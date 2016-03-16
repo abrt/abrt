@@ -29,12 +29,12 @@ if [ $1 ]; then
     if [ "${REINSTALL_BEFORE_EACH_TEST}" = "1" ]; then
         echo 'REINSTALL_BEFORE_EACH_TEST set'
 
-        yum -y remove abrt\* libreport\*
+        dnf -y remove abrt\* libreport\*
 
         rm -rf /etc/abrt/
         rm -rf /etc/libreport/
 
-        yum -y install $PACKAGES
+        dnf -y install $PACKAGES
     fi
 
     if [ "${RESTORE_CONFIGS_BEFORE_EACH_TEST}" = "1" ]; then
