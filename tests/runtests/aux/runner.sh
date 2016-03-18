@@ -29,10 +29,18 @@ if [ $1 ]; then
     if [ "${REINSTALL_BEFORE_EACH_TEST}" = "1" ]; then
         echo 'REINSTALL_BEFORE_EACH_TEST set'
 
-        dnf -y remove abrt\* libreport\*
+        # Do not remove libreport-filesystem because dnf package and a few
+        # other system packages requires it.
+        dnf -y remove abrt\* libreport\* --exclude libreport-filesystem
 
         rm -rf /etc/abrt/
-        rm -rf /etc/libreport/
+
+        # All libreport and abrt packages should be removed so any
+        # configuration file that does not belong to an rpm package was created
+        # by a test and must be removed.
+        for CONF in `find /etc/libreport/`; do
+            rpm -qf $CONF > /dev/null || rm --preserve-root -r --force $CONF
+        done
 
         dnf -y install $PACKAGES
     fi
