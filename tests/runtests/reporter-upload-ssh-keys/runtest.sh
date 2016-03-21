@@ -82,8 +82,8 @@ rlJournalStart
 
         # use ssh keys from standard dir (/home/$user_name/.ssh)
         test
-        rlRun "mv -fv .ssh/id_rsa private_key"
-        rlRun "mv -fv .ssh/id_rsa.pub public_key"
+        rlRun "mv -fv .ssh/id_dsa private_key"
+        rlRun "mv -fv .ssh/id_dsa.pub public_key"
         # use ssh keys from nonstandard dir (/home/$user_name/)
         test "-r private_key -b public_key"
 
@@ -99,32 +99,32 @@ rlJournalStart
 
         rlAssertGrep "Using SSH public key 'pub-commandline'" $LOG_FILE
         rlAssertGrep "Using SSH private key 'pri-commandline'" $LOG_FILE
-        rlAssertGrep "curl: Using SSH public key file 'pub-commandline'" $LOG_FILE
-        rlAssertGrep "curl: Using SSH private key file 'pri-commandline'" $LOG_FILE
+        rlAssertGrep "curl: Using ssh public key file pub-commandline" $LOG_FILE
+        rlAssertGrep "curl: Using ssh private key file pri-commandline" $LOG_FILE
 
         LOG_FILE="ssh_commandline_only_public.log"
         rlRun "./expect reporter-upload -vvv -d problem_dir -u scp://root@localhost$TmpDir/target/upload.tar.gz -b pub-commandline >$LOG_FILE 2>&1"
 
         rlAssertGrep "Using SSH public key 'pub-commandline'" $LOG_FILE
         rlAssertNotGrep "Using SSH private key 'pri-commandline'" $LOG_FILE
-        rlAssertGrep "curl: Using SSH public key file 'pub-commandline'" $LOG_FILE
-        rlAssertNotGrep "curl: Using SSH private key file 'pri-commandline'" $LOG_FILE
+        rlAssertGrep "curl: Using ssh public key file pub-commandline" $LOG_FILE
+        rlAssertNotGrep "curl: Using ssh private key file pri-commandline" $LOG_FILE
 
         LOG_FILE="ssh_commandline_only_private.log"
         rlRun "./expect reporter-upload -vvv -d problem_dir -u scp://root@localhost$TmpDir/target/upload.tar.gz -r pri-commandline >$LOG_FILE 2>&1"
 
         rlAsserNottGrep "Using SSH public key 'pub-commandline'" $LOG_FILE
         rlAssertGrep "Using SSH private key 'pri-commandline'" $LOG_FILE
-        rlAssertNotGrep "curl: Using SSH public key file 'pub-commandline'" $LOG_FILE
-        rlAssertGrep "curl: Using SSH private key file 'pri-commandline'" $LOG_FILE
+        rlAssertNotGrep "curl: Using ssh public key file pub-commandline" $LOG_FILE
+        rlAssertGrep "curl: Using ssh private key file pri-commandline" $LOG_FILE
 
         LOG_FILE="ssh_commandline_default.log"
         rlRun "./expect reporter-upload -vvv -d problem_dir -u scp://root@localhost$TmpDir/target/upload.tar.gz >$LOG_FILE 2>&1"
 
         rlAsserNottGrep "Using SSH public key 'pub-commandline'" $LOG_FILE
         rlAssertNotGrep "Using SSH private key 'pri-commandline'" $LOG_FILE
-        rlAssertNotGrep "curl: Using SSH public key file 'pub-commandline'" $LOG_FILE
-        rlAssertNotGrep "curl: Using SSH private key file 'pri-commandline'" $LOG_FILE
+        rlAssertNotGrep "curl: Using ssh public key file pub-commandline" $LOG_FILE
+        rlAssertNotGrep "curl: Using ssh private key file pri-commandline" $LOG_FILE
     rlPhaseEnd
 
     rlPhaseStartTest "set SSH keyfile conf file upload.conf"
@@ -142,8 +142,8 @@ EOF
 
         rlAssertGrep "Using SSH public key 'pub-conffile'" $LOG_FILE
         rlAssertGrep "Using SSH private key 'pri-conffile'" $LOG_FILE
-        rlAssertGrep "curl: Using SSH public key file 'pub-conffile'" $LOG_FILE
-        rlAssertGrep "curl: Using SSH private key file 'pri-conffile'" $LOG_FILE
+        rlAssertGrep "curl: Using ssh public key file pub-conffile" $LOG_FILE
+        rlAssertGrep "curl: Using ssh private key file pri-conffile" $LOG_FILE
 
 cat > $upload_conf <<EOF
 SSHPublicKey = pub-conffile
@@ -155,8 +155,8 @@ EOF
 
         rlAssertGrep "Using SSH public key 'pub-conffile'" $LOG_FILE
         rlAssertNotGrep "Using SSH private key 'pri-conffile'" $LOG_FILE
-        rlAssertGrep "curl: Using SSH public key file 'pub-conffile'" $LOG_FILE
-        rlAssertNotGrep "curl: Using SSH private key file 'pri-conffile'" $LOG_FILE
+        rlAssertGrep "curl: Using ssh public key file pub-conffile" $LOG_FILE
+        rlAssertNotGrep "curl: Using ssh private key file pri-conffile" $LOG_FILE
 
 cat > $upload_conf <<EOF
 #SSHPublicKey = pub-conffile
@@ -168,8 +168,8 @@ EOF
 
         rlAssertNotGrep "Using SSH public key 'pub-conffile'" $LOG_FILE
         rlAssertGrep "Using SSH private key 'pri-conffile'" $LOG_FILE
-        rlAssertNotGrep "curl: Using SSH public key file 'pub-conffile'" $LOG_FILE
-        rlAssertGrep "curl: Using SSH private key file 'pri-conffile'" $LOG_FILE
+        rlAssertNotGrep "curl: Using ssh public key file pub-conffile" $LOG_FILE
+        rlAssertGrep "curl: Using ssh private key file pri-conffile" $LOG_FILE
 
         rlFileRestore
     rlPhaseEnd
@@ -191,8 +191,8 @@ EOF
 
         rlAssertGrep "Using SSH public key 'pub-env-conf'" $LOG_FILE
         rlAssertGrep "Using SSH private key 'pri-env-conf'" $LOG_FILE
-        rlAssertGrep "curl: Using SSH public key file 'pub-env-conf'" $LOG_FILE
-        rlAssertGrep "curl: Using SSH private key file 'pri-env-conf'" $LOG_FILE
+        rlAssertGrep "curl: Using ssh public key file pub-env-conf" $LOG_FILE
+        rlAssertGrep "curl: Using ssh private key file pri-env-conf" $LOG_FILE
 
 cat > $event_upload_conf <<EOF
 Upload_URL = scp://root@localhost$TmpDir/target/upload.tar.gz
@@ -207,8 +207,8 @@ EOF
 
         rlAssertNotGrep "Using SSH public key 'pub-env-conf'" $LOG_FILE
         rlAssertGrep "Using SSH private key 'pri-env-conf'" $LOG_FILE
-        rlAssertNotGrep "curl: Using SSH public key file 'pub-env-conf'" $LOG_FILE
-        rlAssertGrep "curl: Using SSH private key file 'pri-env-conf'" $LOG_FILE
+        rlAssertNotGrep "curl: Using ssh public key file pub-env-conf" $LOG_FILE
+        rlAssertGrep "curl: Using ssh private key file pri-env-conf" $LOG_FILE
 
 cat > $event_upload_conf <<EOF
 Upload_URL = scp://root@localhost$TmpDir/target/upload.tar.gz
@@ -222,8 +222,8 @@ EOF
 
         rlAssertGrep "Using SSH public key 'pub-env-conf'" $LOG_FILE
         rlAssertNotGrep "Using SSH private key 'pri-env-conf'" $LOG_FILE
-        rlAssertGrep "curl: Using SSH public key file 'pub-env-conf'" $LOG_FILE
-        rlAssertNotGrep "curl: Using SSH private key file 'pri-env-conf'" $LOG_FILE
+        rlAssertGrep "curl: Using ssh public key file pub-env-conf" $LOG_FILE
+        rlAssertNotGrep "curl: Using ssh private key file pri-env-conf" $LOG_FILE
 
         rm -r $event_upload_conf
         rlFileRestore
@@ -251,8 +251,8 @@ EOF
 
         rlAssertGrep "Using SSH public key 'pub-env-xml'" $LOG_FILE
         rlAssertGrep "Using SSH private key 'pri-env-xml'" $LOG_FILE
-        rlAssertGrep "curl: Using SSH public key file 'pub-env-xml'" $LOG_FILE
-        rlAssertGrep "curl: Using SSH private key file 'pri-env-xml'" $LOG_FILE
+        rlAssertGrep "curl: Using ssh public key file pub-env-xml" $LOG_FILE
+        rlAssertGrep "curl: Using ssh private key file pri-env-xml" $LOG_FILE
 
         rlRun "cp -fv ${event_upload_xml}.backup $event_upload_xml"
 
@@ -263,8 +263,8 @@ EOF
 
         rlAssertGrep "Using SSH public key 'pub-env-xml'" $LOG_FILE
         rlAssertNotGrep "Using SSH private key 'pri-env-xml'" $LOG_FILE
-        rlAssertGrep "curl: Using SSH public key file 'pub-env-xml'" $LOG_FILE
-        rlAssertNotGrep "curl: Using SSH private key file 'pri-env-xml'" $LOG_FILE
+        rlAssertGrep "curl: Using ssh public key file pub-env-xml" $LOG_FILE
+        rlAssertNotGrep "curl: Using ssh private key file pri-env-xml" $LOG_FILE
 
         rlRun "cp -fv ${event_upload_xml}.backup $event_upload_xml"
 
@@ -275,8 +275,8 @@ EOF
 
         rlAssertNotGrep "Using SSH public key 'pub-env-xml'" $LOG_FILE
         rlAssertGrep "Using SSH private key 'pri-env-xml'" $LOG_FILE
-        rlAssertNotGrep "curl: Using SSH public key file 'pub-env-xml'" $LOG_FILE
-        rlAssertGrep "curl: Using SSH private key file 'pri-env-xml'" $LOG_FILE
+        rlAssertNotGrep "curl: Using ssh public key file pub-env-xml" $LOG_FILE
+        rlAssertGrep "curl: Using ssh private key file pri-env-xml" $LOG_FILE
 
         rlRun "mv -fv ${event_upload_xml}.backup $event_upload_xml"
         rm -r $event_upload_conf
