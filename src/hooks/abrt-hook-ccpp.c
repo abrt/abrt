@@ -18,6 +18,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include <fnmatch.h>
 #include <sys/utsname.h>
 #include "libabrt.h"
 #include <selinux/selinux.h>
@@ -631,6 +632,19 @@ finito:
     return err;
 }
 
+static bool is_path_ignored(const GList *list, const char *path)
+{
+    const GList *li;
+    for (li = list; li != NULL; li = g_list_next(li))
+    {
+        if (fnmatch((char*)li->data, path, /*flags:*/ 0) == 0)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 static int test_configuration(bool setting_SaveFullCore, bool setting_CreateCoreBacktrace)
 {
     if (!setting_SaveFullCore && !setting_CreateCoreBacktrace)
@@ -641,6 +655,26 @@ static int test_configuration(bool setting_SaveFullCore, bool setting_CreateCore
     }
 
     return 0;
+}
+
+static void error_msg_not_process_crash(const char *pid_str, const char *process_str,
+        long unsigned uid, int signal_no, const char *signame, const char *message, ...)
+{
+    va_list p;
+    va_start(p, message);
+    char *message_full = xvasprintf(message, p);
+    va_end(p);
+
+    if (signame)
+        error_msg("Process %s (%s) of user %lu killed by SIG%s - %s", pid_str,
+                        process_str, uid, signame, message_full);
+    else
+        error_msg("Process %s (%s) of user %lu killed by signal %d - %s", pid_str,
+                        process_str, uid, signal_no, message_full);
+
+    free(message_full);
+
+    return;
 }
 
 int main(int argc, char** argv)
@@ -666,6 +700,7 @@ int main(int argc, char** argv)
     bool setting_SaveBinaryImage;
     bool setting_SaveFullCore;
     bool setting_CreateCoreBacktrace;
+    GList *setting_ignored_paths = NULL;
     {
         map_string_t *settings = new_map_string();
         load_abrt_plugin_conf_file("CCpp.conf", settings);
@@ -677,6 +712,10 @@ int main(int argc, char** argv)
         value = get_map_string_item_or_NULL(settings, "SaveFullCore");
         setting_SaveFullCore = value ? string_to_bool(value) : true;
         value = get_map_string_item_or_NULL(settings, "CreateCoreBacktrace");
+        value = get_map_string_item_or_NULL(settings, "IgnoredPaths");
+        if (value)
+            setting_ignored_paths = parse_list(value);
+
         setting_CreateCoreBacktrace = value ? string_to_bool(value) : true;
         value = get_map_string_item_or_NULL(settings, "VerboseLog");
         if (value)
@@ -712,6 +751,8 @@ int main(int argc, char** argv)
     errno = 0;
     const char* signal_str = argv[1];
     int signal_no = xatoi_positive(signal_str);
+    const char *signame = NULL;
+    bool signal_is_fatal_bool = signal_is_fatal(signal_no, &signame);
     off_t ulimit_c = strtoull(argv[2], NULL, 10);
     if (ulimit_c < 0) /* unlimited? */
     {
@@ -751,6 +792,15 @@ int main(int argc, char** argv)
     {
         error_msg_and_die("PID %lu is '%s', not dumping it to avoid recursion",
                         (long)pid, executable);
+    }
+
+    const char *last_slash = strrchr(executable, '/');
+    if (executable && is_path_ignored(setting_ignored_paths, executable))
+    {
+        error_msg_not_process_crash(pid_str, last_slash + 1, (long unsigned)uid, signal_no,
+                signame, "ignoring (listed in 'IgnoredPaths')");
+
+        return 0;
     }
 
     user_pwd = get_cwd(pid);
@@ -793,24 +843,8 @@ int main(int argc, char** argv)
         return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
-    const char *signame = NULL;
-    switch (signal_no)
-    {
-        case SIGILL : signame = "ILL" ; break;
-        case SIGFPE : signame = "FPE" ; break;
-        case SIGSEGV: signame = "SEGV"; break;
-        case SIGBUS : signame = "BUS" ; break; //Bus error (bad memory access)
-        case SIGABRT: signame = "ABRT"; break; //usually when abort() was called
-    // We have real-world reports from users who see buggy programs
-    // dying with SIGTRAP, uncommented it too:
-        case SIGTRAP: signame = "TRAP"; break; //Trace/breakpoint trap
-    // These usually aren't caused by bugs:
-      //case SIGQUIT: signame = "QUIT"; break; //Quit from keyboard
-      //case SIGSYS : signame = "SYS" ; break; //Bad argument to routine (SVr4)
-      //case SIGXCPU: signame = "XCPU"; break; //CPU time limit exceeded (4.2BSD)
-      //case SIGXFSZ: signame = "XFSZ"; break; //File size limit exceeded (4.2BSD)
-        default: return create_user_core(user_core_fd, pid, ulimit_c); // not a signal we care about
-    }
+    if (!signal_is_fatal_bool)
+        return create_user_core(user_core_fd, pid, ulimit_c); // not a signal we care about
 
     if (!daemon_is_ok())
     {
@@ -839,7 +873,6 @@ int main(int argc, char** argv)
         return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
-    const char *last_slash = strrchr(executable, '/');
     if (last_slash && strncmp(++last_slash, "abrt", 4) == 0)
     {
         if (g_settings_debug_level == 0)

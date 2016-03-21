@@ -39,6 +39,10 @@ SaveFullCore = 'yes' / 'no' ...::
    directory.
    Default is 'yes'.
 
+IgnoredPaths = /path/to/ignore/*, */another/ignored/path* ...::
+   ABRT will ignore crashes in executables whose absolute path matches one of
+   specified patterns.
+
 VerboseLog = NUM::
    Used to make the hook more verbose
 
