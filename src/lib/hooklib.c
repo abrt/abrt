@@ -553,3 +553,29 @@ bool allowed_new_user_problem_entry(uid_t uid, const char *name, const char *val
     error_msg("Only root is permitted to create element '%s' containing '%s'", name, value);
     return false;
 }
+
+int signal_is_fatal(int signal_no, const char **name)
+{
+    const char *signame = NULL;
+    switch (signal_no)
+    {
+        case SIGILL : signame = "ILL" ; break;
+        case SIGFPE : signame = "FPE" ; break;
+        case SIGSEGV: signame = "SEGV"; break;
+        case SIGBUS : signame = "BUS" ; break; //Bus error (bad memory access)
+        case SIGABRT: signame = "ABRT"; break; //usually when abort() was called
+    // We have real-world reports from users who see buggy programs
+    // dying with SIGTRAP, uncommented it too:
+        case SIGTRAP: signame = "TRAP"; break; //Trace/breakpoint trap
+    // These usually aren't caused by bugs:
+      //case SIGQUIT: signame = "QUIT"; break; //Quit from keyboard
+      //case SIGSYS : signame = "SYS" ; break; //Bad argument to routine (SVr4)
+      //case SIGXCPU: signame = "XCPU"; break; //CPU time limit exceeded (4.2BSD)
+      //case SIGXFSZ: signame = "XFSZ"; break; //File size limit exceeded (4.2BSD)
+    }
+
+    if (name != NULL)
+        *name = signame;
+
+   return signame != NULL;
+}
