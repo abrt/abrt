@@ -43,6 +43,16 @@ IgnoredPaths = /path/to/ignore/*, */another/ignored/path* ...::
    ABRT will ignore crashes in executables whose absolute path matches one of
    specified patterns.
 
+AllowedUsers = root, ...::
+   ABRT will process only crashes of either allowed users 'AllowedUsers' or
+   users who are members of allowed group 'AllowedGroups'. If no allowed users
+   nor allowed group are specified ABRT will process crashes of all users.
+
+AllowedGroups = root, ...::
+   ABRT will process only crashes of either allowed users 'AllowedUsers' or
+   users who are members of allowed group 'AllowedGroups'. If no allowed users
+   nor allowed group are specified ABRT will process crashes of all users.
+
 VerboseLog = NUM::
    Used to make the hook more verbose
 
