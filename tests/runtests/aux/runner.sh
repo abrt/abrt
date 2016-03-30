@@ -83,7 +83,7 @@ if [ $1 ]; then
     echo ":: TEST START MARK ::"
     if [ -x /usr/bin/time ]; then
         tmpfile=$( mktemp )
-        /usr/bin/time -v -o $tmpfile ./$(basename $1)
+        /usr/bin/time -v -o $tmpfile /usr/bin/timeout $TEST_TIMEOUT ./$(basename $1)
         cat $tmpfile
         rm $tmpfile
     else
