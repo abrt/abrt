@@ -48,6 +48,9 @@ export REINSTALL_BEFORE_EACH_TEST=0
 export RESTORE_CONFIGS_BEFORE_EACH_TEST=1
 export CLEAN_SPOOL_BEFORE_EACH_TEST=1
 export DUMP_PACKAGE_VERSIONS=1
+# Ensures that a test will not hang forever.
+# See man timeout for more details about the format.
+export TEST_TIMEOUT=15m
 
 # - misc
 export PACKAGES="abrt \
