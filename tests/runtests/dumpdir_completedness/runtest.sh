@@ -31,7 +31,11 @@
 
 TEST="dumpdir_completedness"
 PACKAGE="abrt"
-DDFILES="abrt_version analyzer architecture cgroup cmdline component core_backtrace coredump count dso_list environ executable global_pid hostname kernel last_occurrence limits maps open_fds os_info os_release package pid pkg_arch pkg_epoch pkg_name pkg_release pkg_version proc_pid_status pwd reason runlevel time type uid username uuid var_log_messages"
+
+DDFILES="abrt_version analyzer architecture cmdline component count executable hostname kernel last_occurrence os_release package pkg_arch pkg_epoch pkg_name pkg_release pkg_version pkg_vendor pkg_fingerprint reason time type uid username uuid os_info runlevel"
+
+CCPP_FILES="core_backtrace coredump dso_list environ limits maps open_fds var_log_messages pid pwd cgroup global_pid  proc_pid_status"
+PYTHON_FILES="backtrace"
 
 rlJournalStart
     rlPhaseStartSetup
@@ -43,18 +47,43 @@ rlJournalStart
 
     rlPhaseStartTest "CCpp plugin"
         prepare
-        generate_crash
+
+        # jfilak: will-crash isn't always signed which is needed for pkg_fingerprint.
+        #         If you want to use will-crash, do not forget to add EPEL key
+        #         to /etc/abrt/gpg_keys.
+        #generate_crash
+        sleep 1000 &
+        sleep 1
+        kill -ABRT %1
+
         wait_for_hooks
         get_crash_path
 
         ls $crash_PATH > crash_dir_ls
         check_dump_dir_attributes $crash_PATH
 
-        for FILE in $DDFILES ; do
+        for FILE in $DDFILES $CCPP_FILES; do
             rlAssertExists "$crash_PATH/$FILE"
         done
 
-        rlAssertGrep "/bin/will_segfault" "$crash_PATH/core_backtrace"
+        rlAssertGrep "/bin/sleep" "$crash_PATH/core_backtrace"
+
+        rlRun "abrt-cli rm $crash_PATH"
+    rlPhaseEnd
+
+    rlPhaseStartTest "Python plugin"
+        prepare
+
+        will_python3_raise
+        wait_for_hooks
+        get_crash_path
+
+        ls $crash_PATH > crash_dir_ls
+        check_dump_dir_attributes $crash_PATH
+
+        for FILE in $DDFILES $PYTHON_FILES; do
+            rlAssertExists "$crash_PATH/$FILE"
+        done
 
         rlRun "abrt-cli rm $crash_PATH"
     rlPhaseEnd

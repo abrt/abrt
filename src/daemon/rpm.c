@@ -99,7 +99,22 @@ void rpm_load_gpgkey(const char* filename)
 
 int rpm_chk_fingerprint(const char* pkg)
 {
-    int ret = 0;
+    char *fingerprint = rpm_get_fingerprint(pkg);
+    int res = 0;
+    if (fingerprint)
+        res = rpm_fingerprint_is_imported(fingerprint);
+    free(fingerprint);
+    return res;
+}
+
+int rpm_fingerprint_is_imported(const char* fingerprint)
+{
+    return !!g_list_find_custom(list_fingerprints, fingerprint, (GCompareFunc)g_strcmp0);
+}
+
+char *rpm_get_fingerprint(const char *pkg)
+{
+    char *fingerprint = NULL;
     char *pgpsig = NULL;
     const char *errmsg = NULL;
 
@@ -117,20 +132,15 @@ int rpm_chk_fingerprint(const char* pkg)
         goto error;
     }
 
-    {
-        char *pgpsig_tmp = strstr(pgpsig, " Key ID ");
-        if (pgpsig_tmp)
-        {
-            pgpsig_tmp += sizeof(" Key ID ") - 1;
-            ret = g_list_find_custom(list_fingerprints, pgpsig_tmp, (GCompareFunc)g_strcmp0) != NULL;
-        }
-    }
+    char *pgpsig_tmp = strstr(pgpsig, " Key ID ");
+    if (pgpsig_tmp)
+        fingerprint = xstrdup(pgpsig_tmp + sizeof(" Key ID ") - 1);
 
 error:
     free(pgpsig);
     rpmdbFreeIterator(iter);
     rpmtsFree(ts);
-    return ret;
+    return fingerprint;
 }
 
 /*
@@ -256,6 +266,7 @@ pkg_add_id(name);
 pkg_add_id(version);
 pkg_add_id(release);
 pkg_add_id(arch);
+pkg_add_id(vendor);
 
 // caller is responsible to free returned value
 struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_or_NULL)
@@ -303,6 +314,10 @@ struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_
     if (r)
         goto error;
 
+    r = pkg_add_vendor(header, p);
+    if (r)
+        goto error;
+
     p->p_nvr = xasprintf("%s-%s-%s", p->p_name, p->p_version, p->p_release);
 
     rpmdbFreeIterator(iter);
@@ -322,6 +337,7 @@ void free_pkg_envra(struct pkg_envra *p)
     if (!p)
         return;
 
+    free(p->p_vendor);
     free(p->p_epoch);
     free(p->p_name);
     free(p->p_version);
