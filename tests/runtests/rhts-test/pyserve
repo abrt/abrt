@@ -5,6 +5,7 @@
 import os
 import sys
 import BaseHTTPServer
+import cgi
 
 class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_POST(self):
@@ -13,6 +14,20 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 #        self.end_headers()
 
 #        print self.rfile.read(int(self.headers.getheader('content-length')))
+
+        if 'attachments' in self.path:
+            #content_length = int(self.headers['Content-Length'])
+            #file_content = self.rfile.read(content_length)
+            form = cgi.FieldStorage(
+                 fp=self.rfile,
+                 headers=self.headers,
+                 environ={"REQUEST_METHOD": "POST",
+                          "CONTENT_TYPE": self.headers['Content-Type']})
+
+            uploaded_file = form.getvalue("file")
+            if uploaded_file:
+                with open('data.tar.gz', "wb") as fh:
+                    fh.write(uploaded_file)
 
         response = self.dummy_response
         if not self.filelist:
