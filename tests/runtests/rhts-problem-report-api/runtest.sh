@@ -75,7 +75,7 @@ rlJournalStart
         rlAssertGrep "Invalid format file: ${FORM_FILE}.conf" $LOG_FILE
     rlPhaseEnd
 
-    rlPhaseStartTest "formatting file does not exist"
+    rlPhaseStartTest "invalid formatting file"
         FORM_FILE="invalid"
         LOG_FILE="invalid_formatting_file.log"
         rlRun "reporter-rhtsupport -D -d problem_dir -F ${FORM_FILE}.conf &> $LOG_FILE" 1
