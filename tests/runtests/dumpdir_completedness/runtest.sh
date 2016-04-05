@@ -31,7 +31,10 @@
 
 TEST="dumpdir_completedness"
 PACKAGE="abrt"
-DDFILES="abrt_version analyzer architecture cgroup cmdline component core_backtrace coredump count dso_list environ event_log executable global_pid hostname kernel last_occurrence limits machineid maps open_fds os_info os_release package pid pkg_arch pkg_epoch pkg_name pkg_release pkg_version proc_pid_status pwd reason runlevel sosreport.tar.xz time type uid username uuid var_log_messages"
+DDFILES="abrt_version analyzer architecture cmdline component count event_log executable hostname kernel last_occurrence machineid os_release package pkg_arch pkg_epoch pkg_name pkg_release pkg_version pkg_vendor pkg_fingerprint reason sosreport.tar.xz time type uid username uuid"
+
+CCPP_FILES="core_backtrace coredump dso_list environ limits maps open_fds var_log_messages pid pwd cgroup"
+PYTHON_FILES="backtrace"
 
 rlJournalStart
     rlPhaseStartSetup
@@ -43,18 +46,55 @@ rlJournalStart
 
     rlPhaseStartTest "CCpp plugin"
         prepare
-        generate_crash
+
+        # jfilak: will-crash isn't always signed which is needed for pkg_fingerprint.
+        #         If you want to use will-crash, do not forget to add EPEL key
+        #         to /etc/abrt/gpg_keys.
+        #generate_crash
+        sleep 1000 &
+        sleep 1
+        kill -ABRT %1
+
         wait_for_hooks
         get_crash_path
 
         ls $crash_PATH > crash_dir_ls
         check_dump_dir_attributes $crash_PATH
 
-        for FILE in $DDFILES ; do
+        for FILE in $DDFILES $CCPP_FILES; do
             rlAssertExists "$crash_PATH/$FILE"
         done
 
-        rlAssertGrep "/bin/will_segfault" "$crash_PATH/core_backtrace"
+        rlAssertGrep "/bin/sleep" "$crash_PATH/core_backtrace"
+
+        rlRun "abrt-cli rm $crash_PATH"
+    rlPhaseEnd
+
+    rlPhaseStartTest "Python plugin"
+        prepare
+
+        # jfilak: will-crash isn't always signed which is needed for pkg_fingerprint.
+        #         If you want to use will-crash, do not forget to add EPEL key
+        #         to /etc/abrt/gpg_keys.
+        #will_python_raise
+        #
+        # Let's use a python file from yum which should be always installed
+        #
+        # $ find /usr/lib/python2.7/site-packages/yum -type f -name "*.py" -exec python '{}' \;
+        # Mar 30 10:02:32 dhcp-24-129.brq.redhat.com python[8841]: detected unhandled Python exception in '/usr/lib/python2.7/site-packages/yum/comps.py'
+        # Mar 30 10:02:38 dhcp-24-129.brq.redhat.com python[9463]: detected unhandled Python exception in '/usr/lib/python2.7/site-packages/yum/mdparser.py'
+
+        python /usr/lib/python2.7/site-packages/yum/mdparser.py
+
+        wait_for_hooks
+        get_crash_path
+
+        ls $crash_PATH > crash_dir_ls
+        check_dump_dir_attributes $crash_PATH
+
+        for FILE in $DDFILES $PYTHON_FILES; do
+            rlAssertExists "$crash_PATH/$FILE"
+        done
 
         rlRun "abrt-cli rm $crash_PATH"
     rlPhaseEnd

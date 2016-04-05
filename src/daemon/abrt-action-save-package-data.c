@@ -224,6 +224,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     char *cmdline = NULL;
     char *executable = NULL;
     char *package_short_name = NULL;
+    char *fingerprint = NULL;
     struct pkg_envra *pkg_name = NULL;
     char *component = NULL;
     int error = 1;
@@ -311,13 +312,12 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
         goto ret; /* return 1 (failure) */
     }
 
-    if (settings_bOpenGPGCheck)
+    fingerprint = rpm_get_fingerprint(package_short_name);
+    if (!(fingerprint != NULL && rpm_fingerprint_is_imported(fingerprint))
+         && settings_bOpenGPGCheck)
     {
-        if (!rpm_chk_fingerprint(package_short_name))
-        {
-            log("Package '%s' isn't signed with proper key", package_short_name);
-            goto ret; /* return 1 (failure) */
-        }
+        log("Package '%s' isn't signed with proper key", package_short_name);
+        goto ret; /* return 1 (failure) */
         /* We used to also check the integrity of the executable here:
          *  if (!CheckHash(package_short_name.c_str(), executable)) BOOM();
          * Checking the MD5 sum requires to run prelink to "un-prelink" the
@@ -340,6 +340,27 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
         dd_save_text(dd, FILENAME_PKG_VERSION, pkg_name->p_version);
         dd_save_text(dd, FILENAME_PKG_RELEASE, pkg_name->p_release);
         dd_save_text(dd, FILENAME_PKG_ARCH, pkg_name->p_arch);
+        dd_save_text(dd, FILENAME_PKG_VENDOR, pkg_name->p_vendor);
+
+        if (fingerprint)
+        {
+            /* 16 character + 3 spaces + 1 '\0' + 2 Bytes for errors :) */
+            char key_fingerprint[22] = {0};
+
+            /* The condition is just a defense against errors */
+            for (size_t i = 0, j = 0; j < sizeof(key_fingerprint) - 2; )
+            {
+                key_fingerprint[j++] = toupper(fingerprint[i++]);
+
+                if (fingerprint[i] == '\0')
+                    break;
+
+                if (!(i & (0x3)))
+                    key_fingerprint[j++] = ' ';
+            }
+
+            dd_save_text(dd, FILENAME_PKG_FINGERPRINT, key_fingerprint);
+        }
     }
 
     if (component)
@@ -355,6 +376,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     free(package_short_name);
     free_pkg_envra(pkg_name);
     free(component);
+    free(fingerprint);
 
     return error;
 }
