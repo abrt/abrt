@@ -29,3 +29,5 @@
  stored data, but it's not guaranteed)
  */
 char *problem_data_save(problem_data_t *pd);
+
+int signal_is_fatal(int signal_no, const char **name);
