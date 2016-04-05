@@ -217,14 +217,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
         return 1;
 
     char *type = dd_load_text(dd, FILENAME_TYPE);
-    if (!strcmp(type, "Kerneloops"))
-    {
-        dd_save_text(dd, FILENAME_PACKAGE, "kernel");
-        dd_save_text(dd, FILENAME_COMPONENT, "kernel");
-        dd_close(dd);
-        free(type);
-        return 0;
-    }
+    bool kernel_oops = !strcmp(type, "Kerneloops") || !strcmp(type, "vmcore");
     free(type);
 
     char *cmdline = NULL;
@@ -234,12 +227,32 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
     char *fingerprint = NULL;
     struct pkg_envra *pkg_name = NULL;
     char *component = NULL;
+    char *kernel = NULL;
     int error = 1;
     /* note: "goto ret" statements below free all the above variables,
      * but they don't dd_close(dd) */
 
-    cmdline = dd_load_text_ext(dd, FILENAME_CMDLINE, DD_FAIL_QUIETLY_ENOENT);
-    executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+    if (kernel_oops)
+    {
+        kernel = dd_load_text(dd, FILENAME_KERNEL);
+        if (!kernel)
+        {
+            log("File 'kernel' containing kernel version not "
+                "found in current directory");
+            goto ret;
+        }
+        /* Trim trailing white-spaces. */
+        strchrnul(kernel, ' ')[0] = '\0';
+
+        log_info("Looking for kernel package");
+        executable = xasprintf("/boot/vmlinuz-%s", kernel);
+    }
+    else
+    {
+        cmdline = dd_load_text_ext(dd, FILENAME_CMDLINE, DD_FAIL_QUIETLY_ENOENT);
+        executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+    }
+
 
     /* Do not implicitly query rpm database in process's root dir, if
      * ExploreChroots is disabled. */
@@ -250,8 +263,12 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
     /* Close dd while we query package database. It can take some time,
      * don't want to keep dd locked longer than necessary */
     dd_close(dd);
+    dd = NULL;
 
-    if (is_path_blacklisted(executable))
+    /* The check for kernel_oops is there because it could be an unexpected
+     * behaviour. If one wants to ignore kernel oops, she/he should disable
+     * the corresponding services. */
+    if (!kernel_oops && is_path_blacklisted(executable))
     {
         log("Blacklisted executable '%s'", executable);
         goto ret; /* return 1 (failure) */
@@ -266,12 +283,16 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
                       "proceeding without packaging information", executable);
             goto ret0; /* no error */
         }
-        log("Executable '%s' doesn't belong to any package"
-		" and ProcessUnpackaged is set to 'no'",
-		executable
-        );
+        if (kernel_oops)
+            log("Can't find kernel package corresponding to '%s'", kernel);
+        else
+            log("Executable '%s' doesn't belong to any package"
+                " and ProcessUnpackaged is set to 'no'", executable);
         goto ret; /* return 1 (failure) */
     }
+
+    if (kernel_oops)
+        goto skip_interperter;
 
     /* Check well-known interpreter names */
     const char *basename = strrchr(executable, '/');
@@ -315,11 +336,14 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
         pkg_name = script_pkg;
     }
 
+skip_interperter:
     package_short_name = xasprintf("%s", pkg_name->p_name);
     log_info("Package:'%s' short:'%s'", pkg_name->p_nvr, package_short_name);
 
-
-    if (g_list_find_custom(settings_setBlackListedPkgs, package_short_name, (GCompareFunc)g_strcmp0))
+    /* The check for kernel_oops is there because it could be an unexpected
+     * behaviour. If one wants to ignore kernel oops, she/he should disable
+     * the corresponding services. */
+    if (!kernel_oops && g_list_find_custom(settings_setBlackListedPkgs, package_short_name, (GCompareFunc)g_strcmp0))
     {
         log("Blacklisted package '%s'", package_short_name);
         goto ret; /* return 1 (failure) */
@@ -379,11 +403,12 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
     if (component)
         dd_save_text(dd, FILENAME_COMPONENT, component);
 
-    dd_close(dd);
-
  ret0:
     error = 0;
  ret:
+    if (dd)
+        dd_close(dd);
+
     free(cmdline);
     free(executable);
     free(rootdir);

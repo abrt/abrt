@@ -6,7 +6,6 @@ bin_SCRIPTS = \
     abrt-action-analyze-vulnerability \
     abrt-action-list-dsos \
     abrt-action-perform-ccpp-analysis \
-    abrt-action-save-kernel-data \
     abrt-action-analyze-ccpp-local \
     abrt-action-notify
 
@@ -101,7 +100,6 @@ EXTRA_DIST = \
     analyze_RetraceServer.xml.in \
     abrt-action-analyze-core.in \
     abrt-action-generate-machine-id \
-    abrt-action-save-kernel-data \
     abrt-action-ureport \
     abrt-gdb-exploitable \
     https-utils.h \
