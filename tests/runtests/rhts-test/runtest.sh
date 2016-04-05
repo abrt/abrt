@@ -181,6 +181,21 @@ rlJournalStart
         rlAssertGrep "URL=http://127.0.0.1:12345/rs/cases/[0-9]*/attachments/.*" client_create
         rlAssertGrep "RHTSupport:.* URL=http://127.0.0.1:12345/rs/cases/[0-9]*/attachments/.*" problem_dir/reported_to
         rm -f problem_dir/reported_to
+
+        # pyserver stores received data as $RECEIVED_FILE
+        RECEIVED_FILE="data.tar.gz"
+        rlAssertExists $RECEIVED_FILE
+        rlRun "tar -zxvf $RECEIVED_FILE"
+
+        rlAssertExists "content.xml"
+        rlAssertExists "content"
+
+        # test wether the recieved data are the same as data in the problem dir
+        rlRun "diff -r problem_dir content &> dir_diff.log"
+        rlLog "diff dir content"
+        cat "dir_diff.log"
+
+        rm -rf content content.xml $RECEIVED_FILE
     rlPhaseEnd
 
     # testing -tCASE_NO
