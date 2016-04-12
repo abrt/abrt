@@ -29,58 +29,113 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
     FILE *mntnf_file = fopen(mntnf_path, "r");
     free(mntnf_path);
 
-    struct mountinfo mntnf;
-    int r = get_mountinfo_for_mount_point(mntnf_file, &mntnf, "/");
+    struct mount_point {
+        const char *name;
+        enum mountinfo_fields {
+            MOUNTINFO_ROOT,
+            MOUNTINFO_SOURCE,
+        } field;
+    } mount_points[] = {
+        { "/sys/fs/cgroup/memory", MOUNTINFO_ROOT },
+        { "/",                     MOUNTINFO_SOURCE },
+    };
+
+    char *container_id = NULL;
+    char *output = NULL;
+
+    /* initialized to 0 because we call mountinfo_destroy below */
+    struct mountinfo mntnf = {0};
+
+    for (size_t i = 0; i < ARRAY_SIZE(mount_points); ++i)
+    {
+        log_debug("Parsing container ID from mount point '%s'", mount_points[i].name);
+
+        rewind(mntnf_file);
+
+        /* get_mountinfo_for_mount_point() re-initializes &mntnf */
+        mountinfo_destroy(&mntnf);
+        int r = get_mountinfo_for_mount_point(mntnf_file, &mntnf, mount_points[i].name);
+
+        if (r != 0)
+        {
+            log_debug("Mount poin not found");
+            continue;
+        }
+
+        const char *mnt_info = NULL;
+        switch(mount_points[i].field)
+        {
+            case MOUNTINFO_ROOT:
+                mnt_info = MOUNTINFO_ROOT(mntnf);
+                break;
+            case MOUNTINFO_SOURCE:
+                mnt_info = MOUNTINFO_MOUNT_SOURCE(mntnf);
+                break;
+            default:
+                error_msg("BUG: forgotten MOUNTINFO field type");
+                abort();
+        }
+        const char *last = strrchr(mnt_info, '/');
+        if (last == NULL || strncmp("/docker-", last, strlen("/docker-")) != 0)
+        {
+            log_debug("Mounted source is not a docker mount source: '%s'", mnt_info);
+            continue;
+        }
+
+        last = strrchr(last, '-');
+        if (last == NULL)
+        {
+            log_debug("The docker mount point has unknown format");
+            continue;
+        }
+
+        ++last;
+
+        /* Why we copy only 12 bytes here?
+         * Because only the first 12 characters are used by docker as ID of the
+         * container. */
+        container_id = xstrndup(last, 12);
+        if (strlen(container_id) != 12)
+        {
+            log_debug("Failed to get container ID");
+            continue;
+        }
+
+        char *docker_inspect_cmdline = NULL;
+        if (root_dir != NULL)
+            docker_inspect_cmdline = xasprintf("chroot %s /bin/sh -c \"docker inspect %s\"", root_dir, container_id);
+        else
+            docker_inspect_cmdline = xasprintf("docker inspect %s", container_id);
+
+        log_debug("Executing: '%s'", docker_inspect_cmdline);
+        output = run_in_shell_and_save_output(0, docker_inspect_cmdline, "/", NULL);
+
+        free(docker_inspect_cmdline);
+
+        if (output == NULL || strcmp(output, "[]\n") == 0)
+        {
+            log_debug("Unsupported container ID: '%s'", container_id);
+
+            free(container_id);
+            container_id = NULL;
+
+            free(output);
+            output = NULL;
+
+            continue;
+        }
+
+        break;
+    }
     fclose(mntnf_file);
 
-    if (r != 0)
+    if (container_id == NULL)
     {
-        error_msg("dockerized processes must have re-mounted root");
-        goto dump_docker_info_cleanup;
-    }
-
-    const char *mnt_src = MOUNTINFO_MOUNT_SOURCE(mntnf);
-    const char *last = strrchr(mnt_src, '/');
-    if (last == NULL || strncmp("/docker-", last, strlen("/docker-")) != 0)
-    {
-        error_msg("Mounted source is not a docker mount source");
-        goto dump_docker_info_cleanup;
-    }
-
-    last = strrchr(last, '-');
-    if (last == NULL)
-    {
-        error_msg("The docker mount source has unknown format");
-        goto dump_docker_info_cleanup;
-    }
-
-    ++last;
-    char *container_id = xstrndup(last, 12);
-    if (strlen(container_id) != 12)
-    {
-        error_msg("Failed to get container ID");
+        error_msg("Could not inspect the container");
         goto dump_docker_info_cleanup;
     }
 
     dd_save_text(dd, FILENAME_CONTAINER_ID, container_id);
-
-    char *docker_inspect_cmdline = NULL;
-    if (root_dir != NULL)
-        docker_inspect_cmdline = xasprintf("chroot %s /bin/sh -c \"docker inspect %s\"", root_dir, container_id);
-    else
-        docker_inspect_cmdline = xasprintf("docker inspect %s", container_id);
-
-    log_debug("docker command: '%s'", docker_inspect_cmdline);
-    char *output = run_in_shell_and_save_output(0, docker_inspect_cmdline, "/", NULL);
-
-    free(docker_inspect_cmdline);
-
-    if (output == NULL)
-    {
-        error_msg("Failed to inspect the container");
-        goto dump_docker_info_cleanup;
-    }
-
     dd_save_text(dd, FILENAME_DOCKER_INSPECT, output);
 
     json = json_tokener_parse(output);
