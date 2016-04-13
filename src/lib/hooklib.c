@@ -415,7 +415,12 @@ char* problem_data_save(problem_data_t *pd)
     if (g_settings_privatereports)
         dd = create_dump_dir_from_problem_data_ext(pd, g_settings_dump_location, 0);
     else
-        dd = create_dump_dir_from_problem_data(pd, g_settings_dump_location);
+    {
+        if (problem_data_get_content_or_NULL(pd, FILENAME_UID) == NULL)
+            dd = create_dump_dir_from_problem_data_ext(pd, g_settings_dump_location, 0);
+        else
+            dd = create_dump_dir_from_problem_data(pd, g_settings_dump_location);
+    }
 
     char *problem_id = NULL;
     if (dd)
