@@ -1104,6 +1104,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %dir %{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/
 %{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/*.html
 %{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/*.css
+%config(noreplace) %{_sysconfdir}/libreport/events.d/abrt_dbus_event.conf
 
 %files python
 %{python_sitearch}/problem/
