@@ -703,13 +703,16 @@ static void error_msg_not_process_crash(const char *pid_str, const char *process
     char *message_full = xvasprintf(message, p);
     va_end(p);
 
+    char *process_name = (process_str) ?  xasprintf(" (%s)", process_str) : xstrdup("");
+
     if (signame)
         error_msg("Process %s (%s) of user %lu killed by SIG%s - %s", pid_str,
-                        process_str, uid, signame, message_full);
+                        process_name, uid, signame, message_full);
     else
         error_msg("Process %s (%s) of user %lu killed by signal %d - %s", pid_str,
-                        process_str, uid, signal_no, message_full);
+                        process_name, uid, signal_no, message_full);
 
+    free(process_name);
     free(message_full);
 
     return;
@@ -835,6 +838,10 @@ int main(int argc, char** argv)
 
     int src_fd_binary = -1;
     char *executable = get_executable(pid, setting_SaveBinaryImage ? &src_fd_binary : NULL);
+    if (executable == NULL)
+        error_msg_not_process_crash(pid_str, NULL, (long unsigned)uid, signal_no,
+                signame, "ignoring (can't read /proc/PID/exe link)");
+
     if (executable && strstr(executable, "/abrt-hook-ccpp"))
     {
         error_msg_and_die("PID %lu is '%s', not dumping it to avoid recursion",
