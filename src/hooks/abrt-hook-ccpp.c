@@ -839,17 +839,21 @@ int main(int argc, char** argv)
     int src_fd_binary = -1;
     char *executable = get_executable(pid, setting_SaveBinaryImage ? &src_fd_binary : NULL);
     if (executable == NULL)
+    {
         error_msg_not_process_crash(pid_str, NULL, (long unsigned)uid, signal_no,
                 signame, "ignoring (can't read /proc/PID/exe link)");
 
-    if (executable && strstr(executable, "/abrt-hook-ccpp"))
+        xfunc_die();
+    }
+
+    if (strstr(executable, "/abrt-hook-ccpp"))
     {
         error_msg_and_die("PID %lu is '%s', not dumping it to avoid recursion",
                         (long)pid, executable);
     }
 
     const char *last_slash = strrchr(executable, '/');
-    if (executable && is_path_ignored(setting_ignored_paths, executable))
+    if (is_path_ignored(setting_ignored_paths, executable))
     {
         error_msg_not_process_crash(pid_str, last_slash + 1, (long unsigned)uid, signal_no,
                 signame, "ignoring (listed in 'IgnoredPaths')");
