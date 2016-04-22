@@ -56,6 +56,20 @@ rlJournalStart
         rlAssertNotEquals "Parsed files" "_0 abrt.log" "_$(wc -l abrt.log)"
     rlPhaseEnd
 
+    rlPhaseStartTest "test setting DropNotReportableOopses"
+        rlFileBackup "/etc/abrt/plugins/oops.conf"
+
+        rlRun "augtool set /files/etc/abrt/plugins/oops.conf/DropNotReportableOopses yes"
+        rlRun "augtool print /files/etc/abrt/plugins/oops.conf/DropNotReportableOopses 2>&1 | cut -d'=' -f2 | tee drop_reportable_yes.log"
+        rlAssertGrep "yes" drop_reportable_yes.log
+
+        rlRun "augtool set /files/etc/abrt/plugins/oops.conf/DropNotReportableOopses no"
+        rlRun "augtool print /files/etc/abrt/plugins/oops.conf/DropNotReportableOopses 2>&1 | cut -d'=' -f2 | tee drop_reportable_no.log"
+        rlAssertGrep "no" drop_reportable_no.log
+
+        rlFileRestore
+    rlPhaseEnd
+
     rlPhaseStartCleanup
         rlBundleLogs augeas $(ls *.log)
         popd # TmpDir
