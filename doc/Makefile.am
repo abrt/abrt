@@ -32,7 +32,6 @@ MAN1_TXT += abrt-merge-pstoreoops.txt
 MAN1_TXT += abrt-server.txt
 MAN1_TXT += abrt-cli.txt
 MAN1_TXT += abrt-action-save-package-data.txt
-MAN1_TXT += abrt-action-save-kernel-data.txt
 MAN1_TXT += abrt-install-ccpp-hook.txt
 MAN1_TXT += abrt-action-analyze-ccpp-local.txt
 MAN1_TXT += abrt-watch-log.txt
