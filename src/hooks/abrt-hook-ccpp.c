@@ -969,22 +969,6 @@ int main(int argc, char** argv)
 
         free(dest_filename);
 
-        char *tmp = NULL;
-        get_env_variable(pid, "container", &tmp);
-        if (tmp != NULL)
-        {
-            dd_save_text(dd, FILENAME_CONTAINER, tmp);
-            free(tmp);
-            tmp = NULL;
-        }
-
-        get_env_variable(pid, "container_uuid", &tmp);
-        if (tmp != NULL)
-        {
-            dd_save_text(dd, FILENAME_CONTAINER_UUID, tmp);
-            free(tmp);
-        }
-
         /* There's no need to compare mount namespaces and search for '/' in
          * mountifo.  Comparison of inodes of '/proc/[pid]/root' and '/' works
          * fine. If those inodes do not equal each other, we have to verify
