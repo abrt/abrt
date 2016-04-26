@@ -40,3 +40,5 @@ if [ -f "$TMPPATH" ]; then
 fi
 
 timeout 10s abrt-cli status --since="$SINCE" 2>"$ABRT_DEBUG_LOG" || echo "'abrt-cli status' timed out"
+
+unset ABRT_DEBUG_LOG LPATHDIR SINCEFILE TMPPATH SINCE
