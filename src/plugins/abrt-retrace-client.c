@@ -760,7 +760,7 @@ static int create(bool delete_temp_archive,
     if (response_code == 500 || response_code == 507)
     {
         alert_server_error(cfg.url);
-        error_msg_and_die(http_body);
+        error_msg_and_die("%s", http_body);
     }
     else if (response_code == 403)
     {
