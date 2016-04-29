@@ -42,18 +42,20 @@ SaveFullCore = 'yes' / 'no' ...::
    Default is 'yes'.
 
 IgnoredPaths = /path/to/ignore/*, */another/ignored/path* ...::
-   ABRT will ignore crashes in executables whose absolute path matches one of
-   specified patterns.
+   ABRT will ignore crashes in executables whose absolute path matches
+   any of the glob patterns listed in the comma separated list.
 
-AllowedUsers = root, ...::
+AllowedUsers = root, wheel, ...::
    ABRT will process only crashes of either allowed users 'AllowedUsers' or
    users who are members of allowed group 'AllowedGroups'. If no allowed users
    nor allowed group are specified ABRT will process crashes of all users.
+   'AllowedUsers' is a comma separated list.
 
-AllowedGroups = root, ...::
+AllowedGroups = root, wheel, ...::
    ABRT will process only crashes of either allowed users 'AllowedUsers' or
    users who are members of allowed group 'AllowedGroups'. If no allowed users
    nor allowed group are specified ABRT will process crashes of all users.
+   'AllowedGroups' is a comma separated list.
 
 VerboseLog = NUM::
    Used to make the hook more verbose
