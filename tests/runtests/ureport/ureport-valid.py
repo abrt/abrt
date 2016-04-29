@@ -88,6 +88,7 @@ UREPORT_CHECKER = {
   "type":              { "mand": True,  "type": basestring,  "re": re.compile("^(python|userspace|kerneloops)$", re.IGNORECASE) },
   "reason":            { "mand": True,  "type": basestring,  "re": RE_NONEMPTY, "trunc": 512 },
   "uptime":            { "mand": False, "type": int },
+  "serial":            { "mand": True,  "type": int },
   "component":         { "mand": False, "type": basestring,  "re": RE_PACKAGE, "maxlen": 255 },
   "executable":        { "mand": False, "type": basestring,  "re": RE_EXEC, "maxlen": 255 },
   "installed_package": { "mand": True,  "type": dict, "checker": PACKAGE_CHECKER },
