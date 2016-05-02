@@ -22,15 +22,14 @@
 GList *string_list_from_variant(GVariant *variant)
 {
     GList *list = NULL;
-    GVariantIter *iter;
+    GVariantIter iter;
+    g_variant_iter_init(&iter, variant);
     gchar *str;
-    g_variant_get(variant, "as", &iter);
-    while (g_variant_iter_loop(iter, "s", &str))
+    while (g_variant_iter_loop(&iter, "s", &str))
     {
         log_notice("adding: %s", str);
         list = g_list_prepend(list, xstrdup(str));
     }
-    g_variant_unref(variant);
 
     /* we were prepending items, so we should reverse the list to not confuse people
      * by returning items in reversed order than it's in the variant

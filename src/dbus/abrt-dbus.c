@@ -97,22 +97,21 @@ static uid_t get_caller_uid(GDBusConnection *connection, GDBusMethodInvocation *
     GError *error = NULL;
     guint caller_uid;
 
-    GDBusProxy * proxy = g_dbus_proxy_new_sync(connection,
-                                     G_DBUS_PROXY_FLAGS_NONE,
-                                     NULL,
-                                     "org.freedesktop.DBus",
-                                     "/org/freedesktop/DBus",
-                                     "org.freedesktop.DBus",
-                                     NULL,
-                                     &error);
-
-    GVariant *result = g_dbus_proxy_call_sync(proxy,
-                                     "GetConnectionUnixUser",
-                                     g_variant_new ("(s)", caller),
-                                     G_DBUS_CALL_FLAGS_NONE,
-                                     -1,
-                                     NULL,
-                                     &error);
+    /* Proxy isn't necessary if only need to call a single method.  By default
+     * GDBusProxy connects to signals and downloads property values. It
+     * suppressed by passing flags argument, but not-creating proxy at all is
+     * much faster and safer. */
+    GVariant *result = g_dbus_connection_call_sync(connection,
+                                                   "org.freedesktop.DBus",
+                                                   "/org/freedesktop/DBus",
+                                                   "org.freedesktop.DBus",
+                                                   "GetConnectionUnixUser",
+                                                   g_variant_new ("(s)", caller),
+                                                   /* reply_type */  NULL,
+                                                   G_DBUS_CALL_FLAGS_NONE,
+                                                   /* timeout */     -1,
+                                                   /* cancellable */ NULL,
+                                                   &error);
 
     if (result == NULL)
     {
@@ -940,7 +939,11 @@ static void handle_method_call(GDBusConnection *connection,
 static gboolean on_timeout_cb(gpointer user_data)
 {
     g_main_loop_quit(loop);
-    return TRUE;
+
+    /* FALSE -> remove and destroy this source. Without it, the timeout source
+     * will be leaked at exit - that isn't a problem but it makes valgrind out
+     * less readable. */
+    return FALSE;
 }
 
 static const GDBusInterfaceVTable interface_vtable =
@@ -1058,6 +1061,8 @@ int main(int argc, char *argv[])
     g_bus_unown_name(owner_id);
 
     g_dbus_node_info_unref(introspection_data);
+
+    g_main_loop_unref(loop);
 
     free_abrt_conf_data();
 
