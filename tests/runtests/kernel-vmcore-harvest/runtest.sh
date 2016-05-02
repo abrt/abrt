@@ -82,7 +82,8 @@ rlJournalStart
         rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-${TEST_ID}/analyzer"
         rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-${TEST_ID}/backtrace"
         rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-${TEST_ID}/reason"
-        rlAssertGrep "kernel paging request at source_load" "${ABRT_CONF_DUMP_LOCATION}/vmcore-${TEST_ID}/reason"
+        rlAssertGrep "BUG: unable to handle kernel paging request at 0000000201a14dc0" "${ABRT_CONF_DUMP_LOCATION}/vmcore-${TEST_ID}/reason"
+
         for f in $REQUIRED_FILES; do
                 rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-${TEST_ID}/$f"
         done
