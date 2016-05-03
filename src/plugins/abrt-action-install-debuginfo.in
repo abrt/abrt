@@ -100,7 +100,9 @@ if __name__ == "__main__":
             "    -y          Noninteractive, assume 'Yes' to all questions\n"
             "    --ids       Default: build_ids\n"
             "    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
-            "    --cache     Default: /var/cache/abrt-di\n"
+            "    --cache     Colon separated list of directories. The first one is used for\n"
+            "                saving installed debuginfos.\n"
+            "                Default: /var/cache/abrt-dir\n"
             "    --size_mb   Default: 4096\n"
             "    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
             "    -e,--exact  Download only specified files\n"
@@ -155,7 +157,7 @@ if __name__ == "__main__":
         except OSError as ex:
             print(ex)
         else:
-            cachedirs = conf.get("DebuginfoLocation", None)
+            cachedirs = conf.get("DebuginfoLocation", None).split(":")
 
         if not cachedirs:
             cachedirs = ["/var/cache/abrt-di"]
