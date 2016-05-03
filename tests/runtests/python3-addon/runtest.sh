@@ -41,6 +41,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
+        prepare
         generate_python3_exception
         wait_for_hooks
         get_crash_path
@@ -49,6 +50,39 @@ rlJournalStart
 
         rlRun "abrt-cli info $crash_PATH | grep will_python3_raise" 0 "abrt-cli info should contain will_python3_raise"
         rlRun "abrt-cli info $crash_PATH | grep 'Python'" 0 "abrt-cli info should contain 'Python'"
+        rlRun "abrt-cli rm $crash_PATH"
+    rlPhaseEnd
+
+    rlPhaseStartTest "RequireAbsolutePath test"
+        AASPD_CONF="/etc/abrt/abrt-action-save-package-data.conf"
+        PYTHON_CONF="/etc/abrt/plugins/python3.conf"
+        rlFileBackup $AASPD_CONF $PYTHON_CONF
+
+        CRASH_PY="crash.py"
+        cat > $CRASH_PY << EOF
+#!/usr/bin/python3
+1/0
+EOF
+        rlRun "chmod +x $CRASH_PY" 0
+
+        rlRun "augtool set /files${AASPD_CONF}/ProcessUnpackaged yes" 0
+        rlRun "augtool set /files${PYTHON_CONF}/RequireAbsolutePath yes" 0
+
+        prepare
+        rlRun "./$CRASH_PY" 1
+        sleep 10
+        rlAssert0 "No crash recorded" $(abrt-cli list | wc -l)
+
+        rlRun "augtool set /files${PYTHON_CONF}/RequireAbsolutePath no" 0
+
+        prepare
+        rlRun "./$CRASH_PY" 1
+        wait_for_hooks
+        get_crash_path
+        check_dump_dir_attributes $crash_PATH
+        rlAssertGrep "./$CRASH_PY" ${crash_PATH}/executable
+
+        rlFileRestore # $AASPD_CONF $PYTHON_CONF
     rlPhaseEnd
 
     rlPhaseStartCleanup
