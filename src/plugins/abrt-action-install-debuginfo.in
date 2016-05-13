@@ -152,15 +152,14 @@ if __name__ == "__main__":
     set_verbosity(verbose)
 
     if not cachedirs:
+        cachedirs = ["/var/cache/abrt-di"]
         try:
             conf = problem.load_plugin_conf_file("CCpp.conf")
         except OSError as ex:
             print(ex)
         else:
-            cachedirs = conf.get("DebuginfoLocation", None).split(":")
+            cachedirs = conf.get("DebuginfoLocation", cachedirs[0]).split(":")
 
-        if not cachedirs:
-            cachedirs = ["/var/cache/abrt-di"]
     if not TMPDIR:
         # security people prefer temp subdirs in app's private dir, like /var/run/abrt
         # and we switched to /tmp but Fedora feature tmp-on-tmpfs appeared, hence we must
