@@ -21,7 +21,7 @@
  */
 #define IGNORE_RESULT(func_call) do { if (func_call) /* nothing */; } while (0)
 
-#define DEFAULT_XORG_CRASH_REASON "Xorg server crashed"
+#define DEFAULT_XORG_CRASH_REASON "Display server crashed"
 
 int abrt_xorg_signaled_sleep(int seconds)
 {
