@@ -101,6 +101,7 @@ static const char *const s_koops_suspicious_strings[] = {
     /*s*/"ysctl table check failed",
     ": nobody cared",
     "IRQ handler type mismatch",
+    "Kernel panic - not syncing:",
     /*
      * MCE examples for various CPUs/architectures (collected 2013-04):
      * arch/arc/kernel/traps.c:			die("Machine Check Exception", regs, address, cause);
@@ -418,6 +419,9 @@ void koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_koops_
              && !strstr(curline, "<EOI>")
              && !strstr(curline, "<NMI>")
              && !strstr(curline, "<<EOE>>")
+             && !strstr(curline, "Comm:")
+             && !strstr(curline, "Hardware name:")
+             && !strstr(curline, "Backtrace:")
              && strncmp(curline, "Code: ", 6) != 0
              && strncmp(curline, "RIP ", 4) != 0
              && strncmp(curline, "RSP ", 4) != 0
