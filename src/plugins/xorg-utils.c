@@ -224,8 +224,8 @@ struct xorg_crash_info *process_xorg_bt(char *(*get_next_line)(void *), void *da
             char *filename_end = skip_non_whitespace(filename);
             char sv = *filename_end;
             *filename_end = '\0';
-            /* Does it look like "[/usr]/[s]bin/Xfoo"? */
-            if (strstr(filename, "bin/X"))
+            /* Does it look like "[/usr]/[s]bin/Xfoo" or [/usr]/libexec/Xfoo"? */
+            if (strstr(filename, "bin/X") || strstr(filename, "libexec/X"))
                 exe = xstrdup(filename);
             *filename_end = sv;
         }
