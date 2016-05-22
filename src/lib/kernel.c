@@ -329,6 +329,11 @@ void koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_koops_
     char prevlevel = 0;
     int oopsstart = -1;
     int inbacktrace = 0;
+    regex_t arm_regex;
+    int arm_regex_rc = 0;
+
+    /* ARM backtrace regex, match a string similar to r7:df912310 */
+    arm_regex_rc = regcomp(&arm_regex, "r[[:digit:]]{1,}:[a-f[:digit:]]{8}", REG_EXTENDED | REG_NOSUB);
 
     i = 0;
     while (i < lines_info_size)
@@ -428,6 +433,8 @@ void koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_koops_
              /* s390 Call Trace ends with 'Last Breaking-Event-Address:'
               * which is followed by a single frame */
              && strncmp(curline, "Last Breaking-Event-Address:", strlen("Last Breaking-Event-Address:")) != 0
+             /* ARM dumps registers intertwined with the backtrace */
+             && (arm_regex_rc == 0 ? regexec(&arm_regex, curline, 0, NULL, 0) == REG_NOMATCH : 1)
             ) {
                 oopsend = i-1; /* not a call trace line */
             }
@@ -492,6 +499,8 @@ void koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_koops_
             }
         }
     } /* while (i < lines_info_size) */
+
+    regfree(&arm_regex);
 
     /* process last oops if we have one */
     if (oopsstart >= 0)
