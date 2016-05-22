@@ -1,0 +1,41 @@
+Kernel panic - not syncing: hung_task: blocked tasks
+CPU: 3 PID: 27 Comm: khungtaskd Tainted: P           O    4.2.8-yocto-standard-1968fcd27440e21d39a0b9e14a3be2ad #1
+Hardware name: Marvell Armada 370/XP (Device Tree)
+Backtrace: 
+[<c0014318>] (dump_backtrace_log_lvl) from [<c001457c>] (show_stack+0x24/0x2c)
+ r7:df912310 r6:df912140 r5:c081745c r4:00000000
+[<c0014558>] (show_stack) from [<c059798c>] (dump_stack+0x7c/0xc8)
+[<c0597910>] (dump_stack) from [<c05946f4>] (panic+0x98/0x218)
+ r5:00000061 r4:c084cea8
+[<c0594660>] (panic) from [<c00a8d68>] (watchdog+0x368/0x3a8)
+ r3:00000400 r2:00000000 r1:c08a49f8 r0:c06c0c43
+ r7:df912310
+[<c00a8a00>] (watchdog) from [<c0044898>] (kthread+0xe8/0xfc)
+ r10:00000000 r9:00000000 r8:00000000 r7:c00a8a00 r6:00000000 r5:00000000
+ r4:edbd89c0
+[<c00447b0>] (kthread) from [<c0010428>] (ret_from_fork+0x14/0x2c)
+ r7:00000000 r6:00000000 r5:c00447b0 r4:edbd89c0
+
+
+Current process: khungtaskd   pid=27
+Running on CPU3 (4 online)
+
+current=edb06180   preempt_count=0x1
+
+regs and stacktrace from uregs: edbf3fb0
+Stacktrace initiated from showRegs()
+Process: khungtaskd, pid:27
+stack trace:
+(00) 00000000 (ra=00000000) sp:00000000(00) 00000000
+
+Dumping regs from edbf3fb0
+PC:00000000  LR:00000000  SP:00000000  IP:00000000  FP:00000000
+CPSR: 00000013
+
+R0:  00000000 00000000 00000000 00000000 00000000 00000000
+R6:  00000000 00000000 00000000 00000000 00000000
+
+No MM assigned to process (pid: 27)
+CPU 2 will stop doing anything useful since another CPU has crashed
+CPU 1 will stop doing anything useful since another CPU has crashed
+CPU 0 will stop doing anything useful since another CPU has crashed
