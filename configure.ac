@@ -194,7 +194,7 @@ PKG_CHECK_MODULES([POLKIT], [polkit-gobject-1])
 PKG_CHECK_MODULES([POLKIT_AGENT], [polkit-agent-1])
 PKG_CHECK_MODULES([GIO], [gio-2.0])
 PKG_CHECK_MODULES([SATYR], [satyr])
-PKG_CHECK_MODULES([SYSTEMD_JOURNAL], [libsystemd-journal])
+PKG_CHECK_MODULES([SYSTEMD], [libsystemd])
 PKG_CHECK_MODULES([GSETTINGS_DESKTOP_SCHEMAS], [gsettings-desktop-schemas >= 3.15.1])
 PKG_CHECK_MODULES([LIBSELINUX], [libselinux])
 

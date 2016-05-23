@@ -171,7 +171,7 @@ libabrt_journal_a_SOURCES = \
     abrt-journal.h
 libabrt_journal_a_CFLAGS = \
     -I$(srcdir)/../include \
-    $(SYSTEMD_JOURNAL_CFLAGS) \
+    $(SYSTEMD_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE
@@ -182,7 +182,7 @@ libxorg_utils_a_SOURCES = \
     xorg-utils.h
 libxorg_utils_a_CFLAGS = \
     -I$(srcdir)/../include \
-    $(SYSTEMD_JOURNAL_CFLAGS) \
+    $(SYSTEMD_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     $(GLIB_CFLAGS) \
     -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
@@ -203,7 +203,7 @@ abrt_dump_journal_oops_LDADD = \
     libabrt-journal.a \
     $(GLIB_LIBS) \
     $(LIBREPORT_LIBS) \
-    $(SYSTEMD_JOURNAL_LIBS) \
+    $(SYSTEMD_LIBS) \
     ../lib/libabrt.la
 
 abrt_dump_journal_xorg_SOURCES = \
@@ -221,7 +221,7 @@ abrt_dump_journal_xorg_LDADD = \
     libxorg-utils.a \
     $(GLIB_LIBS) \
     $(LIBREPORT_LIBS) \
-    $(SYSTEMD_JOURNAL_LIBS) \
+    $(SYSTEMD_LIBS) \
     ../lib/libabrt.la
 
 abrt_dump_xorg_SOURCES = \
@@ -253,7 +253,7 @@ abrt_dump_journal_core_LDADD = \
     libabrt-journal.a \
     $(GLIB_LIBS) \
     $(LIBREPORT_LIBS) \
-    $(SYSTEMD_JOURNAL_LIBS) \
+    $(SYSTEMD_LIBS) \
     ../lib/libabrt.la
 
 abrt_action_analyze_c_SOURCES = \
