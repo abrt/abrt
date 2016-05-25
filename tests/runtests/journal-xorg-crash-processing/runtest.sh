@@ -32,7 +32,7 @@ TEST="journal-xorg-crash-processing"
 PACKAGE="abrt"
 XORG_REQUIRED_FILES="kernel backtrace component executable os_info reason time
 type uuid duphash pkg_name pkg_arch pkg_epoch pkg_release pkg_version"
-EXAMPLES_PATH="../../../examples"
+EXAMPLES_PATH="../../examples"
 SYSLOG_IDENTIFIER="abrt-xorg-test"
 
 function test_single_crash

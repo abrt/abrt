@@ -32,7 +32,7 @@ TEST="oops-sanity"
 PACKAGE="abrt"
 OOPS_REQUIRED_FILES="kernel uuid duphash
 pkg_name pkg_arch pkg_epoch pkg_release pkg_version"
-EXAMPLES_PATH="../../../examples"
+EXAMPLES_PATH="../../examples"
 
 rlJournalStart
     rlPhaseStartSetup

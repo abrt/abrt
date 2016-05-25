@@ -30,7 +30,7 @@
 
 TEST="dumpoops"
 PACKAGE="abrt"
-EXAMPLES_PATH="../../../examples"
+EXAMPLES_PATH="../../examples"
 
 rlJournalStart
     rlPhaseStartSetup
