@@ -1119,6 +1119,36 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Wed May 25 2016 Matej Habrnal <mhabrnal@redhat.com> 2.8.1-1
+- a-dump-journal-xorg: allow *libexec/X* to be executable element
+- a-dump-journal-xorg: add '_COMM=gnome-shell' to journal filter
+- build: update pkg names for systemd
+- a-d-journal-core: save core dump bytes from the journal field
+- a-d-journal-core: support lz4 compressed core dump files
+- a-a-install-debuginfo: do not try to split None
+- doc: improve documentation of AllowedGroups, AllowedUsers and IgnoredPaths
+- testcase: add serial field to uReport check
+- a-a-install-debuginfo: correct handling of DebuginfoLocation
+- a-a-s-container-data: update docker container ID parser
+- abrt-hook-ccpp: drop saving of container env vars
+- a-console-notification: do not leak variables
+- a-retrace-client: format security
+- daemon: avoid infinite crash loops
+- spec: drop abrt-action-save-kernel-data bits
+- spec: README -> README.md
+- Add basic documentation
+- a-a-install-debuginfo: fix BrokenPipe error
+- a-a-install-debuginfo: make tmpdir variable global
+- python3 addon: workaround a bug in traceback
+- CCpp: turn off compat cores
+- a-a-save-package-data: blacklist /usr/lib(64)/firefox/plugin-container
+- Fix minor typo: possition -> position
+- translations: add missing new line
+- Translation updates
+- translations: update zanata configuration
+- ccpp: drop %e from the core_pattern
+- Save Vendor and GPG Fingerprint
+
 * Wed Feb 03 2016 Matej Habrnal <mhabrnal@redhat.com> 2.8.0-1
 - a-a-save-package-data: do not blacklist firefox
 
