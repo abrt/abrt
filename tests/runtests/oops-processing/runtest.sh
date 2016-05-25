@@ -82,6 +82,10 @@ rlJournalStart
             $EXAMPLES_PATH/oops_broken_bios.test > \
             $TmpDir/oops_not_reportable_broken_bios.test
 
+        sed "s/4.2.8-yocto-standard-1968fcd27440e21d39a0b9e14a3be2ad/<KERNEL_VERSION>/" \
+            $EXAMPLES_PATH/oops-kernel-panic-hung-tasks-arm.test > \
+            $TmpDir/oops_kernel_panic_hung_tasks_arm.test
+
         pushd $TmpDir
     rlPhaseEnd
 
@@ -89,9 +93,13 @@ rlJournalStart
         for oops in oops*.test; do
             prepare
 
-            installed_kernel="$( rpm -q kernel | tail -n1 )"
-            kernel_version="$( rpm -q --qf "%{version}" $installed_kernel )"
-            sed -i "s/<KERNEL_VERSION>/$installed_kernel/g" $oops
+            rpm_version="$( rpm -q --qf "%{version}-%{release}.%{arch}\n" kernel | tail -n 1 | tr -d '\n' )"
+            kernel_epoch="$( rpm -q --qf "%|epoch?{%{epoch}}:{0}|\n" kernel | tail -n 1 | tr -d '\n' )"
+            kernel_version="$( rpm -q --qf "%{version}\n" kernel | tail -n 1 | tr -d '\n' )"
+            kernel_release="$( rpm -q --qf "%{release}\n" kernel | tail -n 1 | tr -d '\n' )"
+            kernel_arch="$( rpm -q --qf "%{arch}\n" kernel | tail -n 1 | tr -d '\n' )"
+
+            sed -i "s/<KERNEL_VERSION>/$rpm_version/g" $oops
             rlRun "abrt-dump-oops $oops -xD 2>&1 | grep 'abrt-dump-oops: Found oopses: [1-9]'" 0 "[$oops] Found OOPS"
 
             wait_for_hooks
@@ -108,7 +116,10 @@ rlJournalStart
             if [[ "$oops" == *not_reportable* ]]; then
                 rlAssertExists "$crash_PATH/not-reportable"
             else
-                rlAssertNotExists "$crash_PATH/not-reportable"
+                if [ -f "$crash_PATH/not-reportable" ]; then
+                    rlFail "$crash_PATH/not-reportable should not exist"
+                    cat $crash_PATH/not-reportable
+                fi
             fi
 
             rlAssertGrep "kernel" "$crash_PATH/pkg_name"
@@ -119,7 +130,13 @@ rlJournalStart
             else
                 rlAssertGrep "kernel" "$crash_PATH/component"
             fi
-            rlAssertGrep "$kernel_version" "$crash_PATH/pkg_version"
+
+            rlAssertEquals "Parsed kernel version" "$rpm_version" "$(cat $crash_PATH/kernel)"
+            rlAssertEquals "kernel package epoch" "$kernel_epoch" "$(cat $crash_PATH/pkg_epoch)"
+            rlAssertEquals "kernel package version" "$kernel_version" "$(cat $crash_PATH/pkg_version)"
+            rlAssertEquals "kernel package release" "$kernel_release" "$(cat $crash_PATH/pkg_release)"
+            rlAssertEquals "kernel package arch" "$kernel_arch" "$(cat $crash_PATH/pkg_arch)"
+            rlAssertEquals "kernel package" "$( rpm -qf --qf %{name}-%{version}-%{release} /boot/vmlinuz-$rpm_version )" "$(cat $crash_PATH/package)"
             rlRun "cat $crash_PATH/pkg_fingerprint"
 
             rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
@@ -134,7 +151,6 @@ rlJournalStart
         rlRun "augtool set /files/etc/abrt/plugins/oops.conf/DropNotReportableOopses yes" 0
 
         installed_kernel="$( rpm -q kernel | tail -n1 )"
-        kernel_version="$( rpm -q --qf "%{version}" $installed_kernel )"
         oops=oops_not_reportable_no_reliable_frame.test
         sed -i "s/<KERNEL_VERSION>/$installed_kernel/g" $oops
         rlRun "abrt-dump-oops $oops -xD 2>&1 | grep 'abrt-dump-oops: Found oopses: [1-9]'" 0 "[$oops] Found OOPS"
