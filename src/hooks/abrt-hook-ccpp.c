@@ -695,7 +695,7 @@ static int test_configuration(bool setting_SaveFullCore, bool setting_CreateCore
     return 0;
 }
 
-static void error_msg_not_process_crash(const char *pid_str, const char *process_str,
+static void error_msg_process_crash(const char *pid_str, const char *process_str,
         long unsigned uid, int signal_no, const char *signame, const char *message, ...)
 {
     va_list p;
@@ -706,15 +706,29 @@ static void error_msg_not_process_crash(const char *pid_str, const char *process
     char *process_name = (process_str) ?  xasprintf(" (%s)", process_str) : xstrdup("");
 
     if (signame)
-        error_msg("Process %s (%s) of user %lu killed by SIG%s - %s", pid_str,
+        error_msg("Process %s%s of user %lu killed by SIG%s - %s", pid_str,
                         process_name, uid, signame, message_full);
     else
-        error_msg("Process %s (%s) of user %lu killed by signal %d - %s", pid_str,
+        error_msg("Process %s%s of user %lu killed by signal %d - %s", pid_str,
                         process_name, uid, signal_no, message_full);
 
     free(process_name);
     free(message_full);
 
+    return;
+}
+
+static void error_msg_ignore_crash(const char *pid_str, const char *process_str,
+        long unsigned uid, int signal_no, const char *signame, const char *message, ...)
+{
+    va_list p;
+    va_start(p, message);
+    char *message_full = xvasprintf(message, p);
+    va_end(p);
+
+    error_msg_process_crash(pid_str, process_str, uid, signal_no, signame, "ignoring (%s)", message_full);
+
+    free(message_full);
     return;
 }
 
@@ -798,24 +812,35 @@ int main(int argc, char** argv)
         }
     }
 
-    errno = 0;
     const char* signal_str = argv[1];
     int signal_no = xatoi_positive(signal_str);
     const char *signame = NULL;
     bool signal_is_fatal_bool = signal_is_fatal(signal_no, &signame);
+
+    const char *pid_str = argv[3];
+    /* xatoi_positive() handles errors */
+    uid_t uid = xatoi_positive(argv[4]);
+
+    errno = 0;
     off_t ulimit_c = strtoull(argv[2], NULL, 10);
+    if (errno)
+    {
+        error_msg_ignore_crash(pid_str, NULL, (long unsigned)uid, signal_no,
+                signame, "RLIMIT_CORE '%s' is bogus", argv[2]);
+        xfunc_die();
+    }
+
     if (ulimit_c < 0) /* unlimited? */
     {
         /* set to max possible >0 value */
         ulimit_c = ~((off_t)1 << (sizeof(off_t)*8-1));
     }
-    const char *pid_str = argv[3];
-    pid_t local_pid = xatoi_positive(argv[3]);
-    uid_t uid = xatoi_positive(argv[4]);
-    if (errno || local_pid <= 0)
-    {
-        perror_msg_and_die("PID '%s' or limit '%s' is bogus", argv[3], argv[2]);
-    }
+
+    const char *global_pid_str = argv[8];
+    pid_t pid = xatoi_positive(argv[8]);
+
+    user_pwd = get_cwd(pid); /* may be NULL on error */
+    log_notice("user_pwd:'%s'", user_pwd);
 
     {
         char *s = xmalloc_fopen_fgetline_fclose(VAR_RUN"/abrt/saved_core_pattern");
@@ -825,8 +850,6 @@ int main(int argc, char** argv)
         else
             free(s);
     }
-    const char *global_pid_str = argv[8];
-    pid_t pid = xatoi_positive(argv[8]);
 
     pid_t tid = 0;
     if (argv[9])
@@ -836,56 +859,24 @@ int main(int argc, char** argv)
 
     char path[PATH_MAX];
 
-    int src_fd_binary = -1;
-    char *executable = get_executable(pid, setting_SaveBinaryImage ? &src_fd_binary : NULL);
-    if (executable == NULL)
-    {
-        error_msg_not_process_crash(pid_str, NULL, (long unsigned)uid, signal_no,
-                signame, "ignoring (can't read /proc/PID/exe link)");
-
-        xfunc_die();
-    }
-
-    if (strstr(executable, "/abrt-hook-ccpp"))
-    {
-        error_msg_and_die("PID %lu is '%s', not dumping it to avoid recursion",
-                        (long)pid, executable);
-    }
-
-    const char *last_slash = strrchr(executable, '/');
-    if (is_path_ignored(setting_ignored_paths, executable))
-    {
-        error_msg_not_process_crash(pid_str, last_slash + 1, (long unsigned)uid, signal_no,
-                signame, "ignoring (listed in 'IgnoredPaths')");
-
-        return 0;
-    }
-
-    /* dumping core for user, if allowed */
-    if (setting_allowed_users || setting_allowed_groups)
-    {
-        if (setting_allowed_users && is_user_allowed(uid, setting_allowed_users))
-            log_debug("User %lu is listed in 'AllowedUsers'", (long unsigned)uid);
-        else if (setting_allowed_groups && is_user_in_allowed_group(uid, setting_allowed_groups))
-            log_debug("User %lu is member of group listed in 'AllowedGroups'", (long unsigned)uid);
-        else
-        {
-            error_msg_not_process_crash(pid_str, last_slash + 1, (long unsigned)uid, signal_no,
-                signame, "ignoring (not allowed in 'AllowedUsers' nor 'AllowedGroups')");
-
-            xfunc_die();
-        }
-    }
-
-    user_pwd = get_cwd(pid);
-    log_notice("user_pwd:'%s'", user_pwd);
-
     sprintf(path, "/proc/%lu/status", (long)pid);
     char *proc_pid_status = xmalloc_xopen_read_close(path, /*maxsz:*/ NULL);
 
     uid_t fsuid = uid;
     uid_t tmp_fsuid = get_fsuid(proc_pid_status);
+    if (tmp_fsuid < 0)
+    {
+        error_msg_ignore_crash(pid_str, NULL, (long unsigned)uid, signal_no,
+                signame, "Failed to parse /proc/%lu/status (Uid)", (long)pid);
+        xfunc_die();
+    }
     const int fsgid = get_fsgid(proc_pid_status);
+    if (fsgid < 0)
+    {
+        error_msg_ignore_crash(pid_str, NULL, (long unsigned)uid, signal_no,
+                signame, "Failed to parse /proc/%lu/status (Gid)", (long)pid);
+        xfunc_die();
+    }
 
     int suid_policy = dump_suid_policy();
     if (tmp_fsuid != uid)
@@ -901,8 +892,7 @@ int main(int argc, char** argv)
         }
     }
 
-    /* If PrivateReports is on, root owns all problem directories */
-    const uid_t dduid = g_settings_privatereports ? 0 : fsuid;
+    snprintf(path, sizeof(path), "%s/last-ccpp", g_settings_dump_location);
 
     /* Open a fd to compat coredump, if requested and is possible */
     int user_core_fd = -1;
@@ -910,18 +900,72 @@ int main(int argc, char** argv)
         /* note: checks "user_pwd == NULL" inside; updates core_basename */
         user_core_fd = open_user_core(uid, fsuid, fsgid, pid, &argv[1]);
 
+    int src_fd_binary = -1;
+    char *executable = get_executable(pid, setting_SaveBinaryImage ? &src_fd_binary : NULL);
     if (executable == NULL)
     {
         /* readlink on /proc/$PID/exe failed, don't create abrt dump dir */
-        error_msg("Can't read /proc/%lu/exe link", (long)pid);
+        error_msg_ignore_crash(pid_str, NULL, (long unsigned)uid, signal_no,
+                signame, "Can't read /proc/%lu/exe link", (long)pid);
+
+        xfunc_die();
+    }
+
+    const char *last_slash = strrchr(executable, '/');
+    /* if the last_slash was found, skip it */
+    if (last_slash) ++last_slash;
+
+    if (is_path_ignored(setting_ignored_paths, executable))
+    {
+        error_msg_ignore_crash(pid_str, last_slash, (long unsigned)uid, signal_no,
+                signame, "listed in 'IgnoredPaths'");
+
+        return 0;
+    }
+
+    if (strstr(executable, "/abrt-hook-ccpp"))
+    {
+        error_msg_ignore_crash(pid_str, last_slash, (long unsigned)uid, signal_no,
+                signame, "avoid recursion");
+
+        xfunc_die();
+    }
+
+    /* Check /var/tmp/abrt/last-ccpp marker, do not dump repeated crashes
+     * if they happen too often. Else, write new marker value.
+     */
+    if (check_recent_crash_file(path, executable))
+    {
+        error_msg_ignore_crash(pid_str, last_slash, (long unsigned)uid, signal_no,
+                signame, "repeated crash");
+
+        /* It is a repeating crash */
         return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
+    const bool abrt_crash = (last_slash && (strncmp(last_slash, "abrt", 4) == 0));
+    if (abrt_crash && g_settings_debug_level == 0)
+    {
+        error_msg_ignore_crash(pid_str, last_slash, (long unsigned)uid, signal_no,
+                signame, "'DebugLevel' == 0");
+
+        goto finito;
+    }
+
+    /* unsupported signal */
     if (!signal_is_fatal_bool)
+    {
+        error_msg_ignore_crash(pid_str, last_slash, (long unsigned)uid, signal_no,
+                signame, "unsupported signal");
+
         return create_user_core(user_core_fd, pid, ulimit_c); // not a signal we care about
+    }
 
     if (!daemon_is_ok())
     {
+        error_msg_ignore_crash(pid_str, last_slash, (long unsigned)uid, signal_no,
+                signame, "abrtd is not running");
+
         /* not an error, exit with exit code 0 */
         log("abrtd is not running. If it crashed, "
             "/proc/sys/kernel/core_pattern contains a stale value, "
@@ -930,32 +974,40 @@ int main(int argc, char** argv)
         return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
+    /* dumping core for user, if allowed */
+    if (setting_allowed_users || setting_allowed_groups)
+    {
+        if (setting_allowed_users && is_user_allowed(uid, setting_allowed_users))
+            log_debug("User %lu is listed in 'AllowedUsers'", (long unsigned)uid);
+        else if (setting_allowed_groups && is_user_in_allowed_group(uid, setting_allowed_groups))
+            log_debug("User %lu is member of group listed in 'AllowedGroups'", (long unsigned)uid);
+        else
+        {
+            error_msg_ignore_crash(pid_str, last_slash, (long unsigned)uid, signal_no,
+                signame, "not allowed in 'AllowedUsers' nor 'AllowedGroups'");
+
+            xfunc_die();
+        }
+    }
+
+    /* low free space */
     if (g_settings_nMaxCrashReportsSize > 0)
     {
         /* If free space is less than 1/4 of MaxCrashReportsSize... */
         if (low_free_space(g_settings_nMaxCrashReportsSize, g_settings_dump_location))
-            return create_user_core(user_core_fd, pid, ulimit_c);
-    }
-
-    /* Check /var/tmp/abrt/last-ccpp marker, do not dump repeated crashes
-     * if they happen too often. Else, write new marker value.
-     */
-    snprintf(path, sizeof(path), "%s/last-ccpp", g_settings_dump_location);
-    if (check_recent_crash_file(path, executable))
-    {
-        /* It is a repeating crash */
-        return create_user_core(user_core_fd, pid, ulimit_c);
-    }
-
-    if (last_slash && strncmp(++last_slash, "abrt", 4) == 0)
-    {
-        if (g_settings_debug_level == 0)
         {
-            log_warning("Ignoring crash of %s (SIG%s).",
-                        executable, signame ? signame : signal_str);
-            goto finito;
+            error_msg_ignore_crash(pid_str, last_slash, (long unsigned)uid, signal_no,
+                                    signame, "low free space");
+            return create_user_core(user_core_fd, pid, ulimit_c);
         }
+    }
 
+    /* processing crash - inform user about it */
+    error_msg_process_crash(pid_str, last_slash, (long unsigned)uid,
+                signal_no, signame, "dumping core");
+
+    if (abrt_crash)
+    {
         /* If abrtd/abrt-foo crashes, we don't want to create a _directory_,
          * since that can make new copy of abrtd to process it,
          * and maybe crash again...
@@ -974,7 +1026,7 @@ int main(int argc, char** argv)
              * but it does not log file name */
             error_msg_and_die("Error saving '%s'", path);
         }
-        log("Saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
+        log_notice("Saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
         err = 0;
         goto finito;
     }
@@ -985,6 +1037,9 @@ int main(int argc, char** argv)
     {
         return create_user_core(user_core_fd, pid, ulimit_c);
     }
+
+    /* If PrivateReports is on, root owns all problem directories */
+    const uid_t dduid = g_settings_privatereports ? 0 : fsuid;
 
     /* use dduid (either fsuid or 0) instead of uid, so we don't expose any
      * sensitive information of suided app in /var/tmp/abrt

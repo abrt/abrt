@@ -50,6 +50,7 @@ function test_create_dir {
     journalctl --since="$journal_time" >abrt_journal.log
 
     rlAssertNotGrep "Process $PID \(${CRASH_APP##*/}\) of user $USER_UID killed by SIGSEGV - ignoring" abrt_journal.log -E
+    rlAssertGrep "Process $PID \(${CRASH_APP##*/}\) of user $USER_UID killed by SIGSEGV - dumping core" abrt_journal.log -E
 
     rlRun "abrt-cli rm $crash_PATH" 0 "Removing problem dirs"
 }
@@ -73,23 +74,48 @@ function test_not_create_dir {
     sleep 3
 
     journalctl -b --since="$journal_time" >abrt_journal.log
+    rlLog "$(cat abrt_journal.log)"
 
     rlAssertGrep "Process $PID \(${CRASH_APP##*/}\) of user $USER_UID killed by SIGSEGV - ignoring \(${REASON}\)" abrt_journal.log -E
+    rlAssertNotGrep "Process $PID \(${CRASH_APP##*/}\) of user $USER_UID killed by SIGSEGV - dumping core" abrt_journal.log -E
 
     # no crash is generated
     rlAssert0 "Crash should not be generated" $(abrt-cli list 2> /dev/null | wc -l)
+}
 
+function test_duplicate_crash {
+
+    REASON="repeated crash"
+    journal_time=$(date +%R:%S)
+    prepare
+    rlLog "Crashes generating"
+    will_segfault &
+    PID1=$!
+    sleep 3
+    will_segfault &
+    PID2=$!
+    wait_for_hooks
+
+    journalctl -b --since="$journal_time" >abrt_journal.log
+
+    rlAssertGrep "Process $PID1 \(will_segfault\) of user $UID killed by SIGSEGV - dumping core" abrt_journal.log -E
+    rlAssertGrep "Process $PID2 \(will_segfault\) of user $UID killed by SIGSEGV - ignoring \(${REASON}\)" abrt_journal.log -E
+
+    get_crash_path
+    rlRun "abrt-cli rm $crash_PATH" 0 "Removing problem dirs"
 }
 
 rlJournalStart
     rlPhaseStartSetup
         check_prior_crashes
-
         TmpDir=$(mktemp -d)
+        cp failing_code.c $TmpDir
         pushd $TmpDir
+        gcc failing_code.c -o abrt-hook-ccpp
+        gcc failing_code.c -o abrt-binary
     rlPhaseEnd
 
-    rlPhaseStartTest "Ignoring will_segfault"
+    rlPhaseStartTest "Ignoring will_segfault listed in 'IgnoredPaths'"
         CONF_PATH="/etc/abrt/plugins/CCpp.conf"
 
         rlLog "Create backup of ${CONF_PATH}"
@@ -210,6 +236,28 @@ rlJournalStart
         rlRun "userdel -f $TEST_USER"
         rlRun "userdel -f $TEST_USER2"
         rlRUn "groupdel $TEST_GROUP"
+    rlPhaseEnd
+
+    rlPhaseStartTest "ignoring of abrt-hook-ccpp"
+        # using our failing abrt-hook-ccpp
+        test_not_create_dir "./abrt-hook-ccpp" "avoid recursion"
+    rlPhaseEnd
+
+    rlPhaseStartTest "ignoring of abrt's binaries"
+        test_not_create_dir "./abrt-binary" "'DebugLevel' == 0"
+    rlPhaseEnd
+
+    rlPhaseStartTest "ignoring of repeated crashes"
+        test_duplicate_crash
+    rlPhaseEnd
+
+    rlPhaseStartTest "abrtd is not running"
+        # kill abrtd
+        pkill abrtd
+
+        test_not_create_dir "will_segfault" "abrtd is not running"
+
+        systemctl start abrtd
     rlPhaseEnd
 
     rlPhaseStartCleanup
