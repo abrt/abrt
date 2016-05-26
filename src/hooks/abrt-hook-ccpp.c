@@ -725,7 +725,8 @@ int main(int argc, char** argv)
     char *proc_pid_status = xmalloc_xopen_read_close(path, /*maxsz:*/ NULL);
 
     uid_t fsuid = uid;
-    uid_t tmp_fsuid = get_fsuid(proc_pid_status);
+    /* int because get_fsuid() returns negative values in case of error */
+    int tmp_fsuid = get_fsuid(proc_pid_status);
     if (tmp_fsuid < 0)
     {
         error_msg_ignore_crash(pid_str, NULL, (long unsigned)uid, signal_no,
@@ -742,12 +743,12 @@ int main(int argc, char** argv)
     }
 
     int suid_policy = dump_suid_policy();
-    if (tmp_fsuid != uid)
+    if ((uid_t)tmp_fsuid != uid)
     {
         /* use root for suided apps unless it's explicitly set to UNSAFE */
         fsuid = 0;
         if (suid_policy == DUMP_SUID_UNSAFE)
-            fsuid = tmp_fsuid;
+            fsuid = (uid_t)tmp_fsuid;
         else
         {
             g_user_core_flags = O_EXCL;
