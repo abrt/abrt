@@ -44,6 +44,10 @@ rlJournalStart
         cp formatting_files/* $TmpDir
         rlRun "pushd $TmpDir"
 
+        rlFileBackup /etc/localtime
+        rlRun "ln -s /usr/share/zoneinfo/Europe/Prague /etc/localtime"
+        export LANG=C
+
         generate_crash
         get_crash_path
         wait_for_hooks
@@ -164,6 +168,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
+        rlFileRestore
         rlBundleLogs abrt 'mail.out' $(ls *.log)
         rlRun "popd"
         rlRun "echo 'delete *' | mailx -u root" 0 "Delete mail"
