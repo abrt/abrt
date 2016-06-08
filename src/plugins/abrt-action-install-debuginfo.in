@@ -236,12 +236,12 @@ if __name__ == "__main__":
             sys.exit(RETURN_FAILURE)
 
         # TODO: should we pass keep_rpms=keeprpms to DebugInfoDownload here??
-        downloader = download_class(cache=cachedirs[0], tmp=TMPDIR,
+        try:
+            downloader = download_class(cache=cachedirs[0], tmp=TMPDIR,
                                     noninteractive=noninteractive,
                                     repo_pattern=repo_pattern)
-        try:
             result = downloader.download(missing, download_exact_files=exact_fls)
-        except Exception as ex:
+        except OSError as ex:
             if ex.errno == errno.EPIPE:
                 clean_up(TMPDIR, silent=True)
                 exit(RETURN_FAILURE)
