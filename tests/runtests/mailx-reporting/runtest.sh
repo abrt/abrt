@@ -45,7 +45,7 @@ rlJournalStart
         rlRun "pushd $TmpDir"
 
         rlFileBackup /etc/localtime
-        rlRun "ln -s /usr/share/zoneinfo/Europe/Prague /etc/localtime"
+        rlRun "ln -sf /usr/share/zoneinfo/Europe/Prague /etc/localtime"
         export LANG=C
 
         generate_crash
