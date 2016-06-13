@@ -119,6 +119,7 @@ abrt-install-ccpp-hook: abrt-install-ccpp-hook.in
 abrt-harvest-vmcore: abrt_harvest_vmcore.py.in
 	sed -e s,\@CONF_DIR\@,\$(CONF_DIR)\,g \
 	    -e s,\@DEFAULT_DUMP_LOCATION\@,$(DEFAULT_DUMP_LOCATION),g \
+	    -e s,\@BLKID\@,$(BLKID),g \
 		$< >$@
 
 abrt-harvest-pstoreoops: abrt-harvest-pstoreoops.in

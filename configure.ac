@@ -263,6 +263,8 @@ AC_ARG_ENABLE(doxygen-docs,
     [enable_doxygen_docs=no]
 )
 
+AC_PATH_PROG([BLKID], [BLKID], [/usr/sbin/blkid], [$PATH:/usr/sbin:/sbin])
+
 # Doxygen Documentation
 
 AC_PATH_PROG(DOXYGEN, doxygen, no)
