@@ -13,6 +13,7 @@ import shutil
 import time
 import hashlib
 import augeas
+from subprocess import Popen, PIPE
 
 import problem
 import report
@@ -37,6 +38,32 @@ def get_mount_point(part_id):
 
     part_id - device node, label or uuid
     """
+
+    idtypes = {"UUID=":"-U", "PARTUUID=":"-U", "LABEL=":"-L", "PARTLABEL=":"-L"}
+
+    for typ, switch in idtypes.items():
+        if not part_id.startswith(typ):
+            continue
+
+        idf = part_id[len(typ):]
+        try:
+            proc = Popen(["@BLKID@", switch, idf], stdout=PIPE, stderr=PIPE)
+            out, err = proc.communicate()
+            if err:
+                sys.stderr.write("Failed 'blkid {0} {1}': {2}\n"
+                                 .format(switch, idf, err))
+                sys.exit(1)
+            if not out:
+                sys.stderr.write("No results from 'blkid {0} {1}'\n"
+                                 .format(switch, idf))
+                sys.exit(1)
+
+            part_id = out.decode().strip()
+            break
+        except OSError as ex:
+            sys.stderr.write("Cannot run 'blkid {0} {1}': {2}\n"
+                              .format(switch, idf, str(ex)))
+            sys.exit(1)
 
     # look up the identifier in /etc/mtab
     result = get_augeas("Fstab", "/etc/mtab").get("/files/etc/mtab/*"
