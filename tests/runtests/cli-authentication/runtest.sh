@@ -49,6 +49,7 @@ rlJournalStart
 
         pushd $TmpDir
 
+        prepare
         generate_crash
         wait_for_hooks
         get_crash_path
@@ -103,6 +104,7 @@ EOF
     rlPhaseEnd
 
     rlPhaseStartTest "process remove"
+        prepare
         generate_python_segfault
         wait_for_hooks
         get_crash_path
@@ -112,6 +114,7 @@ EOF
     rlPhaseEnd
 
     rlPhaseStartTest "report"
+        prepare
         generate_second_crash
         wait_for_hooks
         get_crash_path
@@ -129,6 +132,7 @@ EOF
     rlPhaseEnd
 
     rlPhaseStartTest "process report"
+        prepare
         sleep 1000 &
         kill -ABRT %%
         wait_for_hooks
