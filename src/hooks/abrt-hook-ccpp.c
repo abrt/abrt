@@ -21,7 +21,11 @@
 #include <fnmatch.h>
 #include <sys/utsname.h>
 #include "libabrt.h"
+#ifdef HAVE_SELINUX
 #include <selinux/selinux.h>
+#else
+typedef char *security_context_t;
+#endif
 
 #ifdef ENABLE_DUMP_TIME_UNWIND
 #include <satyr/abrt.h>
@@ -175,6 +179,7 @@ static DIR *open_cwd(pid_t pid)
  */
 static int compute_selinux_con_for_new_file(pid_t pid, int dir_fd, security_context_t *newcon)
 {
+#ifdef HAVE_SELINUX
     security_context_t srccon;
     security_context_t dstcon;
 
@@ -212,7 +217,18 @@ static int compute_selinux_con_for_new_file(pid_t pid, int dir_fd, security_cont
     }
 
     return 0;
+#else
+    *newcon = NULL;
+    return 1;
+#endif
 }
+
+#ifndef HAVE_SELINUX
+static int setfscreatecon_raw(security_context_t context)
+{
+    return -1;
+}
+#endif
 
 static int open_user_core(uid_t uid, uid_t fsuid, gid_t fsgid, pid_t pid, char **percent_values)
 {
