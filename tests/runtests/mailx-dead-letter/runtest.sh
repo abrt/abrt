@@ -34,6 +34,10 @@ PACKAGE="abrt"
 rlJournalStart
     rlPhaseStartSetup
         check_prior_crashes
+        MAILX_EVENT_FILE="mailx_event.conf"
+        MAILX_EVENT_PATH="/etc/libreport/events.d/$MAILX_EVENT_FILE"
+        rlRun "mv $MAILX_EVENT_PATH ${MAILX_EVENT_PATH}.backup"
+        cp -fv $MAILX_EVENT_FILE $MAILX_EVENT_PATH
 
         TmpDir=$(mktemp -d)
         cp mailx.conf $TmpDir
@@ -66,6 +70,7 @@ rlJournalStart
 
     rlPhaseStartCleanup
         rlRun "popd"
+        rlRun "mv ${MAILX_EVENT_PATH}.backup $MAILX_EVENT_PATH"
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
     rlPhaseEnd
     rlJournalPrintText
