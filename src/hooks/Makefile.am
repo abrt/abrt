@@ -41,6 +41,9 @@ abrt_hook_ccpp_CPPFLAGS = \
     $(LIBREPORT_CFLAGS) \
     $(LIBSELINUX_CFLAGS) \
     -D_GNU_SOURCE
+if HAVE_SELINUX
+abrt_hook_ccpp_CPPFLAGS += -DHAVE_SELINUX
+endif
 abrt_hook_ccpp_LDADD = \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS) \
