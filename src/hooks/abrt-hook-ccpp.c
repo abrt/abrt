@@ -672,7 +672,7 @@ int main(int argc, char** argv)
         free_map_string(settings);
     }
 
-    if (argc == 2 && strcmp(argv[1], "--config-test"))
+    if (argc == 2 && !strcmp(argv[1], "--test-config"))
         return test_configuration(setting_SaveFullCore, setting_CreateCoreBacktrace);
 
     if (argc < 8)
