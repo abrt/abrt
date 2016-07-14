@@ -17,21 +17,22 @@
 # carrotsoft <www.carrotsoft@gmail.com>, 2011, 2012
 # Noriko Mizumoto <noriko@redhat.com>, 2015. #zanata
 # Ooyama Yosiyuki <qqke6wd9k@apricot.ocn.ne.jp>, 2015. #zanata
+# Noriko Mizumoto <noriko@redhat.com>, 2016. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2016-02-11 12:54+0100\n"
+"POT-Creation-Date: 2016-07-14 09:45+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-08-23 07:49-0400\n"
-"Last-Translator: Ooyama Yosiyuki <qqke6wd9k@apricot.ocn.ne.jp>\n"
+"PO-Revision-Date: 2016-03-03 02:16-0500\n"
+"Last-Translator: Noriko Mizumoto <noriko@redhat.com>\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/ja/)\n"
 "Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Zanata 3.8.2\n"
+"X-Generator: Zanata 3.8.4\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -151,6 +152,8 @@ msgid ""
 "linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
+"上記の設定は GSettings に移動しているためスイッチがスキーマ 'org.gnome.desktop.privacy' から設定 'report-"
+"technical-problems' の値にリンクされています。"
 
 #: ../src/configuration-gui/abrt-config-widget.c:501
 msgid "The configuration option above can be configured in"
@@ -182,6 +185,11 @@ msgid ""
 "With option 'Never' the stack trace will be always generated locally. With "
 "option 'Ask' ABRT will always ask the user."
 msgstr ""
+"時間と領域の両方が必要とされるスタックトレースの生成動作にはコアダンプファイルが必要とされます。ABRT "
+"はコアダンプからスタックトレースを生成するサービスを提供しています。ただしユーザーによるサービスへのコアダンプのアップロードが必要になります。'常にアップロードする' "
+"オプションを使用すると指示をしなくてもコアダンプが常に ABRT によりアップロードされるようになります。'アップロードしない' "
+"オプションを使うとスタックトレースは常にローカルで生成されるようになります。'指示を求める' "
+"オプションを使用すると常にユーザーの指示を求めるようになります。"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
@@ -228,7 +236,7 @@ msgstr "このオプションを有効にすると、ABRT は報告された問�
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
-msgstr ""
+msgstr "このオプションを使用すると、機密データが検出された場合には常に制限付きアクセスでバグチケットを作成させることができるようになります。"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
@@ -252,19 +260,19 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid "Always"
-msgstr ""
+msgstr "常にアップロードする"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:15
 msgid "Never"
-msgstr ""
+msgstr "アップロードしない"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:16
 msgid "Ask"
-msgstr ""
+msgstr "指示を求める"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
 msgid "Upload coredump for backtrace generation"
-msgstr ""
+msgstr "バックトレース生成用コアダンプをアップロードする"
 
 #: ../src/configuration-gui/system-config-abrt.c:79
 msgid "_Close"
@@ -291,15 +299,18 @@ msgstr "ABRT について"
 msgid "Quit"
 msgstr "終了"
 
-#: ../src/daemon/abrt-action-save-package-data.c:393
+#: ../src/daemon/abrt-action-save-package-data.c:440
 msgid ""
 "& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
 msgstr ""
+"& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
+"\n"
+"パッケージのデータベースに問い合わせを行いパッケージとコンポーネント名を保存します"
 
-#: ../src/daemon/abrt-action-save-package-data.c:406
-#: ../src/daemon/abrt-action-save-container-data.c:210
+#: ../src/daemon/abrt-action-save-package-data.c:453
+#: ../src/daemon/abrt-action-save-container-data.c:265
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
 #: ../src/plugins/abrt-action-analyze-c.c:141
 #: ../src/plugins/abrt-action-analyze-oops.c:48
@@ -310,43 +321,45 @@ msgstr ""
 msgid "Problem directory"
 msgstr "問題ディレクトリ"
 
-#: ../src/daemon/abrt-action-save-package-data.c:407
+#: ../src/daemon/abrt-action-save-package-data.c:454
 msgid "Configuration file"
 msgstr "設定ファイル"
 
-#: ../src/daemon/abrt-action-save-package-data.c:408
+#: ../src/daemon/abrt-action-save-package-data.c:455
 msgid "Use this directory as RPM root"
-msgstr ""
+msgstr "このディレクトリーを RPM root として使用する"
 
-#: ../src/daemon/abrt-action-save-container-data.c:199
+#: ../src/daemon/abrt-action-save-container-data.c:254
 msgid "& [-v] -d DIR\n"
 "\n"
 "Save container metadata"
-msgstr ""
+msgstr "& [-v] -d DIR\n"
+"\n"
+"コンテナーのメタデータを保存します"
 
-#: ../src/daemon/abrt-action-save-container-data.c:211
+#: ../src/daemon/abrt-action-save-container-data.c:266
 msgid "Root directory for running container commands"
-msgstr ""
+msgstr "コンテナーコマンドの実行用 root ディレクトリー"
 
-#: ../src/daemon/abrt-server.c:796 ../src/dbus/abrt-dbus.c:894
+#: ../src/daemon/abrt-server.c:847 ../src/dbus/abrt-dbus.c:894
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:444
 msgid "& [options]"
 msgstr "& [オプション]"
 
-#: ../src/daemon/abrt-server.c:807
+#: ../src/daemon/abrt-server.c:858
 msgid "Use NUM as client uid"
 msgstr "NUM をクライアントの uid  として使用する"
 
-#: ../src/daemon/abrt-server.c:808 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/daemon/abrt-server.c:859 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:97
-#: ../src/plugins/abrt-dump-journal-core.c:477
+#: ../src/plugins/abrt-dump-journal-core.c:497
 #: ../src/plugins/abrt-dump-journal-oops.c:219
 #: ../src/plugins/abrt-dump-journal-xorg.c:188
 #: ../src/plugins/abrt-dump-xorg.c:52
 msgid "Log to syslog"
 msgstr "syslog にログする"
 
-#: ../src/daemon/abrt-server.c:809 ../src/daemon/abrtd.c:460
+#: ../src/daemon/abrt-server.c:860 ../src/daemon/abrtd.c:460
 msgid "Add program names to log"
 msgstr "ログにプログラム名を追加する"
 
@@ -372,7 +385,7 @@ msgstr "権限がありません"
 
 #: ../src/dbus/abrt-dbus.c:285
 msgid "Can't open the problem"
-msgstr ""
+msgstr "問題を開けません"
 
 #: ../src/dbus/abrt-dbus.c:317
 #, c-format
@@ -435,7 +448,7 @@ msgstr "-d オプションを使用するとログを syslog へ書き込みま�
 
 #: ../src/daemon/abrt-handle-event.c:394
 msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
-msgstr ""
+msgstr "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
 
 #: ../src/daemon/abrt-handle-event.c:403
 msgid "Run EVENT on DIR"
@@ -447,7 +460,7 @@ msgstr "ユーザーと直接通信する"
 
 #: ../src/daemon/abrt-handle-event.c:405
 msgid "Increment the nice value by INCREMENT"
-msgstr ""
+msgstr "INCREMENT で nice 値の増加させる"
 
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
@@ -690,11 +703,11 @@ msgstr "問題ディレクトリの削除に失敗しました: %s"
 #: ../src/lib/problem_api_dbus.c:131
 #, c-format
 msgid "D-Bus GetInfo method call failed: %s"
-msgstr ""
+msgstr "D-Bus GetInfo メソッドの呼び出しに失敗しました: %s"
 
 #: ../src/lib/problem_api_dbus.c:166
 msgid "Can't get problem data from abrt-dbus"
-msgstr ""
+msgstr "abrt-dbus から問題データを取得できません"
 
 #: ../src/lib/problem_api_dbus.c:193
 #, c-format
@@ -806,6 +819,7 @@ msgid ""
 "your computer. ABRT will not allow you to create a report in a bug tracking "
 "system but you can contact kernel maintainers via e-mail."
 msgstr ""
+"バックトレースには報告すべき意味のある関数フレームが含まれていません。煩わしいですが必ずしもコンピューターに問題があるわけではありません。バグ追跡システムでレポートを作成することはできませんが、メールでカーネル管理者への問い合わせを行うことはできます。"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:73
 msgid ""
@@ -866,35 +880,35 @@ msgstr "カーネルログではハードウェア関連のエラーが検出さ
 
 #: ../src/plugins/abrt-action-find-bodhi-update:88
 msgid "cannot open problem directory '{0}'"
-msgstr ""
+msgstr "問題ディレクトリー '{0}' を開けません"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:102
 msgid "Problem directory error: {0}"
-msgstr ""
+msgstr " 問題ディレクトリーにエラーが発生しました: {0}"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:117
 msgid "Using product '{0}' from /etc/os-release."
-msgstr ""
+msgstr "/etc/os-release からの製品 '{0}' を使用しています。"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:119
 msgid "Using product {0}."
-msgstr ""
+msgstr "製品 {0} を使用しています。"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:121
 msgid "Using product version {0}."
-msgstr ""
+msgstr "製品バージョン {0} を使用しています。"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:133
 msgid "Duplicate bugzilla bug '#{0}' was found"
-msgstr ""
+msgstr "重複している bugzilla バグ '#{0}' が見つかりました"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:135
 msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
-msgstr ""
+msgstr "'abrt_hash:{0}' の bugzilla バグはありません。"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:140
 msgid "Warning: abrt-bodhi do not support Product version 'Rawhide'"
-msgstr ""
+msgstr "警告: abrt-bodhi は製品バージョン 'Rawhide' には対応していません"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
@@ -949,7 +963,7 @@ msgstr "エラー: GDB から何もデータが返されませんでした"
 msgid "Error: %s"
 msgstr "エラー: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:51
+#: ../src/plugins/abrt-action-install-debuginfo.in:52
 msgid "Exiting on user command"
 msgstr "ユーザーからのコマンドで終了しています"
 
@@ -972,7 +986,10 @@ msgid ""
 "    --ids       Default: build_ids\n"
 "    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
 "RANDOM_SUFFIX\n"
-"    --cache     Default: /var/cache/abrt-di\n"
+"    --cache     Colon separated list of directories. The first one is used "
+"for\n"
+"                saving installed debuginfos.\n"
+"                Default: /var/cache/abrt-dir\n"
 "    --size_mb   Default: 4096\n"
 "    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
 "    -e,--exact  Download only specified files\n"
@@ -980,32 +997,32 @@ msgid ""
 "                Default: *debug*\n"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:175
+#: ../src/plugins/abrt-action-install-debuginfo.in:176
 msgid "Can't open {0}: {1}"
 msgstr "{0} を開けません: {1}"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:212
+#: ../src/plugins/abrt-action-install-debuginfo.in:213
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr "コアダンプにより {0} debuginfo ファイルが参照されます、このうち {1} ファイルがインストールされていません"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:215
+#: ../src/plugins/abrt-action-install-debuginfo.in:216
 msgid "{0} of debuginfo files are not installed"
 msgstr "{0} debuginfo ファイルがインストールされていません"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:234
+#: ../src/plugins/abrt-action-install-debuginfo.in:235
 #, c-format
 msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:249
+#: ../src/plugins/abrt-action-install-debuginfo.in:253
 msgid "Missing requested file: {0}"
 msgstr "要求されたファイルがありません: {0}"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:254
+#: ../src/plugins/abrt-action-install-debuginfo.in:258
 msgid "Missing debuginfo file: {0}"
 msgstr "debuginfo ファイルがありません: {0}"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:257
+#: ../src/plugins/abrt-action-install-debuginfo.in:261
 msgid "All debuginfo files are available"
 msgstr "すべての debuginfo ファイルが利用可能です"
 
@@ -1278,7 +1295,7 @@ msgid "Create new problem directory in DIR for every oops found"
 msgstr "検出される oops ごと DIR 内に新規の問題ディレクトリを作成します"
 
 #: ../src/plugins/abrt-dump-oops.c:103
-#: ../src/plugins/abrt-dump-journal-core.c:479
+#: ../src/plugins/abrt-dump-journal-core.c:499
 #: ../src/plugins/abrt-dump-journal-oops.c:225
 #: ../src/plugins/abrt-dump-journal-xorg.c:191
 #: ../src/plugins/abrt-dump-xorg.c:55
@@ -1320,28 +1337,28 @@ msgstr ""
 msgid "More oopses found: process only the first one"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:341
-#: ../src/plugins/abrt-dump-journal-core.c:377
+#: ../src/plugins/abrt-dump-journal-core.c:361
+#: ../src/plugins/abrt-dump-journal-core.c:397
 msgid "Failed to obtain all required information from journald"
 msgstr ""
 
 #. We don't want to update the counter here.
-#: ../src/plugins/abrt-dump-journal-core.c:401
+#: ../src/plugins/abrt-dump-journal-core.c:421
 #, c-format
 msgid "Not saving repeating crash after %ds (limit is %ds)"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:407
+#: ../src/plugins/abrt-dump-journal-core.c:427
 msgid "Failed to save detect problem data in abrt database"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:427
+#: ../src/plugins/abrt-dump-journal-core.c:447
 #: ../src/plugins/abrt-dump-journal-oops.c:165
 #: ../src/plugins/abrt-dump-journal-xorg.c:121
 msgid "Failed to initialize systemd-journal watch"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:447
+#: ../src/plugins/abrt-dump-journal-core.c:467
 msgid ""
 "& [-vsf] [-e]/[-c CURSOR] [-t INT]/[-T] [-d DIR]/[-D]\n"
 "\n"
@@ -1355,59 +1372,59 @@ msgid ""
 "The last seen position is saved in "
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:478
+#: ../src/plugins/abrt-dump-journal-core.c:498
 msgid "Create new problem directory in DIR for every coredump"
 msgstr "検出されるコアダンプごと DIR 内に新規の問題ディレクトリを作成します"
 
-#: ../src/plugins/abrt-dump-journal-core.c:480
+#: ../src/plugins/abrt-dump-journal-core.c:500
 #: ../src/plugins/abrt-dump-journal-oops.c:228
 #: ../src/plugins/abrt-dump-journal-xorg.c:194
 msgid "Start reading systemd-journal from the CURSOR position"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:481
+#: ../src/plugins/abrt-dump-journal-core.c:501
 #: ../src/plugins/abrt-dump-journal-oops.c:229
 #: ../src/plugins/abrt-dump-journal-xorg.c:195
 msgid "Start reading systemd-journal from the end"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:482
+#: ../src/plugins/abrt-dump-journal-core.c:502
 msgid "Throttle problem directory creation to 1 per INT second"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:483
+#: ../src/plugins/abrt-dump-journal-core.c:503
 msgid "Same as -t INT, INT is specified in plugins/CCpp.conf"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:484
+#: ../src/plugins/abrt-dump-journal-core.c:504
 #: ../src/plugins/abrt-dump-journal-oops.c:230
 #: ../src/plugins/abrt-dump-journal-xorg.c:196
 msgid "Follow systemd-journal from the last seen position (if available)"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:495
+#: ../src/plugins/abrt-dump-journal-core.c:515
 #: ../src/plugins/abrt-dump-journal-oops.c:246
 #: ../src/plugins/abrt-dump-journal-xorg.c:213
 msgid "You need to specify either -c CURSOR or -e"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:541
+#: ../src/plugins/abrt-dump-journal-core.c:561
 #: ../src/plugins/abrt-dump-journal-oops.c:284
 #: ../src/plugins/abrt-dump-journal-xorg.c:278
 msgid "Cannot open systemd-journal"
 msgstr "systemd-journal を開けません"
 
-#: ../src/plugins/abrt-dump-journal-core.c:544
+#: ../src/plugins/abrt-dump-journal-core.c:564
 msgid "Cannot filter systemd-journal to systemd-coredump data only"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:549
+#: ../src/plugins/abrt-dump-journal-core.c:569
 #: ../src/plugins/abrt-dump-journal-oops.c:293
 #: ../src/plugins/abrt-dump-journal-xorg.c:291
 msgid "Cannot seek to the end of journal"
 msgstr "ジャーナルの最後までシークできません"
 
-#: ../src/plugins/abrt-dump-journal-core.c:552
+#: ../src/plugins/abrt-dump-journal-core.c:572
 #: ../src/plugins/abrt-dump-journal-oops.c:309
 #: ../src/plugins/abrt-dump-journal-xorg.c:307
 #, c-format
@@ -1473,7 +1490,7 @@ msgid ""
 "-c and -e options conflicts because both specifies the first read message.\n"
 "\n"
 "-e is useful only for -f because the following of journal starts by reading \n"
-"the entire journal if the last seen possition is not available.\n"
+"the entire journal if the last seen position is not available.\n"
 "\n"
 "The last seen position is saved in %s\n"
 "\n"
@@ -2340,15 +2357,15 @@ msgstr ""
 
 #: ../src/cli-ng/abrtcli/cli.py:50
 msgid "This"
-msgstr ""
+msgstr "この"
 
 #: ../src/cli-ng/abrtcli/cli.py:52
 msgid "Last"
-msgstr ""
+msgstr "最後の"
 
 #: ../src/cli-ng/abrtcli/cli.py:54
 msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
-msgstr ""
+msgstr "{} 問題は C/C++ タイプではないためデバッグ情報をインストールできません"
 
 #: ../src/cli-ng/abrtcli/cli.py:64 ../src/cli-ng/abrtcli/cli.py:99
 msgid ""

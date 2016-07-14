@@ -16,21 +16,22 @@
 # noxin <transifex.com@davidmainzer.com>, 2013
 # Hedda Peters <hpeters@redhat.com>, 2015. #zanata
 # Roman Spirgi <rspirgi@gmail.com>, 2015. #zanata
+# Lisa Stemmler <lstemmle@redhat.com>, 2016. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2016-02-11 12:54+0100\n"
+"POT-Creation-Date: 2016-07-14 09:45+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-08-19 02:33-0400\n"
-"Last-Translator: Roman Spirgi <rspirgi@gmail.com>\n"
+"PO-Revision-Date: 2016-03-01 06:18-0500\n"
+"Last-Translator: Lisa Stemmler <lstemmle@redhat.com>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/de/)\n"
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 3.8.2\n"
+"X-Generator: Zanata 3.8.4\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -57,7 +58,7 @@ msgstr "Benachrichtigung kann nicht geschlossen werden: %s"
 
 #: ../src/applet/applet.c:598
 msgid "Oops!"
-msgstr "Hoppla!"
+msgstr "Oops!"
 
 #: ../src/applet/applet.c:616
 msgid "Report"
@@ -166,10 +167,13 @@ msgid ""
 "linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
+"Die Konfigurationsoption oben wurde zu GSettings verschoben und der Switch "
+"ist mit dem Wert der Einstellung 'report-technical-problems' vom Schema 'org."
+"gnome.desktop.privacy' verbunden."
 
 #: ../src/configuration-gui/abrt-config-widget.c:501
 msgid "The configuration option above can be configured in"
-msgstr ""
+msgstr "Die Konfigurationsoption oben kann konfiguriert werden in "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
@@ -197,6 +201,13 @@ msgid ""
 "With option 'Never' the stack trace will be always generated locally. With "
 "option 'Ask' ABRT will always ask the user."
 msgstr ""
+"Die Speicherauszug-Datei ist notwendig zur Generierung eines Stack Trace, "
+"eine Operation, die viel Zeit und Speicherplatz in Anspruch nimmt. ABRT "
+"bietet einen Service, der den Stack Trace aus dem Speicherauszug erstellt, "
+"allerdings müssen Sie den Speicherauszug für diesen Service hochladen. Mit "
+"der Option 'Always' wird ABRT immer ohne zu fragen den Speicherauszug "
+"hochladen. Mit der Option 'Never' wird das Stack-Trace immer lokal generiert."
+" Mit der Option 'Ask' wird ABRT immer vorher den Benutzer fragen. "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
@@ -278,19 +289,19 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid "Always"
-msgstr ""
+msgstr "Immer"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:15
 msgid "Never"
-msgstr ""
+msgstr "Nie"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:16
 msgid "Ask"
-msgstr ""
+msgstr "Fragen"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
 msgid "Upload coredump for backtrace generation"
-msgstr ""
+msgstr "Speicherauszug für Erstellung einer Ablaufverfolgung hochladen"
 
 #: ../src/configuration-gui/system-config-abrt.c:79
 msgid "_Close"
@@ -317,7 +328,7 @@ msgstr "Über"
 msgid "Quit"
 msgstr "Beenden"
 
-#: ../src/daemon/abrt-action-save-package-data.c:393
+#: ../src/daemon/abrt-action-save-package-data.c:440
 msgid ""
 "& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 "\n"
@@ -327,8 +338,8 @@ msgstr ""
 "\n"
 "Paket-Datenbank durchsuchen und Paket- und Komponentennamen sichern"
 
-#: ../src/daemon/abrt-action-save-package-data.c:406
-#: ../src/daemon/abrt-action-save-container-data.c:210
+#: ../src/daemon/abrt-action-save-package-data.c:453
+#: ../src/daemon/abrt-action-save-container-data.c:265
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
 #: ../src/plugins/abrt-action-analyze-c.c:141
 #: ../src/plugins/abrt-action-analyze-oops.c:48
@@ -339,15 +350,15 @@ msgstr ""
 msgid "Problem directory"
 msgstr "Fehler-Verzeichnis"
 
-#: ../src/daemon/abrt-action-save-package-data.c:407
+#: ../src/daemon/abrt-action-save-package-data.c:454
 msgid "Configuration file"
 msgstr "Konfigurationsdatei"
 
-#: ../src/daemon/abrt-action-save-package-data.c:408
+#: ../src/daemon/abrt-action-save-package-data.c:455
 msgid "Use this directory as RPM root"
 msgstr "Dieses Verzeichnis als RPM-Root verwenden"
 
-#: ../src/daemon/abrt-action-save-container-data.c:199
+#: ../src/daemon/abrt-action-save-container-data.c:254
 msgid "& [-v] -d DIR\n"
 "\n"
 "Save container metadata"
@@ -355,29 +366,29 @@ msgstr "& [-v] -d DIR\n"
 "\n"
 "Container-Metadata sichern"
 
-#: ../src/daemon/abrt-action-save-container-data.c:211
+#: ../src/daemon/abrt-action-save-container-data.c:266
 msgid "Root directory for running container commands"
 msgstr "Root-Verzeichnis, um Container-Befehle auszuführen"
 
-#: ../src/daemon/abrt-server.c:796 ../src/dbus/abrt-dbus.c:894
+#: ../src/daemon/abrt-server.c:847 ../src/dbus/abrt-dbus.c:894
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:444
 msgid "& [options]"
 msgstr "& [options]"
 
-#: ../src/daemon/abrt-server.c:807
+#: ../src/daemon/abrt-server.c:858
 msgid "Use NUM as client uid"
 msgstr "NUM als Client-UID benutzen"
 
-#: ../src/daemon/abrt-server.c:808 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/daemon/abrt-server.c:859 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:97
-#: ../src/plugins/abrt-dump-journal-core.c:477
+#: ../src/plugins/abrt-dump-journal-core.c:497
 #: ../src/plugins/abrt-dump-journal-oops.c:219
 #: ../src/plugins/abrt-dump-journal-xorg.c:188
 #: ../src/plugins/abrt-dump-xorg.c:52
 msgid "Log to syslog"
 msgstr "In Systemprotokoll speichern"
 
-#: ../src/daemon/abrt-server.c:809 ../src/daemon/abrtd.c:460
+#: ../src/daemon/abrt-server.c:860 ../src/daemon/abrtd.c:460
 msgid "Add program names to log"
 msgstr "Anwendungsnamen protokollieren"
 
@@ -403,7 +414,7 @@ msgstr "Nicht erlaubt"
 
 #: ../src/dbus/abrt-dbus.c:285
 msgid "Can't open the problem"
-msgstr ""
+msgstr "Problem kann nicht geöffnet werden"
 
 #: ../src/dbus/abrt-dbus.c:317
 #, c-format
@@ -474,7 +485,7 @@ msgstr "Auch mit -d  im Systemprotokoll speichern"
 
 #: ../src/daemon/abrt-handle-event.c:394
 msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
-msgstr ""
+msgstr "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
 
 #: ../src/daemon/abrt-handle-event.c:403
 msgid "Run EVENT on DIR"
@@ -486,7 +497,7 @@ msgstr "Direkt mit dem Benutzer kommunizieren"
 
 #: ../src/daemon/abrt-handle-event.c:405
 msgid "Increment the nice value by INCREMENT"
-msgstr ""
+msgstr "NICE Wert durch INCREMENT erhöhen"
 
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
@@ -735,11 +746,11 @@ msgstr "Problematisches Verzeichnis konnte nicht gelöscht werden: %s"
 #: ../src/lib/problem_api_dbus.c:131
 #, c-format
 msgid "D-Bus GetInfo method call failed: %s"
-msgstr ""
+msgstr "D-Bus GetInfo Methoden-Aufruf fehlgeschlagen: %s"
 
 #: ../src/lib/problem_api_dbus.c:166
 msgid "Can't get problem data from abrt-dbus"
-msgstr ""
+msgstr "Fehler-Daten können von abrt-dbus nicht abgerufen werden"
 
 #: ../src/lib/problem_api_dbus.c:193
 #, c-format
@@ -819,7 +830,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr "Coredump »%s« wird analysiert"
+msgstr "Speicherauszug »%s« wird analysiert"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-analyze-core.in:110
@@ -856,10 +867,10 @@ msgid ""
 "your computer. ABRT will not allow you to create a report in a bug tracking "
 "system but you can contact kernel maintainers via e-mail."
 msgstr ""
-"Der Backtrace enthält zu wenig auswertbare Daten. Dies ist zwar ärgerlich, "
-"deutet aber nicht zwingend auf ein Problem Ihres Rechners hin. ABRT kann "
-"keinen Fehlerbericht erstellen, Sie könnten jedoch die Kernel-Maintainer via "
-"E-Mail kontaktieren."
+"Die Ablaufverfolgung enthält zu wenig auswertbare Daten. Dies ist zwar "
+"ärgerlich, deutet aber nicht zwingend auf ein Problem Ihres Rechners hin. "
+"ABRT kann keinen Fehlerbericht erstellen, Sie könnten jedoch die Kernel-"
+"Maintainer via E-Mail kontaktieren."
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:73
 msgid ""
@@ -922,35 +933,35 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-find-bodhi-update:88
 msgid "cannot open problem directory '{0}'"
-msgstr ""
+msgstr "Problem-Verzeichnis kann nicht geöffnet werden '{0}'"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:102
 msgid "Problem directory error: {0}"
-msgstr ""
+msgstr "Problem-Verzeichnis Fehler: {0}"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:117
 msgid "Using product '{0}' from /etc/os-release."
-msgstr ""
+msgstr "Verwendet Produkt '{0}' von /etc/os-release."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:119
 msgid "Using product {0}."
-msgstr ""
+msgstr "Verwendet Produkt {0}."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:121
 msgid "Using product version {0}."
-msgstr ""
+msgstr "Verwendet Produkt-Version {0}."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:133
 msgid "Duplicate bugzilla bug '#{0}' was found"
-msgstr ""
+msgstr "Doppelter Bugzilla Bug '#{0}' wurde gefunden"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:135
 msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
-msgstr ""
+msgstr "Es gibt keinen Bugzilla Bug mit 'abrt_hash:{0}'"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:140
 msgid "Warning: abrt-bodhi do not support Product version 'Rawhide'"
-msgstr ""
+msgstr "Warnung: abrt-bodhi unterstützt nicht Produktversion 'Rawhide'"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
@@ -1008,7 +1019,7 @@ msgstr "Fehler: GDB hat keine Daten zurückgegeben"
 msgid "Error: %s"
 msgstr "Fehler: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:51
+#: ../src/plugins/abrt-action-install-debuginfo.in:52
 msgid "Exiting on user command"
 msgstr "Abbruch durch Benutzerbefehl"
 
@@ -1031,65 +1042,46 @@ msgid ""
 "    --ids       Default: build_ids\n"
 "    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
 "RANDOM_SUFFIX\n"
-"    --cache     Default: /var/cache/abrt-di\n"
+"    --cache     Colon separated list of directories. The first one is used "
+"for\n"
+"                saving installed debuginfos.\n"
+"                Default: /var/cache/abrt-dir\n"
 "    --size_mb   Default: 4096\n"
 "    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
 "    -e,--exact  Download only specified files\n"
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
 msgstr ""
-"Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
-"[--size_mb=SIZE]\n"
-"       [-e, --exact=PATH[:PATH]...]\n"
-"\n"
-"Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
-"to CACHEDIR, using TMPDIR as temporary staging area.\n"
-"Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
-"\n"
-"Reads configuration from /etc/abrt/plugins/CCpp.conf\n"
-"\n"
-"    -v          Be verbose\n"
-"    -y          Noninteractive, assume 'Yes' to all questions\n"
-"    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
-"RANDOM_SUFFIX\n"
-"    --cache     Default: /var/cache/abrt-di\n"
-"    --size_mb   Default: 4096\n"
-"    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
-"    -e,--exact  Download only specified files\n"
-"    --repo      Pattern to use when searching for repos.\n"
-"                Default: *debug*\n"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:175
+#: ../src/plugins/abrt-action-install-debuginfo.in:176
 msgid "Can't open {0}: {1}"
 msgstr "{0} kann nicht geöffnet werden: {1}"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:212
+#: ../src/plugins/abrt-action-install-debuginfo.in:213
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr ""
 "Speicherauszug referenziert {0} Debuginfo-Dateien, {1} davon sind nicht "
 "installiert"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:215
+#: ../src/plugins/abrt-action-install-debuginfo.in:216
 msgid "{0} of debuginfo files are not installed"
 msgstr "{0} der Debuginfo-Dateien sind nicht installiert"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:234
+#: ../src/plugins/abrt-action-install-debuginfo.in:235
 #, c-format
 msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
 msgstr ""
 "Ungültige CCpp-Addon-Konfiguration, nicht unterstützte Paketverwaltung: '%s'"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:249
+#: ../src/plugins/abrt-action-install-debuginfo.in:253
 msgid "Missing requested file: {0}"
 msgstr "Angeforderte Datei fehlt: {0}"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:254
+#: ../src/plugins/abrt-action-install-debuginfo.in:258
 msgid "Missing debuginfo file: {0}"
 msgstr "Fehlende Debuginfo-Datei: {0}"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:257
+#: ../src/plugins/abrt-action-install-debuginfo.in:261
 msgid "All debuginfo files are available"
 msgstr "Alle Debuginfo-Dateien sind vorhanden"
 
@@ -1101,26 +1093,32 @@ msgid ""
 "Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
 "ABRT system cache."
 msgstr ""
+"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+"\t[-r REPO]\n"
+"\n"
+"Installiert debuginfo-Pakete für alle Build-IDs, die in BUILD_IDS_FILE "
+"aufgeführt \n"
+"sind, in den ABRT-Systemcache."
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:66
 msgid "Noninteractive, assume 'Yes' to all questions"
-msgstr ""
+msgstr "Nicht interaktiv, alle Fragen mit »ja« beantworten"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:67
 msgid "- means STDIN, default: build_ids"
-msgstr ""
+msgstr "- bedeutet STDIN, Standard: build_ids"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
 msgid "Download only specified files"
-msgstr ""
+msgstr "Nur angegebene Dateien herunterladen"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
 msgid "Pattern to use when searching for repos, default: *debug*"
-msgstr ""
+msgstr "Muster zum Suchen nach Repositorys, Standard: *debug*"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
 msgid "Ignored option"
-msgstr ""
+msgstr "Ignorierte Option"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:63
 msgid ""
@@ -1375,7 +1373,7 @@ msgstr ""
 "Meldung"
 
 #: ../src/plugins/abrt-dump-oops.c:103
-#: ../src/plugins/abrt-dump-journal-core.c:479
+#: ../src/plugins/abrt-dump-journal-core.c:499
 #: ../src/plugins/abrt-dump-journal-oops.c:225
 #: ../src/plugins/abrt-dump-journal-xorg.c:191
 #: ../src/plugins/abrt-dump-xorg.c:55
@@ -1412,34 +1410,34 @@ msgstr "Kompilieren von regex fehlgeschlagen"
 
 #: ../src/plugins/abrt-dump-oops.c:177
 msgid "Can't update the problem: no oops found"
-msgstr ""
+msgstr "Problem kann nicht aktualisiert werden: kein Oops gefunden"
 
 #: ../src/plugins/abrt-dump-oops.c:183
 msgid "More oopses found: process only the first one"
-msgstr ""
+msgstr "Keine Oopse gefunden: nur erstes wird bearbeitet"
 
-#: ../src/plugins/abrt-dump-journal-core.c:341
-#: ../src/plugins/abrt-dump-journal-core.c:377
+#: ../src/plugins/abrt-dump-journal-core.c:361
+#: ../src/plugins/abrt-dump-journal-core.c:397
 msgid "Failed to obtain all required information from journald"
 msgstr "Abrufen der benötigten Journald-Informationen fehlgeschlagen"
 
 #. We don't want to update the counter here.
-#: ../src/plugins/abrt-dump-journal-core.c:401
+#: ../src/plugins/abrt-dump-journal-core.c:421
 #, c-format
 msgid "Not saving repeating crash after %ds (limit is %ds)"
 msgstr "Sich wiederholender Absturz nicht sichern nach %ds (Limit ist %ds)"
 
-#: ../src/plugins/abrt-dump-journal-core.c:407
+#: ../src/plugins/abrt-dump-journal-core.c:427
 msgid "Failed to save detect problem data in abrt database"
 msgstr "Fehlerdaten konnten nicht in ABRT-Datenbank gespeichert werden"
 
-#: ../src/plugins/abrt-dump-journal-core.c:427
+#: ../src/plugins/abrt-dump-journal-core.c:447
 #: ../src/plugins/abrt-dump-journal-oops.c:165
 #: ../src/plugins/abrt-dump-journal-xorg.c:121
 msgid "Failed to initialize systemd-journal watch"
 msgstr "Systemd-Journal watch konnte nicht initialisiert werden"
 
-#: ../src/plugins/abrt-dump-journal-core.c:447
+#: ../src/plugins/abrt-dump-journal-core.c:467
 msgid ""
 "& [-vsf] [-e]/[-c CURSOR] [-t INT]/[-T] [-d DIR]/[-D]\n"
 "\n"
@@ -1452,62 +1450,75 @@ msgid ""
 "\n"
 "The last seen position is saved in "
 msgstr ""
+"& [-vsf] [-e]/[-c CURSOR] [-t INT]/[-T] [-d DIR]/[-D]\n"
+"\n"
+"Speicherauszug aus Systemd-Journal extrahieren\n"
+"\n"
+"-c und -e Optionen stehen in Konflikt, da beide die erste Nachricht "
+"bestimmen.\n"
+"\n"
+"-e ist nur für -f nützlich, weil das folgende Journal mit dem Lesen  \n"
+"des gesamten Journals beginnt, wenn die zuletzt gesehene Position nicht "
+"verfügbar ist. \n"
+"\n"
+"Die zuletzt gesehene Position ist gespeichert in "
 
-#: ../src/plugins/abrt-dump-journal-core.c:478
+#: ../src/plugins/abrt-dump-journal-core.c:498
 msgid "Create new problem directory in DIR for every coredump"
-msgstr "Für jeden Coredump ein neues Fehlerverzeichnis erstellen"
+msgstr "Für jeden Speicherauszug ein neues Fehlerverzeichnis erstellen"
 
-#: ../src/plugins/abrt-dump-journal-core.c:480
+#: ../src/plugins/abrt-dump-journal-core.c:500
 #: ../src/plugins/abrt-dump-journal-oops.c:228
 #: ../src/plugins/abrt-dump-journal-xorg.c:194
 msgid "Start reading systemd-journal from the CURSOR position"
 msgstr "Systemd-Journal ab Cursor-Position lesen"
 
-#: ../src/plugins/abrt-dump-journal-core.c:481
+#: ../src/plugins/abrt-dump-journal-core.c:501
 #: ../src/plugins/abrt-dump-journal-oops.c:229
 #: ../src/plugins/abrt-dump-journal-xorg.c:195
 msgid "Start reading systemd-journal from the end"
 msgstr "Systemd-Journal ab Ende lesen"
 
-#: ../src/plugins/abrt-dump-journal-core.c:482
+#: ../src/plugins/abrt-dump-journal-core.c:502
 msgid "Throttle problem directory creation to 1 per INT second"
 msgstr "Fehlerverzeichnis-Erstellung auf 1 per INT Sekunde drosseln"
 
-#: ../src/plugins/abrt-dump-journal-core.c:483
+#: ../src/plugins/abrt-dump-journal-core.c:503
 msgid "Same as -t INT, INT is specified in plugins/CCpp.conf"
 msgstr "Gleich wie -t INT, INT ist definiert in plugins/CCpp.conf"
 
-#: ../src/plugins/abrt-dump-journal-core.c:484
+#: ../src/plugins/abrt-dump-journal-core.c:504
 #: ../src/plugins/abrt-dump-journal-oops.c:230
 #: ../src/plugins/abrt-dump-journal-xorg.c:196
 msgid "Follow systemd-journal from the last seen position (if available)"
 msgstr ""
 "Systemd-Journal ab der letzten gesehenen Position folgen (sofern verfügbar)"
 
-#: ../src/plugins/abrt-dump-journal-core.c:495
+#: ../src/plugins/abrt-dump-journal-core.c:515
 #: ../src/plugins/abrt-dump-journal-oops.c:246
 #: ../src/plugins/abrt-dump-journal-xorg.c:213
 msgid "You need to specify either -c CURSOR or -e"
 msgstr "Entweder -c CURSOR oder -e muss angegeben werden"
 
-#: ../src/plugins/abrt-dump-journal-core.c:541
+#: ../src/plugins/abrt-dump-journal-core.c:561
 #: ../src/plugins/abrt-dump-journal-oops.c:284
 #: ../src/plugins/abrt-dump-journal-xorg.c:278
 msgid "Cannot open systemd-journal"
 msgstr "Systemd-Journal kann nicht geöffnet werden"
 
-#: ../src/plugins/abrt-dump-journal-core.c:544
+#: ../src/plugins/abrt-dump-journal-core.c:564
 msgid "Cannot filter systemd-journal to systemd-coredump data only"
 msgstr ""
-"Systemd-Journal kann nicht nur auf systemd-coredump-Daten gefiltert werden"
+"Systemd-Journal kann nicht nur auf systemd-Speicherauszug-Daten gefiltert "
+"werden"
 
-#: ../src/plugins/abrt-dump-journal-core.c:549
+#: ../src/plugins/abrt-dump-journal-core.c:569
 #: ../src/plugins/abrt-dump-journal-oops.c:293
 #: ../src/plugins/abrt-dump-journal-xorg.c:291
 msgid "Cannot seek to the end of journal"
 msgstr "Das Ende des Journals konnte nicht erreicht werden"
 
-#: ../src/plugins/abrt-dump-journal-core.c:552
+#: ../src/plugins/abrt-dump-journal-core.c:572
 #: ../src/plugins/abrt-dump-journal-oops.c:309
 #: ../src/plugins/abrt-dump-journal-xorg.c:307
 #, c-format
@@ -1532,6 +1543,18 @@ msgid ""
 "\n"
 "The last seen position is saved in "
 msgstr ""
+"& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
+"\n"
+"Extrahiert Oops aus Systemd-Journal\n"
+"\n"
+"-c und -e Optionen stehen in Konflikt, da beide die erste Nachricht "
+"bestimmen.\n"
+"\n"
+"-e ist nur für -f nützlich, weil das folgende Journal mit dem Lesen des \n"
+"gesamten Journals beginnt, wenn die zuletzt gesehene Position nicht "
+"verfügbar ist.\n"
+"\n"
+"Die zuletzt gesehene Position ist gespeichert in"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:231
 #: ../src/plugins/abrt-dump-journal-xorg.c:197
@@ -1561,7 +1584,7 @@ msgstr "Beginn der Ansicht ab Cursor '%s' fehlgeschlagen"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:61
 msgid "Failed to parse Backtrace from journal"
-msgstr ""
+msgstr "Parsen der Ablaufverfolgung vom Journal aus fehlgeschlagen"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:143
 #, c-format
@@ -1573,7 +1596,7 @@ msgid ""
 "-c and -e options conflicts because both specifies the first read message.\n"
 "\n"
 "-e is useful only for -f because the following of journal starts by reading \n"
-"the entire journal if the last seen possition is not available.\n"
+"the entire journal if the last seen position is not available.\n"
 "\n"
 "The last seen position is saved in %s\n"
 "\n"
@@ -1584,25 +1607,29 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:189
 msgid "Print found crashes on standard output"
-msgstr ""
+msgstr "Gefundene Abstürze auf der Standardausgabe ausgegeben"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:190
 msgid "Create new problem directory in DIR for every crash found"
 msgstr ""
+"Neues Problemverzeichnis in DIR für jeden gefundenen Absturz erstellen"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:199
 msgid "Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)"
 msgstr ""
+"Journalfilter z.B. '_COMM=gdm-x-session' (kann mehrfach angegeben werden)"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:265
 msgid ""
 "Journal filter must be specified either by parameter -j or stored in /etc/"
 "abrt/plugins/xorg.conf file"
 msgstr ""
+"Journalfilter muss entweder durch Parameter -j angegeben werden oder in der /"
+"etc/abrt/plugins/xorg.conf Datei gespeichert werden"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:282
 msgid "Cannot filter systemd-journal to Xorg data only"
-msgstr ""
+msgstr "Systemd-Journal kann nicht nur auf Xorg-Daten gefiltert werden"
 
 #: ../src/plugins/abrt-dump-xorg.c:35
 msgid ""
@@ -1624,7 +1651,7 @@ msgstr "Neues Fehlerverzeichnis in DIR erstellen für jeden gefundenen Absturz"
 
 #: ../src/plugins/abrt-dump-xorg.c:108
 msgid "Failed to parse Backtrace from log file"
-msgstr ""
+msgstr "Fehler beim Parsen der Ablaufverfolgung aus der Log-Datei"
 
 #. abrt_journal_set_cursor() prints error message in verbose mode
 #: ../src/plugins/abrt-journal.c:274
@@ -1782,7 +1809,7 @@ msgstr "Der Server unterstützt keine xz-komprimierten Tar-Archive."
 #: ../src/plugins/abrt-retrace-client.c:577
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
-msgstr "Die Version »%s« wird vom Rectrace-Server nicht unterstützt."
+msgstr "Die Version »%s« wird vom Retrace-Server nicht unterstützt."
 
 #: ../src/plugins/abrt-retrace-client.c:581
 msgid "The server is not able to handle your request."
@@ -2321,7 +2348,7 @@ msgstr "»%s« findet mehr als ein Fehlerverzeichnis"
 
 #: ../src/cli/abrt-cli.c:130
 msgid "Usage: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
-msgstr ""
+msgstr "Aufruf: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/abrt-cli.c:134
@@ -2425,12 +2452,12 @@ msgstr ""
 #: ../src/cli/report.c:34
 #, c-format
 msgid "Can't find problem '%s'"
-msgstr ""
+msgstr "Problem '%s' kann nicht gefunden werden"
 
 #: ../src/cli/report.c:42
 #, c-format
 msgid "Problem '%s' cannot be reported"
-msgstr ""
+msgstr "Problem '%s' kann nicht gemeldet werden"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/report.c:63 ../src/cli/process.c:70
@@ -2482,114 +2509,119 @@ msgstr "Nur Fehler auswählen, die nach diesem Zeitpunkt auftraten"
 
 #: ../src/cli-ng/abrtcli/cli.py:33
 msgid "Problem has no backtrace"
-msgstr ""
+msgstr "Problem hat keine Ablaufverfolgung"
 
 #: ../src/cli-ng/abrtcli/cli.py:35
 msgid "Start retracing process?"
-msgstr ""
+msgstr "Rückverfolgungsprozess starten?"
 
 #: ../src/cli-ng/abrtcli/cli.py:40
 msgid "Show backtrace of a problem"
-msgstr ""
+msgstr "Ablaufverfolgung eines Problems anzeigen"
 
 #: ../src/cli-ng/abrtcli/cli.py:50
 msgid "This"
-msgstr ""
+msgstr "Dies"
 
 #: ../src/cli-ng/abrtcli/cli.py:52
 msgid "Last"
-msgstr ""
+msgstr "Letzte"
 
 #: ../src/cli-ng/abrtcli/cli.py:54
 msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
 msgstr ""
+"{} Problem ist nicht C/C++ Typ. Debuginfo kann nicht installiert werden"
 
 #: ../src/cli-ng/abrtcli/cli.py:64 ../src/cli-ng/abrtcli/cli.py:99
 msgid ""
 "Permission denied: '{}'\n"
 "If this is a system problem try running this command as root"
 msgstr ""
+"Zugriff verweigert: '{}'\n"
+"Falls dies ein Systemfehler ist, versuchen Sie diesen Befehl als Root "
+"auszuführen"
 
 #: ../src/cli-ng/abrtcli/cli.py:71
 msgid "Install required debuginfo for given problem"
-msgstr ""
+msgstr "Erforderliche Debuginfo für vorhandenes Problem installieren"
 
 #: ../src/cli-ng/abrtcli/cli.py:106
 msgid "Run GDB against a problem"
-msgstr ""
+msgstr "GDB gegen ein Problem laufen lassen"
 
 #: ../src/cli-ng/abrtcli/cli.py:117 ../src/cli-ng/abrtcli/cli.py:153
 msgid "Output format"
-msgstr ""
+msgstr "Ausgabeformat"
 
 #: ../src/cli-ng/abrtcli/cli.py:119 ../src/cli-ng/abrtcli/cli.py:155
 msgid "Built-in output format"
-msgstr ""
+msgstr "Eingebautes Ausgabeformat"
 
 #: ../src/cli-ng/abrtcli/cli.py:145 ../src/cli-ng/abrtcli/match.py:89
 msgid "No problems"
-msgstr ""
+msgstr "Keine Probleme"
 
 #: ../src/cli-ng/abrtcli/cli.py:147
 msgid "List problems"
-msgstr ""
+msgstr "Probleme auflisten"
 
 #: ../src/cli-ng/abrtcli/cli.py:167
 msgid "Print information about problem"
-msgstr ""
+msgstr "Informationen zum Problem auflisten"
 
 #: ../src/cli-ng/abrtcli/cli.py:173
 msgid "Prompt before removal"
-msgstr ""
+msgstr "Vor Entfernung auffordern"
 
 #: ../src/cli-ng/abrtcli/cli.py:174
 msgid "Do not prompt before removal"
-msgstr ""
+msgstr "Nicht vor Entfernung auffordern"
 
 #. force prompt for last problem to avoid accidents
 #: ../src/cli-ng/abrtcli/cli.py:182
 msgid "Are you sure you want to delete this problem?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie dieses Problem löschen wollen?"
 
 #: ../src/cli-ng/abrtcli/cli.py:186
 msgid "Removed"
-msgstr ""
+msgstr "Entfernt"
 
 #: ../src/cli-ng/abrtcli/cli.py:188
 msgid "Remove problem"
-msgstr ""
+msgstr "Problem entfernen"
 
 #: ../src/cli-ng/abrtcli/cli.py:199
 msgid "Report problem"
-msgstr ""
+msgstr "Problem melden"
 
 #: ../src/cli-ng/abrtcli/cli.py:204
 msgid "Perform local retracing"
-msgstr ""
+msgstr "Lokale Rückverfolgung durchführen?"
 
 #: ../src/cli-ng/abrtcli/cli.py:206
 msgid "Perform remote retracing using retrace server"
-msgstr ""
+msgstr "Entfernt zurückziehen mittels Retrace-Server"
 
 #: ../src/cli-ng/abrtcli/cli.py:208
 msgid "Force retracing even if backtrace already exists"
 msgstr ""
+"Rückverfolgung erzwingen, auch wenn Ablaufverfolgung bereits existiert"
 
 #: ../src/cli-ng/abrtcli/cli.py:223
 msgid "Problem already has a backtrace"
-msgstr ""
+msgstr "Problem hat bereits eine Ablaufverfolgung"
 
 #: ../src/cli-ng/abrtcli/cli.py:224
 msgid "Run abrt retrace with -f/--force to retrace again"
-msgstr ""
+msgstr "Abrt retrace mit -f/--force ausführen um erneut zurückzuziehen"
 
 #: ../src/cli-ng/abrtcli/cli.py:225
 msgid "Show backtrace?"
-msgstr ""
+msgstr "Ablaufverfolgung anzeigen?"
 
 #: ../src/cli-ng/abrtcli/cli.py:229
 msgid "No retracing possible for this problem type"
-msgstr ""
+msgstr "Keine Rückverfolgung möglich für diesen Problemtyp"
 
 #: ../src/cli-ng/abrtcli/cli.py:233
 msgid ""
@@ -2598,42 +2630,49 @@ msgid ""
 "Local retracing requires downloading potentially large amount of debuginfo "
 "data"
 msgstr ""
+"Speicherauszug hochladen und entfernte Rückverfolgung ausführen? "
+"(Möglicherweise sind vertrauliche Daten enthalten). Falls Sie »Nein« "
+"angeben, wird eine lokale Stack-Verfolgung erstellt. Lokale Rückverfolgung "
+"erfordert das Herunterladen einer potentiell großen Menge von Debuginfo-"
+"Daten"
 
 #: ../src/cli-ng/abrtcli/cli.py:248
 msgid "Remote retracing"
-msgstr ""
+msgstr "Entfernte Rückverfolgung"
 
 #: ../src/cli-ng/abrtcli/cli.py:251
 msgid "Local retracing"
-msgstr ""
+msgstr "Lokale Rückverfolgung"
 
 #: ../src/cli-ng/abrtcli/cli.py:255
 msgid "Generate backtrace from coredump"
-msgstr ""
+msgstr "Ablaufverfolgung von Speicherauszug aus erstellen"
 
 #: ../src/cli-ng/abrtcli/cli.py:280
 msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
 msgstr ""
+"ABRT hat {} Problem(e) entdeckt. Für weitere Infos führen Sie abrt list{} "
+"aus"
 
 #: ../src/cli-ng/abrtcli/cli.py:283
 msgid "Print count of the recent crashes"
-msgstr ""
+msgstr "Anzahl der jüngsten Abstürze ausgeben"
 
 #: ../src/cli-ng/abrtcli/cli.py:292
 msgid "Authenticate and show all problems on this machine"
-msgstr ""
+msgstr "Authentifizieren und alle Probleme auf dieser Maschine anzeigen"
 
 #: ../src/cli-ng/abrtcli/match.py:96
 msgid "No problem(s) matched"
-msgstr ""
+msgstr "Keine übereinstimmende Probleme"
 
 #: ../src/cli-ng/abrtcli/match.py:116
 msgid "Ambiguous match specified resulting in multiple problems:"
-msgstr ""
+msgstr "Angegebene unklare Übereinstimmung führt zu mehreren Problemen:"
 
 #: ../src/cli-ng/abrtcli/utils.py:78
 msgid "Not reportable"
-msgstr ""
+msgstr "Kann nicht gemeldet werden"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""

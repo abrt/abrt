@@ -7,23 +7,25 @@
 # Chester Cheng <ccheng@redhat.com>, 2012
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
 # Terry Chuang <tchuang@redhat.com>, 2011-2013
-# Chester Cheng <ccheng@redhat.com>, 2015. #zanata
+# Chester Cheng <snowlet.cheng@gmail.com>, 2015. #zanata
 # Ding-Yi Chen <dchen@redhat.com>, 2016. #zanata
+# Jakub Filak <jfilak@redhat.com>, 2016. #zanata
+# 張仁傑 <s9727453@gmail.com>, 2016. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2016-02-11 12:54+0100\n"
+"POT-Creation-Date: 2016-07-14 09:45+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-02-01 06:25-0500\n"
-"Last-Translator: Ding-Yi Chen <dchen@redhat.com>\n"
+"PO-Revision-Date: 2016-07-14 05:46-0400\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/fedora-"
 "abrt/language/zh_TW/)\n"
 "Language: zh-TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Zanata 3.8.2\n"
+"X-Generator: Zanata 3.8.4\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -138,15 +140,19 @@ msgstr "& [-v] [DIR]...\n"
 "新問題被 ABRT 偵測到時通知使用者的面板程式\n"
 
 #: ../src/configuration-gui/abrt-config-widget.c:483
+#, fuzzy
 msgid ""
 "The configuration option above has been moved to GSettings and the switch is "
 "linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
+"上述的配置選項已被移動，GSettings並且開關被連接到該設置的值，報告技術-問題\n"
+"從架構org.gnome.desktop.privacy"
 
 #: ../src/configuration-gui/abrt-config-widget.c:501
+#, fuzzy
 msgid "The configuration option above can be configured in"
-msgstr ""
+msgstr "配置選項可以在被配置以上"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
@@ -173,6 +179,7 @@ msgid ""
 "With option 'Never' the stack trace will be always generated locally. With "
 "option 'Ask' ABRT will always ask the user."
 msgstr ""
+"核心轉儲文件，為了發生堆疊這是時間和空間的耗時的操作，ABRT提供了一個服務產生從核心轉儲的堆疊，但你必須將信息轉儲上傳到該服務，選項：不經詢問總是上傳核心轉儲，選項：從不這個堆疊將會總是在本地產生，選項：問ABRT總是詢問使用者"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -230,7 +237,7 @@ msgstr "資料不完整的問題通常在電腦關機動作之時，或是使用
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid "Always"
-msgstr ""
+msgstr "總是"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:15
 msgid "Never"
@@ -238,11 +245,12 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:16
 msgid "Ask"
-msgstr ""
+msgstr "詢問"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
+#, fuzzy
 msgid "Upload coredump for backtrace generation"
-msgstr ""
+msgstr "上傳核心文件從回遡上一代"
 
 #: ../src/configuration-gui/system-config-abrt.c:79
 msgid "_Close"
@@ -269,7 +277,7 @@ msgstr "關於"
 msgid "Quit"
 msgstr "退出"
 
-#: ../src/daemon/abrt-action-save-package-data.c:393
+#: ../src/daemon/abrt-action-save-package-data.c:440
 msgid ""
 "& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 "\n"
@@ -278,8 +286,8 @@ msgstr "& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 "\n"
 "查詢軟體包資料庫，並儲存軟體包與組件名稱"
 
-#: ../src/daemon/abrt-action-save-package-data.c:406
-#: ../src/daemon/abrt-action-save-container-data.c:210
+#: ../src/daemon/abrt-action-save-package-data.c:453
+#: ../src/daemon/abrt-action-save-container-data.c:265
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
 #: ../src/plugins/abrt-action-analyze-c.c:141
 #: ../src/plugins/abrt-action-analyze-oops.c:48
@@ -290,15 +298,15 @@ msgstr "& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 msgid "Problem directory"
 msgstr "問題目錄"
 
-#: ../src/daemon/abrt-action-save-package-data.c:407
+#: ../src/daemon/abrt-action-save-package-data.c:454
 msgid "Configuration file"
 msgstr "組態檔"
 
-#: ../src/daemon/abrt-action-save-package-data.c:408
+#: ../src/daemon/abrt-action-save-package-data.c:455
 msgid "Use this directory as RPM root"
 msgstr "使用此目錄作為 RPM 根基"
 
-#: ../src/daemon/abrt-action-save-container-data.c:199
+#: ../src/daemon/abrt-action-save-container-data.c:254
 msgid "& [-v] -d DIR\n"
 "\n"
 "Save container metadata"
@@ -306,29 +314,29 @@ msgstr "& [-v] -d DIR\n"
 "\n"
 "儲存容器中介資料"
 
-#: ../src/daemon/abrt-action-save-container-data.c:211
+#: ../src/daemon/abrt-action-save-container-data.c:266
 msgid "Root directory for running container commands"
 msgstr "執行容器指令的根基目錄"
 
-#: ../src/daemon/abrt-server.c:796 ../src/dbus/abrt-dbus.c:894
+#: ../src/daemon/abrt-server.c:847 ../src/dbus/abrt-dbus.c:894
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:444
 msgid "& [options]"
 msgstr "& [選項]"
 
-#: ../src/daemon/abrt-server.c:807
+#: ../src/daemon/abrt-server.c:858
 msgid "Use NUM as client uid"
 msgstr "使用 NUM 作為客戶端 UID"
 
-#: ../src/daemon/abrt-server.c:808 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/daemon/abrt-server.c:859 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:97
-#: ../src/plugins/abrt-dump-journal-core.c:477
+#: ../src/plugins/abrt-dump-journal-core.c:497
 #: ../src/plugins/abrt-dump-journal-oops.c:219
 #: ../src/plugins/abrt-dump-journal-xorg.c:188
 #: ../src/plugins/abrt-dump-xorg.c:52
 msgid "Log to syslog"
 msgstr "紀錄至 syslog"
 
-#: ../src/daemon/abrt-server.c:809 ../src/daemon/abrtd.c:460
+#: ../src/daemon/abrt-server.c:860 ../src/daemon/abrtd.c:460
 msgid "Add program names to log"
 msgstr "加入程式名稱至紀錄檔"
 
@@ -354,7 +362,7 @@ msgstr "未授權"
 
 #: ../src/dbus/abrt-dbus.c:285
 msgid "Can't open the problem"
-msgstr ""
+msgstr "無法開啟問題"
 
 #: ../src/dbus/abrt-dbus.c:317
 #, c-format
@@ -845,11 +853,11 @@ msgstr "內核記錄指出有偵測到硬體錯誤。\n"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:88
 msgid "cannot open problem directory '{0}'"
-msgstr ""
+msgstr "無法打開問題目錄"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:102
 msgid "Problem directory error: {0}"
-msgstr ""
+msgstr "問題目錄錯誤"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:117
 msgid "Using product '{0}' from /etc/os-release."
@@ -857,11 +865,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-find-bodhi-update:119
 msgid "Using product {0}."
-msgstr ""
+msgstr "使用的產品"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:121
 msgid "Using product version {0}."
-msgstr ""
+msgstr "使用的產品版本"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:133
 msgid "Duplicate bugzilla bug '#{0}' was found"
@@ -927,12 +935,12 @@ msgstr "錯誤：GDB 未傳回任何資料"
 msgid "Error: %s"
 msgstr "錯誤：%s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:51
+#: ../src/plugins/abrt-action-install-debuginfo.in:52
 msgid "Exiting on user command"
 msgstr "正在離開使用者指令"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:89
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -950,62 +958,43 @@ msgid ""
 "    --ids       Default: build_ids\n"
 "    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
 "RANDOM_SUFFIX\n"
-"    --cache     Default: /var/cache/abrt-di\n"
+"    --cache     Colon separated list of directories. The first one is used "
+"for\n"
+"                saving installed debuginfos.\n"
+"                Default: /var/cache/abrt-dir\n"
 "    --size_mb   Default: 4096\n"
 "    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
 "    -e,--exact  Download only specified files\n"
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
 msgstr ""
-"Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
-"[--size_mb=SIZE]\n"
-"       [-e, --exact=PATH[:PATH]...]\n"
-"\n"
-"為所有列在 BUILD_IDS_FILE 中的 build-ids 安裝 debuginfos\n"
-"到 CACHEDIR 中，使用 TMPDIR 作為暫時臺前區域。\n"
-"Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
-"\n"
-"Reads configuration from /etc/abrt/plugins/CCpp.conf\n"
-"\n"
-"    -v          Be verbose\n"
-"    -y          Noninteractive, assume 'Yes' to all questions\n"
-"    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
-"RANDOM_SUFFIX\n"
-"    --cache     Default: /var/cache/abrt-di\n"
-"    --size_mb   Default: 4096\n"
-"    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
-"    -e,--exact  Download only specified files\n"
-"    --repo      Pattern to use when searching for repos.\n"
-"                Default: *debug*\n"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:175
+#: ../src/plugins/abrt-action-install-debuginfo.in:176
 msgid "Can't open {0}: {1}"
 msgstr "無法開啟 {0}：{1}"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:212
+#: ../src/plugins/abrt-action-install-debuginfo.in:213
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr "核心傾印參照 {0} 份 debuginfo 檔，其中的 {1} 份尚未安裝"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:215
+#: ../src/plugins/abrt-action-install-debuginfo.in:216
 msgid "{0} of debuginfo files are not installed"
 msgstr "尚未安裝 {0} 個 debuginfo 檔案"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:234
+#: ../src/plugins/abrt-action-install-debuginfo.in:235
 #, c-format
 msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
 msgstr "CCpp 附加元件的組態無效、不支援的軟體包管理員：「%s」"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:249
+#: ../src/plugins/abrt-action-install-debuginfo.in:253
 msgid "Missing requested file: {0}"
 msgstr "遺失的請求檔案：{0}"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:254
+#: ../src/plugins/abrt-action-install-debuginfo.in:258
 msgid "Missing debuginfo file: {0}"
 msgstr "遺失 debuginfo 檔：{0}"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:257
+#: ../src/plugins/abrt-action-install-debuginfo.in:261
 msgid "All debuginfo files are available"
 msgstr "所有的 debuginfo 檔案皆可用"
 
@@ -1028,7 +1017,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
 msgid "Download only specified files"
-msgstr ""
+msgstr "只有下載特別的檔案"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
 msgid "Pattern to use when searching for repos, default: *debug*"
@@ -1036,7 +1025,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
 msgid "Ignored option"
-msgstr ""
+msgstr "忽略選項"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:63
 msgid ""
@@ -1273,7 +1262,7 @@ msgid "Create new problem directory in DIR for every oops found"
 msgstr "在 DIR 內為每個找到的 oops 建立新的問題目錄"
 
 #: ../src/plugins/abrt-dump-oops.c:103
-#: ../src/plugins/abrt-dump-journal-core.c:479
+#: ../src/plugins/abrt-dump-journal-core.c:499
 #: ../src/plugins/abrt-dump-journal-oops.c:225
 #: ../src/plugins/abrt-dump-journal-xorg.c:191
 #: ../src/plugins/abrt-dump-xorg.c:55
@@ -1309,34 +1298,34 @@ msgstr "無法編譯 regex"
 
 #: ../src/plugins/abrt-dump-oops.c:177
 msgid "Can't update the problem: no oops found"
-msgstr ""
+msgstr "不能更新這個程式:找不到oops訊息"
 
 #: ../src/plugins/abrt-dump-oops.c:183
 msgid "More oopses found: process only the first one"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:341
-#: ../src/plugins/abrt-dump-journal-core.c:377
+#: ../src/plugins/abrt-dump-journal-core.c:361
+#: ../src/plugins/abrt-dump-journal-core.c:397
 msgid "Failed to obtain all required information from journald"
 msgstr "無法從 journald 取得所有需要的資訊"
 
 #. We don't want to update the counter here.
-#: ../src/plugins/abrt-dump-journal-core.c:401
+#: ../src/plugins/abrt-dump-journal-core.c:421
 #, c-format
 msgid "Not saving repeating crash after %ds (limit is %ds)"
 msgstr "在 %d 秒內不再儲存重複崩潰 (限制為 %d 秒)"
 
-#: ../src/plugins/abrt-dump-journal-core.c:407
+#: ../src/plugins/abrt-dump-journal-core.c:427
 msgid "Failed to save detect problem data in abrt database"
 msgstr "無法在 abrt 資料庫中儲存偵測問題資料"
 
-#: ../src/plugins/abrt-dump-journal-core.c:427
+#: ../src/plugins/abrt-dump-journal-core.c:447
 #: ../src/plugins/abrt-dump-journal-oops.c:165
 #: ../src/plugins/abrt-dump-journal-xorg.c:121
 msgid "Failed to initialize systemd-journal watch"
 msgstr "無法初始化 systemd-journal watch"
 
-#: ../src/plugins/abrt-dump-journal-core.c:447
+#: ../src/plugins/abrt-dump-journal-core.c:467
 msgid ""
 "& [-vsf] [-e]/[-c CURSOR] [-t INT]/[-T] [-d DIR]/[-D]\n"
 "\n"
@@ -1350,59 +1339,59 @@ msgid ""
 "The last seen position is saved in "
 msgstr ""
 
-#: ../src/plugins/abrt-dump-journal-core.c:478
+#: ../src/plugins/abrt-dump-journal-core.c:498
 msgid "Create new problem directory in DIR for every coredump"
 msgstr "在 DIR 目錄中為每個核心傾印建立新的問題目錄"
 
-#: ../src/plugins/abrt-dump-journal-core.c:480
+#: ../src/plugins/abrt-dump-journal-core.c:500
 #: ../src/plugins/abrt-dump-journal-oops.c:228
 #: ../src/plugins/abrt-dump-journal-xorg.c:194
 msgid "Start reading systemd-journal from the CURSOR position"
 msgstr "開始從 CURSOR 位置讀取 systemd-journal"
 
-#: ../src/plugins/abrt-dump-journal-core.c:481
+#: ../src/plugins/abrt-dump-journal-core.c:501
 #: ../src/plugins/abrt-dump-journal-oops.c:229
 #: ../src/plugins/abrt-dump-journal-xorg.c:195
 msgid "Start reading systemd-journal from the end"
 msgstr "開始從尾端讀取 systemd-journal"
 
-#: ../src/plugins/abrt-dump-journal-core.c:482
+#: ../src/plugins/abrt-dump-journal-core.c:502
 msgid "Throttle problem directory creation to 1 per INT second"
 msgstr "將問題目錄建立壓制到每 INT 秒 1 個"
 
-#: ../src/plugins/abrt-dump-journal-core.c:483
+#: ../src/plugins/abrt-dump-journal-core.c:503
 msgid "Same as -t INT, INT is specified in plugins/CCpp.conf"
 msgstr "與 -t INT 相同，INT 則在 plugins/CCpp.conf 中指定"
 
-#: ../src/plugins/abrt-dump-journal-core.c:484
+#: ../src/plugins/abrt-dump-journal-core.c:504
 #: ../src/plugins/abrt-dump-journal-oops.c:230
 #: ../src/plugins/abrt-dump-journal-xorg.c:196
 msgid "Follow systemd-journal from the last seen position (if available)"
 msgstr "從上次查看的位置開始跟隨 systemd-journal (如果有的話)"
 
-#: ../src/plugins/abrt-dump-journal-core.c:495
+#: ../src/plugins/abrt-dump-journal-core.c:515
 #: ../src/plugins/abrt-dump-journal-oops.c:246
 #: ../src/plugins/abrt-dump-journal-xorg.c:213
 msgid "You need to specify either -c CURSOR or -e"
 msgstr "您需要指定 -c CURSOR 或 -e"
 
-#: ../src/plugins/abrt-dump-journal-core.c:541
+#: ../src/plugins/abrt-dump-journal-core.c:561
 #: ../src/plugins/abrt-dump-journal-oops.c:284
 #: ../src/plugins/abrt-dump-journal-xorg.c:278
 msgid "Cannot open systemd-journal"
 msgstr "無法開啟 systemd-journal"
 
-#: ../src/plugins/abrt-dump-journal-core.c:544
+#: ../src/plugins/abrt-dump-journal-core.c:564
 msgid "Cannot filter systemd-journal to systemd-coredump data only"
 msgstr "無法過濾 systemd-journal 僅取用 systemd-coredump 資料"
 
-#: ../src/plugins/abrt-dump-journal-core.c:549
+#: ../src/plugins/abrt-dump-journal-core.c:569
 #: ../src/plugins/abrt-dump-journal-oops.c:293
 #: ../src/plugins/abrt-dump-journal-xorg.c:291
 msgid "Cannot seek to the end of journal"
 msgstr "無法查找到日誌尾端"
 
-#: ../src/plugins/abrt-dump-journal-core.c:552
+#: ../src/plugins/abrt-dump-journal-core.c:572
 #: ../src/plugins/abrt-dump-journal-oops.c:309
 #: ../src/plugins/abrt-dump-journal-xorg.c:307
 #, c-format
@@ -1468,7 +1457,7 @@ msgid ""
 "-c and -e options conflicts because both specifies the first read message.\n"
 "\n"
 "-e is useful only for -f because the following of journal starts by reading \n"
-"the entire journal if the last seen possition is not available.\n"
+"the entire journal if the last seen position is not available.\n"
 "\n"
 "The last seen position is saved in %s\n"
 "\n"
