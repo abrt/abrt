@@ -1120,6 +1120,20 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Mon Jul 18 2016 Matej Habrnal <mhabrnal@redhat.com> 2.8.2-1
+- Translation updates
+- abrt-hook-ccpp: Fix mismatching argument
+- Allow selinux to be optional at build time
+- vmcore: use findmnt to get mountpoint
+- spec: add utils-linux to vmcore's Require
+- vmcore: fix finding partitions by UUID and LABEL
+- a-a-install-debuginfo: Exception may not have an argument errno
+- koops: do not assume version has 3 levels
+- Add ARM specific oops backtrace processing.
+- examples: add oops-kernel-panic-hung-tasks-arm
+- Add oops processing for kernel panics caused by hung tasks.
+- abrt-hook-ccpp: save get_fsuid() return values in int variables
+
 * Wed May 25 2016 Matej Habrnal <mhabrnal@redhat.com> 2.8.1-1
 - a-dump-journal-xorg: allow *libexec/X* to be executable element
 - a-dump-journal-xorg: add '_COMM=gnome-shell' to journal filter
