@@ -16,6 +16,7 @@
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "problem_api.h"
+#include "abrt_glib.h"
 #include "libabrt.h"
 
 /* Maximal length of backtrace. */
@@ -71,10 +72,75 @@ MANDATORY ITEMS:
 You can send more messages using the same KEY=value format.
 */
 
+static int g_signal_pipe[2];
+
+struct waiting_context
+{
+    GMainLoop *main_loop;
+    const char *dirname;
+    int retcode;
+    enum abrt_daemon_reply
+    {
+        ABRT_CONTINUE,
+        ABRT_INTERRUPT,
+    } reply;
+};
+
 static unsigned total_bytes_read = 0;
 
 static uid_t client_uid = (uid_t)-1L;
 
+static void
+handle_signal(int signo)
+{
+    int save_errno = errno;
+    uint8_t sig_caught = signo;
+    if (write(g_signal_pipe[1], &sig_caught, 1))
+        /* we ignore result, if () shuts up stupid compiler */;
+    errno = save_errno;
+}
+
+static gboolean
+handle_signal_pipe_cb(GIOChannel *gio, GIOCondition condition, gpointer user_data)
+{
+    gsize len = 0;
+    uint8_t signals[2];
+
+    for (;;)
+    {
+        GError *error = NULL;
+        GIOStatus stat = g_io_channel_read_chars(gio, (void *)signals, sizeof(signals), &len, NULL);
+        if (stat == G_IO_STATUS_ERROR)
+            error_msg_and_die(_("Can't read from gio channel: '%s'"), error ? error->message : "");
+        if (stat == G_IO_STATUS_EOF)
+            return FALSE; /* Remove this GLib source */
+        if (stat == G_IO_STATUS_AGAIN)
+            break;
+
+        /* G_IO_STATUS_NORMAL */
+        for (unsigned signo = 0; signo < len; ++signo)
+        {
+            /* we did receive a signal */
+            struct waiting_context *context = (struct waiting_context *)user_data;
+            log_debug("Got signal %d through signal pipe", signals[signo]);
+            switch (signals[signo])
+            {
+                case SIGUSR1: context->reply = ABRT_CONTINUE; break;
+                case SIGINT:  context->reply = ABRT_INTERRUPT; break;
+                default:
+                {
+                    error_msg("Bug - aborting - unsupported signal: %d", signals[signo]);
+                    abort();
+                }
+            }
+
+            g_main_loop_quit(context->main_loop);
+            return FALSE; /* remove this event */
+        }
+    }
+
+    return TRUE; /* "please don't remove this event" */
+}
 
 /* Remove dump dir */
 static int delete_path(const char *dump_dir_name)
@@ -153,6 +219,24 @@ static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *ev
     return child;
 }
 
+static gboolean emit_new_problem_signal(gpointer data)
+{
+    struct waiting_context *context = (struct waiting_context *)data;
+
+    const size_t wrote = fprintf(stderr, "NEW_PROBLEM_DETECTED: %s\n", context->dirname);
+    fflush(stderr);
+
+    if (wrote <= 0)
+    {
+        error_msg("Failed to communicate with the daemon");
+        context->retcode = 503;
+        g_main_loop_quit(context->main_loop);
+    }
+
+    log_notice("Emitted new problem signal, waiting for SIGUSR1|SIGINT");
+    return FALSE;
+}
+
 static int run_post_create(const char *dirname)
 {
     /* If doesn't start with "g_settings_dump_location/"... */
@@ -178,6 +262,51 @@ static int run_post_create(const char *dirname)
             return 403;
         }
     }
+
+    /*
+     * The post-create event cannot be run concurrently for more problem
+     * directories. The problem is in searching for duplicates process
+     * in case when two concurrently processed directories are duplicates
+     * of each other. Both of the directories are marked as duplicates
+     * of each other and are deleted.
+     */
+    log_debug("Creating glib main loop");
+    struct waiting_context context = {0};
+    context.main_loop = g_main_loop_new(NULL, FALSE);
+    context.dirname = dirname;
+
+    log_debug("Setting up a signal handler");
+    /* Set up signal pipe */
+    xpipe(g_signal_pipe);
+    close_on_exec_on(g_signal_pipe[0]);
+    close_on_exec_on(g_signal_pipe[1]);
+    ndelay_on(g_signal_pipe[0]);
+    ndelay_on(g_signal_pipe[1]);
+    signal(SIGUSR1, handle_signal);
+    signal(SIGINT, handle_signal);
+    GIOChannel *channel_signal = abrt_gio_channel_unix_new(g_signal_pipe[0]);
+    g_io_add_watch(channel_signal, G_IO_IN | G_IO_PRI, handle_signal_pipe_cb, &context);
+
+    g_idle_add(emit_new_problem_signal, &context);
+
+    g_main_loop_run(context.main_loop);
+
+    g_main_loop_unref(context.main_loop);
+    g_io_channel_unref(channel_signal);
+    close(g_signal_pipe[1]);
+    close(g_signal_pipe[0]);
+
+    log_notice("Waiting finished");
+
+    if (context.retcode != 0)
+        return context.retcode;
+
+    if (context.reply != ABRT_CONTINUE)
+        /* The only reason for the interruption is removed problem directory */
+        return 413;
+    /*
+     * The post-create event synchronization done.
+     */
 
     int child_stdout_fd;
     int child_pid = spawn_event_handler_child(dirname, "post-create", &child_stdout_fd);
