@@ -324,51 +324,6 @@ end:
     return retval;
 }
 
-static void create_lockfile(void)
-{
-    char pid_str[sizeof(long)*3 + 4];
-    sprintf(pid_str, "%lu", (long)getpid());
-    char *lock_filename = concat_path_file(g_settings_dump_location, "post-create.lock");
-
-    /* Someone else's post-create may take a long-ish time to finish.
-     * For example, I had a failing email sending there, it took
-     * a minute to time out.
-     * That's why timeout is large (100 seconds):
-     */
-    int count = 100;
-    while (1)
-    {
-        /* Return values:
-         * -1: error (in this case, errno is 0 if error message is already logged)
-         *  0: failed to lock (someone else has it locked)
-         *  1: success
-         */
-        int r = create_symlink_lockfile(lock_filename, pid_str);
-    if (r > 0)
-            break;
-    if (r < 0)
-            error_msg_and_die("Can't create '%s'", lock_filename);
-    if (--count == 0)
-        {
-            /* Someone else's post-create process is alive but stuck.
-             * Don't wait forever.
-             */
-            error_msg("Stale lock '%s', removing it", lock_filename);
-            xunlink(lock_filename);
-            break;
-        }
-        sleep(1);
-    }
-    free(lock_filename);
-}
-
-static void delete_lockfile(void)
-{
-    char *lock_filename = concat_path_file(g_settings_dump_location, "post-create.lock");
-    xunlink(lock_filename);
-    free(lock_filename);
-}
-
 static char *do_log(char *log_line, void *param)
 {
     /* We pipe output of events to our log.
@@ -451,22 +406,9 @@ int main(int argc, char **argv)
             make_run_event_state_forwarding(run_state);
         run_state->logging_callback = do_log;
         if (post_create)
-        {
             run_state->post_run_callback = is_crash_a_dup;
-            /*
-             * The post-create event cannot be run concurrently for more problem
-             * directories. The problem is in searching for duplicates process
-             * in case when two concurrently processed directories are duplicates
-             * of each other. Both of the directories are marked as duplicates
-             * of each other and are deleted.
-             */
-            create_lockfile();
-        }
 
         int r = run_event_on_dir_name(run_state, dump_dir_name, event_name);
-
-        if (post_create)
-            delete_lockfile();
 
         const bool no_action_for_event = (r == 0 && run_state->children_count == 0);
 
