@@ -27,6 +27,8 @@
 typedef char *security_context_t;
 #endif
 
+#include <sys/resource.h>
+
 #ifdef ENABLE_DUMP_TIME_UNWIND
 #include <satyr/abrt.h>
 #include <satyr/utils.h>
@@ -602,6 +604,29 @@ static void error_msg_ignore_crash(const char *pid_str, const char *process_str,
     return;
 }
 
+static void dump_abrt_process(pid_t pid, const char *executable)
+{
+    /* If abrtd/abrt-foo crashes, we don't want to create a _directory_,
+     * since that can make new copy of abrtd to process it,
+     * and maybe crash again...
+     * Unlike dirs, mere files are ignored by abrtd.
+     */
+    const char *basename = strrchr(executable, '/') + 1;
+    char *path = xasprintf("%s/%s-coredump", g_settings_dump_location, basename);
+    unlink(path);
+    int abrt_core_fd = xopen3(path, O_WRONLY | O_CREAT | O_EXCL, 0600);
+    off_t core_size = copyfd_eof(STDIN_FILENO, abrt_core_fd, COPYFD_SPARSE);
+    if (core_size < 0 || fsync(abrt_core_fd) != 0)
+    {
+        unlink(path);
+        /* copyfd_eof logs the error including errno string,
+         * but it does not log file name */
+        error_msg_and_die("Error saving '%s'", path);
+    }
+    log_notice("Saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, basename, path, (long long)core_size);
+    free(path);
+}
+
 int main(int argc, char** argv)
 {
     /* Kernel starts us with all fd's closed.
@@ -620,6 +645,14 @@ int main(int argc, char** argv)
 
     /* Parse abrt.conf */
     load_abrt_conf();
+
+    /* core_pattern processes have RLIMIT_CORE set to 1 by default.
+     * If kernel sees RLIMIT_CORE == 1 and pipe is in core_pattern, dumping
+     * of core file is aborted (do_coredump() in kernel/fs/coredump.c)
+     */
+    if (g_settings_debug_level >= 100)
+        setrlimit(RLIMIT_CORE, &((struct rlimit){ RLIM_INFINITY, RLIM_INFINITY}));
+
     /* ... and plugins/CCpp.conf */
     bool setting_MakeCompatCore;
     bool setting_SaveBinaryImage;
@@ -804,8 +837,19 @@ int main(int argc, char** argv)
     /* do not dump abrt-hook-ccpp crashes */
     if (executable && strstr(executable, "/abrt-hook-ccpp"))
     {
-        error_msg_ignore_crash(pid_str, last_slash, (long unsigned)uid, signal_no,
-                signame, "avoid recursion");
+        if (g_settings_debug_level >= 100)
+        {
+            dump_abrt_process(pid, executable);
+        }
+        else
+        {   /* This can happen only if there is a bug in kernel, otherwise,
+             * kernel actively prevents recursion of crashes of core_pattern
+             * unless core_pattern sets RLIMIT_CORE != 1.
+             * (do_coredump() in kernel/fs/coredump.c)
+             */
+            error_msg_ignore_crash(pid_str, last_slash, (long unsigned)uid,
+                                   signal_no, signame, "avoid recursion");
+        }
 
         xfunc_die();
     }
@@ -895,25 +939,7 @@ int main(int argc, char** argv)
 
     if (abrt_crash)
     {
-        /* If abrtd/abrt-foo crashes, we don't want to create a _directory_,
-         * since that can make new copy of abrtd to process it,
-         * and maybe crash again...
-         * Unlike dirs, mere files are ignored by abrtd.
-         */
-        if (snprintf(path, sizeof(path), "%s/%s-coredump", g_settings_dump_location, last_slash) >= sizeof(path))
-            error_msg_and_die("Error saving '%s': truncated long file path", path);
-
-        unlink(path);
-        int abrt_core_fd = xopen3(path, O_WRONLY | O_CREAT | O_EXCL, 0600);
-        off_t core_size = copyfd_eof(STDIN_FILENO, abrt_core_fd, COPYFD_SPARSE);
-        if (core_size < 0 || fsync(abrt_core_fd) != 0)
-        {
-            unlink(path);
-            /* copyfd_eof logs the error including errno string,
-             * but it does not log file name */
-            error_msg_and_die("Error saving '%s'", path);
-        }
-        log_notice("Saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
+        dump_abrt_process(pid, executable);
         err = 0;
         goto cleanup_and_exit;
     }
