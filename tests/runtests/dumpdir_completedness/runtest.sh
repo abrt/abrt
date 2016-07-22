@@ -39,6 +39,9 @@ PYTHON_FILES="backtrace"
 rlJournalStart
     rlPhaseStartSetup
         check_prior_crashes
+        # install signed rpm because if the rpm is unsigned
+        # pkg_fingerprint is not created
+        rlRun "rpm -Uvh --force my_crash-0.0-1.el7.x86_64.rpm"
 
         TmpDir=$(mktemp -d)
         pushd $TmpDir
@@ -47,13 +50,8 @@ rlJournalStart
     rlPhaseStartTest "CCpp plugin"
         prepare
 
-        # jfilak: will-crash isn't always signed which is needed for pkg_fingerprint.
-        #         If you want to use will-crash, do not forget to add EPEL key
-        #         to /etc/abrt/gpg_keys.
-        #generate_crash
-        sleep 1000 &
-        sleep 1
-        kill -ABRT %1
+        # crashing bin from my_crash package
+        ccpp_crash
 
         wait_for_hooks
         get_crash_path
@@ -65,7 +63,7 @@ rlJournalStart
             rlAssertExists "$crash_PATH/$FILE"
         done
 
-        rlAssertGrep "/bin/sleep" "$crash_PATH/core_backtrace"
+        rlAssertGrep "/usr/sbin/ccpp_crash" "$crash_PATH/core_backtrace"
 
         rlRun "abrt-cli rm $crash_PATH"
     rlPhaseEnd
@@ -73,18 +71,8 @@ rlJournalStart
     rlPhaseStartTest "Python plugin"
         prepare
 
-        # jfilak: will-crash isn't always signed which is needed for pkg_fingerprint.
-        #         If you want to use will-crash, do not forget to add EPEL key
-        #         to /etc/abrt/gpg_keys.
-        #will_python_raise
-        #
-        # Let's use a python file from yum which should be always installed
-        #
-        # $ find /usr/lib/python2.7/site-packages/yum -type f -name "*.py" -exec python '{}' \;
-        # Mar 30 10:02:32 dhcp-24-129.brq.redhat.com python[8841]: detected unhandled Python exception in '/usr/lib/python2.7/site-packages/yum/comps.py'
-        # Mar 30 10:02:38 dhcp-24-129.brq.redhat.com python[9463]: detected unhandled Python exception in '/usr/lib/python2.7/site-packages/yum/mdparser.py'
-
-        python /usr/lib/python2.7/site-packages/yum/mdparser.py
+        # crashing bin from my_crash package
+        python_crash
 
         wait_for_hooks
         get_crash_path
@@ -100,6 +88,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
+        rlRun "rpm -e my_crash"
         rlBundleLogs abrt $(echo *_ls)
         popd # TmpDir
         rm -rf $TmpDir
