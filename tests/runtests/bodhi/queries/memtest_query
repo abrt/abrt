@@ -1,821 +1,461 @@
 {
-    "num_items": 8, 
-    "tg_flash": null, 
-    "title": "8 updates found", 
+    "chrome": true,
+    "display_request": true,
+    "display_user": true,
+    "package": "memtest86+",
+    "page": 1,
+    "pages": 1,
+    "rows_per_page": 20,
+    "total": 5,
     "updates": [
         {
-            "approved": null, 
+            "alias": "FEDORA-2016-5a0ae108e4",
             "bugs": [
                 {
-                    "bz_id": 729197, 
-                    "parent": false, 
-                    "security": false, 
-                    "title": "memtest-setup doesn't understand Grub2"
+                    "bug_id": 1303804,
+                    "feedback": [
+                        {
+                            "bug_id": 1303804,
+                            "comment": {
+                                "anonymous": false,
+                                "id": 393815,
+                                "karma": 0,
+                                "karma_critpath": 0,
+                                "testcase_feedback": [],
+                                "text": "Works fine so far, booted fine and ran some tests. Just had to search in Koji by myself as link above doesn't work, bodhi bug?",
+                                "timestamp": "2016-02-26 12:13:13",
+                                "update_id": 51431,
+                                "user": {
+                                    "avatar": "https://seccdn.libravatar.org/avatar/256b00180c042539cbf54137ab58674b42cbde9b958d72e0cbaaaf3bf72e32f5?s=24&d=retro",
+                                    "email": "lupinix@mailbox.org",
+                                    "groups": [
+                                        {
+                                            "name": "kde-sig"
+                                        },
+                                        {
+                                            "name": "packager"
+                                        },
+                                        {
+                                            "name": "python-sig"
+                                        }
+                                    ],
+                                    "id": 763,
+                                    "name": "lupinix",
+                                    "openid": "lupinix.id.fedoraproject.org",
+                                    "show_popups": true
+                                },
+                                "user_id": 763
+                            },
+                            "comment_id": 393815,
+                            "karma": 0
+                        },
+                        {
+                            "bug_id": 1303804,
+                            "comment": {
+                                "anonymous": false,
+                                "id": 393816,
+                                "karma": 1,
+                                "karma_critpath": 0,
+                                "testcase_feedback": [],
+                                "text": "",
+                                "timestamp": "2016-02-26 12:13:24",
+                                "update_id": 51431,
+                                "user": {
+                                    "avatar": "https://seccdn.libravatar.org/avatar/256b00180c042539cbf54137ab58674b42cbde9b958d72e0cbaaaf3bf72e32f5?s=24&d=retro",
+                                    "email": "lupinix@mailbox.org",
+                                    "groups": [
+                                        {
+                                            "name": "kde-sig"
+                                        },
+                                        {
+                                            "name": "packager"
+                                        },
+                                        {
+                                            "name": "python-sig"
+                                        }
+                                    ],
+                                    "id": 763,
+                                    "name": "lupinix",
+                                    "openid": "lupinix.id.fedoraproject.org",
+                                    "show_popups": true
+                                },
+                                "user_id": 763
+                            },
+                            "comment_id": 393816,
+                            "karma": 1
+                        },
+                        {
+                            "bug_id": 1303804,
+                            "comment": {
+                                "anonymous": false,
+                                "id": 393915,
+                                "karma": 1,
+                                "karma_critpath": 0,
+                                "testcase_feedback": [],
+                                "text": "The default ELF version of this update works on the same machine where the ELF version of -10 and -11 failed and I had to use the non-ELF version. (I reported bug 1303804 .)",
+                                "timestamp": "2016-02-26 18:46:49",
+                                "update_id": 51431,
+                                "user": {
+                                    "avatar": "https://seccdn.libravatar.org/avatar/1583729c9bb0ad9ea2b42b128f62876016f3cd5255f9e84f48512ad79709da09?s=24&d=retro",
+                                    "email": "robatino@dslextreme.com",
+                                    "groups": [
+                                        {
+                                            "name": "proventesters"
+                                        }
+                                    ],
+                                    "id": 303,
+                                    "name": "robatino",
+                                    "openid": "robatino.id.fedoraproject.org",
+                                    "show_popups": true
+                                },
+                                "user_id": 303
+                            },
+                            "comment_id": 393915,
+                            "karma": 1
+                        }
+                    ],
+                    "parent": false,
+                    "security": false,
+                    "title": "memtest86+-5.01-{10,11} doesn't work"
+                },
+                {
+                    "bug_id": 1239675,
+                    "feedback": [
+                        {
+                            "bug_id": 1239675,
+                            "comment": {
+                                "anonymous": false,
+                                "id": 384954,
+                                "karma": -1,
+                                "karma_critpath": 0,
+                                "testcase_feedback": [],
+                                "text": "Does not work on i686. See https://bugzilla.redhat.com/show_bug.cgi?id=1303804 .",
+                                "timestamp": "2016-02-02 19:31:35",
+                                "update_id": 49766,
+                                "user": {
+                                    "avatar": "https://seccdn.libravatar.org/avatar/1583729c9bb0ad9ea2b42b128f62876016f3cd5255f9e84f48512ad79709da09?s=24&d=retro",
+                                    "email": "robatino@dslextreme.com",
+                                    "groups": [
+                                        {
+                                            "name": "proventesters"
+                                        }
+                                    ],
+                                    "id": 303,
+                                    "name": "robatino",
+                                    "openid": "robatino.id.fedoraproject.org",
+                                    "show_popups": true
+                                },
+                                "user_id": 303
+                            },
+                            "comment_id": 384954,
+                            "karma": 0
+                        }
+                    ],
+                    "parent": false,
+                    "security": false,
+                    "title": "memtest86+: FTBFS in rawhide"
                 }
-            ], 
+            ],
             "builds": [
                 {
-                    "nvr": "memtest86+-4.20-4.fc16", 
-                    "package": {
-                        "committers": [
-                            "jskarvad"
-                        ], 
-                        "name": "memtest86+", 
-                        "suggest_reboot": false
-                    }
+                    "epoch": null,
+                    "nvr": "memtest86+-5.01-14.fc23"
                 }
-            ], 
-            "close_bugs": true, 
+            ],
+            "close_bugs": true,
             "comments": [
                 {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been submitted for testing by jskarvad. ", 
-                    "timestamp": "2011-12-07 23:10:30"
+                    "anonymous": false,
+                    "bug_feedback": [],
+                    "id": 393068,
+                    "karma": 0,
+                    "karma_critpath": 0,
+                    "testcase_feedback": [],
+                    "text": "This update has been submitted for testing by jskarvad. ",
+                    "timestamp": "2016-02-24 14:48:06",
+                    "update_id": 51431,
+                    "user": {
+                        "avatar": "https://apps.fedoraproject.org/img/icons/bodhi-24.png",
+                        "email": null,
+                        "groups": [],
+                        "id": 91,
+                        "name": "bodhi",
+                        "openid": "bodhi.id.fedoraproject.org",
+                        "show_popups": true
+                    },
+                    "user_id": 91
+                },
+                {
+                    "anonymous": false,
+                    "bug_feedback": [],
+                    "id": 393645,
+                    "karma": 0,
+                    "karma_critpath": 0,
+                    "testcase_feedback": [],
+                    "text": "This update has been pushed to testing.",
+                    "timestamp": "2016-02-26 02:26:11",
+                    "update_id": 51431,
+                    "user": {
+                        "avatar": "https://apps.fedoraproject.org/img/icons/bodhi-24.png",
+                        "email": null,
+                        "groups": [],
+                        "id": 91,
+                        "name": "bodhi",
+                        "openid": "bodhi.id.fedoraproject.org",
+                        "show_popups": true
+                    },
+                    "user_id": 91
+                },
+                {
+                    "anonymous": false,
+                    "bug_feedback": [],
+                    "id": 393811,
+                    "karma": 1,
+                    "karma_critpath": 0,
+                    "testcase_feedback": [],
+                    "text": "works for me",
+                    "timestamp": "2016-02-26 11:58:50",
+                    "update_id": 51431,
+                    "user": {
+                        "avatar": "https://seccdn.libravatar.org/avatar/054959f4db5d1ad8f22cae1ba73e26ebfd3edd6690c21cc7ee00608f294ff22a?s=24&d=retro",
+                        "email": "cserpentis@gmail.com",
+                        "groups": [
+                            {
+                                "name": ""
+                            }
+                        ],
+                        "id": 739,
+                        "name": "cserpentis",
+                        "openid": "cserpentis.id.fedoraproject.org",
+                        "show_popups": true
+                    },
+                    "user_id": 739
+                },
+                {
+                    "anonymous": false,
+                    "bug_feedback": [
+                        {
+                            "bug": {
+                                "bug_id": 1303804,
+                                "parent": false,
+                                "security": false,
+                                "title": "memtest86+-5.01-{10,11} doesn't work"
+                            },
+                            "bug_id": 1303804,
+                            "comment_id": 393815,
+                            "karma": 0
+                        }
+                    ],
+                    "id": 393815,
+                    "karma": 0,
+                    "karma_critpath": 0,
+                    "testcase_feedback": [],
+                    "text": "Works fine so far, booted fine and ran some tests. Just had to search in Koji by myself as link above doesn't work, bodhi bug?",
+                    "timestamp": "2016-02-26 12:13:13",
+                    "update_id": 51431,
+                    "user": {
+                        "avatar": "https://seccdn.libravatar.org/avatar/256b00180c042539cbf54137ab58674b42cbde9b958d72e0cbaaaf3bf72e32f5?s=24&d=retro",
+                        "email": "lupinix@mailbox.org",
+                        "groups": [
+                            {
+                                "name": "kde-sig"
+                            },
+                            {
+                                "name": "packager"
+                            },
+                            {
+                                "name": "python-sig"
+                            }
+                        ],
+                        "id": 763,
+                        "name": "lupinix",
+                        "openid": "lupinix.id.fedoraproject.org",
+                        "show_popups": true
+                    },
+                    "user_id": 763
+                },
+                {
+                    "anonymous": false,
+                    "bug_feedback": [
+                        {
+                            "bug": {
+                                "bug_id": 1303804,
+                                "parent": false,
+                                "security": false,
+                                "title": "memtest86+-5.01-{10,11} doesn't work"
+                            },
+                            "bug_id": 1303804,
+                            "comment_id": 393816,
+                            "karma": 1
+                        }
+                    ],
+                    "id": 393816,
+                    "karma": 1,
+                    "karma_critpath": 0,
+                    "testcase_feedback": [],
+                    "text": "",
+                    "timestamp": "2016-02-26 12:13:24",
+                    "update_id": 51431,
+                    "user": {
+                        "avatar": "https://seccdn.libravatar.org/avatar/256b00180c042539cbf54137ab58674b42cbde9b958d72e0cbaaaf3bf72e32f5?s=24&d=retro",
+                        "email": "lupinix@mailbox.org",
+                        "groups": [
+                            {
+                                "name": "kde-sig"
+                            },
+                            {
+                                "name": "packager"
+                            },
+                            {
+                                "name": "python-sig"
+                            }
+                        ],
+                        "id": 763,
+                        "name": "lupinix",
+                        "openid": "lupinix.id.fedoraproject.org",
+                        "show_popups": true
+                    },
+                    "user_id": 763
+                },
+                {
+                    "anonymous": false,
+                    "bug_feedback": [],
+                    "id": 393914,
+                    "karma": 0,
+                    "karma_critpath": 0,
+                    "testcase_feedback": [],
+                    "text": "This update has been submitted for stable by bodhi. ",
+                    "timestamp": "2016-02-26 18:46:47",
+                    "update_id": 51431,
+                    "user": {
+                        "avatar": "https://apps.fedoraproject.org/img/icons/bodhi-24.png",
+                        "email": null,
+                        "groups": [],
+                        "id": 91,
+                        "name": "bodhi",
+                        "openid": "bodhi.id.fedoraproject.org",
+                        "show_popups": true
+                    },
+                    "user_id": 91
+                },
+                {
+                    "anonymous": false,
+                    "bug_feedback": [
+                        {
+                            "bug": {
+                                "bug_id": 1303804,
+                                "parent": false,
+                                "security": false,
+                                "title": "memtest86+-5.01-{10,11} doesn't work"
+                            },
+                            "bug_id": 1303804,
+                            "comment_id": 393915,
+                            "karma": 1
+                        }
+                    ],
+                    "id": 393915,
+                    "karma": 1,
+                    "karma_critpath": 0,
+                    "testcase_feedback": [],
+                    "text": "The default ELF version of this update works on the same machine where the ELF version of -10 and -11 failed and I had to use the non-ELF version. (I reported bug 1303804 .)",
+                    "timestamp": "2016-02-26 18:46:49",
+                    "update_id": 51431,
+                    "user": {
+                        "avatar": "https://seccdn.libravatar.org/avatar/1583729c9bb0ad9ea2b42b128f62876016f3cd5255f9e84f48512ad79709da09?s=24&d=retro",
+                        "email": "robatino@dslextreme.com",
+                        "groups": [
+                            {
+                                "name": "proventesters"
+                            }
+                        ],
+                        "id": 303,
+                        "name": "robatino",
+                        "openid": "robatino.id.fedoraproject.org",
+                        "show_popups": true
+                    },
+                    "user_id": 303
+                },
+                {
+                    "anonymous": false,
+                    "bug_feedback": [],
+                    "id": 394290,
+                    "karma": 0,
+                    "karma_critpath": 0,
+                    "testcase_feedback": [],
+                    "text": "This update has been pushed to stable.",
+                    "timestamp": "2016-02-28 12:26:59",
+                    "update_id": 51431,
+                    "user": {
+                        "avatar": "https://apps.fedoraproject.org/img/icons/bodhi-24.png",
+                        "email": null,
+                        "groups": [],
+                        "id": 91,
+                        "name": "bodhi",
+                        "openid": "bodhi.id.fedoraproject.org",
+                        "show_popups": true
+                    },
+                    "user_id": 91
                 }
-            ], 
-            "critpath": false, 
-            "critpath_approved": false, 
-            "date_modified": null, 
-            "date_pushed": null, 
-            "date_submitted": "2011-12-07 23:10:21", 
-            "karma": 0, 
-            "nagged": null, 
-            "notes": "This update uses ELF memtest86+ with grub2.", 
+            ],
+            "critpath": false,
+            "date_approved": null,
+            "date_modified": null,
+            "date_pushed": "2016-02-28 08:31:31",
+            "date_stable": "2016-02-28 08:31:31",
+            "date_submitted": "2016-02-24 14:48:06",
+            "date_testing": "2016-02-26 01:02:33",
+            "karma": 3,
+            "locked": false,
+            "meets_testing_requirements": true,
+            "notes": "This is an updated version of memtest which removes relocation above 1 MB (which was found to cause some problems) and improves the installation process - users can now select which version of memtest86+ to install (ELF/non-ELF).",
+            "old_updateid": null,
+            "pushed": true,
             "release": {
-                "dist_tag": "f16", 
-                "id_prefix": "FEDORA", 
-                "locked": false, 
-                "long_name": "Fedora 16", 
-                "name": "F16"
-            }, 
-            "request": "testing", 
-            "stable_karma": 3, 
-            "status": "pending", 
-            "submitter": "jskarvad", 
-            "title": "memtest86+-4.20-4.fc16", 
-            "type": "bugfix", 
-            "unstable_karma": -3, 
-            "updateid": null
-        }, 
-        {
-            "approved": null, 
-            "bugs": [
-                {
-                    "bz_id": 729197, 
-                    "parent": false, 
-                    "security": false, 
-                    "title": "memtest-setup doesn't understand Grub2"
-                }
-            ], 
-            "builds": [
-                {
-                    "nvr": "memtest86+-4.20-3.fc16", 
-                    "package": {
-                        "committers": [
-                            "jskarvad"
-                        ], 
-                        "name": "memtest86+", 
-                        "suggest_reboot": false
+                "branch": "f23",
+                "candidate_tag": "f23-updates-candidate",
+                "dist_tag": "f23",
+                "id_prefix": "FEDORA",
+                "long_name": "Fedora 23",
+                "name": "F23",
+                "override_tag": "f23-override",
+                "pending_stable_tag": "f23-updates-pending",
+                "pending_testing_tag": "f23-updates-testing-pending",
+                "stable_tag": "f23-updates",
+                "state": "current",
+                "testing_tag": "f23-updates-testing",
+                "version": "23"
+            },
+            "request": null,
+            "require_bugs": true,
+            "require_testcases": true,
+            "requirements": "",
+            "severity": "unspecified",
+            "stable_karma": 3,
+            "status": "stable",
+            "submitter": "jskarvad",
+            "suggest": "unspecified",
+            "test_cases": [],
+            "title": "memtest86+-5.01-14.fc23",
+            "type": "bugfix",
+            "unstable_karma": -3,
+            "updateid": "FEDORA-2016-5a0ae108e4",
+            "url": "https://bodhi.fedoraproject.org/updates/FEDORA-2016-5a0ae108e4",
+            "user": {
+                "avatar": "https://seccdn.libravatar.org/avatar/ccc672094c5197c6a07761eca84a5f20d750e98f19a5f9132e7e92494cf3a5ab?s=24&d=retro",
+                "email": "jskarvad@redhat.com",
+                "groups": [
+                    {
+                        "name": "provenpackager"
+                    },
+                    {
+                        "name": "packager"
                     }
-                }
-            ], 
-            "close_bugs": true, 
-            "comments": [
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been submitted for testing by jskarvad. ", 
-                    "timestamp": "2011-12-07 15:15:20"
-                }
-            ], 
-            "critpath": false, 
-            "critpath_approved": false, 
-            "date_modified": null, 
-            "date_pushed": null, 
-            "date_submitted": "2011-12-07 15:15:10", 
-            "karma": 0, 
-            "nagged": null, 
-            "notes": "This is an update that fixes removal of 20_memtest86+ from /etc/grub.d upon package uninstall.\nThis update adds support for grub2.", 
-            "release": {
-                "dist_tag": "f16", 
-                "id_prefix": "FEDORA", 
-                "locked": false, 
-                "long_name": "Fedora 16", 
-                "name": "F16"
-            }, 
-            "request": "testing", 
-            "stable_karma": 3, 
-            "status": "pending", 
-            "submitter": "jskarvad", 
-            "title": "memtest86+-4.20-3.fc16", 
-            "type": "bugfix", 
-            "unstable_karma": -3, 
-            "updateid": null
-        }, 
-        {
-            "approved": null, 
-            "bugs": [
-                {
-                    "bz_id": 729197, 
-                    "parent": false, 
-                    "security": false, 
-                    "title": "memtest-setup doesn't understand Grub2"
-                }
-            ], 
-            "builds": [
-                {
-                    "nvr": "memtest86+-4.20-2.fc16", 
-                    "package": {
-                        "committers": [
-                            "jskarvad"
-                        ], 
-                        "name": "memtest86+", 
-                        "suggest_reboot": false
-                    }
-                }
-            ], 
-            "close_bugs": true, 
-            "comments": [
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been submitted for testing by jskarvad. ", 
-                    "timestamp": "2011-12-05 14:33:24"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "robatino", 
-                    "group": "proventesters", 
-                    "karma": 1, 
-                    "text": "Works for me (but see https://bugzilla.redhat.com/show_bug.cgi?id=729197#c15 ).", 
-                    "timestamp": "2011-12-05 17:53:01"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "autoqa", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "AutoQA: depcheck test PASSED on i386. Result log:\nhttp://autoqa.fedoraproject.org/report/4zz (results are informative only)", 
-                    "timestamp": "2011-12-05 18:44:01"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "autoqa", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "AutoQA: depcheck test PASSED on x86_64. Result log:\nhttp://autoqa.fedoraproject.org/report/50a (results are informative only)", 
-                    "timestamp": "2011-12-05 18:44:18"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update is currently being pushed to the Fedora 16 testing updates repository.", 
-                    "timestamp": "2011-12-05 18:53:26"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update is currently being pushed to the Fedora 16 testing updates repository.", 
-                    "timestamp": "2011-12-05 19:00:42"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been pushed to testing", 
-                    "timestamp": "2011-12-06 01:00:54"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been obsoleted by https://admin.fedoraproject.org/updates/memtest86+-4.20-3.fc16", 
-                    "timestamp": "2011-12-07 15:15:10"
-                }
-            ], 
-            "critpath": false, 
-            "critpath_approved": false, 
-            "date_modified": null, 
-            "date_pushed": "2011-12-06 00:30:33", 
-            "date_submitted": "2011-12-05 14:33:06", 
-            "karma": 1, 
-            "nagged": null, 
-            "notes": "This update adds support for grub2.", 
-            "release": {
-                "dist_tag": "f16", 
-                "id_prefix": "FEDORA", 
-                "locked": false, 
-                "long_name": "Fedora 16", 
-                "name": "F16"
-            }, 
-            "request": null, 
-            "stable_karma": 3, 
-            "status": "obsolete", 
-            "submitter": "jskarvad", 
-            "title": "memtest86+-4.20-2.fc16", 
-            "type": "bugfix", 
-            "unstable_karma": -3, 
-            "updateid": "FEDORA-2011-16801"
-        }, 
-        {
-            "approved": null, 
-            "bugs": [
-                {
-                    "bz_id": 709930, 
-                    "parent": false, 
-                    "security": false, 
-                    "title": "Please update to v4.20 which is needed for sandy bridge"
-                }
-            ], 
-            "builds": [
-                {
-                    "nvr": "memtest86+-4.20-1.fc14", 
-                    "package": {
-                        "committers": [
-                            "jskarvad"
-                        ], 
-                        "name": "memtest86+", 
-                        "suggest_reboot": false
-                    }
-                }
-            ], 
-            "close_bugs": true, 
-            "comments": [
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been submitted for testing by jskarvad. ", 
-                    "timestamp": "2011-06-02 09:23:42"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "autoqa", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "AutoQA: depcheck test PASSED on i386. Result log:\nhttp://autoqa.fedoraproject.org/results/103927-autotest/172.16.0.17/depcheck/results/output.log\n(results are informative only)", 
-                    "timestamp": "2011-06-02 09:42:32"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "autoqa", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "AutoQA: depcheck test PASSED on x86_64. Result log:\nhttp://autoqa.fedoraproject.org/results/104102-autotest/172.16.0.18/depcheck/results/output.log\n(results are informative only)", 
-                    "timestamp": "2011-06-02 13:24:10"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been pushed to testing", 
-                    "timestamp": "2011-06-03 05:36:14"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "robatino", 
-                    "group": "proventesters", 
-                    "karma": 1, 
-                    "text": "", 
-                    "timestamp": "2011-06-03 07:36:18"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has reached 7 days in testing and can be pushed to stable now if the maintainer wishes", 
-                    "timestamp": "2011-06-10 17:04:32"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been submitted for stable by jskarvad. ", 
-                    "timestamp": "2011-06-20 07:54:10"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "autoqa", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "AutoQA: upgradepath test PASSED on noarch. Result log:\nhttp://autoqa.fedoraproject.org/results/131931-autotest/qa03.c.fedoraproject.org/upgradepath/results/output.log\n(results are informative only)", 
-                    "timestamp": "2011-06-20 08:13:00"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been pushed to stable", 
-                    "timestamp": "2011-06-21 17:45:37"
-                }
-            ], 
-            "critpath": false, 
-            "critpath_approved": true, 
-            "date_modified": null, 
-            "date_pushed": "2011-06-03 05:03:55", 
-            "date_submitted": "2011-06-02 09:23:35", 
-            "karma": 1, 
-            "nagged": {
-                "old_testing": "2011-06-19 00:00:35.330984"
-            }, 
-            "notes": "This is new version that fixes various bugs and adds support for Intel", 
-            "release": {
-                "dist_tag": "dist-f14", 
-                "id_prefix": "FEDORA", 
-                "locked": false, 
-                "long_name": "Fedora 14", 
-                "name": "F14"
-            }, 
-            "request": null, 
-            "stable_karma": 3, 
-            "status": "stable", 
-            "submitter": "jskarvad", 
-            "title": "memtest86+-4.20-1.fc14", 
-            "type": "bugfix", 
-            "unstable_karma": -3, 
-            "updateid": "FEDORA-2011-7852"
-        }, 
-        {
-            "approved": null, 
-            "bugs": [
-                {
-                    "bz_id": 709930, 
-                    "parent": false, 
-                    "security": false, 
-                    "title": "Please update to v4.20 which is needed for sandy bridge"
-                }
-            ], 
-            "builds": [
-                {
-                    "nvr": "memtest86+-4.20-1.fc15", 
-                    "package": {
-                        "committers": [
-                            "jskarvad"
-                        ], 
-                        "name": "memtest86+", 
-                        "suggest_reboot": false
-                    }
-                }
-            ], 
-            "close_bugs": true, 
-            "comments": [
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been submitted for testing by jskarvad. ", 
-                    "timestamp": "2011-06-02 09:22:18"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "autoqa", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "AutoQA: depcheck test PASSED on x86_64. Result log:\nhttp://autoqa.fedoraproject.org/results/103938-autotest/172.16.0.20/depcheck/results/output.log\n(results are informative only)", 
-                    "timestamp": "2011-06-02 10:16:28"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "autoqa", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "AutoQA: depcheck test PASSED on i386. Result log:\nhttp://autoqa.fedoraproject.org/results/104067-autotest/172.16.0.19/depcheck/results/output.log\n(results are informative only)", 
-                    "timestamp": "2011-06-02 12:43:30"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been pushed to testing", 
-                    "timestamp": "2011-06-03 05:26:51"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "robatino", 
-                    "group": "proventesters", 
-                    "karma": 1, 
-                    "text": "", 
-                    "timestamp": "2011-06-03 07:35:39"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "glists", 
-                    "group": "proventesters", 
-                    "karma": 1, 
-                    "text": "4.20 indeed works on Sandy Bridge", 
-                    "timestamp": "2011-06-03 11:30:59"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has reached 3 days in testing and can be pushed to stable now if the maintainer wishes", 
-                    "timestamp": "2011-06-06 17:03:24"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "mkozyra", 
-                    "group": null, 
-                    "karma": 1, 
-                    "text": "works on Intel Core i7 2600K", 
-                    "timestamp": "2011-06-06 18:05:34"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has reached the stable karma threshold and will be pushed to the stable updates repository", 
-                    "timestamp": "2011-06-06 18:05:36"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "autoqa", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "AutoQA: upgradepath test PASSED on noarch. Result log:\nhttp://autoqa.fedoraproject.org/results/105657-autotest/172.16.0.18/upgradepath/results/output.log\n(results are informative only)", 
-                    "timestamp": "2011-06-06 18:15:19"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been pushed to stable", 
-                    "timestamp": "2011-06-07 04:33:50"
-                }
-            ], 
-            "critpath": false, 
-            "critpath_approved": true, 
-            "date_modified": null, 
-            "date_pushed": "2011-06-03 05:01:21", 
-            "date_submitted": "2011-06-02 09:22:03", 
-            "karma": 3, 
-            "nagged": null, 
-            "notes": "This is new version that fixes various bugs and adds support for Intel \"Sandy Bridge\" CPU and AMD \"fusion\" CPU. For more details see changelog: http://www.memtest.org/#change", 
-            "release": {
-                "dist_tag": "dist-f15", 
-                "id_prefix": "FEDORA", 
-                "locked": false, 
-                "long_name": "Fedora 15", 
-                "name": "F15"
-            }, 
-            "request": null, 
-            "stable_karma": 3, 
-            "status": "stable", 
-            "submitter": "jskarvad", 
-            "title": "memtest86+-4.20-1.fc15", 
-            "type": "bugfix", 
-            "unstable_karma": -3, 
-            "updateid": "FEDORA-2011-7784"
-        }, 
-        {
-            "approved": null, 
-            "bugs": [
-                {
-                    "bz_id": 671503, 
-                    "parent": false, 
-                    "security": false, 
-                    "title": "/sbin/new-memtest-pkg, line 116 refers to /sbin/nash which doesn't exist in any available package"
-                }
-            ], 
-            "builds": [
-                {
-                    "nvr": "memtest86+-4.10-4.fc14", 
-                    "package": {
-                        "committers": [
-                            "jskarvad"
-                        ], 
-                        "name": "memtest86+", 
-                        "suggest_reboot": false
-                    }
-                }
-            ], 
-            "close_bugs": true, 
-            "comments": [
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been submitted for testing by jskarvad. ", 
-                    "timestamp": "2011-03-29 12:40:02"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been pushed to testing", 
-                    "timestamp": "2011-03-29 19:51:13"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "robatino", 
-                    "group": "proventesters", 
-                    "karma": 1, 
-                    "text": "works okay in casual use", 
-                    "timestamp": "2011-03-29 21:24:39"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "evillagr", 
-                    "group": null, 
-                    "karma": 1, 
-                    "text": "Works fine", 
-                    "timestamp": "2011-03-30 00:09:13"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bernie", 
-                    "group": null, 
-                    "karma": 1, 
-                    "text": "works for me", 
-                    "timestamp": "2011-04-02 15:11:46"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has reached the stable karma threshold and will be pushed to the stable updates repository", 
-                    "timestamp": "2011-04-02 15:11:48"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been pushed to stable", 
-                    "timestamp": "2011-04-02 22:54:48"
-                }
-            ], 
-            "critpath": false, 
-            "critpath_approved": true, 
-            "date_modified": null, 
-            "date_pushed": "2011-03-29 19:11:41", 
-            "date_submitted": "2011-03-29 12:39:55", 
-            "karma": 3, 
-            "nagged": null, 
-            "notes": "This is an update that replaces deprecated nash by findfs in new-memtest-pkg.", 
-            "release": {
-                "dist_tag": "dist-f14", 
-                "id_prefix": "FEDORA", 
-                "locked": false, 
-                "long_name": "Fedora 14", 
-                "name": "F14"
-            }, 
-            "request": null, 
-            "stable_karma": 3, 
-            "status": "stable", 
-            "submitter": "jskarvad", 
-            "title": "memtest86+-4.10-4.fc14", 
-            "type": "bugfix", 
-            "unstable_karma": -3, 
-            "updateid": "FEDORA-2011-4332"
-        }, 
-        {
-            "approved": null, 
-            "bugs": [
-                {
-                    "bz_id": 671503, 
-                    "parent": false, 
-                    "security": false, 
-                    "title": "/sbin/new-memtest-pkg, line 116 refers to /sbin/nash which doesn't exist in any available package"
-                }
-            ], 
-            "builds": [
-                {
-                    "nvr": "memtest86+-4.10-5.fc15", 
-                    "package": {
-                        "committers": [
-                            "jskarvad"
-                        ], 
-                        "name": "memtest86+", 
-                        "suggest_reboot": false
-                    }
-                }
-            ], 
-            "close_bugs": true, 
-            "comments": [
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been submitted for testing by jskarvad. ", 
-                    "timestamp": "2011-03-15 08:23:58"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been pushed to testing", 
-                    "timestamp": "2011-03-15 17:06:23"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has reached 3 days in testing and can be pushed to stable now if the maintainer wishes", 
-                    "timestamp": "2011-03-19 10:01:50"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "robatino", 
-                    "group": "proventesters", 
-                    "karma": 1, 
-                    "text": "works okay in casual use", 
-                    "timestamp": "2011-03-29 14:07:12"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been submitted for stable by jskarvad. ", 
-                    "timestamp": "2011-03-31 07:21:26"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been pushed to stable", 
-                    "timestamp": "2011-03-31 20:03:19"
-                }
-            ], 
-            "critpath": false, 
-            "critpath_approved": true, 
-            "date_modified": null, 
-            "date_pushed": "2011-03-15 17:03:37", 
-            "date_submitted": "2011-03-15 08:23:43", 
-            "karma": 1, 
-            "nagged": {
-                "old_testing": "2011-03-31 00:00:17.277262"
-            }, 
-            "notes": "This is an update that replaces deprecated nash by findfs in new-memtest-pkg.", 
-            "release": {
-                "dist_tag": "dist-f15", 
-                "id_prefix": "FEDORA", 
-                "locked": false, 
-                "long_name": "Fedora 15", 
-                "name": "F15"
-            }, 
-            "request": null, 
-            "stable_karma": 3, 
-            "status": "stable", 
-            "submitter": "jskarvad", 
-            "title": "memtest86+-4.10-5.fc15", 
-            "type": "bugfix", 
-            "unstable_karma": -3, 
-            "updateid": "FEDORA-2011-3321"
-        }, 
-        {
-            "approved": null, 
-            "bugs": [
-                {
-                    "bz_id": 620846, 
-                    "parent": false, 
-                    "security": false, 
-                    "title": "x86_64: memtest86+ grub entry fails to boot"
-                }
-            ], 
-            "builds": [
-                {
-                    "nvr": "memtest86+-4.10-3.fc14", 
-                    "package": {
-                        "committers": [
-                            "jskarvad"
-                        ], 
-                        "name": "memtest86+", 
-                        "suggest_reboot": false
-                    }
-                }
-            ], 
-            "close_bugs": false, 
-            "comments": [
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been submitted for testing by jskarvad. ", 
-                    "timestamp": "2011-01-19 15:20:36"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been pushed to testing", 
-                    "timestamp": "2011-01-19 21:10:52"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "robatino", 
-                    "group": "proventesters", 
-                    "karma": 1, 
-                    "text": "Bug 620846 appears fixed - memtest works now on my x86_64 host without editing\nthe default grub.conf entry.", 
-                    "timestamp": "2011-01-19 23:24:23"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bernie", 
-                    "group": null, 
-                    "karma": -1, 
-                    "text": "/sbin/new-memtest-pkg: line 117: /sbin/nash: No such file or directory", 
-                    "timestamp": "2011-01-21 05:05:27"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "robatino", 
-                    "group": "proventesters", 
-                    "karma": 0, 
-                    "text": "@bernie: confirmed, however the same problem already existed in the stable\nversion. I filed https://bugzilla.redhat.com/show_bug.cgi?id=671503", 
-                    "timestamp": "2011-01-21 17:06:29"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has reached 7 days in testing and can be pushed to stable now if the maintainer wishes", 
-                    "timestamp": "2011-01-26 22:16:34"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "jmert", 
-                    "group": null, 
-                    "karma": 1, 
-                    "text": "Update fixed the boot issue for me.", 
-                    "timestamp": "2011-02-02 18:53:16"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been submitted for stable by jskarvad. ", 
-                    "timestamp": "2011-02-18 08:18:08"
-                }, 
-                {
-                    "anonymous": false, 
-                    "author": "bodhi", 
-                    "group": null, 
-                    "karma": 0, 
-                    "text": "This update has been pushed to stable", 
-                    "timestamp": "2011-02-19 01:26:25"
-                }
-            ], 
-            "critpath": false, 
-            "critpath_approved": true, 
-            "date_modified": null, 
-            "date_pushed": "2011-01-19 20:23:57", 
-            "date_submitted": "2011-01-19 15:20:20", 
-            "karma": 1, 
-            "nagged": {
-                "old_testing": "2011-02-18 00:00:29.520857"
-            }, 
-            "notes": "This is an update that fixes the boot failure on the x86_64 architecture.", 
-            "release": {
-                "dist_tag": "dist-f14", 
-                "id_prefix": "FEDORA", 
-                "locked": false, 
-                "long_name": "Fedora 14", 
-                "name": "F14"
-            }, 
-            "request": null, 
-            "stable_karma": 3, 
-            "status": "stable", 
-            "submitter": "jskarvad", 
-            "title": "memtest86+-4.10-3.fc14", 
-            "type": "bugfix", 
-            "unstable_karma": -3, 
-            "updateid": "FEDORA-2011-0579"
+                ],
+                "id": 591,
+                "name": "jskarvad",
+                "openid": "jskarvad.id.fedoraproject.org",
+                "show_popups": true
+            }
         }
     ]
 }

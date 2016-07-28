@@ -53,57 +53,78 @@ rlJournalStart
 
     rlPhaseStartTest "simple run"
         fake_serve python_query
-        rlRun "echo 'y' | abrt-bodhi -u http://localhost:12345 python > output"
-        rlAssertGrep 'package=python' request
+        rlRun "echo 'y' | abrt-bodhi -vvv -u http://localhost:12345 python &> output"
+
+        cp request request.simple-run-nice.log
+        rlAssertGrep 'GET /?packages=python' request
         rlAssertGrep 'Accept: application/json' request
 
-        rlAssertGrep 'python-2000.7-8.fc14.1' output
-        rlAssertGrep 'mdadm-3000.2.2-13.fc16' output
+        cp output output.simple-run-nice.log
+        rlAssertGrep 'An update exists.*python-2000.7.12-1.fc24' output
+        rlAssertGrep 'An update exists.*python3-3000.4.3-6.fc23' output
+        rlAssertGrep 'An update exists.*python-docs-2.7.10-1.fc22' output
 
         # not pretty printed query
         fake_serve ugly_python_query
-        rlRun "echo 'y' | abrt-bodhi -u http://localhost:12345 python > output"
-        rlAssertGrep 'package=python' request
+        rlRun "echo 'y' | abrt-bodhi -vvv -u http://localhost:12345 python &> output"
+
+        cp request request.simple-run-ugly.log
+        rlAssertGrep 'GET /?packages=python' request
         rlAssertGrep 'Accept: application/json' request
 
-        rlAssertGrep 'python-2000.7-8.fc14.1' output
-        rlAssertGrep 'mdadm-3000.2.2-13.fc16' output
+        cp output output.simple-run-ugly.log
+        rlAssertGrep 'An update exists.*python-2000.7.12-1.fc24' output
+        rlAssertGrep 'An update exists.*python3-3000.4.3-6.fc23' output
+        rlAssertGrep 'An update exists.*python-docs-2.7.10-1.fc22' output
     rlPhaseEnd
 
     rlPhaseStartTest "empty query"
         fake_serve empty_query
-        rlRun "echo 'y' | abrt-bodhi -u http://localhost:12345 python > output"
+        rlRun "echo 'y' | abrt-bodhi -vvv -u http://localhost:12345 python &> output"
+        cp output output.empty.log
         # TODO: fix missing No update found message
     rlPhaseEnd
 
     rlPhaseStartTest "invalid json"
         fake_serve invalid_json_query
-        rlRun "echo 'y' | abrt-bodhi -u http://localhost:12345 python" 1
+        rlRun "echo 'y' | abrt-bodhi -vvv -u http://localhost:12345 python &> output" 1
+        cp output output.invalid.log
     rlPhaseEnd
 
     rlPhaseStartTest "memtest query"
         fake_serve memtest_query
-        rlRun "echo 'y' | abrt-bodhi -u http://localhost:12345 memtest86+" 0
+        rlRun "echo 'y' | abrt-bodhi -vvv -u http://localhost:12345 memtest86+ &> output" 0
+
+        cp output output.memtest-url-encode.log
+        cp request request.memtest-url-encode.log
+        rlAssertGrep 'GET /?packages=memtest86%2B' request
     rlPhaseEnd
 
     rlPhaseStartTest "release specific"
         fake_serve glusterfs_query_el6only
-        rlRun "echo 'y' | abrt-bodhi -u http://localhost:12345 -rel6 glusterfs > output" 0
+        rlRun "echo 'y' | abrt-bodhi -vvv -u http://localhost:12345 -rel6 glusterfs &> output" 0
 
-        rlAssertGrep 'release=el6' request
-        rlAssertGrep 'glusterfs-3.2.5-4.el6' output
+        cp request request.glusterfs-release.log
+        rlAssertGrep 'GET /?releases=el6&packages=glusterfs' request
+
+        cp output output.glusterfs-release.log
+        rlAssertGrep 'An update exists.*glusterfs-3000.2.5-4.el6' output
     rlPhaseEnd
 
     rlPhaseStartTest "by bug"
         fake_serve memtest_query
-        rlRun "echo 'y' | abrt-bodhi -u http://localhost:12345 -b 123456,729197 > output" 0
+        rlRun "echo 'y' | abrt-bodhi -vvv -u http://localhost:12345 -b 1239675,1303804 &> output" 0
 
-        rlAssertGrep 'bugs=123456,729197' request
-        rlAssertGrep 'memtest86+-4.20.4.fc16' output
+        cp request request.memtest-by-bug.log
+        rlAssertGrep 'bugs=1239675,1303804' request
+
+        cp output output.memtest-by-bug.log
+        rlAssertGrep 'An update exists.*memtest86+-5.01-14.fc23' output
     rlPhaseEnd
 
     rlPhaseStartCleanup
         killall nc
+        rlBundleLogs abrt-bodhi $(ls *.log)
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd
