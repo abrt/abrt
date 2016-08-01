@@ -59,9 +59,43 @@ static unsigned s_timeout;
 static int s_timeout_src;
 static GMainLoop *s_main_loop;
 
+GList *s_processes;
+GList *s_dir_queue;
+
 static GIOChannel *channel_socket = NULL;
 static guint channel_id_socket = 0;
 static int child_count = 0;
+
+struct abrt_server_proc
+{
+    pid_t pid;
+    int fdout;
+    char *dirname;
+    GIOChannel *channel;
+    guint watch_id;
+    enum {
+        AS_UKNOWN,
+        AS_POST_CREATE,
+    } type;
+};
+
+/* Returns 0 if proc's pid equals the the given pid */
+static gint abrt_server_compare_pid(struct abrt_server_proc *proc, pid_t *pid)
+{
+    return proc->pid != *pid;
+}
+
+/* Returns 0 if proc's fdout equals the the given fdout */
+static gint abrt_server_compare_fdout(struct abrt_server_proc *proc, int *fdout)
+{
+    return proc->fdout != *fdout;
+}
+
+/* Returns 0 if proc's dirname equals the the given dirname */
+static gint abrt_server_compare_dirname(struct abrt_server_proc *proc, const char *dirname)
+{
+    return g_strcmp0(proc->dirname, dirname);
+}
 
 /* Helpers */
 static guint add_watch_or_die(GIOChannel *channel, unsigned condition, GIOFunc func)
@@ -73,9 +107,212 @@ static guint add_watch_or_die(GIOChannel *channel, unsigned condition, GIOFunc f
     return r;
 }
 
-static void increment_child_count(void)
+static void stop_abrt_server(struct abrt_server_proc *proc)
 {
-    if (++child_count >= MAX_CLIENT_COUNT)
+    kill(proc->pid, SIGINT);
+}
+
+static void dispose_abrt_server(struct abrt_server_proc *proc)
+{
+    close(proc->fdout);
+    free(proc->dirname);
+
+    if (proc->watch_id > 0)
+        g_source_remove(proc->watch_id);
+
+    if (proc->channel != NULL)
+        g_io_channel_unref(proc->channel);
+}
+
+static void notify_next_post_create_process(struct abrt_server_proc *finished)
+{
+    if (finished != NULL)
+        s_dir_queue = g_list_remove(s_dir_queue, finished);
+
+    while (s_dir_queue != NULL)
+    {
+        struct abrt_server_proc *n = (struct abrt_server_proc *)s_dir_queue->data;
+        if (n->type == AS_POST_CREATE)
+            break;
+
+        if (kill(n->pid, SIGUSR1) >= 0)
+        {
+            n->type = AS_POST_CREATE;
+            break;
+        }
+
+        /* This could happen only if the notified process disappeared - crashed?
+         */
+        perror_msg("Failed to send SIGUSR1 to %d", n->pid);
+        log_warning("Directory '%s' will not be processed", n->dirname);
+
+        /* Remove the problematic process from the post-crate directory queue
+         * and go to try to notify another process.
+         */
+        s_dir_queue = g_list_delete_link(s_dir_queue, s_dir_queue);
+    }
+}
+
+/* Queueing the process will also lead to cleaning up the dump location.
+ */
+static void queue_post_craete_process(struct abrt_server_proc *proc)
+{
+    load_abrt_conf();
+    struct abrt_server_proc *running = s_dir_queue == NULL ? NULL
+                                                           : (struct abrt_server_proc *)s_dir_queue->data;
+    if (g_settings_nMaxCrashReportsSize == 0)
+        goto consider_processing;
+
+    const char *full_path_ignored = running != NULL ? running->dirname
+                                                    : proc->dirname;
+    const char *ignored = strrchr(full_path_ignored, '/');
+    if (NULL == ignored)
+        /* Paranoia, this should not happen. */
+        ignored = full_path_ignored;
+    else
+        /* Move behind '/' */
+        ++ignored;
+
+    char *worst_dir = NULL;
+    const double max_size = 1024 * 1024 * g_settings_nMaxCrashReportsSize;
+    while (get_dirsize_find_largest_dir(g_settings_dump_location, &worst_dir, ignored) >= max_size
+           && worst_dir)
+    {
+        const char *kind = "old";
+        char *deleted = concat_path_file(g_settings_dump_location, worst_dir);
+
+        GList *proc_of_deleted_item = NULL;
+        if (proc != NULL && strcmp(deleted, proc->dirname) == 0)
+        {
+            kind = "new";
+            stop_abrt_server(proc);
+            proc = NULL;
+        }
+        else if ((proc_of_deleted_item = g_list_find_custom(s_dir_queue, deleted, (GCompareFunc)abrt_server_compare_dirname)))
+        {
+            kind = "unprocessed";
+            struct abrt_server_proc *removed_proc = (struct abrt_server_proc *)proc_of_deleted_item->data;
+            s_dir_queue = g_list_delete_link(s_dir_queue, proc_of_deleted_item);
+            stop_abrt_server(removed_proc);
+        }
+
+        log("Size of '%s' >= %u MB (MaxCrashReportsSize), deleting %s directory '%s'",
+                g_settings_dump_location, g_settings_nMaxCrashReportsSize,
+                kind, worst_dir);
+
+        free(worst_dir);
+        worst_dir = NULL;
+
+        struct dump_dir *dd = dd_opendir(deleted, DD_FAIL_QUIETLY_ENOENT);
+        if (dd != NULL)
+            dd_delete(dd);
+
+        free(deleted);
+    }
+
+consider_processing:
+    /* If the process survived cleaning up the dump location, append it to the
+     * post-create queue.
+     */
+    if (proc != NULL)
+        s_dir_queue = g_list_append(s_dir_queue, proc);
+
+    /* If there were no running post-crate process before we added the
+     * currently handled process to the post-create queue, start processing of
+     * the currently handled process.
+     */
+    if (running == NULL)
+        notify_next_post_create_process(NULL/*finished*/);
+}
+
+static gboolean abrt_server_output_cb(GIOChannel *channel, GIOCondition condition, gpointer user_data)
+{
+    int fdout = g_io_channel_unix_get_fd(channel);
+    GList *item = g_list_find_custom(s_processes, &fdout, (GCompareFunc)abrt_server_compare_fdout);
+    if (item == NULL)
+    {
+        log_warning("Closing a pipe fd (%d) without a process assigned", fdout);
+        close(fdout);
+        return FALSE;
+    }
+
+    struct abrt_server_proc *proc = (struct abrt_server_proc *)item->data;
+
+    if (condition & G_IO_HUP)
+    {
+        log_debug("abrt-server(%d) closed its pipe", proc->pid);
+        proc->watch_id = 0;
+        return FALSE;
+    }
+
+    for (;;)
+    {
+        gchar *line;
+        gsize len = 0;
+        gsize pos = 0;
+        GError *error = NULL;
+
+        /* We use buffered channel so we do not need to read from the channel in a
+         * loop */
+        GIOStatus stat = g_io_channel_read_line(channel, &line, &len, &pos, &error);
+        if (stat == G_IO_STATUS_ERROR)
+            error_msg_and_die("Can't read from pipe of abrt-server(%d): '%s'", proc->pid, error ? error->message : "");
+        if (stat == G_IO_STATUS_EOF)
+        {
+            log_debug("abrt-server(%d)'s output read till end", proc->pid);
+            proc->watch_id = 0;
+            return FALSE; /* Remove this event */
+        }
+        if (stat == G_IO_STATUS_AGAIN)
+            break;
+
+        /* G_IO_STATUS_NORMAL) */
+        line[pos] = '\0';
+        if (g_str_has_prefix(line, "NEW_PROBLEM_DETECTED: "))
+        {
+            if (proc->dirname != NULL)
+            {
+                log_warning("abrt-server(%d): already handling: %s", proc->pid, proc->dirname);
+                free(proc->dirname);
+                /* Because process can be only once in the dir queue */
+                s_dir_queue = g_list_remove(s_dir_queue, proc);
+            }
+
+            proc->dirname = xstrdup(line + strlen("NEW_PROBLEM_DETECTED: "));
+            log_notice("abrt-server(%d): handling new problem: %s", proc->pid, proc->dirname);
+            queue_post_craete_process(proc);
+        }
+        else
+            log("abrt-server(%d): not recognized message: '%s'", proc->pid, line);
+
+        g_free(line);
+    }
+
+    return TRUE; /* Keep this event */
+}
+
+static void add_abrt_server_proc(const pid_t pid, int fdout)
+{
+    struct abrt_server_proc *proc = xmalloc(sizeof(*proc));
+    proc->pid = pid;
+    proc->fdout = fdout;
+    proc->dirname = NULL;
+    proc->type = AS_UKNOWN;
+    proc->channel = abrt_gio_channel_unix_new(proc->fdout);
+    proc->watch_id = g_io_add_watch(proc->channel,
+                                    G_IO_IN | G_IO_HUP,
+                                    abrt_server_output_cb,
+                                    proc);
+
+    GError *error = NULL;
+    g_io_channel_set_flags(proc->channel, G_IO_FLAG_NONBLOCK, &error);
+    if (error != NULL)
+        error_msg_and_die("g_io_channel_set_flags failed: '%s'", error->message);
+
+    g_io_channel_set_buffered(proc->channel, TRUE);
+
+    s_processes = g_list_append(s_processes, proc);
+    if (g_list_length(s_processes) >= MAX_CLIENT_COUNT)
     {
         error_msg("Too many clients, refusing connections to '%s'", SOCKET_FILE);
         /* To avoid infinite loop caused by the descriptor in "ready" state,
@@ -108,11 +345,29 @@ static void kill_idle_timeout(void)
 
 static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpointer ptr_unused);
 
-static void decrement_child_count(void)
+static void remove_abrt_server_proc(pid_t pid, int status)
 {
-    if (child_count)
-        child_count--;
-    if (child_count < MAX_CLIENT_COUNT && !channel_id_socket)
+    GList *item = g_list_find_custom(s_processes, &pid, (GCompareFunc)abrt_server_compare_pid);
+    if (item == NULL)
+        return;
+
+    struct abrt_server_proc *proc = (struct abrt_server_proc *)item->data;
+    item->data = NULL;
+    s_processes = g_list_delete_link(s_processes, item);
+
+    if (proc->type == AS_POST_CREATE)
+        notify_next_post_create_process(proc);
+    else
+    {   /* Make sure out-of-order exited abrt-server post-create processes do
+         * not stay in the post-create queue.
+         */
+        s_dir_queue = g_list_remove(s_dir_queue, proc);
+    }
+
+    dispose_abrt_server(proc);
+    free(proc);
+
+    if (g_list_length(s_processes) < MAX_CLIENT_COUNT && !channel_id_socket)
     {
         log_info("Accepting connections on '%s'", SOCKET_FILE);
         channel_id_socket = add_watch_or_die(channel_socket, G_IO_IN | G_IO_PRI | G_IO_HUP, server_socket_cb);
@@ -134,17 +389,27 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
 
     log_notice("New client connected");
     fflush(NULL); /* paranoia */
+
+    int pipefd[2];
+    xpipe(pipefd);
+
     pid_t pid = fork();
     if (pid < 0)
     {
         perror_msg("fork");
         close(socket);
+        close(pipefd[0]);
+        close(pipefd[1]);
         goto server_socket_finitio;
     }
     if (pid == 0) /* child */
     {
-        xmove_fd(socket, 0);
-        xdup2(0, 1);
+        xdup2(socket, STDIN_FILENO);
+        xdup2(socket, STDOUT_FILENO);
+        close(socket);
+
+        close(pipefd[0]);
+        xmove_fd(pipefd[1], STDERR_FILENO);
 
         char *argv[3];  /* abrt-server [-s] NULL */
         char **pp = argv;
@@ -156,9 +421,11 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
         execvp(argv[0], argv);
         perror_msg_and_die("Can't execute '%s'", argv[0]);
     }
+
     /* parent */
-    increment_child_count();
     close(socket);
+    close(pipefd[1]);
+    add_abrt_server_proc(pid, pipefd[0]);
 
 server_socket_finitio:
     start_idle_timeout();
@@ -179,9 +446,21 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
             g_main_loop_quit(s_main_loop);
         else
         {
-            while (safe_waitpid(-1, NULL, WNOHANG) > 0)
+            pid_t cpid;
+            int status;
+            while ((cpid = safe_waitpid(-1, &status, WNOHANG)) > 0)
             {
-                decrement_child_count();
+                if (WIFSIGNALED(status))
+                    log_debug("abrt-server(%d) signaled with %d", cpid, WTERMSIG(status));
+                else if (WIFEXITED(status))
+                    log_debug("abrt-server(%d) exited with %d", cpid, WEXITSTATUS(status));
+                else
+                {
+                    log_debug("abrt-server(%d) is being debugged", cpid);
+                    continue;
+                }
+
+                remove_abrt_server_proc(cpid, status);
             }
         }
     }
