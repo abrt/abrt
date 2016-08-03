@@ -13,13 +13,13 @@ SYNOPSIS
 
 'abrt-cli' remove  [-v]  DIR...
 
-'abrt-cli' report  [-v]  [--delete]  DIR...
+'abrt-cli' report  [-v]  [--delete] [--unsafe] DIR...
 
 'abrt-cli' info    [-v]  [--detailed] [-s SIZE] DIR...
 
 'abrt-cli' status  [-vb] [--since NUM]
 
-'abrt-cli' process [-v]  [--since NUM] DIR...
+'abrt-cli' process [-v]  [--since NUM] [--unsafe] DIR...
 
 GLOBAL OPTIONS
 --------------
@@ -48,6 +48,9 @@ COMMAND OPTIONS
 
 --since NUM::
     Selects only problems detected after timestamp
+
+-u, --unsafe::
+   Ignore security checks to be able to report all problems
 
 --until NUM::
     Selects only the problems older than specified timestamp

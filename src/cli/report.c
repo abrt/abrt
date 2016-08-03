@@ -22,7 +22,7 @@
 #include "abrt-cli-core.h"
 #include "builtin-cmd.h"
 
-int _cmd_report(const char **dirs_strv, int remove)
+int _cmd_report(const char **dirs_strv, int flags)
 {
     int ret = 0;
     while (*dirs_strv)
@@ -39,10 +39,14 @@ int _cmd_report(const char **dirs_strv, int remove)
         const int not_reportable = test_exist_over_dbus(real_problem_id, FILENAME_NOT_REPORTABLE);
         if (not_reportable != 0)
         {
-            error_msg(_("Problem '%s' cannot be reported"), real_problem_id);
-            free(real_problem_id);
-            ++ret;
-            continue;
+            if (!(flags & CMD_REPORT_UNSAFE))
+            {
+                error_msg(_("Problem '%s' cannot be reported"), real_problem_id);
+                free(real_problem_id);
+                ++ret;
+                continue;
+            }
+            log_info(_("Problem '%s' is labeled as 'not-reportable'?"), real_problem_id);
         }
 
         const int res = chown_dir_over_dbus(real_problem_id);
@@ -58,7 +62,7 @@ int _cmd_report(const char **dirs_strv, int remove)
                                            | LIBREPORT_RUN_CLI);
 
         /* the problem was successfully reported and option is -d */
-        if(remove && (status == 0 || status == EXIT_STOP_EVENT_RUN))
+        if((flags & CMD_REPORT_REMOVE) && (status == 0 || status == EXIT_STOP_EVENT_RUN))
         {
             log(_("Deleting '%s'"), real_problem_id);
             delete_dump_dir_possibly_using_abrtd(real_problem_id);
@@ -82,11 +86,14 @@ int cmd_report(int argc, const char **argv)
     enum {
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
+        OPT_u = 1 << 2,
     };
 
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_BOOL('d', "delete", NULL, _("Remove PROBLEM_DIR after reporting")),
+        OPT_BOOL('u', "unsafe", NULL, _("Ignore security checks to be able to "
+                                        "report all problems")),
         OPT_END()
     };
 
@@ -101,5 +108,11 @@ int cmd_report(int argc, const char **argv)
     load_abrt_conf();
     free_abrt_conf_data();
 
-    return _cmd_report(argv, opts & OPT_d);
+    int report_flags = 0;
+    if (opts & OPT_d)
+        report_flags |= CMD_REPORT_REMOVE;
+    if (opts & OPT_u)
+        report_flags |= CMD_REPORT_UNSAFE;
+
+    return _cmd_report(argv, report_flags);
 }
