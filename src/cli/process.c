@@ -32,7 +32,7 @@ enum {
     ACT_SKIP
 };
 
-static int process_one_crash(problem_data_t *problem_data)
+static int process_one_crash(problem_data_t *problem_data, int report_flags)
 {
     if (problem_data == NULL)
         return ACT_ERR;
@@ -60,10 +60,10 @@ static int process_one_crash(problem_data_t *problem_data)
         const char *not_reportable = problem_data_get_content_or_NULL(problem_data, FILENAME_NOT_REPORTABLE);
 
         /* if the problem is not-reportable then ask does not contain option report(e) */
-        if (not_reportable != NULL)
-            action = ask(_("Actions: remove(rm), info(i), skip(s):"));
-        else
+        if ((report_flags & CMD_REPORT_UNSAFE) || not_reportable == NULL)
             action = ask(_("Actions: remove(rm), report(e), info(i), skip(s):"));
+        else
+            action = ask(_("Actions: remove(rm), info(i), skip(s):"));
 
         if(strcmp(action, "rm") == 0 || strcmp(action, "remove") == 0 )
         {
@@ -73,11 +73,12 @@ static int process_one_crash(problem_data_t *problem_data)
 
             ret_val = ACT_REMOVE;
         }
-        else if (not_reportable == NULL && (strcmp(action, "e") == 0 || strcmp(action, "report") == 0))
+        else if (((report_flags & CMD_REPORT_UNSAFE) || not_reportable == NULL)
+             && (strcmp(action, "e") == 0 || strcmp(action, "report") == 0))
         {
             log(_("Reporting '%s'"), dir_name);
             const char *dirs_strv[] = {dir_name, NULL};
-            _cmd_report(dirs_strv, /*do not delete*/0);
+            _cmd_report(dirs_strv, report_flags);
 
             ret_val = ACT_REPORT;
         }
@@ -98,7 +99,7 @@ static int process_one_crash(problem_data_t *problem_data)
     return ret_val;
 }
 
-static void process_crashes(vector_of_problem_data_t *crash_list, long since)
+static void process_crashes(vector_of_problem_data_t *crash_list, long since, int report_flags)
 {
 
     for (unsigned i = 0; i < crash_list->len; ++i)
@@ -117,7 +118,7 @@ static void process_crashes(vector_of_problem_data_t *crash_list, long since)
         if(i != 0)
             printf("\n");
 
-        int action = process_one_crash(crash);
+        int action = process_one_crash(crash, report_flags);
 
         if (i != crash_list->len - 1)
         {
@@ -135,23 +136,36 @@ static void process_crashes(vector_of_problem_data_t *crash_list, long since)
 int cmd_process(int argc, const char **argv)
 {
     const char *program_usage_string = _(
+        "& process [options]\n"
+        "\n"
         "Without --since argument, iterates over all detected problems."
     );
+
+    enum {
+        OPT_v = 1 << 0,
+        OPT_s = 1 << 1,
+        OPT_u = 1 << 2,
+    };
 
     int opt_since = 0;
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_INTEGER('s', "since" , &opt_since,  _("Selects only problems detected after timestamp")),
+        OPT_BOOL(   'u', "unsafe", NULL,        _("Ignore security checks to be able to "
+                                                  "report all problems")),
         OPT_END()
     };
 
-    parse_opts(argc, (char **)argv, program_options, program_usage_string);
+    unsigned opts = parse_opts(argc, (char **)argv, program_options, program_usage_string);
 
     vector_of_problem_data_t *ci = fetch_crash_infos();
 
     g_ptr_array_sort_with_data(ci, &cmp_problem_data, (char *) FILENAME_LAST_OCCURRENCE);
 
-    process_crashes(ci, opt_since);
+    int report_flags = 0;
+    if (opts & OPT_u)
+        report_flags |= CMD_REPORT_UNSAFE;
+    process_crashes(ci, opt_since, report_flags);
 
     free_vector_of_problem_data(ci);
 
