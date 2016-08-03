@@ -167,6 +167,70 @@ EOF
 
     rlPhaseEnd
 
+    rlPhaseStartTest "process action report not-reportable as unsafe"
+
+        #set testing analyzer to problem
+        rlAssertExists "$crash_PATH/analyzer"
+        rlAssertExists "$crash_PATH/type"
+        echo -n ABRT_testing > $crash_PATH/analyzer
+        echo -n ABRT_testing > $crash_PATH/type
+        rlAssertGrep "ABRT_testing" $crash_PATH/analyzer
+        rlAssertGrep "ABRT_testing" $crash_PATH/type
+
+        rlRun "echo not-reportable > $crash_PATH/not-reportable" 0 "Creating not-reportable file"
+
+        workflow_conf_file="/etc/libreport/workflows.d/report_testing.conf"
+        cat > $workflow_conf_file << EOF
+EVENT=workflow_testing analyzer=ABRT_testing type=ABRT_testing
+EOF
+        rlAssertExists "$workflow_conf_file"
+
+        workflow_file="/usr/share/libreport/workflows/workflow_testing.xml"
+        cat > $workflow_file << EOF
+<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<workflow>
+    <name>Report testing</name>
+    <description>Testing workflow for reporting</description>
+    <priority>-99</priority>
+    <events>
+        <event>report_testing</event>
+    </events>
+</workflow>
+EOF
+
+        rlAssertExists "$workflow_file"
+
+        event_conf_file="/etc/libreport/events.d/testing_event.conf"
+        cat > $event_conf_file << EOF
+EVENT=report_testing analyzer=ABRT_testing type=ABRT_testing
+    echo REPORTING
+
+EVENT=report-cli analyzer=ABRT_testing type=ABRT_testing
+    report-cli -- "\$DUMP_DIR"
+EOF
+
+        event_file="/usr/share/libreport/events/report_testing.xml"
+        cat > $event_file << EOF
+<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<event>
+    <name>Testing report</name>
+    <description>Testing event report_testing</description>
+    <gui-review-elements>no</gui-review-elements>
+</event>
+EOF
+
+        rlAssertExists "$event_conf_file"
+
+        rlRun "./expect report --unsafe &> process_report_unsafe.log" 0 "Running abrt-cli reporting via expect"
+        rlRun "abrt-cli e --unsafe $crash_PATH &> report_unsafe.log"
+
+        rlAssertGrep "$(cat report_unsafe.log)" process_report_unsafe.log
+
+        rlRun "rm -f $workflow_conf_file $workflow_file $event_conf_file $event_file" 0 "removing configuration file"
+        rlRun "rm -f  $crash_PATH/not-reportable" 0 "removing not-reportable file"
+
+    rlPhaseEnd
+
 
     rlPhaseStartTest "process action remove"
 

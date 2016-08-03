@@ -123,6 +123,23 @@ rlJournalStart
         rlRun "rm -f $crash_PATH/not-reportable"
     rlPhaseEnd
 
+    rlPhaseStartTest "report not-reportable --unsafe parameter"
+        rlRun "touch $crash_PATH/not-reportable"
+
+        cp $crash_PATH/{type,analyzer} ./
+
+        echo "cli_sanity_test_not_reportable_unsafe" > $crash_PATH/type
+        echo "cli_sanity_test_not_reportable_unsafe" > $crash_PATH/analyzer
+
+        rlRun "abrt-cli report --unsafe $crash_PATH 2>&1 | tee abrt-cli-report-not-reportable-unsafe.log" 0
+        rlAssertNotGrep "Problem '$crash_PATH' cannot be reported" abrt-cli-report-not-reportable-unsafe.log
+        rlAssertGrep "Error: no processing is specified for event 'report-cli'" abrt-cli-report-not-reportable-unsafe.log
+
+        cp -f type analyzer $crash_PATH
+
+        rlRun "rm -f $crash_PATH/not-reportable"
+    rlPhaseEnd
+
     # This test used to select 1st analyzer (Local GNU Debugger)
     # and run it, then "edit" data with cat (this merely prints data to stdout)
     # and terminate. This was far from reliable (what if analyzer would change?).
