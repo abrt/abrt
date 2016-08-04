@@ -86,7 +86,8 @@ sbin_SCRIPTS += \
 dist_pluginsconf_DATA += \
     vmcore.conf
 EXTRA_DIST +=  \
-	abrt_harvest_vmcore.py.in
+	abrt_harvest_vmcore.py.in \
+	CCpp.conf.in
 endif
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc)) $(man1_MANS)
@@ -104,6 +105,12 @@ abrt_exception_handler3.py: abrt_exception_handler3.py.in
 	sed -e s,\@VAR_RUN\@,\"$(VAR_RUN)\",g \
 	    -e s,\@CONF_DIR\@,\"$(CONF_DIR)\",g \
 	    abrt_exception_handler3.py.in >abrt_exception_handler3.py
+
+CCpp.conf: CCpp.conf.in
+	sed -e s,\@VAR_RUN\@,\"$(VAR_RUN)\",g \
+	    -e s,\@CONF_DIR\@,\"$(CONF_DIR)\",g \
+	    -e s,\@DEFAULT_PACKAGE_MANAGER\@,$(DEFAULT_PACKAGE_MANAGER),g \
+	    CCpp.conf.in >CCpp.conf
 
 # RPM fix: we need to regenerate abrt_exception_handler.py, because it has the default ddir
 install-data-local:

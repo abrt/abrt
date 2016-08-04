@@ -122,6 +122,17 @@ rlJournalStart
         rlAssertGrep 'An update exists.*memtest86+-5.01-14.fc23' output
     rlPhaseEnd
 
+    rlPhaseStartTest "package manger"
+        fake_serve pkgmgr_query
+        rlRun "echo 'y' | abrt-bodhi -vvv -u http://localhost:12345 abrt &> output" 0
+
+        cp request request.pkgmgr-by-package.log
+        rlAssertGrep 'packages=abrt ' request
+
+        cp output output.pkgmgr-by-package.log
+        rlAssertGrep 'by running: dnf update ' output
+    rlPhaseEnd
+
     rlPhaseStartCleanup
         killall nc
         rlBundleLogs abrt-bodhi $(ls *.log)
