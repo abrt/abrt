@@ -28,6 +28,8 @@
 #include <libreport/libreport_curl.h>
 #include <libreport/client.h>
 
+#include "libabrt.h"
+
 //699198,705037,705036
 
 /* bodhi returns json structure
@@ -587,9 +589,20 @@ int main(int argc, char **argv)
      * There are other tools (pkcon et al) which might be somewhat more
      * convenient (for example, they might be usable from non-root), but they
      * might be not present on the system, may evolve or be superseded,
-     * while yum is unlikely to do so.
+     * as it did happen to yum.
      */
-    strbuf_prepend_str(q, "yum update --enablerepo=fedora --enablerepo=updates-testing");
+
+    map_string_t *settings = new_map_string();
+    load_abrt_plugin_conf_file("CCpp.conf", settings);
+
+    const char *value;
+    strbuf_prepend_str(q, " update --enablerepo=fedora --enablerepo=updates --enablerepo=updates-testing");
+    value = get_map_string_item_or_NULL(settings, "PackageManager");
+    if (value)
+        strbuf_prepend_str(q, value);
+    else
+        strbuf_prepend_str(q, DEFAULT_PACKAGE_MANAGER);
+    free_map_string(settings);
 
     char *msg = xasprintf(_("An update exists which might fix your problem. "
                 "You can install it by running: %s. "
