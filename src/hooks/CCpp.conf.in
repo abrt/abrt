@@ -48,9 +48,9 @@ SaveFullCore = yes
 
 # Specify Package manager used for downloading of debuginfo packages
 # Allowed values are: yum, dnf
-# Default value is: dnf
+# Default value is: @DEFAULT_PACKAGE_MANAGER@
 #
-# PackageManager = dnf
+# PackageManager = @DEFAULT_PACKAGE_MANAGER@
 
 # Allow the hook to run 'rpm -qf' for crashes in containers
 #

@@ -240,6 +240,13 @@ AC_ARG_WITH([defaultdumplocation],
             [], [with_defaultdumplocation=${localstatedir}/spool/abrt])
 AC_SUBST([DEFAULT_DUMP_LOCATION], [$with_defaultdumplocation])
 
+AC_ARG_WITH([defaultpackagemanager],
+            AS_HELP_STRING([--with-defaultpackagemanager=dnf],
+                           [Default package manager. 'dnf' or 'yum' ('dnf')]),
+            [], [with_defaultpackagemanager=dnf])
+AC_SUBST([DEFAULT_PACKAGE_MANAGER], [$with_defaultpackagemanager])
+
+
 AC_ARG_WITH(augeaslenslibdir,
                     [AS_HELP_STRING([--with-augeaslenslibdir=DIR],
                                                    [Directory for librepor lens (default: /usr/share/augeas/lenses)])],
