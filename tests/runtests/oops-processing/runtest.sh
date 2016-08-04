@@ -31,7 +31,7 @@
 TEST="oops_processing"
 PACKAGE="abrt"
 OOPS_REQUIRED_FILES="kernel uuid duphash
-pkg_name pkg_arch pkg_epoch pkg_release pkg_version pkg_vendor pkg_fingerprint"
+pkg_name pkg_arch pkg_epoch pkg_release pkg_version pkg_vendor"
 EXAMPLES_PATH="../../../examples"
 
 rlJournalStart
@@ -87,6 +87,9 @@ rlJournalStart
                 rlAssertExists "$crash_PATH/$f"
             done
 
+            # check pkg_fingerprint just if the cernel is signed
+            rpm -qi kernel | grep "Signature" | tail -1 | grep -q "(none)" || rlAssertExists "$crash_PATH/pkg_fingerprint"
+
             check_dump_dir_attributes $crash_PATH
 
             if [[ "$oops" == *not_reportable* ]]; then
@@ -98,7 +101,6 @@ rlJournalStart
             rlAssertGrep "kernel" "$crash_PATH/pkg_name"
             rlAssertGrep "kernel" "$crash_PATH/component"
             rlAssertGrep "$kernel_version" "$crash_PATH/pkg_version"
-            rlRun "cat $crash_PATH/pkg_fingerprint"
 
             rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
         done
