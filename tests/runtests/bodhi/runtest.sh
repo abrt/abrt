@@ -62,7 +62,7 @@ rlJournalStart
         cp output output.simple-run-nice.log
         rlAssertGrep 'An update exists.*python-2000.7.12-1.fc24' output
         rlAssertGrep 'An update exists.*python3-3000.4.3-6.fc23' output
-        rlAssertGrep 'An update exists.*python-docs-2.7.10-1.fc22' output
+        rlAssertGrep 'An update exists.*python-docs-2000.7.10-1.fc22' output
 
         # not pretty printed query
         fake_serve ugly_python_query
@@ -75,7 +75,7 @@ rlJournalStart
         cp output output.simple-run-ugly.log
         rlAssertGrep 'An update exists.*python-2000.7.12-1.fc24' output
         rlAssertGrep 'An update exists.*python3-3000.4.3-6.fc23' output
-        rlAssertGrep 'An update exists.*python-docs-2.7.10-1.fc22' output
+        rlAssertGrep 'An update exists.*python-docs-2000.7.10-1.fc22' output
     rlPhaseEnd
 
     rlPhaseStartTest "empty query"
