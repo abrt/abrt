@@ -235,7 +235,7 @@ rlJournalStart
 
         rlRun "userdel -f $TEST_USER"
         rlRun "userdel -f $TEST_USER2"
-        rlRUn "groupdel $TEST_GROUP"
+        rlRun "groupdel $TEST_GROUP"
     rlPhaseEnd
 
     rlPhaseStartTest "ignoring of abrt-hook-ccpp"
