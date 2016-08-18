@@ -45,7 +45,7 @@ function get_crash_path() {
         abrt-cli list
         echo "Syslog:"
         print_syslog 10
-        rlDie "No crash dir generated, this shouldn't happen"
+        rlFail "No crash dir generated, this shouldn't happen"
     fi
     rlLog "PATH = $crash_PATH"
 }
