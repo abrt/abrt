@@ -228,7 +228,6 @@ rlJournalStart
 
         ./pyserve \
                 ureport_submit \
-                create_0hint \
                 create_1create \
                 ureport_attach \
                 create_2attach \
@@ -245,8 +244,9 @@ rlJournalStart
         rlAssertGrep "curl: Connected to 127.0.0.1 (127.0.0.1) port 12345 (#0)" client_create3
         rlAssertGrep "curl sent header: 'POST /rs/telemetry/abrt/reports/new/ HTTP/1" client_create3
 
-        rlAssertGrep "Checking for hints" client_create3
-        rlAssertGrep "curl sent header: 'POST /rs/problems HTTP/1" client_create3
+        # removed pyserver response create_0hint and commented the following lines due to (#1368460)
+        #rlAssertGrep "Checking for hints" client_create3
+        #rlAssertGrep "curl sent header: 'POST /rs/problems HTTP/1" client_create3
 
         rlAssertGrep "Creating a new case" client_create3
         rlAssertGrep "curl sent header: 'POST /rs/cases HTTP/1" client_create3
@@ -272,7 +272,6 @@ rlJournalStart
 
         ./pyserve \
                 ureport_submit \
-                create_0hint \
                 create_1create \
                 ureport_attach \
                 ureport_attach \
@@ -290,8 +289,9 @@ rlJournalStart
         rlAssertGrep "curl: Connected to 127.0.0.1 (127.0.0.1) port 12345 (#0)" client_create4
         rlAssertGrep "curl sent header: 'POST /rs/telemetry/abrt/reports/new/ HTTP/1" client_create4
 
-        rlAssertGrep "Checking for hints" client_create4
-        rlAssertGrep "curl sent header: 'POST /rs/problems HTTP/1" client_create4
+        # removed pyserver response create_0hint and commented the following lines due to (#1368460)
+        #rlAssertGrep "Checking for hints" client_create4
+        #rlAssertGrep "curl sent header: 'POST /rs/problems HTTP/1" client_create4
 
         rlAssertGrep "Creating a new case" client_create4
         rlAssertGrep "curl sent header: 'POST /rs/cases HTTP/1" client_create4
@@ -319,7 +319,6 @@ rlJournalStart
         rlRun "echo \"uReport: BTHASH=691cf824e3e07457156125636e86c50279e29496\" > $crash_PATH/reported_to" 0 "Add BTHASH to reported_to"
 
         ./pyserve \
-                create_0hint \
                 create_1create \
                 ureport_attach \
                 ureport_attach \
@@ -339,8 +338,9 @@ rlJournalStart
 
         rlAssertGrep "uReport has already been submitted." client_create5
 
-        rlAssertGrep "Checking for hints" client_create5
-        rlAssertGrep "curl sent header: 'POST /rs/problems HTTP/1" client_create5
+        # removed pyserver response create_0hint and commented the following lines due to (#1368460)
+        #rlAssertGrep "Checking for hints" client_create5
+        #rlAssertGrep "curl sent header: 'POST /rs/problems HTTP/1" client_create5
 
         rlAssertGrep "Creating a new case" client_create5
         rlAssertGrep "curl sent header: 'POST /rs/cases HTTP/1" client_create5
@@ -370,7 +370,6 @@ rlJournalStart
         rlRun "echo \"uReport: BTHASH=691cf824e3e07457156125636e86c50279e29496\" > $crash_PATH/reported_to" 0 "Add BTHASH to reported_to"
 
         ./pyserve \
-                create_0hint \
                 create_1create \
                 ureport_attach \
                 create_2attach \
@@ -389,8 +388,9 @@ rlJournalStart
 
         rlAssertGrep "uReport has already been submitted." client_create6
 
-        rlAssertGrep "Checking for hints" client_create6
-        rlAssertGrep "curl sent header: 'POST /rs/problems HTTP/1" client_create6
+        # removed pyserver response create_0hint and commented the following lines due to (#1368460)
+        #rlAssertGrep "Checking for hints" client_create6
+        #rlAssertGrep "curl sent header: 'POST /rs/problems HTTP/1" client_create6
 
         rlAssertGrep "Creating a new case" client_create6
         rlAssertGrep "curl sent header: 'POST /rs/cases HTTP/1" client_create6
