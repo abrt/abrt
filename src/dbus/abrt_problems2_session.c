@@ -61,9 +61,9 @@ typedef struct
     char     *p2s_caller;
     uid_t    p2s_uid;
     int      p2s_state;
-    time_t   p2s_stamp;
     GList    *p2s_tasks;
     uint32_t p2s_task_indexer;
+    GHashTable *p2s_tokens;
     struct check_auth_cb_params *p2s_auth_rq;
 } AbrtP2SessionPrivate;
 
@@ -260,27 +260,196 @@ static void authorization_request_initialize(AbrtP2Session *session, GVariant *p
 
 AbrtP2Session *abrt_p2_session_new(char *caller, uid_t uid)
 {
-    AbrtP2Session *node = g_object_new(TYPE_ABRT_P2_SESSION, NULL);
-    node->pv->p2s_caller = caller;
-    node->pv->p2s_uid = uid;
+    AbrtP2Session *session = g_object_new(TYPE_ABRT_P2_SESSION, NULL);
+    session->pv->p2s_caller = caller;
+    session->pv->p2s_uid = uid;
 
-    if (node->pv->p2s_uid == 0)
-        node->pv->p2s_state = ABRT_P2_SESSION_STATE_AUTH;
+    if (session->pv->p2s_uid == 0)
+        session->pv->p2s_state = ABRT_P2_SESSION_STATE_AUTH;
     else
-        node->pv->p2s_state = ABRT_P2_SESSION_STATE_INIT;
+        session->pv->p2s_state = ABRT_P2_SESSION_STATE_INIT;
 
-    node->pv->p2s_stamp = time(NULL);
+    session->pv->p2s_tokens = g_hash_table_new_full(g_str_hash,
+                                                    g_str_equal,
+                                                    g_free,
+                                                    NULL);
 
-    return node;
+    return session;
 }
 
-AbrtP2SessionAuthRequestRet abrt_p2_session_authorize(AbrtP2Session *session, GVariant *parameters)
+const char *abrt_p2_session_generate_token(AbrtP2Session *session,
+            unsigned int duration,
+            GError **error)
+{
+    if (session->pv->p2s_state != ABRT_P2_SESSION_STATE_AUTH)
+    {
+        g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
+                    "Session is not authorized");
+        return NULL;
+    }
+
+#define SESSION_TOKEN_LENGHT 16
+    static const char *const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+    if (duration == 0)
+        duration = 5;
+
+    FILE *urandom = fopen("/dev/urandom", "rb");
+
+    if (urandom == NULL)
+    {
+        perror_msg("fopen(/dev/urandom, rb)");
+        g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
+                    "Failed to open /dev/urandom for reading");
+        return NULL;
+    }
+
+    unsigned int seed = 0;
+    const size_t r = fread(&seed, 1, sizeof(unsigned int), urandom);
+    fclose(urandom);
+
+    if (sizeof(unsigned int) != r)
+    {
+        perror_msg("fread(unsigned int, /dev/urandom)");
+        g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
+                    "Failed to read 'unsigned int' from /dev/urandom");
+        return NULL;
+    }
+
+    char *token = xmalloc((SESSION_TOKEN_LENGHT + 1) * sizeof(char));
+    for (char *iter = token; iter < token + SESSION_TOKEN_LENGHT; ++iter)
+        *iter = alphabet[(int)(strlen(alphabet) * (rand_r(&seed) / (double)RAND_MAX))];
+
+    token[SESSION_TOKEN_LENGHT] = '\0';
+
+    const time_t curtime = time(NULL);
+    if (curtime == ((time_t) -1))
+    {
+        g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
+                    "Cannot get current time");
+        free(token);
+        return NULL;
+    }
+
+    g_hash_table_insert(session->pv->p2s_tokens,
+                        token,
+                        GINT_TO_POINTER(curtime + duration));
+
+    return token;
+#undef SESSION_TOKEN_LENGHT
+}
+
+int abrt_p2_session_revoke_token(AbrtP2Session *session,
+            const char *token)
+{
+    return g_hash_table_remove(session->pv->p2s_tokens, token) ? 0 : 1;
+}
+
+static AbrtP2SessionAuthRequestRet abrt_p2_session_authorize_peer_with_token(
+            AbrtP2Session *session,
+            AbrtP2Session *peer_session,
+            const char *token,
+            GError **error)
+{
+    if (session->pv->p2s_state != ABRT_P2_SESSION_STATE_AUTH)
+    {
+        g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_ACCESS_DENIED,
+                    "Not authorized session cannot pass authorization");
+        return ABRT_P2_SESSION_AUTHORIZE_FAILED;
+    }
+
+    if (session->pv->p2s_uid != peer_session->pv->p2s_uid)
+    {
+        g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_ACCESS_DENIED,
+                    "Session owners do not match");
+        return ABRT_P2_SESSION_AUTHORIZE_FAILED;
+    }
+
+    const gpointer expire = g_hash_table_lookup(session->pv->p2s_tokens, token);
+    if (expire == NULL)
+    {
+        g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_ACCESS_DENIED,
+                    "No such token");
+        return ABRT_P2_SESSION_AUTHORIZE_FAILED;
+    }
+
+    const time_t curtime = time(NULL);
+    if (curtime == ((time_t) -1))
+    {
+        g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
+                    "Cannot get current time");
+        return ABRT_P2_SESSION_AUTHORIZE_FAILED;
+    }
+
+    if (curtime > (time_t)(GPOINTER_TO_INT(expire)))
+    {
+        g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_ACCESS_DENIED,
+                    "Token has already expired");
+        return ABRT_P2_SESSION_AUTHORIZE_FAILED;
+    }
+
+    g_hash_table_remove(session->pv->p2s_tokens, token);
+    abrt_p2_session_grant_authorization(peer_session);
+
+    log_info("Granted authorization to peer session on '%s' bus",
+             peer_session->pv->p2s_caller);
+
+    return ABRT_P2_SESSION_AUTHORIZE_GRANTED;
+}
+
+static int abrt_p2_session_cmp_caller(AbrtP2Session *lhs, const char *bus_name)
+{
+    return strcmp(lhs->pv->p2s_caller, bus_name);
+}
+
+AbrtP2SessionAuthRequestRet abrt_p2_session_authorize(AbrtP2Session *session,
+            GVariant *parameters,
+            GList *peers,
+            GError **error)
 {
     switch(session->pv->p2s_state)
     {
         case ABRT_P2_SESSION_STATE_INIT:
-            authorization_request_initialize(session, parameters);
-            return ABRT_P2_SESSION_AUTHORIZE_ACCEPTED;
+            {
+                GVariant *peer_bus = g_variant_lookup_value(parameters,
+                                                        "problems2.peer-bus",
+                                                        G_VARIANT_TYPE_STRING);
+                GVariant *token = g_variant_lookup_value(parameters,
+                                                         "problems2.peer-token",
+                                                         G_VARIANT_TYPE_STRING);
+
+                if (!peer_bus && !token)
+                {
+                    authorization_request_initialize(session, parameters);
+                    return ABRT_P2_SESSION_AUTHORIZE_ACCEPTED;
+                }
+
+                if (peer_bus && token)
+                {
+                    GList *tmp = g_list_find_custom(peers,
+                                                    g_variant_get_string(peer_bus,
+                                                                         NULL),
+                                                    (GCompareFunc)abrt_p2_session_cmp_caller);
+                    if (tmp == NULL)
+                    {
+                        g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
+                                    "No peer session for bus '%s'",
+                                    g_variant_get_string(peer_bus, NULL));
+                        return ABRT_P2_SESSION_AUTHORIZE_FAILED;
+                    }
+
+                    AbrtP2Session *peer_session = (AbrtP2Session *)tmp->data;
+                    return abrt_p2_session_authorize_peer_with_token(peer_session,
+                                                                     session,
+                                                                     g_variant_get_string(token, NULL),
+                                                                     error);
+                }
+
+                g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
+                            "Invalid parameters peer-bus and peer-token.");
+                return ABRT_P2_SESSION_AUTHORIZE_FAILED;
+            }
+            break;
 
         case ABRT_P2_SESSION_STATE_PENDING:
             return ABRT_P2_SESSION_AUTHORIZE_PENDING;

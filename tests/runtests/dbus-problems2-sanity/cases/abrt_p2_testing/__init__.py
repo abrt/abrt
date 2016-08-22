@@ -211,7 +211,6 @@ class Problems2Task(_Problems2Object):
 
 class TestCase(unittest.TestCase):
 
-    # TODO -> how this works ???
     @classmethod
     def setUpClass(self):
         if os.getuid() != 0:
@@ -496,15 +495,20 @@ def get_huge_file_path(size_kb=0):
 
     return huge_file_path
 
-
-def get_authorized_session(test, bus=None, session_path=None):
+def get_session(test, bus=None, session_path=None):
     if bus is None:
         bus = test.bus
 
     if session_path is None:
         session_path = test.p2.GetSession()
 
-    p2_session = Problems2Session(bus, session_path)
+    return Problems2Session(bus, session_path)
+
+def get_authorized_session(test, bus=None, session_path=None):
+    if bus is None:
+        bus = test.bus
+
+    p2_session = get_session(test, bus, session_path)
     p2_session.getobject().connect_to_signal("AuthorizationChanged",
                                              test.handle_authorization_changed)
 

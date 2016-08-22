@@ -387,40 +387,50 @@ static void session_object_dbus_method_call(GDBusConnection *connection,
 
     if (strcmp("Authorize", method_name) == 0)
     {
-        struct user_info *user = abrt_p2_service_user_lookup(service,
-                                                             caller_uid);
-        for (GList *us = user->sessions; us != NULL; us = g_list_next(us))
-        {
-            AbrtP2Session *s = ABRT_P2_SESSION(us->data);
-            if (!abrt_p2_session_is_authorized(s))
-                continue;
-
-            log_info("Re-authorized session '%s' by another authorized session",
-                     object_path);
-
-            const gint32 retval = abrt_p2_session_grant_authorization(session);
-            GVariant *response = g_variant_new("(i)", retval);
-            g_dbus_method_invocation_return_value(invocation, response);
-            return;
-        }
-
         GVariant *details = g_variant_get_child_value(parameters, 0);
-        const gint32 retval = abrt_p2_session_authorize(session, details);
+        struct user_info *user = abrt_p2_service_user_lookup(service, caller_uid);
+        const gint32 retval = abrt_p2_session_authorize(session,
+                                                        details,
+                                                        user->sessions,
+                                                        &error);
         g_variant_unref(details);
 
         if (retval < 0)
         {
-            g_dbus_method_invocation_return_error(invocation,
-                                                  G_DBUS_ERROR,
-                                                  G_DBUS_ERROR_FAILED,
-                                                  "Failed authorize Session");
-        }
-        else
-        {
-            GVariant *response = g_variant_new("(i)", retval);
-            g_dbus_method_invocation_return_value(invocation, response);
+            g_prefix_error(&error, "Failed to authorize Session: ");
+            g_dbus_method_invocation_return_gerror(invocation, error);
+            g_error_free(error);
+            return;
         }
 
+        GVariant *response = g_variant_new("(i)", retval);
+        g_dbus_method_invocation_return_value(invocation, response);
+        return;
+    }
+
+    if (strcmp("GenerateToken", method_name) == 0)
+    {
+        guint duration = 0;
+        g_variant_get(parameters, "(u)", &duration);
+        const char *token = abrt_p2_session_generate_token(session, duration, &error);
+        if (token == NULL)
+        {
+            g_prefix_error(&error, "Cannot generate token: ");
+            g_dbus_method_invocation_return_gerror(invocation, error);
+            g_error_free(error);
+            return;
+        }
+
+        GVariant *response = g_variant_new("(s)", token);
+        g_dbus_method_invocation_return_value(invocation, response);
+        return;
+    }
+
+    if (strcmp("RevokeToken", method_name) == 0)
+    {
+        GVariant *token = g_variant_get_child_value(parameters, 0);
+        if (abrt_p2_session_revoke_token(session, g_variant_get_string(token, NULL)) != 0)
+            log_warning("Could not remove Session Token because it was already gone.");
         return;
     }
 
@@ -1722,7 +1732,7 @@ static AbrtP2Object *task_object_register(AbrtP2Service* service,
 
     if (obj == NULL)
     {
-        g_prefix_error(error, "Failed to register Task object");
+        g_prefix_error(error, "Failed to register Task object: ");
         return NULL;
     }
 

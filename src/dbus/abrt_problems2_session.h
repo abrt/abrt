@@ -99,7 +99,9 @@ typedef enum {
 } AbrtP2SessionAuthChangedStatus;
 
 AbrtP2SessionAuthRequestRet abrt_p2_session_authorize(AbrtP2Session *session,
-            GVariant *parameters);
+            GVariant *parameters,
+            GList *peers,
+            GError **error);
 
 AbrtP2SessionAuthRequestRet abrt_p2_session_grant_authorization(AbrtP2Session *session);
 
@@ -126,6 +128,13 @@ GList *abrt_p2_session_tasks(AbrtP2Session *session);
 int abrt_p2_session_tasks_count(AbrtP2Session *session);
 
 void abrt_p2_session_clean_tasks(AbrtP2Session *session);
+
+const char *abrt_p2_session_generate_token(AbrtP2Session *session,
+            unsigned int duration,
+            GError **error);
+
+int abrt_p2_session_revoke_token(AbrtP2Session *session,
+            const char *token);
 
 /*
  * Shared PolKit authority with other entities.

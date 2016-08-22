@@ -27,6 +27,7 @@ class TestSession(abrt_p2_testing.TestCase):
                 if not exp_message is None:
                     self.assertEquals(message, exp_message)
 
+                # Verify that Authorize returns 2 if there is a pending request
                 ret = p2_session.Authorize(dict())
                 self.assertEqual(2, ret, "Not-yet finished authorization request")
                 self.interrupt_waiting()
@@ -37,6 +38,7 @@ class TestSession(abrt_p2_testing.TestCase):
 
             self.logger.debug("Calling Authorize(): expecting failure")
 
+            # First attempt - this time authorization should fail
             ret = p2_session.Authorize({"message" : "Foo the bars"})
             self.assertEqual(1, ret, "Pending authorization request")
 
@@ -57,6 +59,7 @@ class TestSession(abrt_p2_testing.TestCase):
             self.assertFalse(p2_session.getproperty("IsAuthorized"),
                         "Failed authorization request made Session authorized")
 
+            # Second attempt - this time authorization should be successful
             self.logger.debug("Calling Authorize(): expecting success")
 
             ret = p2_session.Authorize(dict())
@@ -91,6 +94,18 @@ class TestSession(abrt_p2_testing.TestCase):
 
         self.assertFalse(p2_session.getproperty("IsAuthorized"), msg = "still authorized")
 
+    def test_pass_authorization(self):
+        another_bus = dbus.SystemBus(private=True)
+        another_p2_proxy = another_bus.get_object(BUS_NAME,
+                                                  '/org/freedesktop/Problems2')
+        another_p2 = dbus.Interface(another_p2_proxy,
+                                    dbus_interface='org.freedesktop.Problems2')
+
+        another_p2_session_path = another_p2.GetSession()
+        another_p2_session = Problems2Session(another_bus, another_session_path)
+
+        with authorize_session(self) as p2_session:
+            token = p2_session.GenerateToken(0);
 
 if __name__ == "__main__":
     abrt_p2_testing.main(TestSession)
