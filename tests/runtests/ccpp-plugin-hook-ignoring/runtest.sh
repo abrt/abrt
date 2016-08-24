@@ -61,6 +61,8 @@ function test_not_create_dir {
     shift
     REASON=${1:-"listed in 'IgnoredPaths'"}
     shift
+    SIGNAL=${1:-"SIGSEGV"}
+    shift
     USER_PARAM=$1
 
     USER_UID=$(id -u $USER_PARAM)
@@ -74,8 +76,8 @@ function test_not_create_dir {
 
     journalctl -b --since="$journal_time" >abrt_journal.log
 
-    rlAssertGrep "Process $PID \(${CRASH_APP##*/}\) of user $USER_UID killed by SIGSEGV - ignoring \(${REASON}\)" abrt_journal.log -E
-    rlAssertNotGrep "Process $PID \(${CRASH_APP##*/}\) of user $USER_UID killed by SIGSEGV - dumping core" abrt_journal.log -E
+    rlAssertGrep "Process $PID \(${CRASH_APP##*/}\) of user $USER_UID killed by $SIGNAL - ignoring \(${REASON}\)" abrt_journal.log -E
+    rlAssertNotGrep "Process $PID \(${CRASH_APP##*/}\) of user $USER_UID killed by $SIGNAL - dumping core" abrt_journal.log -E
 
     # no crash is generated
     rlAssert0 "Crash should not be generated" $(abrt-cli list 2> /dev/null | wc -l)
@@ -149,6 +151,7 @@ rlJournalStart
         TEST_USER=abrt_user_allowed
         TEST_USER2=abrt_user_allowed2
         TEST_GROUP=abrt_group_allowed
+        SIG="SIGSEGV"
         CONF_FILE="/etc/abrt/plugins/CCpp.conf"
         REASON_ALLOW="not allowed in 'AllowedUsers' nor 'AllowedGroups'"
 
@@ -170,23 +173,23 @@ rlJournalStart
         # $TEST_USER is not allowed
         rlRun "echo \"AllowedUsers = $TEST_USER2,root\" >> ${CONF_FILE}"
 
-        #                   $crashing_app  $reason          $username
-        test_not_create_dir will_segfault  "$REASON_ALLOW"  $TEST_USER
+        #                   $crashing_app  $reason         $signal $username
+        test_not_create_dir will_segfault  "$REASON_ALLOW" $SIG    $TEST_USER
 
         rlLog "===================================================================="
         rlRun "cp -fv ${CONF_FILE}.no_allowing $CONF_FILE"
         rlRun "echo \"AllowedGroups = $TEST_USER2\" >> ${CONF_FILE}"
 
-        #                   $crashing_app     $reason          $username
-        test_not_create_dir will_segfault     "$REASON_ALLOW"  $TEST_USER
+        #                   $crashing_app     $reason         $signal $username
+        test_not_create_dir will_segfault     "$REASON_ALLOW" $SIG    $TEST_USER
 
         rlLog "===================================================================="
         rlRun "cp -fv ${CONF_FILE}.no_allowing $CONF_FILE"
         rlRun "echo \"AllowedUsers = $TEST_USER2,root\" >> ${CONF_FILE}"
         rlRun "echo \"AllowedGroups = $TEST_USER2,root\" >> ${CONF_FILE}"
 
-        #                   $crashing_app     $reason          $username
-        test_not_create_dir will_segfault     "$REASON_ALLOW"  $TEST_USER
+        #                   $crashing_app     $reason          $signal $username
+        test_not_create_dir will_segfault     "$REASON_ALLOW"  $SIG    $TEST_USER
 
         rlLog "===================================================================="
         # $TEST_USER is not allowed
@@ -227,11 +230,11 @@ rlJournalStart
 
     rlPhaseStartTest "ignoring of abrt-hook-ccpp"
         # using our failing abrt-hook-ccpp
-        test_not_create_dir "./abrt-hook-ccpp" "avoid recursion"
+        test_not_create_dir "./abrt-hook-ccpp" "avoid recursion" "SIGABRT"
     rlPhaseEnd
 
     rlPhaseStartTest "ignoring of abrt's binaries"
-        test_not_create_dir "./abrt-binary" "'DebugLevel' == 0"
+        test_not_create_dir "./abrt-binary" "'DebugLevel' == 0" "SIGABRT"
     rlPhaseEnd
 
     rlPhaseStartTest "ignoring of repeated crashes"

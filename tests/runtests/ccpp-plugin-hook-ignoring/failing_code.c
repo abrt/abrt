@@ -1,7 +1,7 @@
-#include <stdio.h>
+#include <stdlib.h>
 
 int main()
 {
-    puts(NULL);
+    abort();
     return 0;
 }
