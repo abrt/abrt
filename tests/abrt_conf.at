@@ -1,0 +1,174 @@
+# -*- Autotest -*-
+# vim:set makeprg=rm\ testsuite;\ make\ testsuite;\ ./testsuite\ -v\ ??
+
+AT_BANNER([abrt_conf])
+
+AT_TESTFUN([load_abrt_conf_normalized_paths],
+[[
+/* This will tell gcc to show message in this AT file. */
+#line 10 "abrt_conf.at"
+
+#include "libabrt.h"
+#include <assert.h>
+
+struct result
+{
+    const char *line;
+    const char *const *global_option;
+    const char *expected;
+};
+
+void test(struct result **res)
+{
+    char conf_file[] = "/tmp/abrt_test.conf.XXXXXX";
+    int conf_fd = mkstemp(conf_file);
+    assert(conf_fd >= 0 && "Temporary test configuration file");
+
+    printf("**** %s\n", conf_file);
+    for (struct result **iter = res; NULL != *iter; ++iter)
+    {
+        if ((*iter)->line != NULL)
+        {
+            printf("---- %s", (*iter)->line);
+            full_write_str(conf_fd, (*iter)->line);
+        }
+    }
+    puts("----");
+
+    close(conf_fd);
+
+    setenv("ABRT_DEFAULT_CONF_DIR", "/tmp", 1);
+    setenv("ABRT_CONF_DIR", "/tmp", 1);
+    setenv("ABRT_CONF_FILE_NAME", strrchr(conf_file, '/') + 1, 1);
+
+    /*
+    int old_stderr = dup(STDERR_FILENO);
+    int errpipe[2];
+    pipe(errpipe);
+    fcntl(ts_pipefd[0], F_SETFL, O_NONBLOCK);
+    dup2(errpipe[1], STDERR_FILENO);
+    */
+
+    load_abrt_conf();
+
+    /*
+    dup2(old_stderr, STDERR_FILENO);
+    char *error_output = xmalloc_read(errpipe[0], NULL);
+    close(errpipe[0]);
+    */
+
+    unsetenv("ABRT_CONF_FILE_NAME");
+    unsetenv("ABRT_CONF_DIR");
+    unsetenv("ABRT_DEFAULT_CONF_DIR");
+
+    for (struct result **iter = res; NULL != *iter; ++iter)
+    {
+        if ((    (*(*iter)->global_option != NULL && (*iter)->expected == NULL)
+              || (*(*iter)->global_option == NULL && (*iter)->expected != NULL))
+           ||
+            (    (*(*iter)->global_option != NULL && (*iter)->expected != NULL)
+              && (strcmp(*(*iter)->global_option, (*iter)->expected) != 0)))
+        {
+            fprintf(stderr, "Real != Expected :: '%s' != '%s'\n", *(*iter)->global_option, (*iter)->expected);
+            abort();
+        }
+    }
+
+    free_abrt_conf_data();
+}
+
+int main(int argc, char *argv[])
+{
+    g_verbose = 3;
+
+    {
+        struct result res_dump_location = {
+            .line = "DumpLocation = /foo/blah/abrt\n",
+            .global_option = (const char *const *)&g_settings_dump_location,
+            .expected = "/foo/blah/abrt",
+        };
+
+        struct result res_archive_dir = {
+            .line = "WatchCrashdumpArchiveDir = /opt/bar/abrt\n",
+            .global_option = (const char *const *)&g_settings_sWatchCrashdumpArchiveDir,
+            .expected = "/opt/bar/abrt",
+        };
+
+        struct result *results[] = {
+            &res_dump_location,
+            &res_archive_dir,
+            NULL,
+        };
+
+        test(results);
+    }
+
+    {
+        struct result res_dump_location = {
+            .line = "DumpLocation = /foo/blah/abrt////\n",
+            .global_option = (const char *const *)&g_settings_dump_location,
+            .expected = "/foo/blah/abrt",
+        };
+
+        struct result res_archive_dir = {
+            .line = "WatchCrashdumpArchiveDir = /opt/bar/abrt////\n",
+            .global_option = (const char *const *)&g_settings_sWatchCrashdumpArchiveDir,
+            .expected = "/opt/bar/abrt",
+        };
+
+        struct result *results[] = {
+            &res_dump_location,
+            &res_archive_dir,
+            NULL,
+        };
+
+        test(results);
+    }
+
+    {
+        struct result res_dump_location = {
+            .line = "DumpLocation = /foo//blah///abrt\n",
+            .global_option = (const char *const *)&g_settings_dump_location,
+            .expected = "/foo/blah/abrt",
+        };
+
+        struct result res_archive_dir = {
+            .line = "WatchCrashdumpArchiveDir = /opt//bar///abrt\n",
+            .global_option = (const char *const *)&g_settings_sWatchCrashdumpArchiveDir,
+            .expected = "/opt/bar/abrt",
+        };
+
+        struct result *results[] = {
+            &res_dump_location,
+            &res_archive_dir,
+            NULL,
+        };
+
+        test(results);
+    }
+
+    {
+        struct result res_dump_location = {
+            .line = "DumpLocation = /////\n",
+            .global_option = (const char *const *)&g_settings_dump_location,
+            .expected = "/",
+        };
+
+        struct result res_archive_dir = {
+            .line = "WatchCrashdumpArchiveDir = /////\n",
+            .global_option = (const char *const *)&g_settings_sWatchCrashdumpArchiveDir,
+            .expected = "/",
+        };
+
+        struct result *results[] = {
+            &res_dump_location,
+            &res_archive_dir,
+            NULL,
+        };
+
+        test(results);
+    }
+
+    return 0;
+}
+]])

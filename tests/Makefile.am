@@ -58,7 +58,8 @@ TESTSUITE_AT = \
   koops-parser.at \
   xorg-utils.at \
   ignored_problems.at \
-  hooklib.at
+  hooklib.at \
+  abrt_conf.at
 
 EXTRA_DIST += $(TESTSUITE_AT) $(TESTSUITE_FILES)
 TESTSUITE = $(srcdir)/testsuite
