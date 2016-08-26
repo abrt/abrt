@@ -273,7 +273,7 @@ static int run_post_create(const char *dirname)
     log_debug("Creating glib main loop");
     struct waiting_context context = {0};
     context.main_loop = g_main_loop_new(NULL, FALSE);
-    context.dirname = dirname;
+    context.dirname = strrchr(dirname, '/') + 1;
 
     log_debug("Setting up a signal handler");
     /* Set up signal pipe */
