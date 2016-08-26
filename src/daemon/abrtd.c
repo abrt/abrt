@@ -179,16 +179,15 @@ static void queue_post_craete_process(struct abrt_server_proc *proc)
            && worst_dir)
     {
         const char *kind = "old";
-        char *deleted = concat_path_file(g_settings_dump_location, worst_dir);
 
         GList *proc_of_deleted_item = NULL;
-        if (proc != NULL && strcmp(deleted, proc->dirname) == 0)
+        if (proc != NULL && strcmp(worst_dir, proc->dirname) == 0)
         {
             kind = "new";
             stop_abrt_server(proc);
             proc = NULL;
         }
-        else if ((proc_of_deleted_item = g_list_find_custom(s_dir_queue, deleted, (GCompareFunc)abrt_server_compare_dirname)))
+        else if ((proc_of_deleted_item = g_list_find_custom(s_dir_queue, worst_dir, (GCompareFunc)abrt_server_compare_dirname)))
         {
             kind = "unprocessed";
             struct abrt_server_proc *removed_proc = (struct abrt_server_proc *)proc_of_deleted_item->data;
@@ -200,6 +199,7 @@ static void queue_post_craete_process(struct abrt_server_proc *proc)
                 g_settings_dump_location, g_settings_nMaxCrashReportsSize,
                 kind, worst_dir);
 
+        char *deleted = concat_path_file(g_settings_dump_location, worst_dir);
         free(worst_dir);
         worst_dir = NULL;
 
