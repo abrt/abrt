@@ -39,6 +39,29 @@ void free_abrt_conf_data()
     g_settings_dump_location = NULL;
 }
 
+/* Beware - the function normalizes only slashes - that's the most often
+ * problem we have to face.
+ */
+static char *xstrdup_normalized_path(const char *path)
+{
+    const size_t len = strlen(path);
+    char *const res = xzalloc(len + 1);
+
+    res[0] = path[0];
+
+    const char *p = path + 1;
+    char *r = res;
+    for (; p - path < len; ++p)
+        if (*p != '/' || *r != '/')
+            *++r = *p;
+
+    /* remove trailing slash if the path is not '/' */
+    if (r - res > 1 && *r == '/')
+        *r = '\0';
+
+    return res;
+}
+
 static void ParseCommon(map_string_t *settings, const char *conf_filename)
 {
     const char *value;
@@ -46,7 +69,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     value = get_map_string_item_or_NULL(settings, "WatchCrashdumpArchiveDir");
     if (value)
     {
-        g_settings_sWatchCrashdumpArchiveDir = xstrdup(value);
+        g_settings_sWatchCrashdumpArchiveDir = xstrdup_normalized_path(value);
         remove_map_string_item(settings, "WatchCrashdumpArchiveDir");
     }
 
@@ -66,7 +89,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     value = get_map_string_item_or_NULL(settings, "DumpLocation");
     if (value)
     {
-        g_settings_dump_location = xstrdup(value);
+        g_settings_dump_location = xstrdup_normalized_path(value);
         remove_map_string_item(settings, "DumpLocation");
     }
     else
