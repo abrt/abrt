@@ -60,6 +60,15 @@ dist_events_DATA = \
 
 @INTLTOOL_XML_RULE@
 
+journalcatalogdir = $(JOURNAL_CATALOG_DIR)
+
+dist_journalcatalog_DATA = \
+    abrt_ccpp.catalog \
+    abrt_koops.catalog \
+    abrt_python3.catalog \
+    abrt_python.catalog \
+    abrt_xorg.catalog
+
 eventsconfdir = $(EVENTS_CONF_DIR)
 
 dist_eventsconf_DATA = \
@@ -108,7 +117,12 @@ EXTRA_DIST = \
     abrt-journal.h \
     post_report.xml.in \
     abrt-action-analyze-ccpp-local.in \
-    abrt-action-analyze-vulnerability.in
+    abrt-action-analyze-vulnerability.in \
+    abrt_ccpp.catalog.in \
+    abrt_koops.catalog.in \
+    abrt_python3.catalog.in \
+    abrt_python.catalog.in \
+    abrt_xorg.catalog.in
 
 if BUILD_ADDON_VMCORE
 bin_SCRIPTS += \
@@ -122,6 +136,9 @@ dist_events_DATA += \
 dist_eventsconf_DATA += \
     vmcore_event.conf
 
+dist_journalcatalog_DATA += \
+    abrt_vmcore.catalog
+
 PYTHON_FILES += \
     abrt-action-analyze-vmcore.in
 
@@ -129,7 +146,8 @@ EXTRA_DIST += \
     analyze_VMcore.xml.in \
     abrt-action-analyze-vmcore \
     abrt-action-check-oops-for-alt-component \
-    abrt-action-check-oops-for-hw-error
+    abrt-action-check-oops-for-hw-error \
+    abrt_vmcore.catalog.in
 endif
 
 confdir = $(PLUGINS_CONF_DIR)
@@ -436,4 +454,8 @@ abrt-action-analyze-ccpp-local: abrt-action-analyze-ccpp-local.in
 abrt-action-analyze-core: abrt-action-analyze-core.in
 	sed -e s,\@localedir\@,$(localedir),g \
         -e s,\@PACKAGE\@,$(PACKAGE),g \
+        $< >$@
+
+%.catalog: %.catalog.in
+	sed -e s,\@SUPPORT_URL\@,$(SUPPORT_URL),g \
         $< >$@
