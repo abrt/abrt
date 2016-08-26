@@ -16,6 +16,7 @@
 import os
 import sys
 from argparse import ArgumentParser
+from subprocess import call
 
 import dbus
 import dbus.lowlevel
@@ -36,6 +37,19 @@ FILENAME_UID = "uid"
 FILENAME_UUID = "uuid"
 FILENAME_DUPHASH = "duphash"
 
+def run_event(event_name, dump_dir_name):
+    '''
+    Run event with `event_name` on problem directory `dump_dir_name`
+    '''
+
+    state = report.run_event_state()
+    ret = state.run_event_on_dir_name(dump_dir_name, event_name)
+
+    if ret == 0 and state.children_count == 0:
+        log1("Didn't find definition of event '%s'", event_name)
+        return False
+
+    return True
 
 def run_autoreport(problem_data, event_name):
     """Runs autoreporting event
@@ -256,6 +270,15 @@ if __name__ == "__main__":
                     " required for uReport notification\n".format(str(ex)))
 
                 return_status = RETURN_FAILURE
+
+    # log problem to systemd journal
+    if not run_event("report_systemd-journal", DIR_PATH):
+        # if report_systemd-journal is not defined, run 'reporter-systemd-journald'
+        try:
+            call(["reporter-systemd-journald", "-d " + DIR_PATH])
+        except FileNotFoundError as ex:
+            # we expect the reporter doesn't have to be installed
+            log1("reporter-systemd-journald was not found")
 
     sys.exit(return_status)
 
