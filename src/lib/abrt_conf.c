@@ -140,25 +140,45 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     }
 }
 
+static const char *get_abrt_conf_file_name(void)
+{
+    const char *const abrt_conf = getenv("ABRT_CONF_FILE_NAME");
+    return abrt_conf == NULL ? ABRT_CONF : abrt_conf;
+}
+
 int load_abrt_conf()
 {
     free_abrt_conf_data();
 
+    const char *const abrt_conf = get_abrt_conf_file_name();
     map_string_t *settings = new_map_string();
-    if (!load_abrt_conf_file(ABRT_CONF, settings))
-        perror_msg("Can't load '%s'", ABRT_CONF);
+    if (!load_abrt_conf_file(abrt_conf, settings))
+        perror_msg("Can't load '%s'", abrt_conf);
 
-    ParseCommon(settings, ABRT_CONF);
+    ParseCommon(settings, abrt_conf);
     free_map_string(settings);
 
     return 0;
 }
 
+static const char *const *get_conf_directories(void)
+{
+    static const char *base_directories[3];
+
+    const char *d = getenv("ABRT_DEFAULT_CONF_DIR");
+    const char *c = getenv("ABRT_CONF_DIR");
+
+    base_directories[0] = d != NULL ? d : DEFAULT_CONF_DIR;
+    base_directories[1] = c != NULL ? d : CONF_DIR;
+    base_directories[2] = NULL;
+
+    return base_directories;
+}
+
 int load_abrt_conf_file(const char *file, map_string_t *settings)
 {
-    static const char *const base_directories[] = { DEFAULT_CONF_DIR, CONF_DIR, NULL };
-
-    return load_conf_file_from_dirs(file, base_directories, settings, /*skip key w/o values:*/ false);
+    const char *const *conf_directories = get_conf_directories();
+    return load_conf_file_from_dirs(file, conf_directories, settings, /*skip key w/o values:*/ false);
 }
 
 int load_abrt_plugin_conf_file(const char *file, map_string_t *settings)
