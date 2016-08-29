@@ -6,7 +6,7 @@ cat << EOH
 Prepares the source tree for configuration
 
 Usage:
-  autogen.sh [sydeps [--install]]
+  autogen.sh [sysdeps [--install]]
 
 Options:
 
