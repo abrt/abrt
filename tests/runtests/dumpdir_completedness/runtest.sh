@@ -39,12 +39,39 @@ PYTHON_FILES="backtrace"
 rlJournalStart
     rlPhaseStartSetup
         check_prior_crashes
-        # install signed rpm because if the rpm is unsigned
-        # pkg_fingerprint is not created
-        rlRun "rpm -Uvh --force my_crash-0.0-1.el7.x86_64.rpm"
+        # rpm has to be installed
+        rlAssertRpm rpm-build
+        rlAssertRpm rpm
+        rlAssertRpm gnupg2
 
         TmpDir=$(mktemp -d)
+        cp expect $TmpDir
+        cp -r Makefile my_crash.spec src $TmpDir
         pushd $TmpDir
+
+        rlRun "make rpm > rpmbuild.log"
+        CRASHING_RPM=$(grep "Wrote:" rpmbuild.log | grep -v debuginfo | grep -v src.rpm | sed 's/Wrote: //g')
+        rlRun "rm rpmbuild.log"
+
+        # generate keys with random name
+        gpg_name=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c8)
+cat > gpg_key.conf<<EOF
+Key-Type: 1
+Key-Length: 2048
+Subkey-Type: 1
+Subkey-Length: 2048
+Name-Real: abrt_${gpg_name}
+Expire-Date: 0
+Passphrase: abrt_pass
+EOF
+        rlRun "gpg --batch --gen-key gpg_key.conf"
+        rlRun "rm gpg_key.conf"
+
+        ./expect rpm --addsign -D "_gpg_name abrt_${gpg_name}" $CRASHING_RPM
+
+        # install signed rpm because if the rpm is unsigned
+        # pkg_fingerprint is not created
+        rlRun "rpm -Uvh --force $CRASHING_RPM"
     rlPhaseEnd
 
     rlPhaseStartTest "CCpp plugin"
@@ -91,6 +118,8 @@ rlJournalStart
         rlRun "rpm -e my_crash"
         rlBundleLogs abrt $(echo *_ls)
         popd # TmpDir
+        # delete gpg key
+        ./expect gpg --delete-secret-and-public-key abrt_${gpg_name}
         rm -rf $TmpDir
     rlPhaseEnd
     rlJournalPrintText
