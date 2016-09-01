@@ -6,13 +6,13 @@
 # Chester Cheng <ccheng@redhat.com>, 2012,2014
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
 # Terry Chuang <tchuang@redhat.com>, 2014
-# Chester Cheng <ccheng@redhat.com>, 2015. #zanata
+# Chester Cheng <snowlet.cheng@gmail.com>, 2015. #zanata
 # Terry Chuang <tchuang@redhat.com>, 2015. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2015-07-14 15:37+0200\n"
+"POT-Creation-Date: 2016-06-29 15:31+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,7 +22,7 @@ msgstr ""
 "abrt/language/zh_TW/)\n"
 "Language: zh-TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Zanata 3.6.2\n"
+"X-Generator: Zanata 3.9.5\n"
 
 # translation auto-copied from project abrt, version master, document abrt
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -371,7 +371,7 @@ msgid "Quit"
 msgstr "退出"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/daemon/abrt-action-save-package-data.c:378
+#: ../src/daemon/abrt-action-save-package-data.c:400
 msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
@@ -381,9 +381,9 @@ msgstr "& [-v] [-c CONFFILE] -d DIR\n"
 "查詢軟體包資料庫，並儲存軟體包與元件名稱"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/daemon/abrt-action-save-package-data.c:390
+#: ../src/daemon/abrt-action-save-package-data.c:412
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
-#: ../src/plugins/abrt-action-analyze-c.c:78
+#: ../src/plugins/abrt-action-analyze-c.c:141
 #: ../src/plugins/abrt-action-analyze-oops.c:48
 #: ../src/plugins/abrt-action-analyze-xorg.c:84
 #: ../src/plugins/abrt-action-analyze-python.c:47
@@ -393,13 +393,13 @@ msgid "Problem directory"
 msgstr "問題目錄"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/daemon/abrt-action-save-package-data.c:391
+#: ../src/daemon/abrt-action-save-package-data.c:413
 msgid "Configuration file"
 msgstr "組態檔"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/daemon/abrt-server.c:792 ../src/dbus/abrt-dbus.c:1001
-#: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:484
+#: ../src/daemon/abrt-server.c:792 ../src/dbus/abrt-dbus.c:1004
+#: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:465
 msgid "& [options]"
 msgstr "& [選項]"
 
@@ -416,81 +416,81 @@ msgid "Log to syslog"
 msgstr "紀錄至 syslog"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/daemon/abrt-server.c:805 ../src/daemon/abrtd.c:500
+#: ../src/daemon/abrt-server.c:805 ../src/daemon/abrtd.c:481
 msgid "Add program names to log"
 msgstr "加入程式名稱至紀錄檔"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:132
+#: ../src/dbus/abrt-dbus.c:131
 msgid "Unknown error"
 msgstr "未知錯誤"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:221
+#: ../src/dbus/abrt-dbus.c:220
 #, c-format
 msgid "'%s' is not a valid problem directory"
 msgstr "「%s」不是有效的問題目錄"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:256
+#: ../src/dbus/abrt-dbus.c:255
 #, c-format
 msgid "'%s' element can't be modified"
 msgstr "無法修改「%s」元素"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:285 ../src/dbus/abrt-dbus.c:498
-#: ../src/dbus/abrt-dbus.c:560 ../src/dbus/abrt-dbus.c:625
-#: ../src/dbus/abrt-dbus.c:815 ../src/dbus/abrt-configuration.c:618
+#: ../src/dbus/abrt-dbus.c:284 ../src/dbus/abrt-dbus.c:497
+#: ../src/dbus/abrt-dbus.c:559 ../src/dbus/abrt-dbus.c:624
+#: ../src/dbus/abrt-dbus.c:814 ../src/dbus/abrt-configuration.c:618
 #: ../src/dbus/abrt-configuration.c:683
 #, c-format
 msgid "Not Authorized"
 msgstr "未授權"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:298
+#: ../src/dbus/abrt-dbus.c:297
 msgid "Can't access the problem for modification"
 msgstr "無法存取問題以修改"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:514
+#: ../src/dbus/abrt-dbus.c:513
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr "目錄擁有者變更失敗。請檢查紀錄檔瞭解更多細節。"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:635
+#: ../src/dbus/abrt-dbus.c:634
 msgid "Can't access the problem for reading"
 msgstr "無法存取問題以閱讀"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:690 ../src/dbus/abrt-dbus.c:755
-#: ../src/dbus/abrt-dbus.c:911
+#: ../src/dbus/abrt-dbus.c:689 ../src/dbus/abrt-dbus.c:754
+#: ../src/dbus/abrt-dbus.c:910
 #, c-format
 msgid "'%s' is not a valid element name"
 msgstr "「%s」不是有效的元素名稱"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:711
+#: ../src/dbus/abrt-dbus.c:710
 #, c-format
 msgid "Can't get size of '%s'"
 msgstr "無法取得「%s」的大小"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:726
+#: ../src/dbus/abrt-dbus.c:725
 msgid "No problem space left"
 msgstr "無剩餘問題空間"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:776
+#: ../src/dbus/abrt-dbus.c:775
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
 msgstr "無法從問題目錄「%2$s」刪除「%1$s」元素"
 
-#: ../src/dbus/abrt-dbus.c:803
+#: ../src/dbus/abrt-dbus.c:802
 msgid "Can't access the problem"
 msgstr "無法存取問題"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:983 ../src/dbus/abrt-configuration.c:983
+#: ../src/dbus/abrt-dbus.c:986 ../src/dbus/abrt-configuration.c:983
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
@@ -498,18 +498,18 @@ msgid ""
 msgstr "「%s」名稱已遺失，請確認其他擁有該名稱的服務並未執行中。\n"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:1010 ../src/dbus/abrt-configuration.c:1011
-#: ../src/daemon/abrtd.c:499
+#: ../src/dbus/abrt-dbus.c:1013 ../src/dbus/abrt-configuration.c:1011
+#: ../src/daemon/abrtd.c:480
 msgid "Exit after NUM seconds of inactivity"
 msgstr "在停止使用 NUM 秒後離開"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/dbus/abrt-dbus.c:1028 ../src/dbus/abrt-configuration.c:1021
+#: ../src/dbus/abrt-dbus.c:1031 ../src/dbus/abrt-configuration.c:1021
 msgid "This program must be run as root."
 msgstr "此程式必須以 root 身份執行。"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/daemon/abrtd.c:451
+#: ../src/daemon/abrtd.c:432
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
 "detected while computer is shutting down or user is logging out. In order to "
@@ -521,12 +521,12 @@ msgstr ""
 "不會允許您提交此種問題報告。若您有時間，且也想幫助開發者來處理此問題，請直接聯繫開發者。"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/daemon/abrtd.c:497
+#: ../src/daemon/abrtd.c:478
 msgid "Do not daemonize"
 msgstr "不要在幕後運行"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/daemon/abrtd.c:498
+#: ../src/daemon/abrtd.c:479
 msgid "Log to syslog even with -d"
 msgstr "即使加上 -d 參數也紀錄至 syslog"
 
@@ -589,69 +589,69 @@ msgstr "最大快取大小，單位為 MiB。預設為 "
 
 # translation auto-copied from project abrt, version master, document abrt
 #: ../src/daemon/abrt-auto-reporting.c:200
-#: ../src/daemon/abrt-auto-reporting.c:208
+#: ../src/daemon/abrt-auto-reporting.c:213
 msgid "& [ "
 msgstr "& [ "
 
-#: ../src/daemon/abrt-auto-reporting.c:235
+#: ../src/daemon/abrt-auto-reporting.c:240
 msgid "Turns the authentication off"
 msgstr "關閉身份認證"
 
-#: ../src/daemon/abrt-auto-reporting.c:236
+#: ../src/daemon/abrt-auto-reporting.c:241
 msgid "Red Hat Support user name"
 msgstr "Red Hat Support 使用者名稱"
 
-#: ../src/daemon/abrt-auto-reporting.c:237
+#: ../src/daemon/abrt-auto-reporting.c:242
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
 msgstr "Red Hat Support 密碼；如果未提供密碼，將會發出提示"
 
-#: ../src/daemon/abrt-auto-reporting.c:238
+#: ../src/daemon/abrt-auto-reporting.c:243
 msgid "uReport SSL certificate paths or certificate type"
 msgstr "uReport SSL 憑證路徑或憑證類型"
 
-#: ../src/daemon/abrt-auto-reporting.c:254
+#: ../src/daemon/abrt-auto-reporting.c:259
 msgid "You also need to specify --username for --password"
 msgstr "使用 --password 時必須指定 --username"
 
-#: ../src/daemon/abrt-auto-reporting.c:260
+#: ../src/daemon/abrt-auto-reporting.c:265
 msgid "You can use either --username or --certificate"
 msgstr "您可以使用 --username 或 --certificate"
 
-#: ../src/daemon/abrt-auto-reporting.c:266
+#: ../src/daemon/abrt-auto-reporting.c:271
 msgid "You can use either --username or --anonymous"
 msgstr "您可以使用 --username 或 --anonymous"
 
-#: ../src/daemon/abrt-auto-reporting.c:272
+#: ../src/daemon/abrt-auto-reporting.c:277
 msgid "You can use either --anonymous or --certificate"
 msgstr "您可以使用 --anonymous 或 --certificate"
 
-#: ../src/daemon/abrt-auto-reporting.c:279
+#: ../src/daemon/abrt-auto-reporting.c:284
 msgid "Invalid number of arguments"
 msgstr "引數數量無效"
 
-#: ../src/daemon/abrt-auto-reporting.c:298
+#: ../src/daemon/abrt-auto-reporting.c:303
 #, c-format
 msgid "Unknown option value: '%s'\n"
 msgstr "選項值不明：「%s」\n"
 
-#: ../src/daemon/abrt-auto-reporting.c:338
+#: ../src/daemon/abrt-auto-reporting.c:343
 msgid "Password:"
 msgstr "密碼："
 
-#: ../src/daemon/abrt-auto-reporting.c:341
+#: ../src/daemon/abrt-auto-reporting.c:346
 msgid "Cannot continue without password\n"
 msgstr "沒有密碼無法繼續\n"
 
 #. Print only the part before ':' of a string like "username:password"
-#: ../src/daemon/abrt-auto-reporting.c:382
+#: ../src/daemon/abrt-auto-reporting.c:387
 msgid "HTTP Authenticated auto reporting"
 msgstr "HTTP 身份認證自動回報"
 
-#: ../src/daemon/abrt-auto-reporting.c:384
+#: ../src/daemon/abrt-auto-reporting.c:389
 msgid "SSL Client Authenticated auto reporting"
 msgstr "SSL 用戶端身份憑證自動回報"
 
-#: ../src/daemon/abrt-auto-reporting.c:386
+#: ../src/daemon/abrt-auto-reporting.c:391
 msgid "anonymous auto reporting"
 msgstr "匿名自動回報"
 
@@ -831,7 +831,7 @@ msgid "Crash thread not found"
 msgstr "沒有找到崩潰執行序"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/plugins/abrt-action-analyze-c.c:67
+#: ../src/plugins/abrt-action-analyze-c.c:130
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
@@ -2165,38 +2165,38 @@ msgstr "已啟用私密報告，請使用 'abrt-cli -a COMMAND' 以取得偵測�
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "請見 'abrt-cli COMMAND --help' 以瞭解更多資訊"
 
-#: ../src/cli/list.c:121
+#: ../src/cli/list.c:124
 #, c-format
 msgid ""
 "%sRun 'abrt-cli report %s' for creating a case in Red Hat Customer Portal\n"
 msgstr "%s執行 'abrt-cli report %s' 以在 Red Hat 客戶入口網站中建立案例\n"
 
-#: ../src/cli/list.c:173
+#: ../src/cli/list.c:176
 msgid "& list [options]"
 msgstr "& list [options]"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/list.c:182
+#: ../src/cli/list.c:185
 msgid "List only not-reported problems"
 msgstr "僅列出尚未回報的問題"
 
 # translation auto-copied from project abrt, version master, document abrt
 #. deprecate -d option with --pretty=full
-#: ../src/cli/list.c:184 ../src/cli/list.c:237
+#: ../src/cli/list.c:187 ../src/cli/list.c:240
 msgid "Show detailed report"
 msgstr "顯示詳細的回報"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/list.c:185
+#: ../src/cli/list.c:188
 msgid "List only the problems more recent than specified timestamp"
 msgstr "僅列出比指定的時間戳記更近期的問題"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/list.c:186
+#: ../src/cli/list.c:189
 msgid "List only the problems older than specified timestamp"
 msgstr "僅列出比指定的時間戳記更之前的問題"
 
-#: ../src/cli/list.c:212
+#: ../src/cli/list.c:215
 #, c-format
 msgid ""
 "The Autoreporting feature is disabled. Please consider enabling it by "
@@ -2207,37 +2207,37 @@ msgstr ""
 "身份，透過「abrt-auto-reporting enabled」 來啟用它\n"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/list.c:229
+#: ../src/cli/list.c:232
 msgid "& info [options] DIR..."
 msgstr "& info [選項] DIR..."
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/list.c:238
+#: ../src/cli/list.c:241
 msgid "Text larger than this will be shown abridged"
 msgstr "大於此的文字會刪減顯示"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/list.c:258
+#: ../src/cli/list.c:261
 #, c-format
 msgid "No such problem directory '%s'"
 msgstr "沒有這個問題目錄「%s」"
 
-#: ../src/cli/status.c:63
+#: ../src/cli/status.c:66
 msgid "& status"
 msgstr "& status"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/status.c:71
+#: ../src/cli/status.c:74
 msgid "Print only the problem count without any message"
 msgstr "僅列印問題數目而不帶任何訊息"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/status.c:72
+#: ../src/cli/status.c:75
 msgid "Print only the problems more recent than specified timestamp"
 msgstr "僅列印比指定的時間戳記更近期的問題"
 
 # translation auto-copied from project abrt, version master, document abrt
-#: ../src/cli/status.c:88
+#: ../src/cli/status.c:91
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
 msgstr "ABRT 已偵測到 %u 項問題。若要取得更多資訊，請執行：abrt-cli list%s\n"
