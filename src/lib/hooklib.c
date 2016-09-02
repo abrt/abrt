@@ -599,17 +599,28 @@ bool dir_has_correct_permissions(const char *dir_name, int flags)
     return correct_group;
 }
 
+bool problem_entry_is_post_create_condition(const char *name)
+{
+    return    strcmp(name, FILENAME_TYPE) == 0
+           /* Replaced with FILENAME_TYPE on '2015-01-15'
+            * commit a6efe199922165725b200298d5b276b52912f3dd
+            * Users scripts might not be adapted to it yet.
+            */
+           || strcmp(name, FILENAME_ANALYZER) == 0
+           /* Compatibility value used in abrt-server.
+            * There still might some scripts using it.
+            */
+           || strcmp(name, "basename") == 0;
+}
+
 bool allowed_new_user_problem_entry(uid_t uid, const char *name, const char *value)
 {
     /* Allow root to create everything */
     if (uid == 0)
         return true;
 
-    /* Permit non-root users to create everything except: analyzer and type */
-    if (strcmp(name, FILENAME_ANALYZER) != 0
-     && strcmp(name, FILENAME_TYPE) != 0
-     /* compatibility value used in abrt-server */
-     && strcmp(name, "basename") != 0)
+    /* Permit non-root users to create everything except post-create condition elements */
+    if (!problem_entry_is_post_create_condition(name))
         return true;
 
     /* Permit non-root users to create all types except: C/C++, Koops, vmcore and xorg */

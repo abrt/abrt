@@ -83,3 +83,27 @@ int main(void)
     return 0;
 }
 ]])
+
+AT_TESTFUN([abrt_problem_entry_is_post_create_condition],
+[[
+#include "libabrt.h"
+#include <assert.h>
+
+int main(void)
+{
+    g_verbose = 3;
+    load_abrt_conf();
+
+    assert(problem_entry_is_post_create_condition(FILENAME_TYPE));
+    assert(problem_entry_is_post_create_condition(FILENAME_ANALYZER));
+    assert(problem_entry_is_post_create_condition("basename"));
+
+    assert(!problem_entry_is_post_create_condition(FILENAME_TIME));
+    assert(!problem_entry_is_post_create_condition(FILENAME_COUNT));
+    assert(!problem_entry_is_post_create_condition(FILENAME_REMOTE));
+    assert(!problem_entry_is_post_create_condition(FILENAME_PACKAGE));
+    assert(!problem_entry_is_post_create_condition(FILENAME_COMPONENT));
+
+    return 0;
+}
+]])

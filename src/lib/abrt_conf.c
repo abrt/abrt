@@ -37,6 +37,9 @@ void free_abrt_conf_data()
 
     free(g_settings_dump_location);
     g_settings_dump_location = NULL;
+
+    free(g_settings_autoreporting_event);
+    g_settings_autoreporting_event = NULL;
 }
 
 /* Beware - the function normalizes only slashes - that's the most often
