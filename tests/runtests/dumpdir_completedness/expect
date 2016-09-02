@@ -1,0 +1,37 @@
+#!/usr/bin/expect -f
+
+set timeout 10
+
+spawn {*}$argv
+
+# timeout handler
+proc itstime {args} {
+    puts "!! expect timeout !!"
+    exit 1
+}
+
+while {1} {
+    expect {
+
+        eof {
+            break
+        }
+
+        timeout {
+            itstime
+        }
+
+        "Enter passphrase:" {
+            sleep 1;
+            send "abrt_pass\n";
+        }
+        "Delete this key from the keyring?" {
+            sleep 1;
+            send "y\n";
+        }
+        "This is a secret key! - really delete?" {
+            sleep 1;
+            send "y\n";
+        }
+    }
+}

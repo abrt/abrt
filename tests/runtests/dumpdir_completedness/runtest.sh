@@ -40,21 +40,41 @@ PYTHON_FILES="backtrace"
 rlJournalStart
     rlPhaseStartSetup
         check_prior_crashes
+        # rpm has to be installed
+        rlAssertRpm rpm-build
+        rlAssertRpm rpm
+        rlAssertRpm rpm-sign
+        rlAssertRpm gnupg2
 
         TmpDir=$(mktemp -d)
+        cp expect $TmpDir
+        cp -r Makefile my_crash.spec src $TmpDir
+        cp gpg_abrt_private.key gpg_abrt_public.key $TmpDir
+        cp mygpg $TmpDir
         pushd $TmpDir
+
+        rlRun "make rpm > rpmbuild.log"
+        CRASHING_RPM=$(grep "Wrote:" rpmbuild.log | grep -v debuginfo | grep -v src.rpm | sed 's/Wrote: //g')
+        rlRun "rm rpmbuild.log"
+
+        gpg --import gpg_abrt_public.key
+        gpg --import gpg_abrt_private.key
+
+        killall -q gpg-agent
+        gpg-agent --homedir $HOME/.gnupg --allow-loopback --daemon
+
+        ./expect rpm --addsign -D "__gpg $(realpath mygpg)" -D "_gpg_name abrt_gpg_key" $CRASHING_RPM
+
+        # install signed rpm because if the rpm is unsigned
+        # pkg_fingerprint is not created
+        rlRun "rpm -Uvh --force $CRASHING_RPM"
     rlPhaseEnd
 
     rlPhaseStartTest "CCpp plugin"
         prepare
 
-        # jfilak: will-crash isn't always signed which is needed for pkg_fingerprint.
-        #         If you want to use will-crash, do not forget to add EPEL key
-        #         to /etc/abrt/gpg_keys.
-        #generate_crash
-        sleep 1000 &
-        sleep 1
-        kill -ABRT %1
+        # crashing bin from my_crash package
+        ccpp_crash
 
         wait_for_hooks
         get_crash_path
@@ -66,7 +86,7 @@ rlJournalStart
             rlAssertExists "$crash_PATH/$FILE"
         done
 
-        rlAssertGrep "/bin/sleep" "$crash_PATH/core_backtrace"
+        rlAssertGrep "/usr/sbin/ccpp_crash" "$crash_PATH/core_backtrace"
 
         rlRun "abrt-cli rm $crash_PATH"
     rlPhaseEnd
@@ -74,7 +94,9 @@ rlJournalStart
     rlPhaseStartTest "Python plugin"
         prepare
 
-        will_python3_raise
+        # crashing bin from my_crash package
+        python_crash
+
         wait_for_hooks
         get_crash_path
 
@@ -89,8 +111,10 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
+        rlRun "rpm -e my_crash"
         rlBundleLogs abrt $(echo *_ls)
         popd # TmpDir
+        ./expect gpg --delete-secret-and-public-key abrt_gpg_key
         rm -rf $TmpDir
     rlPhaseEnd
     rlJournalPrintText
