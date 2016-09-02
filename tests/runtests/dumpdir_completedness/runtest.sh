@@ -47,27 +47,16 @@ rlJournalStart
         TmpDir=$(mktemp -d)
         cp expect $TmpDir
         cp -r Makefile my_crash.spec src $TmpDir
+        cp gpg_abrt_private.key gpg_abrt_public.key $TmpDir
         pushd $TmpDir
 
         rlRun "make rpm > rpmbuild.log"
         CRASHING_RPM=$(grep "Wrote:" rpmbuild.log | grep -v debuginfo | grep -v src.rpm | sed 's/Wrote: //g')
         rlRun "rm rpmbuild.log"
 
-        # generate keys with random name
-        gpg_name=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c8)
-cat > gpg_key.conf<<EOF
-Key-Type: 1
-Key-Length: 2048
-Subkey-Type: 1
-Subkey-Length: 2048
-Name-Real: abrt_${gpg_name}
-Expire-Date: 0
-Passphrase: abrt_pass
-EOF
-        rlRun "gpg --batch --gen-key gpg_key.conf"
-        rlRun "rm gpg_key.conf"
-
-        ./expect rpm --addsign -D "_gpg_name abrt_${gpg_name}" $CRASHING_RPM
+        gpg --import gpg_abrt_public.key
+        gpg --import gpg_abrt_private.key
+        ./expect rpm --addsign -D "_gpg_name abrt_gpg_key" $CRASHING_RPM
 
         # install signed rpm because if the rpm is unsigned
         # pkg_fingerprint is not created
@@ -119,7 +108,7 @@ EOF
         rlBundleLogs abrt $(echo *_ls)
         popd # TmpDir
         # delete gpg key
-        ./expect gpg --delete-secret-and-public-key abrt_${gpg_name}
+        ./expect gpg --delete-secret-and-public-key abrt_gpg_key
         rm -rf $TmpDir
     rlPhaseEnd
     rlJournalPrintText
