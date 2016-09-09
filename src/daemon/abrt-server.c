@@ -716,9 +716,6 @@ static void process_message(GHashTable *problem_info, char *message)
             else
             {
                 g_hash_table_insert(problem_info, key, xstrdup(value));
-                /* Compat, delete when FILENAME_ANALYZER is replaced by FILENAME_TYPE: */
-                if (strcmp(key, FILENAME_TYPE) == 0)
-                    g_hash_table_insert(problem_info, xstrdup(FILENAME_ANALYZER), xstrdup(value));
                 /* Prevent freeing key later: */
                 key = NULL;
             }
