@@ -1124,6 +1124,26 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Fri Sep 09 2016 Jakub Filak <jfilak@redhat.com> 2.9.0-1
+- spec: install abrt_dbus_event.conf
+- dbus: use Problems2 API in abrt-dbus
+- dbus: Problems2 API implementation
+- spec: install Problems2 interfaces
+- dbus-doc: rewrite the XML to Problems2
+- Fix memory leaks
+- lib: introdcue a function checking post-create name
+- abrtd: change HTTP response code for duplicate problems to 303
+- autogen: fix typo in usage help string
+- daemon: send base names from abrt-server to abrtd
+- lib: normalize slashes of configured paths
+- lib: make configuration paths alterable at runtime
+- Add generated CCpp.conf to .gitignore
+- abrt-bodhi: use CCpp PackageManager configuration directive from configure
+- cli: introduce unsafe reporting for not-reporable problems
+- handle-event: stop creating post-create lock
+- daemon: trigger dump location cleanup after detection
+- hook-ccpp: dump own core file in debug mode
+
 * Mon Jul 18 2016 Matej Habrnal <mhabrnal@redhat.com> 2.8.2-1
 - Translation updates
 - abrt-hook-ccpp: Fix mismatching argument
