@@ -190,4 +190,5 @@ if __name__ == "__main__":
 
         sys.exit(exitcode)
     else:
-        error_msg_and_die(_("reporter-ureport failed with exit code %d" % exitcode))
+        log1(_("reporter-ureport failed with exit code %d" % exitcode))
+        sys.exit(exitcode)
