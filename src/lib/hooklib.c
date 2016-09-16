@@ -254,7 +254,7 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
 
     unsigned i = 0;
     char *args[25];
-    args[i++] = (char*)"gdb";
+    args[i++] = (char*)GDB;
     args[i++] = (char*)"-batch";
     struct strbuf *set_debug_file_directory = strbuf_new();
     unsigned auto_load_base_index = 0;

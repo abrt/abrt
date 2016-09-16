@@ -271,6 +271,7 @@ AC_ARG_ENABLE(doxygen-docs,
 )
 
 AC_PATH_PROG([FINDMNT], [findmnt], [/usr/bin/findmnt], [$PATH:/usr/sbin:/sbin])
+AC_PATH_PROG([GDB], [gdb], [/usr/bin/gdb], [/usr/libexec$PATH_SEPARATOR$PATH])
 
 # Doxygen Documentation
 
@@ -454,6 +455,7 @@ AC_CONFIG_FILES([
 	src/dbus/Makefile
 	src/plugins/abrt-action-install-debuginfo
 	src/plugins/abrt-action-analyze-vmcore
+	src/plugins/abrt-action-analyze-vulnerability
 	src/plugins/abrt-action-check-oops-for-hw-error
 	src/plugins/abrt-action-check-oops-for-alt-component
 	src/python-problem/Makefile
