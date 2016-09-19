@@ -107,7 +107,8 @@ EXTRA_DIST = \
     xorg-utils.h \
     abrt-journal.h \
     post_report.xml.in \
-    abrt-action-analyze-ccpp-local.in
+    abrt-action-analyze-ccpp-local.in \
+    abrt-action-analyze-vulnerability.in
 
 if BUILD_ADDON_VMCORE
 bin_SCRIPTS += \

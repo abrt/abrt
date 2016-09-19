@@ -184,11 +184,8 @@ This package contains hook for C/C++ crashed programs.
 Summary: %{name}'s C/C++ addon
 Group: System Environment/Libraries
 Requires: cpio
-%if 0%{?fedora:%{fedora} > 22}
-Requires: gdb >= gdb-7.9.50.20150531
-%else
-Requires: gdb >= 7.9.1-16
-%endif
+BuildRequires: gdb-headless
+Requires: gdb-headless
 Requires: elfutils
 %if 0%{!?rhel:1}
 # abrt-action-perform-ccpp-analysis wants to run analyze_RetraceServer:
@@ -395,7 +392,8 @@ Requires: abrt-addon-ccpp
 Requires: abrt-addon-python3
 Requires: abrt-addon-xorg
 # Default config of addon-ccpp requires gdb
-Requires: gdb >= 7.8.1-31
+BuildRequires: gdb-headless
+Requires: gdb-headless
 Requires: abrt-gui
 Requires: gnome-abrt
 %if 0%{?rhel}
