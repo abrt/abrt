@@ -60,6 +60,15 @@ dist_events_DATA = \
 
 @INTLTOOL_XML_RULE@
 
+libreportpluginconfdir = $(LIBREPORT_PLUGINS_CONF_DIR)
+
+dist_libreportpluginconf_DATA = \
+    catalog_ccpp_format.conf \
+    catalog_python_format.conf \
+    catalog_python3_format.conf \
+    catalog_koops_format.conf \
+    catalog_xorg_format.conf
+
 journalcatalogdir = $(JOURNAL_CATALOG_DIR)
 
 dist_journalcatalog_DATA = \
@@ -138,6 +147,9 @@ dist_eventsconf_DATA += \
 
 dist_journalcatalog_DATA += \
     abrt_vmcore.catalog
+
+dist_libreportpluginconf_DATA += \
+    catalog_vmcore_format.conf
 
 PYTHON_FILES += \
     abrt-action-analyze-vmcore.in
