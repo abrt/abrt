@@ -55,7 +55,6 @@ def send(data):
         s.sendall(pre.encode())
         s.sendall(data.encode())
 
-        s.sendall("\0".encode())
         s.shutdown(socket.SHUT_WR)
 
         while True:
@@ -88,10 +87,6 @@ def write_dump(tb_text, tb):
     data += "executable={0}\0".format(executable)
     data += "reason={0}\0".format(tb_text.splitlines()[0])
     data += "backtrace={0}\0".format(tb_text)
-
-    data += "environ="
-    for k, v in os.environ.items():
-        data += "{0}={1}\n".format(k, v)
 
     response = send(data)
     parts = response.split()
