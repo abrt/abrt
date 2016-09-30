@@ -54,16 +54,6 @@ def write_dump(tb_text, tb):
         # (BTW, we *can't* assume the script is in current directory.)
         executable = sys.argv[0]
 
-    dso_list = None
-    # Trace back is None in case of SyntaxError exception.
-    if tb:
-        try:
-            import rpm
-            dso_list = get_dso_list(tb)
-        except ImportError as imperr:
-            syslog("RPM module not available, cannot query RPM db for package "\
-                   "names")
-
     # Open ABRT daemon's socket and write data to it
     try:
         import socket
@@ -80,9 +70,6 @@ def write_dump(tb_text, tb):
             # CCMainWindow.py:1:<module>:ZeroDivisionError: integer division or modulo by zero
             s.sendall("reason=%s\0" % tb_text.splitlines()[0])
             s.sendall("backtrace=%s\0" % tb_text)
-
-            if dso_list:
-                s.sendall("dso_list=%s\0" % "\n".join(dso_list))
 
             s.shutdown(socket.SHUT_WR)
 
