@@ -600,16 +600,26 @@ exit 0
 chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %systemd_post abrt-ccpp.service
 %systemd_post abrt-journal-core.service
+%journal_catalog_update
 
 %post addon-kerneloops
 %systemd_post abrt-oops.service
+%journal_catalog_update
 
 %post addon-xorg
 %systemd_post abrt-xorg.service
+%journal_catalog_update
+
+%post addon-python
+%journal_catalog_update
+
+%post addon-python3
+%journal_catalog_update
 
 %if %{?have_kexec_tools} == 1
 %post addon-vmcore
 %systemd_post abrt-vmcore.service
+%journal_catalog_update
 %endif
 
 %post addon-pstoreoops
@@ -878,6 +888,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_datadir}/%{name}/conf.d/plugins/CCpp.conf
 %{_mandir}/man5/abrt-CCpp.conf.5.gz
 %{_libexecdir}/abrt-gdb-exploitable
+%{_journalcatalogdir}/abrt_ccpp.catalog
 %if %{with systemd}
 %{_unitdir}/abrt-ccpp.service
 %{_unitdir}/abrt-journal-core.service
@@ -948,6 +959,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %files addon-kerneloops
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/koops_event.conf
+%{_journalcatalogdir}/abrt_koops.catalog
 %{_mandir}/man5/koops_event.conf.5.gz
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/oops.conf
 %{_datadir}/%{name}/conf.d/plugins/oops.conf
@@ -970,6 +982,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %files addon-xorg
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/xorg_event.conf
+%{_journalcatalogdir}/abrt_xorg.catalog
 %{_mandir}/man5/xorg_event.conf.5.gz
 %if %{with systemd}
 %{_unitdir}/abrt-xorg.service
@@ -1002,6 +1015,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man5/abrt-vmcore.conf.5*
 %{_mandir}/man1/abrt-action-analyze-vmcore.1*
 %{_mandir}/man1/abrt-action-check-oops-for-hw-error.1*
+%{_journalcatalogdir}/abrt_vmcore.catalog
 %endif
 
 %files addon-pstoreoops
@@ -1022,6 +1036,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_datadir}/%{name}/conf.d/plugins/python.conf
 %{_mandir}/man5/abrt-python.conf.5.gz
 %config(noreplace) %{_sysconfdir}/libreport/events.d/python_event.conf
+%{_journalcatalogdir}/abrt_python.catalog
 %{_mandir}/man5/python_event.conf.5.gz
 %{python_sitearch}/abrt*.py*
 %{python_sitearch}/abrt.pth
@@ -1032,6 +1047,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_datadir}/%{name}/conf.d/plugins/python3.conf
 %{_mandir}/man5/abrt-python3.conf.5.gz
 %config(noreplace) %{_sysconfdir}/libreport/events.d/python3_event.conf
+%{_journalcatalogdir}/abrt_python3.catalog
 %{_mandir}/man5/python3_event.conf.5.gz
 %{python3_sitearch}/abrt*
 %{python3_sitearch}/__pycache__/abrt*
