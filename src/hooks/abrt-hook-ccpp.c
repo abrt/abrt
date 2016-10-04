@@ -652,6 +652,8 @@ int main(int argc, char** argv)
      */
     if (g_settings_debug_level >= 100)
         setrlimit(RLIMIT_CORE, &((struct rlimit){ RLIM_INFINITY, RLIM_INFINITY}));
+    if (g_settings_debug_level >= 200)
+        set_xfunc_diemode(DIEMODE_ABORT);
 
     /* ... and plugins/CCpp.conf */
     bool setting_MakeCompatCore;
@@ -851,7 +853,7 @@ int main(int argc, char** argv)
                                    signal_no, signame, "avoid recursion");
         }
 
-        xfunc_die();
+        exit(0);
     }
     /* Check /var/tmp/abrt/last-ccpp marker, do not dump repeated crashes
      * if they happen too often. Else, write new marker value.
