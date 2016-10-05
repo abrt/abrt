@@ -74,6 +74,7 @@ You can send more messages using the same KEY=value format.
 */
 
 static int g_signal_pipe[2];
+static struct ns_ids g_ns_ids;
 
 struct waiting_context
 {
@@ -89,6 +90,7 @@ struct waiting_context
 
 static unsigned total_bytes_read = 0;
 
+static pid_t client_pid = (pid_t)-1L;
 static uid_t client_uid = (uid_t)-1L;
 
 static void
@@ -1034,10 +1036,9 @@ static int perform_http_xact(struct response *rsp)
         return run_post_create(messagebuf_data, rsp);
     }
 
-    /* Save problem dir */
-    unsigned pid = convert_pid(problem_info);
     die_if_data_is_missing(problem_info);
 
+    /* Save problem dir */
     char *executable = g_hash_table_lookup(problem_info, FILENAME_EXECUTABLE);
     if (executable)
     {
@@ -1057,6 +1058,16 @@ static int perform_http_xact(struct response *rsp)
     problem_data_add_basics(problem_info);
 //...the problem being that problem_info here is not a problem_data_t!
 #endif
+    unsigned pid = convert_pid(problem_info);
+    struct ns_ids client_ids;
+    if (get_ns_ids(client_pid, &client_ids) < 0)
+        error_msg_and_die("Cannot get peer's Namespaces from /proc/%d/ns", client_pid);
+
+    if (client_ids.nsi_ids[PROC_NS_ID_PID] != g_ns_ids.nsi_ids[PROC_NS_ID_PID])
+    {
+        log_notice("Client is running in own PID Namespace, using PID %d instead of %d", client_pid, pid);
+        pid = client_pid;
+    }
 
     create_problem_dir(problem_info, pid);
     /* does not return */
@@ -1119,17 +1130,22 @@ int main(int argc, char **argv)
     /* Part 2 - set the timeout per se */
     alarm(TIMEOUT);
 
+    /* Get uid of the connected client */
+    struct ucred cr;
+    socklen_t crlen = sizeof(cr);
+    if (0 != getsockopt(STDIN_FILENO, SOL_SOCKET, SO_PEERCRED, &cr, &crlen))
+        perror_msg_and_die("getsockopt(SO_PEERCRED)");
+    if (crlen != sizeof(cr))
+        error_msg_and_die("%s: bad crlen %d", "getsockopt(SO_PEERCRED)", (int)crlen);
+
     if (client_uid == (uid_t)-1L)
-    {
-        /* Get uid of the connected client */
-        struct ucred cr;
-        socklen_t crlen = sizeof(cr);
-        if (0 != getsockopt(STDIN_FILENO, SOL_SOCKET, SO_PEERCRED, &cr, &crlen))
-            perror_msg_and_die("getsockopt(SO_PEERCRED)");
-        if (crlen != sizeof(cr))
-            error_msg_and_die("%s: bad crlen %d", "getsockopt(SO_PEERCRED)", (int)crlen);
         client_uid = cr.uid;
-    }
+
+    client_pid = cr.pid;
+
+    pid_t pid = getpid();
+    if (get_ns_ids(getpid(), &g_ns_ids) < 0)
+        error_msg_and_die("Cannot get own Namespaces from /proc/%d/ns", pid);
 
     load_abrt_conf();
 
