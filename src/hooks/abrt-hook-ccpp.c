@@ -757,8 +757,9 @@ int main(int argc, char** argv)
     }
     const char *global_pid_str = argv[7];
     pid_t pid = xatoi_positive(argv[7]);
+    const int pid_proc_fd = open_proc_pid_dir(pid);
 
-    user_pwd = get_cwd(pid); /* may be NULL on error */
+    user_pwd = get_cwd_at(pid_proc_fd); /* may be NULL on error */
     log_notice("user_pwd:'%s'", user_pwd);
 
     {
@@ -815,7 +816,7 @@ int main(int argc, char** argv)
         /* note: checks "user_pwd == NULL" inside; updates core_basename */
         user_core_fd = open_user_core(uid, fsuid, fsgid, pid, &argv[1]);
 
-    char *executable = get_executable(pid);
+    char *executable = get_executable_at(pid_proc_fd);
     if (executable == NULL)
     {
         /* readlink on /proc/$PID/exe failed, don't create abrt dump dir */
@@ -972,7 +973,7 @@ int main(int argc, char** argv)
 
         /* What's wrong on using /proc/[pid]/root every time ?*/
         /* It creates os_info_in_root_dir for all crashes. */
-        char *rootdir = process_has_own_root(pid) ? get_rootdir(pid) : NULL;
+        char *rootdir = process_has_own_root_at(pid) ? get_rootdir_at(pid) : NULL;
 
         /* Reading data from an arbitrary root directory is not secure. */
         if (g_settings_explorechroots)
@@ -986,33 +987,34 @@ int main(int argc, char** argv)
             dd_create_basic_files(dd, fsuid, NULL);
         }
 
-        char *dest_filename = concat_path_file(dd->dd_dirname, "also_somewhat_longish_name");
-        char *dest_base = strrchr(dest_filename, '/') + 1;
-
         // Disabled for now: /proc/PID/smaps tends to be BIG,
         // and not much more informative than /proc/PID/maps:
-        // dd_copy_file(dd, FILENAME_SMAPS, source_filename);
+        // dd_copy_file_at(dd, FILENAME_SMAPS, pid_proc_fd, "smaps");
 
-        strcpy(source_filename + source_base_ofs, "maps");
-        dd_copy_file(dd, FILENAME_MAPS, source_filename);
+        dd_copy_file_at(dd, FILENAME_MAPS, pid_proc_fd, "maps");
+        dd_copy_file_at(dd, FILENAME_LIMITS, pid_proc_fd, "limits");
+        dd_copy_file_at(dd, FILENAME_CGROUP, pid_proc_fd, "cgroup");
+        dd_copy_file_at(dd, FILENAME_MOUNTINFO, pid_proc_fd, "mountinfo");
 
-        strcpy(source_filename + source_base_ofs, "limits");
-        dd_copy_file(dd, FILENAME_LIMITS, source_filename);
+        FILE *open_fds = dd_open_item_file(dd, FILENAME_OPEN_FDS, O_WRONLY);
+        if (open_fds != NULL)
+        {
+            if (dump_fd_info_at(pid_proc_fd, open_fds) < 0)
+                dd_delete_item(dd, FILENAME_OPEN_FDS);
+            fclose(open_fds);
+        }
 
-        strcpy(source_filename + source_base_ofs, "cgroup");
-        dd_copy_file(dd, FILENAME_CGROUP, source_filename);
-
-        strcpy(source_filename + source_base_ofs, "mountinfo");
-        dd_copy_file(dd, FILENAME_MOUNTINFO, source_filename);
-
-        strcpy(dest_base, FILENAME_OPEN_FDS);
-        strcpy(source_filename + source_base_ofs, "fd");
-        dump_fd_info_ext(dest_filename, source_filename, dd->dd_uid, dd->dd_gid);
-
-        strcpy(dest_base, FILENAME_NAMESPACES);
-        dump_namespace_diff_ext(dest_filename, 1, pid, dd->dd_uid, dd->dd_gid);
-
-        free(dest_filename);
+        const int init_proc_dir_fd = open_proc_pid_dir(1);
+        FILE *namespaces = dd_open_item_file(dd, FILENAME_NAMESPACES, O_WRONLY);
+        if (namespaces != NULL && init_proc_dir_fd >= 0)
+        {
+            if (dump_namespace_diff_at(init_proc_dir_fd, pid_proc_fd, namespaces) < 0)
+                dd_delete_item(dd, FILENAME_NAMESPACES);
+        }
+        if (init_proc_dir_fd >= 0)
+            close(init_proc_dir_fd);
+        if (namespaces != NULL)
+            fclose(namespaces);
 
         /* There's no need to compare mount namespaces and search for '/' in
          * mountifo.  Comparison of inodes of '/proc/[pid]/root' and '/' works
@@ -1024,7 +1026,7 @@ int main(int argc, char** argv)
         {
             log_debug("Process %d is considered to be containerized", pid);
             pid_t container_pid;
-            if (get_pid_of_container(pid, &container_pid) == 0)
+            if (get_pid_of_container_at(pid_proc_fd, &container_pid) == 0)
             {
                 char *container_cmdline = get_cmdline(container_pid);
                 dd_save_text(dd, FILENAME_CONTAINER_CMDLINE, container_cmdline);
@@ -1055,11 +1057,11 @@ int main(int argc, char** argv)
         dd_save_text(dd, FILENAME_REASON, reason);
         free(reason);
 
-        char *cmdline = get_cmdline(pid);
+        char *cmdline = get_cmdline_at(pid_proc_fd);
         dd_save_text(dd, FILENAME_CMDLINE, cmdline ? : "");
         free(cmdline);
 
-        char *environ = get_environ(pid);
+        char *environ = get_environ_at(pid_proc_fd);
         dd_save_text(dd, FILENAME_ENVIRON, environ ? : "");
         free(environ);
 
@@ -1255,6 +1257,8 @@ cleanup_and_exit:
 
     if (proc_cwd != NULL)
         closedir(proc_cwd);
+
+    close(pid_proc_fd);
 
     return err;
 }
