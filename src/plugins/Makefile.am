@@ -303,12 +303,14 @@ abrt_action_analyze_python_SOURCES = \
     abrt-action-analyze-python.c
 abrt_action_analyze_python_CPPFLAGS = \
     -I$(srcdir)/../include \
+    -I$(srcdir)/../libreport/src/lib \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE
 abrt_action_analyze_python_LDADD = \
-    $(LIBREPORT_LIBS)
+    $(LIBREPORT_LIBS) \
+    ../lib/libabrt.la
 
 abrt_action_analyze_oops_SOURCES = \
     abrt-action-analyze-oops.c
