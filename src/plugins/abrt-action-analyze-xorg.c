@@ -105,6 +105,29 @@ int main(int argc, char **argv)
     char *blacklisted = is_in_comma_separated_list_with_fmt(backtrace, "/%.*s", BlacklistedXorgModules);
     if (!blacklisted)
         blacklisted = is_in_comma_separated_list_with_fmt(xorg_log, "LoadModule: \"%.*s\"", BlacklistedXorgModules);
+
+    /* get and save crash_function */
+    /* xorg backtrace is extracted from journal and looks like:
+     * 0: /usr/libexec/Xorg (OsLookupColor+0x139) [0x59ab89]
+     * 1: /lib64/libc.so.6 (__restore_rt+0x0) [0x7f2b13545b1f]
+     * 2: /lib64/libc.so.6 (__select_nocancel+0xa) [0x7f2b13609e7a]
+     * 3: /usr/libexec/Xorg (WaitForSomething+0x1c8) [0x593568]
+     * 4: /usr/libexec/Xorg (SendErrorToClient+0x111) [0x43a3a1]
+     */
+    char *crash_function = strchr(backtrace, '(');
+    if (crash_function++)
+    {
+        char *end = strchr(crash_function, '+');
+        if (end)
+            *end = '\0';
+        else
+        {
+            end = strchr(crash_function, ')');
+            *end = '\0';
+        }
+        dd_save_text(dd, FILENAME_CRASH_FUNCTION, crash_function);
+    }
+
     free(backtrace);
     free(xorg_log);
 
