@@ -34,6 +34,8 @@ typedef char *security_context_t;
 #include <satyr/utils.h>
 #endif /* ENABLE_DUMP_TIME_UNWIND */
 
+#define KERNEL_PIPE_BUFFER_SIZE 65536
+
 static int g_user_core_flags;
 static int g_need_nonrelative;
 
@@ -42,100 +44,6 @@ static int g_need_nonrelative;
  * and (void) cast is not enough to shut it up! Oh God...
  */
 #define IGNORE_RESULT(func_call) do { if (func_call) /* nothing */; } while (0)
-
-/* Custom version of copyfd_xyz,
- * one which is able to write into two descriptors at once.
- */
-#define CONFIG_FEATURE_COPYBUF_KB 4
-static off_t copyfd_sparse(int src_fd, int dst_fd1, int dst_fd2, off_t size2)
-{
-	off_t total = 0;
-	int last_was_seek = 0;
-#if CONFIG_FEATURE_COPYBUF_KB <= 4
-	char buffer[CONFIG_FEATURE_COPYBUF_KB * 1024];
-	enum { buffer_size = sizeof(buffer) };
-#else
-	char *buffer;
-	int buffer_size;
-
-	/* We want page-aligned buffer, just in case kernel is clever
-	 * and can do page-aligned io more efficiently */
-	buffer = mmap(NULL, CONFIG_FEATURE_COPYBUF_KB * 1024,
-			PROT_READ | PROT_WRITE,
-			MAP_PRIVATE | MAP_ANON,
-			/* ignored: */ -1, 0);
-	buffer_size = CONFIG_FEATURE_COPYBUF_KB * 1024;
-	if (buffer == MAP_FAILED) {
-		buffer = alloca(4 * 1024);
-		buffer_size = 4 * 1024;
-	}
-#endif
-
-	while (1) {
-		ssize_t rd = safe_read(src_fd, buffer, buffer_size);
-		if (!rd) { /* eof */
-			if (last_was_seek) {
-				if (lseek(dst_fd1, -1, SEEK_CUR) < 0
-				 || safe_write(dst_fd1, "", 1) != 1
-				 || (dst_fd2 >= 0
-				     && (lseek(dst_fd2, -1, SEEK_CUR) < 0
-					 || safe_write(dst_fd2, "", 1) != 1
-				        )
-				    )
-				) {
-					perror_msg("Write error");
-					total = -1;
-					goto out;
-				}
-			}
-			/* all done */
-			goto out;
-		}
-		if (rd < 0) {
-			perror_msg("Read error");
-			total = -1;
-			goto out;
-		}
-
-		/* checking sparseness */
-		ssize_t cnt = rd;
-		while (--cnt >= 0) {
-			if (buffer[cnt] != 0) {
-				/* not sparse */
-				errno = 0;
-				ssize_t wr1 = full_write(dst_fd1, buffer, rd);
-				ssize_t wr2 = (dst_fd2 >= 0 ? full_write(dst_fd2, buffer, rd) : rd);
-				if (wr1 < rd || wr2 < rd) {
-					perror_msg("Write error");
-					total = -1;
-					goto out;
-				}
-				last_was_seek = 0;
-				goto adv;
-			}
-		}
-		/* sparse */
-		xlseek(dst_fd1, rd, SEEK_CUR);
-		if (dst_fd2 >= 0)
-			xlseek(dst_fd2, rd, SEEK_CUR);
-		last_was_seek = 1;
- adv:
-		total += rd;
-		size2 -= rd;
-		if (size2 < 0)
-			dst_fd2 = -1;
-// truncate to 0 or even delete the second file?
-// No, kernel does not delete nor truncate core files.
-	}
- out:
-
-#if CONFIG_FEATURE_COPYBUF_KB > 4
-	if (buffer_size != 4 * 1024)
-		munmap(buffer, buffer_size);
-#endif
-	return total;
-}
-
 
 /* Global data */
 static char *user_pwd;
@@ -411,26 +319,6 @@ static int close_user_core(int user_core_fd, off_t core_size)
     return 0;
 }
 
-/* Like xopen, but on error, unlocks and deletes dd and user core */
-static int create_or_die(const char *filename, int user_core_fd)
-{
-    int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL, DEFAULT_DUMP_DIR_MODE);
-    if (fd >= 0)
-    {
-        IGNORE_RESULT(fchown(fd, dd->dd_uid, dd->dd_gid));
-        return fd;
-    }
-
-    int sv_errno = errno;
-    if (dd)
-        dd_delete(dd);
-    if (user_core_fd >= 0)
-        close(user_core_fd);
-
-    errno = sv_errno;
-    perror_msg_and_die("Can't open '%s'", filename);
-}
-
 static void create_core_backtrace(pid_t tid, const char *executable, int signal_no, struct dump_dir *dd)
 {
 #ifdef ENABLE_DUMP_TIME_UNWIND
@@ -453,13 +341,41 @@ static void create_core_backtrace(pid_t tid, const char *executable, int signal_
 #endif /* ENABLE_DUMP_TIME_UNWIND */
 }
 
+static ssize_t splice_entire_per_partes(int in_fd, int out_fd, size_t size_limit)
+{
+    size_t bytes = 0;
+    size_t soft_limit = KERNEL_PIPE_BUFFER_SIZE;
+    while (bytes < size_limit)
+    {
+        const size_t hard_limit = size_limit - bytes;
+        if (hard_limit < soft_limit)
+            soft_limit = hard_limit;
+
+        const ssize_t copied = splice(in_fd, NULL, out_fd, NULL, soft_limit, SPLICE_F_MOVE | SPLICE_F_MORE);
+        if (copied < 0)
+            return copied;
+
+        bytes += copied;
+
+        /* Check EOF. */
+        if (copied == 0)
+            break;
+    }
+
+    return bytes;
+}
+
 static int create_user_core(int user_core_fd, pid_t pid, off_t ulimit_c)
 {
     int err = 1;
     if (user_core_fd >= 0)
     {
-        off_t core_size = copyfd_size(STDIN_FILENO, user_core_fd, ulimit_c, COPYFD_SPARSE);
-        if (close_user_core(user_core_fd, core_size) != 0)
+        errno = 0;
+        ssize_t core_size = splice_entire_per_partes(STDIN_FILENO, user_core_fd, ulimit_c);
+        if (core_size < 0)
+            perror_msg("Failed to create user core '%s' in '%s'", core_basename, user_pwd);
+
+        if (close_user_core(user_core_fd, core_size) != 0 || core_size < 0)
             goto finito;
 
         log_notice("Saved core dump of pid %lu to '%s' at '%s' (%llu bytes)", (long)pid, core_basename, user_pwd, (long long)core_size);
@@ -615,8 +531,8 @@ static void dump_abrt_process(pid_t pid, const char *executable)
     char *path = xasprintf("%s/%s-coredump", g_settings_dump_location, basename);
     unlink(path);
     int abrt_core_fd = xopen3(path, O_WRONLY | O_CREAT | O_EXCL, 0600);
-    off_t core_size = copyfd_eof(STDIN_FILENO, abrt_core_fd, COPYFD_SPARSE);
-    if (core_size < 0 || fsync(abrt_core_fd) != 0)
+    off_t core_size = splice_entire_per_partes(STDIN_FILENO, abrt_core_fd, SIZE_MAX);
+    if (core_size < 0 || fsync(abrt_core_fd) != 0 || close(abrt_core_fd) < 0)
     {
         unlink(path);
         /* copyfd_eof logs the error including errno string,
@@ -625,6 +541,164 @@ static void dump_abrt_process(pid_t pid, const char *executable)
     }
     log_notice("Saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, basename, path, (long long)core_size);
     free(path);
+}
+
+static ssize_t splice_full(int in_fd, int out_fd, size_t size)
+{
+    ssize_t total = 0;
+    while (size != 0)
+    {
+        const ssize_t b = splice(in_fd, NULL, out_fd, NULL, size, 0);
+        if (b < 0)
+            return b;
+
+        if (b == 0)
+            break;
+
+        total += b;
+        size -= b;
+    }
+
+    return total;
+}
+
+static size_t xsplice_full(int in_fd, int out_fd, size_t size)
+{
+    const ssize_t r = splice_full(in_fd, out_fd, size);
+    if (r < 0)
+        perror_msg_and_die("Failed to write core dump to file");
+    return (size_t)r;
+}
+
+static void pipe_close(int *pfds)
+{
+    close(pfds[0]);
+    close(pfds[1]);
+    pfds[0] = pfds[1] = -1;
+}
+
+enum dump_core_files_ret_flags {
+    DUMP_ABRT_CORE_FAILED  = 0x0001,
+    DUMP_USER_CORE_FAILED  = 0x0100,
+};
+
+/* Optimized creation of two core files - ABRT and CWD
+ *
+ * The simplest optimization is to avoid the need to copy data to user space.
+ * In that case we cannot read data once and write them twice as we do with
+ * read/write approach because there is no syscall forwarding data from a
+ * single source fd to several destination fds (one might claim that there is
+ * tee() function but such a solution is suboptimal from our perspective).
+ *
+ * So the function first create ABRT core file and then creates user core file.
+ * If ABRT limit made the ABRT core to be smaller than allowed user core size,
+ * then the function reads more data from STDIN and appends them to the user
+ * core file.
+ *
+ * We must not read from the user core fd because that operation might be
+ * refused by OS.
+ */
+static int dump_two_core_files(int abrt_core_fd, size_t *abrt_limit, int user_core_fd, size_t *user_limit)
+{
+   /* tee() does not move the in_fd, thus you need to call splice to be
+    * get next chunk of data loaded into the in_fd buffer.
+    * So, calling tee() without splice() would be looping on the same
+    * data. Hence, we must ensure that after tee() we call splice() and
+    * that would be problematic if tee core limit is greater than splice
+    * core limit. Therefore, we swap the out fds based on their limits.
+    */
+    int    spliced_fd          = *abrt_limit > *user_limit ? abrt_core_fd    : user_core_fd;
+    size_t spliced_core_limit  = *abrt_limit > *user_limit ? *abrt_limit     : *user_limit;
+    int    teed_fd             = *abrt_limit > *user_limit ? user_core_fd    : abrt_core_fd;
+    size_t teed_core_limit     = *abrt_limit > *user_limit ? *user_limit     : *abrt_limit;
+
+    size_t *spliced_core_size  = *abrt_limit > *user_limit ? abrt_limit : user_limit;
+    size_t *teed_core_size     = *abrt_limit > *user_limit ? user_limit : abrt_limit;
+
+    *spliced_core_size = *teed_core_size = 0;
+
+    int cp[2] = { -1, -1 };
+    if (pipe(cp) < 0)
+    {
+        perror_msg("Failed to create temporary pipe for core file");
+        cp[0] = cp[1] = -1;
+    }
+
+    /* tee() can copy duplicate up to size of the pipe buffer bytes.
+     * It should not be problem to ask for more (in that case, tee would simply
+     * duplicate up to the limit bytes) but I would rather not to exceed
+     * the pipe buffer limit.
+     */
+    int copy_buffer_size = fcntl(STDIN_FILENO, F_GETPIPE_SZ);
+    if (copy_buffer_size < 0)
+        copy_buffer_size = KERNEL_PIPE_BUFFER_SIZE;
+
+    ssize_t to_write = copy_buffer_size;
+    for (;;)
+    {
+        if (cp[1] >= 0)
+        {
+            to_write = tee(STDIN_FILENO, cp[1], copy_buffer_size, 0);
+
+            /* Check EOF. */
+            if (to_write == 0)
+                break;
+
+            if (to_write < 0)
+            {
+                perror_msg("Cannot duplicate stdin buffer for core file");
+                pipe_close(cp);
+                to_write = copy_buffer_size;
+            }
+        }
+
+        size_t to_splice = to_write;
+        if (*spliced_core_size + to_splice > spliced_core_limit)
+            to_splice = spliced_core_limit - *spliced_core_size;
+
+        const size_t spliced = xsplice_full(STDIN_FILENO, spliced_fd, to_splice);
+        *spliced_core_size += spliced;
+
+        if (cp[0] >= 0)
+        {
+            size_t to_tee = to_write;
+            if (*teed_core_size + to_tee > teed_core_limit)
+                to_tee = teed_core_limit - *teed_core_size;
+
+            const ssize_t teed = splice_full(cp[0], teed_fd, to_tee);
+            if (teed < 0)
+            {
+                perror_msg("Cannot splice teed data to core file");
+                pipe_close(cp);
+                to_write = copy_buffer_size;
+            }
+            else
+                *teed_core_size += teed;
+
+            if (*teed_core_size >= teed_core_limit)
+            {
+                pipe_close(cp);
+                to_write = copy_buffer_size;
+            }
+        }
+
+        /* Check EOF. */
+        if (spliced == 0 || *spliced_core_size >= spliced_core_limit)
+            break;
+    }
+
+    int r = 0;
+    if (cp[0] < 0)
+    {
+        if (abrt_limit < user_limit)
+            r |= DUMP_ABRT_CORE_FAILED;
+        else
+            r |= DUMP_USER_CORE_FAILED;
+    }
+    else
+        pipe_close(cp);
+
+    return r;
 }
 
 int main(int argc, char** argv)
@@ -660,6 +734,8 @@ int main(int argc, char** argv)
     bool setting_CreateCoreBacktrace;
     bool setting_SaveContainerizedPackageData;
     bool setting_StandaloneHook;
+    unsigned int setting_MaxCoreFileSize = g_settings_nMaxCrashReportsSize;
+
     GList *setting_ignored_paths = NULL;
     GList *setting_allowed_users = NULL;
     GList *setting_allowed_groups = NULL;
@@ -685,6 +761,10 @@ int main(int argc, char** argv)
         value = get_map_string_item_or_NULL(settings, "AllowedGroups");
         if (value)
             setting_allowed_groups = parse_list(value);
+
+        value = get_map_string_item_or_NULL(settings, "MaxCoreFileSize");
+        if (value && !try_get_map_string_item_as_uint(settings, "MaxCoreFileSize", &setting_MaxCoreFileSize))
+            log_warning("The MaxCoreFileSize option in the CCpp.conf file holds an invalid value");
 
         value = get_map_string_item_or_NULL(settings, "SaveContainerizedPackageData");
         setting_SaveContainerizedPackageData = value && string_to_bool(value);
@@ -1102,33 +1182,60 @@ int main(int argc, char** argv)
             }
         }
 
-        off_t core_size = 0;
+        size_t core_size = 0;
         if (setting_SaveFullCore)
         {
-            strcpy(path + path_len, "/"FILENAME_COREDUMP);
-            int abrt_core_fd = create_or_die(path, user_core_fd);
-
-            /* We write both coredumps at once.
-             * We can't write user coredump first, since it might be truncated
-             * and thus can't be copied and used as abrt coredump;
-             * and if we write abrt coredump first and then copy it as user one,
-             * then we have a race when process exits but coredump does not exist yet:
-             * $ echo -e '#include<signal.h>\nmain(){raise(SIGSEGV);}' | gcc -o test -x c -
-             * $ rm -f core*; ulimit -c unlimited; ./test; ls -l core*
-             * 21631 Segmentation fault (core dumped) ./test
-             * ls: cannot access core*: No such file or directory <=== BAD
-             */
-            core_size = copyfd_sparse(STDIN_FILENO, abrt_core_fd, user_core_fd, ulimit_c);
-            close_user_core(user_core_fd, core_size);
-            if (fsync(abrt_core_fd) != 0 || close(abrt_core_fd) != 0 || core_size < 0)
+            int abrt_core_fd = dd_open_item(dd, FILENAME_COREDUMP, O_RDWR);
+            if (abrt_core_fd < 0)
+            {   /* Avoid the need to deal with two destinations. */
+                perror_msg("Failed to create ABRT core file in '%s'", dd->dd_dirname);
+                create_user_core(user_core_fd, pid, ulimit_c);
+            }
+            else
             {
-                unlink(path);
+                size_t abrt_limit = 0;
+                if (   (g_settings_nMaxCrashReportsSize != 0 && setting_MaxCoreFileSize == 0)
+                    || (g_settings_nMaxCrashReportsSize != 0 && g_settings_nMaxCrashReportsSize < setting_MaxCoreFileSize))
+                    abrt_limit = g_settings_nMaxCrashReportsSize;
+                else
+                    abrt_limit = setting_MaxCoreFileSize;
 
-                /* copyfd_sparse logs the error including errno string,
-                 * but it does not log file name */
-                error_msg("Error writing '%s'", path);
+                if (abrt_limit != 0)
+                {
+                    const size_t abrt_limit_bytes = 1024 * 1024 * abrt_limit;
+                    /* Overflow protection. */
+                    if (abrt_limit_bytes > abrt_limit)
+                        abrt_limit = abrt_limit_bytes;
+                    else
+                    {
+                        error_msg("ABRT core file size limit (MaxCrashReportsSize|MaxCoreFileSize) does not fit into runtime type. Using maximal possible size.");
+                        abrt_limit = SIZE_MAX;
+                    }
+                }
+                else
+                    abrt_limit = SIZE_MAX;
 
-                goto cleanup_and_exit;
+                if (user_core_fd < 0)
+                {
+                    const ssize_t r = splice_entire_per_partes(STDIN_FILENO, abrt_core_fd, abrt_limit);
+                    if (r < 0)
+                        perror_msg("Failed to write ABRT core file");
+                    else
+                        core_size = r;
+                }
+                else
+                {
+                    size_t user_limit = ulimit_c;
+                    const int r = dump_two_core_files(abrt_core_fd, &abrt_limit, user_core_fd, &user_limit);
+
+                    close_user_core(user_core_fd, (r & DUMP_USER_CORE_FAILED) ? -1 : user_limit);
+
+                    if (!(r & DUMP_ABRT_CORE_FAILED))
+                        core_size = abrt_limit;
+                }
+
+                if (fsync(abrt_core_fd) != 0 || close(abrt_core_fd) != 0)
+                    perror_msg("Failed to close ABRT core file");
             }
         }
         else
@@ -1219,8 +1326,8 @@ int main(int argc, char** argv)
         free(newpath);
 
         if (core_size > 0)
-            log_notice("Saved core dump of pid %lu (%s) to %s (%llu bytes)",
-                       (long)pid, executable, path, (long long)core_size);
+            log_notice("Saved core dump of pid %lu (%s) to %s (%zu bytes)",
+                       (long)pid, executable, path, core_size);
 
         if (abrtd_running)
             notify_new_path(path);

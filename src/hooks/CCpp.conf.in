@@ -12,6 +12,16 @@
 #   https://github.com/systemd/systemd/issues/2643
 MakeCompatCore = no
 
+# The option allows you to set limit for the core file size in MiB.
+#
+# This value is compared to value of the MaxCrashReportSize configuration
+# option from (/etc/abrt.conf) and the lower value is used as the limit.
+#
+# If MaxCoreFileSize is 0 then the value of MaxCrashReportSize is the limit.
+# If MaxCrashReportSize is 0 then the value of MaxCoreFileSize is the limit.
+# If both values are 0 then the core file size is unlimited.
+MaxCoreFileSize = 0
+
 # Do you want a copy of crashed binary be saved?
 # (useful, for example, when _deleted binary_ segfaults)
 SaveBinaryImage = no
