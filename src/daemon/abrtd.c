@@ -41,6 +41,7 @@
 /* Maximum number of simultaneously opened client connections. */
 #define MAX_CLIENT_COUNT  10
 
+#define ABRTD_EVENT_ENV "ABRTD_PID"
 
 /* Daemon initializes, then sits in glib main loop, waiting for events.
  * Events can be:
@@ -198,8 +199,11 @@ static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *ev
     int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_QUIET | EXECFLG_ERR2OUT;
     VERB1 flags &= ~EXECFLG_QUIET;
 
+    char *env_vec[2];
+    env_vec[0] = xasprintf("%s=%d", ABRTD_EVENT_ENV, getpid());
+    env_vec[1] = NULL;
     pid_t child = fork_execv_on_steroids(flags, args, pipeout,
-                                         /*env_vec:*/ NULL, /*dir:*/ NULL,
+                                         env_vec, /*dir:*/ NULL,
                                          /*uid(unused):*/ 0);
     if (fdp)
         *fdp = pipeout[0];
@@ -532,6 +536,23 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
 
 /* Inotify handler */
 
+static int problem_dump_dir_was_provoked_by_abrt_event(struct dump_dir *dd, char  **provoker)
+{
+    char *env_var = NULL;
+    const int r = dd_get_env_variable(dd, ABRTD_EVENT_ENV, &env_var);
+
+    /* Dump directory doesn't contain the environ file */
+    if (r == -ENOENT)
+        return 0;
+
+    if (provoker != NULL)
+        *provoker = env_var;
+    else
+        free(env_var);
+
+    return env_var != NULL;
+}
+
 static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
 {
     /* Default size: 128 simultaneous actions (about 1/2 meg) */
@@ -683,6 +704,37 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             if (current_one)
                 continue;
         }
+
+        struct dump_dir *dd = dd_opendir(dirpath, DD_OPEN_READONLY);
+        char *provoker = NULL;
+        if (dd && problem_dump_dir_was_provoked_by_abrt_event(dd, &provoker))
+        {
+            if (g_settings_debug_level == 0)
+            {
+                error_msg("Removing problem provoked by ABRT(pid:%s): '%s'", provoker, dirpath);
+                dd_delete(dd);
+                continue;
+            }
+            else
+            {
+                char *dumpdir = NULL;
+                char *event   = NULL;
+                char *reason  = NULL;
+                char *cmdline = NULL;
+
+                /* Ignore errors */
+                dd_get_env_variable(dd, "DUMP_DIR", &dumpdir);
+                dd_get_env_variable(dd, "EVENT",    &event);
+                reason  = dd_load_text(dd, FILENAME_REASON);
+                cmdline = dd_load_text(dd, FILENAME_CMDLINE);
+
+                error_msg("ABRTD_PID=%s;DUMP_DIR='%s';EVENT='%s';REASON='%s';CMDLINE='%s'",
+                           provoker, dumpdir, event, reason, cmdline);
+            }
+
+            free(provoker);
+        }
+        dd_close(dd);
 
         /* push the new directory to the end of the incoming queue */
         s_dir_queue = g_list_append(s_dir_queue, dirpath);
