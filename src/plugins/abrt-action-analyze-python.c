@@ -62,12 +62,15 @@ int main(int argc, char **argv)
         return 1;
     char *bt = dd_load_text(dd, FILENAME_BACKTRACE);
 
-    /* save crash_function into dumpdir */
+    /* save crash_function and exception_name into dumpdir */
     char *error_message = NULL;
     struct sr_stacktrace *stacktrace = sr_stacktrace_parse(SR_REPORT_PYTHON,
                                                            (const char *)bt, &error_message);
     if (stacktrace)
     {
+        struct sr_python_stacktrace *python_stacktrace = (struct sr_python_stacktrace *)stacktrace;
+        if (python_stacktrace->exception_name)
+            dd_save_text(dd, FILENAME_EXCEPTION_TYPE, python_stacktrace->exception_name);
         /* thread is the same as stacktrace, if stacktrace is not NULL, thread
          * is not NULL as well */
         struct sr_thread *thread = sr_stacktrace_find_crash_thread(stacktrace);
