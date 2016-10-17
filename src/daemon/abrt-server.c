@@ -134,6 +134,10 @@ static int create_debug_dump()
 
     dd_save_text(dd, "abrt_version", VERSION);
 
+    char *environ = get_environ(pid);
+    dd_save_text(dd, FILENAME_ENVIRON, environ ? : "");
+    free(environ);
+
     dd_close(dd);
 
     /* Move the completely created debug dump to
