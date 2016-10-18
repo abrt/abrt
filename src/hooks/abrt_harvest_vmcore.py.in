@@ -13,6 +13,7 @@ import shutil
 import time
 import hashlib
 import augeas
+from argparse import ArgumentParser
 from subprocess import Popen, PIPE
 
 import problem
@@ -62,7 +63,7 @@ def get_mount_point(part_id):
     except OSError as ex:
         errx("Cannot run 'findmnt': {1}".format(str(ex)))
 
-def parse_kdump():
+def parse_kdump(kdump_conf_path="/etc/kdump.conf"):
     """
     This function parses /etc/kdump.conf to get a path to kdump's
     dump directory.
@@ -73,14 +74,14 @@ def parse_kdump():
     # filesystem types that can be used by kdump for dumping
     fs_types = ['ext4', 'ext3', 'ext2', 'minix', 'btrfs', 'xfs']
 
-    if not os.access('/etc/kdump.conf', os.R_OK):
-        sys.stderr.write("/etc/kdump.conf not readable, using "
-                         "default path '%s'\n" % dump_path)
+    if not os.access(kdump_conf_path, os.R_OK):
+        sys.stderr.write("%s not readable, using "
+                         "default path '%s'\n" % (kdump_conf_path, dump_path))
         return dump_path
 
-    aug_obj = get_augeas("Kdump", "/etc/kdump.conf")
+    aug_obj = get_augeas("Kdump", kdump_conf_path)
     # check for path variable in kdump.conf
-    kdump_path = aug_obj.get("/files/etc/kdump.conf/path")
+    kdump_path = aug_obj.get("/files%s/path" % kdump_conf_path)
     if kdump_path:
         dump_path = kdump_path
 
@@ -88,7 +89,7 @@ def parse_kdump():
     partition = None
     # first uncommented fs_type partition instruction
     for fs_type in fs_types:
-        result = aug_obj.get("/files/etc/kdump.conf/" + fs_type)
+        result = aug_obj.get("/files%s/%s" % (kdump_conf_path, fs_type))
         if result:
             partition = result
             break
@@ -141,7 +142,7 @@ def delete_and_close(dd, dd_dirname):
     dd.close()
 
 
-def harvest_vmcore():
+def harvest_vmcore(crash_dir):
     """
     This function moves vmcore directories from kdump's dump dir
     to abrt's dump dir and notifies abrt.
@@ -151,11 +152,9 @@ def harvest_vmcore():
     function.
     """
 
-    dump_dir = parse_kdump()
-
-    if not os.access(dump_dir, os.R_OK):
+    if not os.access(crash_dir, os.R_OK):
         sys.stderr.write("Dump directory '%s' not accessible. "
-                         "Exiting.\n" % dump_dir)
+                         "Exiting.\n" % crash_dir)
         sys.exit(1)
 
     # Wait for abrtd to start. Give it at least 1 second to initialize.
@@ -185,15 +184,15 @@ def harvest_vmcore():
         abrtdumpdir = conf.get("DumpLocation", "@DEFAULT_DUMP_LOCATION@")
 
     try:
-        filelist = os.listdir(dump_dir)
+        filelist = os.listdir(crash_dir)
     except OSError:
         sys.stderr.write("Dump directory '%s' not accessible. "
-                         "Exiting.\n" % dump_dir)
+                         "Exiting.\n" % crash_dir)
         sys.exit(1)
 
     # Go through all directories in core dump directory
     for cfile in filelist:
-        f_full = os.path.join(dump_dir, cfile)
+        f_full = os.path.join(crash_dir, cfile)
         if not os.path.isdir(f_full):
             continue
 
@@ -273,4 +272,11 @@ def harvest_vmcore():
 
 
 if __name__ == '__main__':
-    harvest_vmcore()
+    parser = ArgumentParser()
+    parser.add_argument("--kdump", default="/etc/kdump.conf",
+                        help="path to kdump.conf")
+    args = parser.parse_args()
+
+    crash_dir = parse_kdump(args.kdump)
+
+    harvest_vmcore(crash_dir)
