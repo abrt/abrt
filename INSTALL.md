@@ -33,18 +33,6 @@ or if you want to debug ABRT run:
 
     $ make
 
-### Checking
-
-ABRT uses [Autotest](http://www.gnu.org/savannah-checkouts/gnu/autoconf/manual/autoconf-2.69/html_node/Using-Autotest.html)
-to validate source codes. Run the test by:
-
-    $ make check
-
-If you want to search for memory issues, build ABRT with debug options and then
-run:
-
-    $ make maintainer-check
-
 ### Installing
 
 If you need an rpm package, run:
@@ -54,3 +42,7 @@ If you need an rpm package, run:
 otherwise run:
 
     $ make install
+
+On platforms with SELinux enabled, the 'make install' command must be followed
+by the 'restorecon /' command. This is not required when installing rpm
+packages because rpm's selinux plugin takes care of it.
