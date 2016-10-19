@@ -21,9 +21,13 @@ fi
 
 cat > /etc/libreport/events.d/test_event.conf << _EOF_
 EVENT=notify
+        echo "ABRT tests - EVENT=notify - $DUMP_DIR"
         touch /tmp/abrt-done
+        true
 EVENT=notify-dup
+        echo "ABRT tests - EVENT=notify-dup - $DUMP_DIR"
         touch /tmp/abrt-done
+        true
 _EOF_
 
 if [ "${DISABLE_GPGCHECK}" = "1" ]; then

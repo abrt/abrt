@@ -145,6 +145,10 @@ function prepare() {
 
     rm -f -- $ABRT_CONF_DUMP_LOCATION/last-ccpp
     rm -f "/tmp/abrt-done"
+
+    if [ ! -f /etc/libreport/events.d/test_event.conf ]; then
+        rlLog "test_event.conf does not exist. Did you run pre.sh?"
+    fi
 }
 
 function print_syslog {
