@@ -68,6 +68,20 @@ case "$1" in
             automake --add-missing --force --copy || exit 1
 
             echo "Running configure ..."
-            ./configure "$@"
+            if [ 0 -eq $# ]; then
+                ./configure \
+                    --prefix=/usr \
+                    --mandir=/usr/share/man \
+                    --infodir=/usr/share/info \
+                    --sysconfdir=/etc \
+                    --localstatedir=/var \
+                    --sharedstatedir=/var/lib \
+                    --enable-native-unwinder \
+                    --enable-dump-time-unwind \
+                    --enable-debug
+                echo "Configured for local debugging ..."
+            else
+                ./configure "$@"
+            fi
         ;;
 esac
