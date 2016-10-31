@@ -19,6 +19,11 @@ MakeCompatCore = 'yes' / 'no' ...::
    instead of the template.
    For more information about naming core dump files see 'man 5 core'.
 
+MaxCoreFileSize = 'a number in MiB' ...::
+   This configuration option together with MaxCrashReportsSize set the limit on
+   the size of dumped core file. The lower value of the both options is used as
+   the effective limit. 0 is evaluated as unlimited for the both options.
+
 SaveBinaryImage = 'yes' / 'no' ...::
    Do you want a copy of crashed binary be saved?
    Useful, for example, when _deleted binary_ segfaults.

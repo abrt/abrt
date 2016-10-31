@@ -144,6 +144,7 @@ function prepare() {
     load_abrt_conf
 
     rm -f -- $ABRT_CONF_DUMP_LOCATION/last-ccpp
+    rm -f -- $ABRT_CONF_DUMP_LOCATION/last-via-server
     rm -f "/tmp/abrt-done"
 
     if [ ! -f /etc/libreport/events.d/test_event.conf ]; then
