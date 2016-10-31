@@ -74,6 +74,7 @@ You can send more messages using the same KEY=value format.
 */
 
 static int g_signal_pipe[2];
+static struct ns_ids g_ns_ids;
 
 struct waiting_context
 {
@@ -89,6 +90,7 @@ struct waiting_context
 
 static unsigned total_bytes_read = 0;
 
+static pid_t client_pid = (pid_t)-1L;
 static uid_t client_uid = (uid_t)-1L;
 
 static void
@@ -602,20 +604,105 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
         error_msg_and_die("Error creating problem directory '%s'", path);
     }
 
-    dd_create_basic_files(dd, client_uid, NULL);
-    dd_save_text(dd, FILENAME_ABRT_VERSION, VERSION);
+    const int proc_dir_fd = open_proc_pid_dir(pid);
+    char *rootdir = NULL;
 
-    gpointer gpkey = g_hash_table_lookup(problem_info, FILENAME_CMDLINE);
-    if (!gpkey)
+    if (proc_dir_fd < 0)
+    {
+        pwarn_msg("Cannot open /proc/%d:", pid);
+    }
+    else if (process_has_own_root_at(proc_dir_fd))
+    {
+        /* Obtain the root directory path only if process' root directory is
+         * not the same as the init's root directory
+         */
+        rootdir = get_rootdir_at(proc_dir_fd);
+    }
+
+    /* Reading data from an arbitrary root directory is not secure. */
+    if (proc_dir_fd >= 0 && g_settings_explorechroots)
+    {
+        char proc_pid_root[sizeof("/proc/[pid]/root") + sizeof(pid_t) * 3];
+        const size_t w = snprintf(proc_pid_root, sizeof(proc_pid_root), "/proc/%d/root", pid);
+        assert(sizeof(proc_pid_root) > w);
+
+        /* Yes, test 'rootdir' but use 'source_filename' because 'rootdir' can
+         * be '/' for a process with own namespace. 'source_filename' is /proc/[pid]/root. */
+        dd_create_basic_files(dd, client_uid, (rootdir != NULL) ? proc_pid_root : NULL);
+    }
+    else
+    {
+        dd_create_basic_files(dd, client_uid, NULL);
+    }
+
+    if (proc_dir_fd >= 0)
     {
         /* Obtain and save the command line. */
-        char *cmdline = get_cmdline(pid);
+        char *cmdline = get_cmdline_at(proc_dir_fd);
         if (cmdline)
         {
             dd_save_text(dd, FILENAME_CMDLINE, cmdline);
             free(cmdline);
         }
+
+        /* Obtain and save the environment variables. */
+        char *environ = get_environ_at(proc_dir_fd);
+        if (environ)
+        {
+            dd_save_text(dd, FILENAME_ENVIRON, environ);
+            free(environ);
+        }
+
+        dd_copy_file_at(dd, FILENAME_CGROUP,    proc_dir_fd, "cgroup");
+        dd_copy_file_at(dd, FILENAME_MOUNTINFO, proc_dir_fd, "mountinfo");
+
+        FILE *open_fds = dd_open_item_file(dd, FILENAME_OPEN_FDS, O_WRONLY);
+        if (open_fds)
+        {
+            if (dump_fd_info_at(proc_dir_fd, open_fds) < 0)
+                dd_delete_item(dd, FILENAME_OPEN_FDS);
+            fclose(open_fds);
+        }
+
+        const int init_proc_dir_fd = open_proc_pid_dir(1);
+        FILE *namespaces = dd_open_item_file(dd, FILENAME_NAMESPACES, O_WRONLY);
+        if (namespaces && init_proc_dir_fd >= 0)
+        {
+            if (dump_namespace_diff_at(init_proc_dir_fd, proc_dir_fd, namespaces) < 0)
+                dd_delete_item(dd, FILENAME_NAMESPACES);
+        }
+        if (init_proc_dir_fd >= 0)
+            close(init_proc_dir_fd);
+        if (namespaces)
+            fclose(namespaces);
+
+        /* The process's root directory isn't the same as the init's root
+         * directory. */
+        if (rootdir)
+        {
+            if (strcmp(rootdir, "/") ==  0)
+            {   /* We are dealing containerized process because root's
+                 * directory path is '/' and that means that the process
+                 * has mounted its own root.
+                 * Seriously, it is possible if the process is running in its
+                 * own MOUNT namespaces.
+                 */
+                log_debug("Process %d is considered to be containerized", pid);
+                pid_t container_pid;
+                if (get_pid_of_container_at(proc_dir_fd, &container_pid) == 0)
+                {
+                    char *container_cmdline = get_cmdline(container_pid);
+                    dd_save_text(dd, FILENAME_CONTAINER_CMDLINE, container_cmdline);
+                    free(container_cmdline);
+                }
+            }
+            else
+            {   /* We are dealing chrooted process. */
+                dd_save_text(dd, FILENAME_ROOTDIR, rootdir);
+            }
+        }
     }
+    free(rootdir);
 
     /* Store id of the user whose application crashed. */
     char uid_str[sizeof(long) * 3 + 2];
@@ -623,12 +710,15 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     dd_save_text(dd, FILENAME_UID, uid_str);
 
     GHashTableIter iter;
+    gpointer gpkey;
     gpointer gpvalue;
     g_hash_table_iter_init(&iter, problem_info);
     while (g_hash_table_iter_next(&iter, &gpkey, &gpvalue))
     {
         dd_save_text(dd, (gchar *) gpkey, (gchar *) gpvalue);
     }
+
+    dd_save_text(dd, FILENAME_ABRT_VERSION, VERSION);
 
     dd_close(dd);
 
@@ -946,10 +1036,9 @@ static int perform_http_xact(struct response *rsp)
         return run_post_create(messagebuf_data, rsp);
     }
 
-    /* Save problem dir */
-    unsigned pid = convert_pid(problem_info);
     die_if_data_is_missing(problem_info);
 
+    /* Save problem dir */
     char *executable = g_hash_table_lookup(problem_info, FILENAME_EXECUTABLE);
     if (executable)
     {
@@ -969,6 +1058,16 @@ static int perform_http_xact(struct response *rsp)
     problem_data_add_basics(problem_info);
 //...the problem being that problem_info here is not a problem_data_t!
 #endif
+    unsigned pid = convert_pid(problem_info);
+    struct ns_ids client_ids;
+    if (get_ns_ids(client_pid, &client_ids) < 0)
+        error_msg_and_die("Cannot get peer's Namespaces from /proc/%d/ns", client_pid);
+
+    if (client_ids.nsi_ids[PROC_NS_ID_PID] != g_ns_ids.nsi_ids[PROC_NS_ID_PID])
+    {
+        log_notice("Client is running in own PID Namespace, using PID %d instead of %d", client_pid, pid);
+        pid = client_pid;
+    }
 
     create_problem_dir(problem_info, pid);
     /* does not return */
@@ -1031,17 +1130,22 @@ int main(int argc, char **argv)
     /* Part 2 - set the timeout per se */
     alarm(TIMEOUT);
 
+    /* Get uid of the connected client */
+    struct ucred cr;
+    socklen_t crlen = sizeof(cr);
+    if (0 != getsockopt(STDIN_FILENO, SOL_SOCKET, SO_PEERCRED, &cr, &crlen))
+        perror_msg_and_die("getsockopt(SO_PEERCRED)");
+    if (crlen != sizeof(cr))
+        error_msg_and_die("%s: bad crlen %d", "getsockopt(SO_PEERCRED)", (int)crlen);
+
     if (client_uid == (uid_t)-1L)
-    {
-        /* Get uid of the connected client */
-        struct ucred cr;
-        socklen_t crlen = sizeof(cr);
-        if (0 != getsockopt(STDIN_FILENO, SOL_SOCKET, SO_PEERCRED, &cr, &crlen))
-            perror_msg_and_die("getsockopt(SO_PEERCRED)");
-        if (crlen != sizeof(cr))
-            error_msg_and_die("%s: bad crlen %d", "getsockopt(SO_PEERCRED)", (int)crlen);
         client_uid = cr.uid;
-    }
+
+    client_pid = cr.pid;
+
+    pid_t pid = getpid();
+    if (get_ns_ids(getpid(), &g_ns_ids) < 0)
+        error_msg_and_die("Cannot get own Namespaces from /proc/%d/ns", pid);
 
     load_abrt_conf();
 
