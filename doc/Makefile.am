@@ -23,6 +23,7 @@ MAN5_TXT =
 MAN5_TXT += abrt.conf.txt
 MAN5_TXT += abrt-action-save-package-data.conf.txt
 MAN5_TXT += abrt-oops.conf.txt
+MAN5_TXT += abrt-CCpp.conf.txt
 
 MAN8_TXT =
 MAN8_TXT += abrtd.txt abrt-dbus.txt
