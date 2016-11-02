@@ -1038,7 +1038,7 @@ int main(int argc, char** argv)
 
         /* What's wrong on using /proc/[pid]/root every time ?*/
         /* It creates os_info_in_root_dir for all crashes. */
-        char *rootdir = process_has_own_root_at(pid) ? get_rootdir_at(pid) : NULL;
+        char *rootdir = process_has_own_root_at(pid_proc_fd) ? get_rootdir_at(pid_proc_fd) : NULL;
 
         /* Reading data from an arbitrary root directory is not secure. */
         if (g_settings_explorechroots)
