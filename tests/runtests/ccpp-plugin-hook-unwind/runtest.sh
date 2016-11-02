@@ -33,26 +33,48 @@ TEST="ccpp-plugin-hook-unwind"
 PACKAGE="abrt"
 
 CFG_FILE="/etc/abrt/plugins/CCpp.conf"
+EVENT_FILE="/etc/libreport/events.d/ccpp_event.conf"
+
+NEW_PID_NS_PRG=will_segfault_in_new_pid
+
+UNPRIV_USER_NAME=abrt_ci_test_user
+UNPRIV_TO_ROOT_PRG=unprivileged_to_root
+ROOT_TO_UNPRIV_PRG=root_to_unprivileged
 
 rlJournalStart
     rlPhaseStartSetup
         check_prior_crashes
 
-        old_ulimit=$(ulimit -c)
-        rlRun "ulimit -c unlimited" 0
+        TmpDir=$(mktemp -d /var/tmp/abrt-test.XXXXXX)
+        chmod o+rx $TmpDir
 
-        TmpDir=$(mktemp -d)
-
-        rlRun "cp will_segfault_in_new_pid.c verify_core_backtrace.py $TmpDir/"
+        rlRun "cp verify_core_backtrace.py $NEW_PID_NS_PRG.c $UNPRIV_TO_ROOT_PRG.c $ROOT_TO_UNPRIV_PRG.c $TmpDir/" || rlDie "Missing files"
 
         pushd $TmpDir
 
-        rlFileBackup $CFG_FILE
+        rlRun "gcc -std=gnu99 -pedantic -Wall -Wextra -Wno-unused-parameter -o $NEW_PID_NS_PRG $NEW_PID_NS_PRG.c" || rlDie "Failed to build - $NEW_PID_NS_PRG"
+        rlRun "gcc -std=c99 -pedantic -Wall -Wextra -o $ROOT_TO_UNPRIV_PRG $ROOT_TO_UNPRIV_PRG.c" || rlDie "Failed to build - $ROOT_TO_UNPRIV_PRG"
+        rlRun "gcc -std=c99 -pedantic -Wall -Wextra -o $UNPRIV_TO_ROOT_PRG $UNPRIV_TO_ROOT_PRG.c" || rlDie "Failed to build - $UNPRIV_TO_ROOT_PRG"
+        chown root:root $UNPRIV_TO_ROOT_PRG
+        chmod u+s $UNPRIV_TO_ROOT_PRG
+
+        rlFileBackup $CFG_FILE $EVENT_FILE
+
+        rlLogInfo "Removing core_backtrace generator from ccpp_event.conf"
+        rlRun "sed '/^.*core_backtrace.*$/d' -i $EVENT_FILE"
+
+        old_ulimit=$(ulimit -c)
+        rlRun "ulimit -c unlimited" 0
+
+        old_suid_dumpable=$(cat /proc/sys/fs/suid_dumpable)
+        rlRun "echo 2 > /proc/sys/fs/suid_dumpable" 0
     rlPhaseEnd
 
     rlPhaseStartTest "CreateCoreBacktrace enabled"
+        rlLogInfo "VerboseLog = 3"
         rlLogInfo "CreateCoreBacktrace = yes"
-        rlRun "echo 'CreateCoreBacktrace = yes' > $CFG_FILE" 0 "Set CreateCoreBacktrace = yes"
+        rlRun "echo 'VerboseLog = 3' > $CFG_FILE" 0 "Set VerboseLog = 3"
+        rlRun "echo 'CreateCoreBacktrace = yes' >> $CFG_FILE" 0 "Set CreateCoreBacktrace = yes"
 
         prepare
         generate_crash
@@ -62,7 +84,7 @@ rlJournalStart
         rlAssertExists "$crash_PATH/core_backtrace"
         rlAssertExists "$crash_PATH/coredump"
 
-        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace" 0 "All frames must have required members"
+        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace $(uname -i) $(cat ${crash_PATH}/executable)" 0 "All frames must have required members"
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
     rlPhaseEnd
@@ -71,10 +93,9 @@ rlJournalStart
         # I did not use 'unshare --fork --pid will_segfault' because unshare
         # kills itself with the signal the child received.
         rlLogInfo "Build the binary"
-        rlRun "gcc -std=gnu99 --pedantic -Wall -Wextra -Wno-unused-parameter -o will_segfault_in_new_pid will_segfault_in_new_pid.c"
 
         prepare
-        rlRun "./will_segfault_in_new_pid"
+        rlRun "./$NEW_PID_NS_PRG"
         wait_for_hooks
         get_crash_path
         rlRun "killall abrt-hook-ccpp" 1 "Kill hung abrt-hook-ccpp process"
@@ -83,15 +104,17 @@ rlJournalStart
         rlAssertExists "$crash_PATH/coredump"
         rlAssertNotEquals "TID is the global TID" "_1" "_$(cat $crash_PATH/tid)"
 
-        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace" 0 "All frames must have required members"
+        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace $(uname -i) $(cat ${crash_PATH}/executable)" 0 "All frames must have required members"
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
     rlPhaseEnd
 
     rlPhaseStartTest "SaveFullCore disabled"
+        rlLogInfo "VerboseLog = 3"
         rlLogInfo "CreateCoreBacktrace = yes"
         rlLogInfo "SaveFullCore = no"
-        rlRun "echo 'CreateCoreBacktrace = yes' > $CFG_FILE" 0 "Set CreateCoreBacktrace = yes"
+        rlRun "echo 'VerboseLog = 3' > $CFG_FILE" 0 "Set VerboseLog = 3"
+        rlRun "echo 'CreateCoreBacktrace = yes' >> $CFG_FILE" 0 "Set CreateCoreBacktrace = yes"
         rlRun "echo 'SaveFullCore = no' >> $CFG_FILE" 0 "Set SaveFullCore = no"
 
         prepare
@@ -102,7 +125,7 @@ rlJournalStart
         rlAssertExists "$crash_PATH/core_backtrace"
         rlAssertNotExists "$crash_PATH/coredump"
 
-        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace" 0 "All frames must have required members"
+        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace $(uname -i) $(cat ${crash_PATH}/executable)" 0 "All frames must have required members"
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
     rlPhaseEnd
@@ -121,7 +144,49 @@ rlJournalStart
         rlAssertExists "$crash_PATH/core_backtrace"
         rlAssertNotExists "$crash_PATH/coredump"
 
-        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace" 0 "All frames must have required members"
+        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace $(uname -i) $(cat ${crash_PATH}/executable)" 0 "All frames must have required members"
+
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+    rlPhaseEnd
+
+    rlPhaseStartTest "Unprivileged user running root set-uid program"
+        prepare
+
+        rlRun "useradd -M -d /tmp $UNPRIV_USER_NAME"
+        rlRun "su $UNPRIV_USER_NAME -c \"./$UNPRIV_TO_ROOT_PRG\"" 139
+        rlRun "userdel -f $UNPRIV_USER_NAME"
+
+        wait_for_hooks
+        get_crash_path
+
+        rlAssertEquals "Ran under root" $(cat ${crash_PATH}/uid) 0
+
+        rlAssertExists "$crash_PATH/core_backtrace"
+        rlAssertNotExists "$crash_PATH/coredump"
+
+        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace $(uname -i) $(cat ${crash_PATH}/executable)" 0 "Validating generated core_backtrace"
+
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+    rlPhaseEnd
+
+    rlPhaseStartTest "root running set-uid program as unprivileged user"
+
+        prepare
+
+        rlRun "useradd -M -d /tmp $UNPRIV_USER_NAME"
+        UNPRIV_USER_ID=$(id -u $UNPRIV_USER_NAME)
+        rlRun "./$ROOT_TO_UNPRIV_PRG $UNPRIV_USER_NAME" 139
+        rlRun "userdel -f $UNPRIV_USER_NAME"
+
+        wait_for_hooks
+        get_crash_path
+
+        rlAssertEquals "Ran under unpriv" $(cat ${crash_PATH}/uid) $UNPRIV_USER_ID
+
+        rlAssertExists "$crash_PATH/core_backtrace"
+        rlAssertNotExists "$crash_PATH/coredump"
+
+        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace $(uname -i) $(cat ${crash_PATH}/executable)" 0 "Validating generated core_backtrace"
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
     rlPhaseEnd
@@ -130,6 +195,7 @@ rlJournalStart
         rlFileRestore # CFG_FILE
 
         rlRun "ulimit -c $old_ulimit" 0
+        rlRun "echo $old_suid_dumpable > /proc/sys/fs/suid_dumpable" 0
 
         popd # TmpDir
         rm -rf $TmpDir

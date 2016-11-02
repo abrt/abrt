@@ -185,6 +185,7 @@ Summary: %{name}'s C/C++ addon
 Group: System Environment/Libraries
 Requires: cpio
 BuildRequires: gdb-headless
+BuildRequires: libcap-devel
 Requires: gdb-headless
 Requires: elfutils
 %if 0%{!?rhel:1}

@@ -46,6 +46,7 @@ abrt_hook_ccpp_CPPFLAGS += -DHAVE_SELINUX
 endif
 abrt_hook_ccpp_LDADD = \
     ../lib/libabrt.la \
+    -lcap \
     $(LIBREPORT_LIBS) \
     $(LIBSELINUX_LIBS)
 

@@ -29,9 +29,15 @@ typedef char *security_context_t;
 
 #include <sys/resource.h>
 
+#include <sys/types.h>
+
+/* capabilities */
+#include <sys/capability.h>
+
 #ifdef ENABLE_DUMP_TIME_UNWIND
 #include <satyr/abrt.h>
 #include <satyr/utils.h>
+#include <satyr/core/unwind.h>
 #endif /* ENABLE_DUMP_TIME_UNWIND */
 
 #define KERNEL_PIPE_BUFFER_SIZE 65536
@@ -317,28 +323,6 @@ static int close_user_core(int user_core_fd, off_t core_size)
         return -1;
     }
     return 0;
-}
-
-static void create_core_backtrace(pid_t tid, const char *executable, int signal_no, struct dump_dir *dd)
-{
-#ifdef ENABLE_DUMP_TIME_UNWIND
-    if (g_verbose > 1)
-        sr_debug_parser = true;
-
-    char *error_message = NULL;
-    char *core_bt = sr_abrt_get_core_stacktrace_from_core_hook(tid, executable,
-                                                               signal_no, &error_message);
-
-    if (core_bt == NULL)
-    {
-        log("Failed to create core_backtrace: %s", error_message);
-        free(error_message);
-        return;
-    }
-
-    dd_save_text(dd, FILENAME_CORE_BACKTRACE, core_bt);
-    free(core_bt);
-#endif /* ENABLE_DUMP_TIME_UNWIND */
 }
 
 static ssize_t splice_entire_per_partes(int in_fd, int out_fd, size_t size_limit)
@@ -815,6 +799,7 @@ int main(int argc, char** argv)
     const char *pid_str = argv[3];
     /* xatoi_positive() handles errors */
     uid_t uid = xatoi_positive(argv[4]);
+    gid_t gid = xatoi_positive(argv[5]);
 
     const char* signal_str = argv[1];
     int signal_no = xatoi_positive(signal_str);
@@ -1292,21 +1277,6 @@ int main(int argc, char** argv)
         }
 #endif
 
-        /* Perform crash-time unwind of the guilty thread. */
-        if (tid > 0 && setting_CreateCoreBacktrace)
-            create_core_backtrace(tid, executable, signal_no, dd);
-
-        /* We close dumpdir before we start catering for crash storm case.
-         * Otherwise, delete_dump_dir's from other concurrent
-         * CCpp's won't be able to delete our dump (their delete_dump_dir
-         * will wait for us), and we won't be able to delete their dumps.
-         * Classic deadlock.
-         */
-        dd_close(dd);
-        dd = NULL;
-
-        path[path_len] = '\0'; /* path now contains only directory name */
-
         if (abrtd_running && setting_SaveContainerizedPackageData && containerized)
         {   /* Do we really need to run rpm from core_pattern hook? */
             sprintf(source_filename, "/proc/%lu/root", (long)pid);
@@ -1323,6 +1293,127 @@ int main(int argc, char** argv)
             int stat;
             safe_waitpid(pid, &stat, 0);
         }
+
+#ifdef ENABLE_DUMP_TIME_UNWIND
+        /* Perform crash-time unwind of the guilty thread. */
+        if (tid > 0 && setting_CreateCoreBacktrace)
+        {
+            log_debug("Creating core_backtrace\n");
+
+            pid_t pid = fork();
+            if (pid < 0)
+            {
+                perror_msg("fork");
+                goto core_backtrace_failed;
+            }
+
+            if (pid == 0)
+            {
+                if (g_verbose > 1)
+                    sr_debug_parser = true;
+
+                const int corebtfd = dd_open_item(dd, FILENAME_CORE_BACKTRACE, O_RDWR);
+                if (corebtfd < 0)
+                    perror_msg_and_die("Cannot open %s", FILENAME_CORE_BACKTRACE);
+
+                char *error_message = NULL;
+                struct sr_core_stracetrace_unwind_state *state = NULL;
+                state = sr_abrt_get_core_stacktrace_from_core_hook_prepare(tid, &error_message);
+
+                if (error_message)
+                    perror_msg_and_die("Can't prepare for core backtrace generation: %s", error_message);
+
+                const gid_t g = gid == 0 ? fsgid : gid;
+                if (setresgid(g, g, g) == -1)
+                    perror_msg_and_die("Can't change process group id of '%d' user", gid);
+
+                const uid_t u = uid == 0 ? fsuid : uid;
+                if (setresuid(u, u, u) == -1)
+                    perror_msg_and_die("Can't change process user id of '%d' user", uid);
+
+                log_debug("Running core_backtrace under %d:%d", u, g);
+
+                /* Get capability state of the calling process  */
+                cap_t caps = cap_get_proc();
+                if (!caps)
+                    perror_msg_and_die("Can't get capability state of process PID: %d", getpid());
+
+                /* Array must be filled with CAP_* constants */
+                cap_value_t cap_list[CAP_LAST_CAP+1];
+                for (cap_value_t cap = CAP_CHOWN; cap <= CAP_LAST_CAP; cap++)
+                    cap_list[cap] = cap;
+
+                if (cap_set_flag(caps, CAP_PERMITTED, CAP_LAST_CAP, cap_list, CAP_CLEAR) == -1)
+                    perror_msg_and_die("Failed to clear all capabilities in permitted set");
+
+                if (cap_set_flag(caps, CAP_EFFECTIVE, CAP_LAST_CAP, cap_list, CAP_CLEAR) == -1)
+                    perror_msg_and_die("Failed to clear all capabilities in effective set");
+
+                if (cap_set_flag(caps, CAP_INHERITABLE, CAP_LAST_CAP, cap_list, CAP_CLEAR) == -1)
+                    perror_msg_and_die("Failed to clear all capabilities in inherited set");
+
+                if (cap_set_proc(caps) == -1)
+                    perror_msg_and_die("Failed to assign cleared capabilities to process");
+
+                if (cap_free(caps) == -1)
+                    perror_msg_and_die("Error releasing capability state resource! PID: %d", getpid());
+
+                char *json = sr_abrt_get_core_stacktrace_from_core_hook_generate(tid, executable,
+                                                                                 signal_no, state,
+                                                                                 &error_message);
+                state = NULL;
+                if (!json)
+                    error_msg_and_die("Can't generate core backtrace: %s", error_message);
+
+                full_write_str(corebtfd, json);
+                free(json);
+                close(corebtfd);
+
+                exit(0);
+            }
+
+            /* Both processes must close its stdin! */
+            close(STDIN_FILENO);
+
+            int status = 0;
+            if (safe_waitpid(pid, &status, 0) >= 0)
+            {
+                if (WIFSIGNALED(status))
+                {
+                    log("Core backtrace generator signaled with %d", WTERMSIG(status));
+                    goto core_backtrace_failed;
+                }
+                if (!WIFEXITED(status))
+                {
+                    log("Core backtrace generator did not properly exit");
+                    goto core_backtrace_failed;
+                }
+                const int r = WEXITSTATUS(status);
+                if (r != 0)
+                {
+                    log("Core backtrace generator exited with error %d", r);
+                    goto core_backtrace_failed;
+                }
+
+                log_debug("Core backtrace generator finished successfully");
+                goto core_backtrace_done;
+            }
+
+core_backtrace_failed:
+            dd_delete_item(dd, FILENAME_CORE_BACKTRACE);
+        }
+core_backtrace_done:
+#endif
+        /* We close dumpdir before we start catering for crash storm case.
+         * Otherwise, delete_dump_dir's from other concurrent
+         * CCpp's won't be able to delete our dump (their delete_dump_dir
+         * will wait for us), and we won't be able to delete their dumps.
+         * Classic deadlock.
+         */
+        dd_close(dd);
+        dd = NULL;
+
+        path[path_len] = '\0'; /* path now contains only directory name */
 
         char *newpath = xstrndup(path, path_len - (sizeof(".new")-1));
         if (rename(path, newpath) == 0)
