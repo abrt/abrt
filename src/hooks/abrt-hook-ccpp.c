@@ -1061,7 +1061,7 @@ int main(int argc, char** argv)
         dd_copy_file_at(dd, FILENAME_CGROUP, pid_proc_fd, "cgroup");
         dd_copy_file_at(dd, FILENAME_MOUNTINFO, pid_proc_fd, "mountinfo");
 
-        FILE *open_fds = dd_open_item_file(dd, FILENAME_OPEN_FDS, O_WRONLY);
+        FILE *open_fds = dd_open_item_file(dd, FILENAME_OPEN_FDS, O_RDWR);
         if (open_fds != NULL)
         {
             if (dump_fd_info_at(pid_proc_fd, open_fds) < 0)
@@ -1070,7 +1070,7 @@ int main(int argc, char** argv)
         }
 
         const int init_proc_dir_fd = open_proc_pid_dir(1);
-        FILE *namespaces = dd_open_item_file(dd, FILENAME_NAMESPACES, O_WRONLY);
+        FILE *namespaces = dd_open_item_file(dd, FILENAME_NAMESPACES, O_RDWR);
         if (namespaces != NULL && init_proc_dir_fd >= 0)
         {
             if (dump_namespace_diff_at(init_proc_dir_fd, pid_proc_fd, namespaces) < 0)

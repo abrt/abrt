@@ -656,7 +656,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
         dd_copy_file_at(dd, FILENAME_CGROUP,    proc_dir_fd, "cgroup");
         dd_copy_file_at(dd, FILENAME_MOUNTINFO, proc_dir_fd, "mountinfo");
 
-        FILE *open_fds = dd_open_item_file(dd, FILENAME_OPEN_FDS, O_WRONLY);
+        FILE *open_fds = dd_open_item_file(dd, FILENAME_OPEN_FDS, O_RDWR);
         if (open_fds)
         {
             if (dump_fd_info_at(proc_dir_fd, open_fds) < 0)
@@ -665,7 +665,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
         }
 
         const int init_proc_dir_fd = open_proc_pid_dir(1);
-        FILE *namespaces = dd_open_item_file(dd, FILENAME_NAMESPACES, O_WRONLY);
+        FILE *namespaces = dd_open_item_file(dd, FILENAME_NAMESPACES, O_RDWR);
         if (namespaces && init_proc_dir_fd >= 0)
         {
             if (dump_namespace_diff_at(init_proc_dir_fd, proc_dir_fd, namespaces) < 0)
