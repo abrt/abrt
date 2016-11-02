@@ -94,61 +94,6 @@ def write_dump(tb_text, tb):
     except Exception as ex:
         syslog("can't communicate with ABRT daemon, is it running? %s" % str(ex))
 
-def get_package_for_file(fpath):
-    """
-    Returns package name for a given file.
-
-    @param fpath: filename
-    @type fpath: str
-    @return: package name for the file
-    @rtype: str
-    @throws RPMinfoError: if package for the file cannot be found
-
-    """
-
-    import rpm
-    ts = rpm.TransactionSet()
-    mi = ts.dbMatch("basenames", fpath)
-    try:
-        header = mi.next()
-    except StopIteration:
-        raise RPMinfoError("Cannot get package and component for file "+
-                            fpath)
-    package = "{0}-{1}-{2}.{3}".format(header["name"], header["version"],
-                                    header["release"], header["arch"])
-
-    return package
-
-def get_dso_list(tb):
-    """
-    Get the list of names of the packages whose files appear in the traceback.
-
-    @param tb: traceback
-    @type tb: traceback
-    @return: list of package names
-    @rtype: list
-
-    """
-
-    import inspect
-    if inspect.istraceback(tb):
-        tb = inspect.getinnerframes(tb)
-
-    packages = set()
-    for (frame, fpath, lineno, func, ctx, idx) in tb:
-        try:
-            packages.add(get_package_for_file(fpath))
-        except RPMinfoError as rpmerr:
-            continue
-
-    # remove the package name of the executable itself
-    try:
-        packages.discard(get_package_for_file(sys.argv[0]))
-    except RPMinfoError as rpmerr:
-        pass
-
-    return list(packages)
-
 
 def require_abs_path():
     """
