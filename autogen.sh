@@ -16,9 +16,23 @@ Options:
 EOH
 }
 
-build_depslist()
+parse_build_requires_from_spec_file()
 {
-    DEPS_LIST=`grep "^\(Build\)\?Requires:" *.spec.in | grep -v "%{name}" | tr -s " " | tr "," "\n" | cut -f2 -d " " | grep -v "^abrt" | sort -u | while read br; do if [ "%" = ${br:0:1} ]; then grep "%define $(echo $br | sed -e 's/%{\(.*\)}/\1/')" *.spec.in | tr -s " " | cut -f3 -d" "; else echo $br ;fi ; done | tr "\n" " "`
+    PACKAGE=$1
+    grep "^\(Build\)\?Requires:" $PACKAGE.spec.in | grep -v "%{name}" | tr -s " " | tr "," "\n" | cut -f2 -d " " | grep -v "^"$PACKAGE | sort -u | while read br;
+    do
+        if [ "%" = ${br:0:1} ]; then
+            grep "%define $(echo $br | sed -e 's/%{\(.*\)}/\1/')" $PACKAGE.spec.in | tr -s " " | cut -f3 -d" "
+        else
+            echo $br
+        fi
+    done | tr "\n" " "
+}
+
+list_build_dependencies()
+{
+    local BUILD_SYSTEM_DEPS_LIST="gettext-devel"
+    echo $BUILD_SYSTEM_DEPS_LIST $(parse_build_requires_from_spec_file abrt)
 }
 
 case "$1" in
@@ -27,7 +41,7 @@ case "$1" in
             exit 0
         ;;
     "sysdeps")
-            build_depslist
+            DEPS_LIST=$(list_build_dependencies)
 
             if [ "$2" == "--install" ]; then
                 set -x verbose
