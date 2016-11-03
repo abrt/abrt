@@ -436,6 +436,10 @@ static int test_configuration(bool setting_SaveFullCore, bool setting_CreateCore
         return 1;
     }
 
+#ifndef ENABLE_DUMP_TIME_UNWIND
+        fprintf(stderr, "SaveFullCore is disabled but dump time unwinding is not supported\n");
+#endif /*ENABLE_DUMP_TIME_UNWIND*/
+
     return 0;
 }
 
@@ -687,8 +691,9 @@ static int dump_two_core_files(int abrt_core_fd, size_t *abrt_limit, int user_co
 
 enum create_core_backtrace_status
 {
-    CB_STDIN_CLOSED = 0x1,
-    CB_SUCCESSFUL   = 0x2,
+    CB_DISABLED     = 0x1,
+    CB_STDIN_CLOSED = 0x2,
+    CB_SUCCESSFUL   = 0x4,
 };
 
 static enum create_core_backtrace_status
@@ -801,6 +806,8 @@ create_core_backtrace(struct dump_dir *dd, uid_t uid, uid_t fsuid, gid_t gid,
 
 core_backtrace_failed:
     dd_delete_item(dd, FILENAME_CORE_BACKTRACE);
+#else  /*ENABLE_DUMP_TIME_UNWIND*/
+    retval = CB_DISABLED;
 #endif /*ENABLE_DUMP_TIME_UNWIND*/
 
     return retval;
@@ -1421,6 +1428,8 @@ int main(int argc, char** argv)
         {
             log_debug("Creating core_backtrace\n");
             cbr = create_core_backtrace(dd, uid, fsuid, gid, fsgid, tid, executable, signal_no);
+            if (cbr & CB_DISABLED)
+                log_warning("CreateCoreBacktrace is enabled but dump time unwinding is not supported");
         }
 
         /* Make sure we closed STDIN_FILENO to let kernel to wipe out the process. */
