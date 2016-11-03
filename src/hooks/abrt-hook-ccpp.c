@@ -700,13 +700,15 @@ static enum create_core_backtrace_status
 create_core_backtrace(struct dump_dir *dd, uid_t uid, uid_t fsuid, gid_t gid,
                       gid_t fsgid, pid_t tid, const char *executable, int signal_no)
 {
+#ifndef ENABLE_DUMP_TIME_UNWIND
+    return CB_DISABLED;
+#else  /*ENABLE_DUMP_TIME_UNWIND*/
     int retval = 0;
-#ifdef ENABLE_DUMP_TIME_UNWIND
     pid_t pid = fork();
     if (pid < 0)
     {
         perror_msg("fork");
-        goto core_backtrace_failed;
+        goto no_core_backtrace_generated_failure;
     }
 
     if (pid == 0)
@@ -810,12 +812,18 @@ create_core_backtrace(struct dump_dir *dd, uid_t uid, uid_t fsuid, gid_t gid,
     return retval;
 
 core_backtrace_failed:
-    dd_delete_item(dd, FILENAME_CORE_BACKTRACE);
-#else  /*ENABLE_DUMP_TIME_UNWIND*/
-    retval = CB_DISABLED;
-#endif /*ENABLE_DUMP_TIME_UNWIND*/
-
+    {
+        struct stat st;
+        const int r = dd_item_stat(dd, FILENAME_CORE_BACKTRACE, &st);
+        /* Either stat failed (it doesn't matter if the item does not exist) or the
+         * item has 0 Bytes - there is no need to retain the item in neither case.
+         */
+        if (r != 0 || st.st_size == 0)
+            dd_delete_item(dd, FILENAME_CORE_BACKTRACE);
+    }
+no_core_backtrace_generated_failure:
     return retval;
+#endif /*ENABLE_DUMP_TIME_UNWIND*/
 }
 
 int main(int argc, char** argv)
