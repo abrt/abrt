@@ -701,6 +701,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
                 dd_save_text(dd, FILENAME_ROOTDIR, rootdir);
             }
         }
+        close(proc_dir_fd);
     }
     free(rootdir);
 
