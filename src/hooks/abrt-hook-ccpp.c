@@ -801,6 +801,11 @@ create_core_backtrace(struct dump_dir *dd, uid_t uid, uid_t fsuid, gid_t gid,
         log_debug("Core backtrace generator finished successfully");
         retval |= CB_SUCCESSFUL;
     }
+    else
+    {
+        perror_msg("waitpid");
+        goto core_backtrace_failed;
+    }
 
     return retval;
 
