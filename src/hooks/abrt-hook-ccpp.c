@@ -436,6 +436,10 @@ static int test_configuration(bool setting_SaveFullCore, bool setting_CreateCore
         return 1;
     }
 
+#ifndef ENABLE_DUMP_TIME_UNWIND
+        fprintf(stderr, "SaveFullCore is disabled but dump time unwinding is not supported\n");
+#endif /*ENABLE_DUMP_TIME_UNWIND*/
+
     return 0;
 }
 
@@ -683,6 +687,143 @@ static int dump_two_core_files(int abrt_core_fd, size_t *abrt_limit, int user_co
         pipe_close(cp);
 
     return r;
+}
+
+enum create_core_backtrace_status
+{
+    CB_DISABLED     = 0x1,
+    CB_STDIN_CLOSED = 0x2,
+    CB_SUCCESSFUL   = 0x4,
+};
+
+static enum create_core_backtrace_status
+create_core_backtrace(struct dump_dir *dd, uid_t uid, uid_t fsuid, gid_t gid,
+                      gid_t fsgid, pid_t tid, const char *executable, int signal_no)
+{
+#ifndef ENABLE_DUMP_TIME_UNWIND
+    return CB_DISABLED;
+#else  /*ENABLE_DUMP_TIME_UNWIND*/
+    int retval = 0;
+    pid_t pid = fork();
+    if (pid < 0)
+    {
+        perror_msg("fork");
+        goto no_core_backtrace_generated_failure;
+    }
+
+    if (pid == 0)
+    {
+        if (g_verbose > 1)
+            sr_debug_parser = true;
+
+        const int corebtfd = dd_open_item(dd, FILENAME_CORE_BACKTRACE, O_RDWR);
+        if (corebtfd < 0)
+            perror_msg_and_die("Cannot open %s", FILENAME_CORE_BACKTRACE);
+
+        char *error_message = NULL;
+        struct sr_core_stracetrace_unwind_state *state = NULL;
+        state = sr_abrt_get_core_stacktrace_from_core_hook_prepare(tid, &error_message);
+
+        if (error_message)
+            perror_msg_and_die("Can't prepare for core backtrace generation: %s", error_message);
+
+        const gid_t g = gid == 0 ? fsgid : gid;
+        if (setresgid(g, g, g) == -1)
+            perror_msg_and_die("Can't change process group id of '%d' user", gid);
+
+        const uid_t u = uid == 0 ? fsuid : uid;
+        if (setresuid(u, u, u) == -1)
+            perror_msg_and_die("Can't change process user id of '%d' user", uid);
+
+        log_debug("Running core_backtrace under %d:%d", u, g);
+
+        /* Get capability state of the calling process  */
+        cap_t caps = cap_get_proc();
+        if (!caps)
+            perror_msg_and_die("Can't get capability state of process PID: %d", getpid());
+
+        /* Array must be filled with CAP_* constants */
+        cap_value_t cap_list[CAP_LAST_CAP+1];
+        for (cap_value_t cap = CAP_CHOWN; cap <= CAP_LAST_CAP; cap++)
+            cap_list[cap] = cap;
+
+        if (cap_set_flag(caps, CAP_PERMITTED, CAP_LAST_CAP, cap_list, CAP_CLEAR) == -1)
+            perror_msg_and_die("Failed to clear all capabilities in permitted set");
+
+        if (cap_set_flag(caps, CAP_EFFECTIVE, CAP_LAST_CAP, cap_list, CAP_CLEAR) == -1)
+            perror_msg_and_die("Failed to clear all capabilities in effective set");
+
+        if (cap_set_flag(caps, CAP_INHERITABLE, CAP_LAST_CAP, cap_list, CAP_CLEAR) == -1)
+            perror_msg_and_die("Failed to clear all capabilities in inherited set");
+
+        if (cap_set_proc(caps) == -1)
+            perror_msg_and_die("Failed to assign cleared capabilities to process");
+
+        if (cap_free(caps) == -1)
+            perror_msg_and_die("Error releasing capability state resource! PID: %d", getpid());
+
+        char *json = sr_abrt_get_core_stacktrace_from_core_hook_generate(tid, executable,
+                                                                         signal_no, state,
+                                                                         &error_message);
+        state = NULL;
+        if (!json)
+            error_msg_and_die("Can't generate core backtrace: %s", error_message);
+
+        full_write_str(corebtfd, json);
+        free(json);
+        close(corebtfd);
+
+        exit(0);
+    }
+
+    /* Both processes must close its stdin! */
+    close(STDIN_FILENO);
+    retval |= CB_STDIN_CLOSED;
+
+    int status = 0;
+    if (safe_waitpid(pid, &status, 0) >= 0)
+    {
+        if (WIFSIGNALED(status))
+        {
+            log("Core backtrace generator signaled with %d", WTERMSIG(status));
+            goto core_backtrace_failed;
+        }
+        if (!WIFEXITED(status))
+        {
+            log("Core backtrace generator did not properly exit");
+            goto core_backtrace_failed;
+        }
+        const int r = WEXITSTATUS(status);
+        if (r != 0)
+        {
+            log("Core backtrace generator exited with error %d", r);
+            goto core_backtrace_failed;
+        }
+
+        log_debug("Core backtrace generator finished successfully");
+        retval |= CB_SUCCESSFUL;
+    }
+    else
+    {
+        perror_msg("waitpid");
+        goto core_backtrace_failed;
+    }
+
+    return retval;
+
+core_backtrace_failed:
+    {
+        struct stat st;
+        const int r = dd_item_stat(dd, FILENAME_CORE_BACKTRACE, &st);
+        /* Either stat failed (it doesn't matter if the item does not exist) or the
+         * item has 0 Bytes - there is no need to retain the item in neither case.
+         */
+        if (r != 0 || st.st_size == 0)
+            dd_delete_item(dd, FILENAME_CORE_BACKTRACE);
+    }
+no_core_backtrace_generated_failure:
+    return retval;
+#endif /*ENABLE_DUMP_TIME_UNWIND*/
 }
 
 int main(int argc, char** argv)
@@ -1294,116 +1435,20 @@ int main(int argc, char** argv)
             safe_waitpid(pid, &stat, 0);
         }
 
-#ifdef ENABLE_DUMP_TIME_UNWIND
+        enum create_core_backtrace_status cbr = 0;
         /* Perform crash-time unwind of the guilty thread. */
         if (tid > 0 && setting_CreateCoreBacktrace)
         {
             log_debug("Creating core_backtrace\n");
+            cbr = create_core_backtrace(dd, uid, fsuid, gid, fsgid, tid, executable, signal_no);
+            if (cbr & CB_DISABLED)
+                log_warning("CreateCoreBacktrace is enabled but dump time unwinding is not supported");
+        }
 
-            pid_t pid = fork();
-            if (pid < 0)
-            {
-                perror_msg("fork");
-                goto core_backtrace_failed;
-            }
-
-            if (pid == 0)
-            {
-                if (g_verbose > 1)
-                    sr_debug_parser = true;
-
-                const int corebtfd = dd_open_item(dd, FILENAME_CORE_BACKTRACE, O_RDWR);
-                if (corebtfd < 0)
-                    perror_msg_and_die("Cannot open %s", FILENAME_CORE_BACKTRACE);
-
-                char *error_message = NULL;
-                struct sr_core_stracetrace_unwind_state *state = NULL;
-                state = sr_abrt_get_core_stacktrace_from_core_hook_prepare(tid, &error_message);
-
-                if (error_message)
-                    perror_msg_and_die("Can't prepare for core backtrace generation: %s", error_message);
-
-                const gid_t g = gid == 0 ? fsgid : gid;
-                if (setresgid(g, g, g) == -1)
-                    perror_msg_and_die("Can't change process group id of '%d' user", gid);
-
-                const uid_t u = uid == 0 ? fsuid : uid;
-                if (setresuid(u, u, u) == -1)
-                    perror_msg_and_die("Can't change process user id of '%d' user", uid);
-
-                log_debug("Running core_backtrace under %d:%d", u, g);
-
-                /* Get capability state of the calling process  */
-                cap_t caps = cap_get_proc();
-                if (!caps)
-                    perror_msg_and_die("Can't get capability state of process PID: %d", getpid());
-
-                /* Array must be filled with CAP_* constants */
-                cap_value_t cap_list[CAP_LAST_CAP+1];
-                for (cap_value_t cap = CAP_CHOWN; cap <= CAP_LAST_CAP; cap++)
-                    cap_list[cap] = cap;
-
-                if (cap_set_flag(caps, CAP_PERMITTED, CAP_LAST_CAP, cap_list, CAP_CLEAR) == -1)
-                    perror_msg_and_die("Failed to clear all capabilities in permitted set");
-
-                if (cap_set_flag(caps, CAP_EFFECTIVE, CAP_LAST_CAP, cap_list, CAP_CLEAR) == -1)
-                    perror_msg_and_die("Failed to clear all capabilities in effective set");
-
-                if (cap_set_flag(caps, CAP_INHERITABLE, CAP_LAST_CAP, cap_list, CAP_CLEAR) == -1)
-                    perror_msg_and_die("Failed to clear all capabilities in inherited set");
-
-                if (cap_set_proc(caps) == -1)
-                    perror_msg_and_die("Failed to assign cleared capabilities to process");
-
-                if (cap_free(caps) == -1)
-                    perror_msg_and_die("Error releasing capability state resource! PID: %d", getpid());
-
-                char *json = sr_abrt_get_core_stacktrace_from_core_hook_generate(tid, executable,
-                                                                                 signal_no, state,
-                                                                                 &error_message);
-                state = NULL;
-                if (!json)
-                    error_msg_and_die("Can't generate core backtrace: %s", error_message);
-
-                full_write_str(corebtfd, json);
-                free(json);
-                close(corebtfd);
-
-                exit(0);
-            }
-
-            /* Both processes must close its stdin! */
+        /* Make sure we closed STDIN_FILENO to let kernel to wipe out the process. */
+        if (!(cbr & CB_STDIN_CLOSED))
             close(STDIN_FILENO);
 
-            int status = 0;
-            if (safe_waitpid(pid, &status, 0) >= 0)
-            {
-                if (WIFSIGNALED(status))
-                {
-                    log("Core backtrace generator signaled with %d", WTERMSIG(status));
-                    goto core_backtrace_failed;
-                }
-                if (!WIFEXITED(status))
-                {
-                    log("Core backtrace generator did not properly exit");
-                    goto core_backtrace_failed;
-                }
-                const int r = WEXITSTATUS(status);
-                if (r != 0)
-                {
-                    log("Core backtrace generator exited with error %d", r);
-                    goto core_backtrace_failed;
-                }
-
-                log_debug("Core backtrace generator finished successfully");
-                goto core_backtrace_done;
-            }
-
-core_backtrace_failed:
-            dd_delete_item(dd, FILENAME_CORE_BACKTRACE);
-        }
-core_backtrace_done:
-#endif
         /* We close dumpdir before we start catering for crash storm case.
          * Otherwise, delete_dump_dir's from other concurrent
          * CCpp's won't be able to delete our dump (their delete_dump_dir

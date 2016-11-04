@@ -701,6 +701,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
                 dd_save_text(dd, FILENAME_ROOTDIR, rootdir);
             }
         }
+        close(proc_dir_fd);
     }
     free(rootdir);
 
@@ -740,6 +741,11 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
      */
     printf("HTTP/1.1 201 Created\r\n\r\n");
     fflush(NULL);
+
+    /* Closing STDIN_FILENO (abrtd duped the socket to stdin and stdout) and
+     * not-replacing it with something else to let abrt-server die on reading
+     * from invalid stdin - to catch bugs. */
+    close(STDIN_FILENO);
     close(STDOUT_FILENO);
     xdup2(STDERR_FILENO, STDOUT_FILENO); /* paranoia: don't leave stdout fd closed */
 
