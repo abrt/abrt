@@ -891,6 +891,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_libexecdir}/abrt-gdb-exploitable
 %{_journalcatalogdir}/abrt_ccpp.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_ccpp_format.conf
+%config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_journal_ccpp_format.conf
 %if %{with systemd}
 %{_unitdir}/abrt-ccpp.service
 %{_unitdir}/abrt-journal-core.service
