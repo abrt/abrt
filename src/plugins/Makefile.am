@@ -64,6 +64,7 @@ libreportpluginconfdir = $(LIBREPORT_PLUGINS_CONF_DIR)
 
 dist_libreportpluginconf_DATA = \
     catalog_ccpp_format.conf \
+    catalog_journal_ccpp_format.conf \
     catalog_python_format.conf \
     catalog_python3_format.conf \
     catalog_koops_format.conf \
