@@ -13,6 +13,11 @@
  * GNU General Public License for more details.
  */
 #include <satyr/stacktrace.h>
+#include <satyr/koops/stacktrace.h>
+#include <satyr/thread.h>
+#include <satyr/koops/frame.h>
+#include <satyr/frame.h>
+#include <satyr/normalize.h>
 
 #include "oops-utils.h"
 #include "libabrt.h"
@@ -193,6 +198,28 @@ void abrt_oops_save_data_in_dump_dir(struct dump_dir *dd, char *oops, const char
     if (first_line[0])
         dd_save_text(dd, FILENAME_KERNEL, first_line);
     dd_save_text(dd, FILENAME_BACKTRACE, second_line);
+
+    /* save crash_function into dumpdir */
+    char *error_message = NULL;
+    struct sr_stacktrace *stacktrace = sr_stacktrace_parse(SR_REPORT_KERNELOOPS,
+                                                           (const char *)second_line, &error_message);
+
+    if (stacktrace)
+    {
+        sr_normalize_koops_stacktrace((struct sr_koops_stacktrace *)stacktrace);
+        /* stacktrace is the same as thread, there is no need to check return value */
+        struct sr_thread *thread = sr_stacktrace_find_crash_thread(stacktrace);
+        struct sr_koops_frame *frame = (struct sr_koops_frame *)sr_thread_frames(thread);
+        if (frame && frame->function_name)
+            dd_save_text(dd, FILENAME_CRASH_FUNCTION, frame->function_name);
+
+        sr_stacktrace_free(stacktrace);
+    }
+    else
+    {
+        error_msg("Can't parse stacktrace: %s", error_message);
+        free(error_message);
+    }
 
     /* check if trace doesn't have line: 'Your BIOS is broken' */
     if (strstr(second_line, "Your BIOS is broken"))

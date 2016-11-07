@@ -24,6 +24,7 @@
 #include <satyr/core/stacktrace.h>
 #include <satyr/core/thread.h>
 #include <satyr/core/frame.h>
+#include <satyr/normalize.h>
 
 static void trim_unstrip_output(char *result, const char *unstrip_n_output)
 {
@@ -56,18 +57,24 @@ static void trim_unstrip_output(char *result, const char *unstrip_n_output)
     *dst = '\0';
 }
 
-static char *build_ids_from_core_backtrace(const char *dump_dir_name)
+static struct sr_core_thread *
+core_thread_from_core_stacktrace(struct sr_core_stacktrace *stacktrace)
+{
+    struct sr_core_thread *thread = sr_core_stacktrace_find_crash_thread(stacktrace);
+    if (!thread)
+    {
+        log_info("Failed to find crash thread");
+        return NULL;
+    }
+
+    return thread;
+}
+
+static struct sr_core_stacktrace *
+core_stacktrace_from_core_json(char *core_backtrace)
 {
     char *error = NULL;
-    char *core_backtrace_path = xasprintf("%s/"FILENAME_CORE_BACKTRACE, dump_dir_name);
-    char *json = xmalloc_open_read_close(core_backtrace_path, /*maxsize:*/ NULL);
-    free(core_backtrace_path);
-
-    if (!json)
-        return NULL;
-
-    struct sr_core_stacktrace *stacktrace = sr_core_stacktrace_from_json_text(json, &error);
-    free(json);
+    struct sr_core_stacktrace *stacktrace = sr_core_stacktrace_from_json_text(core_backtrace, &error);
     if (!stacktrace)
     {
         if (error)
@@ -78,10 +85,28 @@ static char *build_ids_from_core_backtrace(const char *dump_dir_name)
         return NULL;
     }
 
-    struct sr_core_thread *thread = sr_core_stacktrace_find_crash_thread(stacktrace);
+    return stacktrace;
+}
+
+static char *build_ids_from_core_backtrace(const char *dump_dir_name)
+{
+    char *core_backtrace_path = xasprintf("%s/"FILENAME_CORE_BACKTRACE, dump_dir_name);
+    char *json = xmalloc_open_read_close(core_backtrace_path, /*maxsize:*/ NULL);
+    free(core_backtrace_path);
+
+    if (!json)
+        return NULL;
+
+    struct sr_core_stacktrace *stacktrace = core_stacktrace_from_core_json(json);
+    free(json);
+
+    if (!stacktrace)
+        return NULL;
+
+    struct sr_core_thread *thread = core_thread_from_core_stacktrace(stacktrace);
+
     if (!thread)
     {
-        log_info("Failed to find crash thread");
         sr_core_stacktrace_free(stacktrace);
         return NULL;
     }
@@ -214,6 +239,34 @@ int main(int argc, char **argv)
     str_to_sha1str(hash_str, string_to_hash);
 
     dd_save_text(dd, FILENAME_UUID, hash_str);
+
+    /* Create crash_function element from core_backtrace */
+    char *core_backtrace_json = dd_load_text_ext(dd, FILENAME_CORE_BACKTRACE,
+                                                 DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    if (core_backtrace_json)
+    {
+        struct sr_core_stacktrace *stacktrace = core_stacktrace_from_core_json(core_backtrace_json);
+        free(core_backtrace_json);
+
+        if (!stacktrace)
+            goto next;
+
+        struct sr_core_thread *thread = core_thread_from_core_stacktrace(stacktrace);
+
+        if (!thread)
+            goto next;
+
+        sr_normalize_core_thread(thread);
+
+        struct sr_core_frame *frame = thread->frames;
+        if (frame->function_name)
+            dd_save_text(dd, FILENAME_CRASH_FUNCTION, frame->function_name);
+
+next:
+        /* can be NULL */
+        sr_core_stacktrace_free(stacktrace);
+    }
+
     dd_close(dd);
 
     return 0;

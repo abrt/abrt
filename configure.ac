@@ -229,6 +229,7 @@ PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
 DEFAULT_PLUGINS_CONF_DIR='${datadir}/${PACKAGE_NAME}/conf.d/plugins'
 EVENTS_DIR='${datadir}/libreport/events'
 EVENTS_CONF_DIR='${sysconfdir}/libreport/events.d'
+JOURNAL_CATALOG_DIR='$(prefix)/lib/systemd/catalog'
 ENABLE_SOCKET_OR_DBUS='-DENABLE_DBUS=1'
 DEFAULT_DUMP_LOCATION_MODE=0751
 DEFAULT_DUMP_DIR_MODE=$($PKG_CONFIG --variable=dd_mode libreport)
@@ -252,6 +253,14 @@ AC_ARG_WITH(augeaslenslibdir,
                     [AS_HELP_STRING([--with-augeaslenslibdir=DIR],
                                                    [Directory for librepor lens (default: /usr/share/augeas/lenses)])],
                                 [], [with_augeaslenslibdir="/usr/share/augeas/lenses"])
+AC_ARG_WITH([support-url],
+        AS_HELP_STRING([--with-support-url=URL],
+                [Specify the support URL to show in catalog entries]),
+        [SUPPORT_URL="$withval"],
+        [SUPPORT_URL=https://bugzilla.redhat.com/])
+
+AC_SUBST(SUPPORT_URL)
+
 AC_SUBST([AUGEAS_LENS_LIB_DIR], [$with_augeaslenslibdir])
 
 AC_PATH_PROG(AUGPARSE, augparse, no)
@@ -363,6 +372,7 @@ AC_SUBST(VAR_STATE)
 AC_SUBST(PLUGINS_CONF_DIR)
 AC_SUBST(DEFAULT_PLUGINS_CONF_DIR)
 AC_SUBST(EVENTS_CONF_DIR)
+AC_SUBST(JOURNAL_CATALOG_DIR)
 AC_SUBST(EVENTS_DIR)
 AC_SUBST(DEFAULT_DUMP_LOCATION)
 AC_SUBST(DEFAULT_DUMP_LOCATION_MODE)
