@@ -1,20 +1,9 @@
 #!/bin/sh
 
 INSTALL_DI=true
-FIND_BODHI_UPDATE_ARGS=""
-# if bz is set to false it also disables bodhi, because it needs it's result
-WITH_BUGZILLA=true
 for opt in "$@"; do
     if [ x"$opt" = x"--without-di" ]; then
         INSTALL_DI=false
-    fi
-
-    if [ x"$opt" = x"--without-bz" ]; then
-        WITH_BUGZILLA=false
-    fi
-
-    if [ x"$opt" = x"--without-bodhi" ]; then
-        FIND_BODHI_UPDATE_ARGS="--without-bodhi"
     fi
 done
 
@@ -31,11 +20,5 @@ if $INSTALL_DI; then
 fi
 
 if [ $? = 0 ]; then
-    abrt-action-generate-backtrace &&
-    abrt-action-analyze-backtrace
-    if [ "$?" == "0" ]; then
-        if $WITH_BUGZILLA; then
-            abrt-action-find-bodhi-update $FIND_BODHI_UPDATE_ARGS
-        fi
-    fi
+    abrt-action-generate-backtrace && abrt-action-analyze-backtrace
 fi
