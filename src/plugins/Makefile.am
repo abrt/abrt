@@ -58,6 +58,11 @@ dist_events_DATA = \
     collect_vimrc_system.xml \
     post_report.xml
 
+if BUILD_BODHI
+dist_events_DATA += \
+    analyze_BodhiUpdates.xml
+endif
+
 @INTLTOOL_XML_RULE@
 
 libreportpluginconfdir = $(LIBREPORT_PLUGINS_CONF_DIR)
@@ -91,6 +96,10 @@ dist_eventsconf_DATA = \
     gconf_event.conf \
     vimrc_event.conf
 
+if BUILD_BODHI
+dist_eventsconf_DATA += \
+    bodhi_event.conf
+endif
 
 PYTHON_FILES = \
     abrt-action-install-debuginfo.in \
@@ -113,6 +122,7 @@ EXTRA_DIST = \
     collect_GConf.xml.in \
     collect_vimrc_user.xml.in \
     collect_vimrc_system.xml.in \
+    analyze_BodhiUpdates.xml.in \
     analyze_CCpp.xml.in \
     analyze_LocalGDB.xml.in \
     analyze_RetraceServer.xml.in \

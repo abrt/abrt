@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<event>
+    <name>Bodhi Updates</name>
+    <_description>Search for updated packages that fixes the crash.</_description>
+    <_long-description>Looks for Bugzilla reports with the 'abrt_hash' value in Bugzilla Bug Whiteboar equal to 'UUID' of the crash. If such a bug found, search for Bodhi updates shipping fixes for the found Bugzilla bugs.</_long-description>
+
+    <requires-items>duphash,os_info</requires-items>
+    <gui-review-elements>no</gui-review-elements>
+    <sending-sensitive-data>no</sending-sensitive-data>
+
+    <options>
+        <import-event-options event="report_Bugzilla"/>
+    </options>
+</event>

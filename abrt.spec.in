@@ -1094,6 +1094,8 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %defattr(-,root,root,-)
 %{_bindir}/abrt-bodhi
 %{_bindir}/abrt-action-find-bodhi-update
+%config(noreplace) %{_sysconfdir}/libreport/events.d/bodhi_event.conf
+%{_datadir}/libreport/events/analyze_BodhiUpdates.xml
 %{_mandir}/man1/abrt-bodhi.1.gz
 %{_mandir}/man1/abrt-action-find-bodhi-update.1.gz
 %endif
