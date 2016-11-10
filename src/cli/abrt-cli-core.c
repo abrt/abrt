@@ -85,6 +85,12 @@ void restart_as_root_if_needed(unsigned cmd_argc, const char *cmd_argv[])
     if (g_settings_privatereports && getuid() == 0)
         return;
 
+    if (g_settings_privatereports == false)
+    {
+        log(_("PrivateReports is disabled. Run abrt-cli-root to see all problems detected by ABRT."));
+        return;
+    }
+
     log(_("PrivateReports is enabled. Only \"root\" can see the problems detected by ABRT."));
 
     if (!ask_yes_no(_("Do you wan to run abrt-cli-root?")))
