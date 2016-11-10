@@ -111,7 +111,7 @@ def emit_crash_dbus_signal(problem_data):
 
         # List of tuples where the first member is element name and the second
         # member is a Boolean flag which is True if the element is required
-        arguments = ((FILENAME_PACKAGE, True), (CD_DUMPDIR, True),
+        arguments = ((FILENAME_PACKAGE, False), (CD_DUMPDIR, True),
                 (FILENAME_UID, False), (FILENAME_UUID, False),
                 (FILENAME_DUPHASH, False))
 
@@ -138,8 +138,6 @@ def emit_crash_dbus_signal(problem_data):
 def build_notification_problem_data(problem_dir):
     """Loads all necessary problem elements
 
-    Problem dump directory must contain 'package' element.
-
     Keyword arguments:
     problem_dir -- an absolute file system path problem directory
 
@@ -163,14 +161,11 @@ def build_notification_problem_data(problem_dir):
         dd_load_flag = (report.DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
                 | report.DD_FAIL_QUIETLY_ENOENT)
 
-        package = dump_dir.load_text(FILENAME_PACKAGE, dd_load_flag)
-        if not package:
-            raise ValueError("problem directory misses '{0}'"
-                    .format(FILENAME_PACKAGE))
-
         pd_add_flag = report.CD_FLAG_TXT | report.CD_FLAG_ISNOTEDITABLE
 
-        prblm_dt.add(FILENAME_PACKAGE, package, pd_add_flag)
+        package = dump_dir.load_text(FILENAME_PACKAGE, dd_load_flag)
+        if package:
+            prblm_dt.add(FILENAME_PACKAGE, package, pd_add_flag)
         prblm_dt.add(CD_DUMPDIR, problem_dir, pd_add_flag)
 
         for element in (FILENAME_UID, FILENAME_UUID, FILENAME_DUPHASH):
