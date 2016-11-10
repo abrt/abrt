@@ -278,9 +278,9 @@ int main(int argc, char **argv)
     if (container_cmdline == NULL)
         error_msg_and_die("The crash didn't occur in container");
 
-    if (strstr("/docker ", container_cmdline) == 0)
+    if (strstr(container_cmdline, "/docker ") != 0 || prefixcmp(container_cmdline, "/usr/libexec/docker") == 0)
         dump_docker_info(dd, root_dir);
-    else if (strstr("/lxc-", container_cmdline) == 0)
+    else if (strstr(container_cmdline, "/lxc-") != 0)
         dump_lxc_info(dd, container_cmdline);
     else
         error_msg_and_die("Unsupported container technology");
