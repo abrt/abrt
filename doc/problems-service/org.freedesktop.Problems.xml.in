@@ -97,23 +97,49 @@
                     <tp:docstring>
                         <variablelist>
                             <varlistentry>
-                                <term>bit 0</term>
-                                <listitem><para>if up, the task will be created</para></listitem>
+                                <term>0x1</term>
+                                <listitem><para>the task will be created</para></listitem>
                             </varlistentry>
                             <varlistentry>
-                                <term>bit 1</term>
-                                <listitem><para>if up, the task will be stopped after the temporary directory is created</para></listitem>
+                                <term>0x2</term>
+                                <listitem><para>the task will be stopped after the temporary directory is created</para></listitem>
                             </varlistentry>
                             <varlistentry>
-                                <term>bit 2</term>
-                                <listitem><para>if up, the task will be automatically started</para></listitem>
+                                <term>0x4</term>
+                                <listitem><para>the task will be automatically started</para></listitem>
                             </varlistentry>
                         </variablelist>
                     </tp:docstring>
                 </arg>
 
                 <arg type='o' name='task' direction='out'>
-                    <tp:docstring>Object path of the task processing the new problem data.</tp:docstring>
+                    <tp:docstring>
+                        Object path of the task processing the new problem data.
+
+                        The task can finish with one of the following codes:
+                        <variablelist>
+                            <varlistentry>
+                                <term>0</term>
+                                <listitem><para>ABRT_P2_TASK_NEW_PROBLEM_ACCEPTED - a new problem was created</para></listitem>
+                            </varlistentry>
+                            <varlistentry>
+                                <term>1</term>
+                                <listitem><para>ABRT_P2_TASK_NEW_PROBLEM_FAILED - the processing failed</para></listitem>
+                            </varlistentry>
+                            <varlistentry>
+                                <term>2</term>
+                                <listitem><para>ABRT_P2_TASK_NEW_PROBLEM_DUPLICATE - the problem data was dropped and a duplicated problem was updated</para></listitem>
+                            </varlistentry>
+                            <varlistentry>
+                                <term>3</term>
+                                <listitem><para>ABRT_P2_TASK_NEW_PROBLEM_DROPPED - the problem data couldn't be saved</para></listitem>
+                            </varlistentry>
+                            <varlistentry>
+                                <term>4</term>
+                                <listitem><para>ABRT_P2_TASK_NEW_PROBLEM_INVALID_DATA - the problem data contained abandoned values</para></listitem>
+                            </varlistentry>
+                        </variablelist>
+                    </tp:docstring>
                 </arg>
 
                 <tp:docstring>
@@ -122,26 +148,28 @@
                         <programlisting>
 <![CDATA[
 #!/usr/bin/python3
-import os
+import sys
 import dbus
+from functools import partial
 from dbus.mainloop.glib import DBusGMainLoop
+from gi.repository import GLib
 
+PROBLEMS_BUS="org.freedesktop.problems"
+PROBLEMS_PATH="/org/freedesktop/Problems2"
+PROBLEMS_IFACE="org.freedesktop.Problems2"
+TASK_IFACE="org.freedesktop.Problems2.Task"
+
+
+def on_task_properties_changed(loop, iface, changed_properties, invalidated_properties):
+    if changed_properties['status'] in [2, 3, 4, 5]:
+        loop.quit()
+
+
+DBusGMainLoop(set_as_default=True)
 bus = dbus.SystemBus()
 
-def on_task_properties_changed(iface, changed_properties, invalidated_properties, tp=None):
-    if changed_properties['status'] == 2:
-        p = bus.get_object("org.freedesktop.problems", tp)
-        t = dbus.Interface(p, dbus_interface("org.freedesktop.Problems2.Task"))
-        results, code = t.Finish()
-        if code == 0:
-            print(results["NewProblem.Entry"])
-            os.exit(0)
-        else:
-            print(results["Error.Message"])
-            os.exit(1)
-
-proxy = bus.get_object("org.freedesktop.problems", '/org/freedesktop/problems2')
-problems = dbus.Interface(proxy, dbus_interface='org.freedesktop.Problems2')
+proxy = bus.get_object(PROBLEMS_BUS, PROBLEMS_PATH)
+problems = dbus.Interface(proxy, dbus_interface=PROBLEMS_IFACE)
 
 task_pah = None
 with open("/etc/services", "r") as services_file:
@@ -151,24 +179,37 @@ with open("/etc/services", "r") as services_file:
                    "executable"  : "/usr/bin/foo",
                    "services"    : dbus.types.UnixFd(services_file)}
 
-    task_path = problems.NewProblem(description, 1)
+    task_path = problems.NewProblem(description, 0x1)
 
-task_proxy = dbus.get_object("org.freedesktop.problems", task_path)
-task_properties = dbus.Interface(task_proxy, dbus_interface='org.freedesktop.DBus.Properties')
-task_properties.connect_to_signal("PropertiesChanged", on_task_properties_changed, path_keyword="tp")
-
-DBusGMainLoop(set_as_default=True)
 loop = GLib.MainLoop()
+
+task_proxy = bus.get_object(PROBLEMS_BUS, task_path)
+task = dbus.Interface(task_proxy, dbus_interface=TASK_IFACE)
+task_properties = dbus.Interface(task_proxy, dbus_interface="org.freedesktop.DBus.Properties")
+task_properties.connect_to_signal("PropertiesChanged", partial(on_task_properties_changed, loop))
+task.Start(dict())
+
 GLib.timeout_add(30000, loop.quit)
 loop.run()
 
-print("Failed")
+status = task_properties.Get(TASK_IFACE, "Status")
+if status in [0, 1]:
+    print("Timed-out")
+    task.Cancel(0)
+    sys.exit(1)
 
-task = dbus.Interface(task_proxy, dbus_interface='org.freedesktop.Problems2.Task')
-task.Cancel(0)
+if status < 5:
+    print("Unexpected status: {}".format(status))
+    sys.exit(1)
 
-os.exit(1)
-
+if status == 5:
+    results, code = task.Finish()
+    if code in [0, 2]:
+        print("New problem: {}".format(results["NewProblem.Entry"]))
+        sys.exit(0)
+    else:
+        print(results["Error.Message"])
+        sys.exit(1)
 ]]>
                         </programlisting>
                     </example>
@@ -199,21 +240,24 @@ dbus-send --system --type=method_call --print-reply \
                 <tp:docstring>Returns a list of problem identifiers for problems visible by the caller. If the session is authorized (GetSession), then the method returns all detected problems (system problems and problems of other users).</tp:docstring>
 
                 <arg type='i' name='flags' direction='in'>
-                    <tp:docstring>Allows to specify what kind of problems to include in the response</tp:docstring>
-                    <variablelist>
-                            <varlistentry>
-                                <term>0x0</term>
-                                <listitem><para>Only problems that can be viewed and modified by the caller</para></listitem>
-                            </varlistentry>
-                            <varlistentry>
-                                <term>0x1</term>
-                                <listitem><para>Include problems of other users</para></listitem>
-                            </varlistentry>
-                            <varlistentry>
-                                <term>0x2</term>
-                                <listitem><para>Include problems being processed</para></listitem>
-                            </varlistentry>
-                    </variablelist>
+                    <tp:docstring>
+                        Allows to specify what kind of problems to include in the response
+
+                        <variablelist>
+                                <varlistentry>
+                                    <term>0x0</term>
+                                    <listitem><para>Only problems that can be viewed and modified by the caller</para></listitem>
+                                </varlistentry>
+                                <varlistentry>
+                                    <term>0x1</term>
+                                    <listitem><para>Include problems of other users</para></listitem>
+                                </varlistentry>
+                                <varlistentry>
+                                    <term>0x2</term>
+                                    <listitem><para>Include problems being processed</para></listitem>
+                                </varlistentry>
+                        </variablelist>
+                    </tp:docstring>
                 </arg>
 
                 <arg type='a{sv}' name='options' direction='in'>
@@ -229,24 +273,26 @@ dbus-send --system --type=method_call --print-reply \
                         <title>How to get the list of problems in Python</title>
                         <programlisting>
 <![CDATA[
-#!/usr/bin/env python
+#!/usr/bin/python3
 import dbus
+
+PROBLEMS_BUS="org.freedesktop.problems"
+PROBLEMS_PATH="/org/freedesktop/Problems2"
+PROBLEMS_IFACE="org.freedesktop.Problems2"
+ENTRY_IFACE="org.freedesktop.Problems2.Entry"
 
 bus = dbus.SystemBus()
 
-proxy = bus.get_object("org.freedesktop.problems",
-                                  '/org/freedesktop/problems2')
-
-problems = dbus.Interface(proxy, dbus_interface='org.freedesktop.Problems2')
-prblms = problems.GetProblems()
+proxy = bus.get_object(PROBLEMS_BUS, PROBLEMS_PATH)
+problems = dbus.Interface(proxy, dbus_interface=PROBLEMS_IFACE)
+prblms = problems.GetProblems(0x0, {})
 
 for path in prblms:
-    prblm_proxy = dbus.get_object("org.freedesktop.problems", path)
-    prblm = dbus.Interface(prblm_proxy, "org.freedesktop.Problems2.Entry")
+prblm_proxy = bus.get_object(PROBLEMS_BUS, path)
+props = dbus.Interface(prblm_proxy, "org.freedesktop.DBus.Properties")
 
-    print(prblm.executable)
-    print(prblm.reason)
-    print()
+print("{}: {}".format(props.Get(ENTRY_IFACE, "Executable"),
+                      props.Get(ENTRY_IFACE, "Reason")))
 ]]>
                         </programlisting>
                     </example>
@@ -257,36 +303,58 @@ for path in prblms:
                         <title>How to get the list of user problems and system problems in Python</title>
                         <programlisting>
 <![CDATA[
-#!/usr/bin/env python
+#!/usr/bin/python3
 import sys
 import dbus
+from functools import partial
+from dbus.mainloop.glib import DBusGMainLoop
+from gi.repository import GLib
 
+PROBLEMS_BUS="org.freedesktop.problems"
+PROBLEMS_PATH="/org/freedesktop/Problems2"
+PROBLEMS_IFACE="org.freedesktop.Problems2"
+ENTRY_IFACE="org.freedesktop.Problems2.Entry"
+SESSION_IFACE="org.freedesktop.Problems2.Session"
+
+
+def on_session_authorization_signal(mainloop, status):
+    if status == 0:
+        mainloop.quit()
+    if status == 3:
+        print("Authorization failed")
+        sys.exit(1)
+
+
+DBusGMainLoop(set_as_default=True)
 bus = dbus.SystemBus()
 
-proxy = bus.get_object("org.freedesktop.problems",
-                                  '/org/freedesktop/problems2')
-
-problems = dbus.Interface(proxy, dbus_interface='org.freedesktop.Problems2')
+proxy = bus.get_object(PROBLEMS_BUS, PROBLEMS_PATH)
+problems = dbus.Interface(proxy, dbus_interface=PROBLEMS_IFACE)
 
 session_path = problems.GetSession()
+session_proxy = bus.get_object(PROBLEMS_BUS, session_path)
+session = dbus.Interface(session_proxy, dbus_interface=SESSION_IFACE)
 
-session_proxy = bus.get_object("org.freedesktop.problems", session_path)
-session = dbus.Interface(session_proxy, dbus_interface='org.freedesktop.Problems2.Session')
+mainloop = GLib.MainLoop()
+session_proxy.connect_to_signal("AuthorizationChanged",
+                                partial(on_session_authorization_signal,
+                                        mainloop))
+result = session.Authorize({})
 
-result = session.Authorize(None, True)
-if result != 0:
+if result < 0:
     print("Cannot authorize")
     sys.exit(1)
 
-prblms = problems.GetProblems()
+if result > 0:
+    mainloop.run()
 
+prblms = problems.GetProblems(0x1, {})
 for path in prblms:
-    prblm_proxy = dbus.get_object("org.freedesktop.problems", path)
-    prblm = dbus.Interface(prblm_proxy, "org.freedesktop.Problems2.Entry")
+    prblm_proxy = bus.get_object(PROBLEMS_BUS, path)
+    props = dbus.Interface(prblm_proxy, "org.freedesktop.DBus.Properties")
 
-    print(prblm.executable)
-    print(prblm.reason)
-    print()
+    print("{}: {}".format(props.Get(ENTRY_IFACE, "Executable"),
+                          props.Get(ENTRY_IFACE, "Reason")))
 ]]>
                         </programlisting>
                     </example>
@@ -780,28 +848,33 @@ The Variable variant is definitely more convenient for users!
                         <title>How to use ReadElements() method to print out a nice list of problems</title>
                         <programlisting>
 <![CDATA[
-#!/usr/bin/env python
+#!/usr/bin/python3
 from sys import stdout
 import dbus
 from datetime import datetime
 
+PROBLEMS_BUS="org.freedesktop.problems"
+PROBLEMS_PATH="/org/freedesktop/Problems2"
+PROBLEMS_IFACE="org.freedesktop.Problems2"
+ENTRY_IFACE="org.freedesktop.Problems2.Entry"
+
 bus = dbus.SystemBus()
+proxy = bus.get_object(PROBLEMS_BUS, PROBLEMS_PATH)
+problems = dbus.Interface(proxy, dbus_interface=PROBLEMS_IFACE)
 
-proxy = bus.get_object("org.freedesktop.problems",
-                          '/org/freedesktop/problems2')
+prblms = problems.GetProblems(0x0, {})
 
-problems = dbus.Interface(proxy, dbus_interface='org.freedesktop.Problems2')
-
-for prblmprx in problems.GetProblems():
-    prblm  = dbus.Interface(prblmprx, dbus_interface='org.freedesktop.Problems2.Entry')
-    kv = prblm.ReadElements(prblmid, ["time", "count", "package", "reason"], ONLY_TEXT)
+for path in prblms:
+    prblm_proxy = bus.get_object(PROBLEMS_BUS, path)
+    prblm  = dbus.Interface(prblm_proxy, dbus_interface=ENTRY_IFACE)
+    kv = prblm.ReadElements(["time", "count", "package", "reason"], 0x4)
 
     date = datetime.fromtimestamp(float(kv["time"]))
     count = int(kv.get("count", 0))
     package = str(kv.get("package", ""))
     reason = str(kv.get("reason", ""))
 
-    stdout.write("{0} {1:-3} {2:30} : {3}\n".format(date, count, package, reason))
+    stdout.write("{0} {1:-3} {2:40} : {3}\n".format(date, count, package, reason))
 ]]>
                         </programlisting>
                     </example>
@@ -1032,8 +1105,8 @@ valid only a very short period of time (5s by default) and can used only once.
                                 <listitem><para>Successfully finished</para></listitem>
                             </varlistentry>
                             <varlistentry>
-                                <term>1</term>
-                                <listitem><para>Processing failed</para></listitem>
+                                <term>non 0</term>
+                                <listitem><para>Processing failed - check status code of the task type.</para></listitem>
                             </varlistentry>
                         </variablelist>
                     </tp:docstring>
