@@ -33,8 +33,7 @@ def handle_event(event_name, problem_dir):
 
     """
 
-    state = report.run_event_state()
-    ret = state.run_event_on_dir_name(problem_dir, event_name)
+    state, ret = report.run_event_on_problem_dir(problem_dir, event_name)
 
     if ret == 0 and state.children_count == 0:
         print("No actions are found for event '%s'" % event_name)

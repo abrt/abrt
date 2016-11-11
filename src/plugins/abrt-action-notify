@@ -42,8 +42,7 @@ def run_event(event_name, dump_dir_name):
     Run event with `event_name` on problem directory `dump_dir_name`
     '''
 
-    state = report.run_event_state()
-    ret = state.run_event_on_dir_name(dump_dir_name, event_name)
+    state, ret = report.run_event_on_problem_dir(dump_dir_name, event_name)
 
     if ret == 0 and state.children_count == 0:
         log1("Didn't find definition of event '%s'", event_name)
@@ -72,8 +71,7 @@ def run_autoreport(problem_data, event_name):
 
     log1("Running autoreporting event: '{0}'".format(event_name))
 
-    res = report.run_event_state()
-    ret = res.run_event_on_dir_name(dir_name[0], event_name)
+    res, ret  = report.run_event_on_problem_dir(dir_name[0], event_name)
 
     if res.children_count == 0 and ret == 0:
         raise RuntimeError("No processing is specified for event '{0}'"
