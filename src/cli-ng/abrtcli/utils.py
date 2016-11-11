@@ -206,8 +206,7 @@ def run_event(event_name, prob):
     Run event with `event_name` on problem `prob`
     '''
 
-    state = report.run_event_state()
-    ret = state.run_event_on_dir_name(prob.path, event_name)
+    state, ret = report.run_event_on_problem_dir(prob.path, event_name)
 
     if ret == 0 and state.children_count == 0:
         sys.stderr.write('No actions were found for event {}'
