@@ -264,7 +264,8 @@ if __name__ == "__main__":
 
                 return_status = RETURN_FAILURE
 
-    # log problem to systemd journal
+    # log problem to systemd journal with SYSLOG_IDENTIFIER=abrt-notification
+    os.environ["REPORTER_JOURNAL_SYSLOG_ID"] = "abrt-notification"
     if not run_event("report_systemd-journal", DIR_PATH):
         # if report_systemd-journal is not defined, run 'reporter-systemd-journald'
         try:
