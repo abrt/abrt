@@ -561,7 +561,7 @@ rlJournalStart
         # not contain
         rlAssertNotGrep "<return SOAP-ENC:arrayType=\"ns1:IssueData\[0\]\" xsi:type=\"SOAP-ENC:Array\">" client_log 
         rlAssertNotGrep "Attaching better backtrace" client_log
-        rlAsserNottGrep "Found the same comment in the issue history, not adding a new one" client_log
+        rlAssertNotGrep "Found the same comment in the issue history, not adding a new one" client_log
         rlAssertNotGrep "<return xsi:type=\"xsd:integer\">4</return></ns1:mc_issue_attachment_addResponse>" client_log
         rlAssertNotGrep "<int>323795</int>" client_log #dummy
 
@@ -621,7 +621,7 @@ rlJournalStart
         rlAssertGrep "Status: new open http://localhost:12345/view.php?id=99" client_log
 
         # not contain
-        rlAsserNottGrep "Found the same comment in the issue history, not adding a new one" client_log
+        rlAssertNotGrep "Found the same comment in the issue history, not adding a new one" client_log
         rlAssertNotGrep "<int>323795</int>" client_log #dummy
 
         rm -f problem_dir/reported_to

@@ -184,7 +184,7 @@ rlJournalStart
         get_crash_path
 
         rlLog "core: `ls -l`"
-        rlAssertNotExist 'core.$killpid' 0 "Checking if core does not exist"
+        rlAssertNotExists 'core.$killpid' 0 "Checking if core does not exist"
         rlRun "journalctl SYSLOG_IDENTIFIER=abrt-hook-ccpp --since=\"$SINCE\" | grep \"Current suid_dumpable policy prevents from saving core dumps according to relative core_pattern\""
 
         rlRun "echo 0 > /proc/sys/fs/suid_dumpable" 0 "Set setuid no dump"

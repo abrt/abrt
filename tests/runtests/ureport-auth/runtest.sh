@@ -275,7 +275,7 @@ rlJournalStart
 
         rlAssertGrep "Failed to upload uReport to the server 'https://localhost:12345/faf'" rhsm_with_ca_broken.log
         rlAssertGrep "Error: curl_easy_perform: Problem with the SSL CA cert (path? access rights?)" rhsm_with_ca_broken.log
-        rlNotAssertGrep "This problem has already been reported." rhsm_with_ca_broken.log
+        rlAssertNotGrep "This problem has already been reported." rhsm_with_ca_broken.log
 
         # CA certificate does not exist
         rlLog "CA certificate does not exist"
@@ -289,7 +289,7 @@ rlJournalStart
 
         rlAssertGrep "curl_easy_perform: error_msg: curl_easy_perform: Peer certificate cannot be authenticated with given CA certificates" rhsm_with_ca_not_exist.log
         rlAssertGrep "Failed to upload uReport to the server 'https://localhost:12345/faf' with curl: Peer's Certificate issuer is not recognized." rhsm_with_ca_not_exist.log
-        rlNotAssertGrep "This problem has already been reported." rhsm_with_ca_not_exist.log
+        rlAssertNotGrep "This problem has already been reported." rhsm_with_ca_not_exist.log
 
         unset LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH
         unset LIBREPORT_DEBUG_AUTHORITY_CERT_DIR_PATH
