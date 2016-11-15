@@ -119,7 +119,7 @@ rlJournalStart
         rlRun "abrt-action-find-bodhi-update -vvv -d $crash_PATH &> env_product.log" 0 "Product from env"
         rlAssertGrep "Using product foo" env_product.log
         rlRun "unset Bugzilla_Product"
-    lPhaseEnd
+    rlPhaseEnd
 
     rlPhaseStartCleanup
         rm -rf $crash_PATH

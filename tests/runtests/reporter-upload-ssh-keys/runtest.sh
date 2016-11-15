@@ -113,7 +113,7 @@ rlJournalStart
         LOG_FILE="ssh_commandline_only_private.log"
         rlRun "./expect reporter-upload -vvv -d problem_dir -u scp://root@localhost$TmpDir/target/upload.tar.gz -r pri-commandline >$LOG_FILE 2>&1"
 
-        rlAsserNottGrep "Using SSH public key 'pub-commandline'" $LOG_FILE
+        rlAssertNotGrep "Using SSH public key 'pub-commandline'" $LOG_FILE
         rlAssertGrep "Using SSH private key 'pri-commandline'" $LOG_FILE
         rlAssertNotGrep "curl: Using SSH public key file 'pub-commandline'" $LOG_FILE
         rlAssertGrep "curl: Using SSH private key file 'pri-commandline'" $LOG_FILE
@@ -121,7 +121,7 @@ rlJournalStart
         LOG_FILE="ssh_commandline_default.log"
         rlRun "./expect reporter-upload -vvv -d problem_dir -u scp://root@localhost$TmpDir/target/upload.tar.gz >$LOG_FILE 2>&1"
 
-        rlAsserNottGrep "Using SSH public key 'pub-commandline'" $LOG_FILE
+        rlAssertNotGrep "Using SSH public key 'pub-commandline'" $LOG_FILE
         rlAssertNotGrep "Using SSH private key 'pri-commandline'" $LOG_FILE
         rlAssertNotGrep "curl: Using SSH public key file 'pub-commandline'" $LOG_FILE
         rlAssertNotGrep "curl: Using SSH private key file 'pri-commandline'" $LOG_FILE
