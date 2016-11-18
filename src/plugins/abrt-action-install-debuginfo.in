@@ -71,6 +71,7 @@ if __name__ == "__main__":
     missing = None
     repo_pattern = "*debug*"
     pkgmgr = None
+    releasever = None
 
     # localization
     init_gettext()
@@ -89,6 +90,7 @@ if __name__ == "__main__":
             "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
             "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
             "       [-e, --exact=PATH[:PATH]...]\n"
+            "       [--releasever=RELEASEVER]\n"
             "\n"
             "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
             "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -108,13 +110,15 @@ if __name__ == "__main__":
             "    -e,--exact  Download only specified files\n"
             "    --repo      Pattern to use when searching for repos.\n"
             "                Default: *debug*\n"
+            "    --releasever RELEASEVER\n"
+            "                Pass this OS version to package managers.\n"
             # --keeprpms is not documented yet because it's a NOP so far
     ) % PROGNAME
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], "vyhe",
                 ["help", "ids=", "cache=", "size_mb=", "tmpdir=", "keeprpms",
-                 "exact=", "repo=", "pkgmgr="])
+                 "exact=", "repo=", "pkgmgr=", "releasever="])
     except getopt.GetoptError as err:
         print(err) # prints something like "option -a not recognized"
         exit(RETURN_FAILURE)
@@ -148,6 +152,8 @@ if __name__ == "__main__":
             repo_pattern = arg
         elif opt == "--pkgmgr":
             pkgmgr = arg
+        elif opt == "--releasever":
+            releasever = arg
 
     set_verbosity(verbose)
 
@@ -239,7 +245,8 @@ if __name__ == "__main__":
         try:
             downloader = download_class(cache=cachedirs[0], tmp=TMPDIR,
                                     noninteractive=noninteractive,
-                                    repo_pattern=repo_pattern)
+                                    repo_pattern=repo_pattern,
+                                    releasever=releasever)
             result = downloader.download(missing, download_exact_files=exact_fls)
         except OSError as ex:
             if ex.errno == errno.EPIPE:

@@ -8,15 +8,34 @@ for opt in "$@"; do
 done
 
 if $INSTALL_DI; then
+    abrt-action-analyze-core --core=coredump -o build_ids || exit $?
+
     # On some systems debuginfo install needs root privileges.
     # Running a suided-to-abrt wrapper would make
     # debuginfo install fail even for root.
     # Therefore, if we are root, we don't use the wrapper.
+    EXECUTABLE=@LIBEXEC_DIR@/abrt-action-install-debuginfo-to-abrt-cache
     if [ x"`id -u`" = x"0" ]; then
-        abrt-action-analyze-core --core=coredump -o build_ids && abrt-action-install-debuginfo --size_mb=4096
-    else
-        abrt-action-analyze-core --core=coredump -o build_ids && @LIBEXEC_DIR@/abrt-action-install-debuginfo-to-abrt-cache --size_mb=4096
+        EXECUTABLE=abrt-action-install-debuginfo
     fi
+
+    # Get VERSION_ID from crash's /etc/os-release (stored as os_info in a dump
+    # directory).
+    # We need this value for package managers to configure the correct
+    # repositories (i.e. '$releasever' for DNF/Yum).
+    EXTRA_ARGS=
+    for osrel in "${DUMP_DIR:-.}/os_info_in_rootdir" "${DUMP_DIR:-.}/os_info"
+    do
+        if [ -e $osrel ]; then
+            . $osrel
+            if [ -n "$VERSION_ID" ]; then
+                EXTRA_ARGS="--releasever=$VERSION_ID"
+                break
+            fi
+        fi
+    done
+
+    ${EXECUTABLE} ${EXTRA_ARGS} --size_mb=4096
 fi
 
 if [ $? = 0 ]; then

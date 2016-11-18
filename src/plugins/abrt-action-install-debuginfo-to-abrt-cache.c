@@ -54,12 +54,14 @@ int main(int argc, char **argv)
         OPT_e = 1 << 3,
         OPT_r = 1 << 4,
         OPT_s = 1 << 5,
+        OPT_R = 1 << 6,
     };
 
     const char *build_ids = "build_ids";
     const char *exact = NULL;
     const char *repo = NULL;
     const char *size_mb = NULL;
+    const char *releasever = NULL;
 
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
@@ -68,6 +70,7 @@ int main(int argc, char **argv)
         OPT_STRING('e', "exact",     &exact, "EXACT",          _("Download only specified files")),
         OPT_STRING('r', "repo",       &repo, "REPO",           _("Pattern to use when searching for repos, default: *debug*")),
         OPT_STRING('s', "size_mb", &size_mb, "SIZE_MB",        _("Ignored option")),
+        OPT_STRING('R', "releasever", &releasever, "RELEASEVER", _("OS release version")),
         OPT_END()
     };
     const unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -114,8 +117,8 @@ int main(int argc, char **argv)
 
     log_info("Created working directory: %s", tmp_directory);
 
-    /* name, -v, --ids, -, -y, -e, EXACT, -r, REPO, -t, PATH, --, NULL */
-    const char *args[13];
+    /* name, -v, --ids, -, -y, -e, EXACT, -r, REPO, -t, PATH, --releaseve, VER, --, NULL */
+    const char *args[15];
     {
         const char *verbs[] = { "", "-v", "-vv", "-vvv" };
         unsigned i = 0;
@@ -135,6 +138,11 @@ int main(int argc, char **argv)
         {
             args[i++] = "--repo";
             args[i++] = repo;
+        }
+        if ((opts & OPT_R))
+        {
+            args[i++] = "--releasever";
+            args[i++] = releasever;
         }
         args[i++] = "--tmpdir";
         args[i++] = tmp_directory;
