@@ -15,7 +15,7 @@ class ProblemWatcher(object):
 
     def __init__(self, auth):
         import dbus
-        import gobject
+        from gi.repository import GObject as gobject
         from dbus.mainloop.glib import DBusGMainLoop
 
         gobject.threads_init()
