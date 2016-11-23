@@ -219,12 +219,25 @@ remove.__doc__ = _('Remove problem')
 
 @expects_obj
 @arg('MATCH', nargs='?', default='last', completer=match_completer)
+@arg('-u', "--unsafe",
+     help=_('Ignore security checks to be able to report all problems'),
+     default=False)
 @arg_verbose
 def report(args):
     prob = match_get_problem(args.MATCH, auth=args.auth)
-    libreport.report_problem_in_dir(prob.path,
-                                    libreport.LIBREPORT_WAIT |
-                                    libreport.LIBREPORT_RUN_CLI)
+
+    if prob.not_reportable and not args.unsafe:
+        if reportclient.verbose > 0:
+            print(prob.not_reportable_reason)
+
+        print(_('Problem \'{0}\' cannot be reported').format(prob.short_id))
+        sys.exit(1)
+
+    flags = libreport.LIBREPORT_WAIT | libreport.LIBREPORT_RUN_CLI
+    if args.unsafe:
+        flags |= libreport.LIBREPORT_IGNORE_NOT_REPORTABLE
+
+    libreport.report_problem_in_dir(prob.path, flags)
 
 report.__doc__ = _('Report problem')
 
