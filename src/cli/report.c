@@ -36,6 +36,7 @@ int _cmd_report(const char **dirs_strv, int flags)
             continue;
         }
 
+
         const int not_reportable = test_exist_over_dbus(real_problem_id, FILENAME_NOT_REPORTABLE);
         if (not_reportable != 0)
         {
@@ -57,9 +58,12 @@ int _cmd_report(const char **dirs_strv, int flags)
             ++ret;
             continue;
         }
-        int status = report_problem_in_dir(real_problem_id,
-                                             LIBREPORT_WAIT
-                                           | LIBREPORT_RUN_CLI);
+
+        int lr_flags = LIBREPORT_WAIT | LIBREPORT_RUN_CLI;
+        if (flags & CMD_REPORT_UNSAFE)
+            lr_flags |= LIBREPORT_IGNORE_NOT_REPORTABLE;
+
+        int status = report_problem_in_dir(real_problem_id, lr_flags);
 
         /* the problem was successfully reported and option is -d */
         if((flags & CMD_REPORT_REMOVE) && (status == 0 || status == EXIT_STOP_EVENT_RUN))
