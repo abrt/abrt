@@ -41,6 +41,14 @@ int _cmd_report(const char **dirs_strv, int flags)
         {
             if (!(flags & CMD_REPORT_UNSAFE))
             {
+                if (g_verbose > 0)
+                {
+                    char *reason = load_text_over_dbus(real_problem_id, FILENAME_NOT_REPORTABLE);
+                    if (reason != NULL)
+                        log("%s\n", reason);
+                    free(reason);
+                }
+
                 error_msg(_("Problem '%s' cannot be reported"), real_problem_id);
                 free(real_problem_id);
                 ++ret;
@@ -57,9 +65,12 @@ int _cmd_report(const char **dirs_strv, int flags)
             ++ret;
             continue;
         }
-        int status = report_problem_in_dir(real_problem_id,
-                                             LIBREPORT_WAIT
-                                           | LIBREPORT_RUN_CLI);
+
+        int lr_flags = LIBREPORT_WAIT | LIBREPORT_RUN_CLI;
+        if (flags & CMD_REPORT_UNSAFE)
+            lr_flags |= LIBREPORT_IGNORE_NOT_REPORTABLE;
+
+        int status = report_problem_in_dir(real_problem_id, lr_flags);
 
         /* the problem was successfully reported and option is -d */
         if((flags & CMD_REPORT_REMOVE) && (status == 0 || status == EXIT_STOP_EVENT_RUN))
