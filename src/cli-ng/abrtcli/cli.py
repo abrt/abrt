@@ -237,6 +237,8 @@ def report(args):
     if args.unsafe:
         flags |= libreport.LIBREPORT_IGNORE_NOT_REPORTABLE
 
+    prob.chown()
+
     libreport.report_problem_in_dir(prob.path, flags)
 
 report.__doc__ = _('Report problem')
