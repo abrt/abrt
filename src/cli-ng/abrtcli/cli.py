@@ -1,12 +1,14 @@
 import os
 import sys
 import subprocess
+import functools
 
 import argcomplete
 from argh import ArghParser, named, arg, aliases, expects_obj
 import problem
 import report as libreport
-from reportclient import ask_yes_no
+import reportclient
+from reportclient import ask_yes_no, set_verbosity
 
 from abrtcli import config, l18n
 from abrtcli.l18n import _
@@ -21,10 +23,32 @@ from abrtcli.utils import (fmt_problems,
                            run_event,
                            sort_problems)
 
+def arg_verbose(func):
+    """
+    This is a decorator that adds --verbose command line argument to a command.
+
+    If the command supports the argument, the command must correctly initialize
+    reportclient, because we want to propagate the verbosity to called
+    functions.
+    """
+
+    @functools.wraps(func)
+    def abrt_wrapper(args):
+        if 'verbose' in args:
+            reportclient.verbose += args.verbose
+            set_verbosity(reportclient.verbose)
+
+        return func(args)
+
+    argh_wrapper = arg('-v', '--verbose', action='count', default=0,
+                       help=_('Print verbose information'))
+    return argh_wrapper(abrt_wrapper)
+
 
 @aliases('bt')
 @expects_obj
 @arg('MATCH', nargs='?', default='last', completer=match_completer)
+@arg_verbose
 def backtrace(args):
     prob = match_get_problem(args.MATCH, auth=args.auth)
     if hasattr(prob, 'backtrace'):
@@ -44,6 +68,7 @@ backtrace.__doc__ = _('Show backtrace of a problem')
 @aliases('di')
 @expects_obj
 @arg('MATCH', nargs='?', default='last', completer=match_completer)
+@arg_verbose
 def di_install(args):
     prob = match_get_problem(args.MATCH, auth=args.auth)
     if not isinstance(prob, problem.Ccpp):
@@ -74,6 +99,7 @@ di_install.__doc__ = _('Install required debuginfo for given problem')
 @expects_obj
 @arg('-d', '--debuginfo-install', help='Install debuginfo prior launching gdb')
 @arg('MATCH', nargs='?', default='last', completer=match_completer)
+@arg_verbose
 def gdb(args):
     prob = match_get_problem(args.MATCH, auth=args.auth)
     if not isinstance(prob, problem.Ccpp):
@@ -119,6 +145,7 @@ gdb.__doc__ = _('Run GDB against a problem')
      help=_('Built-in output format'))
 @arg('-n', '--not-reported', default=False,
      help=_('List only not-reported problems'))
+@arg_verbose
 def list_problems(args):
     probs = sort_problems(problem.list(auth=args.auth))
 
@@ -154,6 +181,7 @@ list_problems.__doc__ = _('List problems')
 @arg('--pretty', choices=config.FORMATS, default='full',
      help=_('Built-in output format'))
 @arg('MATCH', nargs='?', default='last', completer=match_completer)
+@arg_verbose
 def info(args):
     prob = match_get_problem(args.MATCH, allow_multiple=True, auth=args.auth)
     if not args.fmt:
@@ -172,6 +200,7 @@ info.__doc__ = _('Print information about problem')
 @arg('MATCH', nargs='?', default='last', completer=match_completer)
 @arg('-i', help=_('Prompt before removal'), default=False)
 @arg('-f', help=_('Do not prompt before removal'), default=False)
+@arg_verbose
 def remove(args):
     prob = match_get_problem(args.MATCH, auth=args.auth)
     print(fmt_problems(prob, fmt=config.FULL_FMT))
@@ -190,6 +219,7 @@ remove.__doc__ = _('Remove problem')
 
 @expects_obj
 @arg('MATCH', nargs='?', default='last', completer=match_completer)
+@arg_verbose
 def report(args):
     prob = match_get_problem(args.MATCH, auth=args.auth)
     libreport.report_problem_in_dir(prob.path,
@@ -207,6 +237,7 @@ report.__doc__ = _('Report problem')
 @arg('-f', '--force', action='store_true',
      help=_('Force retracing even if backtrace already exists'))
 @arg('MATCH', nargs='?', default='last', completer=match_completer)
+@arg_verbose
 def retrace(args):
     # we might not get these var if called from backtrace
     local, remote, auth = False, False, False
@@ -262,6 +293,7 @@ retrace.__doc__ = _('Generate backtrace from coredump')
      help=_('Print only the problems more recent than specified timestamp'))
 @arg('-n', '--not-reported', default=False,
      help=_('List only not-reported problems'))
+@arg_verbose
 def status(args):
     probs = problem.list(auth=args.auth)
 
