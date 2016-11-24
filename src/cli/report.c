@@ -36,12 +36,19 @@ int _cmd_report(const char **dirs_strv, int flags)
             continue;
         }
 
-
         const int not_reportable = test_exist_over_dbus(real_problem_id, FILENAME_NOT_REPORTABLE);
         if (not_reportable != 0)
         {
             if (!(flags & CMD_REPORT_UNSAFE))
             {
+                if (g_verbose > 0)
+                {
+                    char *reason = load_text_over_dbus(real_problem_id, FILENAME_NOT_REPORTABLE);
+                    if (reason != NULL)
+                        log("%s\n", reason);
+                    free(reason);
+                }
+
                 error_msg(_("Problem '%s' cannot be reported"), real_problem_id);
                 free(real_problem_id);
                 ++ret;
