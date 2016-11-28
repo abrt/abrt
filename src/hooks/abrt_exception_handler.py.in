@@ -63,6 +63,7 @@ def write_dump(tb_text, tb):
             s.connect(@VAR_RUN@ + "/abrt/abrt.socket")
             s.sendall("POST / HTTP/1.1\r\n\r\n")
             s.sendall("type=Python\0")
+            s.sendall("analyzer=abrt-python-handler\0")
             s.sendall("pid=%s\0" % os.getpid())
             s.sendall("executable=%s\0" % executable)
             # This handler puts a short(er) crash descr in 1st line of the backtrace.
