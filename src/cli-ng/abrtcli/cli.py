@@ -160,6 +160,8 @@ def list_problems(args):
 
     if not args.fmt:
         fmt = config.MEDIUM_FMT
+    else:
+        fmt = args.fmt
 
     if args.pretty != 'medium':
         fmt = getattr(config, '{}_FMT'.format(args.pretty.upper()))
@@ -186,6 +188,8 @@ def info(args):
     prob = match_get_problem(args.MATCH, allow_multiple=True, auth=args.auth)
     if not args.fmt:
         fmt = config.FULL_FMT
+    else:
+        fmt = args.fmt
 
     if args.pretty != 'full':
         fmt = getattr(config, '{}_FMT'.format(args.pretty.upper()))
