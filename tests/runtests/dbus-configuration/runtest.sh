@@ -307,11 +307,11 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "Int32"
-        rlAssertEquals "Get 'MaxCrashReportsSize' value" "_$(confDBusGetProperty abrt MaxCrashReportsSize)" "_1000"
+        rlAssertEquals "Get 'MaxCrashReportsSize' value" "_$(confDBusGetProperty abrt MaxCrashReportsSize)" "_5000"
         rlRun "confDBusSetProperty abrt MaxCrashReportsSize int32 1234" 0
         rlAssertEquals "Failed to set 'MaxCrashReportsSize' value" "_$(confDBusGetProperty abrt MaxCrashReportsSize)" "_1234"
         rlRun "confDBusSetPropertyDefault abrt MaxCrashReportsSize" 0
-        rlAssertEquals "Failed to reset 'MaxCrashReportsSize' value" "_$(confDBusGetProperty abrt MaxCrashReportsSize)" "_1000"
+        rlAssertEquals "Failed to reset 'MaxCrashReportsSize' value" "_$(confDBusGetProperty abrt MaxCrashReportsSize)" "_5000"
     rlPhaseEnd
 
     rlPhaseStartTest "String Array from non-default file"
