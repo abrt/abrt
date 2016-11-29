@@ -83,8 +83,9 @@ rlJournalStart
         echo "cli_sanity_test_not_reportable" > $crash_PATH/type
         echo "cli_sanity_test_not_reportable" > $crash_PATH/analyzer
 
+        PROBLEM_ID=$(abrt list --fmt {short_id})
         rlRun "abrt report 2>&1 | tee abrt-cli-report-not-reportable.log" 0
-        rlAssertGrep "Problem '$crash_PATH' cannot be reported" abrt-cli-report-not-reportable.log
+        rlAssertGrep "Problem '$PROBLEM_ID' cannot be reported" abrt-cli-report-not-reportable.log
 
         cp -f type analyzer $crash_PATH
 
