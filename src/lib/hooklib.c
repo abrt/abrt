@@ -246,7 +246,13 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return NULL;
-    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+
+    char *executable = NULL;
+    if (dd_exist(dd, FILENAME_BINARY))
+        executable = concat_path_file(dd->dd_dirname, FILENAME_BINARY);
+    else
+        executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+
     dd_close(dd);
 
     /* Let user know what's going on */
