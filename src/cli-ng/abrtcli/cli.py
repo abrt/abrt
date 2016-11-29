@@ -160,6 +160,8 @@ def list_problems(args):
 
     if not args.fmt:
         fmt = config.MEDIUM_FMT
+    else:
+        fmt = args.fmt
 
     if args.pretty != 'medium':
         fmt = getattr(config, '{}_FMT'.format(args.pretty.upper()))
