@@ -77,5 +77,6 @@ export PACKAGES="abrt \
                  libreport-plugin-ureport \
                  libreport-plugin-logger \
                  libreport-plugin-mantisbt \
+                 libreport-plugin-systemd-journal \
                  satyr \
                  will-crash"
