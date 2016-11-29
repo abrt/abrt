@@ -85,12 +85,12 @@ if __name__ == "__main__":
 
                         vendor = h[rpm.RPMTAG_VENDOR]
                         if vendor != None:
-                            verdor = vendor.decode('utf-8')
+                            vendor = vendor.decode('utf-8')
 
                         outfile.write("%s %s (%s) %s\n" %
                                     (path,
                                      h[rpm.RPMTAG_NEVRA].decode('utf-8'),
-                                     verdor,
+                                     vendor,
                                      h[rpm.RPMTAG_INSTALLTIME])
                                     )
 
