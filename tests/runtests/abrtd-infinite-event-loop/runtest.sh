@@ -52,7 +52,8 @@ function test_run
 
     # get only the new entries
     sed "1,/$last_line/ d" /var/log/messages 2>&1 | tee ${1}_$4.log
-    rlAssertGrep "$2" ${1}_$4.log
+    pattern=$(echo $2 | sed 's#//#/#g')
+    rlAssertGrep "$pattern" ${1}_$4.log
 
     ps aux | grep abrt > ${1}_ps_$4.log
     rlAssertNotGrep "abrt-server" ${1}_ps_$4.log
