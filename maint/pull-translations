@@ -1,0 +1,45 @@
+#!/usr/bin/bash
+if [ ! -d po ]; then
+    echo "Run this script in the top source directory"
+    exit 1
+fi
+
+git update-index -q --refresh >/dev/null 2>&1
+if [ -n "$(git diff-index --name-only HEAD --)" ]; then
+    echo "Run this script only without uncommited changes"
+    exit 1
+fi
+
+zanata-cli pull -B || exit 1
+
+ERR=false
+for pof in `ls -1 po/*.po`
+do
+    msgfmt --check-format $pof || {
+        ERR=true
+    }
+done
+
+if $ERR; then
+    exit 1
+fi
+
+for pof in `cd po && ls *.po`;
+do
+    echo $pof | cut -f1 -d.
+    if ! git ls-files po/$pof --error-unmatch >/dev/null 2>&1; then
+        git add po/$pof >/dev/null 2>&1 || {
+            echo "Failed to 'git add po/$pof'"
+            exit 1
+        }
+    fi
+done | sort > po/LINGUAS
+
+NEW_LINGUAS=$(git status -s --porcelain | grep "^A" | awk -F[/.] '{print $2}' | tr "\n" " " | sed 's/\(.*\) /\1/')
+if [ -n "$NEW_LINGUAS" ]; then
+    git add po/LINGUAS
+    git commit -s -m "Add new translation languages - $NEW_LINGUAS"
+fi
+
+git commit -a -s -m "Translation updates"
+git log --oneline -2
