@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.10.0]
 ### Added
 - Start reporting the detected problems to systemd-journal in the form of
 catalogue messages that contains essential problem details. The messages are
@@ -51,4 +53,5 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.9.0...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.10.0...HEAD
+[2.10.0]: https://github.com/abrt/abrt/compare/2.9.0...2.10.0

@@ -1148,6 +1148,77 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Sat Dec 03 2016 Jakub Filak <jakub@thefilaks.net> 2.10.0-1
+- Translation updates
+- spec: bump required libreport and satyr versions
+- build: make the release-* targets smarter
+- Add CHANGELOG.md
+- a-a-notify: set env var before run report_systemd-journal event
+- use run_event_on_problem_dir() helper for running events
+- notify: do not require package element
+- spec: add catalog_journal_ccpp_format.conf file
+- reporter-s-journal: add formatting file for abrt-journal-core analyser
+- cli-ng: fix --fmt parameter
+- python: create analyzer element in dumpdir
+- abrt-action-list-dsos: fix typo in vendor variable name
+- cli-ng: chown problem before reporting
+- lib: stop printing out a debug message 'adding: '
+- cli: print out the not-reportable reason
+- cli: configure libreport to ignore not-reportable
+- cli-ng: force reporting even if not-reportable
+- cli-ng: introduce verbose argument
+- Import GObject from gi.repository
+- ccpp: configure package repositories for correct OS
+- a-a-s-c-data: adapt to current docker
+- daemon: don't drop problems from unknown containers
+- a-a-s-c-data: correct detection of container type
+- spec: install Bodhi event files
+- bodhi: factor out Bodhi updates lookup into a solo event
+- problems2: update the documentation
+- a-a-analyze-python: create exception_type element
+- a-a-analyze-xorg: create crash_function into dump dir
+- koops: create crash_function element
+- a-a-analyze-python: create crash_function element
+- a-a-analyze-c: create crash_function element
+- spec: add formatting files for reporter-systemd-journal
+- reporter-systemd-journal: add formatting files
+- vmcore: /var/tmp/abrt is no longer a dump location
+- events: add event report_systemd-journal to all addons
+- abrt-action-notify: notify to systemd journal
+- spec: add abrt's catalog source files
+- journal-catalog: add abrt's catalog source files
+- ccpp: retain partial core_backtrace upon error
+- ccpp: log waitpid errors
+- ccpp: inform users about not supported unwinding
+- ccpp: close stdin when we can let the process die
+- daemon: properly shutdown socket connection
+- daemon: close forgotten FD to /proc/[pid]
+- ccpp: pass proc pid FD instead of pid to *_at fns
+- ccpp+daemon: pass valid params to dd_open_item()
+- python: remove unused functions from sysexcept hook
+- build: add gettext-devel to sysdeps
+- spec: add libcap-devel to BRs of addon-ccpp
+- ccpp: avoid running elfutils under root
+- Add abrt-action-analyze-vulnerability to .gitignore
+- build: autoge.sh without args configures for debugging
+- conf: increase MaxCrashReportsSize to 5GiB
+- ccpp: fast dumping and abrt core limit
+- CI: make debugging easier with more log messages
+- doc: add a guide for ABRT hackers
+- vmcore: fix an undefined variable on error path
+- vmcore: read kdump.conf from an arbitrary location
+- ccpp: use libreport 'at' functions
+- ccpp: use abort() to exit in debug mode
+- python2: stop generating dso_list in the process
+- python: stop collecting ENVIRON in the process
+- abrtd: details of processes from different PID NS
+- abrtd: save interesting process details
+- a-a-s-package-data: add python3.6 to known Interpreters
+- spec: update gdb Requires
+- tree-wide: make path to GDB configurable
+- a-a-ureport: print out exit codes in verbose mode
+- daemon: stop replacing analyzer with type
+
 * Fri Sep 09 2016 Jakub Filak <jfilak@redhat.com> 2.9.0-1
 - spec: install abrt_dbus_event.conf
 - dbus: use Problems2 API in abrt-dbus
