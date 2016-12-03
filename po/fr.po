@@ -17,12 +17,12 @@
 # Sam Friedmann <sam.friedmann@redhat.com>, 2014
 # Vincent HERBER <vincent.herber@gmail.com>, 2011
 # Vincent  <vincent.herber@gmail.com>, 2011
-# Jibec <jean-baptiste@holcroft.fr>, 2015. #zanata
+# Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>, 2015. #zanata
 # Julie Carbone <jcarbone@redhat.com>, 2015. #zanata
 # Maxim Therrien <acerspyro@gmail.com>, 2015. #zanata
 # dominique <chepioq@gmail.com>, 2015. #zanata
 # Jakub Filak <jfilak@redhat.com>, 2016. #zanata
-# Jibec <jean-baptiste@holcroft.fr>, 2016. #zanata
+# Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>, 2016. #zanata
 # Julie Carbone <jcarbone@redhat.com>, 2016. #zanata
 # Jérôme Bivia <jerome.bivia@gmail.com>, 2016. #zanata
 msgid ""
@@ -33,13 +33,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-07-14 05:31-0400\n"
+"PO-Revision-Date: 2016-12-03 02:05-0500\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/fr/)\n"
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Zanata 3.8.4\n"
+"X-Generator: Zanata 3.9.6\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -1057,6 +1057,33 @@ msgid ""
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
 msgstr ""
+"Utilisation : %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH[:PATH]...]\n"
+"\n"
+"Installe debuginfos pour tous les build-ids répertoriés dans BUILD_IDS_FILE\n"
+"vers CACHEDIR, en utilisant TMPDIR comme répertoire intermédiaire temporaire."
+"\n"
+"Les anciens fichiers de CACHEDIR sont supprimés jusqu'à l'obtention d'une "
+"taille plus petite que SIZE.\n"
+"\n"
+"Lit la configuration depuis /etc/abrt/plugins/CCpp.conf\n"
+"\n"
+"    -v          Verbeux\n"
+"    -y          Non interactif, répondre « Oui » à toutes les questions\n"
+"    --ids       Par défaut : build_ids\n"
+"    --tmpdir    Par défaut : @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
+"    --cache     Liste des dossiers séparés par des deux-points. Le premier "
+"est utilisé\n"
+"                pour sauvegarder les informations de débogages  installées.\n"
+"                Par défaut : /var/cache/abrt-di\n"
+"    --size_mb   Par défaut : 4096\n"
+"    --pkgmgr   Par défaut : la variable PackageManager du CCpp.conf ou 'dnf'\n"
+"    -e,--exact  Télécharger uniquement les fichiers spécifiés\n"
+"    --repo      Schéma à utiliser lors de la recherche de dépôts.\n"
+"                Par défaut : *debug*\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:176
 msgid "Can't open {0}: {1}"
@@ -1610,6 +1637,21 @@ msgid ""
 "parameter\n"
 "-j or in %s conf file.\n"
 msgstr ""
+"& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
+"\n"
+"Extrait le plantage Xorg depuis systemd-journal\n"
+"\n"
+"Les options -c et -e entrent en conflit car les deux spécifient le premier "
+"message de lecture.\n"
+"\n"
+"-e n'est utile seulement pour -f car la suite du journal débute par la "
+"lecture\n"
+"du journal entier si la dernière position lue n'est pas disponible.\n"
+"\n"
+"La dernière position lue est sauvegardée dans  %s\n"
+"\n"
+"Le filtre du journal est une option requise et doit être renseigné par "
+"l'option -j ou dans le fichier de configuration %s.\n"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:189
 msgid "Print found crashes on standard output"

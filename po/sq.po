@@ -1,5 +1,5 @@
 # Silva Arapi <silva.arapi19@gmail.com>, 2015. #zanata
-# Anxhela Hyseni <angelabelieber@ymail.com>, 2016. #zanata
+# Anxhela Hyseni <anxhela.hyseni1996@gmail.com>, 2016. #zanata
 # Anxhelo Lushka <an_xhelo@hotmail.com>, 2016. #zanata
 # Jakub Filak <jfilak@redhat.com>, 2016. #zanata
 # Silva Arapi <silva.arapi19@gmail.com>, 2016. #zanata
@@ -11,11 +11,11 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-07-14 05:50-0400\n"
+"PO-Revision-Date: 2016-12-03 02:10-0500\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Albanian\n"
 "Language: sq\n"
-"X-Generator: Zanata 3.8.4\n"
+"X-Generator: Zanata 3.9.6\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -991,6 +991,30 @@ msgid ""
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
 msgstr ""
+"Përdorimi: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH[:PATH]...]\n"
+"\n"
+"Instalon informacionin e rregullimeve për ndërtimet e listuara në "
+"NDËRTIMI_SKEDARËVE_IDS\n"
+"tek CACHEDIR, duke përdorur TMPDIR si zona skene të përkohshme.\n"
+"Skedarët e vjetër në CACHEDIR janë fshirë derisa ajo është më e vogël se "
+"MADHËSIA.\n"
+"\n"
+"Lexon konfigurimet nga /etc/abrt/plugins/CCpp.conf\n"
+"\n"
+"    -v          Të jetë fjalëshumë\n"
+"    -y          Jobashkëvepruese, supozo 'Po' te të gjitha pyetjet\n"
+"    --ids       Parazgjedhur: build_ids\n"
+"    --tmpdir    Parazgjedhur: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
+"    --cache     Parazgjedhur: /var/cache/abrt-di\n"
+"    --size_mb   Parazgjedhur: 4096\n"
+"    --pkgmgr   Paragjedhur: PackageManager nga CCpp.conf ose 'dnf'\n"
+"    -e,--exact  Shkarko vetëm skedarët e specifikuar\n"
+"    --repo      Model për t'u përdorur kur të kërkoni për repos\n"
+"                Parazgjedhur: *rregulloj*\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:176
 msgid "Can't open {0}: {1}"
@@ -1066,6 +1090,9 @@ msgid ""
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
 msgstr ""
+"Ok për të ngarkuar mbeturinat e bërthamës? (Mund të përmbajë të dhëna "
+"sensitive). Në qoftë se përgjigjia është 'Jo', një raft gjurmimi do të "
+"gjenerohet lokalisht. (Mund të shkarkohen një sasi e madhe të dhënash)."
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:72
 msgid ""
@@ -1527,6 +1554,20 @@ msgid ""
 "parameter\n"
 "-j or in %s conf file.\n"
 msgstr ""
+"& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
+"\n"
+"Shkurto dështimet Xorg nga ditari-sistemd\n"
+"\n"
+"alternativat -c dhe -e kanë konflikte sepse të dyja caktojnë mesazhin e parë "
+"të lexuar.\n"
+"\n"
+"-e është e nevojshme për -f sepse ditari i mëposhtëm fillon duke lexuar të "
+"gjithë ditarin nëse vendodhja e fundit e parë nuk është e disponueshme.\n"
+"\n"
+"Vendodhja e parë së fundmi është ruajtur në %s\n"
+"\n"
+"Filtruesi i ditarit është një parametër i nevojshëm dhe duhet të caktohet "
+"ose nga parametri -j ose në skedarin conf %s.\n"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:189
 msgid "Print found crashes on standard output"
@@ -1540,16 +1581,19 @@ msgstr ""
 #: ../src/plugins/abrt-dump-journal-xorg.c:199
 msgid "Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)"
 msgstr ""
+"Ditari i filtrimit psh. '_COMM=gdm-x-session' (mund të jepet disa herë)"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:265
 msgid ""
 "Journal filter must be specified either by parameter -j or stored in /etc/"
 "abrt/plugins/xorg.conf file"
 msgstr ""
+"Ditari i filtrimit duhet të jetë i specifikuar ose nga parametri -j ose i "
+"ruajtur në skedarin /etc/abrt/plugins/xorg.conf"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:282
 msgid "Cannot filter systemd-journal to Xorg data only"
-msgstr ""
+msgstr "Nuk mund të filtrohet ditari-sistemd vetëm në të dhëna Xorg"
 
 #: ../src/plugins/abrt-dump-xorg.c:35
 msgid ""
@@ -1557,6 +1601,9 @@ msgid ""
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
 msgstr ""
+"& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"Shkëput oops nga SKEDARI (ose futja standarte)"
 
 #: ../src/plugins/abrt-dump-xorg.c:53
 msgid "Print found crash data on standard output"
@@ -1579,51 +1626,60 @@ msgstr "Nuk mund të ruhet pozicioni i orës së protokollit "
 #: ../src/plugins/abrt-journal.c:284
 #, c-format
 msgid "Cannot save journal watch's position: open('%s')"
-msgstr ""
+msgstr "Nuk mund të ruhet pozicioni i orës së protokollit: hapur('%s')"
 
 #. Only notice because this is expected
 #: ../src/plugins/abrt-journal.c:302
 #, c-format
 msgid "Not restoring journal watch's position: file '%s' does not exist"
 msgstr ""
+"Nuk mund të riruhet pozicioni i ditarit të kohës: skedari '%s' nuk ekziston"
 
 #: ../src/plugins/abrt-journal.c:304
 #, c-format
 msgid "Cannot restore journal watch's position form file '%s'"
-msgstr ""
+msgstr "Nuk mund të ruhet pozicioni i orës së protokollit nga skedari '%s'"
 
 #: ../src/plugins/abrt-journal.c:311
 #, c-format
 msgid "Cannot restore journal watch's position: path '%s' is not regular file"
 msgstr ""
+"Nuk mund të ruhet pozicioni i orës së protokollit : rruga '%s' nuk është "
+"skedar i zakonshëm"
 
 #: ../src/plugins/abrt-journal.c:317
 #, c-format
 msgid ""
 "Cannot restore journal watch's position: file '%s' exceeds %dB size limit"
 msgstr ""
+"Nuk mund të ruhet pozicioni i orës së protokollit: skedari '%s' tejkalon "
+"limitin e madhësisë %dB"
 
 #: ../src/plugins/abrt-journal.c:325
 #, c-format
 msgid "Cannot restore journal watch's position: open('%s')"
-msgstr ""
+msgstr "Nuk mund të ruhet pozicioni i orës së protokollit: hap('%s')"
 
 #: ../src/plugins/abrt-journal.c:334
 #, c-format
 msgid "Cannot restore journal watch's position: cannot read entire file '%s'"
 msgstr ""
+"Nuk mund të ruhet pozicioni i orës së protokollit: nuk mund të lexohet i "
+"tërë skedari '%s'"
 
 #. abrt_journal_set_cursor() prints error message in verbose mode
 #: ../src/plugins/abrt-journal.c:346
 #, c-format
 msgid "Failed to move the journal to a cursor from file '%s'"
-msgstr ""
+msgstr "Dështoi lëvizja e protokollit tek një kursor nga skedari '%s'"
 
 #: ../src/plugins/abrt-retrace-client.c:70
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
 msgstr ""
+"Serveri i ripërshkrimit nuk mund të përdoret, sepse përplasja është shumë e "
+"madhe. Provoni ripërshkrimin lokal."
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
@@ -1646,7 +1702,7 @@ msgstr "Nuk mund të ekzekutohet '%s'"
 #: ../src/plugins/abrt-retrace-client.c:842
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr ""
+msgstr "Dështoi dërgimi i kokës HTTP e gjatësisë %d: gabim NSS %d."
 
 #: ../src/plugins/abrt-retrace-client.c:223
 #: ../src/plugins/abrt-retrace-client.c:412
@@ -1658,7 +1714,8 @@ msgstr ""
 #, c-format
 msgid "Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr ""
+msgstr "Reagim i papritur HTTP nga serveri: %d\n"
+"%s"
 
 #: ../src/plugins/abrt-retrace-client.c:232
 #: ../src/plugins/abrt-retrace-client.c:755
@@ -1667,7 +1724,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:992
 #: ../src/plugins/abrt-retrace-client.c:1062
 msgid "Invalid response from server: missing HTTP message body."
-msgstr ""
+msgstr "Përgjigje e pavlefshme nga serveri: mungon trupi i mesazhit HTTP."
 
 #: ../src/plugins/abrt-retrace-client.c:424
 #, c-format
@@ -1675,6 +1732,8 @@ msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official '%s' repositories?"
 msgstr ""
+"Serveri i ripërshkrimit nuk mund të përpunoj paketën '%s.%s'. \n"
+"Ai është pjesë e formale e depove '%s'?"
 
 #: ../src/plugins/abrt-retrace-client.c:444
 msgid "Querying server settings"
@@ -1927,6 +1986,8 @@ msgstr "Debugger GNU lokal"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgstr ""
+"Shkarko paketën info rregulluese dhe gjenero përgjurmimin lokal duke "
+"përdorur GDB"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
@@ -1934,6 +1995,9 @@ msgid ""
 "and take up disk space. However, unlike RetraceServer, doesn't send coredump "
 "to remote machines."
 msgstr ""
+"Ka nevojë për të shkarkuar paketat e info të rregullimit, e cila mund t'ju "
+"marrë pak kohë, dhe të zëjë hapësirë në disk. Gjithsesi, ndryshe nga "
+"ServeriRipërshkrues, nuk dërgon mbeturinabërthame në makineri të largëta."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
@@ -1947,6 +2011,13 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
+"Ngarkon mbeturinabërthame në një server, i cili gjeneron përgjurmues dhe e "
+"kthen atë. Avantazhe: nuk ka nevojë për shkarkimin e info rregullueseve. "
+"Serveri ripërshkrues i bazës së të dhënave tek info rregulluesi është më i "
+"kompletuar. Serveri ripërshkrimes mund të gjenerojë një përgjurmues më të "
+"mirë. Disavantazhe: ngarkimi i mbeturinabërthame përmban të gjithë të dhënat "
+"nga programi i përplasur, duke përfshirë të dhënat tuaja private, në qoftë "
+"se keni."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Retrace server URL"
@@ -1970,6 +2041,9 @@ msgid ""
 "fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
 "&gt;(warning)&lt;/a&gt;"
 msgstr ""
+"Shkruani \"i pasigurt\" për të lejuar lidhje të pasigurta &lt;a href=\"https:"
+"//fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
+"&gt;(warning)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
@@ -1977,13 +2051,16 @@ msgstr "Mblidh gabimet .xsession"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
-msgstr ""
+msgstr "Ruaj rreshtat e përshtatshëm nga skedari ~/.xsession-errors"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:3
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
 msgstr ""
+"Skanon përmes skedarit ~/.xsession-errors dhe ruan ato rreshta të cilat "
+"përmbajnë emra të ekzekutueshëm. Rezultati do të ruhet si element "
+"'xsession_errors'."
 
 #: ../src/plugins/https-utils.c:62
 msgid "An error occurred on the server side."
@@ -2017,6 +2094,8 @@ msgstr "Certifikata është e nënshkruar nga një lëshues i pabesuar: '%s'."
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
 msgstr ""
+"Emri i subjektit të çrtifikatës '%s' nuk përputhet me emrin e host-it "
+"objektiv '%s'."
 
 #: ../src/plugins/https-utils.c:107
 msgid "Remote certificate has expired."
@@ -2030,17 +2109,17 @@ msgstr "Lëshuesi i certifikatës nuk është i njohur: '%s'."
 #: ../src/plugins/https-utils.c:113
 #, c-format
 msgid "Bad certificate received. Subject '%s', issuer '%s'."
-msgstr ""
+msgstr "U morr çertifikatë e keqe. Subjekti '%s', emetuesi '%s'."
 
 #: ../src/plugins/https-utils.c:149
 #, c-format
 msgid "Failed to get slot 'PEM Token #0': %d."
-msgstr ""
+msgstr "Dështoi marrja e të çarës 'PEM Token #0': %d."
 
 #: ../src/plugins/https-utils.c:182
 #, c-format
 msgid "Can't resolve host name '%s'. NSS error %d."
-msgstr ""
+msgstr "Nuk mund të zgjidhet emri i host '%s'. Gabim NSS %d."
 
 #. Host exists, but has neither IPv4 nor IPv6??
 #: ../src/plugins/https-utils.c:203
@@ -2134,12 +2213,17 @@ msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
 msgstr ""
+"Një problem thelbësor ndërhyri prej BIOS të thyer. Fatkeqësisht, probleme të "
+"tilla nuk janë të riparueshëm nga mirëmbajtësit thelbësor."
 
 #: ../src/plugins/oops-utils.c:205
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
 msgstr ""
+"Një problem thelbësor ndërhyri, por pajisja juaj fizike është e pasuportuar, "
+"si pasojë mirëmbajtesit thelbësor nuk janë në gjendje për të rregulluar këtë "
+"problem."
 
 #: ../src/plugins/oops-utils.c:220
 #, c-format
@@ -2147,11 +2231,14 @@ msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
+"Një problem thelbësor ndërhyri, por thelbi juaj ka qenë i njollosur (flamujt:"
+"%s). Mirëmbajtësit thelbësor nuk janë në gjendje për të diagnostikuar "
+"raportimet e njollosura."
 
 #: ../src/plugins/oops-utils.c:228
 #, c-format
 msgid " Tainted modules: %s."
-msgstr ""
+msgstr "Modulet e njollosura: %s."
 
 #: ../src/plugins/bodhi.c:468
 msgid "List of bug ids"
@@ -2159,7 +2246,7 @@ msgstr "Lista e dështimeve ids"
 
 #: ../src/plugins/bodhi.c:469
 msgid "Specify a bodhi server url"
-msgstr ""
+msgstr "Specifikoni një url serveri bothi"
 
 #: ../src/plugins/bodhi.c:470
 msgid "Specify a release"
@@ -2171,6 +2258,9 @@ msgid ""
 "\n"
 "Search for updates on bodhi server"
 msgstr ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"\n"
+"Kërkoni për përditësime në serverin bodhi"
 
 #: ../src/plugins/bodhi.c:542
 msgid "Searching for updates"
@@ -2201,6 +2291,10 @@ msgid ""
 "\n"
 "Scans files for split oops message. Can print and/or delete them."
 msgstr ""
+"& [-v] [-od] FILE...\n"
+"\n"
+"Skano skedarët për mesazhe oops të ndara. Mund t'i printosh dhe/ose t'i "
+"fshish ato."
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:97
 msgid "Print found oopses"
@@ -2217,7 +2311,7 @@ msgstr "'%s' identifikon më tepër se një direktori problemi"
 
 #: ../src/cli/abrt-cli.c:130
 msgid "Usage: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
-msgstr ""
+msgstr "Përdorim: abrt-cli [--authenticate] [--version] KOMAND [DIR]..."
 
 #: ../src/cli/abrt-cli.c:134
 msgid "List problems [in DIRs]"
@@ -2276,6 +2370,9 @@ msgid ""
 "issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
 msgstr ""
+"Tipari automatik i raportimit është çaktivizuar. Ju lutem konsideroni që ta "
+"aktivizoni atë duke lëshuar 'abrt-auto-reportim aktivizuar' si një përdorues "
+"me privilegje bazë\n"
 
 #: ../src/cli/list.c:183
 msgid "& info [options] DIR..."
@@ -2480,6 +2577,10 @@ msgid ""
 "Local retracing requires downloading potentially large amount of debuginfo "
 "data"
 msgstr ""
+"Ngarkimi i mbeturinave bërthamë dhe performimi i rigjurmimit të largët? "
+"(Mund të përmbajë të dhëna sensitive). Në qoftë se përgjigjia është 'Jo', "
+"një raft gjurmimi do të gjenerohet lokalisht. Rigjurmimi lokal kërkon "
+"shkarkimin e një sasie të dhënash potencialisht të madhe info rregulluese"
 
 #: ../src/cli-ng/abrtcli/cli.py:248
 msgid "Remote retracing"
@@ -2524,6 +2625,8 @@ msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
 msgstr ""
+"Dërgo core dump në serverin e largët retrace për analizim lokal nëse "
+"analizimi i largët dështon"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
 msgid ""
@@ -2535,6 +2638,15 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
+"Ngarkon mbeturinabërthame në një server, i cili gjeneron përgjurmues dhe e "
+"kthen atë. Në qoftë se përdoruesi nuk do të ngarkoj mbeturinabërthamë të tij "
+"gjithandej eventi do të performohet lokalisht. Analiza lokale është një "
+"event i vazhdueshëm nëse analiza e largët dështon. Avantazhe: nuk ka nevojë "
+"për shkarkimin e info rregullueseve. Serveri ripërshkrues i bazës së të "
+"dhënave tek info rregulluesi është më i kompletuar. Serveri ripërshkrimes "
+"mund të gjenerojë një përgjurmues më të mirë. Disavantazhe: ngarkimi i "
+"mbeturinabërthame përmban të gjithë të dhënat nga programi i përplasur, duke "
+"përfshirë të dhënat tuaja private, në qoftë se keni."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -2544,12 +2656,16 @@ msgstr "Analizo bërthamën VM"
 msgid ""
 "Install kernel debuginfo packages, generate kernel log and oops message"
 msgstr ""
+"Instalo paketat info rregulluese bazë, gjenero trungun bazë dhe mesazhet "
+"oops"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
 "Needs to install kernel debuginfo packages, which might take significant "
 "time, and take up disk space."
 msgstr ""
+"Ka nevojë për të instaluar paketat info rregulluese bazë, të cilat mund t'ju "
+"marrim pak kohë, dhe t'ju zënë hapësirë në disk."
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
@@ -2564,6 +2680,8 @@ msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
 msgstr ""
+"Gjeneron gconftool-2 --recursive-list /apps/executable dhe i ruan ato si "
+"elemente 'gconf_subtree'."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"

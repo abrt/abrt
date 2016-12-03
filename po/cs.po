@@ -15,6 +15,7 @@
 # Jiri Eischmann <jiri@eischmann.cz>, 2015.
 # Zdenek <chmelarz@gmail.com>, 2015. #zanata
 # Jiri Eischmann <jiri@eischmann.cz>, 2016. #zanata
+# Petr Kovar <pkovar@redhat.com>, 2016. #zanata
 # Zdenek <chmelarz@gmail.com>, 2016. #zanata
 msgid ""
 msgstr ""
@@ -24,16 +25,16 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-04-01 04:30-0400\n"
-"Last-Translator: Jiri Eischmann <jiri@eischmann.cz>\n"
+"PO-Revision-Date: 2016-11-04 03:18-0400\n"
+"Last-Translator: Petr Kovar <pkovar@redhat.com>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Zanata 3.8.4\n"
+"X-Generator: Zanata 3.9.6\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
-msgstr "Hlášení problemů"
+msgstr "Hlášení problémů"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2
 msgid "View and report application crashes"
@@ -993,6 +994,31 @@ msgid ""
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
 msgstr ""
+"Použití: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH[:PATH]...]\n"
+"\n"
+"Instaluje debuginfo pro všechny ID buildů v BUILD_IDS_FILE\n"
+"do CACHEDIR pomocí TMPDIR jako dočasného vyčkávacího prostoru.\n"
+"Staré soubory v CACHEDIR jsou smazány, dokud nejsou menší než SIZE.\n"
+"\n"
+"Načítá konfiguraci z /etc/abrt/plugins/CCpp.conf\n"
+"\n"
+"    -v          Být upovídanýdebuginfo\n"
+"    -y          Neinterkativní, předpokládá 'Ano' pro všechny otázky\n"
+"    --ids       Výchozí: build_ids\n"
+"    --tmpdir    Výchozí: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
+"    --cache     Čárkami oddělený seznam adresářů. První z nich je použit pro "
+"\n"
+"                ukládání nainstalovaných debuginfos.\n"
+"                Výchozí: /var/cache/abrt-di\n"
+"    --size_mb   Výchozí: 4096\n"
+"    --pkgmgr   Výchozí: Správce balíčků z CCpp.conf nebo 'dnf'\n"
+"    -e,--exact  Stáhnout pouze uvedený soubor\n"
+"    --repo      Vzor, který použít pro hledání repozitářů.\n"
+"                Výchozí: *debug*\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:176
 msgid "Can't open {0}: {1}"
@@ -1525,6 +1551,19 @@ msgid ""
 "parameter\n"
 "-j or in %s conf file.\n"
 msgstr ""
+"& [-vsoxtf] [-e]/[-c KURZOR] [-d ADRESÁŘ]/[-D]\n"
+"\n"
+"Extrahuje ze systemd-journal pády Xorg\n"
+"\n"
+"Volby -c a -e jsou v konfliktu, protože obě určují první přečtenou zprávu.\n"
+"\n"
+"-e je užitečné pouze pro -f, protože po startu žurnálu následuje čtení\n"
+"celého žurnálu, pokud není k dispozici poslední pozice.\n"
+"\n"
+"Poslední zhlédnutá pozice je uložená v %s\n"
+"\n"
+"Filtr žurnálu je požadovaný parametr a musí být specifikován buď parametrem\n"
+"-j nebo v konfiguračním souboru %s.\n"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:189
 msgid "Print found crashes on standard output"
@@ -1644,7 +1683,7 @@ msgstr "Nelze vytvořit dočasný soubor v "
 #: ../src/plugins/abrt-retrace-client.c:168
 #, c-format
 msgid "Can't execute '%s'"
-msgstr "„%s“ nelze spustit"
+msgstr "'%s' nelze spustit"
 
 #: ../src/plugins/abrt-retrace-client.c:211
 #: ../src/plugins/abrt-retrace-client.c:398
@@ -2029,7 +2068,7 @@ msgstr "Vyskytla se chyba během připojování k '%s'"
 #: ../src/plugins/https-utils.c:97
 #, c-format
 msgid "Issuer certificate is invalid: '%s'."
-msgstr "Neplatný vydavatel certifikátu: „%s“"
+msgstr "Neplatný vydavatel certifikátu: '%s'"
 
 #: ../src/plugins/https-utils.c:100
 #, c-format
@@ -2039,7 +2078,7 @@ msgstr "Certifikát je podepsán neznámým vydavatelem: '%s'."
 #: ../src/plugins/https-utils.c:103
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
-msgstr "Jméno v certifikátu „%s“ neodpovída hostname „%s“"
+msgstr "Jméno v certifikátu '%s' neodpovídá názvu počítače '%s'"
 
 #: ../src/plugins/https-utils.c:107
 msgid "Remote certificate has expired."
@@ -2048,12 +2087,12 @@ msgstr "Platnost certifikátu vypršela."
 #: ../src/plugins/https-utils.c:110
 #, c-format
 msgid "Certificate issuer is not recognized: '%s'."
-msgstr "Neznámý vydavatel certifikátu: „%s“"
+msgstr "Neznámý vydavatel certifikátu: '%s'"
 
 #: ../src/plugins/https-utils.c:113
 #, c-format
 msgid "Bad certificate received. Subject '%s', issuer '%s'."
-msgstr "Byl obdržen špatný ceritfikát. Předmět „%s“, vydal „%s“."
+msgstr "Byl obdržen špatný certifikát. Předmět '%s', vydal '%s'."
 
 #: ../src/plugins/https-utils.c:149
 #, c-format

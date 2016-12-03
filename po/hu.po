@@ -12,8 +12,10 @@
 # teknos.ferenc <teknos.ferenc@gmail.com>, 2013-2014
 # Zoltan Hoppár <zoltanh721@fedoraproject.org>, 2011-2013
 # Zoltan Hoppár <zoltanh721@fedoraproject.org>, 2014
+# DÃ©lczegi Csaba <delczegicsaba@gmail.com>, 2016. #zanata
 # Jakub Filak <jfilak@redhat.com>, 2016. #zanata
 # Meskó Balázs <meskobalazs@gmail.com>, 2016. #zanata
+# Zoltan Hoppar <zoltanh721@fedoraproject.org>, 2016. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -22,13 +24,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-07-14 05:47-0400\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"PO-Revision-Date: 2016-09-19 12:13-0400\n"
+"Last-Translator: DÃ©lczegi Csaba <delczegicsaba@gmail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/hu/)\n"
 "Language: hu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 3.8.4\n"
+"X-Generator: Zanata 3.9.6\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -196,6 +198,13 @@ msgid ""
 "With option 'Never' the stack trace will be always generated locally. With "
 "option 'Ask' ABRT will always ask the user."
 msgstr ""
+"A hibabejelentő fájl ( coredump file ) elkészítéséhez szükséges, idő- és "
+"tárhely igényes, hogy elkészüljön az ideiglenes tárhelyen ( stack trace ). "
+"Az ABRT szolgáltatást nyújt a hibabejelentő fájl elkészítéséhez az "
+"ideiglenes tárhelyről de ehhez fel kell tölteni a szolgáltatáshoz. A "
+"'Mindig' opcióval az ABRT mindig feltölti a hibabejelentő fájlt megkérdezés "
+"nélkül. A 'Soha' opcióval az ideiglenes tárhelyről készült adat helyileg "
+"lesz tárolva. A 'Rákérdez' opcióval mindig megkérdezi a felhasználót."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -282,7 +291,7 @@ msgstr "Kérdezzen"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
 msgid "Upload coredump for backtrace generation"
-msgstr ""
+msgstr "Hibabejelentés feltöltése a hibakereséséhez"
 
 #: ../src/configuration-gui/system-config-abrt.c:79
 msgid "_Close"
@@ -314,7 +323,7 @@ msgid ""
 "& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
-msgstr ""
+msgstr "A csomag adatbázis lekérdezése és a csomag összetevőinek mentése"
 
 #: ../src/daemon/abrt-action-save-package-data.c:453
 #: ../src/daemon/abrt-action-save-container-data.c:265
@@ -808,6 +817,11 @@ msgid ""
 "your computer. ABRT will not allow you to create a report in a bug tracking "
 "system but you can contact kernel maintainers via e-mail."
 msgstr ""
+"A hibajelentés nem tartalmaz elegendő értékes információt, hogy bejelentésre "
+"kerüljön. Zavaró lehet, de nem jelent problémát a számítógépével "
+"kapcsolatban. Az ABRT nem engedélyezi, hogy jelentést készítsen egy "
+"hibakereső rendszerben, de értesítheti a kernel karbantartókat e-mail-en "
+"keresztül."
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:73
 msgid ""
@@ -1013,6 +1027,8 @@ msgstr "{0} debuginfo fájl nincs telepítve"
 #, c-format
 msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
 msgstr ""
+"Érvénytelen konfiguráció a CCpp bővítményben, nem támogatott csomagkezelő:"
+"'%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:253
 msgid "Missing requested file: {0}"
@@ -1034,6 +1050,11 @@ msgid ""
 "Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
 "ABRT system cache."
 msgstr ""
+"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+"    [-r REPO]\n"
+"\n"
+"Hibakereső csomagok telepítése minden build-id-hoz, melyek szerepelnek a "
+"BUILS_IDS_FILE - ban az ABRT rendszer gyorsítótárába."
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:66
 msgid "Noninteractive, assume 'Yes' to all questions"
@@ -1041,7 +1062,7 @@ msgstr "Nem-interaktív, „Igen” feltételezése minden kérdésnél"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:67
 msgid "- means STDIN, default: build_ids"
-msgstr ""
+msgstr "- "
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
 msgid "Download only specified files"
@@ -1133,8 +1154,9 @@ msgid "uReport was already sent, not sending it again"
 msgstr "Az uReport már el lett küldve, nem lesz még egyszer elküldve"
 
 #: ../src/plugins/abrt-action-ureport:179
+#, fuzzy
 msgid "Adding you to CC List of the existing bugzilla bug"
-msgstr ""
+msgstr "A létező bugzilla CC listahoz hozzáadva"
 
 #: ../src/plugins/abrt-action-ureport:193
 #, c-format
@@ -1350,19 +1372,21 @@ msgstr "Nem sikerült minden szükséges információt kinyerni a journald-ből"
 
 #. We don't want to update the counter here.
 #: ../src/plugins/abrt-dump-journal-core.c:421
-#, c-format
+#, fuzzy, c-format
 msgid "Not saving repeating crash after %ds (limit is %ds)"
-msgstr ""
+msgstr "Men menti a további crash-t  %ds (limit is %ds)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:427
+#, fuzzy
 msgid "Failed to save detect problem data in abrt database"
-msgstr ""
+msgstr "Nem tudta menteni a z érzékelt problémákat az abrt adatbázisban"
 
 #: ../src/plugins/abrt-dump-journal-core.c:447
 #: ../src/plugins/abrt-dump-journal-oops.c:165
 #: ../src/plugins/abrt-dump-journal-xorg.c:121
+#, fuzzy
 msgid "Failed to initialize systemd-journal watch"
-msgstr ""
+msgstr "Nem tudta inicializálni a systemd-journal figyelőt"
 
 #: ../src/plugins/abrt-dump-journal-core.c:467
 msgid ""
@@ -1379,20 +1403,23 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-core.c:498
+#, fuzzy
 msgid "Create new problem directory in DIR for every coredump"
-msgstr ""
+msgstr "Új probléma könyvtár késtítése minden coredump-hoz a DIR mappában"
 
 #: ../src/plugins/abrt-dump-journal-core.c:500
 #: ../src/plugins/abrt-dump-journal-oops.c:228
 #: ../src/plugins/abrt-dump-journal-xorg.c:194
+#, fuzzy
 msgid "Start reading systemd-journal from the CURSOR position"
-msgstr ""
+msgstr "A kurzor pozíciójátol kezdi el olvasni a systemd-journal-t"
 
 #: ../src/plugins/abrt-dump-journal-core.c:501
 #: ../src/plugins/abrt-dump-journal-oops.c:229
 #: ../src/plugins/abrt-dump-journal-xorg.c:195
+#, fuzzy
 msgid "Start reading systemd-journal from the end"
-msgstr ""
+msgstr "A systemd-journal végétől kezdi el olvasni"
 
 #: ../src/plugins/abrt-dump-journal-core.c:502
 msgid "Throttle problem directory creation to 1 per INT second"
@@ -1405,24 +1432,28 @@ msgstr ""
 #: ../src/plugins/abrt-dump-journal-core.c:504
 #: ../src/plugins/abrt-dump-journal-oops.c:230
 #: ../src/plugins/abrt-dump-journal-xorg.c:196
+#, fuzzy
 msgid "Follow systemd-journal from the last seen position (if available)"
-msgstr ""
+msgstr "Folytatja a systemd-journal utolsó helyzetétől ( ha lehetséges )"
 
 #: ../src/plugins/abrt-dump-journal-core.c:515
 #: ../src/plugins/abrt-dump-journal-oops.c:246
 #: ../src/plugins/abrt-dump-journal-xorg.c:213
+#, fuzzy
 msgid "You need to specify either -c CURSOR or -e"
-msgstr ""
+msgstr "Meg kell határoznia, hogy -c kurzor vagy -e"
 
 #: ../src/plugins/abrt-dump-journal-core.c:561
 #: ../src/plugins/abrt-dump-journal-oops.c:284
 #: ../src/plugins/abrt-dump-journal-xorg.c:278
+#, fuzzy
 msgid "Cannot open systemd-journal"
-msgstr ""
+msgstr "Nem tudja megnyitni a systemd-journal-t"
 
 #: ../src/plugins/abrt-dump-journal-core.c:564
+#, fuzzy
 msgid "Cannot filter systemd-journal to systemd-coredump data only"
-msgstr ""
+msgstr "Nem tudja a systemd-journal-t kiszűrni a systemd-coredump adataiból"
 
 #: ../src/plugins/abrt-dump-journal-core.c:569
 #: ../src/plugins/abrt-dump-journal-oops.c:293
