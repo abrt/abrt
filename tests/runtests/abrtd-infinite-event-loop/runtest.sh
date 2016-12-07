@@ -52,15 +52,28 @@ function test_run
 
     # get only the new entries
     sed "1,/$last_line/ d" /var/log/messages 2>&1 | tee ${1}_$4.log
+    # pattern must not contain // in path
     pattern=$(echo $2 | sed 's#//#/#g')
     rlAssertGrep "$pattern" ${1}_$4.log
 
+    echo "wait for abrt-handle-event"
+    AHE_PID=$(pidof abrt-handle-event)
+
+    if [ -n "$AHE_PID" ]; then
+        while [ "_$AHE_PID" == "_$(pidof abrt-handle-event)" ] ; do
+            echo -n "."
+            sleep 1
+        done
+        echo "."
+        sleep 5
+    fi
+
+    killall abrt-handle-event
+    rlRun "killall abrt-server" 1
+
     ps aux | grep abrt > ${1}_ps_$4.log
     rlAssertNotGrep "abrt-server" ${1}_ps_$4.log
-    rlAssertNotGrep "abrt-event-handler" ${1}_ps_$4.log
-
-    rlRun "killall abrt-event-handler" 1
-    rlRun "killall abrt-server" 1
+    rlAssertNotGrep "abrt-handle-event" ${1}_ps_$4.log
 
     rlLog "`ls -al $ABRT_CONF_DUMP_LOCATION`"
 
@@ -107,7 +120,9 @@ EOF
 EVENT=post-create type=Python
     sleep 30
     echo "Starting loop ..."
-    will_python_raise
+    SEC=\$(date +%s)
+    ln -sf $(which will_python_raise) /var/spool/abrt/will_python_crash_\$SEC
+    /var/spool/abrt/will_python_crash_\$SEC
     exit 0
 EOF
 
@@ -139,9 +154,7 @@ EOF
     rlPhaseEnd
 
     rlPhaseStartTest "Python hook - debug"
-        # the second problem should removed as dumplicate of the first one
-        # because it is used the same crashing binary 'will_python_raise'
-        test_debug will_python_raise 1
+        test_debug will_python_raise
     rlPhaseEnd
 
     rlPhaseStartCleanup
@@ -150,6 +163,7 @@ EOF
         popd # TmpDir
         rm -rf $TmpDir
         rm -f $CCPP_EVENT_CONF $PYTHON_EVENT_CONF
+        rm -f $PYTHON_CRASH_SYMLINK
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd
