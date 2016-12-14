@@ -19,6 +19,13 @@
 #include "libabrt.h"
 #include "rpm.h"
 
+#ifdef HAVE_LIBRPM
+#include <rpm/rpmts.h>
+#include <rpm/rpmcli.h>
+#include <rpm/rpmdb.h>
+#include <rpm/rpmpgp.h>
+#endif
+
 /**
 * A set, which contains finger prints.
 */
@@ -51,8 +58,10 @@ char* get_package_name_from_NVR_or_NULL(const char* packageNVR)
 
 void rpm_init()
 {
+#ifdef HAVE_LIBRPM
     if (rpmReadConfigFiles(NULL, NULL) != 0)
         error_msg("Can't read RPM rc files");
+#endif
 
     list_free_with_free(list_fingerprints); /* paranoia */
     /* Huh? Why do we start the list with an element with NULL string? */
@@ -61,6 +70,7 @@ void rpm_init()
 
 void rpm_destroy()
 {
+#ifdef HAVE_LIBRPM
     /* Mirroring the order of deinit calls in rpm-4.11.1/lib/poptALL.c::rpmcliFini() */
     rpmFreeCrypto();
     rpmFreeMacros(NULL);
@@ -71,6 +81,7 @@ void rpm_destroy()
      * "BDB2053 Freeing read locks for locker 0x1e0: 28718/139661746636736"
      */
     rpmdbCheckTerminate(1);
+#endif
 
     list_free_with_free(list_fingerprints);
     list_fingerprints = NULL;
@@ -78,6 +89,7 @@ void rpm_destroy()
 
 void rpm_load_gpgkey(const char* filename)
 {
+#ifdef HAVE_LIBRPM
     uint8_t *pkt = NULL;
     size_t pklen;
     if (pgpReadPkts(filename, &pkt, &pklen) != PGPARMOR_PUBKEY)
@@ -95,6 +107,9 @@ void rpm_load_gpgkey(const char* filename)
             list_fingerprints = g_list_append(list_fingerprints, fingerprint);
     }
     free(pkt);
+#else
+    return;
+#endif
 }
 
 int rpm_chk_fingerprint(const char* pkg)
@@ -114,6 +129,7 @@ int rpm_fingerprint_is_imported(const char* fingerprint)
 
 char *rpm_get_fingerprint(const char *pkg)
 {
+#ifdef HAVE_LIBRPM
     char *fingerprint = NULL;
     char *pgpsig = NULL;
     const char *errmsg = NULL;
@@ -141,6 +157,9 @@ error:
     rpmdbFreeIterator(iter);
     rpmtsFree(ts);
     return fingerprint;
+#else
+    return NULL;
+#endif
 }
 
 /*
@@ -183,6 +202,7 @@ error:
 }
 */
 
+#ifdef HAVE_LIBRPM
 static int rpm_query_file(rpmts *ts, rpmdbMatchIterator *iter, Header *header,
         const char *filename, const char *rootdir_or_NULL)
 {
@@ -216,9 +236,11 @@ static int rpm_query_file(rpmts *ts, rpmdbMatchIterator *iter, Header *header,
 
     return 0;
 }
+#endif
 
 char* rpm_get_component(const char *filename, const char *rootdir_or_NULL)
 {
+#ifdef HAVE_LIBRPM
     char *ret = NULL;
     char *srpm = NULL;
     rpmts ts;
@@ -246,8 +268,12 @@ char* rpm_get_component(const char *filename, const char *rootdir_or_NULL)
     rpmdbFreeIterator(iter);
     rpmtsFree(ts);
     return ret;
+#else
+    return NULL;
+#endif
 }
 
+#ifdef HAVE_LIBRPM
 #define pkg_add_id(name)                                                \
     static inline int pkg_add_##name(Header header, struct pkg_envra *p) \
     {                                                                   \
@@ -267,10 +293,12 @@ pkg_add_id(version);
 pkg_add_id(release);
 pkg_add_id(arch);
 pkg_add_id(vendor);
+#endif
 
 // caller is responsible to free returned value
 struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_or_NULL)
 {
+#ifdef HAVE_LIBRPM
     rpmts ts;
     rpmdbMatchIterator iter;
     Header header;
@@ -330,6 +358,9 @@ struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_
     rpmdbFreeIterator(iter);
     rpmtsFree(ts);
     return NULL;
+#else
+    return NULL;
+#endif
 }
 
 void free_pkg_envra(struct pkg_envra *p)
