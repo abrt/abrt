@@ -269,7 +269,7 @@ Requires: %{name} = %{version}-%{release}
 BuildRequires: libreport-web-devel >= %{libreport_ver}
 BuildRequires: hawkey-devel
 Obsoletes: libreport-plugin-bodhi > 0.0.1
-Provides: libreport-plugin-bodhi
+Provides: libreport-plugin-bodhi = %{version}-%{release}
 
 %description plugin-bodhi
 Search for a new updates in bodhi server.
@@ -396,7 +396,7 @@ Requires: libreport-fedora >= %{libreport_ver}
 %endif
 %endif
 #Requires: abrt-plugin-firefox
-Provides: bug-buddy
+Provides: bug-buddy = %{version}-%{release}
 
 %description desktop
 Virtual package to install all necessary packages for usage from desktop
