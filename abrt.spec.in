@@ -756,7 +756,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_libexecdir}/abrt-action-generate-machine-id
 %{_bindir}/abrt-handle-upload
 %{_bindir}/abrt-action-notify
-%{_mandir}/man1/abrt-action-notify.1.gz
+%{_mandir}/man1/abrt-action-notify.1*
 %{_bindir}/abrt-action-save-package-data
 %{_bindir}/abrt-action-save-container-data
 %{_bindir}/abrt-watch-log
@@ -767,14 +767,14 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_datadir}/%{name}/conf.d/abrt-action-save-package-data.conf
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/xorg.conf
 %{_datadir}/%{name}/conf.d/plugins/xorg.conf
-%{_mandir}/man5/abrt-xorg.conf.5.gz
+%{_mandir}/man5/abrt-xorg.conf.5*
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys.conf
 %{_datadir}/%{name}/conf.d/gpg_keys.conf
-%{_mandir}/man5/gpg_keys.conf.5.gz
+%{_mandir}/man5/gpg_keys.conf.5*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/abrt_event.conf
-%{_mandir}/man5/abrt_event.conf.5.gz
+%{_mandir}/man5/abrt_event.conf.5*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/smart_event.conf
-%{_mandir}/man5/smart_event.conf.5.gz
+%{_mandir}/man5/smart_event.conf.5*
 %dir %attr(@DEFAULT_DUMP_LOCATION_MODE@, root, abrt) %{_localstatedir}/%{var_base_dir}/%{name}
 %dir %attr(0700, abrt, abrt) %{_localstatedir}/spool/%{name}-upload
 # abrtd runs as root
@@ -782,22 +782,22 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %ghost %attr(0666, -, -) %{_localstatedir}/run/%{name}/abrt.socket
 %ghost %attr(0644, -, -) %{_localstatedir}/run/%{name}/abrtd.pid
 
-%{_mandir}/man1/abrt-handle-upload.1.gz
-%{_mandir}/man1/abrt-server.1.gz
-%{_mandir}/man1/abrt-action-save-package-data.1.gz
-%{_mandir}/man1/abrt-watch-log.1.gz
+%{_mandir}/man1/abrt-handle-upload.1*
+%{_mandir}/man1/abrt-server.1*
+%{_mandir}/man1/abrt-action-save-package-data.1*
+%{_mandir}/man1/abrt-watch-log.1*
 %{_mandir}/man1/abrt-action-analyze-python.1*
-%{_mandir}/man1/abrt-action-analyze-xorg.1.gz
-%{_mandir}/man1/abrt-auto-reporting.1.gz
-%{_mandir}/man8/abrtd.8.gz
-%{_mandir}/man5/abrt-action-save-package-data.conf.5.gz
-# {_mandir}/man5/pyhook.conf.5.gz
+%{_mandir}/man1/abrt-action-analyze-xorg.1*
+%{_mandir}/man1/abrt-auto-reporting.1*
+%{_mandir}/man8/abrtd.8*
+%{_mandir}/man5/abrt-action-save-package-data.conf.5*
+# {_mandir}/man5/pyhook.conf.5*
 
 %files libs
 %{_libdir}/libabrt.so.*
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
 %{_datadir}/%{name}/conf.d/abrt.conf
-%{_mandir}/man5/abrt.conf.5.gz
+%{_mandir}/man5/abrt.conf.5*
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
 %dir %{_datadir}/%{name}
@@ -849,7 +849,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
 %{_datadir}/%{name}/conf.d/plugins/CCpp.conf
-%{_mandir}/man5/abrt-CCpp.conf.5.gz
+%{_mandir}/man5/abrt-CCpp.conf.5*
 %{_libexecdir}/abrt-gdb-exploitable
 %{_journalcatalogdir}/abrt_ccpp.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_ccpp_format.conf
@@ -877,11 +877,11 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_bindir}/abrt-action-analyze-ccpp-local
 %{_bindir}/abrt-dump-journal-core
 %config(noreplace) %{_sysconfdir}/libreport/events.d/ccpp_event.conf
-%{_mandir}/man5/ccpp_event.conf.5.gz
+%{_mandir}/man5/ccpp_event.conf.5*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/gconf_event.conf
-%{_mandir}/man5/gconf_event.conf.5.gz
+%{_mandir}/man5/gconf_event.conf.5*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vimrc_event.conf
-%{_mandir}/man5/vimrc_event.conf.5.gz
+%{_mandir}/man5/vimrc_event.conf.5*
 %{_datadir}/libreport/events/analyze_CCpp.xml
 %{_datadir}/libreport/events/analyze_LocalGDB.xml
 %{_datadir}/libreport/events/collect_xsession_errors.xml
@@ -915,16 +915,16 @@ killall abrt-dbus >/dev/null 2>&1 || :
 
 %files retrace-client
 %{_bindir}/abrt-retrace-client
-%{_mandir}/man1/abrt-retrace-client.1.gz
+%{_mandir}/man1/abrt-retrace-client.1*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/ccpp_retrace_event.conf
-%{_mandir}/man5/ccpp_retrace_event.conf.5.gz
+%{_mandir}/man5/ccpp_retrace_event.conf.5*
 %{_datadir}/libreport/events/analyze_RetraceServer.xml
 
 %files addon-kerneloops
 %config(noreplace) %{_sysconfdir}/libreport/events.d/koops_event.conf
 %{_journalcatalogdir}/abrt_koops.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_koops_format.conf
-%{_mandir}/man5/koops_event.conf.5.gz
+%{_mandir}/man5/koops_event.conf.5*
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/oops.conf
 %{_datadir}/%{name}/conf.d/plugins/oops.conf
 %if %{with systemd}
@@ -947,7 +947,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/xorg_event.conf
 %{_journalcatalogdir}/abrt_xorg.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_xorg_format.conf
-%{_mandir}/man5/xorg_event.conf.5.gz
+%{_mandir}/man5/xorg_event.conf.5*
 %if %{with systemd}
 %{_unitdir}/abrt-xorg.service
 %else
@@ -961,7 +961,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %if %{?have_kexec_tools} == 1
 %files addon-vmcore
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vmcore_event.conf
-%{_mandir}/man5/vmcore_event.conf.5.gz
+%{_mandir}/man5/vmcore_event.conf.5*
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/vmcore.conf
 %{_datadir}/%{name}/conf.d/plugins/vmcore.conf
 %{_datadir}/libreport/events/analyze_VMcore.xml
@@ -996,22 +996,22 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %files addon-python
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python.conf
 %{_datadir}/%{name}/conf.d/plugins/python.conf
-%{_mandir}/man5/abrt-python.conf.5.gz
+%{_mandir}/man5/abrt-python.conf.5*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/python_event.conf
 %{_journalcatalogdir}/abrt_python.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_python_format.conf
-%{_mandir}/man5/python_event.conf.5.gz
+%{_mandir}/man5/python_event.conf.5*
 %{python_sitearch}/abrt*.py*
 %{python_sitearch}/abrt.pth
 
 %files addon-python3
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python3.conf
 %{_datadir}/%{name}/conf.d/plugins/python3.conf
-%{_mandir}/man5/abrt-python3.conf.5.gz
+%{_mandir}/man5/abrt-python3.conf.5*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/python3_event.conf
 %{_journalcatalogdir}/abrt_python3.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_python3_format.conf
-%{_mandir}/man5/python3_event.conf.5.gz
+%{_mandir}/man5/python3_event.conf.5*
 %{python3_sitearch}/abrt*
 %{python3_sitearch}/__pycache__/abrt*
 
@@ -1019,13 +1019,13 @@ killall abrt-dbus >/dev/null 2>&1 || :
 
 %files tui
 %{_bindir}/abrt-cli
-%{_mandir}/man1/abrt-cli.1.gz
+%{_mandir}/man1/abrt-cli.1*
 
 %files cli-ng
 %config(noreplace) %{_sysconfdir}/bash_completion.d/abrt.bash_completion
 %{_bindir}/abrt
 %{python_sitearch}/abrtcli/
-%{_mandir}/man1/abrt.1.gz
+%{_mandir}/man1/abrt.1*
 
 %files desktop
 
@@ -1036,8 +1036,8 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_datadir}/%{name}/conf.d/plugins/CCpp_Atomic.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-action-save-package-data.conf
 %{_bindir}/abrt-action-save-package-data
-%{_mandir}/man1/abrt-action-save-package-data.1.gz
-%{_mandir}/man5/abrt-action-save-package-data.conf.5.gz
+%{_mandir}/man1/abrt-action-save-package-data.1*
+%{_mandir}/man5/abrt-action-save-package-data.conf.5*
 %endif
 
 %if %{with bodhi}
@@ -1046,15 +1046,15 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_bindir}/abrt-action-find-bodhi-update
 %config(noreplace) %{_sysconfdir}/libreport/events.d/bodhi_event.conf
 %{_datadir}/libreport/events/analyze_BodhiUpdates.xml
-%{_mandir}/man1/abrt-bodhi.1.gz
-%{_mandir}/man1/abrt-action-find-bodhi-update.1.gz
+%{_mandir}/man1/abrt-bodhi.1*
+%{_mandir}/man1/abrt-action-find-bodhi-update.1*
 %endif
 
 %files dbus
 %{_sbindir}/abrt-dbus
 %{_sbindir}/abrt-configuration
-%{_mandir}/man8/abrt-dbus.8.gz
-%{_mandir}/man8/abrt-configuration.8.gz
+%{_mandir}/man8/abrt-dbus.8*
+%{_mandir}/man8/abrt-configuration.8*
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
 %{_datadir}/dbus-1/interfaces/org.freedesktop.Problems2.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.Problems2.Entry.xml
@@ -1080,14 +1080,14 @@ killall abrt-dbus >/dev/null 2>&1 || :
 
 %files python
 %{python_sitearch}/problem/
-%{_mandir}/man5/abrt-python.5.gz
+%{_mandir}/man5/abrt-python.5*
 
 %files python-doc
 %{python_sitelib}/problem_examples
 
 %files python3
 %{python3_sitearch}/problem/
-%{_mandir}/man5/abrt-python3.5.gz
+%{_mandir}/man5/abrt-python3.5*
 
 %files python3-doc
 %{python3_sitelib}/problem_examples
