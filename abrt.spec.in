@@ -519,7 +519,6 @@ CFLAGS="%{optflags} -Werror" %configure \
 make %{?_smp_mflags}
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT \
              mandir=%{_mandir} \
              dbusabrtdocdir=%{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/
@@ -550,9 +549,6 @@ ln -sf %{_datadir}/applications/abrt-applet.desktop ${RPM_BUILD_ROOT}%{_sysconfd
 
 # After everything is installed, remove info dir
 rm -f %{buildroot}%{_infodir}/dir
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %check
 make check
