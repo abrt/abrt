@@ -62,7 +62,6 @@ Name: abrt
 Version: @PACKAGE_VERSION@
 Release: 1%{?dist}
 License: GPLv2+
-Group: Applications/System
 URL: https://abrt.readthedocs.org/
 Source: https://fedorahosted.org/released/%{name}/%{name}-%{version}.tar.gz
 BuildRequires: %{dbus_devel}
@@ -106,7 +105,6 @@ Requires: dbus-1-glib
 %if %{with systemd}
 Requires: %{systemd_units}
 %endif
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
 Requires: %{name}-python3 = %{version}-%{release}
 Requires(pre): %{shadow_utils}
@@ -128,14 +126,12 @@ It uses plugin system to extend its functionality.
 
 %package libs
 Summary: Libraries for %{name}
-Group: System Environment/Libraries
 
 %description libs
 Libraries for %{name}.
 
 %package devel
 Summary: Development libraries for %{name}
-Group: Development/Libraries
 Requires: abrt-libs = %{version}-%{release}
 
 %description devel
@@ -143,14 +139,12 @@ Development libraries and headers for %{name}.
 
 %package gui-libs
 Summary: Libraries for %{name}-gui
-Group: System Environment/Libraries
 
 %description gui-libs
 Libraries for %{name}-gui.
 
 %package gui-devel
 Summary: Development libraries for %{name}-gui
-Group: Development/Libraries
 Requires: abrt-gui-libs = %{version}-%{release}
 
 %description gui-devel
@@ -158,7 +152,6 @@ Development libraries and headers for %{name}-gui.
 
 %package gui
 Summary: %{name}'s gui
-Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-dbus = %{version}-%{release}
 Requires: gnome-abrt
@@ -177,7 +170,6 @@ GTK+ wizard for convenient bug reporting.
 
 %package addon-coredump-helper
 Summary: %{name}'s /proc/sys/kernel/core_pattern helper
-Group: System Environment/Libraries
 Requires: abrt-libs = %{version}-%{release}
 
 %description addon-coredump-helper
@@ -185,7 +177,6 @@ This package contains hook for C/C++ crashed programs.
 
 %package addon-ccpp
 Summary: %{name}'s C/C++ addon
-Group: System Environment/Libraries
 Requires: cpio
 BuildRequires: gdb-headless
 BuildRequires: libcap-devel
@@ -205,7 +196,6 @@ This package contains %{name}'s C/C++ analyzer plugin.
 
 %package addon-upload-watch
 Summary: %{name}'s upload addon
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-libs = %{version}-%{release}
 
@@ -214,7 +204,6 @@ This package contains hook for uploaded problems.
 
 %package retrace-client
 Summary: %{name}'s retrace client
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: xz
 Requires: tar
@@ -225,7 +214,6 @@ which is able to analyze C/C++ crashes remotely.
 
 %package addon-kerneloops
 Summary: %{name}'s kerneloops addon
-Group: System Environment/Libraries
 BuildRequires: systemd-devel
 Requires: curl
 Requires: %{name} = %{version}-%{release}
@@ -240,7 +228,6 @@ system log.
 
 %package addon-xorg
 Summary: %{name}'s Xorg addon
-Group: System Environment/Libraries
 Requires: curl
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-libs = %{version}-%{release}
@@ -252,7 +239,6 @@ log.
 %if %{?have_kexec_tools} == 1
 %package addon-vmcore
 Summary: %{name}'s vmcore addon
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-addon-kerneloops
 Requires: kexec-tools
@@ -267,7 +253,6 @@ vmcore files.
 
 %package addon-pstoreoops
 Summary: %{name}'s pstore oops addon
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-libs = %{version}-%{release}
 Requires: abrt-addon-kerneloops
@@ -280,7 +265,6 @@ This package contains plugin for collecting kernel oopses from pstore storage.
 %package plugin-bodhi
 Summary: %{name}'s bodhi plugin
 BuildRequires: %{libjson_devel}
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 BuildRequires: libreport-web-devel >= %{libreport_ver}
 BuildRequires: hawkey-devel
@@ -293,7 +277,6 @@ Search for a new updates in bodhi server.
 
 %package addon-python
 Summary: %{name}'s addon for catching and analyzing Python exceptions
-Group: System Environment/Libraries
 Requires: python
 Requires: %{name} = %{version}-%{release}
 Requires: systemd-python
@@ -305,7 +288,6 @@ uncaught exception in python programs.
 
 %package addon-python3
 Summary: %{name}'s addon for catching and analyzing Python 3 exceptions
-Group: System Environment/Libraries
 Requires: python3
 Requires: %{name} = %{version}-%{release}
 Requires: python3-systemd
@@ -317,7 +299,6 @@ uncaught exception in python 3 programs.
 
 %package tui
 Summary: %{name}'s command line interface
-Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-cli >= %{libreport_ver}
 Requires: abrt-libs = %{version}-%{release}
@@ -329,7 +310,6 @@ in command line environment.
 
 %package cli-ng
 Summary: %{name}'s improved command line interface
-Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-cli >= %{libreport_ver}
 Requires: abrt-libs = %{version}-%{release}
@@ -345,7 +325,6 @@ New generation command line interface for ABRT
 
 %package cli
 Summary: Virtual package to make easy default installation on non-graphical environments
-Group: Applications/System
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-tui
 Requires: abrt-addon-kerneloops
@@ -380,7 +359,6 @@ environment.
 
 %package desktop
 Summary: Virtual package to make easy default installation on desktop environments
-Group: User Interface/Desktops
 # This package gets installed when anything requests bug-buddy -
 # happens when users upgrade Fn to Fn+1;
 # or if user just wants "typical desktop installation".
@@ -427,7 +405,6 @@ environment.
 %if %{with atomic}
 %package atomic
 Summary: Package to make easy default installation on Atomic hosts.
-Group: Applications/System
 Requires: %{name}-addon-coredump-helper = %{version}-%{release}
 Conflicts: %{name}-addon-ccpp
 
@@ -438,7 +415,6 @@ hosts.
 
 %package dbus
 Summary: ABRT DBus service
-Group: Applications/System
 Requires: %{name} = %{version}-%{release}
 BuildRequires: polkit-devel
 Requires: abrt-libs = %{version}-%{release}
@@ -450,7 +426,6 @@ uses PolicyKit to authorize to access the problem data.
 
 %package python
 Summary: ABRT Python API
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-libs = %{version}-%{release}
 Requires: %{name}-dbus = %{version}-%{release}
@@ -466,7 +441,6 @@ problems handled by ABRT in Python.
 
 %package python-doc
 Summary: ABRT Python API Documentation
-Group: Documentation
 BuildArch: noarch
 BuildRequires: python2-devel
 Requires: %{name} = %{version}-%{release}
@@ -477,7 +451,6 @@ Examples and documentation for ABRT Python API.
 
 %package python3
 Summary: ABRT Python 3 API
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-libs = %{version}-%{release}
 Requires: %{name}-dbus = %{version}-%{release}
@@ -493,7 +466,6 @@ problems handled by ABRT in Python 3.
 
 %package python3-doc
 Summary: ABRT Python API Documentation
-Group: Documentation
 BuildArch: noarch
 BuildRequires: python3-devel
 Requires: %{name} = %{version}-%{release}
@@ -504,7 +476,6 @@ Examples and documentation for ABRT Python 3 API.
 
 %package console-notification
 Summary: ABRT console notification script
-Group: Applications/System
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-cli = %{version}-%{release}
 
