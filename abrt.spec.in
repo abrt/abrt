@@ -117,6 +117,9 @@ Requires: libreport-plugin-ureport
 %if 0%{?rhel}
 Requires: libreport-plugin-rhtsupport
 %endif
+%if 0%{?fedora}
+Recommends: libreport-plugin-systemd-journal
+%endif
 
 %description
 %{name} is a tool to help users to detect defects in applications and
