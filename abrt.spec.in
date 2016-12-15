@@ -741,7 +741,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 killall abrt-dbus >/dev/null 2>&1 || :
 
 %files -f %{name}.lang
-%defattr(-,root,root,-)
 %doc README.md COPYING
 %if %{with systemd}
 %{_unitdir}/abrtd.service
@@ -795,7 +794,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 # {_mandir}/man5/pyhook.conf.5.gz
 
 %files libs
-%defattr(-,root,root,-)
 %{_libdir}/libabrt.so.*
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
 %{_datadir}/%{name}/conf.d/abrt.conf
@@ -810,7 +808,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_datadir}/augeas/lenses/abrt.aug
 
 %files devel
-%defattr(-,root,root,-)
 # The complex pattern below (instead of simlpy *) excludes Makefile{.am,.in}:
 %doc apidoc/html/*.{html,png,css,js}
 %{_includedir}/abrt/abrt-dbus.h
@@ -821,18 +818,15 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_libdir}/pkgconfig/abrt.pc
 
 %files gui-libs
-%defattr(-,root,root,-)
 %{_libdir}/libabrt_gui.so.*
 
 %files gui-devel
-%defattr(-,root,root,-)
 %{_includedir}/abrt/abrt-config-widget.h
 %{_includedir}/abrt/system-config-abrt.h
 %{_libdir}/libabrt_gui.so
 %{_libdir}/pkgconfig/abrt_gui.pc
 
 %files gui
-%defattr(-,root,root,-)
 %dir %{_datadir}/%{name}
 # all glade, gtkbuilder and py files for gui
 %{_datadir}/icons/hicolor/*/apps/*
@@ -848,12 +842,10 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man1/system-config-abrt.1*
 
 %files addon-coredump-helper
-%defattr(-,root,root,-)
 %{_libexecdir}/abrt-hook-ccpp
 %{_sbindir}/abrt-install-ccpp-hook
 
 %files addon-ccpp
-%defattr(-,root,root,-)
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
 %{_datadir}/%{name}/conf.d/plugins/CCpp.conf
@@ -912,7 +904,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man1/abrt-dump-journal-core.1*
 
 %files addon-upload-watch
-%defattr(-,root,root,-)
 %{_sbindir}/abrt-upload-watch
 %if %{with systemd}
 %{_unitdir}/abrt-upload-watch.service
@@ -930,7 +921,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_datadir}/libreport/events/analyze_RetraceServer.xml
 
 %files addon-kerneloops
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/koops_event.conf
 %{_journalcatalogdir}/abrt_koops.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_koops_format.conf
@@ -954,7 +944,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man5/abrt-oops.conf.5*
 
 %files addon-xorg
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/xorg_event.conf
 %{_journalcatalogdir}/abrt_xorg.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_xorg_format.conf
@@ -971,7 +960,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 
 %if %{?have_kexec_tools} == 1
 %files addon-vmcore
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vmcore_event.conf
 %{_mandir}/man5/vmcore_event.conf.5.gz
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/vmcore.conf
@@ -995,7 +983,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %endif
 
 %files addon-pstoreoops
-%defattr(-,root,root,-)
 %if %{with systemd}
 %{_unitdir}/abrt-pstoreoops.service
 %else
@@ -1007,7 +994,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man1/abrt-merge-pstoreoops.1*
 
 %files addon-python
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python.conf
 %{_datadir}/%{name}/conf.d/plugins/python.conf
 %{_mandir}/man5/abrt-python.conf.5.gz
@@ -1019,7 +1005,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{python_sitearch}/abrt.pth
 
 %files addon-python3
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python3.conf
 %{_datadir}/%{name}/conf.d/plugins/python3.conf
 %{_mandir}/man5/abrt-python3.conf.5.gz
@@ -1031,26 +1016,21 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{python3_sitearch}/__pycache__/abrt*
 
 %files cli
-%defattr(-,root,root,-)
 
 %files tui
-%defattr(-,root,root,-)
 %{_bindir}/abrt-cli
 %{_mandir}/man1/abrt-cli.1.gz
 
 %files cli-ng
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/bash_completion.d/abrt.bash_completion
 %{_bindir}/abrt
 %{python_sitearch}/abrtcli/
 %{_mandir}/man1/abrt.1.gz
 
 %files desktop
-%defattr(-,root,root,-)
 
 %if %{with atomic}
 %files atomic
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp_Atomic.conf
 %{_unitdir}/abrt-coredump-helper.service
 %{_datadir}/%{name}/conf.d/plugins/CCpp_Atomic.conf
@@ -1062,7 +1042,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 
 %if %{with bodhi}
 %files plugin-bodhi
-%defattr(-,root,root,-)
 %{_bindir}/abrt-bodhi
 %{_bindir}/abrt-action-find-bodhi-update
 %config(noreplace) %{_sysconfdir}/libreport/events.d/bodhi_event.conf
@@ -1072,7 +1051,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %endif
 
 %files dbus
-%defattr(-,root,root,-)
 %{_sbindir}/abrt-dbus
 %{_sbindir}/abrt-configuration
 %{_mandir}/man8/abrt-dbus.8.gz
