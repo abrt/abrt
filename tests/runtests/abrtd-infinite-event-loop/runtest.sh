@@ -75,7 +75,9 @@ function test_run
     rlAssertNotGrep "abrt-server" ${1}_ps_$4.log
     rlAssertNotGrep "abrt-handle-event" ${1}_ps_$4.log
 
-    sleep 10
+    while pgrep sos &>/dev/null ; do
+        sleep 5
+    done
 
     rlLog "`ls -al $ABRT_CONF_DUMP_LOCATION`"
 
@@ -110,6 +112,7 @@ rlJournalStart
         rm -rf $ABRT_CONF_DUMP_LOCATION
         rlRun "augtool set /files/etc/abrt/abrt.conf/DebugLevel 0"
         rlRun "augtool set /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged yes"
+        sed -i "$(( $(grep -n 'nice sosreport' /etc/libreport/events.d/abrt_event.conf | sed 's/:.*//') - 1 ))s/^/#/" /etc/libreport/events.d/abrt_event.conf
 
         cat > $CCPP_EVENT_CONF <<EOF
 EVENT=post-create type=CCpp
@@ -162,6 +165,8 @@ EOF
 
     rlPhaseStartCleanup
         rlRun "augtool set /files/etc/abrt/abrt.conf/DebugLevel 0"
+        rlRun "augtool set /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged yes"
+        sed -i "$(( $(grep -n 'nice sosreport' /etc/libreport/events.d/abrt_event.conf | sed 's/:.*//') - 1 ))s/#//" /etc/libreport/events.d/abrt_event.conf
         rlBundleLogs abrt $(ls *.log)
         popd # TmpDir
         rm -rf $TmpDir
