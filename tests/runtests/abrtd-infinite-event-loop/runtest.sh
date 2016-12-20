@@ -75,6 +75,8 @@ function test_run
     rlAssertNotGrep "abrt-server" ${1}_ps_$4.log
     rlAssertNotGrep "abrt-handle-event" ${1}_ps_$4.log
 
+    sleep 10
+
     rlLog "`ls -al $ABRT_CONF_DUMP_LOCATION`"
 
     rlAssertEquals "Dump directories" _$3 _`find $ABRT_CONF_DUMP_LOCATION -mindepth 1 -maxdepth 1 -type d | wc -l`
@@ -107,6 +109,7 @@ rlJournalStart
         service abrtd stop
         rm -rf $ABRT_CONF_DUMP_LOCATION
         rlRun "augtool set /files/etc/abrt/abrt.conf/DebugLevel 0"
+        rlRun "augtool set /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged yes"
 
         cat > $CCPP_EVENT_CONF <<EOF
 EVENT=post-create type=CCpp
