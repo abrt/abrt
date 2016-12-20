@@ -75,9 +75,7 @@ function test_run
     rlAssertNotGrep "abrt-server" ${1}_ps_$4.log
     rlAssertNotGrep "abrt-handle-event" ${1}_ps_$4.log
 
-    while pgrep sos &>/dev/null ; do
-        sleep 5
-    done
+    sleep 5
 
     rlLog "`ls -al $ABRT_CONF_DUMP_LOCATION`"
 
