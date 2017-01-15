@@ -185,7 +185,6 @@ PKG_CHECK_MODULES([GTK], [gtk+-3.0])
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.43])
 PKG_CHECK_MODULES([DBUS], [dbus-1])
 PKG_CHECK_MODULES([LIBXML], [libxml-2.0])
-PKG_CHECK_MODULES([RPM], [rpm])
 PKG_CHECK_MODULES([LIBNOTIFY], [libnotify >= 0.7.0])
 PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([LIBREPORT], [libreport])
@@ -423,6 +422,16 @@ ABRT_PARSE_WITH([selinux]))
     AM_CONDITIONAL(HAVE_SELINUX, true)
 [else]
     AM_CONDITIONAL(HAVE_SELINUX, false)
+[fi]
+
+AC_ARG_WITH(rpm,
+AS_HELP_STRING([--with-rpm],[build rpm support (default is YES)]),
+ABRT_PARSE_WITH([rpm]))
+
+[if test -z "$NO_RPM"]
+[then]
+    PKG_CHECK_MODULES([RPM], [rpm])
+    AC_DEFINE(HAVE_LIBRPM, [], [Have rpm support.])
 [fi]
 
 # Initialize the test suite.

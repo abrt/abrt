@@ -22,11 +22,6 @@
 #ifndef RPM_H_
 #define RPM_H_
 
-#include <rpm/rpmts.h>
-#include <rpm/rpmcli.h>
-#include <rpm/rpmdb.h>
-#include <rpm/rpmpgp.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
