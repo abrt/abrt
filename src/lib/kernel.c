@@ -139,7 +139,7 @@ static const char *const s_koops_suspicious_strings[] = {
     "coprocessor segment overrun:",
     "invalid TSS:",
     "segment not present:",
-    "invalid opcode:",
+    "invalid opcode",
     "alignment check:",
     "stack segment:",
     "fpu exception:",
