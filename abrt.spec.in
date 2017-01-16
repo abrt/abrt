@@ -23,13 +23,20 @@
 %define have_kexec_tools 1
 %endif
 
-%if 0%{?rhel} >= 6
-    %define desktopvendor redhat
-%else
-    %if 0%{?suse_version}
-        %define desktopvendor suse
+# rpmbuild --define 'desktopvendor mystring'
+%if "x%{desktopvendor}" == "x"
+    %if %{with systemd}
+        %define desktopvendor %(source /etc/os-release; echo ${ID})
     %else
-        %define desktopvendor fedora
+        %if 0%{?rhel} >= 6
+            %define desktopvendor redhat
+        %else
+            %if 0%{?suse_version}
+                %define desktopvendor suse
+            %else
+                %define desktopvendor fedora
+            %endif
+        %endif
     %endif
 %endif
 
