@@ -154,6 +154,16 @@ rlJournalStart
             | grep -v "Version:" > \
             $TmpDir/oops5.right
 
+        sed "s/4.9.3-200.fc25.x86_64/<KERNEL_VERSION>/" \
+            $EXAMPLES_PATH/oops6.test > \
+            $TmpDir/oops6.test
+
+        sed "s/4.8.15-300.fc25.x86_64/<KERNEL_VERSION>/" \
+            $EXAMPLES_PATH/oops6.right \
+            | grep -v "abrt-dump-oops:" \
+            | grep -v "Version:" > \
+            $TmpDir/oops6.right
+
         sed "s/3.10.0-33.el7.ppc64/<KERNEL_VERSION>/" \
             $EXAMPLES_PATH/oops8_ppc64.test > \
             $TmpDir/oops8_ppc64.test
