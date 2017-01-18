@@ -78,7 +78,7 @@ def get_bugzilla_reports(reported_to):
     return bugs
 
 def run_event(event_name, dump_dir_name):
-    state, ret = report.run_event_on_problem_dir(dump_dir_name, event_name)
+    state, ret = run_event_on_problem_dir(dump_dir_name, event_name)
     if ret == 0 and state.children_count == 0:
         log1("Didn't find definition of event '%s'", event_name)
 
