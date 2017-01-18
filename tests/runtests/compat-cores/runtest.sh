@@ -193,7 +193,7 @@ rlJournalStart
         get_crash_path
 
         rlLog "core: `ls -l`"
-        rlAssertNotExist 'core.$killpid' 0 "Checking if core does not exist"
+        rlAssertNotExists 'core.$killpid' 0 "Checking if core does not exist"
         NEWCOUNT=$(grep "Current suid_dumpable policy prevents from saving core dumps according to relative core_pattern" /var/log/messages | wc -l)
         rlAssertEquals "logged: Current suid_dumpable policy prevents from saving core dumps according to relative core_pattern" $(($OLDCOUNT+1)) $NEWCOUNT
 
