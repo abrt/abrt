@@ -1,0 +1,41 @@
+13131.077] (II) evdev: Microsoft Microsoft 3-Button Mouse with IntelliEye(TM): initialized for relative axes.
+[ 13131.079] (**) Microsoft Microsoft 3-Button Mouse with IntelliEye(TM): (accel) keeping acceleration scheme 1
+[ 13131.079] (**) Microsoft Microsoft 3-Button Mouse with IntelliEye(TM): (accel) acceleration profile 0
+[ 13131.079] (**) Microsoft Microsoft 3-Button Mouse with IntelliEye(TM): (accel) acceleration factor: 2.000
+[ 13131.079] (**) Microsoft Microsoft 3-Button Mouse with IntelliEye(TM): (accel) acceleration threshold: 4
+[ 14344.047] (II) config/udev: removing device Microsoft Microsoft 3-Button Mouse with IntelliEye(TM)
+[ 14344.058] (II) evdev: Microsoft Microsoft 3-Button Mouse with IntelliEye(TM): Close
+[ 14344.058] (II) UnloadModule: "evdev"
+[ 14344.090] (II) config/udev: removing device Darfon USB Combo Keyboard
+[ 14344.099] (II) evdev: Darfon USB Combo Keyboard: Close
+[ 14344.100] (II) UnloadModule: "evdev"
+[ 14344.128] (II) config/udev: removing device Darfon USB Combo Keyboard
+[ 14344.142] (II) evdev: Darfon USB Combo Keyboard: Close
+[ 14344.142] (II) UnloadModule: "evdev"
+[ 14594.516] (EE) 
+[ 14594.516] (EE) Backtrace:
+[ 14594.587] (EE) 0: /usr/bin/X (xorg_backtrace+0x55) [0x55b653d0f1d5]
+[ 14594.588] (EE) 1: /usr/bin/X (0x55b653b5f000+0x1b4339) [0x55b653d13339]
+[ 14594.588] (EE) 2: /lib64/libc.so.6 (0x7f0be74cc000+0x35670) [0x7f0be7501670]
+[ 14594.610] (EE) 3: /usr/lib64/xorg/modules/drivers/intel_drv.so (0x7f0be23af000+0xf964d) [0x7f0be24a864d]
+[ 14594.610] (EE) 4: /usr/lib64/xorg/modules/drivers/intel_drv.so (0x7f0be23af000+0xfc4df) [0x7f0be24ab4df]
+[ 14594.610] (EE) 5: /usr/bin/X (DRI2SwapBuffers+0x1c7) [0x55b653ce1ee7]
+[ 14594.610] (EE) 6: /usr/bin/X (0x55b653b5f000+0x1847a3) [0x55b653ce37a3]
+[ 14594.610] (EE) 7: /usr/bin/X (0x55b653b5f000+0x5823e) [0x55b653bb723e]
+[ 14594.611] (EE) 8: /usr/bin/X (0x55b653b5f000+0x5c16b) [0x55b653bbb16b]
+[ 14594.611] (EE) 9: /lib64/libc.so.6 (__libc_start_main+0xf5) [0x7f0be74edb15]
+[ 14594.611] (EE) 10: /usr/bin/X (0x55b653b5f000+0x466b1) [0x55b653ba56b1]
+[ 14594.611] (EE) 
+[ 14594.621] (EE) Segmentation fault at address 0x10
+[ 14594.621] (EE) 
+Fatal server error:
+[ 14594.621] (EE) Caught signal 11 (Segmentation fault). Server aborting
+[ 14594.621] (EE) 
+[ 14594.621] (EE) 
+Please consult the The X.Org Foundation support 
+     at http://wiki.x.org
+ for help. 
+[ 14594.621] (EE) Please also check the log file at "/var/log/Xorg.0.log" for additional information.
+[ 14594.621] (EE) 
+[ 14594.623] (II) AIGLX: Suspending AIGLX clients for VT switch
+[ 14594.724] (EE) Server terminated with error (1). Closing log file.
