@@ -44,16 +44,24 @@ static unsigned g_bt_count = 0;
 static unsigned g_opts;
 static const char *debug_dumps_dir = ".";
 
-static char *skip_pfx(char *p)
+static char *skip_pfx(char *str)
 {
-    if (p[0] != '[')
-        return p;
-    char *q = strchr(p, ']');
-    if (!q)
-        return p;
-    if (q[1] == ' ')
-        return q + 2;
-    return p;
+    if (str[0] == '[')
+    {
+        char *q = strchr(str, ']');
+        if (q)
+            str = q + 1;
+    }
+
+    if (str[0] == ' ')
+        ++str;
+
+    /* if there is (EE), ignore it */
+    if (strncmp(str, "(EE)", 4) == 0)
+        /* if ' ' follows (EE), ignore it too */
+        return str + (4 + (str[4] == ' '));
+
+    return str;
 }
 
 static char *list2lines(GList *list)
