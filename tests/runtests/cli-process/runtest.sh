@@ -44,6 +44,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "process"
+        prepare
         generate_crash
         get_crash_path
         wait_for_hooks
@@ -244,12 +245,14 @@ EOF
     rlPhaseEnd
 
     rlPhaseStartTest "process --since"
+        prepare
         # abrt-ccpp ignores repeated crashes of a single executable
         generate_python_segfault
         get_crash_path
         wait_for_hooks
 
         sleep 2
+        prepare
         generate_second_crash
         wait_for_hooks
 
