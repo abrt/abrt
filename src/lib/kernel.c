@@ -19,6 +19,8 @@
 #include <satyr/stacktrace.h>
 #include <satyr/thread.h>
 
+#include <regex.h>
+
 #define _GNU_SOURCE 1 /* for strcasestr */
 #include "libabrt.h"
 
@@ -532,19 +534,48 @@ char *koops_extract_version(const char *linepointer)
      || strstr(linepointer, "REGS")
      || strstr(linepointer, "EFLAGS")
     ) {
-        char* start;
-        char* end;
-
-        start = strstr(linepointer, "2.6.");
-        if (!start)
-            start = strstr(linepointer, "3.");
-        if (start)
+        /* "(4.7.0-2.x86_64.fc25) #"    */
+        /* " 4.7.0-2.x86_64.fc25 #"     */
+        /* " 2.6.3.4.5-2.x86_64.fc22 #" */
+        const char *regexp = "([ \\(]|kernel-)([0-9]+\\.[0-9]+\\.[0-9]+(\\.[^.-]+)*-[^ \\)]+)\\)? #";
+        regex_t re;
+        int r = regcomp(&re, regexp, REG_EXTENDED);
+        if (r != 0)
         {
-            end = strchr(start, ')');
-            if (!end)
-                end = strchrnul(start, ' ');
-            return xstrndup(start, end-start);
+            char buf[LINE_MAX];
+            regerror(r, &re, buf, sizeof(buf));
+            error_msg("BUG: invalid kernel version regexp: %s", buf);
+            return NULL;
         }
+
+        regmatch_t matchptr[3];
+        r = regexec(&re, linepointer, sizeof(matchptr)/sizeof(matchptr[0]), matchptr, 0);
+        if (r != 0)
+        {
+            if (r != REG_NOMATCH)
+            {
+                char buf[LINE_MAX];
+                regerror(r, &re, buf, sizeof(buf));
+                error_msg("BUG: kernel version regexp failed: %s", buf);
+            }
+            else
+            {
+                log_debug("A kernel version candidate line didn't match kernel oops regexp:");
+                log_debug("\t'%s'", linepointer);
+            }
+
+            regfree(&re);
+            return NULL;
+        }
+
+        /* 0: entire string */
+        /* 1: version prefix */
+        /* 2: version string */
+        const regmatch_t *const ver = matchptr + 2;
+        char *ret = xstrndup(linepointer + ver->rm_so, ver->rm_eo - ver->rm_so);
+
+        regfree(&re);
+        return ret;
     }
 
     return NULL;
