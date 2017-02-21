@@ -76,7 +76,7 @@ srpm:
 # e.g: make scratch-build DIST=f15
 DIST=rawhide
 scratch-build: srpm
-	koji build --scratch dist-$(DIST) `make srpm | grep Wrote | cut -d' ' -f2`
+	koji build --scratch $(DIST) `make srpm | grep Wrote | cut -d' ' -f2`
 
 UPLOAD_URL ?= fedorahosted.org:abrt
 
