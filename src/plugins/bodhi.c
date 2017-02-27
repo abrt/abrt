@@ -22,7 +22,6 @@
 #include <rpm/rpmcli.h>
 #include <rpm/rpmdb.h>
 #include <rpm/rpmpgp.h>
-#include <hawkey/util.h>
 
 #include <libreport/internal_libreport.h>
 #include <libreport/libreport_curl.h>
@@ -271,6 +270,36 @@ static void bodhi_print_errors_from_json(json_object *json)
     return;
 }
 
+/**
+ * Parses only name of rpm package
+ */
+static int parse_pkginfo_name(const char *pkg_full_name, char **name)
+{
+    const int len = strlen(pkg_full_name);
+    if (len <= 0)
+        return EINVAL;
+    const char *c = pkg_full_name + len - 1;
+    for (; *c != '.'; --c)
+    {
+        if (c <= pkg_full_name)
+            return EINVAL;
+    }
+    for (; *c != '-'; --c)
+    {
+        if (c <= pkg_full_name)
+            return EINVAL;
+    }
+    --c;
+    for (; *c != '-'; --c)
+    {
+        if (c <= pkg_full_name)
+            return EINVAL;
+    }
+    *name = xstrndup(pkg_full_name, (c - pkg_full_name));
+
+    return 0;
+}
+
 static GHashTable *bodhi_parse_json(json_object *json, const char *release)
 {
 
@@ -314,19 +343,12 @@ static GHashTable *bodhi_parse_json(json_object *json, const char *release)
             b = xzalloc(sizeof(struct bodhi));
 
             char *name = NULL;
-            long ign_e;
-            char *ign_v, *ign_r, *ign_a;
-
             json_object *build = json_object_array_get_idx(builds_item, k);
 
             bodhi_read_value(build, "nvr", &b->nvr, BODHI_READ_STR);
 
-            if (hy_split_nevra(b->nvr, &name, &ign_e, &ign_v, &ign_r, &ign_a))
-                error_msg_and_die("hawkey failed to parse '%s'", b->nvr);
-
-            free(ign_v);
-            free(ign_r);
-            free(ign_a);
+            if (parse_pkginfo_name(b->nvr, &name))
+                error_msg_and_die("failed to parse package name: '%s'", b->nvr);
 
             struct bodhi *bodhi_tbl_item = g_hash_table_lookup(bodhi_table, name);
             if (bodhi_tbl_item && rpmvercmp(bodhi_tbl_item->nvr, b->nvr) > 0)
