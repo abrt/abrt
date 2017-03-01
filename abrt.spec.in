@@ -708,7 +708,7 @@ service abrtd condrestart >/dev/null 2>&1 || :
 
 %posttrans addon-ccpp
 # Regenerate core_bactraces because of missing crash threads
-service abrt-ccpp condrestart >/dev/null 2>&1 || :
+service abrt-journal-core condrestart >/dev/null 2>&1 || :
 abrtdir=$(grep "DumpLocation" /etc/abrt/abrt.conf | cut -d'=' -f2 | tr -d ' ')
 if test -d "$abrtdir"; then
     for DD in `find "$abrtdir" -mindepth 1 -maxdepth 1 -type d`
