@@ -22,7 +22,7 @@ parse_build_requires_from_spec_file()
     grep "^\(Build\)\?Requires:" $PACKAGE.spec.in | grep -v "%{name}" | tr -s " " | tr "," "\n" | cut -f2 -d " " | grep -v "^"$PACKAGE | sort -u | while read br;
     do
         if [ "%" = ${br:0:1} ]; then
-            grep "%define $(echo $br | sed -e 's/%{\(.*\)}/\1/')" $PACKAGE.spec.in | tr -s " " | cut -f3 -d" "
+            grep "%define $(echo $br | sed -e 's/%{\(.*\)}/\1/')" $PACKAGE.spec.in | sed -e 's/^[ \t]*//' | tr -s " " | cut -f3 -d" "
         else
             echo $br
         fi
