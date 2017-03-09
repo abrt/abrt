@@ -304,6 +304,25 @@ Requires: abrt-python3
 This package contains python 3 hook and python analyzer plugin for handling
 uncaught exception in python 3 programs.
 
+%package plugin-sosreport
+Summary: %{name}'s plugin for building automatic sosreports
+Group: System Environment/Libraries
+Requires: sosreport
+Requires: %{name} = %{version}-%{release}
+
+%description plugin-sosreport
+This package contains a configuration snippet to enable automatic generation
+of sosreports for abrt events.
+
+%package plugin-machine-id
+Summary: %{name}'s plugin to generate machine_id based off dmidecode
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+
+%description plugin-machine-id
+This package contains a configuration snippet to enable automatic generation
+of machine_id for abrt events.
+
 %package tui
 Summary: %{name}'s command line interface
 Requires: %{name} = %{version}-%{release}
@@ -760,7 +779,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_sbindir}/abrt-auto-reporting
 %{_libexecdir}/abrt-handle-event
 %{_libexecdir}/abrt-action-ureport
-%{_libexecdir}/abrt-action-generate-machine-id
 %{_bindir}/abrt-handle-upload
 %{_bindir}/abrt-action-notify
 %{_mandir}/man1/abrt-action-notify.1*
@@ -1021,6 +1039,15 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man5/python3_event.conf.5*
 %{python3_sitearch}/abrt*
 %{python3_sitearch}/__pycache__/abrt*
+
+%files plugin-sosreport
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/libreport/events.d/sosreport_event.conf
+
+%files plugin-machine-id
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/libreport/events.d/machine-id_event.conf
+%{_libexecdir}/abrt-action-generate-machine-id
 
 %files cli
 

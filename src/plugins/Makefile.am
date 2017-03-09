@@ -94,6 +94,8 @@ dist_eventsconf_DATA = \
     python_event.conf \
     python3_event.conf \
     smart_event.conf \
+    sosreport_event.conf \
+    machine-id_event.conf \
     gconf_event.conf \
     vimrc_event.conf
 
