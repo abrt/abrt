@@ -5,6 +5,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+
+### Changed
+- 'abrt-ccpp.service' is not enabled by default.
+'abrt-abrt-journal-core.service' is enablen instead. ABRT gets coredumps from
+systemd journal.
+- Modify suspicious kernel string "invalid opcode:" because "invalid opcode:"
+can also be without colon.
+
+### Fixed
+- Fix calling of 'run_event_on_problem_dir'. The function is imported as a solo
+identifier from the report module.
+- Fix scratch-build targe. Prefix "dist-" in no longer used in koji build target.
+
 
 ## [2.10.0]
 ### Added
