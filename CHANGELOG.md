@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 systemd journal.
 - Modify suspicious kernel string "invalid opcode:" because "invalid opcode:"
 can also be without colon.
+- The EVENTs generating machine-id and executing sosreport are now delivered as
+standalone plugins.
 
 ### Fixed
 - Fix calling of 'run_event_on_problem_dir'. The function is imported as a solo
