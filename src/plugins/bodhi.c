@@ -22,7 +22,6 @@
 #include <rpm/rpmcli.h>
 #include <rpm/rpmdb.h>
 #include <rpm/rpmpgp.h>
-#include <hawkey/util.h>
 
 #include <libreport/internal_libreport.h>
 #include <libreport/libreport_curl.h>
@@ -271,6 +270,40 @@ static void bodhi_print_errors_from_json(json_object *json)
     return;
 }
 
+/**
+ * Parses only name from nvr
+ * nvr is RPM packages naming convention format: name-version-release
+ *
+ * for example: meanwhile3.34.3-3.34-3.fc666
+ *              ^name           ^ver.^release
+ */
+static int parse_nvr_name(const char *nvr, char **name)
+{
+    const int len = strlen(nvr);
+    if (len <= 0)
+        return EINVAL;
+    const char *c = nvr + len - 1;
+    /* skip release */
+    for (; *c != '-'; --c)
+    {
+        if (c <= nvr)
+            return EINVAL;
+    }
+    --c;
+    /* skip version */
+    for (; *c != '-'; --c)
+    {
+        if (c <= nvr)
+            return EINVAL;
+    }
+    if (c <= nvr)
+        return EINVAL;
+
+    *name = xstrndup(nvr, (c - nvr));
+
+    return 0;
+}
+
 static GHashTable *bodhi_parse_json(json_object *json, const char *release)
 {
 
@@ -314,19 +347,14 @@ static GHashTable *bodhi_parse_json(json_object *json, const char *release)
             b = xzalloc(sizeof(struct bodhi));
 
             char *name = NULL;
-            long ign_e;
-            char *ign_v, *ign_r, *ign_a;
-
             json_object *build = json_object_array_get_idx(builds_item, k);
 
             bodhi_read_value(build, "nvr", &b->nvr, BODHI_READ_STR);
 
-            if (hy_split_nevra(b->nvr, &name, &ign_e, &ign_v, &ign_r, &ign_a))
-                error_msg_and_die("hawkey failed to parse '%s'", b->nvr);
+            if (parse_nvr_name(b->nvr, &name))
+                error_msg_and_die("failed to parse package name from nvr: '%s'", b->nvr);
 
-            free(ign_v);
-            free(ign_r);
-            free(ign_a);
+            log_info("Found package: %s\n", name);
 
             struct bodhi *bodhi_tbl_item = g_hash_table_lookup(bodhi_table, name);
             if (bodhi_tbl_item && rpmvercmp(bodhi_tbl_item->nvr, b->nvr) > 0)
