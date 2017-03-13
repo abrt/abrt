@@ -78,7 +78,7 @@ DIST=rawhide
 scratch-build: srpm
 	koji build --scratch $(DIST) `make srpm | grep Wrote | cut -d' ' -f2`
 
-UPLOAD_URL ?= fedorahosted.org:abrt
+UPLOAD_URL ?= localhost
 
 upload: dist
 	scp $(distdir).tar.gz $$(test -n "$$UPLOAD_LOGIN" && echo "$$UPLOAD_LOGIN@")$(UPLOAD_URL)
@@ -119,4 +119,3 @@ release:
 	git tag "$$NEW_VER"; \
 	echo -n "$$NEW_VER" > abrt-version
 	autoconf --force
-	$(MAKE) upload
