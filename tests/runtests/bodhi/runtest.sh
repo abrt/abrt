@@ -64,6 +64,12 @@ rlJournalStart
         rlAssertGrep 'An update exists.*python3-3000.4.3-6.fc23' output
         rlAssertGrep 'An update exists.*python-docs-2000.7.10-1.fc22' output
 
+        rlAssertGrep 'Found package: python' output
+        rlAssertGrep 'Found package: python3' output
+        rlAssertGrep 'Found package: redhat-rpm-config' output
+        rlAssertGrep 'Found package: python-rpm-macros' output
+        rlAssertGrep 'Found package: python-docs' output
+
         # not pretty printed query
         fake_serve ugly_python_query
         rlRun "echo 'y' | abrt-bodhi -vvv -u http://localhost:12345 python &> output"
@@ -76,6 +82,12 @@ rlJournalStart
         rlAssertGrep 'An update exists.*python-2000.7.12-1.fc24' output
         rlAssertGrep 'An update exists.*python3-3000.4.3-6.fc23' output
         rlAssertGrep 'An update exists.*python-docs-2000.7.10-1.fc22' output
+
+        rlAssertGrep 'Found package: python' output
+        rlAssertGrep 'Found package: python3' output
+        rlAssertGrep 'Found package: redhat-rpm-config' output
+        rlAssertGrep 'Found package: python-rpm-macros' output
+        rlAssertGrep 'Found package: python-docs' output
     rlPhaseEnd
 
     rlPhaseStartTest "empty query"
@@ -98,6 +110,8 @@ rlJournalStart
         cp output output.memtest-url-encode.log
         cp request request.memtest-url-encode.log
         rlAssertGrep 'GET /?packages=memtest86%2B' request
+
+        rlAssertGrep 'Found package: memtest86+' output
     rlPhaseEnd
 
     rlPhaseStartTest "release specific"
@@ -109,6 +123,8 @@ rlJournalStart
 
         cp output output.glusterfs-release.log
         rlAssertGrep 'An update exists.*glusterfs-3000.2.5-4.el6' output
+
+        rlAssertGrep 'Found package: glusterfs' output
     rlPhaseEnd
 
     rlPhaseStartTest "by bug"
@@ -120,6 +136,8 @@ rlJournalStart
 
         cp output output.memtest-by-bug.log
         rlAssertGrep 'An update exists.*memtest86+-5.01-14.fc23' output
+
+        rlAssertGrep 'Found package: memtest86+' output
     rlPhaseEnd
 
     rlPhaseStartTest "package manger"
@@ -131,6 +149,20 @@ rlJournalStart
 
         cp output output.pkgmgr-by-package.log
         rlAssertGrep 'by running: dnf update ' output
+
+        rlAssertGrep 'Found package: dnf-plugins-core' output
+        rlAssertGrep 'Found package: dnf' output
+    rlPhaseEnd
+
+    rlPhaseStartTest "bad nvr"
+        fake_serve bad_nvr_query
+        rlRun "echo 'y' | abrt-bodhi -vvv -u http://localhost:12345 abrt &> output" 1
+
+        cp request request.bad-nvr.log
+        cp output output.bad-nvr.log
+
+        rlAssertGrep 'Found package: dnf-plugins-core' output
+        rlAssertGrep 'failed to parse package name from nvr: '"'"'-1.1.9-2.fc24'"'"'' output
     rlPhaseEnd
 
     rlPhaseStartCleanup
