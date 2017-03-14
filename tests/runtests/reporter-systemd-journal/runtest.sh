@@ -247,6 +247,7 @@ EOF
             '"PROBLEM_REPORT" : "\\nDESCRIPTION PART\\n"' \
             '"PROBLEM_PID" : "1234"' \
             '"PROBLEM_EXCEPTION_TYPE" : "exception_type"' \
+            '"PROBLEM_DIR" : "'"$TmpDir"'/problem_dir' \
             'NULL' \
             # shouldn't be in log
             '"PROBLEM_CMDLINE" : "urxvtd -q -o -f"' \
@@ -273,6 +274,7 @@ EOF
             '"PROBLEM_REPORT" : "\\nDESCRIPTION PART\\n"' \
             '"PROBLEM_PID" : "1234"' \
             '"PROBLEM_EXCEPTION_TYPE" : "exception_type"' \
+            '"PROBLEM_DIR" : "'"$TmpDir"'/problem_dir' \
             # essential fields
             '"PROBLEM_CMDLINE" : "urxvtd -q -o -f"' \
             '"PROBLEM_COMPONENT" : "rxvt-unicode"' \
@@ -308,6 +310,7 @@ EOF
             '"PROBLEM_REPORT" : "\\nDESCRIPTION PART\\n"' \
             '"PROBLEM_PID" : "1234"' \
             '"PROBLEM_EXCEPTION_TYPE" : "exception_type"' \
+            '"PROBLEM_DIR" : "'"$TmpDir"'/problem_dir' \
             # essential fields
             '"PROBLEM_CMDLINE" : "urxvtd -q -o -f"' \
             '"PROBLEM_COMPONENT" : "rxvt-unicode"' \
