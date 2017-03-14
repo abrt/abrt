@@ -278,7 +278,7 @@ main(int argc, char **argv)
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_BOOL('s', NULL, NULL              , _("Log to syslog")),
-        OPT_BOOL('d', NULL, NULL              , _("Daemize")),
+        OPT_BOOL('d', NULL, NULL              , _("Daemonize")),
         OPT_INTEGER('w', NULL, &concurrent_workers, _("Number of concurrent workers. Default is "STRINGIZE(DEFAULT_COUNT_OF_WORKERS))),
         OPT_INTEGER('c', NULL, &cache_size_mib, _("Maximal cache size in MiB. Default is "STRINGIZE(DEFAULT_CACHE_MIB_SIZE))),
         OPT_END()
