@@ -119,3 +119,4 @@ release:
 	git tag "$$NEW_VER"; \
 	echo -n "$$NEW_VER" > abrt-version
 	autoconf --force
+	$(MAKE) dist
