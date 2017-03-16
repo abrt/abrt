@@ -15,6 +15,8 @@ systemd journal.
 can also be without colon.
 - The EVENTs generating machine-id and executing sosreport are now delivered as
 standalone plugins.
+- Remove dependency on hawkey. Function hy_split_nevra of obsolete hawkey
+library replaced by own implementation, as hawkey will be removed soon.
 
 ### Fixed
 - Fix calling of 'run_event_on_problem_dir'. The function is imported as a solo
