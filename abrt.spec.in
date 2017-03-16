@@ -1127,6 +1127,35 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Thu Mar 16 2017 Matej Habrnal <mhabrnal@redhat.com> 2.10.1-1
+- changelog: update CHANGELOG.md
+- build: create tarball in release-* target
+- spec: sosreport is not a package
+- Fix Typo
+- bodhi: Remove dependency on hawkey
+- spec: Remove dependency on hawkey
+- build: do not upload tarball to fedorahosted.org
+- spec: do not use fedorahosted.org as source
+- spec: install new plugins
+- plugins: introduce Machine ID and SOS report
+- Update CHANGELOG.md
+- build: fix generating list of dependences in autogen.sh
+- spec: start abrt-journal-core instead of abrt-ccpp
+- build: fix scratch-build target
+- a-a-ureport: fix calling of run_event_on_problem_dir
+- spec: if using systemd, default to os-release ID for desktopvendor
+- kernel: modify suspicious string "invalid opcode:"
+- daemon: Allow rpm to be optional at build time
+- spec: allow any compression of man pages
+- spec: remove defattr
+- spec: remove cleaning buildroot
+- spec: use versioned provides
+- spec: remove changelog entries older than 2 years
+- remove Buildroot and Groups tags
+- spec: recommend libreport-plugin-systemd-journal on Fedoras
+- doc: document selinux change needed for automatic deletion of reports
+- ccpp: tell gdb to analyze saved binary image
+
 * Sat Dec 03 2016 Jakub Filak <jakub@thefilaks.net> 2.10.0-1
 - Translation updates
 - spec: bump required libreport and satyr versions
