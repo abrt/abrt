@@ -108,6 +108,9 @@ if __name__ == "__main__":
         with open_or_die("kernel", "w") as krnlfile:
             krnlfile.write(kernel)
 
+    with open_or_die("mce", "w") as f:
+        f.write("fatal" if vmcore_mce else "non-fatal")
+
     # vmcore MCEs already have good backtrace element, nothing more to do
     if vmcore_mce:
         sys.exit(0)
