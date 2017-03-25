@@ -99,7 +99,7 @@ struct occurrence_queue
     int oq_head;       ///< the first empty index
     unsigned oq_size;  ///< size of the queue
 
-    struct last_occurence
+    struct last_occurrence
     {
         unsigned oqlc_stamp;
         char *oqlc_executable;

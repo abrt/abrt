@@ -167,7 +167,7 @@ static int abrt_p2_task_new_problem_notify_directory_task(AbrtP2TaskNewProblem *
 
     char *message = NULL;
     const char *problem_id = abrt_p2_entry_problem_id(entry);
-    int r = notify_new_path_with_reponse(problem_id, &message);
+    int r = notify_new_path_with_response(problem_id, &message);
     if (r < 0)
     {
         log_debug("Task '%p': Failed to communicate with the problems daemon",

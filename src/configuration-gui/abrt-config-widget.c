@@ -510,7 +510,7 @@ abrt_config_widget_init(AbrtConfigWidget *self)
              * from GObject which offers a functionality for attaching an
              * arbitrary data to its instances. The last argument is a function
              * called to destroy the arbirarty data when the instance is being
-             * destoryed. */
+             * destroyed. */
             g_object_set_data_full(G_OBJECT(launcher), "launched-app", app, g_object_unref);
             g_signal_connect(launcher, "clicked", G_CALLBACK(pp_launcher_clicked), NULL);
 
@@ -519,7 +519,7 @@ abrt_config_widget_init(AbrtConfigWidget *self)
             gtk_widget_set_hexpand(launcher, FALSE);
             gtk_widget_set_vexpand(launcher, FALSE);
 
-            /* Make the launcher button alligned on center of the warning. */
+            /* Make the launcher button aligned on center of the warning. */
             gtk_widget_set_halign(launcher, GTK_ALIGN_CENTER);
             gtk_widget_set_valign(launcher, GTK_ALIGN_CENTER);
 

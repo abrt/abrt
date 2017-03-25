@@ -32,11 +32,11 @@ Configuration file
 ~~~~~~~~~~~~~~~~~~
 The conf file is located in /etc/abrt/plugins/xorg.conf.
 Configuration file lines should have 'PARAM = VALUE' format. The parameters for
-abrt-dump-jounral-xorg are:
+abrt-dump-journal-xorg are:
 
 'JournalFilters'::
    Specify list of comma separated filters which are used for searching Xorg
-   crashes in jounral (e.g. JournalFilters = _COMM=gdm-x-session, [...])
+   crashes in journal (e.g. JournalFilters = _COMM=gdm-x-session, [...])
 
 OPTIONS
 -------
@@ -56,7 +56,7 @@ OPTIONS
    Same as -d DumpLocation, DumpLocation is specified in abrt.conf
 
 -s CURSOR::
-   Starts scannig systemd-journal from CURSOR
+   Starts scanning systemd-journal from CURSOR
 
 -e::
    Starts following systemd-journal from the end

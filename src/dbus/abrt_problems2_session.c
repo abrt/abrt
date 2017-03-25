@@ -320,7 +320,7 @@ const char *abrt_p2_session_generate_token(AbrtP2Session *session,
         return NULL;
     }
 
-#define SESSION_TOKEN_LENGHT 16
+#define SESSION_TOKEN_LENGTH 16
     static const char *const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
     if (duration == 0)
@@ -348,11 +348,11 @@ const char *abrt_p2_session_generate_token(AbrtP2Session *session,
         return NULL;
     }
 
-    char *token = xmalloc((SESSION_TOKEN_LENGHT + 1) * sizeof(char));
-    for (char *iter = token; iter < token + SESSION_TOKEN_LENGHT; ++iter)
+    char *token = xmalloc((SESSION_TOKEN_LENGTH + 1) * sizeof(char));
+    for (char *iter = token; iter < token + SESSION_TOKEN_LENGTH; ++iter)
         *iter = alphabet[(int)(strlen(alphabet) * (rand_r(&seed) / (double)RAND_MAX))];
 
-    token[SESSION_TOKEN_LENGHT] = '\0';
+    token[SESSION_TOKEN_LENGTH] = '\0';
 
     const time_t curtime = time(NULL);
     if (curtime == ((time_t) -1))
@@ -368,7 +368,7 @@ const char *abrt_p2_session_generate_token(AbrtP2Session *session,
                         GINT_TO_POINTER(curtime + duration));
 
     return token;
-#undef SESSION_TOKEN_LENGHT
+#undef SESSION_TOKEN_LENGTH
 }
 
 int abrt_p2_session_revoke_token(AbrtP2Session *session,

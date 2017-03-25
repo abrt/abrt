@@ -292,7 +292,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
     }
 
     if (kernel_oops)
-        goto skip_interperter;
+        goto skip_interpreter;
 
     /* Check well-known interpreter names */
     const char *basename = strrchr(executable, '/');
@@ -336,7 +336,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
         pkg_name = script_pkg;
     }
 
-skip_interperter:
+skip_interpreter:
     package_short_name = xasprintf("%s", pkg_name->p_name);
     log_info("Package:'%s' short:'%s'", pkg_name->p_nvr, package_short_name);
 

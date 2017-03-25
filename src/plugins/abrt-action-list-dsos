@@ -33,7 +33,7 @@ def parse_maps(maps_path):
         # and Xorg backtrace format:
         #  [ 86985.880] 9: /usr/lib64/libdrm.so.2 (drmHandleEvent+0xa3) [0x376b407513]
         # To do that, we take only lines which have a / character,
-        # then for each line we start at first /, then remove everyting after first whitespace
+        # then for each line we start at first /, then remove everything after first whitespace
         files = [x[x.find('/'):].split()[0] for x in f.readlines() if x.find('/') > -1]
         # set() uniqifies the list of filenames
         return set(files)

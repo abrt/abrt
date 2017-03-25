@@ -600,7 +600,7 @@ bool dir_has_correct_permissions(const char *dir_name, int flags)
      * 1. Chowning of dump directories switches the ownership to 'user':'abrt'
      * 2. We want to allow users to delete their problems
      * 3. We want to allow users to modify their data
-     * 4. The daemons are hardened agains hard link and symbolic link issues.
+     * 4. The daemons are hardened against hard link and symbolic link issues.
      */
     return correct_group;
 }

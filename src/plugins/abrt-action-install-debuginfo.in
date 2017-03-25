@@ -144,7 +144,7 @@ if __name__ == "__main__":
             TMPDIR = arg
         elif opt == "--keeprpms":
             keeprpms = True
-        # --exact takes precendece over --ids
+        # --exact takes precedence over --ids
         elif opt in ("-e", "--exact"):
             missing = arg.split(':')
             exact_fls = True
