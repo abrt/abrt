@@ -6,7 +6,7 @@ fi
 
 git update-index -q --refresh >/dev/null 2>&1
 if [ -n "$(git diff-index --name-only HEAD --)" ]; then
-    echo "Run this script only without uncommited changes"
+    echo "Run this script only without uncommitted changes"
     exit 1
 fi
 

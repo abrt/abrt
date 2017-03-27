@@ -32,8 +32,8 @@ Property              Meaning                                                  E
 ``architecture``      Machine architecture string                              ``'x86_64'``
 ``kernel``            Kernel version string                                    ``'3.6.6-1.fc17.x86_64'``
 ``package``           Package string                                           ``'time-1.7-40.fc17.x86_64'``
-``time``              Time of the occurence (unixtime)                         ``datetime.datetime(2012, 12, 2, 16, 18, 41)``
-``count``             Number of times this problem occured                     ``1``
+``time``              Time of the occurrence (unixtime)                        ``datetime.datetime(2012, 12, 2, 16, 18, 41)``
+``count``             Number of times this problem occurred                    ``1``
 ===================== ======================================================== ====================
 
 Parsed package data is also available:

@@ -204,7 +204,7 @@ void ignored_problems_remove_row(ignored_problems_t *set, const char *problem_id
         {
             log_notice("Won't remove problem '%s' from ignored problems:"
                       " it is already removed", problem_id);
-            /* Close orig_fp here becuase it looks like much simpler than
+            /* Close orig_fp here because it looks like much simpler than
              * exetendig the set of goto labels at the end of this function */
             fclose(orig_fp);
         }

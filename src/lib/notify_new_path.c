@@ -21,10 +21,10 @@
 void notify_new_path(const char *path)
 {
     /* Ignore results and don't wait for response -> NULL */
-    notify_new_path_with_reponse(path, NULL);
+    notify_new_path_with_response(path, NULL);
 }
 
-int notify_new_path_with_reponse(const char *path, char **message)
+int notify_new_path_with_response(const char *path, char **message)
 {
     int retval;
     int fd = socket(AF_UNIX, SOCK_STREAM, 0);

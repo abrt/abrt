@@ -221,7 +221,7 @@ int main(int argc, char **argv)
         if (last_dot != first_dot)
         {
             /* There are more than one dot: "1.2.3"
-             * Strip last part, we don't want to distinquish crashes
+             * Strip last part, we don't want to distinguish crashes
              * in packages which differ only by minor release number.
              */
             *last_dot = '\0';
