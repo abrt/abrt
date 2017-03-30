@@ -127,8 +127,8 @@ wait for the reply
 @param message The abrtd reply
 @return -errno on error otherwise return value of abrtd
 */
-#define notify_new_path_with_reponse abrt_notify_new_path_with_response
-int notify_new_path_with_reponse(const char *path, char **message);
+#define notify_new_path_with_response abrt_notify_new_path_with_response
+int notify_new_path_with_response(const char *path, char **message);
 
 /* Note: should be public since unit tests need to call it */
 #define koops_extract_version abrt_koops_extract_version
