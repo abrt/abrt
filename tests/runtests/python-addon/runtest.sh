@@ -62,6 +62,24 @@ rlJournalStart
         rlRun "abrt-cli rm $crash_PATH"
     rlPhaseEnd
 
+    rlPhaseStartTest "Python exceptions test"
+        SINCE=$(date +"%R:%S")
+        python -c 0/0
+        rlRun "journalctl --since=\"$SINCE\" _PID=\"$!\" SYSLOG_IDENTIFIER=python | grep \"'interactive mode (python -c ...)'\"" 0 "journalctl should contain 'interactive mode (python -c ...)'"
+
+        sleep 1
+
+        SINCE=$(date +"%R:%S")
+        echo '1/0' | python
+        rlRun "journalctl --since=\"$SINCE\" _PID=\"$!\" SYSLOG_IDENTIFIER=python | grep \"'interactive mode'\"" 0 "journalctl should contain 'interactive mode'"
+
+        sleep 1
+
+        SINCE=$(date +"%R:%S")
+        echo '2/0' | python -i
+        rlRun "journalctl --since=\"$SINCE\" _PID=\"$!\" SYSLOG_IDENTIFIER=python | grep \"'interactive mode'\"" 0 "journalctl should contain 'interactive mode'"
+    rlPhaseEnd
+
     rlPhaseStartTest "RequireAbsolutePath test"
         AASPD_CONF="/etc/abrt/abrt-action-save-package-data.conf"
         PYTHON_CONF="/etc/abrt/plugins/python.conf"

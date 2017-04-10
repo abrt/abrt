@@ -152,7 +152,9 @@ def handle_exception(etype, value, tb):
         ## argv0 is:-c
         # Are there other cases when sys.argv[0][0] is "-"?
         if not sys.argv[0] or sys.argv[0][0] == "-":
-            syslog("detected unhandled Python exception")
+            einfo = "" if not sys.argv[0] else " (python {0} ...)".format(sys.argv[0])
+            syslog("detected unhandled Python exception in 'interactive mode{0}'"
+                   .format(einfo))
             raise Exception
 
         # Ignore scripts with relative path unless "RequireAbsolutePath = no".
