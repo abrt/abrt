@@ -1,0 +1,26 @@
+[890563.635398] [ 1804]    89  1804    25638        3      50      276             0 qmgr
+[890563.635400] [ 2079]     0  2079    27509        1      10       32             0 agetty
+[890563.635402] [38910]   950 38910    28321        0      14       53             0 respawn.sh
+[890563.635404] [39971]   950 39971  1983637   542742    3389  1015908             0 webservice
+[890563.635407] [32384]    89 32384    25592       14      49      248             0 pickup
+[890563.635409] Kernel panic - not syncing: Out of memory: system-wide panic_on_oom is enabled
+
+[890563.635617] CPU: 0 PID: 35943 Comm: webservice Not tainted 3.10.0-327.28.2.el7.x86_64 #1
+[890563.635735] Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 09/17/2015
+[890563.636662]  ffffffff81875018 0000000079c9dd5c ffff88008015ba80 ffffffff8163654b
+[890563.636690]  ffff88008015bb00 ffffffff8162fdda ffffffff00000010 ffff88008015bb10
+[890563.636717]  ffff88008015bab0 0000000079c9dd5c 000000000000000e ffffffff81878cf5
+[890563.636743] Call Trace:
+[890563.636754]  [<ffffffff8163654b>] dump_stack+0x19/0x1b
+[890563.636772]  [<ffffffff8162fdda>] panic+0xd8/0x1e7
+[890563.636789]  [<ffffffff8116d3b5>] check_panic_on_oom+0x55/0x60
+[890563.636808]  [<ffffffff8116d7ab>] out_of_memory+0x23b/0x4f0
+[890563.636828]  [<ffffffff81173c16>] __alloc_pages_nodemask+0xaa6/0xba0
+[890563.636850]  [<ffffffff811b7e8a>] alloc_pages_vma+0x9a/0x150
+[890563.636869]  [<ffffffff811a9c7b>] read_swap_cache_async+0xeb/0x160
+[890563.636891]  [<ffffffff811d4226>] ? mem_cgroup_update_page_stat+0x16/0x50
+[890563.636913]  [<ffffffff811a9d98>] swapin_readahead+0xa8/0x110
+[890563.636933]  [<ffffffff81197912>] handle_mm_fault+0xa42/0xf50
+[890563.636952]  [<ffffffff81642130>] __do_page_fault+0x150/0x450
+[890563.636971]  [<ffffffff81642453>] do_page_fault+0x23/0x80
+[890563.636988]  [<ffffffff8163e748>] page_fault+0x28/0x30
