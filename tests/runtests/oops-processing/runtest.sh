@@ -30,7 +30,7 @@
 
 TEST="oops_processing"
 PACKAGE="abrt"
-OOPS_REQUIRED_FILES="kernel uuid duphash
+OOPS_REQUIRED_FILES="kernel cpuinfo uuid duphash
 pkg_name pkg_arch pkg_epoch pkg_release pkg_version pkg_vendor pkg_fingerprint"
 EXAMPLES_PATH="../../examples"
 # abrt should store "xorg-x11-drv-ati" in component file in those test files
