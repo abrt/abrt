@@ -723,8 +723,28 @@ fi
 service abrtd condrestart >/dev/null 2>&1 || :
 
 %posttrans addon-ccpp
+# Migrate from abrt-ccpp.service to abrt-journal-core.service
+# 'systemctl preset abrt-ccpp.service abrt-journal-core.service'
+# is done only for installation by %systemd_post macro but not for package
+# upgrade. Following lines affect changes in Fedora preset files in case of
+# package upgrade and also starts abrt-journal-core.service and stops
+# abrt-ccpp.service if abrt-ccpp.service is running.
+# All this has to be done only once because some users want to use
+# abrt-ccpp.service instead of the default abrt-journal-core.service.
+# Hence we introduced a %{_localstatedir}/lib/abrt/abrt-migrated file to
+# mark the migration was done.
+if test ! -f %{_localstatedir}/lib/abrt/abrt-migrated ; then
+    systemctl --no-reload preset abrt-ccpp.service >/dev/null 2>&1 || : 
+    systemctl --no-reload preset abrt-journal-core.service >/dev/null 2>&1 || :
+    if service abrt-ccpp status >/dev/null 2>&1 ; then
+        systemctl stop abrt-ccpp >/dev/null 2>&1 || :
+        systemctl start abrt-journal-core >/dev/null 2>&1 || :
+    fi
+    touch %{_localstatedir}/lib/abrt/abrt-migrated
+fi
+systemctl try-restart abrt-journal-core >/dev/null 2>&1 || :
+systemctl try-restart abrt-ccpp >/dev/null 2>&1 || :
 # Regenerate core_bactraces because of missing crash threads
-service abrt-journal-core condrestart >/dev/null 2>&1 || :
 abrtdir=$(grep "DumpLocation" /etc/abrt/abrt.conf | cut -d'=' -f2 | tr -d ' ')
 if test -d "$abrtdir"; then
     for DD in `find "$abrtdir" -mindepth 1 -maxdepth 1 -type d`
@@ -882,6 +902,8 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %else
 %{_initrddir}/abrt-ccpp
 %endif
+
+%dir %{_localstatedir}/lib/abrt
 
 # attr(6755) ~= SETUID|SETGID
 %attr(6755, abrt, abrt) %{_libexecdir}/abrt-action-install-debuginfo-to-abrt-cache
