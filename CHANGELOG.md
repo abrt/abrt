@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.2]
+
 ## [2.10.1]
 ### Added
 
@@ -73,6 +75,7 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.10.1...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.10.2...HEAD
+[2.10.2]: https://github.com/abrt/abrt/compare/2.10.1...2.10.2
 [2.10.1]: https://github.com/abrt/abrt/compare/2.10.0...2.10.1
 [2.10.0]: https://github.com/abrt/abrt/compare/2.9.0...2.10.0

@@ -1149,6 +1149,16 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Tue Apr 25 2017 Matej Habrnal <mhabrnal@redhat.com> 2.10.2-1
+- Translation updates
+- spec: introduce migration to abrt-journal-core
+- abrt_event: Save cpuinfo in problem directories
+- koops: Improve fatal MCE check when dumping backtrace
+- lib: typo in header
+- Spelling fixes
+- Python 3.6 invalid escape sequence deprecation fix
+- koops_event: add check to restrict reporting of MCEs
+
 * Thu Mar 16 2017 Matej Habrnal <mhabrnal@redhat.com> 2.10.1-1
 - changelog: update CHANGELOG.md
 - build: create tarball in release-* target
