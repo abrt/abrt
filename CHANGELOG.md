@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ## [2.10.2]
+### Added
+- Added creation of new element 'mce' for oopses, where it's possible values
+are 'fatal' or 'non-fatal' and check to restrict reporting of MCEs.
+- Start saving cpuinfo in problem directories.
+- Introduce migration to abrt-journal-core.
+
+### Changed
+- Improve fatal MCE check when dumping backtrace. Problem was, that regular
+kernel panic message was treated as fatal MCE, for which we don't want to have
+backtrace.
+- Translation updates.
+
+### Fixed
+- Python 3.6 invalid escape sequence deprecation fix and some spelling fixes.
 
 ## [2.10.1]
 ### Added
