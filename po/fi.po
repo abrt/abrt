@@ -9,6 +9,8 @@
 # Ville-Pekka Vainio <vpvainio@iki.fi>, 2011-2013
 # Ville Skyttä <ville.skytta@iki.fi>, 2011
 # Juhani Numminen <juhaninumminen0@gmail.com>, 2016. #zanata
+# Jiri Grönroos <jiri.gronroos@iki.fi>, 2017. #zanata
+# Toni Rantala <trantalafilo@gmail.com>, 2017. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -17,8 +19,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-01-12 01:09-0500\n"
-"Last-Translator: Juhani Numminen <juhaninumminen0@gmail.com>\n"
+"PO-Revision-Date: 2017-04-17 12:17-0400\n"
+"Last-Translator: Toni Rantala <trantalafilo@gmail.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/fi/)\n"
 "Language: fi\n"
@@ -27,7 +29,7 @@ msgstr ""
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
-msgstr "Ongelmien raportointi"
+msgstr "Vikailmoitin"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2
 msgid "View and report application crashes"
@@ -50,7 +52,7 @@ msgstr "Ilmoitusta ei voida sulkea: %s"
 
 #: ../src/applet/applet.c:598
 msgid "Oops!"
-msgstr ""
+msgstr "Hups!"
 
 #: ../src/applet/applet.c:616
 msgid "Report"
@@ -107,12 +109,16 @@ msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
 msgstr ""
+"Valitettavasti osassa havaittiin virhe. Ongelmasta ilmoitetaan kun internet-"
+"yhteys on käytettävissä."
 
 #: ../src/applet/applet.c:741
 msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
 msgstr ""
+"Valitettavasti virhe havaittiin. Jos haluat auttaa ongelman selvittämisessä, "
+"lähetä virheilmoitus."
 
 #: ../src/applet/applet.c:786
 #, c-format
@@ -123,7 +129,7 @@ msgstr "Ei voida näyttää ilmoitusta: %s"
 #: ../src/applet/applet.c:818 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr ""
+msgstr "Gio-kanavalta ei voida lukea: '%s'"
 
 #: ../src/applet/applet.c:896
 #, c-format
@@ -167,11 +173,11 @@ msgstr "Lähetä uReport automaattisesti"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
-msgstr ""
+msgstr "Lyhennetty raportointi"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
-msgstr ""
+msgstr "Hiljainen lyhennetty raportointi"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
@@ -220,7 +226,7 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid "Request private ticket for sensitive information"
-msgstr ""
+msgstr "Pyydä yksityistä tikettiä arkaluontoiselle informaatiolle."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Notify incomplete problems"
@@ -235,15 +241,15 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid "Always"
-msgstr ""
+msgstr "Aina"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:15
 msgid "Never"
-msgstr ""
+msgstr "Ei koskaan"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:16
 msgid "Ask"
-msgstr ""
+msgstr "Kysy"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
 msgid "Upload coredump for backtrace generation"
@@ -264,7 +270,7 @@ msgstr "Ongelmienraportointiasetukset"
 
 #: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
-msgstr ""
+msgstr "Tietoja System Config ABRT:sta."
 
 #: ../src/configuration-gui/main.c:105
 msgid "About"
@@ -323,7 +329,7 @@ msgstr "& [valitsimet]"
 
 #: ../src/daemon/abrt-server.c:858
 msgid "Use NUM as client uid"
-msgstr ""
+msgstr "Käytä NUM:ia asiakas uid:na"
 
 #: ../src/daemon/abrt-server.c:859 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:97
@@ -345,7 +351,7 @@ msgstr "Tuntematon virhe"
 #: ../src/dbus/abrt-dbus.c:167
 #, c-format
 msgid "'%s' is not a valid element name"
-msgstr ""
+msgstr "'%s' ei ole kelvollinen elementin nimi"
 
 #: ../src/dbus/abrt-dbus.c:219
 #, c-format
@@ -360,7 +366,7 @@ msgstr "Ei käyttöoikeutta"
 
 #: ../src/dbus/abrt-dbus.c:285
 msgid "Can't open the problem"
-msgstr ""
+msgstr "Ongelmaa ei voi avata"
 
 #: ../src/dbus/abrt-dbus.c:317
 #, c-format
@@ -374,11 +380,11 @@ msgstr ""
 #: ../src/dbus/abrt-dbus.c:665
 #, c-format
 msgid "Can't get size of '%s'"
-msgstr ""
+msgstr "'%s':n kokoa ei saada."
 
 #: ../src/dbus/abrt-dbus.c:680
 msgid "No problem space left"
-msgstr ""
+msgstr "Ongelmatilaa ei jäljellä"
 
 #: ../src/dbus/abrt-dbus.c:715
 #, c-format
@@ -429,11 +435,11 @@ msgstr "Suorita TAPAHTUMA HAKemistoissa"
 
 #: ../src/daemon/abrt-handle-event.c:404
 msgid "Communicate directly to the user"
-msgstr ""
+msgstr "Kommunikoi suoraan käyttäjälle"
 
 #: ../src/daemon/abrt-handle-event.c:405
 msgid "Increment the nice value by INCREMENT"
-msgstr ""
+msgstr "Kasvata nice-arvoa INCREMENT:llä"
 
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
@@ -467,56 +473,56 @@ msgstr ""
 #: ../src/daemon/abrt-auto-reporting.c:198
 #: ../src/daemon/abrt-auto-reporting.c:206
 msgid "& [ "
-msgstr ""
+msgstr "& [ "
 
 #: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
-msgstr ""
+msgstr "Asettaa tunnistautumisen pois päältä"
 
 #: ../src/daemon/abrt-auto-reporting.c:234
 msgid "Red Hat Support user name"
-msgstr ""
+msgstr "Red Hat -tuen käyttäjätunnus"
 
 #: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
-msgstr ""
+msgstr "Red Hat -tuen salasana. Jos ei määritetty, kysytään"
 
 #: ../src/daemon/abrt-auto-reporting.c:236
 msgid "uReport SSL certificate paths or certificate type"
-msgstr ""
+msgstr "uReportoi SSL sertifikaatti plut tai sertifikaatti tyypit"
 
 #: ../src/daemon/abrt-auto-reporting.c:252
 msgid "You also need to specify --username for --password"
-msgstr ""
+msgstr "Sinun pitää myös määrittää --käyttäjänimi --salasanalle"
 
 #: ../src/daemon/abrt-auto-reporting.c:258
 msgid "You can use either --username or --certificate"
-msgstr ""
+msgstr "Voit käyttää joko --käyttäjänimi tai --sertifikaatti"
 
 #: ../src/daemon/abrt-auto-reporting.c:264
 msgid "You can use either --username or --anonymous"
-msgstr ""
+msgstr "Voit käyttää joko --käyttäjänimeä tai --anonyymiä"
 
 #: ../src/daemon/abrt-auto-reporting.c:270
 msgid "You can use either --anonymous or --certificate"
-msgstr ""
+msgstr "Voit käyttää joko --anonyymiä tai --sertifikaattia"
 
 #: ../src/daemon/abrt-auto-reporting.c:277
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "Virheellinen määrä argumentteja"
 
 #: ../src/daemon/abrt-auto-reporting.c:296
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "Tuntematon valinnan arvo: '%s'\n"
 
 #: ../src/daemon/abrt-auto-reporting.c:336
 msgid "Password:"
-msgstr ""
+msgstr "Salasana:"
 
 #: ../src/daemon/abrt-auto-reporting.c:339
 msgid "Cannot continue without password\n"
-msgstr ""
+msgstr "Jatkaminen ilman salasanaa ei ole mahdollista\n"
 
 #. Print only the part before ':' of a string like "username:password"
 #: ../src/daemon/abrt-auto-reporting.c:380
@@ -570,11 +576,11 @@ msgstr "Ohitetaan: ”{0}” (sisältää sarkaimen)"
 
 #: ../src/daemon/abrt-handle-upload.in:194
 msgid "Can't change directory to '{0}'"
-msgstr ""
+msgstr "Hakemistoa ei voida vaihtaa '{0}':n"
 
 #: ../src/daemon/abrt-handle-upload.in:205
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "Tuntematon tiedostotyyppi: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:210
 msgid "Can't create working directory in '{0}'"
@@ -582,31 +588,31 @@ msgstr ""
 
 #: ../src/daemon/abrt-handle-upload.in:221
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}' ei voida siirtää '{1}':n"
 
 #: ../src/daemon/abrt-handle-upload.in:226
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}' ei voida kopioida '{1}':n"
 
 #: ../src/daemon/abrt-handle-upload.in:230
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "Varmistusvirhe '{0}':ssa"
 
 #: ../src/daemon/abrt-handle-upload.in:232
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "Puretaan '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:236
 msgid "Can't create '{0}' directory"
-msgstr ""
+msgstr "Hakemistoa '{0}' ei voida luoda"
 
 #: ../src/daemon/abrt-handle-upload.in:240
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "'{0}' ei voida purkaa"
 
 #: ../src/daemon/abrt-handle-upload.in:260
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' käsiteltiin onnistuneesti"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
@@ -621,12 +627,12 @@ msgstr "Ei voi yhdistää järjestelmän DBusiin: %s"
 #: ../src/lib/problem_api_dbus.c:68
 #, c-format
 msgid "Can't chown '%s': %s"
-msgstr ""
+msgstr "Ei voida chown '%s': %s"
 
 #: ../src/lib/problem_api_dbus.c:97
 #, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr ""
+msgstr "Ongelmhakemisto %s:n poisto epäonnistui."
 
 #: ../src/lib/problem_api_dbus.c:131
 #, c-format
@@ -655,7 +661,7 @@ msgstr ""
 #: ../src/lib/ignored_problems.c:233
 #, c-format
 msgid "Can't create temporary file '%s'"
-msgstr ""
+msgstr "Väliaikaistiedostoa '%s' ei voi luoda"
 
 #: ../src/lib/ignored_problems.c:250
 #, c-format
@@ -707,16 +713,16 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-core.in:110
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "Koonti-id %s puuttuu"
 
 #: ../src/plugins/abrt-action-analyze-core.in:142
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr ""
+msgstr "Käyttö: %s [-v] [-o OUTFILE] -c COREFILE"
 
 #: ../src/plugins/abrt-action-analyze-core.in:164
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "COREFILE ei ole määritetty"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
@@ -754,7 +760,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:52
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
-msgstr ""
+msgstr "Käyttö: {0} [-v[v]] [--core=VMCORE]"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:79
 msgid "File {0} doesn't exist"
@@ -767,7 +773,8 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
 msgid "Can't process {0}:\n"
 "{1}"
-msgstr ""
+msgstr "Ei voida käsitellä {0}:\n"
+"{1}"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "Can't extract the oops message: '{0}'"
@@ -789,7 +796,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-find-bodhi-update:102
 msgid "Problem directory error: {0}"
-msgstr ""
+msgstr "Ongelmahakemisto virhe: {0}"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:117
 msgid "Using product '{0}' from /etc/os-release."
@@ -797,11 +804,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-find-bodhi-update:119
 msgid "Using product {0}."
-msgstr ""
+msgstr "Käytetään tuotetta {0}."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:121
 msgid "Using product version {0}."
-msgstr ""
+msgstr "Käytetään tuoteversiota {0}."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:133
 msgid "Duplicate bugzilla bug '#{0}' was found"
@@ -852,16 +859,16 @@ msgstr ""
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
 msgid "Generating core_backtrace"
-msgstr ""
+msgstr "Luodaan core_backtrace"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:81
 msgid "Error: GDB did not return any data"
-msgstr ""
+msgstr "Virhe: GDB ei palauttanut mitään tietoja"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:95
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Virhe: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:52
 msgid "Exiting on user command"
@@ -917,7 +924,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:253
 msgid "Missing requested file: {0}"
-msgstr ""
+msgstr "Puuttuva pyydetty tiedosto: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:258
 msgid "Missing debuginfo file: {0}"
@@ -946,7 +953,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
 msgid "Download only specified files"
-msgstr ""
+msgstr "Lataa vain määritellyt tiedostot"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
 msgid "Pattern to use when searching for repos, default: *debug*"
@@ -954,7 +961,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
 msgid "Ignored option"
-msgstr ""
+msgstr "huomiotta jätetty valinta"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:63
 msgid ""
@@ -993,7 +1000,7 @@ msgstr "Säästä tämä hakemisto"
 #: ../src/plugins/abrt-action-ureport:59
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr " '%s' ei voida käynnistää, virheilmoitus: '%s'"
 
 #: ../src/plugins/abrt-action-ureport:70
 #, c-format
@@ -1003,7 +1010,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-ureport:99
 #, c-format
 msgid "Usage: %s [-v]"
-msgstr ""
+msgstr "Käyttö: %s [-v]"
 
 #: ../src/plugins/abrt-action-ureport:120
 msgid "Unable to get current working directory as it was probably deleted"
@@ -1011,11 +1018,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-ureport:148
 msgid "A bug was already filed about this problem:"
-msgstr ""
+msgstr "Tästä ongelmasta tehtiin jo vikailmoitus:"
 
 #: ../src/plugins/abrt-action-ureport:158
 msgid "uReport was already sent, not sending it again"
-msgstr ""
+msgstr "uReport lähetettiin jo, ei lähetetä uudelleen"
 
 #: ../src/plugins/abrt-action-ureport:179
 msgid "Adding you to CC List of the existing bugzilla bug"
@@ -1024,7 +1031,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-ureport:193
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
-msgstr ""
+msgstr "reporter-ureport epäonnistui poistumiskoodilla %d"
 
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
@@ -1045,7 +1052,7 @@ msgstr ""
 #: ../src/plugins/abrt-gdb-exploitable:550
 #: ../src/plugins/abrt-gdb-exploitable:575
 msgid "Signal sent by keyboard"
-msgstr ""
+msgstr "näppäimistön lähettämä signaali"
 
 #: ../src/plugins/abrt-gdb-exploitable:554
 #: ../src/plugins/abrt-gdb-exploitable:579
@@ -1055,7 +1062,7 @@ msgstr ""
 #: ../src/plugins/abrt-gdb-exploitable:558
 #: ../src/plugins/abrt-gdb-exploitable:587
 msgid "Signal sent by window resize"
-msgstr ""
+msgstr "ikkunan koon muuttamisen lähettämä signaali"
 
 #: ../src/plugins/abrt-gdb-exploitable:562
 #: ../src/plugins/abrt-gdb-exploitable:591
@@ -1072,11 +1079,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-gdb-exploitable:616
 msgid "XCPU signal (over CPU time limit)"
-msgstr ""
+msgstr "XCPU singaali (yli CPU aikarajan)"
 
 #: ../src/plugins/abrt-gdb-exploitable:620
 msgid "XFSZ signal (over file size limit)"
-msgstr ""
+msgstr "XFSZ singaali(yli tiedostokoon rajan)"
 
 #: ../src/plugins/abrt-gdb-exploitable:624
 msgid "TRAP signal (can be a bug in a debugger/tracer)"
@@ -1088,11 +1095,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-gdb-exploitable:633
 msgid "Arithmetic exception"
-msgstr ""
+msgstr "Aritmeettinen poikkeus"
 
 #: ../src/plugins/abrt-gdb-exploitable:637
 msgid "Division by zero"
-msgstr ""
+msgstr "Jako nollalla"
 
 #: ../src/plugins/abrt-gdb-exploitable:641
 msgid "Illegal instruction (jump to a random address?)"
@@ -1108,7 +1115,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-gdb-exploitable:656
 msgid "Write to an invalid address"
-msgstr ""
+msgstr "Kirjoitus virheelliseen osoitteeseen"
 
 #: ../src/plugins/abrt-gdb-exploitable:660
 msgid "Subroutine return to an invalid address (corrupted stack?)"
@@ -1130,15 +1137,15 @@ msgstr ""
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Likely crash reason: "
-msgstr ""
+msgstr "Oletettu kaatumisen syy:"
 
 #: ../src/plugins/abrt-gdb-exploitable:707
 msgid "Exploitable rating (0-9 scale): "
-msgstr ""
+msgstr "Hyväksikäytön arvio (asteikolla 0-9)"
 
 #: ../src/plugins/abrt-gdb-exploitable:709
 msgid "Current instruction: "
-msgstr ""
+msgstr "Tämänhetkiset ohjeet:"
 
 #: ../src/plugins/abrt-gdb-exploitable:711
 msgid "Exploitability analysis came up empty\n"
@@ -1484,7 +1491,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
 msgid "Can't create temporary file in "
-msgstr ""
+msgstr "Väliaikaista tiedostoa ei voida luoda"
 
 #: ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
@@ -1569,7 +1576,7 @@ msgstr "Palvelin ei voi käsitellä pyyntöä."
 
 #: ../src/plugins/abrt-retrace-client.c:600
 msgid "Unknown package sent to Retrace server."
-msgstr ""
+msgstr "Tuntematon paketti lähetetty Retrace-palvelimelle."
 
 #: ../src/plugins/abrt-retrace-client.c:609
 msgid "Preparing an archive to upload"
@@ -1585,7 +1592,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:640
 #, c-format
 msgid "You are going to upload %s. Continue?"
-msgstr ""
+msgstr "Olet aikeissa lähettää kohteen %s. Jatketaanko?"
 
 #: ../src/plugins/abrt-retrace-client.c:649
 msgid "Cancelled by user"
@@ -1594,7 +1601,7 @@ msgstr "Käyttäjä perui"
 #: ../src/plugins/abrt-retrace-client.c:683
 #, c-format
 msgid "Uploading %s\n"
-msgstr ""
+msgstr "Lähetetään %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:709
 #, c-format
@@ -1688,6 +1695,8 @@ msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
 msgstr ""
+"älä tarkista voiko uudelleenjäjityspalvelin prosessoida annettua pakettia "
+"ennen arkiston lähetystä"
 
 #: ../src/plugins/abrt-retrace-client.c:1224
 msgid "retrace server URL"
@@ -1756,7 +1765,7 @@ msgstr "Tarvitaan tehtävätunnus."
 #: ../src/plugins/abrt-retrace-client.c:1322
 #: ../src/plugins/abrt-retrace-client.c:1330
 msgid "Task password is needed."
-msgstr "Tarvitaan salasana."
+msgstr "Tarvitaan tehtävän salasana."
 
 #: ../src/plugins/abrt-retrace-client.c:1334
 #, c-format
@@ -1845,21 +1854,21 @@ msgstr ""
 
 #: ../src/plugins/https-utils.c:62
 msgid "An error occurred on the server side."
-msgstr ""
+msgstr "Palvelinpuolella tapahtui virhe."
 
 #: ../src/plugins/https-utils.c:65
 #, c-format
 msgid "A server-side error occurred on '%s'"
-msgstr ""
+msgstr "Palvelinpuolen virhe tapahtui  '%s':ssa"
 
 #: ../src/plugins/https-utils.c:74
 msgid "An error occurred while connecting to the server"
-msgstr ""
+msgstr "Palvelimeen yhdistäessä tapahtui virhe."
 
 #: ../src/plugins/https-utils.c:77
 #, c-format
 msgid "An error occurred while connecting to '%s'"
-msgstr ""
+msgstr "'%s':n yhdistettäessä tapahtui virhe"
 
 #: ../src/plugins/https-utils.c:97
 #, c-format
@@ -1883,7 +1892,7 @@ msgstr "Etävarmenne on vanhentunut."
 #: ../src/plugins/https-utils.c:110
 #, c-format
 msgid "Certificate issuer is not recognized: '%s'."
-msgstr "Sertifikaatin myöntäjää ei tunnisteta: ”%s”."
+msgstr "Varmenteen myöntäjää ei tunnisteta: ”%s”."
 
 #: ../src/plugins/https-utils.c:113
 #, c-format
@@ -1904,7 +1913,7 @@ msgstr ""
 #: ../src/plugins/https-utils.c:203
 #, c-format
 msgid "Can't resolve host name '%s'."
-msgstr ""
+msgstr "Konenimeä '%s' ei voida selvittää."
 
 #: ../src/plugins/https-utils.c:210
 msgid "Failed to set socket blocking mode."
@@ -1920,11 +1929,11 @@ msgstr "Asiakaskättelyn käyttöönotto SSL-pistokkeessa epäonnistui."
 
 #: ../src/plugins/https-utils.c:220
 msgid "Failed to enable SSL3."
-msgstr ""
+msgstr "SSL3: käyttöönotto epäonnistui."
 
 #: ../src/plugins/https-utils.c:222
 msgid "Failed to enable TLS."
-msgstr ""
+msgstr "TLS:n käyttöönotto epäonnistui."
 
 #: ../src/plugins/https-utils.c:224
 msgid "Failed to set URL to SSL socket."
@@ -1933,7 +1942,7 @@ msgstr "SSL-pistokkeen osoitteen asettaminen epäonnistui."
 #: ../src/plugins/https-utils.c:233
 #, c-format
 msgid "Can't connect to '%s'"
-msgstr ""
+msgstr "Yhteys kohteeseen '%s' ei onnistu"
 
 #: ../src/plugins/https-utils.c:241
 msgid "Failed to set certificate hook."
@@ -1950,7 +1959,7 @@ msgstr "Kättelyn alustaminen epäonnistui."
 #: ../src/plugins/https-utils.c:258
 #, c-format
 msgid "Failed to complete SSL handshake: NSS error %d."
-msgstr ""
+msgstr "SSL-kättelyn viimeistely epäonnistui: NSS-virhe %d."
 
 #: ../src/plugins/https-utils.c:267
 msgid "Failed to close SSL socket."
@@ -1959,7 +1968,7 @@ msgstr "SSL-pistokkeen sulkeminen epäonnistui."
 #: ../src/plugins/https-utils.c:332
 #, c-format
 msgid "Malformed HTTP response header: '%s'"
-msgstr ""
+msgstr "Väärän muotoinen HTTP-vastausotsake: '%s'"
 
 #: ../src/plugins/https-utils.c:369
 #, c-format
@@ -1985,7 +1994,7 @@ msgstr "NSS:n sammuttaminen epäonnistui."
 #: ../src/plugins/oops-utils.c:73
 #, c-format
 msgid "Sleeping for %d seconds"
-msgstr ""
+msgstr "Nukkuu %d sekuntia"
 
 #: ../src/plugins/oops-utils.c:200
 msgid ""
@@ -2020,11 +2029,11 @@ msgstr ""
 
 #: ../src/plugins/bodhi.c:469
 msgid "Specify a bodhi server url"
-msgstr ""
+msgstr "Määritä Bodhi-palvelimen URL"
 
 #: ../src/plugins/bodhi.c:470
 msgid "Specify a release"
-msgstr ""
+msgstr "Määritä julkaisu"
 
 #: ../src/plugins/bodhi.c:475
 msgid ""
@@ -2035,16 +2044,17 @@ msgstr ""
 
 #: ../src/plugins/bodhi.c:542
 msgid "Searching for updates"
-msgstr ""
+msgstr "Etsitään päivityksiä"
 
 #: ../src/plugins/bodhi.c:548
 msgid "No updates for this package found"
-msgstr ""
+msgstr "Tälle paketille ei löydy päivityksiä"
 
 #. strbuf_free(q);
 #: ../src/plugins/bodhi.c:577
 msgid "Local version of the package is newer than available updates"
 msgstr ""
+"Paikallinen versio paketista on uudempi kuin saatavilla olevat päivitykset"
 
 #: ../src/plugins/bodhi.c:594
 #, c-format
@@ -2052,6 +2062,8 @@ msgid ""
 "An update exists which might fix your problem. You can install it by running:"
 " %s. Do you want to continue with reporting the bug?"
 msgstr ""
+"Ongelman mahdollisesti korjaava päivitys on saatavilla. Voit asentaa sen "
+"suorittamalla: %s. Haluatko jatkaa ongelmasta ilmoittamista?"
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
 msgid ""
@@ -2071,7 +2083,7 @@ msgstr ""
 #: ../src/cli/abrt-cli-core.c:100
 #, c-format
 msgid "'%s' identifies more than one problem directory"
-msgstr ""
+msgstr "'%s' tunnistaa useamman kuin yhden ongelmahakemiston"
 
 #: ../src/cli/abrt-cli.c:130
 msgid "Usage: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
@@ -2079,7 +2091,7 @@ msgstr ""
 
 #: ../src/cli/abrt-cli.c:134
 msgid "List problems [in DIRs]"
-msgstr ""
+msgstr "Listaa ongelmat (HAK:ssa)"
 
 #: ../src/cli/abrt-cli.c:135
 msgid "Remove problem directory DIR"
@@ -2099,7 +2111,7 @@ msgstr ""
 
 #: ../src/cli/abrt-cli.c:139
 msgid "Process multiple problems"
-msgstr ""
+msgstr "Käsittele useita ongelmia"
 
 #: ../src/cli/abrt-cli.c:162
 msgid "See 'abrt-cli COMMAND --help' for more information"
@@ -2107,7 +2119,7 @@ msgstr "Katso lisätietoja komennolla \"abrt-cli KOMENTO --help\""
 
 #: ../src/cli/list.c:127
 msgid "& list [options]"
-msgstr ""
+msgstr "& listaa[valinnat]"
 
 #: ../src/cli/list.c:136 ../src/cli-ng/abrtcli/cli.py:121
 #: ../src/cli-ng/abrtcli/cli.py:264
@@ -2146,11 +2158,11 @@ msgstr ""
 #: ../src/cli/list.c:212
 #, c-format
 msgid "No such problem directory '%s'"
-msgstr ""
+msgstr "Ei ongelmhakemistoa '%s'"
 
 #: ../src/cli/status.c:66
 msgid "& status"
-msgstr ""
+msgstr "& tila"
 
 #: ../src/cli/status.c:74 ../src/cli-ng/abrtcli/cli.py:260
 msgid "Print only the problem count without any message"
@@ -2168,17 +2180,17 @@ msgstr ""
 #: ../src/cli/report.c:34
 #, c-format
 msgid "Can't find problem '%s'"
-msgstr ""
+msgstr "Ongelmaa '%s' ei löydy"
 
 #: ../src/cli/report.c:42
 #, c-format
 msgid "Problem '%s' cannot be reported"
-msgstr ""
+msgstr "Ongelmaa '%s' ei voi ilmoittaa"
 
 #: ../src/cli/report.c:63 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "Poistetaan '%s'"
 
 #: ../src/cli/report.c:79
 msgid "& report [options] DIR..."
@@ -2186,7 +2198,7 @@ msgstr ""
 
 #: ../src/cli/report.c:89
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "Poista PROBLEM_DIR raportoinnin jälkeen"
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
@@ -2199,12 +2211,12 @@ msgstr ""
 #: ../src/cli/process.c:78
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "Ilmoitetaan '%s'"
 
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:127
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "Seuraava ongelma, paina ENTER:"
 
 #: ../src/cli/process.c:138
 msgid "Without --since argument, iterates over all detected problems."
@@ -2228,11 +2240,11 @@ msgstr ""
 
 #: ../src/cli-ng/abrtcli/cli.py:50
 msgid "This"
-msgstr ""
+msgstr "Tämä"
 
 #: ../src/cli-ng/abrtcli/cli.py:52
 msgid "Last"
-msgstr ""
+msgstr "Viimeinen"
 
 #: ../src/cli-ng/abrtcli/cli.py:54
 msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
@@ -2250,7 +2262,7 @@ msgstr ""
 
 #: ../src/cli-ng/abrtcli/cli.py:106
 msgid "Run GDB against a problem"
-msgstr ""
+msgstr "Suorita GDB ongelmaa vastaan"
 
 #: ../src/cli-ng/abrtcli/cli.py:117 ../src/cli-ng/abrtcli/cli.py:153
 msgid "Output format"
@@ -2262,40 +2274,40 @@ msgstr ""
 
 #: ../src/cli-ng/abrtcli/cli.py:145 ../src/cli-ng/abrtcli/match.py:89
 msgid "No problems"
-msgstr ""
+msgstr "Ei ongelmia"
 
 #: ../src/cli-ng/abrtcli/cli.py:147
 msgid "List problems"
-msgstr ""
+msgstr "Listaa ongelmat"
 
 #: ../src/cli-ng/abrtcli/cli.py:167
 msgid "Print information about problem"
-msgstr ""
+msgstr "Tulosta tietoa ongelmasta"
 
 #: ../src/cli-ng/abrtcli/cli.py:173
 msgid "Prompt before removal"
-msgstr ""
+msgstr "Kysy ennen poistamista"
 
 #: ../src/cli-ng/abrtcli/cli.py:174
 msgid "Do not prompt before removal"
-msgstr ""
+msgstr "Älä kysy ennen poistamista"
 
 #. force prompt for last problem to avoid accidents
 #: ../src/cli-ng/abrtcli/cli.py:182
 msgid "Are you sure you want to delete this problem?"
-msgstr ""
+msgstr "Haluatko varmasti poistaa tämän ongelman?"
 
 #: ../src/cli-ng/abrtcli/cli.py:186
 msgid "Removed"
-msgstr ""
+msgstr "Poistettu"
 
 #: ../src/cli-ng/abrtcli/cli.py:188
 msgid "Remove problem"
-msgstr ""
+msgstr "Poista ongelma"
 
 #: ../src/cli-ng/abrtcli/cli.py:199
 msgid "Report problem"
-msgstr ""
+msgstr "Ilmoita ongelma"
 
 #: ../src/cli-ng/abrtcli/cli.py:204
 msgid "Perform local retracing"
@@ -2355,7 +2367,7 @@ msgstr ""
 
 #: ../src/cli-ng/abrtcli/cli.py:292
 msgid "Authenticate and show all problems on this machine"
-msgstr ""
+msgstr "Tunnistaudu ja näytä kaikki tämän koneen ongelmat"
 
 #: ../src/cli-ng/abrtcli/match.py:96
 msgid "No problem(s) matched"
@@ -2367,7 +2379,7 @@ msgstr ""
 
 #: ../src/cli-ng/abrtcli/utils.py:78
 msgid "Not reportable"
-msgstr ""
+msgstr "Ei ilmoitettavissa"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
@@ -2461,4 +2473,4 @@ msgstr ""
 
 #: ../src/plugins/post_report.xml.in.h:3
 msgid "Used for updating of the databases"
-msgstr ""
+msgstr "Käytetään tietokantojen päivittämiseen"

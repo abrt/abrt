@@ -16,6 +16,8 @@
 # Jakub Filak <jfilak@redhat.com>, 2016. #zanata
 # Meskó Balázs <meskobalazs@gmail.com>, 2016. #zanata
 # Zoltan Hoppar <zoltanh721@fedoraproject.org>, 2016. #zanata
+# Meskó Balázs <meskobalazs@gmail.com>, 2017. #zanata
+# TheWanderer <sz.kornelgeza@gmail.com>, 2017. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -24,8 +26,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-09-19 12:13-0400\n"
-"Last-Translator: DÃ©lczegi Csaba <delczegicsaba@gmail.com>\n"
+"PO-Revision-Date: 2017-04-11 07:01-0400\n"
+"Last-Translator: TheWanderer <sz.kornelgeza@gmail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/hu/)\n"
 "Language: hu\n"
@@ -944,18 +946,15 @@ msgid "Backtrace is generated and saved, %u bytes"
 msgstr "Nyomkövetési információ előállítva és elmentve, %u bájt"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:40
-#, fuzzy
 msgid ""
 "& [-v] [-r] -d DIR\n"
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
 msgstr ""
-"& [-v] [-r] -d DIR \n"
+"& [-v] [-r] -d DIR\n"
 "\n"
-"\n"
-"\n"
-"Egy coredump-szintű nyomkövetési adatot készít a hibaadatokból és a "
-"kapcsolódó binárisból"
+"Egy coredump-szintű visszakövetést készít a veremkiíratásból és a kapcsolódó "
+"binárisból"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
@@ -1014,10 +1013,10 @@ msgid "Can't open {0}: {1}"
 msgstr "{0} nem nyitható meg: {1}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:213
-#, fuzzy
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr ""
-"A hibakód referenciák {0}, debuginfo fájlok, {1} nem került telepítésre"
+"A veremkiíratás {0} debuginfo fájlra hivatkozik, közülük {1} nincs telepítve."
+""
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:216
 msgid "{0} of debuginfo files are not installed"
@@ -1070,32 +1069,30 @@ msgstr "Csak a megadott fájlok letöltése"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
 msgid "Pattern to use when searching for repos, default: *debug*"
-msgstr ""
+msgstr "Használandó minta tárolók keresésekor, alapértelmezett: *debug*"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
 msgid "Ignored option"
 msgstr "Figyelmen kívül hagyott beállítás"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:63
-#, fuzzy
 msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
 msgstr ""
-"Egyetért, hogy feltöltsük a core dump-ot? (Érzékeny adatokat is "
-"tartalmazhat) Ha a válasza 'Nem', a nyomkövetési adatokat helyben állítjuk "
-"elő. (Ezzel nagy mennyiségű adat kerülhet letöltésre)."
+"Feltölthetjük a veremkiíratást? (Érzékeny adatokat is tartalmazhat) Ha a "
+"válasza „Nem”, akkor a veremkövetési adatok helyben kerülnek előállításra. "
+"(Ezzel nagy mennyiségű adat kerülhet letöltésre)."
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:72
-#, fuzzy
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
 msgstr ""
-"Kívánja hogy helyben állítsuk elő a nyomkövetési adatokat? (Ezzel nagy "
-"mennyiségű adat kerülhet letöltésre, de enélkül a hibajelentés "
-"használhatatlan és a jelentés beküldése nem folytatódhat)."
+"Kívánja hogy helyben állítsuk elő a veremkövetési adatokat? (Ezzel nagy "
+"mennyiségű adat kerülhet letöltésre, de enélkül a jelentés beküldése nem "
+"folytatható)."
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -1112,9 +1109,8 @@ msgstr ""
 "FILE fájlok megőriződnek (sosem kerülnek törlésre)."
 
 #: ../src/plugins/abrt-action-trim-files.c:236
-#, fuzzy
 msgid "Delete whole problem directories"
-msgstr "Törölje a teljes hibagyűjtő könyvtáralat"
+msgstr "A teljes hibagyűjtő könyvtárak törlése"
 
 #: ../src/plugins/abrt-action-trim-files.c:237
 msgid "Delete files inside this directory"
@@ -1154,9 +1150,8 @@ msgid "uReport was already sent, not sending it again"
 msgstr "Az uReport már el lett küldve, nem lesz még egyszer elküldve"
 
 #: ../src/plugins/abrt-action-ureport:179
-#, fuzzy
 msgid "Adding you to CC List of the existing bugzilla bug"
-msgstr "A létező bugzilla CC listahoz hozzáadva"
+msgstr "Az Ön hozzáadása a meglévő bugzilla hiba CC listájához"
 
 #: ../src/plugins/abrt-action-ureport:193
 #, c-format
@@ -1372,21 +1367,19 @@ msgstr "Nem sikerült minden szükséges információt kinyerni a journald-ből"
 
 #. We don't want to update the counter here.
 #: ../src/plugins/abrt-dump-journal-core.c:421
-#, fuzzy, c-format
+#, c-format
 msgid "Not saving repeating crash after %ds (limit is %ds)"
-msgstr "Men menti a további crash-t  %ds (limit is %ds)"
+msgstr "Nem menti az ismétlődő összeomlásokat %d mp után (a korlát %d mp)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:427
-#, fuzzy
 msgid "Failed to save detect problem data in abrt database"
-msgstr "Nem tudta menteni a z érzékelt problémákat az abrt adatbázisban"
+msgstr "Nem sikerült menteni az érzékelt problémákat az abrt adatbázisban"
 
 #: ../src/plugins/abrt-dump-journal-core.c:447
 #: ../src/plugins/abrt-dump-journal-oops.c:165
 #: ../src/plugins/abrt-dump-journal-xorg.c:121
-#, fuzzy
 msgid "Failed to initialize systemd-journal watch"
-msgstr "Nem tudta inicializálni a systemd-journal figyelőt"
+msgstr "Nem sikerült a systemd-journal figyelő előkészítése"
 
 #: ../src/plugins/abrt-dump-journal-core.c:467
 msgid ""
@@ -1459,19 +1452,19 @@ msgstr "Nem tudja a systemd-journal-t kiszűrni a systemd-coredump adataiból"
 #: ../src/plugins/abrt-dump-journal-oops.c:293
 #: ../src/plugins/abrt-dump-journal-xorg.c:291
 msgid "Cannot seek to the end of journal"
-msgstr ""
+msgstr "A napló vége nem található"
 
 #: ../src/plugins/abrt-dump-journal-core.c:572
 #: ../src/plugins/abrt-dump-journal-oops.c:309
 #: ../src/plugins/abrt-dump-journal-xorg.c:307
 #, c-format
 msgid "Failed to set systemd-journal cursor '%s'"
-msgstr ""
+msgstr "A systemd-journal cursor '%s' állítása nem sikerült"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:40
 #: ../src/plugins/abrt-dump-journal-xorg.c:52
 msgid "Cannot read journal data."
-msgstr ""
+msgstr "A naplóadatok nem olvashatóak."
 
 #: ../src/plugins/abrt-dump-journal-oops.c:186
 msgid ""
@@ -1495,7 +1488,7 @@ msgstr ""
 #: ../src/plugins/abrt-dump-journal-oops.c:232
 #: ../src/plugins/abrt-dump-journal-xorg.c:198
 msgid "Read all journal files from directory at PATH"
-msgstr ""
+msgstr "Minden naplófájl olvasása a PATH mappából"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:279
 #: ../src/plugins/abrt-dump-journal-xorg.c:273
@@ -1758,7 +1751,7 @@ msgstr "Felhasználó kérésére megszakítva"
 #: ../src/plugins/abrt-retrace-client.c:683
 #, c-format
 msgid "Uploading %s\n"
-msgstr ""
+msgstr "%s feltöltése\n"
 
 #: ../src/plugins/abrt-retrace-client.c:709
 #, c-format
@@ -2090,11 +2083,11 @@ msgstr "A kliens kapcsolódása sikertelen az SSL sockethez."
 
 #: ../src/plugins/https-utils.c:220
 msgid "Failed to enable SSL3."
-msgstr ""
+msgstr "Az SSL3 engedélyezése sikertelen."
 
 #: ../src/plugins/https-utils.c:222
 msgid "Failed to enable TLS."
-msgstr ""
+msgstr "A TLS engedélyezése sikertelen."
 
 #: ../src/plugins/https-utils.c:224
 msgid "Failed to set URL to SSL socket."
@@ -2342,7 +2335,7 @@ msgstr "Nincs ilyen problémát tartalmazó könyvtár  '%s'"
 
 #: ../src/cli/status.c:66
 msgid "& status"
-msgstr ""
+msgstr "& status"
 
 #: ../src/cli/status.c:74 ../src/cli-ng/abrtcli/cli.py:260
 msgid "Print only the problem count without any message"
@@ -2366,21 +2359,21 @@ msgstr ""
 #: ../src/cli/report.c:34
 #, c-format
 msgid "Can't find problem '%s'"
-msgstr ""
+msgstr "A(z) „%s” probléma nem található."
 
 #: ../src/cli/report.c:42
 #, c-format
 msgid "Problem '%s' cannot be reported"
-msgstr ""
+msgstr "A(z) „%s” probléma nem jelenthető be."
 
 #: ../src/cli/report.c:63 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "A(z) „%s” törlése."
 
 #: ../src/cli/report.c:79
 msgid "& report [options] DIR..."
-msgstr ""
+msgstr "& report [kapcsolók] KÖNYVTÁR…"
 
 #: ../src/cli/report.c:89
 msgid "Remove PROBLEM_DIR after reporting"
@@ -2388,16 +2381,16 @@ msgstr ""
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
-msgstr ""
+msgstr "Műveletek: törlés(rm), információ(i), kihagyás(s):"
 
 #: ../src/cli/process.c:66
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
-msgstr ""
+msgstr "Műveletek: törlés(rm), jelentés(e), információ(i), kihagyás(s):"
 
 #: ../src/cli/process.c:78
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "A(z) „%s” bejelentése."
 
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:127
@@ -2426,7 +2419,7 @@ msgstr ""
 
 #: ../src/cli-ng/abrtcli/cli.py:50
 msgid "This"
-msgstr ""
+msgstr "Ez"
 
 #: ../src/cli-ng/abrtcli/cli.py:52
 msgid "Last"
@@ -2452,15 +2445,15 @@ msgstr ""
 
 #: ../src/cli-ng/abrtcli/cli.py:117 ../src/cli-ng/abrtcli/cli.py:153
 msgid "Output format"
-msgstr ""
+msgstr "Kimeneti formátum"
 
 #: ../src/cli-ng/abrtcli/cli.py:119 ../src/cli-ng/abrtcli/cli.py:155
 msgid "Built-in output format"
-msgstr ""
+msgstr "Beépített kimeneti formátum"
 
 #: ../src/cli-ng/abrtcli/cli.py:145 ../src/cli-ng/abrtcli/match.py:89
 msgid "No problems"
-msgstr ""
+msgstr "Nincsenek problémák"
 
 #: ../src/cli-ng/abrtcli/cli.py:147
 msgid "List problems"

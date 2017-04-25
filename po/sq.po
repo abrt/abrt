@@ -1,8 +1,4 @@
-# Silva Arapi <silva.arapi19@gmail.com>, 2015. #zanata
-# Anxhela Hyseni <anxhela.hyseni1996@gmail.com>, 2016. #zanata
-# Anxhelo Lushka <an_xhelo@hotmail.com>, 2016. #zanata
-# Jakub Filak <jfilak@redhat.com>, 2016. #zanata
-# Silva Arapi <silva.arapi19@gmail.com>, 2016. #zanata
+# Jona Azizaj <jonaazizaj@gmail.com>, 2017. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -11,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-12-03 02:10-0500\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"PO-Revision-Date: 2017-04-17 09:52-0400\n"
+"Last-Translator: Anxhela Hyseni <anxhela.hyseni1996@gmail.com>\n"
 "Language-Team: Albanian\n"
 "Language: sq\n"
 "X-Generator: Zanata 3.9.6\n"
@@ -199,9 +195,9 @@ msgid ""
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
 msgstr ""
-"ABRT i ruan të dhënat e problemeve në direktori. Sa herë që ABRT ka nevoj "
+"ABRT i ruan të dhënat e problemeve në direktori. Sa herë që ABRT ka nevojë "
 "për një direktori pët të shkruar, direktoria do të lëvizë nga vendndodhja në "
-"sistem në direktorin kryefaqe. Duke e çaktivizuar këtë opsion ABRT do ta "
+"sistem në direktorinë kryefaqe. Duke e çaktivizuar këtë opsion ABRT do ta "
 "lëvizë direktorin e problemeve pa pyetur. "
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
@@ -223,10 +219,10 @@ msgid ""
 "in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
-"Me këtë komandë të aktivizuar proçesi i filluar duke klikuar në butonin "
-"Raporto në flluckën e njoftimit të problemit do të ndërpritet pasi uReport "
-"është dërguar. Ju gjithmonë mund të përdorni shfletuesin e problemit të "
-"parapërzgjdhur për të përfunduar raportin."
+"Me këtë komandë të aktivizuar proçesi fillon duke klikuar në butonin Raporto "
+"në flluckën e njoftimit të problemit do të ndërpritet pasi uReport është "
+"dërguar. Ju gjithmonë mund të përdorni shfletuesin e problemit të "
+"parapërzgjedhur për të përfunduar raportin."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
@@ -243,11 +239,11 @@ msgid ""
 "access if possibly sensitive data are detected."
 msgstr ""
 "Me këtë komandë të aktivizuar ABRT gjithmonë do të krijojë etiketa problemi "
-"me aksesim të kufizuar në qoftë se të dhëna sensitive janë gjetur."
+"me aksesim të kufizuar në qoftë se të dhënat sensitive janë gjetur."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid "Request private ticket for sensitive information"
-msgstr "Kërko bilet private për informacionet sensitive"
+msgstr "Kërko biletë private për informacionet sensitive"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Notify incomplete problems"
@@ -312,7 +308,7 @@ msgid ""
 msgstr ""
 "& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 "\n"
-"Paketa e pyetsorit të bazës së të dhënave dhe ruani paketën dhe komponenten "
+"Paketa e pyetësorit të bazës së të dhënave dhe ruani paketën dhe komponenten "
 "e emrit"
 
 #: ../src/daemon/abrt-action-save-package-data.c:453
@@ -426,7 +422,7 @@ msgid ""
 "is not running.\n"
 msgstr ""
 "Emri '%s' ka humbur, ju lutem kontrolloni në qoftë se shërbime të tjera të "
-"zotëruara nuk janë duke u ekzeketuar.\n"
+"zotëruara nuk janë duke u ekzekutuar.\n"
 
 #: ../src/dbus/abrt-dbus.c:903 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:459
@@ -458,7 +454,7 @@ msgstr "Mos daemonizo"
 
 #: ../src/daemon/abrtd.c:458
 msgid "Log to syslog even with -d"
-msgstr "Kyçuni në siskyç edhe me -d"
+msgstr "Kyçuni në syslog edhe me -d"
 
 #: ../src/daemon/abrt-handle-event.c:394
 msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
@@ -496,7 +492,7 @@ msgstr ""
 "& [-vs] [-w NUM] [-c MiB] [NGARKO_DIREKTORIN]\n"
 "\n"
 "\n"
-"Shikoni NGARKO_DIREKTORIN dhe shpaketoni arkivat hyrëse në DumpLocation "
+"Shikoni NGARKO_DIREKTORINË dhe shpaketoni arkivat hyrëse në DumpLocation "
 "specifikuar në abrt.conf\n"
 "\n"
 "Në qoftë se NGARKO_DIRECTORY nuk është pajisur, përdorni një vlerë të "
@@ -535,7 +531,7 @@ msgstr ""
 
 #: ../src/daemon/abrt-auto-reporting.c:236
 msgid "uReport SSL certificate paths or certificate type"
-msgstr "uReport shtigjet e çertifikatës ose lloji i çertifikatës SSL"
+msgstr "uReport shtigjet e certifikatës ose lloji i certifikatës SSL"
 
 #: ../src/daemon/abrt-auto-reporting.c:252
 msgid "You also need to specify --username for --password"
@@ -551,7 +547,7 @@ msgstr "Ju mund të përdorni ose --emërpërdoruesi ose --anonimisht"
 
 #: ../src/daemon/abrt-auto-reporting.c:270
 msgid "You can use either --anonymous or --certificate"
-msgstr "Ju mund të përdorni ose --anonimisht ose --çertifikatë"
+msgstr "Ju mund të përdorni ose --anonimisht ose --certifikatë"
 
 #: ../src/daemon/abrt-auto-reporting.c:277
 msgid "Invalid number of arguments"
@@ -573,11 +569,11 @@ msgstr "Nuk mund të vazhdohet pa fjalëkalim\n"
 #. Print only the part before ':' of a string like "username:password"
 #: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
-msgstr "HTTP Vërtetuar reportime auto"
+msgstr "HTTP Vërtetoi raportime të bëra automatikisht"
 
 #: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
-msgstr "SSL Klient Vërtetuar reportime auto"
+msgstr "SSL Klient Vërtetoi raportime të bëra automatikisht"
 
 #: ../src/daemon/abrt-auto-reporting.c:384
 msgid "anonymous auto reporting"
@@ -650,7 +646,7 @@ msgstr "Nuk mund të kopjohet nga '{0}' në '{1}'"
 
 #: ../src/daemon/abrt-handle-upload.in:230
 msgid "Verification error on '{0}'"
-msgstr "Gabim verifilimi në '{0}'"
+msgstr "Gabim verifikimi në '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:232
 msgid "Unpacking '{0}'"
@@ -686,7 +682,7 @@ msgstr "Nuk mund të ushqehet '%s': %s"
 #: ../src/lib/problem_api_dbus.c:97
 #, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr "Fshirja e direktoris së problemit dështoi: %s"
+msgstr "Fshirja e direktorisë së problemit dështoi: %s"
 
 #: ../src/lib/problem_api_dbus.c:131
 #, c-format
@@ -834,7 +830,7 @@ msgid ""
 msgstr ""
 "& [-v] -d DIR\n"
 "\n"
-"Llogarit dhe ruan UUID dhe DUPHASH e pirgjeve të dështimeve të pitonit"
+"Llogarit dhe ruan UUID dhe DUPHASH e pirgjeve të dështimeve të pythonit"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:52
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
@@ -876,7 +872,7 @@ msgstr "nuk mund të hapet direktoria e problemit '{0}'"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:102
 msgid "Problem directory error: {0}"
-msgstr "Gabim në direktorin e problemeve: {0}"
+msgstr "Gabim në direktorinë e problemeve: {0}"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:117
 msgid "Using product '{0}' from /etc/os-release."
@@ -911,7 +907,7 @@ msgstr ""
 "& [options] -d DIR\n"
 "\n"
 "Analizon coredump në direktorin e problemeve DIR, gjeneron dhe ruan "
-"përgjurmimin"
+"gjurmimin"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
@@ -1152,7 +1148,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-ureport:148
 msgid "A bug was already filed about this problem:"
-msgstr "Një problem është njoftuar tashmë për këtë problem"
+msgstr "Një bug është njoftuar tashmë për këtë problem"
 
 #: ../src/plugins/abrt-action-ureport:158
 msgid "uReport was already sent, not sending it again"
@@ -1406,14 +1402,16 @@ msgid ""
 msgstr ""
 "& [-vsf] [-e]/[-c CURSOR] [-t INT]/[-T] [-d DIR]/[-D]\n"
 "\n"
-"Extract coredumps from systemd-journal\n"
+"Nxirr coredumps nga systemd-journal\n"
 "\n"
-"-c and -e options conflicts because both specifies the first read message.\n"
+"opsionet -c dhe -e konfliktohen sepse të dyja specifikojnë leximin e "
+"mesazhit të parë\n"
 "\n"
-"-e is useful only for -f because the following of journal starts by reading \n"
-"the entire journal if the last seen possition is not available.\n"
+"-e është e nevojshme vetëm për -f sepse vazhdimi i ditarit fillon duke "
+"lexuar të gjithë ditarin nëqoftëse pozicioni i fundit që shikohet nuk është "
+"në dispozicion.\n"
 "\n"
-"The last seen position is saved in "
+"Pozicioni i fundit që shikohet është i ruajtur në"
 
 #: ../src/plugins/abrt-dump-journal-core.c:498
 msgid "Create new problem directory in DIR for every coredump"
@@ -1514,13 +1512,13 @@ msgstr "Lexo skedarët ditarë nga të gjitha makinat"
 #: ../src/plugins/abrt-dump-journal-oops.c:232
 #: ../src/plugins/abrt-dump-journal-xorg.c:198
 msgid "Read all journal files from directory at PATH"
-msgstr "Lexo të gjithë skedarët ditarë nga direktoria tek SHTEG"
+msgstr "Lexo të gjithë skedarët ditarë nga direktoria tek PATH"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:279
 #: ../src/plugins/abrt-dump-journal-xorg.c:273
 #, c-format
 msgid "Cannot initialize systemd-journal in directory '%s'"
-msgstr "Nuk mund të inicializohet ditari-sistemd në direktorin '%s'"
+msgstr "Nuk mund të inicializohet ditari-sistemd në direktorinë '%s'"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:288
 msgid "Cannot filter systemd-journal to kernel data only"
@@ -1571,7 +1569,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:189
 msgid "Print found crashes on standard output"
-msgstr "Printimi gjeti përplasje në informacionin e nxjerrë standard"
+msgstr "Printimi gjeti përplasje në informacionin standart të nxjerrë"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:190
 msgid "Create new problem directory in DIR for every crash found"
@@ -1603,12 +1601,12 @@ msgid ""
 msgstr ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
-"Shkëput oops nga SKEDARI (ose futja standarte)"
+"Shkëput oops nga SKEDARI (ose inputi standart)"
 
 #: ../src/plugins/abrt-dump-xorg.c:53
 msgid "Print found crash data on standard output"
 msgstr ""
-"Printimi gjeti të dhëna me përplasje në informacionin e nxjerrë standard"
+"Printimi gjeti të dhëna me përplasje në informacionin e nxjerrë standart"
 
 #: ../src/plugins/abrt-dump-xorg.c:54
 msgid "Create problem directory in DIR for every crash found"
@@ -1633,7 +1631,8 @@ msgstr "Nuk mund të ruhet pozicioni i orës së protokollit: hapur('%s')"
 #, c-format
 msgid "Not restoring journal watch's position: file '%s' does not exist"
 msgstr ""
-"Nuk mund të riruhet pozicioni i ditarit të kohës: skedari '%s' nuk ekziston"
+"Nuk mund të ruhet sërish pozicioni i ditarit të kohës: skedari '%s' nuk "
+"ekziston"
 
 #: ../src/plugins/abrt-journal.c:304
 #, c-format
@@ -1733,7 +1732,7 @@ msgid ""
 "Is it a part of official '%s' repositories?"
 msgstr ""
 "Serveri i ripërshkrimit nuk mund të përpunoj paketën '%s.%s'. \n"
-"Ai është pjesë e formale e depove '%s'?"
+"Ai është pjesë formale e depove '%s'?"
 
 #: ../src/plugins/abrt-retrace-client.c:444
 msgid "Querying server settings"
@@ -1996,8 +1995,8 @@ msgid ""
 "to remote machines."
 msgstr ""
 "Ka nevojë për të shkarkuar paketat e info të rregullimit, e cila mund t'ju "
-"marrë pak kohë, dhe të zëjë hapësirë në disk. Gjithsesi, ndryshe nga "
-"ServeriRipërshkrues, nuk dërgon mbeturinabërthame në makineri të largëta."
+"marrë pak kohë, dhe të zërë hapësirë në disk. Gjithsesi, ndryshe nga "
+"ServeriRipërshkrues, nuk dërgon coredump në makineri të largëta."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
@@ -2011,13 +2010,13 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
-"Ngarkon mbeturinabërthame në një server, i cili gjeneron përgjurmues dhe e "
-"kthen atë. Avantazhe: nuk ka nevojë për shkarkimin e info rregullueseve. "
-"Serveri ripërshkrues i bazës së të dhënave tek info rregulluesi është më i "
+"Ngarkon coredump në një server, i cili gjeneron përgjurmues dhe e kthen atë. "
+"Avantazhe: nuk ka nevojë për shkarkimin e info rregullueseve. Serveri "
+"ripërshkrues i bazës së të dhënave tek info rregulluesi është më i "
 "kompletuar. Serveri ripërshkrimes mund të gjenerojë një përgjurmues më të "
-"mirë. Disavantazhe: ngarkimi i mbeturinabërthame përmban të gjithë të dhënat "
-"nga programi i përplasur, duke përfshirë të dhënat tuaja private, në qoftë "
-"se keni."
+"mirë. Disavantazhe: ngarkimi i coredump përmban të gjithë të dhënat nga "
+"programi i përplasur, duke përfshirë të dhënat tuaja private, në qoftë se "
+"keni."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Retrace server URL"
@@ -2088,7 +2087,7 @@ msgstr "Certifikata e lëshuesit është e pavlefshme: '%s'."
 #: ../src/plugins/https-utils.c:100
 #, c-format
 msgid "Certificate is signed by an untrusted issuer: '%s'."
-msgstr "Certifikata është e nënshkruar nga një lëshues i pabesuar: '%s'."
+msgstr "Certifikata është e nënshkruar nga një lëshues jo i besuar: '%s'."
 
 #: ../src/plugins/https-utils.c:103
 #, c-format
@@ -2109,12 +2108,12 @@ msgstr "Lëshuesi i certifikatës nuk është i njohur: '%s'."
 #: ../src/plugins/https-utils.c:113
 #, c-format
 msgid "Bad certificate received. Subject '%s', issuer '%s'."
-msgstr "U morr çertifikatë e keqe. Subjekti '%s', emetuesi '%s'."
+msgstr "U mor certifikatë e keqe. Subjekti '%s', emetuesi '%s'."
 
 #: ../src/plugins/https-utils.c:149
 #, c-format
 msgid "Failed to get slot 'PEM Token #0': %d."
-msgstr "Dështoi marrja e të çarës 'PEM Token #0': %d."
+msgstr "Dështoi marja e të çarës 'PEM Token #0': %d."
 
 #: ../src/plugins/https-utils.c:182
 #, c-format
@@ -2129,15 +2128,15 @@ msgstr "Nuk mund të zgjidhet emri i host '%s'."
 
 #: ../src/plugins/https-utils.c:210
 msgid "Failed to set socket blocking mode."
-msgstr "Dështoi vendosja e metodës fole bllokuese"
+msgstr "Dështoi vendosja e metodës socket bllokuese."
 
 #: ../src/plugins/https-utils.c:213
 msgid "Failed to wrap TCP socket by SSL."
-msgstr "Dështroi mbështjellja e foles TCP nga SSL."
+msgstr "Dështroi mbështjellja e TCP socket nga SSL."
 
 #: ../src/plugins/https-utils.c:215
 msgid "Failed to enable client handshake to SSL socket."
-msgstr "Dështoi aktivizimi i shtrëngimit të duarve nga klientët në folen SSL."
+msgstr "Dështoi aktivizimi i handshake nga klientët në SSL socket."
 
 #: ../src/plugins/https-utils.c:220
 msgid "Failed to enable SSL3."
@@ -2149,7 +2148,7 @@ msgstr "Dështoi aktivizimi i TLS."
 
 #: ../src/plugins/https-utils.c:224
 msgid "Failed to set URL to SSL socket."
-msgstr "Dështoi vendosja e URL në folen SSL."
+msgstr "Dështoi vendosja e URL në SSL socket."
 
 #: ../src/plugins/https-utils.c:233
 #, c-format
@@ -2162,20 +2161,20 @@ msgstr "Dështoi vendosja e fiksimit të çertifikatës."
 
 #: ../src/plugins/https-utils.c:247
 msgid "Failed to set handshake callback."
-msgstr "Dështoi vendosja e marrjes mbrapsht të shtrëngimit të duarve."
+msgstr "Dështoi vendosja e marrjes mbrapsht të handshake."
 
 #: ../src/plugins/https-utils.c:251
 msgid "Failed to reset handshake."
-msgstr "Dështoi rivendosja e shtrëngimit të duarve."
+msgstr "Dështoi rivendosja e handshake."
 
 #: ../src/plugins/https-utils.c:258
 #, c-format
 msgid "Failed to complete SSL handshake: NSS error %d."
-msgstr "Dështoi kompletimi i shtrëngimit të duarve SSL: gabim NSS %d."
+msgstr "Dështoi kompletimi i handshake SSL: gabim NSS %d."
 
 #: ../src/plugins/https-utils.c:267
 msgid "Failed to close SSL socket."
-msgstr "Dështoi mbyllja e foles SSL."
+msgstr "Dështoi mbyllja e SSL socket."
 
 #: ../src/plugins/https-utils.c:332
 #, c-format
@@ -2221,9 +2220,9 @@ msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
 msgstr ""
-"Një problem thelbësor ndërhyri, por pajisja juaj fizike është e pasuportuar, "
-"si pasojë mirëmbajtesit thelbësor nuk janë në gjendje për të rregulluar këtë "
-"problem."
+"Një problem thelbësor ka ndërhyrë, por pajisja juaj fizike është e "
+"pasuportuar, si pasojë mirëmbajtësit thelbësor nuk janë në gjendje për të "
+"rregulluar këtë problem."
 
 #: ../src/plugins/oops-utils.c:220
 #, c-format
@@ -2231,9 +2230,9 @@ msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"Një problem thelbësor ndërhyri, por thelbi juaj ka qenë i njollosur (flamujt:"
-"%s). Mirëmbajtësit thelbësor nuk janë në gjendje për të diagnostikuar "
-"raportimet e njollosura."
+"Një problem thelbësor ka ndërhyrë, por thelbi juaj ka qenë i njollosur "
+"(flamujt:%s). Mirëmbajtësit thelbësor nuk janë në gjendje për të "
+"diagnostikuar raportimet e njollosura."
 
 #: ../src/plugins/oops-utils.c:228
 #, c-format
@@ -2246,7 +2245,7 @@ msgstr "Lista e dështimeve ids"
 
 #: ../src/plugins/bodhi.c:469
 msgid "Specify a bodhi server url"
-msgstr "Specifikoni një url serveri bothi"
+msgstr "Specifikoni një url serveri bodhi"
 
 #: ../src/plugins/bodhi.c:470
 msgid "Specify a release"
@@ -2319,7 +2318,7 @@ msgstr "Listo problemet [në DIRs]"
 
 #: ../src/cli/abrt-cli.c:135
 msgid "Remove problem directory DIR"
-msgstr "Hiq direktorin e problemit DIR"
+msgstr "Hiq direktorinë e problemit DIR"
 
 #: ../src/cli/abrt-cli.c:136
 msgid "Analyze and report problem data in DIR"
@@ -2357,11 +2356,11 @@ msgstr "Shfaq raportin e detajuar"
 
 #: ../src/cli/list.c:139 ../src/cli-ng/abrtcli/cli.py:113
 msgid "List only the problems more recent than specified timestamp"
-msgstr "Listoo vetëm problemet më të fundit se specifikimi i kohëspullë"
+msgstr "Listo vetëm problemet më të fundit se specifikimi i timestamp"
 
 #: ../src/cli/list.c:140 ../src/cli-ng/abrtcli/cli.py:115
 msgid "List only the problems older than specified timestamp"
-msgstr "Listoo vetëm problemet më të vjetra se specifikimi i kohëspullë"
+msgstr "Listo vetëm problemet më të vjetra se specifikimi i timestamp"
 
 #: ../src/cli/list.c:166
 #, c-format
@@ -2380,7 +2379,7 @@ msgstr "& info [options] DIR..."
 
 #: ../src/cli/list.c:192
 msgid "Text larger than this will be shown abridged"
-msgstr "Teksti më i madhë se kjo do të fshaqet i shkuartuar"
+msgstr "Teksti më i madh se kjo do të shfaqet i shkurtuar"
 
 #: ../src/cli/list.c:212
 #, c-format
@@ -2397,7 +2396,7 @@ msgstr "Afisho vëtëm problemin e numëruar pa asnjë mesazh"
 
 #: ../src/cli/status.c:75 ../src/cli-ng/abrtcli/cli.py:262
 msgid "Print only the problems more recent than specified timestamp"
-msgstr "Afisho vetëm problemet më të fundit se specifikimi i kohëspullë"
+msgstr "Afisho vetëm problemet më të fundit se specifikimi i timestamp"
 
 #: ../src/cli/status.c:91
 #, c-format
@@ -2448,12 +2447,11 @@ msgstr "Për problemin e rradhës shtypni ENTER:"
 
 #: ../src/cli/process.c:138
 msgid "Without --since argument, iterates over all detected problems."
-msgstr ""
-"Pa -që prej argumentit, iteracionet mbi të gjitha problemet e gjetura."
+msgstr "Pa --që prej argumentit, iteron mbi të gjitha problemet e gjetura."
 
 #: ../src/cli/process.c:144
 msgid "Selects only problems detected after timestamp"
-msgstr "Përzgjedh vetëm problemet e gjetura pas kohëspullë"
+msgstr "Përzgjedh vetëm problemet e gjetura pas timestamp"
 
 #: ../src/cli-ng/abrtcli/cli.py:33
 msgid "Problem has no backtrace"
@@ -2486,7 +2484,7 @@ msgid ""
 "If this is a system problem try running this command as root"
 msgstr ""
 "Leja refuzohet: '{}'\n"
-"Nëse ky është një problem i sistemit provo të ekzekutosh këtë komand si "
+"Nëse ky është një problem i sistemit provo të ekzekutosh këtë komandë si "
 "rrënjë"
 
 #: ../src/cli-ng/abrtcli/cli.py:71
@@ -2638,15 +2636,15 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
-"Ngarkon mbeturinabërthame në një server, i cili gjeneron përgjurmues dhe e "
-"kthen atë. Në qoftë se përdoruesi nuk do të ngarkoj mbeturinabërthamë të tij "
-"gjithandej eventi do të performohet lokalisht. Analiza lokale është një "
-"event i vazhdueshëm nëse analiza e largët dështon. Avantazhe: nuk ka nevojë "
-"për shkarkimin e info rregullueseve. Serveri ripërshkrues i bazës së të "
-"dhënave tek info rregulluesi është më i kompletuar. Serveri ripërshkrimes "
-"mund të gjenerojë një përgjurmues më të mirë. Disavantazhe: ngarkimi i "
-"mbeturinabërthame përmban të gjithë të dhënat nga programi i përplasur, duke "
-"përfshirë të dhënat tuaja private, në qoftë se keni."
+"Ngarkon coredump në një server, i cili gjeneron përgjurmues dhe e kthen atë. "
+"Në qoftë se përdoruesi nuk do të ngarkoj coredump të tij gjithandej eventi "
+"do të performohet lokalisht. Analiza lokale është një event i vazhdueshëm "
+"nëse analiza e largët dështon. Avantazhe: nuk ka nevojë për shkarkimin e "
+"info rregullueseve. Serveri ripërshkrues i bazës së të dhënave tek info "
+"rregulluesi është më i kompletuar. Serveri ripërshkrimes mund të gjenerojë "
+"një përgjuues më të mirë. Disavantazhe: ngarkimi i coredump përmban të "
+"gjithë të dhënat nga programi i përplasur, duke përfshirë të dhënat tuaja "
+"private, në qoftë se keni."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -2701,7 +2699,7 @@ msgstr ""
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid "Collect yours vim configuration files"
-msgstr "Koleksiono konfikurimet e vrullshme të skedarëve tuaj"
+msgstr "Koleksiono konfigurimet e vrullshme të skedarëve tuaj"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:2
 msgid "Save .vimrc and .gvimrc from your home directory"

@@ -30,6 +30,10 @@
 # Alexis Stevenson <waldoribeiro@sapo.pt>, 2016. #zanata
 # Máximo Castañeda Riloba <mcrcctm@gmail.com>, 2016. #zanata
 # William  Moreno Reyes <williamjmorenor@gmail.com>, 2016. #zanata
+# Abdel G. Martínez L. <abdel.g.martinez.l@gmail.com>, 2017. #zanata
+# Eduardo Villagrán  <evillagr@fedoraproject.org>, 2017. #zanata
+# Kevin Puertas <kevin01010@gmail.com>, 2017. #zanata
+# Máximo Castañeda Riloba <mcrcctm@gmail.com>, 2017. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -38,8 +42,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-09-07 07:23-0400\n"
-"Last-Translator: William  Moreno Reyes <williamjmorenor@gmail.com>\n"
+"PO-Revision-Date: 2017-04-24 05:08-0400\n"
+"Last-Translator: Máximo Castañeda Riloba <mcrcctm@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/es/)\n"
 "Language: es\n"
@@ -48,11 +52,11 @@ msgstr ""
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
-msgstr "Informe de errores"
+msgstr "Informe de Errores"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr "Ver e informar sobre errores de aplicación"
+msgstr "Ver e informar errores de aplicación"
 
 #: ../src/applet/applet.c:260 ../src/cli/report.c:51
 #, c-format
@@ -62,7 +66,7 @@ msgstr "No se puede tomar propiedad de '%s'"
 #: ../src/applet/applet.c:268
 #, c-format
 msgid "Can't open directory for writing '%s'"
-msgstr "No se puede abrir la carpeta '%s' para escritura"
+msgstr "No se puede escribir en la carpeta '%s'"
 
 #: ../src/applet/applet.c:546 ../src/applet/applet.c:564
 #, c-format
@@ -106,8 +110,8 @@ msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
 msgstr ""
-"Lo sentimos, parece que %s ha dejado de funcionar. Por favor póngase en "
-"contacto con el desarrollador si desea informar de este problema."
+"Lo sentimos, parece que %s ha dejado de funcionar. Póngase en contacto con "
+"el desarrollador si desea informar de este problema."
 
 #: ../src/applet/applet.c:713
 #, c-format
@@ -123,8 +127,8 @@ msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
 msgstr ""
-"Lo sentimos, parece que ha ocurrido un problema con alguno de los "
-"componentes. Se ha informado automáticamente de este problema."
+"Lo sentimos, parece que ha ocurrido un problema con un componente. Se ha "
+"informado automáticamente de este problema."
 
 #: ../src/applet/applet.c:736
 msgid ""
@@ -181,8 +185,8 @@ msgid ""
 "linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
-"Esta opción de configuración se ha movido a GSettings. Se usa el valor de "
-"'report-technical-problems' del esquema 'org.gnome.desktop.privacy'."
+"Esta opción se ha llevado a GSettings. Se usa el valor de 'report-technical-"
+"problems' del esquema 'org.gnome.desktop.privacy'."
 
 #: ../src/configuration-gui/abrt-config-widget.c:501
 msgid "The configuration option above can be configured in"
@@ -213,12 +217,12 @@ msgid ""
 "With option 'Never' the stack trace will be always generated locally. With "
 "option 'Ask' ABRT will always ask the user."
 msgstr ""
-"El archivo de volcado es necesario para generar la traza de llamadas, en una "
-"operación costosa en tiempo y espacio. ABRT suministra un servicio que "
-"genera la traza a partir de ese archivo,  pero para usarlo hay que enviar el "
-"archivo a ese servicio. Con la opción 'Siempre' ABRT subirá el archivo sin "
-"preguntar. Con 'Nunca' se generará la traza en el equipo local. Con "
-"'Preguntar' ABRT preguntará siempre qué hacer."
+"El archivo de volcado es necesario para generar la traza y es una operación "
+"costosa en tiempo y espacio. ABRT suministra un servicio que genera la traza "
+"a partir del archivo de volcado,  pero para usarlo hay que enviar el archivo "
+"a ese servicio. Con la opción 'Siempre' ABRT subirá el archivo sin preguntar."
+" Con 'Nunca' se generará la traza en el equipo local. Con 'Preguntar', "
+"preguntará siempre qué hacer."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -262,7 +266,7 @@ msgid ""
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
 "Con esta opción habilitada ABRT nunca muestra notificaciones de problemas "
-"informados. Tiene efecto sólo si los informes abreviados están habilitados."
+"informados. Solo funciona si los informes abreviados están habilitados."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid ""
@@ -339,7 +343,7 @@ msgid ""
 msgstr ""
 "& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 "\n"
-"Interrogar a la base de datos de paquetes y guardar el nombre de paquete y "
+"Buscar en la base de datos de paquetes y guardar el nombre de paquete y del "
 "componente"
 
 #: ../src/daemon/abrt-action-save-package-data.c:453
@@ -649,11 +653,11 @@ msgstr "No es una carpeta: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:177
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr "Omitiendo: '{0}' (inicia con barra inclinada)"
+msgstr "Omitiendo: '{0}' (empieza con una barra inclinada)"
 
 #: ../src/daemon/abrt-handle-upload.in:180
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr "Omitiendo: '{0}' (inicia con punto)"
+msgstr "Omitiendo: '{0}' (empieza con un punto)"
 
 #: ../src/daemon/abrt-handle-upload.in:183
 msgid "Skipping: '{0}' (contains ..)"

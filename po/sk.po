@@ -11,6 +11,8 @@
 # Richard Marko <rissko@gmail.com>, 2012
 # Dusan Kazik <prescott66@gmail.com>, 2015. #zanata
 # feonsu <feonsu@gmail.com>, 2016. #zanata
+# Dusan Kazik <prescott66@gmail.com>, 2017. #zanata
+# Matej Marusak <mmarusak@redhat.com>, 2017. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -19,8 +21,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-10-26 10:29-0400\n"
-"Last-Translator: feonsu <feonsu@gmail.com>\n"
+"PO-Revision-Date: 2017-04-17 08:07-0400\n"
+"Last-Translator: Dusan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/sk/)\n"
 "Language: sk\n"
@@ -190,6 +192,12 @@ msgid ""
 "With option 'Never' the stack trace will be always generated locally. With "
 "option 'Ask' ABRT will always ask the user."
 msgstr ""
+"Súbor obsahujúci coredump je potrebný pre generovanie stacktracu, čo je "
+"časovo a pamäťovo náročná operácia. ABRT poskytuje službu, ktorá generuje "
+"stacktrace z coredumpu, avšak je potrebné nahrať coredump do tejto služby. "
+"Zvolením možnosti \"Vždy\" ABRT vždy nahrá coredump bez pýtania sa. Zvolením "
+"možnosti \"Nikdy\", stacktrace budu generovaný lokálne. Po vybratí \"Ask\" "
+"sa ABRT vždy spýta užívateľa."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -198,6 +206,10 @@ msgid ""
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
 msgstr ""
+"ABRT ukladá údaje o probléme do adresárov. Vždy keď ABRT potrebuje "
+"zapisovateľný adresár, adresár je presunutý zo systémového úložiska do Vášho "
+"domáceho adresára. Ak je táto možnosť zakázaná, ABRT presunie adresár s "
+"problémom bez pýtania sa."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
@@ -206,6 +218,10 @@ msgid ""
 "uReport is sent at beginning of reporting process. With this option enabled "
 "uReports are sent automatically immediately after problem detection."
 msgstr ""
+"uReport je krátky a kompletne anonymný popis problému.  ABRT používa "
+"uReporty na rýchlu detekciu duplicít. Implicitne je uReport poslaný na "
+"začiatku reportovacieho procesu. Povoleným tejto možnosti, uReporty budú "
+"automaticky poslané hneď po rozpoznaní problému."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
@@ -219,6 +235,8 @@ msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
+"Po povolení tejto možnosti ABRT nikdy neukáže notifikáciu reportovaných "
+"problémov. Nadobúda efekt iba ak skrátené reportovanie je povolené."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid ""
@@ -240,6 +258,9 @@ msgid ""
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
 msgstr ""
+"Neúplné problémy sú zachytené počas vypínania počítača alebo odhlasovania "
+"používateľa. Kvôli zachovaniu kvality hlásení o problémoch, Vám ABRT "
+"neumožní odoslať tieto problémy."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid "Always"
@@ -255,7 +276,7 @@ msgstr "Pýtať sa"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
 msgid "Upload coredump for backtrace generation"
-msgstr ""
+msgstr "Odoslať coredump na vygenerovanie backtracu"
 
 #: ../src/configuration-gui/system-config-abrt.c:79
 msgid "_Close"
@@ -1096,12 +1117,12 @@ msgstr "Signál bol odoslaný klávesnicou"
 #: ../src/plugins/abrt-gdb-exploitable:554
 #: ../src/plugins/abrt-gdb-exploitable:579
 msgid "Job control signal sent by kernel"
-msgstr ""
+msgstr "Signál kontroly úlohy odoslaný jadrom"
 
 #: ../src/plugins/abrt-gdb-exploitable:558
 #: ../src/plugins/abrt-gdb-exploitable:587
 msgid "Signal sent by window resize"
-msgstr ""
+msgstr "Signál odoslaný zmenou veľkosti okna"
 
 #: ../src/plugins/abrt-gdb-exploitable:562
 #: ../src/plugins/abrt-gdb-exploitable:591
@@ -1146,7 +1167,7 @@ msgstr "Nepovolená inštrukcia (skok na náhodnú adresu?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:647
 msgid "Non-crash related signal"
-msgstr ""
+msgstr "Signál nesúvisiaci so zlyhaním"
 
 #: ../src/plugins/abrt-gdb-exploitable:652
 msgid "Stack overflow"
@@ -2209,7 +2230,7 @@ msgstr ""
 #: ../src/cli/list.c:212
 #, c-format
 msgid "No such problem directory '%s'"
-msgstr ""
+msgstr "Priečinok s problémom „%s“ neexistuje"
 
 #: ../src/cli/status.c:66
 msgid "& status"
@@ -2239,12 +2260,12 @@ msgstr "Nedá sa nájsť problém '%s'"
 #: ../src/cli/report.c:42
 #, c-format
 msgid "Problem '%s' cannot be reported"
-msgstr ""
+msgstr "Nedá sa nahlásiť problém „%s“"
 
 #: ../src/cli/report.c:63 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "Odstraňuje sa „%s“"
 
 #: ../src/cli/report.c:79
 msgid "& report [options] DIR..."
@@ -2265,12 +2286,12 @@ msgstr ""
 #: ../src/cli/process.c:78
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "Nahlasuje sa „%s“"
 
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:127
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "Pre nasledujúci problém stlačte ENTER:"
 
 #: ../src/cli/process.c:138
 msgid "Without --since argument, iterates over all detected problems."
@@ -2309,6 +2330,8 @@ msgid ""
 "Permission denied: '{}'\n"
 "If this is a system problem try running this command as root"
 msgstr ""
+"Prístup zamietnutý: „{}“\n"
+"Ak je to systémový problém, skúste spustiť tento príkaz ako správca"
 
 #: ../src/cli-ng/abrtcli/cli.py:71
 msgid "Install required debuginfo for given problem"
@@ -2328,11 +2351,11 @@ msgstr ""
 
 #: ../src/cli-ng/abrtcli/cli.py:145 ../src/cli-ng/abrtcli/match.py:89
 msgid "No problems"
-msgstr ""
+msgstr "Žiadne problémy"
 
 #: ../src/cli-ng/abrtcli/cli.py:147
 msgid "List problems"
-msgstr ""
+msgstr "Zoznam problémov"
 
 #: ../src/cli-ng/abrtcli/cli.py:167
 msgid "Print information about problem"
