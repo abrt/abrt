@@ -150,6 +150,32 @@ static const char *const s_koops_suspicious_strings[] = {
     NULL
 };
 
+static const char *const s_koops_suspicious_strings_blacklist[] = {
+    /* "BUG:" and "DEBUG:" overlaps, we don't want to recognize DEBUG messages as BUG */
+    "DEBUG:",
+
+    /* Termination */
+    NULL
+};
+
+static bool suspicious_line(const char *line)
+{
+    const char *const *str = s_koops_suspicious_strings;
+    for ( ; *str; ++str)
+        if (strstr(line, *str))
+            break;
+
+    if (!*str)
+        return false;
+
+    str = s_koops_suspicious_strings_blacklist;
+    for ( ; *str; ++str)
+        if (strstr(line, *str))
+           break;
+
+    return !*str;
+}
+
 void koops_print_suspicious_strings(void)
 {
     koops_print_suspicious_strings_filtered(NULL);
@@ -159,6 +185,15 @@ GList *koops_suspicious_strings_list(void)
 {
     GList *strings = NULL;
     for (const char *const *str = s_koops_suspicious_strings; *str; ++str)
+        strings = g_list_prepend(strings, (gpointer)*str);
+
+    return strings;
+}
+
+GList *koops_suspicious_strings_blacklist(void)
+{
+    GList *strings = NULL;
+    for (const char *const *str = s_koops_suspicious_strings_blacklist; *str; ++str)
         strings = g_list_prepend(strings, (gpointer)*str);
 
     return strings;
@@ -351,14 +386,8 @@ void koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_koops_
         if (oopsstart < 0)
         {
             /* Find start-of-oops markers */
-            for (const char *const *str = s_koops_suspicious_strings; *str; ++str)
-            {
-                if (strstr(curline, *str))
-                {
-                    oopsstart = i;
-                    break;
-                }
-            }
+            if (suspicious_line(curline))
+                oopsstart = i;
 
             if (oopsstart >= 0)
             {
@@ -449,18 +478,9 @@ void koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_koops_
             /* kernel end-of-oops marker (not including marker itself) */
             else if (strstr(curline, "---[ end trace"))
                 oopsend = i-1;
-            else
-            {
-                /* if a new oops starts, this one has ended */
-                for (const char *const *str = s_koops_suspicious_strings; *str; ++str)
-                {
-                    if (strstr(curline, *str))
-                    {
-                        oopsend = i-1;
-                        break;
-                    }
-                }
-            }
+            /* if a new oops starts, this one has ended */
+            else if (suspicious_line(curline))
+                oopsend = i-1;
 
             if (oopsend <= i)
             {
@@ -518,6 +538,7 @@ void koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_koops_
         }
     }
 }
+
 int koops_hash_str_ext(char result[SHA1_RESULT_LEN*2 + 1], const char *oops_buf, int frame_count, int duphash_flags)
 {
     char *hash_str = NULL, *error = NULL;
