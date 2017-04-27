@@ -114,6 +114,7 @@ static void watch_journald(abrt_journal_t *journal, const char *dump_location, i
         .decorated_cb = abrt_journal_watch_extract_xorg_crashes,
         .decorated_cb_data = &watch_conf,
         .strings = xorg_strings,
+        .blacklisted_strings = NULL,
     };
 
     abrt_journal_watch_t *watch = NULL;

@@ -469,15 +469,17 @@ void abrt_journal_watch_notify_strings(abrt_journal_watch_t *watch, void *data)
         error_msg_and_die("Cannot read journal data.");
 
     GList *cur = conf->strings;
-    while (cur)
-    {
+    for (; cur; cur = g_list_next(cur))
         if (strstr(message, cur->data) != NULL)
             break;
 
-        cur = g_list_next(cur);
-    }
-
+    GList *blacklist_cur = conf->blacklisted_strings;
     if (cur)
+        for (; blacklist_cur; blacklist_cur = g_list_next(blacklist_cur))
+            if (strstr(message, blacklist_cur->data) != NULL)
+                break;
+
+    if (cur && !blacklist_cur)
         conf->decorated_cb(watch, conf->decorated_cb_data);
 }
 

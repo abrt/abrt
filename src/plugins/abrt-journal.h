@@ -129,6 +129,7 @@ struct abrt_journal_watch_notify_strings
     abrt_journal_watch_callback decorated_cb;
     void *decorated_cb_data;
     GList *strings;
+    GList *blacklisted_strings;
 };
 
 void abrt_journal_watch_notify_strings(abrt_journal_watch_t *watch, void *data);
