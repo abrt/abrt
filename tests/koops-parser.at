@@ -194,7 +194,7 @@ int run_test(const struct test_struct *test)
 
 	int result = !(oops_list && !strcmp((char *)oops_list->data, oops_expected));
 	if (result)
-		log("'%s' \n '%s'", (char *)oops_list->data, oops_expected);
+		log("Obtained:\n'%s'\nExpected:\n'%s'", (char *)oops_list->data, oops_expected);
 
 	g_list_free_full(oops_list, free);
 	free(oops_expected_bck);
@@ -211,6 +211,7 @@ int main(void)
 		{ EXAMPLE_PFX"/nmi_oops.test", EXAMPLE_PFX"/nmi_oops.right"},
 		{ EXAMPLE_PFX"/oops10_s390x.test", EXAMPLE_PFX"/oops10_s390x.right"},
 		{ EXAMPLE_PFX"/kernel_panic_oom.test", EXAMPLE_PFX"/kernel_panic_oom.right"},
+		{ EXAMPLE_PFX"/debug_messages.test", EXAMPLE_PFX"/debug_messages.right"},
 	};
 
 	int ret = 0;
