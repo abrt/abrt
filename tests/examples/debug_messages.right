@@ -1,0 +1,34 @@
+abrt-dump-oops: Found oopses: 1
+
+Version: 3.10.0-327.28.2.el7.x86_64
+BUG: unable to handle kernel NULL pointer dereference at virtual address 00000008
+ printing eip:
+c022a7b5
+*pde = 00000000
+Oops: 0000 [#1]
+SMP 
+Modules linked in: thinkpad_acpi ppdev speedstep_lib cpufreq_conservative cpufreq_userspace cpufreq_ondemand cpufreq_stats cpufreq_powersave freq_table video bay dock ac sbs button container battery lp irtty_sir sir_dev pcmcia parport_pc parport snd_cs46xx gameport snd_ac97_codec ac97_bus snd_pcm_oss snd_mixer_oss nsc_ircc snd_pcm snd_seq_dummy irda crc_ccitt snd_seq_oss psmouse i2c_piix4 snd_seq_midi snd_rawmidi snd_seq_midi_event serio_raw pcspkr snd_seq i2c_core snd_timer snd_seq_device snd soundcore snd_page_alloc shpchp pci_hotplug intel_agp yenta_socket rsrc_nonstatic pcmcia_core agpgart evdev ext3 jbd mbcache sg sr_mod cdrom sd_mod uhci_hcd usbcore ata_piix ata_generic libata scsi_mod e100 mii thermal processor fan fuse apparmor commoncap
+CPU:    0
+EIP:    0060:[<c022a7b5>]    Not tainted VLI
+EFLAGS: 00010202   (3.10.0-327.28.2.el7.x86_64 #1)
+EIP is at acpi_ns_internalize_name+0xd/0x83
+eax: 00000008   ebx: 00000000   ecx: 00000000   edx: c7879e54
+esi: d0b980c0   edi: c7879e54   ebp: c7879e70   esp: c7879de8
+ds: 007b   es: 007b   fs: 00d8  gs: 0033  ss: 0068
+Process modprobe (pid: 4467, ti=c7878000 task=ce5c94c0 task.ti=c7878000)
+Stack: 00000000 00000000 d0b97e60 00008080 c01c4390 d0b97e60 00000000 00000000 
+       d0b980c0 00000000 c7879e70 c022a85c d0b97e60 c795d030 c7c604e0 c01c44ef 
+       00000004 d0b97e60 c7acea18 c01c3884 00008080 00000004 00000004 00000080 
+Call Trace:
+ [<c01c4390>] __sysfs_new_dirent+0x20/0x50
+ [<c022a85c>] acpi_ns_get_node+0x31/0x93
+ [<c01c44ef>] sysfs_make_dirent+0x2f/0x50
+ [<c01c3884>] sysfs_add_file+0x74/0x90
+ [<d0b910b7>] drv_acpi_handle_init+0x37/0x90 [thinkpad_acpi]
+ [<c0231aef>] acpi_ut_release_mutex+0x5b/0x63
+ [<c0233ac0>] acpi_method_notify_enable+0x15/0x34
+ [<d0b5ba32>] cmos_init+0x52/0x70 [thinkpad_acpi]
+ [<d0b5c21f>] thinkpad_acpi_module_init+0x27f/0x69a [thinkpad_acpi]
+ [<c014a811>] sys_init_module+0x151/0x1a00
+ [<c01fb8cf>] prio_tree_insert+0x1f/0x250
+ [<c01041d2>] sysenter_past_esp+0x6b/0xa9

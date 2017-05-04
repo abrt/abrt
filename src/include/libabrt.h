@@ -162,6 +162,8 @@ void koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_koops_
 void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen);
 #define koops_suspicious_strings_list abrt_koops_suspicious_strings_list
 GList *koops_suspicious_strings_list(void);
+#define koops_suspicious_strings_blacklist abrt_koops_suspicious_strings_blacklist
+GList *koops_suspicious_strings_blacklist(void);
 #define koops_print_suspicious_strings abrt_koops_print_suspicious_strings
 void koops_print_suspicious_strings(void);
 /**

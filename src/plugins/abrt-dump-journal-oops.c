@@ -149,6 +149,8 @@ static void watch_journald(abrt_journal_t *journal, const char *dump_location, i
         free(oops_string_filter_regex);
     }
 
+    GList *koops_strings_blacklist = koops_suspicious_strings_blacklist();
+
     struct watch_journald_settings watch_conf = {
         .dump_location = dump_location,
         .oops_utils_flags = flags,
@@ -158,6 +160,7 @@ static void watch_journald(abrt_journal_t *journal, const char *dump_location, i
         .decorated_cb = abrt_journal_watch_extract_kernel_oops,
         .decorated_cb_data = &watch_conf,
         .strings = koops_strings,
+        .blacklisted_strings = koops_strings_blacklist,
     };
 
     abrt_journal_watch_t *watch = NULL;

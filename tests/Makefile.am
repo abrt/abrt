@@ -50,6 +50,8 @@ TESTSUITE_FILES += examples/oops10_s390x.test
 TESTSUITE_FILES += examples/oops10_s390x.right
 TESTSUITE_FILES += examples/kernel_panic_oom.test
 TESTSUITE_FILES += examples/kernel_panic_oom.right
+TESTSUITE_FILES += examples/debug_messages.test
+TESTSUITE_FILES += examples/debug_messages.right
 TESTSUITE_FILES += examples/oops_unsupported_hw.test
 TESTSUITE_FILES += examples/oops_broken_bios.test
 
