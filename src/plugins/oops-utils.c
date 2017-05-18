@@ -241,13 +241,12 @@ void abrt_oops_save_data_in_dump_dir(struct dump_dir *dd, char *oops, const char
 
             char *tnt_long = kernel_tainted_long(tainted_short);
             dd_save_text(dd, FILENAME_TAINTED_LONG, tnt_long);
-            free(tnt_long);
 
             struct strbuf *reason = strbuf_new();
             const char *fmt = _("A kernel problem occurred, but your kernel has been "
-                    "tainted (flags:%s). Kernel maintainers are unable to "
-                    "diagnose tainted reports.");
-            strbuf_append_strf(reason, fmt, tainted_short);
+                    "tainted (flags:%s). Explanation:\n%s"
+                    "Kernel maintainers are unable to diagnose tainted reports.");
+            strbuf_append_strf(reason, fmt, tainted_short, tnt_long);
 
             char *modlist = !proc_modules ? NULL : abrt_oops_list_of_tainted_modules(proc_modules);
             if (modlist)
@@ -259,6 +258,7 @@ void abrt_oops_save_data_in_dump_dir(struct dump_dir *dd, char *oops, const char
             dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason->buf);
             strbuf_free(reason);
             free(tainted_short);
+            free(tnt_long);
         }
     }
 
