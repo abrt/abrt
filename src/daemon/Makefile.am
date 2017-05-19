@@ -7,8 +7,7 @@ bin_SCRIPTS = \
     abrt-handle-upload
 
 bin_PROGRAMS = \
-    abrt-action-save-package-data \
-    abrt-action-save-container-data
+    abrt-action-save-package-data
 
 sbin_PROGRAMS = \
     abrtd \
@@ -16,7 +15,10 @@ sbin_PROGRAMS = \
     abrt-upload-watch \
     abrt-auto-reporting
 
-libexec_PROGRAMS = abrt-handle-event
+libexec_PROGRAMS = \
+    abrt-handle-event \
+    abrt-action-save-container-data
+
 
 # This is a daemon, building with full relro and PIE
 # for increased security.
