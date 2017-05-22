@@ -796,11 +796,11 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_sbindir}/abrt-auto-reporting
 %{_libexecdir}/abrt-handle-event
 %{_libexecdir}/abrt-action-ureport
+%{_libexecdir}/abrt-action-save-container-data
 %{_bindir}/abrt-handle-upload
 %{_bindir}/abrt-action-notify
 %{_mandir}/man1/abrt-action-notify.1*
 %{_bindir}/abrt-action-save-package-data
-%{_bindir}/abrt-action-save-container-data
 %{_bindir}/abrt-watch-log
 %{_bindir}/abrt-action-analyze-python
 %{_bindir}/abrt-action-analyze-xorg
