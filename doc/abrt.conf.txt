@@ -43,6 +43,29 @@ DebugLevel = '0-100'::
    problems caused by itself.
    The default is 0 (non debug mode).
 
+AutoreportingEvent = 'event'::
+   A name of event which is run automatically after problem's detection. The
+   event should perform some fast analysis and exit with 70 if the
+   problem is known.
+   Default is report_uReport.
+
+AutoreportingEnabled = 'yes/no'::
+   Enables automatic running of the event configured in AutoreportingEvent option.
+
+ShortenedReporting = 'yes/no'::
+   Enables shortened GUI reporting where the reporting is interrupted after
+   AutoreportingEvent is done.
+   Default is Yes if application is running in GNOME desktop session; otherwise
+   No.
+
+ExploreChroots = 'true/false'::
+   Enables various features exploring process's root directories if they differ
+   from the default root directory. The folowing list includes examples of
+   enabled features:
+     * query the rpm database in the process's root directory
+     * save files like /etc/os-release from the process's root directory
+   Default is false.
+
 
 SEE ALSO
 --------
