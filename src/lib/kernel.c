@@ -748,9 +748,10 @@ static const char *const tnts_long[] = {
     /* B */ "System has hit bad_page.",
     /* C */ "Modules from drivers/staging are loaded.",
     /* D */ "Kernel has oopsed before",
-    /* E */ "Unsigned module has been loaded."
+    /* E */ "Unsigned module has been loaded.",
     /* F */ "Module has been forcibly loaded.",
-    /* G */ "Proprietary module has not been loaded.",
+            /* We don't want to be more descriptive about G flag */
+    /* G */ NULL, /* "Proprietary module has not been loaded." */
     /* H */ NULL,
     /* I */ "Working around severe firmware bug.",
     /* J */ NULL,
@@ -782,7 +783,7 @@ char *kernel_tainted_long(const char *tainted_short)
         {
             const char *const txt = tnts_long[tnt_index];
             if (txt)
-                strbuf_append_strf(tnt_long, "%s\n", txt);
+                strbuf_append_strf(tnt_long, "%c - %s\n", tainted_short[0], txt);
         }
 
         ++tainted_short;
