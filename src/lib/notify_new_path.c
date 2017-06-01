@@ -18,12 +18,6 @@
 #include <sys/un.h>
 #include "libabrt.h"
 
-void notify_new_path(const char *path)
-{
-    /* Ignore results and don't wait for response -> NULL */
-    notify_new_path_with_response(path, NULL);
-}
-
 int notify_new_path_with_response(const char *path, char **message)
 {
     int retval;
@@ -105,4 +99,10 @@ int notify_new_path_with_response(const char *path, char **message)
 
     /* If code is greater than INT_MAX, -EBADMSG is returned. */
     return (int)code;
+}
+
+void notify_new_path(const char *path)
+{
+    /* Ignore results and don't wait for response -> NULL */
+    notify_new_path_with_response(path, NULL);
 }
