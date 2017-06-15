@@ -607,6 +607,19 @@ static NotifyNotification *new_warn_notification(const char *body)
 }
 
 static void
+add_default_action (NotifyNotification *notification,
+                    problem_info_t     *pi)
+{
+    if (!g_gnome_abrt_available)
+        return;
+
+    /* Using the same action as for report */
+    notify_notification_add_action(notification, "default", _("Report"),
+            NOTIFY_ACTION_CALLBACK(action_report),
+            problem_info_ref (pi), problem_info_unref);
+}
+
+static void
 add_send_a_report_button (NotifyNotification *notification,
                           problem_info_t     *pi)
 {
@@ -777,6 +790,8 @@ static void notify_problem_list(GList *problems)
             add_send_a_report_button (notification, pi);
         if (restart_button)
             add_restart_app_button (notification, pi);
+
+        add_default_action (notification, pi);
 
         GError *err = NULL;
         log_debug("Showing a notification");
