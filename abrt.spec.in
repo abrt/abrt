@@ -1149,6 +1149,20 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Thu Jun 15 2017 Martin Kutlak <mkutlak@redhat.com> 2.10.3-1
+- Translation updates
+- applet: add a default action to a notification
+- spec: require libreport-plugin-systemd-journal on Fedoras
+- changing load location from bin to libexec
+- changing location of abrt-action-save-container-data from bin to libexec
+- koops: Improve not-reportable for oopses with taint flags
+- This fixes #1173
+- python: provide more information about exception
+- abrt-journal: adapt to suspicious blacklist addition
+- koops: add suspicious strings blacklist
+- build: fix changelog adding in release target
+- changelog: update CHANGELOG.md
+
 * Tue Apr 25 2017 Matej Habrnal <mhabrnal@redhat.com> 2.10.2-1
 - Translation updates
 - spec: introduce migration to abrt-journal-core
