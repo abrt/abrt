@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ## [2.10.3]
+### Added
+- Added blacklist for suspicious kernel oops messages to filter out false
+positives.
+- Added descriptions for taint flags of kernel oopses.
+- Added default action for notifications. Clicking on a notification now
+opens 'gnome-abrt' with the detected problem.
+
+### Changed
+- Translation updates.
+- 'abrt-addon-python' and 'abrt-addon-python3' now provide more information
+about where the exception happened.
+
+### Fixed
 
 ## [2.10.2]
 ### Added
