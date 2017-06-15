@@ -11,6 +11,8 @@
 # Onur Baysan <onurbaysan@gmail.com>, 2011
 # Akın Ömeroğlu <akinomeroglu@gmail.com>, 2015. #zanata
 # Jakub Filak <jfilak@redhat.com>, 2016. #zanata
+# Emin Tufan Çetin <etcetin@gmail.com>, 2017. #zanata
+# Martin Kutlak <mkutlak@redhat.com>, 2017. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -19,8 +21,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-12-03 02:32-0500\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"PO-Revision-Date: 2017-06-15 08:18-0400\n"
+"Last-Translator: Martin Kutlak <mkutlak@redhat.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/tr/)\n"
 "Language: tr\n"
@@ -102,23 +104,23 @@ msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
 msgstr ""
-"Üzgünüz, bileşende bir problem meydana gelmiş gibi gözüküyor. Sorun otomatik "
-"olarak raporlandı."
+"Üzgünüz, bir bileşende sorun oluşmuş gibi gözüküyor. Sorun otomatik olarak "
+"raporlandı."
 
 #: ../src/applet/applet.c:736
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
 msgstr ""
-"Üzgünüz, bileşende bir problem meydana gelmiş gibi gözüküyor. Sorun, "
-"İnternet bağlantısı olduğunda raporlanacak."
+"Üzgünüz, bir bileşende sorun oluşmuş gibi gözüküyor. Sorun, İnternet "
+"bağlantısı olduğunda raporlanacak."
 
 #: ../src/applet/applet.c:741
 msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
 msgstr ""
-"Üzgünüz, bir sorun olmuş gibi gözüküyor. Eğer sorunun çözümüne yardımcı "
+"Üzgünüz, bir sorun oluşmuş gibi gözüküyor. Eğer sorunun çözümüne yardımcı "
 "olmak isterseniz lütfen bir rapor gönderin."
 
 #: ../src/applet/applet.c:786
@@ -227,7 +229,7 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Notify incomplete problems"
-msgstr ""
+msgstr "Tamamlanmamış sorunları bildir"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid ""
@@ -238,15 +240,15 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid "Always"
-msgstr ""
+msgstr "Her zaman"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:15
 msgid "Never"
-msgstr ""
+msgstr "Asla"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:16
 msgid "Ask"
-msgstr ""
+msgstr "Sor"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
 msgid "Upload coredump for backtrace generation"
@@ -254,7 +256,7 @@ msgstr ""
 
 #: ../src/configuration-gui/system-config-abrt.c:79
 msgid "_Close"
-msgstr ""
+msgstr "_Kapat"
 
 #: ../src/configuration-gui/system-config-abrt.c:88
 msgid "_Defaults"
@@ -263,7 +265,7 @@ msgstr ""
 #: ../src/configuration-gui/system-config-abrt.c:116
 #: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
-msgstr ""
+msgstr "Sorun Raporlama Yapılandırması"
 
 #: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
@@ -348,17 +350,18 @@ msgstr ""
 #: ../src/dbus/abrt-dbus.c:219
 #, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr ""
+msgstr "'%s' geçerli bir sorun dizini değil"
 
 #: ../src/dbus/abrt-dbus.c:272 ../src/dbus/abrt-dbus.c:520
 #: ../src/dbus/abrt-configuration.c:618 ../src/dbus/abrt-configuration.c:683
 #, c-format
 msgid "Not Authorized"
-msgstr ""
+msgstr "Yetkili Değil"
 
 #: ../src/dbus/abrt-dbus.c:285
+#, fuzzy
 msgid "Can't open the problem"
-msgstr ""
+msgstr "Sorun açılamaz"
 
 #: ../src/dbus/abrt-dbus.c:317
 #, c-format
@@ -473,7 +476,7 @@ msgstr ""
 
 #: ../src/daemon/abrt-auto-reporting.c:234
 msgid "Red Hat Support user name"
-msgstr ""
+msgstr "Red Hat Support kullanıcı adı"
 
 #: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
@@ -510,11 +513,11 @@ msgstr ""
 
 #: ../src/daemon/abrt-auto-reporting.c:336
 msgid "Password:"
-msgstr ""
+msgstr "Parola:"
 
 #: ../src/daemon/abrt-auto-reporting.c:339
 msgid "Cannot continue without password\n"
-msgstr ""
+msgstr "Parola olmadan devam edilemez\n"
 
 #. Print only the part before ':' of a string like "username:password"
 #: ../src/daemon/abrt-auto-reporting.c:380
@@ -544,27 +547,27 @@ msgstr ""
 #: ../src/daemon/abrt-handle-upload.in:171
 #: ../src/daemon/abrt-handle-upload.in:174
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "Bir dizin değil: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:177
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
+msgstr "Atlanıyor: '{0}' (taksim işaretiyle başlıyor)"
 
 #: ../src/daemon/abrt-handle-upload.in:180
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
+msgstr "Atlanıyor: '{0}' (nokta ile başlıyor)"
 
 #: ../src/daemon/abrt-handle-upload.in:183
 msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
+msgstr "Atlanıyor: '{0}' (.. içeriyor)"
 
 #: ../src/daemon/abrt-handle-upload.in:186
 msgid "Skipping: '{0}' (contains space)"
-msgstr ""
+msgstr "Atlanıyor: '{0}' (boşluk içeriyor)"
 
 #: ../src/daemon/abrt-handle-upload.in:189
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "Atlanıyor: '{0}' (sekme içeriyor)"
 
 #: ../src/daemon/abrt-handle-upload.in:194
 msgid "Can't change directory to '{0}'"
@@ -572,7 +575,7 @@ msgstr ""
 
 #: ../src/daemon/abrt-handle-upload.in:205
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "Bilinmeyen dosya türü: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:210
 msgid "Can't create working directory in '{0}'"
@@ -705,7 +708,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-core.in:110
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "Eksik inşa kimliği: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:142
 #, c-format
@@ -741,7 +744,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-xorg.c:113
 #, c-format
 msgid "Module '%s' was loaded - won't report this crash"
-msgstr ""
+msgstr "'%s' modülü yüklendi - bu çöküş raporlanmayacak"
 
 #: ../src/plugins/abrt-action-analyze-python.c:36
 msgid ""
@@ -1982,6 +1985,8 @@ msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
 msgstr ""
+"Bir çekirdek sorunu oluştu, ama donanımınız desteklenmiyor, bu nedenle "
+"çekirdek bakımcıları bu sorunu çözemez."
 
 #: ../src/plugins/oops-utils.c:220
 #, c-format
@@ -2016,16 +2021,16 @@ msgstr ""
 
 #: ../src/plugins/bodhi.c:542
 msgid "Searching for updates"
-msgstr ""
+msgstr "Güncellemeler aranıyor"
 
 #: ../src/plugins/bodhi.c:548
 msgid "No updates for this package found"
-msgstr ""
+msgstr "Bu paket için güncelleme yok"
 
 #. strbuf_free(q);
 #: ../src/plugins/bodhi.c:577
 msgid "Local version of the package is newer than available updates"
-msgstr ""
+msgstr "Paketin yerel sürümü kullanılabilir güncellemelerden daha yeni"
 
 #: ../src/plugins/bodhi.c:594
 #, c-format
@@ -2033,6 +2038,8 @@ msgid ""
 "An update exists which might fix your problem. You can install it by running:"
 " %s. Do you want to continue with reporting the bug?"
 msgstr ""
+"Sorununuzu çözebilecek bir güncelleme var. Şu komutu çalıştırarak "
+"kurabilirsiniz: %s. Hatayı raporlamaya devam etmek ister misiniz?"
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
 msgid ""
@@ -2098,15 +2105,15 @@ msgstr ""
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:138 ../src/cli/list.c:191
 msgid "Show detailed report"
-msgstr "Detaylı raporu göster"
+msgstr "Ayrıntılı raporu göster"
 
 #: ../src/cli/list.c:139 ../src/cli-ng/abrtcli/cli.py:113
 msgid "List only the problems more recent than specified timestamp"
-msgstr ""
+msgstr "Yalnızca belirtilen zaman damgasından daha yeni sorunları listele"
 
 #: ../src/cli/list.c:140 ../src/cli-ng/abrtcli/cli.py:115
 msgid "List only the problems older than specified timestamp"
-msgstr ""
+msgstr "Yalnızca belirtilen zaman damgasından daha eski sorunları listele"
 
 #: ../src/cli/list.c:166
 #, c-format
@@ -2115,6 +2122,8 @@ msgid ""
 "issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
 msgstr ""
+"Otomatik raporlama özelliği devre dışıdır. 'abrt-auto-reporting enabled'\n"
+"komutunu kök ayrıcalığıyla bildirerek etkinleştiğinden emin olun.\n"
 
 #: ../src/cli/list.c:183
 msgid "& info [options] DIR..."
@@ -2127,7 +2136,7 @@ msgstr ""
 #: ../src/cli/list.c:212
 #, c-format
 msgid "No such problem directory '%s'"
-msgstr ""
+msgstr "'%s' sorun dizini yok"
 
 #: ../src/cli/status.c:66
 msgid "& status"
@@ -2139,7 +2148,7 @@ msgstr ""
 
 #: ../src/cli/status.c:75 ../src/cli-ng/abrtcli/cli.py:262
 msgid "Print only the problems more recent than specified timestamp"
-msgstr ""
+msgstr "Yalnızca belirtilen zaman damgasından daha yeni sorunları yazdır"
 
 #: ../src/cli/status.c:91
 #, c-format
@@ -2159,7 +2168,7 @@ msgstr ""
 #: ../src/cli/report.c:63 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "'%s' siliniyor"
 
 #: ../src/cli/report.c:79
 msgid "& report [options] DIR..."
@@ -2180,12 +2189,12 @@ msgstr ""
 #: ../src/cli/process.c:78
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "'%s' raporlanıyor"
 
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:127
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "Sonraki sorun için ENTER’a bas:"
 
 #: ../src/cli/process.c:138
 msgid "Without --since argument, iterates over all detected problems."
@@ -2224,6 +2233,8 @@ msgid ""
 "Permission denied: '{}'\n"
 "If this is a system problem try running this command as root"
 msgstr ""
+"İzin reddedildi: '{}'\n"
+"Eğer bu bir sistem sorunuysa bu komutu kök olarak çalıştırmayı deneyin"
 
 #: ../src/cli-ng/abrtcli/cli.py:71
 msgid "Install required debuginfo for given problem"
@@ -2235,23 +2246,23 @@ msgstr ""
 
 #: ../src/cli-ng/abrtcli/cli.py:117 ../src/cli-ng/abrtcli/cli.py:153
 msgid "Output format"
-msgstr ""
+msgstr "Çıktı biçimi"
 
 #: ../src/cli-ng/abrtcli/cli.py:119 ../src/cli-ng/abrtcli/cli.py:155
 msgid "Built-in output format"
-msgstr ""
+msgstr "Gömülü çıktı biçimi"
 
 #: ../src/cli-ng/abrtcli/cli.py:145 ../src/cli-ng/abrtcli/match.py:89
 msgid "No problems"
-msgstr ""
+msgstr "Sorun yok"
 
 #: ../src/cli-ng/abrtcli/cli.py:147
 msgid "List problems"
-msgstr ""
+msgstr "Sorunları listele"
 
 #: ../src/cli-ng/abrtcli/cli.py:167
 msgid "Print information about problem"
-msgstr ""
+msgstr "Sorun hakkında bilgi yazdır"
 
 #: ../src/cli-ng/abrtcli/cli.py:173
 msgid "Prompt before removal"
@@ -2264,11 +2275,11 @@ msgstr ""
 #. force prompt for last problem to avoid accidents
 #: ../src/cli-ng/abrtcli/cli.py:182
 msgid "Are you sure you want to delete this problem?"
-msgstr ""
+msgstr "Bu sorunu silmek istediğinize emin misiniz?"
 
 #: ../src/cli-ng/abrtcli/cli.py:186
 msgid "Removed"
-msgstr ""
+msgstr "Kaldırıldı"
 
 #: ../src/cli-ng/abrtcli/cli.py:188
 msgid "Remove problem"
@@ -2340,7 +2351,7 @@ msgstr ""
 
 #: ../src/cli-ng/abrtcli/match.py:96
 msgid "No problem(s) matched"
-msgstr ""
+msgstr "Eşleşen sorun yok"
 
 #: ../src/cli-ng/abrtcli/match.py:116
 msgid "Ambiguous match specified resulting in multiple problems:"
@@ -2348,7 +2359,7 @@ msgstr ""
 
 #: ../src/cli-ng/abrtcli/utils.py:78
 msgid "Not reportable"
-msgstr ""
+msgstr "Raporlanabilir değil"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
