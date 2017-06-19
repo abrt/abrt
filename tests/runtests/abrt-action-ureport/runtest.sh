@@ -46,8 +46,8 @@ rlJournalStart
     rlPhaseStartTest "attaching contact email if configured"
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
 
         rlRun "augtool set /files/etc/libreport/plugins/ureport.conf/ContactEmail abrt@email.com" 0 "set ContactEmail settings to ureport.conf"
@@ -78,8 +78,8 @@ rlJournalStart
     rlPhaseStartTest "do not attach contact email if not configured"
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
 
         rlRun "augtool rm /files/etc/libreport/plugins/ureport.conf/ContactEmail" 0 "rm ContactEmail settings frim ureport.conf"

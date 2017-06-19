@@ -47,8 +47,8 @@ rlJournalStart
         python watch.py > watch_output &
 
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         # Give at leas 1s to D-Bus to deliver Crash signal to watch.py
         # It could be possible to configure dbus-monitor somehow but adding
@@ -65,8 +65,8 @@ rlJournalStart
     rlPhaseStartTest list
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlRun "python -c 'import problem; assert len(problem.list()) == 1'"
 
@@ -92,9 +92,9 @@ rlJournalStart
     rlPhaseStartTest create
         prepare
         rlRun "python create.py" 
+        wait_for_hooks
         get_crash_path
         echo $crash_PATH
-        wait_for_hooks
 
         rlAssertExists $crash_PATH/reason
         rlAssertGrep "runtime" $crash_PATH/analyzer

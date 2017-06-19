@@ -45,8 +45,8 @@ rlJournalStart
         rlRun "pushd $TmpDir"
 
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
     rlPhaseEnd
 
     rlPhaseStartTest

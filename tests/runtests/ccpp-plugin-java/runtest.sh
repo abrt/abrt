@@ -46,8 +46,8 @@ rlJournalStart
 
     rlPhaseStartTest
         will_java_segfault
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         check_dump_dir_attributes $crash_PATH
 

@@ -44,8 +44,8 @@ rlJournalStart
 
     rlPhaseStartTest
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         package="$(abrt-cli list | grep -i Package | awk '{ print $2 }' | tail -n1)"
         user="$( id -u )"
