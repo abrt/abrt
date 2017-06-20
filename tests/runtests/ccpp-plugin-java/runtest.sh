@@ -53,7 +53,7 @@ rlJournalStart
 
         ls $crash_PATH > crash_dir_ls
 
-        rlAssertExists "$crash_PATH/hs_err.log"
+       # rlAssertExists "$crash_PATH/hs_err.log"
     rlPhaseEnd
 
     rlPhaseStartCleanup
