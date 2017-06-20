@@ -44,7 +44,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest monitor
-        python watch.py > watch_output &
+        python3 watch.py > watch_output &
 
         generate_crash
         get_crash_path
