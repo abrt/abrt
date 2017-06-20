@@ -76,6 +76,8 @@ function wait_for_sosreport() {
 
 function wait_for_hooks() {
     rlLog "Waiting for all hooks to end"
+    # Wait at least 1 second
+    sleep 1
     local c=0
     while [ ! -f "/tmp/abrt-done" ]; do
         sleep 0.1
@@ -86,7 +88,7 @@ function wait_for_hooks() {
         fi
     done
     t=$( echo "scale=2; $c/10" | bc )
-    rlLog "Hooks ended in $t seconds"
+    rlLog "Hooks ended in $((t+=1)) seconds"
 }
 
 function generate_crash() {
