@@ -288,7 +288,7 @@ save_systemd_coredump_in_dump_directory(struct dump_dir *dd, struct crash_info *
     dd_save_text(dd, FILENAME_ANALYZER, "abrt-journal-core");
 
     char *reason;
-    if (info->ci_signal_name != NULL)
+    if (info->ci_signal_name == NULL)
         reason = xasprintf("%s killed by signal %d", info->ci_executable_name, info->ci_signal_no);
     else
         reason = xasprintf("%s killed by SIG%s", info->ci_executable_name, info->ci_signal_name);
