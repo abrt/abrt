@@ -16,7 +16,6 @@
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-#include <polkit/polkit.h>
 #include <glib-object.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -24,17 +23,23 @@
 #include "libabrt.h"
 #include "abrt-polkit.h"
 
+#ifdef HAVE_POLKIT
+#include <polkit/polkit.h>
+#endif
+
 /*number of seconds: timeout for the authorization*/
 #define POLKIT_TIMEOUT 20
 
+#ifdef HAVE_POLKIT
 static gboolean do_cancel(GCancellable* cancellable)
 {
     log("Timer has expired; cancelling authorization check\n");
     g_cancellable_cancel(cancellable);
     return FALSE;
 }
+#endif
 
-
+#ifdef HAVE_POLKIT
 static PolkitResult do_check(PolkitSubject *subject, const char *action_id)
 {
     PolkitAuthority *authority;
@@ -90,17 +95,24 @@ out:
     g_object_unref(auth_result);
     return result;
 }
+#endif
 
 PolkitResult polkit_check_authorization_dname(const char *dbus_name, const char *action_id)
 {
+#ifdef HAVE_POLKIT
     glib_init();
 
     PolkitSubject *subject = polkit_system_bus_name_new(dbus_name);
     return do_check(subject, action_id);
+#else
+    log_warning("Polkit disabled. Everyone has access to private data");
+    return PolkitYes;
+#endif
 }
 
 PolkitResult polkit_check_authorization_pid(pid_t pid, const char *action_id)
 {
+#ifdef HAVE_POLKIT
     glib_init();
 
     PolkitSubject *subject = polkit_unix_process_new_for_owner(pid,
@@ -108,4 +120,8 @@ PolkitResult polkit_check_authorization_pid(pid_t pid, const char *action_id)
             /*use uid from /proc*/ -1);
 
     return do_check(subject, action_id);
+#else
+    log_warning("Polkit disabled. Everyone has access to private data");
+    return PolkitYes;
+#endif
 }
