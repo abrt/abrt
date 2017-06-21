@@ -71,6 +71,7 @@ struct crash_info
     char *ci_executable_path;          ///< /full/path/to/executable
     const char *ci_executable_name;    ///< executable
     uid_t ci_uid;
+    pid_t ci_pid;
 
     struct field_mapping *ci_mapping;
     size_t ci_mapping_items;
@@ -219,6 +220,13 @@ abrt_journal_core_retrieve_information(abrt_journal_t *journal, struct crash_inf
         return -EINVAL;
     }
 
+    /* This is not fatal, the pid is used only in dumpdir name */
+    if (abrt_journal_get_int_field(journal, "COREDUMP_PID", &(info->ci_pid)))
+    {
+        log_notice("Failed to get PID from journal message.");
+        info->ci_pid = getpid();
+    }
+
     char *proc_status = abrt_journal_get_string_field(journal, "COREDUMP_PROC_STATUS", NULL);
     if (proc_status == NULL)
     {
@@ -322,7 +330,7 @@ save_systemd_coredump_in_dump_directory(struct dump_dir *dd, struct crash_info *
 static int
 abrt_journal_core_to_abrt_problem(struct crash_info *info, const char *dump_location)
 {
-    struct dump_dir *dd = create_dump_dir(dump_location, "ccpp", /*fs owner*/0,
+    struct dump_dir *dd = create_dump_dir_ext(dump_location, "ccpp", info->ci_pid, /*fs owner*/0,
             (save_data_call_back)save_systemd_coredump_in_dump_directory, info);
 
     if (dd != NULL)
