@@ -55,19 +55,22 @@ rlJournalStart
 
     rlPhaseStartTest "Python exceptions test"
         SINCE=$(date +"%R:%S")
-        python3 -c 0/0
+        rlRun "python3 -c 0/0 &"
+        wait_for_hooks
         rlRun "journalctl --since=\"$SINCE\" _PID=\"$!\" SYSLOG_IDENTIFIER=python3 | grep \"'interactive mode (python -c ...)'\"" 0 "journalctl should contain 'interactive mode (python -c ...)'"
 
         sleep 1
 
         SINCE=$(date +"%R:%S")
-        echo '1/0' | python3
+        rlRun "echo '1/0' | python3 &"
+        wait_for_hooks
         rlRun "journalctl --since=\"$SINCE\" _PID=\"$!\" SYSLOG_IDENTIFIER=python3 | grep \"'interactive mode'\"" 0 "journalctl should contain 'interactive mode'"
 
         sleep 1
 
         SINCE=$(date +"%R:%S")
-        echo '2/0' | python3 -i
+        rlRun "echo '2/0' | python3 -i &"
+        wait_for_hooks
         rlRun "journalctl --since=\"$SINCE\" _PID=\"$!\" SYSLOG_IDENTIFIER=python3 | grep \"'interactive mode'\"" 0 "journalctl should contain 'interactive mode'"
     rlPhaseEnd
 
