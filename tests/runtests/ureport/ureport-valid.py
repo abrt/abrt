@@ -184,6 +184,9 @@ def ureport2to1(ureport2):
         if "executable" in prob:
             ureport1["executable"] = prob["executable"]
 
+        if "serial" in prob:
+            ureport1["serial"] = prob["serial"]
+
         if "user" in prob:
             user = prob["user"]
 
