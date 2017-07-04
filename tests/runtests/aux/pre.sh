@@ -62,3 +62,5 @@ if [ "${DISABLE_NOAUDIT}" = "1" ]; then
     # turn off noaudit
     semodule -DB
 fi
+
+sed -i 's/MaxCrashReportsSize.*=.*\d*/MaxCrashReportsSize = 1000/' /etc/abrt/abrt.conf

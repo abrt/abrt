@@ -67,8 +67,8 @@ rlJournalStart
 
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         ls core* > make_compat_core_yes_pwd_ls
         core_fname="$(echo core*)"
@@ -86,8 +86,8 @@ rlJournalStart
 
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         ls core* > make_compat_core_no_pwd_ls
         core_fname="$(echo core*)"
@@ -104,8 +104,8 @@ rlJournalStart
 
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         ls $crash_PATH > save_binary_image_yes_ls
         rlAssertExists "$crash_PATH/binary"
@@ -116,8 +116,8 @@ rlJournalStart
 
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         ls $crash_PATH > save_binary_image_no_ls
         rlAssertNotExists "$crash_PATH/binary"

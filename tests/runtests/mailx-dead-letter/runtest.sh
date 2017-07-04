@@ -52,8 +52,8 @@ rlJournalStart
 
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlRun "ls $crash_PATH > dir_content.log"
 

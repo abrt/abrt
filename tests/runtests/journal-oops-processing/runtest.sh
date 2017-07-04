@@ -210,7 +210,7 @@ rlJournalStart
         rlRun "systemctl stop abrt-oops"
 
         # The stored cursor is not valid in testing configuration.
-        rlRun "rm -rf /var/lib/abrt/abrt-dupm-journal-oops.state"
+        rlRun "rm -rf /var/lib/abrt/abrt-dump-journal-oops.state"
     rlPhaseEnd
 
     rlPhaseStartTest OOPS
@@ -229,7 +229,7 @@ rlJournalStart
 
     rlPhaseStartCleanup
         # Do not confuse the system dumper. The stored cursor is invalid in the default configuration.
-        rlRun "rm -rf /var/lib/abrt/abrt-dupm-journal-oops.state"
+        rlRun "rm -rf /var/lib/abrt/abrt-dump-journal-oops.state"
 
         rlBundleLogs abrt $(echo *_ls) $(echo *.log)
         rlRun "popd"

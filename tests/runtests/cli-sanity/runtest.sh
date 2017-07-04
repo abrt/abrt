@@ -91,8 +91,8 @@ rlJournalStart
 
     rlPhaseStartTest "list"
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlRun "abrt-cli list | grep -i 'cmdline'"
         rlRun "abrt-cli list | grep -i 'Package'"

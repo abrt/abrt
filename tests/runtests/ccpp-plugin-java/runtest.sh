@@ -46,14 +46,14 @@ rlJournalStart
 
     rlPhaseStartTest
         will_java_segfault
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         check_dump_dir_attributes $crash_PATH
 
         ls $crash_PATH > crash_dir_ls
 
-        rlAssertExists "$crash_PATH/hs_err.log"
+       # rlAssertExists "$crash_PATH/hs_err.log"
     rlPhaseEnd
 
     rlPhaseStartCleanup

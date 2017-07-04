@@ -46,8 +46,8 @@ rlJournalStart
     rlPhaseStartTest "process"
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlRun "./expect skip &> process.log" 0 "Running abrt-cli process via expect"
 

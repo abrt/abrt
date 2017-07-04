@@ -52,8 +52,8 @@ rlJournalStart
         rlRun "abrt-cli status --since 0" 0
 
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlRun "abrt-cli status > status1.log"
         rlAssertGrep "ABRT has detected '\?1'\? problem(s)." status1.log
@@ -62,8 +62,8 @@ rlJournalStart
         SINCE=`date +%s`
 
         generate_python_exception
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlRun "abrt-cli status > status2.log"
         rlAssertGrep "ABRT has detected '\?2'\? problem(s)." status2.log

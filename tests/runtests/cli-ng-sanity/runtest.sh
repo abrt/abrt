@@ -54,8 +54,8 @@ rlJournalStart
 
     rlPhaseStartTest "list"
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlRun "abrt list | grep -i 'Id'"
         rlRun "abrt list | grep -i 'Component'"

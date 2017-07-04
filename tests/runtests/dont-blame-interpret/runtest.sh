@@ -41,10 +41,8 @@ rlJournalStart
         pushd $TmpDir
 
         generate_python_segfault
+        wait_for_hooks
         get_crash_path
-        # give abrt-action-save-package-data some time to finish
-        # wait_for_hooks seemed stalled :-/
-        sleep 1
 
     rlPhaseEnd
 

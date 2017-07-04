@@ -116,7 +116,7 @@ rlJournalStart
         rlRun "systemctl stop abrt-xorg"
 
         # The stored cursor is not valid in testing configuration.
-        rlRun "rm -rf /var/lib/abrt/abrt-dupm-journal-xorg.state"
+        rlRun "rm -rf /var/lib/abrt/abrt-dump-journal-xorg.state"
     rlPhaseEnd
 
     rlPhaseStartTest "Xorg crashes"
@@ -127,7 +127,7 @@ rlJournalStart
 
     rlPhaseStartCleanup
         # Do not confuse the system dumper. The stored cursor is invalid in the default configuration.
-        rlRun "rm -rf /var/lib/abrt/abrt-dupm-journal-xorg.state"
+        rlRun "rm -rf /var/lib/abrt/abrt-dump-journal-xorg.state"
 
         rlBundleLogs abrt $(echo *_ls) $(echo *.log)
         rlRun "popd"
