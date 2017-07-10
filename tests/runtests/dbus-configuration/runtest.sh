@@ -31,6 +31,8 @@
 TEST="dbus-configuration"
 PACKAGE="abrt"
 
+abrt_conf="/etc/abrt/abrt.conf"
+
 function confDBusSetProperty() {
     # dbus-send does not support variant:array:string
     #
@@ -307,11 +309,17 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "Int32"
+        rlFileBackup $abrt_conf
+        # change config (max size was reduced in aux/pre.sh due to limited available space on VM)
+        augtool set /files/etc/abrt/abrt.conf/MaxCrashReportsSize 5000
+
         rlAssertEquals "Get 'MaxCrashReportsSize' value" "_$(confDBusGetProperty abrt MaxCrashReportsSize)" "_5000"
         rlRun "confDBusSetProperty abrt MaxCrashReportsSize int32 1234" 0
         rlAssertEquals "Failed to set 'MaxCrashReportsSize' value" "_$(confDBusGetProperty abrt MaxCrashReportsSize)" "_1234"
         rlRun "confDBusSetPropertyDefault abrt MaxCrashReportsSize" 0
         rlAssertEquals "Failed to reset 'MaxCrashReportsSize' value" "_$(confDBusGetProperty abrt MaxCrashReportsSize)" "_5000"
+
+        rlFileRestore
     rlPhaseEnd
 
     rlPhaseStartTest "String Array from non-default file"
