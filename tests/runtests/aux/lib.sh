@@ -87,8 +87,8 @@ function wait_for_hooks() {
             break
         fi
     done
-    t=$( echo "scale=2; $c/10" | bc )
-    rlLog "Hooks ended in $((t+=1)) seconds"
+    t=$( echo "scale=2; ($c/10)+1" | bc )
+    rlLog "Hooks ended in $t seconds"
 }
 
 function generate_crash() {
