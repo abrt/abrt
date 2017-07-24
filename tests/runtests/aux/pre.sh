@@ -30,6 +30,8 @@ EVENT=notify-dup
         true
 _EOF_
 
+sed -i 's/MaxCrashReportsSize.*=.*\d*/MaxCrashReportsSize = 1000/' /etc/abrt/abrt.conf
+
 if [ "${DISABLE_GPGCHECK}" = "1" ]; then
     sed -i 's/OpenGPGCheck.*=.*yes/OpenGPGCheck = no/' \
         /etc/abrt/abrt-action-save-package-data.conf
@@ -62,5 +64,3 @@ if [ "${DISABLE_NOAUDIT}" = "1" ]; then
     # turn off noaudit
     semodule -DB
 fi
-
-sed -i 's/MaxCrashReportsSize.*=.*\d*/MaxCrashReportsSize = 1000/' /etc/abrt/abrt.conf
