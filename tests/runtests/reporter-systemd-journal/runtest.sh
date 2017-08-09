@@ -248,6 +248,8 @@ EOF
             '"PROBLEM_PID" : "1234"' \
             '"PROBLEM_EXCEPTION_TYPE" : "exception_type"' \
             '"PROBLEM_DIR" : "'"$TmpDir"'/problem_dir' \
+            '"PROBLEM_DUPHASH" : "bbfe66399cc9cb8ba647414e33c5d1e4ad82b511"' \
+            '"PROBLEM_UUID" : "b43d70450c44352de194f545a7d3841eb80b1ae5"' \
             'NULL' \
             # shouldn't be in log
             '"PROBLEM_CMDLINE" : "urxvtd -q -o -f"' \
@@ -275,6 +277,8 @@ EOF
             '"PROBLEM_PID" : "1234"' \
             '"PROBLEM_EXCEPTION_TYPE" : "exception_type"' \
             '"PROBLEM_DIR" : "'"$TmpDir"'/problem_dir' \
+            '"PROBLEM_DUPHASH" : "bbfe66399cc9cb8ba647414e33c5d1e4ad82b511"' \
+            '"PROBLEM_UUID" : "b43d70450c44352de194f545a7d3841eb80b1ae5"' \
             # essential fields
             '"PROBLEM_CMDLINE" : "urxvtd -q -o -f"' \
             '"PROBLEM_COMPONENT" : "rxvt-unicode"' \
@@ -290,7 +294,6 @@ EOF
             '"PROBLEM_DSO_LIST" : "/lib64/libcrypt-2.14.so glibc-2.14-4.x86_64 (Fedora Project) 1310382635"' \
             '"PROBLEM_BACKTRACE_RATING" : "1"' \
             '"POBLEM_HOSTNAME" : "fluffy"' \
-            '"PROBLEM_DUPHASH" : "bbfe66399cc9cb8ba647414e33c5d1e4ad82b511"' \
             '"PROBLEM_BACKTRACE" : "testing backtrace"' \
             '"PROBLEM_OS_RELEASE" : "Fedora release 15 (Lovelock)"' \
             '"PROBLEM_KERNEL" : "2.6.38.8-35.fc15.x86_64"' \
@@ -311,6 +314,8 @@ EOF
             '"PROBLEM_PID" : "1234"' \
             '"PROBLEM_EXCEPTION_TYPE" : "exception_type"' \
             '"PROBLEM_DIR" : "'"$TmpDir"'/problem_dir' \
+            '"PROBLEM_DUPHASH" : "bbfe66399cc9cb8ba647414e33c5d1e4ad82b511"' \
+            '"PROBLEM_UUID" : "b43d70450c44352de194f545a7d3841eb80b1ae5"' \
             # essential fields
             '"PROBLEM_CMDLINE" : "urxvtd -q -o -f"' \
             '"PROBLEM_COMPONENT" : "rxvt-unicode"' \
@@ -325,7 +330,6 @@ EOF
             '"PROBLEM_DSO_LIST" : "/lib64/libcrypt-2.14.so glibc-2.14-4.x86_64 (Fedora Project) 1310382635"' \
             '"PROBLEM_BACKTRACE_RATING" : "1"' \
             '"PROBLEM_HOSTNAME" : "fluffy"' \
-            '"PROBLEM_DUPHASH" : "bbfe66399cc9cb8ba647414e33c5d1e4ad82b511"' \
             '"PROBLEM_BACKTRACE" : "testing backtrace"' \
             '"PROBLEM_OS_RELEASE" : "Fedora release 15 (Lovelock)"' \
             '"PROBLEM_KERNEL" : "2.6.38.8-35.fc15.x86_64"' \
