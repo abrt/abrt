@@ -49,7 +49,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "Kill sleep in fedora image"
-        rlRun "docker run --name $DOCKER_NAME -d $DOCKER_IMAGE /usr/bin/bash -c \"timeout -s ABRT 1 sleep 10\"" 0
+        rlRun "docker run --name $DOCKER_NAME $DOCKER_IMAGE /usr/bin/bash -c \"timeout -s ABRT 1 sleep 10\"" 124
         rlRun "docker inspect $DOCKER_NAME > docker_inspect"
         rlRun "DOCKER_ID=$(docker ps -a -f name=$DOCKER_NAME --format \"{{.ID}}\")"
 
