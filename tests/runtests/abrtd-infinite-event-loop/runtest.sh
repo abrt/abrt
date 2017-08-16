@@ -81,7 +81,7 @@ function test_no_debug
 # $1 command
 function test_debug
 {
-    test_run $1 "ABRT_SERVER_PID=.*;DUMP_DIR='$ABRT_CONF_DUMP_LOCATION/.*';EVENT='post-create';REASON='.*';CMDLINE='.*will_.*'" 2 debug
+    test_run $1 "ABRT_SERVER_PID=.*;DUMP_DIR='$ABRT_CONF_DUMP_LOCATION/.*';EVENT='post-create';REASON='.*';CMDLINE='.*'" 2 debug
 }
 
 rlJournalStart
@@ -104,7 +104,7 @@ EOF
 EVENT=post-create type=Python
     sleep 30
     echo "Starting loop ..."
-    will_python_raise
+    python2 -c 'import os; os.kill(os.getpid(), 11)'
     exit 0
 EOF
 
@@ -112,7 +112,7 @@ EOF
 EVENT=post-create type=Python3
     sleep 30
     echo "Starting loop ..."
-    will_python3_raise
+    python3 -c 'import os; os.kill(os.getpid(), 11)'
     exit 0
 EOF
 
