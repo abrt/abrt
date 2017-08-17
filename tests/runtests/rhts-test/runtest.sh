@@ -235,7 +235,7 @@ rlJournalStart
                 >server_create 2>&1 &
         sleep 1
 
-        echo 2 > $crash_PATH/count
+        echo -n 2 > $crash_PATH/count
         echo "Red Hat, Inc." > $crash_PATH/pkg_vendor
         rlRun "reporter-rhtsupport -vvv -u -c rhtsupport.conf -d $crash_PATH &> client_create3"
 
@@ -280,7 +280,7 @@ rlJournalStart
                 >server_create 2>&1 &
         sleep 1
 
-        echo 2 > $crash_PATH/count
+        echo -n 2 > $crash_PATH/count
         echo "Red Hat, Inc." > $crash_PATH/pkg_vendor
         rlRun "reporter-rhtsupport -vvv -u -c rhtsupport.conf -d $crash_PATH &> client_create4"
 
@@ -327,7 +327,7 @@ rlJournalStart
                 >server_create 2>&1 &
         sleep 1
 
-        echo 2 > $crash_PATH/count
+        echo -n 2 > $crash_PATH/count
         echo "Red Hat, Inc." > $crash_PATH/pkg_vendor
         rlRun "reporter-rhtsupport -vvv -u -c rhtsupport.conf -d $crash_PATH &> client_create5"
 
@@ -377,7 +377,7 @@ rlJournalStart
                 >server_create 2>&1 &
         sleep 1
 
-        echo 2 > $crash_PATH/count
+        echo -n 2 > $crash_PATH/count
         echo "Red Hat, Inc." > $crash_PATH/pkg_vendor
         rlRun "reporter-rhtsupport -vvv -u -c rhtsupport.conf -d $crash_PATH &> client_create6"
 
