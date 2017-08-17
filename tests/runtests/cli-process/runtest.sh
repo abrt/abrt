@@ -248,8 +248,8 @@ EOF
         prepare
         # abrt-ccpp ignores repeated crashes of a single executable
         generate_python_segfault
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         sleep 2
         prepare

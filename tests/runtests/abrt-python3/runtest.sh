@@ -76,8 +76,8 @@ rlJournalStart
     rlPhaseStartTest edit
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlRun "python3 edit.py"
         # ^ should delete coredump and replace will_segfault with 31337 in cmdline
@@ -92,9 +92,9 @@ rlJournalStart
     rlPhaseStartTest create
         prepare
         rlRun "python3 create.py" 
+        wait_for_hooks
         get_crash_path
         echo $crash_PATH
-        wait_for_hooks
 
         rlAssertExists $crash_PATH/reason
         rlAssertGrep "runtime" $crash_PATH/analyzer

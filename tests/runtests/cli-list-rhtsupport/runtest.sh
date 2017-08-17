@@ -43,8 +43,8 @@ rlJournalStart
     rlPhaseStartTest "Not reported problem"
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlRun "rm -f $crash_PATH/reported_to $crash_PATH/not-reportable"
 
@@ -57,8 +57,8 @@ rlJournalStart
     rlPhaseStartTest "Already reported problem"
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlRun "rm -f $crash_PATH/not-reportable"
 
@@ -73,8 +73,8 @@ rlJournalStart
     rlPhaseStartTest "Not-reportable problem"
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlRun "rm -f $crash_PATH/reported_to $crash_PATH/not-reportable"
 
@@ -89,8 +89,8 @@ rlJournalStart
     rlPhaseStartTest "Not reported problem and unavailable RHTSupport plugin"
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlRun "echo 'TestFakeType' > $crash_PATH/type"
         rlRun "echo 'TestFakeType' > $crash_PATH/analyzer"

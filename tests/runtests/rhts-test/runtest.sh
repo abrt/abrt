@@ -221,8 +221,8 @@ rlJournalStart
     rlPhaseStartTest "rhtsupport create with option -u"
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlRun "augtool rm /files/etc/libreport/plugins/ureport.conf/ContactEmail" 0 "remove ContactEmail settings from ureport.conf"
 
@@ -265,8 +265,8 @@ rlJournalStart
    rlPhaseStartTest "rhtsupport create with option -u with attach email"
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlRun "augtool set /files/etc/libreport/plugins/ureport.conf/ContactEmail abrt@email.com" 0 "set ContactEmail settings to ureport.conf"
 
@@ -313,8 +313,8 @@ rlJournalStart
     rlPhaseStartTest "rhtsupport create with option -u (uReport has been already submitted, email is configured)"
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlRun "echo \"uReport: BTHASH=691cf824e3e07457156125636e86c50279e29496\" > $crash_PATH/reported_to" 0 "Add BTHASH to reported_to"
 
@@ -362,8 +362,8 @@ rlJournalStart
     rlPhaseStartTest "rhtsupport create with option -u (uReport has been already submitted, email is not configured)"
         prepare
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlRun "augtool rm /files/etc/libreport/plugins/ureport.conf/ContactEmail" 0 "remove ContactEmail settings from ureport.conf"
 

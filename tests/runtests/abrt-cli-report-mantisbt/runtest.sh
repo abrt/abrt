@@ -184,8 +184,8 @@ rlJournalStart
 
     rlPhaseStartTest "testing workflow"
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         prepare_crash
 
