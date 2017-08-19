@@ -23,13 +23,17 @@
 /* It is not possible to include polkitagent.h without the following define.
  * Check out the included header file.
  */
+#ifdef HAVE_POLKIT
 #define POLKIT_AGENT_I_KNOW_API_IS_SUBJECT_TO_CHANGE
 #include <polkitagent/polkitagent.h>
+#endif
 
 int g_cli_authenticate;
 
+#ifdef HAVE_POLKIT
 static PolkitAgentListener *s_local_polkit_agent = NULL;
 static gpointer s_local_agent_handle = NULL;
+#endif
 
 /* Vector of problems: */
 /* problem_data_vector[i] = { "name" = { "content", CD_FLAG_foo_bits } } */
@@ -126,6 +130,7 @@ char *hash2dirname_if_necessary(const char *input)
 
 void initialize_polkit_agent(void)
 {
+#ifdef HAVE_POLKIT
     GError *error = NULL;
     PolkitSubject *subject = polkit_unix_process_new_for_owner(
                                 getpid(),
@@ -148,13 +153,18 @@ void initialize_polkit_agent(void)
     }
 
     g_object_unref(subject);
+#else
+    log_info("Polkit support is currently disabled");
+#endif
 }
 
 void uninitialize_polkit_agent(void)
 {
+#ifdef HAVE_POLKIT
     if (s_local_agent_handle != NULL)
         polkit_agent_listener_unregister(s_local_agent_handle);
 
     if (s_local_polkit_agent != NULL)
         g_object_unref(s_local_polkit_agent);
+#endif
 }
