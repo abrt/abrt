@@ -330,7 +330,7 @@ static char *do_log(char *log_line, void *param)
      * Otherwise, errors on post-create result in
      * "Corrupted or bad dump DIR, deleting" without adequate explanation why.
      */
-    log("%s", log_line);
+    log_warning("%s", log_line);
     return log_line;
 }
 

@@ -203,7 +203,7 @@ static struct dump_dir *open_dump_directory(GDBusMethodInvocation *invocation,
 {
     if (!allowed_problem_dir(problem_dir))
     {
-        log("UID=%d attempted to access not allowed problem directory '%s'",
+        log_warning("UID=%d attempted to access not allowed problem directory '%s'",
                 caller_uid, problem_dir);
         if (!(flags & OPEN_FAIL_NO_REPLY))
             return_InvalidProblemDir_error(invocation, problem_dir);
@@ -1035,7 +1035,7 @@ int main(int argc, char *argv[])
     if (!env_path || !env_path[0])
         putenv((char*)"PATH=/usr/sbin:/usr/bin:/sbin:/bin");
 
-    msg_prefix = "abrt-dbus"; /* for log(), error_msg() and such */
+    msg_prefix = "abrt-dbus"; /* for log_warning(), error_msg() and such */
 
     if (getuid() != 0)
         error_msg_and_die(_("This program must be run as root."));

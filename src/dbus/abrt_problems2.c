@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 
     export_abrt_envvars(0);
 
-    msg_prefix = "abrt-problems2"; /* for log(), error_msg() and such */
+    msg_prefix = "abrt-problems2"; /* for log_warning(), error_msg() and such */
 
     if (getuid() != 0)
         error_msg_and_die("This program must be run as root.");

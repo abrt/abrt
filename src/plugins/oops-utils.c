@@ -29,7 +29,7 @@ int abrt_oops_process_list(GList *oops_list, const char *dump_location, const ch
     int oops_cnt = g_list_length(oops_list);
     if (oops_cnt != 0)
     {
-        log("Found oopses: %d", oops_cnt);
+        log_warning("Found oopses: %d", oops_cnt);
         if ((flags & ABRT_OOPS_PRINT_STDOUT))
         {
             int i = 0;
@@ -38,7 +38,7 @@ int abrt_oops_process_list(GList *oops_list, const char *dump_location, const ch
                 char *kernel_bt = (char*)g_list_nth_data(oops_list, i++);
                 char *tainted_short = kernel_tainted_short(kernel_bt);
                 if (tainted_short)
-                    log("Kernel is tainted '%s'", tainted_short);
+                    log_warning("Kernel is tainted '%s'", tainted_short);
 
                 free(tainted_short);
                 printf("\nVersion: %s", kernel_bt);
@@ -46,10 +46,10 @@ int abrt_oops_process_list(GList *oops_list, const char *dump_location, const ch
         }
         if (dump_location != NULL)
         {
-            log("Creating problem directories");
+            log_warning("Creating problem directories");
             errors = abrt_oops_create_dump_dirs(oops_list, dump_location, analyzer, flags);
             if (errors)
-                log("%d errors while dumping oopses", errors);
+                log_warning("%d errors while dumping oopses", errors);
             /*
              * This marker in syslog file prevents us from
              * re-parsing old oopses. The only problem is that we
@@ -75,7 +75,7 @@ int abrt_oops_process_list(GList *oops_list, const char *dump_location, const ch
         int n = unreported_cnt > 30 ? 30 : unreported_cnt;
         n = n * n;
         if (n > 9)
-            log(_("Sleeping for %d seconds"), n);
+            log_warning(_("Sleeping for %d seconds"), n);
         abrt_oops_signaled_sleep(n); /* max 15 mins */
     }
 

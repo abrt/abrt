@@ -237,7 +237,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
         kernel = dd_load_text(dd, FILENAME_KERNEL);
         if (!kernel)
         {
-            log("File 'kernel' containing kernel version not "
+            log_warning("File 'kernel' containing kernel version not "
                 "found in current directory");
             goto ret;
         }
@@ -270,7 +270,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
      * the corresponding services. */
     if (!kernel_oops && is_path_blacklisted(executable))
     {
-        log("Blacklisted executable '%s'", executable);
+        log_warning("Blacklisted executable '%s'", executable);
         goto ret; /* return 1 (failure) */
     }
 
@@ -284,9 +284,9 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
             goto ret0; /* no error */
         }
         if (kernel_oops)
-            log("Can't find kernel package corresponding to '%s'", kernel);
+            log_warning("Can't find kernel package corresponding to '%s'", kernel);
         else
-            log("Executable '%s' doesn't belong to any package"
+            log_warning("Executable '%s' doesn't belong to any package"
                 " and ProcessUnpackaged is set to 'no'", executable);
         goto ret; /* return 1 (failure) */
     }
@@ -310,7 +310,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
         /* executable may have changed, check it again */
         if (is_path_blacklisted(executable))
         {
-            log("Blacklisted executable '%s'", executable);
+            log_warning("Blacklisted executable '%s'", executable);
             goto ret; /* return 1 (failure) */
         }
         if (!script_pkg)
@@ -320,7 +320,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
              */
             if (!settings_bProcessUnpackaged)
             {
-                log("Interpreter crashed, but no packaged script detected: '%s'", cmdline);
+                log_warning("Interpreter crashed, but no packaged script detected: '%s'", cmdline);
                 goto ret; /* return 1 (failure) */
             }
 
@@ -345,7 +345,7 @@ skip_interpreter:
      * the corresponding services. */
     if (!kernel_oops && g_list_find_custom(settings_setBlackListedPkgs, package_short_name, (GCompareFunc)g_strcmp0))
     {
-        log("Blacklisted package '%s'", package_short_name);
+        log_warning("Blacklisted package '%s'", package_short_name);
         goto ret; /* return 1 (failure) */
     }
 
@@ -353,7 +353,7 @@ skip_interpreter:
     if (!(fingerprint != NULL && rpm_fingerprint_is_imported(fingerprint))
          && settings_bOpenGPGCheck)
     {
-        log("Package '%s' isn't signed with proper key", package_short_name);
+        log_warning("Package '%s' isn't signed with proper key", package_short_name);
         goto ret; /* return 1 (failure) */
         /* We used to also check the integrity of the executable here:
          *  if (!CheckHash(package_short_name.c_str(), executable)) BOOM();

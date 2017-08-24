@@ -7,7 +7,7 @@ import os
 import getopt
 import rpm
 
-def log(s):
+def log_warning(s):
     sys.stderr.write("%s\n" % s)
 
 def error_msg(s):

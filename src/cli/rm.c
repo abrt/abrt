@@ -45,7 +45,7 @@ static int remove_using_abrtd_or_fs(const char **dirs_strv)
         const char *rm_dir = *dirs_strv++;
         status = delete_dump_dir_possibly_using_abrtd(rm_dir);
         if (!status)
-            log("rm '%s'", rm_dir);
+            log_warning("rm '%s'", rm_dir);
         else
             errs++;
     }

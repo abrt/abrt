@@ -90,7 +90,7 @@ static int add_dirname_to_GList(struct dump_dir *dd, void *arg)
 {
     if (!dir_has_correct_permissions(dd->dd_dirname, DD_PERM_DAEMONS))
     {
-        log("Ignoring '%s': invalid owner, group or mode", dd->dd_dirname);
+        log_warning("Ignoring '%s': invalid owner, group or mode", dd->dd_dirname);
         /*Do not break*/
         return 0;
     }

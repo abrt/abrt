@@ -144,7 +144,7 @@ if __name__ == "__main__":
         if reported_to and reported_to != "":
             bugs = get_bugzilla_reports(reported_to)
             if bugs:
-                log(_("A bug was already filed about this problem:"))
+                log_warning(_("A bug was already filed about this problem:"))
                 bugs = sorted(bugs)
                 for bug in bugs:
                     print(bug)
@@ -154,7 +154,7 @@ if __name__ == "__main__":
         else:
             log1("'%s/reported_to' doesn't exist", dirname)
 
-        log(_("uReport was already sent, not sending it again"))
+        log_warning(_("uReport was already sent, not sending it again"))
         sys.exit(0)
 
     if report_type == "CCpp" and not core_backtrace_exists:
@@ -175,7 +175,7 @@ if __name__ == "__main__":
         watch = os.getenv("uReport_WatchReportedBugs") or ""
         if exitcode == 70 and watch.lower() in ["yes", "on", "1"]:
             if reported_to and reported_to != "" and get_bugzilla_reports(reported_to):
-                log(_("Adding you to CC List of the existing bugzilla bug"))
+                log_warning(_("Adding you to CC List of the existing bugzilla bug"))
                 run_event("watch_Bugzilla", dirname)
 
         email = os.getenv("uReport_ContactEmail")

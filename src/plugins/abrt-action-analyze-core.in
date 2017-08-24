@@ -17,16 +17,16 @@ _ = lambda x: gettext.gettext(x)
 
 verbose = 0
 
-def log(s):
+def log_warning(s):
     sys.stderr.write("%s\n" % s)
 
 def log1(message):
     if verbose > 0:
-        log(message)
+        log_warning(message)
 
 def log2(message):
     if verbose > 1:
-        log(message)
+        log_warning(message)
 
 def error_msg(s):
     sys.stderr.write("%s\n" % s)
@@ -69,7 +69,7 @@ def extract_info_from_core(coredump_name):
     #SEP = 3
     EXECUTABLE = 4
 
-    log(_("Analyzing coredump '%s'") % coredump_name)
+    log_warning(_("Analyzing coredump '%s'") % coredump_name)
     eu_unstrip_OUT = Popen(["eu-unstrip","--core=%s" % coredump_name, "-n"], stdout=PIPE, bufsize=-1, universal_newlines=True).communicate()[0]
     # parse eu_unstrip_OUT and return the list of build_ids
 
@@ -107,7 +107,7 @@ def extract_info_from_core(coredump_name):
             # "Please split kernel debuginfo packages so that VDSO debuginfos are separate" -
             # we might want to remove this special-casing later.
             if b_ids_line[BUILD_ID] == '-':
-                log(_("Missing build id: %s" % b_ids_line[EXECUTABLE]))
+                log_warning(_("Missing build id: %s" % b_ids_line[EXECUTABLE]))
             elif ((len(b_ids_line) == EXECUTABLE) or (b_ids_line[EXECUTABLE] not in ["linux-vdso.so.1", "linux-gate.so.1"])):
                 build_id = b_ids_line[BUILD_ID].split('@')[0]
                 build_ids.add(build_id)

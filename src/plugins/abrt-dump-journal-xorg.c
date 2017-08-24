@@ -64,7 +64,7 @@ static GList *abrt_journal_extract_xorg_crashes(abrt_journal_t *journal)
     }
     while (abrt_journal_next(journal) > 0);
 
-    log("Found crashes: %d", g_list_length(crash_info_list));
+    log_warning("Found crashes: %d", g_list_length(crash_info_list));
 
     return crash_info_list;
 }

@@ -67,7 +67,7 @@ static int process_one_crash(problem_data_t *problem_data, int report_flags)
 
         if(strcmp(action, "rm") == 0 || strcmp(action, "remove") == 0 )
         {
-            log(_("Deleting '%s'"), dir_name);
+            log_warning(_("Deleting '%s'"), dir_name);
             const char *dirs_strv[] = {dir_name, NULL};
             _cmd_remove(dirs_strv);
 
@@ -76,7 +76,7 @@ static int process_one_crash(problem_data_t *problem_data, int report_flags)
         else if (((report_flags & CMD_REPORT_UNSAFE) || not_reportable == NULL)
              && (strcmp(action, "e") == 0 || strcmp(action, "report") == 0))
         {
-            log(_("Reporting '%s'"), dir_name);
+            log_warning(_("Reporting '%s'"), dir_name);
             const char *dirs_strv[] = {dir_name, NULL};
             _cmd_report(dirs_strv, report_flags);
 

@@ -45,7 +45,7 @@ int _cmd_report(const char **dirs_strv, int flags)
                 {
                     char *reason = load_text_over_dbus(real_problem_id, FILENAME_NOT_REPORTABLE);
                     if (reason != NULL)
-                        log("%s\n", reason);
+                        log_warning("%s\n", reason);
                     free(reason);
                 }
 
@@ -75,7 +75,7 @@ int _cmd_report(const char **dirs_strv, int flags)
         /* the problem was successfully reported and option is -d */
         if((flags & CMD_REPORT_REMOVE) && (status == 0 || status == EXIT_STOP_EVENT_RUN))
         {
-            log(_("Deleting '%s'"), real_problem_id);
+            log_warning(_("Deleting '%s'"), real_problem_id);
             delete_dump_dir_possibly_using_abrtd(real_problem_id);
         }
 

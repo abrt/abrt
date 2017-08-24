@@ -195,7 +195,7 @@ static void queue_post_craete_process(struct abrt_server_proc *proc)
             stop_abrt_server(removed_proc);
         }
 
-        log("Size of '%s' >= %u MB (MaxCrashReportsSize), deleting %s directory '%s'",
+        log_warning("Size of '%s' >= %u MB (MaxCrashReportsSize), deleting %s directory '%s'",
                 g_settings_dump_location, g_settings_nMaxCrashReportsSize,
                 kind, worst_dir);
 
@@ -283,7 +283,7 @@ static gboolean abrt_server_output_cb(GIOChannel *channel, GIOCondition conditio
             queue_post_craete_process(proc);
         }
         else
-            log("abrt-server(%d): not recognized message: '%s'", proc->pid, line);
+            log_warning("abrt-server(%d): not recognized message: '%s'", proc->pid, line);
 
         g_free(line);
     }
@@ -754,7 +754,7 @@ int main(int argc, char** argv)
 #endif
 
     unsetenv("ABRT_SYSLOG");
-    msg_prefix = g_progname; /* for log(), error_msg() and such */
+    msg_prefix = g_progname; /* for log_warning(), error_msg() and such */
 
     if (getuid() != 0)
         error_msg_and_die("Must be run as root");

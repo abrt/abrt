@@ -93,7 +93,7 @@ static void problems2_object_type_print_all_objects(struct problems2_object_type
     const char *p;
     AbrtP2Object *obj;
     while(g_hash_table_iter_next(&iter, (gpointer)&p, (gpointer)&obj))
-        log("%s: '%s' : %p", prefix, p, obj);
+        log_warning("%s: '%s' : %p", prefix, p, obj);
 }
 #endif
 
