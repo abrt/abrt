@@ -87,8 +87,8 @@ int main(int argc, char **argv)
          * instead of a backtrace.
          * and component only.  This is not supposed to happen often.
          */
-        log(_("Backtrace parsing failed for %s"), dump_dir_name);
-        log("%d:%d: %s", location.line, location.column, location.message);
+        log_warning(_("Backtrace parsing failed for %s"), dump_dir_name);
+        log_warning("%d:%d: %s", location.line, location.column, location.message);
         struct strbuf *emptybt = strbuf_new();
 
         char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
@@ -137,7 +137,7 @@ int main(int argc, char **argv)
         {
             hash_str = sr_thread_get_duphash(crash_thread, 3, component,
                                              SR_DUPHASH_NOHASH);
-            log("Generating duphash: %s", hash_str);
+            log_warning("Generating duphash: %s", hash_str);
             free(hash_str);
         }
 
@@ -147,7 +147,7 @@ int main(int argc, char **argv)
         free(hash_str);
     }
     else
-        log(_("Crash thread not found"));
+        log_warning(_("Crash thread not found"));
 
 
     /* Compute the backtrace rating. */

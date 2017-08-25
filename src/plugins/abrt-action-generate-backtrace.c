@@ -84,7 +84,7 @@ int main(int argc, char **argv)
     if (!backtrace)
     {
         backtrace = xstrdup("");
-        log("get_backtrace() returns NULL, broken core/gdb?");
+        log_warning("get_backtrace() returns NULL, broken core/gdb?");
     }
     free(debuginfo_dirs);
     free_abrt_conf_data();
@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     /* Don't be completely silent. gdb run takes a few seconds,
      * it is useful to let user know it (maybe) worked.
      */
-    log(_("Backtrace is generated and saved, %u bytes"), (int)strlen(backtrace));
+    log_warning(_("Backtrace is generated and saved, %u bytes"), (int)strlen(backtrace));
     free(backtrace);
 
     return 0;

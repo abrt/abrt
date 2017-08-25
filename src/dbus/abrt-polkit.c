@@ -33,7 +33,7 @@
 #ifdef HAVE_POLKIT
 static gboolean do_cancel(GCancellable* cancellable)
 {
-    log("Timer has expired; cancelling authorization check\n");
+    log_warning("Timer has expired; cancelling authorization check\n");
     g_cancellable_cancel(cancellable);
     return FALSE;
 }

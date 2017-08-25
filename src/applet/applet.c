@@ -102,7 +102,7 @@ static void migrate_auto_reporting_to_gsettings(void)
     remove_map_string_item(settings, OPT_NAME);
     save_app_conf_file(APP_NAME, settings);
 
-    log("Successfully migrated "APP_NAME":"OPT_NAME" to "GS_SCHEMA_ID_PRIVACY":"GS_PRIVACY_OPT_AUTO_REPORTING);
+    log_warning("Successfully migrated "APP_NAME":"OPT_NAME" to "GS_SCHEMA_ID_PRIVACY":"GS_PRIVACY_OPT_AUTO_REPORTING);
 
 #undef OPT_NAME
 finito:

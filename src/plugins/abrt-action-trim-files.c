@@ -108,7 +108,7 @@ static double get_dir_size(const char *dirname,
                 GList *cur = preserve_files_list;
                 while (cur)
                 {
-                    //log("'%s' ? '%s'", fullname, *pp);
+                    //log_warning("'%s' ? '%s'", fullname, *pp);
                     if (strcmp(fullname, (char*)cur->data) == 0)
                         goto next;
                     cur = cur->next;

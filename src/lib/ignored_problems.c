@@ -176,7 +176,7 @@ void ignored_problems_add(ignored_problems_t *set, const char *problem_id)
          * already emitted good explanatory message. This message
          * explains what the previous failure causes.
          */
-        VERB1 log("Can't add problem '%s' to ignored problems:"
+        VERB1 log_warning("Can't add problem '%s' to ignored problems:"
                 " can't open the problem", problem_id);
         return;
     }
@@ -195,7 +195,7 @@ void ignored_problems_remove_row(ignored_problems_t *set, const char *problem_id
 {
     INITIALIZE_LIBABRT();
 
-    VERB1 log("Going to remove problem '%s' from ignored problems", problem_id);
+    VERB1 log_warning("Going to remove problem '%s' from ignored problems", problem_id);
 
     FILE *orig_fp;
     if (!ignored_problems_file_contains(set, problem_id, uuid, duphash, &orig_fp, "r"))

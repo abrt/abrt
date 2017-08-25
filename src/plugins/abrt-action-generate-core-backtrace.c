@@ -78,7 +78,7 @@ int main(int argc, char **argv)
     char *gdb_output = get_backtrace(dump_dir_name, exec_timeout_sec, NULL);
     if (!gdb_output)
     {
-        log(_("Error: GDB did not return any data"));
+        log_warning(_("Error: GDB did not return any data"));
         return 1;
     }
 
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
 
     if (!success)
     {
-        log(_("Error: %s"), error_message);
+        log_warning(_("Error: %s"), error_message);
         free(error_message);
         return 1;
     }

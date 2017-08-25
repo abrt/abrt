@@ -197,16 +197,16 @@ static int open_user_core(uid_t uid, uid_t fsuid, gid_t fsgid, pid_t pid, char *
                 const char *val = "%";
                 if (specifier_num > 0) /* not %% */
                     val = percent_values[specifier_num - 1];
-                //log("c:'%c'", c);
-                //log("val:'%s'", val);
+                //log_warning("c:'%c'", c);
+                //log_warning("val:'%s'", val);
 
                 /* Replace %c at core_basename[idx] by its value */
                 idx--;
                 char *old = core_basename;
                 core_basename = xasprintf("%.*s%s%s", idx, core_basename, val, core_basename + idx + 2);
-                //log("pos:'%*s|'", idx, "");
-                //log("new:'%s'", core_basename);
-                //log("old:'%s'", old);
+                //log_warning("pos:'%*s|'", idx, "");
+                //log_warning("new:'%s'", core_basename);
+                //log_warning("old:'%s'", old);
                 free(old);
                 idx += strlen(val);
             }
@@ -785,18 +785,18 @@ create_core_backtrace(struct dump_dir *dd, uid_t uid, uid_t fsuid, gid_t gid,
     {
         if (WIFSIGNALED(status))
         {
-            log("Core backtrace generator signaled with %d", WTERMSIG(status));
+            log_warning("Core backtrace generator signaled with %d", WTERMSIG(status));
             goto core_backtrace_failed;
         }
         if (!WIFEXITED(status))
         {
-            log("Core backtrace generator did not properly exit");
+            log_warning("Core backtrace generator did not properly exit");
             goto core_backtrace_failed;
         }
         const int r = WEXITSTATUS(status);
         if (r != 0)
         {
-            log("Core backtrace generator exited with error %d", r);
+            log_warning("Core backtrace generator exited with error %d", r);
             goto core_backtrace_failed;
         }
 
@@ -1097,7 +1097,7 @@ int main(int argc, char** argv)
                 signame, "abrtd is not running");
 
         /* not an error, exit with exit code 0 */
-        log("If abrtd crashed, "
+        log_warning("If abrtd crashed, "
             "/proc/sys/kernel/core_pattern contains a stale value, "
             "consider resetting it to 'core'"
         );

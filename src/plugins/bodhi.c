@@ -416,7 +416,7 @@ static GHashTable *bodhi_query_list(const char *query, const char *release)
     }
     free(bodhi_url_bugs);
 
-//    log("%s", post_state->body);
+//    log_warning("%s", post_state->body);
 
     json_object *json = json_tokener_parse(post_state->body);
     if (is_error(json))
@@ -569,13 +569,13 @@ int main(int argc, char **argv)
     if (query->buf[query->len - 1] == '&')
         query->buf[query->len - 1] = '\0';
 
-    log(_("Searching for updates"));
+    log_warning(_("Searching for updates"));
     GHashTable *update_hash_tbl = bodhi_query_list(query->buf, release);
     strbuf_free(query);
 
     if (!update_hash_tbl || !g_hash_table_size(update_hash_tbl))
     {
-        log(_("No updates for this package found"));
+        log_warning(_("No updates for this package found"));
         /*if (update_hash_tbl) g_hash_table_unref(update_hash_tbl);*/
         return 0;
     }
@@ -604,7 +604,7 @@ int main(int argc, char **argv)
     if (!q->len)
     {
         /*strbuf_free(q);*/
-        log(_("Local version of the package is newer than available updates"));
+        log_warning(_("Local version of the package is newer than available updates"));
         return 0;
     }
 

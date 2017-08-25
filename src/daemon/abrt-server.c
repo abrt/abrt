@@ -387,7 +387,7 @@ static int run_post_create(const char *dirname, struct response *resp)
     bool child_is_post_create = 1; /* else it is a notify child */
 
  read_child_output:
-    //log("Reading from event fd %d", child_stdout_fd);
+    //log_warning("Reading from event fd %d", child_stdout_fd);
 
     /* Read streamed data and split lines */
     for (;;)
@@ -415,7 +415,7 @@ static int run_post_create(const char *dirname, struct response *resp)
                 dup_of_dir = xstrdup(msg + strlen("DUP_OF_DIR: "));
             }
             else
-                log("%s", msg);
+                log_warning("%s", msg);
 
             strbuf_clear(cmd_output);
             /* jump to next line */
@@ -444,14 +444,14 @@ static int run_post_create(const char *dirname, struct response *resp)
     {
         if (WIFSIGNALED(status))
         {
-            log("'post-create' on '%s' killed by signal %d",
+            log_warning("'post-create' on '%s' killed by signal %d",
                             dirname, WTERMSIG(status));
             goto delete_bad_dir;
         }
         /* else: it is WIFEXITED(status) */
         if (!dup_of_dir)
         {
-            log("'post-create' on '%s' exited with %d",
+            log_warning("'post-create' on '%s' exited with %d",
                             dirname, WEXITSTATUS(status));
             goto delete_bad_dir;
         }
@@ -504,7 +504,7 @@ static int run_post_create(const char *dirname, struct response *resp)
 
             if (!last_ocr)
             {   /* the new dump directory may lie in the dump location for some time */
-                log("Using current time for the last occurrence file which may be incorrect.");
+                log_warning("Using current time for the last occurrence file which may be incorrect.");
                 time_t t = time(NULL);
                 last_ocr = xasprintf("%lu", (long)t);
             }
@@ -537,7 +537,7 @@ static int run_post_create(const char *dirname, struct response *resp)
                 (dup_of_dir ? "notify-dup" : "notify"),
                 &fd
     );
-    //log("Started notify, fd %d -> %d", fd, child_stdout_fd);
+    //log_warning("Started notify, fd %d -> %d", fd, child_stdout_fd);
     xmove_fd(fd, child_stdout_fd);
     child_is_post_create = 0;
     if (dup_of_dir)

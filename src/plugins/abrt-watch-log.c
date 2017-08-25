@@ -29,16 +29,16 @@ static bool memstr(void *buf, unsigned size, const char *str)
     int len = strlen(str);
     while ((int)size >= len)
     {
-        //log("LOOKING FOR:'%s'", str);
+        //log_warning("LOOKING FOR:'%s'", str);
         char *first = memchr(buf, (unsigned char)str[0], size - len + 1);
         if (!first)
             break;
-        //log("FOUND:'%.66s'", first);
+        //log_warning("FOUND:'%.66s'", first);
         first++;
         if (len <= 1 || strncmp(first, str + 1, len - 1) == 0)
             return true;
         size -= (first - (char*)buf);
-        //log("SKIP TO:'%.66s' %d chars", first, (int)(first - (char*)buf));
+        //log_warning("SKIP TO:'%.66s' %d chars", first, (int)(first - (char*)buf));
         buf = first;
     }
     return false;
@@ -117,7 +117,7 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
      */
     if (lseek(fd, 0, SEEK_CUR) <= cur_pos)
     {
-        log("Warning, '%s' did not process its input", prog[0]);
+        log_warning("Warning, '%s' did not process its input", prog[0]);
         lseek(fd, statbuf->st_size, SEEK_SET);
     }
 }

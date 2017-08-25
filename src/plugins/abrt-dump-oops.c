@@ -169,7 +169,7 @@ int main(int argc, char **argv)
     unsigned errors = 0;
     if (opts & OPT_u)
     {
-        log("Updating problem directory");
+        log_warning("Updating problem directory");
         switch (g_list_length(oops_list))
         {
             case 0:

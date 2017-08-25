@@ -130,7 +130,7 @@ if __name__ == "__main__":
         bug_id = proc.stdout.read().rstrip().decode("utf-8", "ignore")
 
     if bug_id:
-        log(_("Duplicate bugzilla bug '#{0}' was found").format(bug_id))
+        log_warning(_("Duplicate bugzilla bug '#{0}' was found").format(bug_id))
     else:
         log1(_("There is no bugzilla bug with 'abrt_hash:{0}'").format(duphash_content))
         sys.exit(RETURN_OK)

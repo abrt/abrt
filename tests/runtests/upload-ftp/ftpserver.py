@@ -456,7 +456,7 @@ class _FileReadWriteError(OSError):
 
 # --- loggers
 
-def log(msg):
+def log_warning(msg):
     """Log messages intended for the end user."""
     print msg
 
@@ -2554,9 +2554,9 @@ class FTPHandler(object, asynchat.async_chat):
 
     # --- logging wrappers
 
-    def log(self, msg):
+    def log_warning(self, msg):
         """Log a message, including additional identifying session data."""
-        log("[%s]@%s:%s %s" % (self.username, self.remote_ip,
+        log_warning("[%s]@%s:%s %s" % (self.username, self.remote_ip,
                                self.remote_port, msg))
 
     def logline(self, msg):
@@ -3744,7 +3744,7 @@ class FTPServer(object, asyncore.dispatcher):
             poll_fun = asyncore.poll
 
         if count is None:
-            log("Starting FTP server")
+            log_warning("Starting FTP server")
             try:
                 try:
                     while asyncore.socket_map or _scheduler._tasks:
@@ -3753,7 +3753,7 @@ class FTPServer(object, asyncore.dispatcher):
                 except (KeyboardInterrupt, SystemExit, asyncore.ExitNow):
                     pass
             finally:
-                log("Shutting down FTP server")
+                log_warning("Shutting down FTP server")
                 cls.close_all()
         else:
             while (asyncore.socket_map or _scheduler._tasks) and count > 0:
@@ -3786,7 +3786,7 @@ class FTPServer(object, asyncore.dispatcher):
             handler = self.handler(sock, self)
             if not handler.connected:
                 return
-            log("[]%s:%s Connected." % addr[:2])
+            log_warning("[]%s:%s Connected." % addr[:2])
             ip = addr[0]
             self.ip_map.append(ip)
 

@@ -229,7 +229,7 @@ if __name__ == "__main__":
         if ex != 0:
             print_clean_and_die(_("Verification error on '{0}'").format(archive))
 
-        log(_("Unpacking '{0}'").format(archive))
+        log_warning(_("Unpacking '{0}'").format(archive))
         try:
             os.mkdir(tempdir)
         except OSError:

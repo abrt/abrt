@@ -103,7 +103,7 @@ run_abrt_handle_upload(struct process *proc, const char *name)
 static void
 handle_new_path(struct process *proc, char *name)
 {
-    log("Detected creation of file '%s' in upload directory '%s'", name, proc->upload_directory);
+    log_warning("Detected creation of file '%s' in upload directory '%s'", name, proc->upload_directory);
 
     if (proc->children < proc->max_children)
     {

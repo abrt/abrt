@@ -71,7 +71,7 @@ static void record_oops(GList **oops_list, const struct abrt_koops_line_info* li
         free(version);
     }
 
-    VERB3 if (rv == 0) log("Dropped oops: too short");
+    VERB3 if (rv == 0) log_warning("Dropped oops: too short");
 }
 
 /* In some comparisons, we skip 1st letter, to avoid dealing with
@@ -567,9 +567,9 @@ int koops_hash_str_ext(char result[SHA1_RESULT_LEN*2 + 1], const char *oops_buf,
         hash_str = sr_thread_get_duphash(thread, frame_count, NULL,
                                          duphash_flags|SR_DUPHASH_NOHASH);
         if (hash_str)
-            log("Generating duphash: '%s'", hash_str);
+            log_warning("Generating duphash: '%s'", hash_str);
         else
-            log("Nothing useful for duphash");
+            log_warning("Nothing useful for duphash");
 
 
         free(hash_str);

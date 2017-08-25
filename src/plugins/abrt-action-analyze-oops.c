@@ -73,7 +73,7 @@ int main(int argc, char **argv)
         if (!res || !drop_notreportable_oopses)
         {
             /* Let users know that they can configure ABRT to drop these oopses. */
-            log("Preserving oops '%s' because DropNotReportableOopses is 'no'", dump_dir_name);
+            log_warning("Preserving oops '%s' because DropNotReportableOopses is 'no'", dump_dir_name);
 
             dd_save_text(dd, FILENAME_NOT_REPORTABLE,
             _("The backtrace does not contain enough meaningful function frames "

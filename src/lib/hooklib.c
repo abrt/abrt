@@ -75,7 +75,7 @@ void trim_problem_dirs(const char *dirname, double cap_size, const char *exclude
             free(worst_basename);
             break;
         }
-        log("%s is %.0f bytes (more than %.0fMiB), deleting '%s'",
+        log_warning("%s is %.0f bytes (more than %.0fMiB), deleting '%s'",
                 dirname, cur_size, cap_size / (1024*1024), worst_basename);
         char *d = concat_path_file(dirname, worst_basename);
         free(worst_basename);
@@ -256,7 +256,7 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
     dd_close(dd);
 
     /* Let user know what's going on */
-    log(_("Generating backtrace"));
+    log_warning(_("Generating backtrace"));
 
     unsigned i = 0;
     char *args[25];
@@ -367,11 +367,11 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
 
         bt_depth /= 2;
         if (bt)
-            log("Backtrace is too big (%u bytes), reducing depth to %u",
+            log_warning("Backtrace is too big (%u bytes), reducing depth to %u",
                         (unsigned)strlen(bt), bt_depth);
         else
             /* (NB: in fact, current impl. of exec_vp() never returns NULL) */
-            log("Failed to generate backtrace, reducing depth to %u",
+            log_warning("Failed to generate backtrace, reducing depth to %u",
                         bt_depth);
         free(bt);
 
@@ -443,7 +443,7 @@ int dump_suid_policy()
     FILE *f  = fopen(filename, "r");
     if (!f)
     {
-        log("Can't open %s", filename);
+        log_warning("Can't open %s", filename);
         return suid_dump_policy;
     }
 
@@ -452,7 +452,7 @@ int dump_suid_policy()
     if (c != EOF)
         suid_dump_policy = c - '0';
 
-    //log("suid dump policy is: %i", suid_dump_policy);
+    //log_warning("suid dump policy is: %i", suid_dump_policy);
     return suid_dump_policy;
 }
 
