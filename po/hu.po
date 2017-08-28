@@ -12,11 +12,12 @@
 # teknos.ferenc <teknos.ferenc@gmail.com>, 2013-2014
 # Zoltan Hoppár <zoltanh721@fedoraproject.org>, 2011-2013
 # Zoltan Hoppár <zoltanh721@fedoraproject.org>, 2014
-# DÃ©lczegi Csaba <delczegicsaba@gmail.com>, 2016. #zanata
-# Jakub Filak <jfilak@redhat.com>, 2016. #zanata
+# Délczegi Csaba <delczegicsaba@gmail.com>, 2016. #zanata
 # Meskó Balázs <meskobalazs@gmail.com>, 2016. #zanata
 # Zoltan Hoppar <zoltanh721@fedoraproject.org>, 2016. #zanata
+# Délczegi Csaba <delczegicsaba@gmail.com>, 2017. #zanata
 # Meskó Balázs <meskobalazs@gmail.com>, 2017. #zanata
+# Norbert Makula <iamreallynotapokemon@gmail.com>, 2017. #zanata
 # TheWanderer <sz.kornelgeza@gmail.com>, 2017. #zanata
 msgid ""
 msgstr ""
@@ -26,8 +27,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-04-11 07:01-0400\n"
-"Last-Translator: TheWanderer <sz.kornelgeza@gmail.com>\n"
+"PO-Revision-Date: 2017-08-06 10:25-0400\n"
+"Last-Translator: Délczegi Csaba <delczegicsaba@gmail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/hu/)\n"
 "Language: hu\n"
@@ -979,7 +980,7 @@ msgid "Exiting on user command"
 msgstr "Kilépés felhasználói utasításra"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:89
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -1007,6 +1008,32 @@ msgid ""
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
 msgstr ""
+"Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH[:PATH]...]\n"
+"\n"
+"Telepíti a debuginfókat minden build-id-hoz, melyek szerepelnek a "
+"BUILD_IDS_FILE-ban a CACHDIR-be, a TMPDIR használatával mint átmeneti "
+"(vég)célterület.\n"
+"A régi fájlok törlésre kerülnek a CACHEDIR-ben amíg kisebb mint a SIZE.\n"
+"\n"
+"Konfiguráció beolvasása a /etc/abrt/plugins/CCpp.conf-ból\n"
+"\n"
+"    -v          Be verbose\n"
+"    -y          Noninteractive, assume 'Yes' to all questions\n"
+"    --ids       Default: build_ids\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
+"    --cache     Colon separated list of directories. The first one is used "
+"for\n"
+"                saving installed debuginfos.\n"
+"                Default: /var/cache/abrt-dir\n"
+"    --size_mb   Default: 4096\n"
+"    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
+"    -e,--exact  Download only specified files\n"
+"    --repo      Pattern to use when searching for repos.\n"
+"                Default: *debug*\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:176
 msgid "Can't open {0}: {1}"
@@ -1026,8 +1053,8 @@ msgstr "{0} debuginfo fájl nincs telepítve"
 #, c-format
 msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
 msgstr ""
-"Érvénytelen konfiguráció a CCpp bővítményben, nem támogatott csomagkezelő:"
-"'%s'"
+"Érvénytelen konfiguráció a CCpp bővítményben, nem támogatott csomagkezelő: "
+"„%s”"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:253
 msgid "Missing requested file: {0}"
@@ -1417,6 +1444,7 @@ msgstr "A systemd-journal végétől kezdi el olvasni"
 #: ../src/plugins/abrt-dump-journal-core.c:502
 msgid "Throttle problem directory creation to 1 per INT second"
 msgstr ""
+"Aktiválja a probléma mappa létrehozását INT másodpercenként egy alkalommal"
 
 #: ../src/plugins/abrt-dump-journal-core.c:503
 msgid "Same as -t INT, INT is specified in plugins/CCpp.conf"
@@ -1482,8 +1510,9 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-oops.c:231
 #: ../src/plugins/abrt-dump-journal-xorg.c:197
+#, fuzzy
 msgid "Read journal files from all machines"
-msgstr ""
+msgstr "Naplófájlok olvasása az összes gépről"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:232
 #: ../src/plugins/abrt-dump-journal-xorg.c:198
@@ -1492,9 +1521,9 @@ msgstr "Minden naplófájl olvasása a PATH mappából"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:279
 #: ../src/plugins/abrt-dump-journal-xorg.c:273
-#, c-format
+#, fuzzy, c-format
 msgid "Cannot initialize systemd-journal in directory '%s'"
-msgstr ""
+msgstr "Nem sikerült a systemd-journal figyelő előkészítése a '%s' mappában"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:288
 msgid "Cannot filter systemd-journal to kernel data only"
@@ -1531,11 +1560,12 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:189
 msgid "Print found crashes on standard output"
-msgstr ""
+msgstr "Talált ütközések kiírása a szabványos kimenetre"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:190
 msgid "Create new problem directory in DIR for every crash found"
 msgstr ""
+"Készítsen mindig új mappát DIR mappában minden egyes ütközéshez amit talál"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:199
 msgid "Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)"
