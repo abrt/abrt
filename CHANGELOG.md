@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.4]
+
 ## [2.10.3]
 ### Added
 - Added blacklist for suspicious kernel oops messages to filter out false
@@ -104,7 +106,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.10.3...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.10.4...HEAD
+[2.10.4]: https://github.com/abrt/abrt/compare/2.10.3...2.10.4
 [2.10.3]: https://github.com/abrt/abrt/compare/2.10.2...2.10.3
 [2.10.2]: https://github.com/abrt/abrt/compare/2.10.1...2.10.2
 [2.10.1]: https://github.com/abrt/abrt/compare/2.10.0...2.10.1

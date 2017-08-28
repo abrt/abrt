@@ -61,7 +61,7 @@
     %define docdirversion -%{version}
 %endif
 
-%define libreport_ver 2.9.0
+%define libreport_ver 2.9.2
 %define satyr_ver 0.22
 
 Summary: Automatic bug detection and reporting tool
@@ -1151,6 +1151,20 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Mon Aug 28 2017 Matej Habrnal <mhabrnal@redhat.com> 2.10.4-1
+- Translation updates
+- logging: rename log() to log_warning()
+- Quick hack to fix build with rpm >= 4.14
+- tests: Crash different binary in infinite event loop
+- tests: Revert not sufficient fix
+- tests: Reflect field changes in reporter-s-journal
+- tests: Get docker-inspect while container is running
+- cli,dbus: Allow polkit to be optional at build time
+- spec: add dependency for python{3}-gobject
+- a-d-journal-core: fix bad condition in creating reason msg
+- a-d-journal-core: use pid of crashed process in dumpdir name
+- changelog: update CHANGELOG.md
+
 * Thu Jun 15 2017 Martin Kutlak <mkutlak@redhat.com> 2.10.3-1
 - Translation updates
 - applet: add a default action to a notification
