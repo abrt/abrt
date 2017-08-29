@@ -40,9 +40,22 @@
 #ifndef ABRT_PROBLEMS2_SESSION_H
 #define ABRT_PROBLEMS2_SESSION_H
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "abrt_problems2_task.h"
 
+#ifdef HAVE_POLKIT
 #include <polkit/polkit.h>
+#else
+struct _PolkitAuthority;
+typedef struct _PolkitAuthority PolkitAuthority;
+struct _PolkitDetails;
+typedef struct _PolkitDetails PolkitDetails;
+typedef struct _PolkitSubject PolkitSubject;
+#endif
+
 #include <glib-object.h>
 #include <gio/gio.h>
 #include <inttypes.h>

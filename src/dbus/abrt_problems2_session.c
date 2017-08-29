@@ -16,6 +16,10 @@
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "abrt_problems2_session.h"
 
 #include "libabrt.h"
@@ -188,6 +192,7 @@ forgotten_state:
               new_state);
 }
 
+#ifdef HAVE_POLKIT
 static void check_authorization_callback(GObject *source,
             GAsyncResult *res,
             gpointer user_data)
@@ -235,9 +240,11 @@ static void check_authorization_callback(GObject *source,
     else
         log_debug("Operation finished after the session had been destroyed");
 }
+#endif
 
 static void authorization_request_initialize(AbrtP2Session *session, GVariant *parameters)
 {
+#ifdef HAVE_POLKIT
     struct check_auth_cb_params *auth_rq = xmalloc(sizeof(*auth_rq));
     auth_rq->session = session;
     auth_rq->cancellable = g_cancellable_new();
@@ -287,7 +294,9 @@ static void authorization_request_initialize(AbrtP2Session *session, GVariant *p
                                          auth_rq->cancellable,
                                          check_authorization_callback,
                                          auth_rq);
-
+#else
+    change_state(session, ABRT_P2_SESSION_STATE_AUTH);
+#endif
 }
 
 AbrtP2Session *abrt_p2_session_new(char *caller, uid_t uid)
