@@ -11,7 +11,7 @@ import errno
 import getopt
 import reportclient
 from subprocess import Popen, PIPE
-from reportclient import verbose, log, log1, log2, set_verbosity, error_msg_and_die, error_msg
+from reportclient import verbose, log_warning, log1, log2, set_verbosity, error_msg_and_die, error_msg
 import time
 from reportclient.debuginfo import DebugInfoDownload, filter_installed_debuginfos, build_ids_to_path, clean_up
 import problem

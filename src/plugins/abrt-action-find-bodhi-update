@@ -40,7 +40,7 @@ import sys
 from argparse import ArgumentParser
 from subprocess import Popen, PIPE
 
-from reportclient import (_, log, log1, set_verbosity, verbose, RETURN_OK,
+from reportclient import (_, log_warning, log1, set_verbosity, verbose, RETURN_OK,
                           RETURN_FAILURE, error_msg)
 import report
 
