@@ -11,7 +11,7 @@ import getopt
 import augeas
 
 from report import dd_opendir, DD_FAIL_QUIETLY_ENOENT, run_event_on_problem_dir
-from reportclient import set_verbosity, error_msg_and_die, error_msg, log1, log
+from reportclient import set_verbosity, error_msg_and_die, error_msg, log1, log_warning
 
 GETTEXT_PROGNAME = "abrt"
 import locale
