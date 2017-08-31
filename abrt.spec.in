@@ -113,7 +113,7 @@ Requires: dbus-1-glib
 Requires: %{systemd_units}
 %endif
 Requires: %{name}-libs = %{version}-%{release}
-Requires: %{name}-python3 = %{version}-%{release}
+Requires: python3-%{name} = %{version}-%{release}
 Requires(pre): %{shadow_utils}
 Requires: python3-augeas
 Requires: python3-dbus
@@ -249,7 +249,7 @@ Summary: %{name}'s vmcore addon
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-addon-kerneloops
 Requires: kexec-tools
-Requires: abrt-python3
+Requires: python3-abrt
 Requires: python3-augeas
 Requires: util-linux
 
@@ -281,25 +281,31 @@ Provides: libreport-plugin-bodhi = %{version}-%{release}
 Search for a new updates in bodhi server.
 %endif
 
-%package addon-python
+%package -n python2-abrt-addon
 Summary: %{name}'s addon for catching and analyzing Python exceptions
-Requires: python
 Requires: %{name} = %{version}-%{release}
 Requires: systemd-python
-Requires: abrt-python
+Requires: python2-abrt
+# Remove before F30
+Provides: abrt-addon-python = %{version}-%{release}
+Provides: abrt-addon-python%{?_isa} = %{version}-%{release}
+Obsoletes: abrt-addon-python < 2.10.4
 
-%description addon-python
+%description -n python2-abrt-addon
 This package contains python hook and python analyzer plugin for handling
 uncaught exception in python programs.
 
-%package addon-python3
+%package -n python3-abrt-addon
 Summary: %{name}'s addon for catching and analyzing Python 3 exceptions
-Requires: python3
 Requires: %{name} = %{version}-%{release}
 Requires: python3-systemd
-Requires: abrt-python3
+Requires: python3-abrt
+# Remove before F30
+Provides: abrt-addon-python3 = %{version}-%{release}
+Provides: abrt-addon-python3%{?_isa} = %{version}-%{release}
+Obsoletes: abrt-addon-python3 < 2.10.4
 
-%description addon-python3
+%description -n python3-abrt-addon
 This package contains python 3 hook and python analyzer plugin for handling
 uncaught exception in python 3 programs.
 
@@ -337,7 +343,7 @@ Requires: %{name} = %{version}-%{release}
 Requires: libreport-cli >= %{libreport_ver}
 Requires: abrt-libs = %{version}-%{release}
 Requires: abrt-dbus
-Requires: abrt-python
+Requires: python2-abrt
 Requires: abrt-addon-ccpp
 Requires: python-argh
 Requires: python-argcomplete
@@ -356,7 +362,7 @@ Requires: abrt-addon-pstoreoops
 Requires: abrt-addon-vmcore
 %endif
 Requires: abrt-addon-ccpp
-Requires: abrt-addon-python3
+Requires: python3-abrt-addon
 Requires: abrt-addon-xorg
 %if 0%{?rhel}
 Requires: libreport-rhel >= %{libreport_ver}
@@ -394,7 +400,7 @@ Requires: abrt-addon-pstoreoops
 Requires: abrt-addon-vmcore
 %endif
 Requires: abrt-addon-ccpp
-Requires: abrt-addon-python3
+Requires: python3-abrt-addon
 Requires: abrt-addon-xorg
 # Default config of addon-ccpp requires gdb
 BuildRequires: gdb-headless
@@ -447,7 +453,7 @@ ABRT DBus service which provides org.freedesktop.problems API on dbus and
 uses PolicyKit to authorize to access the problem data.
 
 
-%package python
+%package -n python2-abrt
 Summary: ABRT Python API
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-libs = %{version}-%{release}
@@ -455,48 +461,64 @@ Requires: %{name}-dbus = %{version}-%{release}
 Requires: dbus-python
 Requires: libreport-python
 Requires: python-gobject
+%{?python_provide:%python_provide python2-abrt}
+# Remove before F30
+Provides: %{name}-python = %{version}-%{release}
+Provides: %{name}-python%{?_isa} = %{version}-%{release}
+Obsoletes: %{name}-python < 2.10.4
 BuildRequires: python-nose
 BuildRequires: python-sphinx
 BuildRequires: libreport-python
 
-%description python
+%description -n python2-abrt
 High-level API for querying, creating and manipulating
 problems handled by ABRT in Python.
 
-%package python-doc
+%package -n python2-abrt-doc
 Summary: ABRT Python API Documentation
 BuildArch: noarch
 BuildRequires: python2-devel
 Requires: %{name} = %{version}-%{release}
-Requires: %{name}-python = %{version}-%{release}
+Requires: python2-abrt = %{version}-%{release}
+# Remove before F30
+Provides: %{name}-python-doc = %{version}-%{release}
+Obsoletes: %{name}-python-doc < 2.10.4
 
-%description python-doc
+%description -n python2-abrt-doc
 Examples and documentation for ABRT Python API.
 
-%package python3
+%package -n python3-abrt
 Summary: ABRT Python 3 API
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-libs = %{version}-%{release}
 Requires: %{name}-dbus = %{version}-%{release}
 Requires: python3-dbus
 Requires: libreport-python3
+%{?python_provide:%python_provide python3-abrt}
+# Remove before F30
+Provides: %{name}-python3 = %{version}-%{release}
+Provides: %{name}-python3%{?_isa} = %{version}-%{release}
+Obsoletes: %{name}-python3 < 2.10.4
 Requires: python3-gobject
 BuildRequires: python3-nose
 BuildRequires: python3-sphinx
 BuildRequires: libreport-python3
 
-%description python3
+%description -n python3-abrt
 High-level API for querying, creating and manipulating
 problems handled by ABRT in Python 3.
 
-%package python3-doc
+%package -n python3-abrt-doc
 Summary: ABRT Python API Documentation
 BuildArch: noarch
 BuildRequires: python3-devel
 Requires: %{name} = %{version}-%{release}
-Requires: %{name}-python3 = %{version}-%{release}
+Requires: python3-%{name} = %{version}-%{release}
+# Remove before F30
+Provides: %{name}-python3-doc = %{version}-%{release}
+Obsoletes: %{name}-python3-doc < 2.10.4
 
-%description python3-doc
+%description -n python3-abrt-doc
 Examples and documentation for ABRT Python 3 API.
 
 %package console-notification
@@ -606,10 +628,10 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %systemd_post abrt-xorg.service
 %journal_catalog_update
 
-%post addon-python
+%post -n python2-abrt-addon
 %journal_catalog_update
 
-%post addon-python3
+%post -n python3-abrt-addon
 %journal_catalog_update
 
 %if %{?have_kexec_tools} == 1
@@ -1039,7 +1061,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man1/abrt-harvest-pstoreoops.1*
 %{_mandir}/man1/abrt-merge-pstoreoops.1*
 
-%files addon-python
+%files -n python2-abrt-addon
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python.conf
 %{_datadir}/%{name}/conf.d/plugins/python.conf
 %{_mandir}/man5/abrt-python.conf.5*
@@ -1050,7 +1072,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{python_sitearch}/abrt*.py*
 %{python_sitearch}/abrt.pth
 
-%files addon-python3
+%files -n python3-abrt-addon
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python3.conf
 %{_datadir}/%{name}/conf.d/plugins/python3.conf
 %{_mandir}/man5/abrt-python3.conf.5*
@@ -1133,18 +1155,18 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/*.css
 %config(noreplace) %{_sysconfdir}/libreport/events.d/abrt_dbus_event.conf
 
-%files python
+%files -n python2-abrt
 %{python_sitearch}/problem/
 %{_mandir}/man5/abrt-python.5*
 
-%files python-doc
+%files -n python2-abrt-doc
 %{python_sitelib}/problem_examples
 
-%files python3
+%files -n python3-abrt
 %{python3_sitearch}/problem/
 %{_mandir}/man5/abrt-python3.5*
 
-%files python3-doc
+%files -n python3-abrt-doc
 %{python3_sitelib}/problem_examples
 
 %files console-notification
