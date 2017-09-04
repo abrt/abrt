@@ -42,13 +42,38 @@ rlJournalStart
 
         TmpDir=$(mktemp -d)
 
-        systemctl status docker > /dev/null || rlDie "Docker is not runnig"
+        systemctl status docker > /dev/null || rlDie "Docker is not running"
         docker inspect $DOCKER_IMAGE || rlDie "Fedora image is not downloaded"
 
         pushd $TmpDir
     rlPhaseEnd
 
-    rlPhaseStartTest "Kill sleep in fedora image"
+    rlPhaseStartTest "Kill sleep in fedora image with journal-core"
+        rlRun "systemctl stop abrt-ccpp"
+        rlRun "systemctl start abrt-journal-core"
+        rlRun "docker run --name $DOCKER_NAME $DOCKER_IMAGE /usr/bin/bash -c \"timeout -s ABRT 1 sleep 10\"" 124
+        rlRun "docker inspect $DOCKER_NAME > docker_inspect"
+        rlRun "DOCKER_ID=$(docker ps -a -f name=$DOCKER_NAME --format \"{{.ID}}\")"
+
+        wait_for_hooks
+        get_crash_path
+
+        ls $crash_PATH > crash_dir_ls
+        check_dump_dir_attributes $crash_PATH
+
+        rlAssertEquals    "Docker in container file" "_$(cat $crash_PATH/container)"        "_docker"
+        rlAssertEquals    "Found correct image"      "_$(cat $crash_PATH/container_image)"  "_$DOCKER_IMAGE"
+        rlAssertEquals    "Grabbed correct ID"       "_$(cat $crash_PATH/container_id)"     "_$DOCKER_ID"
+        rlAssertNotDiffer                                    $crash_PATH/docker_inspect      docker_inspect
+        rlAssertGrep      "docker"                          "$crash_PATH/container_cmdline"
+
+        rlRun "docker rm abrt_integration_test"
+    rlPhaseEnd
+
+    rlPhaseStartTest "Kill sleep in fedora image with ccpp-plugin"
+        abrt-cli rm $crash_PATH
+        rlRun "systemctl stop abrt-journal-core"
+        rlRun "systemctl start abrt-ccpp"
         rlRun "docker run --name $DOCKER_NAME $DOCKER_IMAGE /usr/bin/bash -c \"timeout -s ABRT 1 sleep 10\"" 124
         rlRun "docker inspect $DOCKER_NAME > docker_inspect"
         rlRun "DOCKER_ID=$(docker ps -a -f name=$DOCKER_NAME --format \"{{.ID}}\")"
