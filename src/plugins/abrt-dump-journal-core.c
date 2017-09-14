@@ -32,19 +32,20 @@ struct field_mapping {
     const char *name;
     const char *file;
 } fields [] = {
-    { .name = "COREDUMP_EXE",         .file = FILENAME_EXECUTABLE, },
-    { .name = "COREDUMP_CMDLINE",     .file = FILENAME_CMDLINE, },
-    { .name = "COREDUMP_PROC_STATUS", .file = FILENAME_PROC_PID_STATUS, },
-    { .name = "COREDUMP_PROC_MAPS",   .file = FILENAME_MAPS, },
-    { .name = "COREDUMP_PROC_LIMITS", .file = FILENAME_LIMITS, },
-    { .name = "COREDUMP_PROC_CGROUP", .file = FILENAME_CGROUP, },
-    { .name = "COREDUMP_ENVIRON",     .file = FILENAME_ENVIRON, },
-    { .name = "COREDUMP_CWD",         .file = FILENAME_PWD, },
-    { .name = "COREDUMP_ROOT",        .file = FILENAME_ROOTDIR, },
-    { .name = "COREDUMP_OPEN_FDS",    .file = FILENAME_OPEN_FDS, },
-    { .name = "COREDUMP_UID",         .file = FILENAME_UID, },
-    //{ .name = "COREDUMP_GID",         .file = FILENAME_GID, },
-    { .name = "COREDUMP_PID",         .file = FILENAME_PID, },
+    { .name = "COREDUMP_EXE",               .file = FILENAME_EXECUTABLE, },
+    { .name = "COREDUMP_CMDLINE",           .file = FILENAME_CMDLINE, },
+    { .name = "COREDUMP_PROC_STATUS",       .file = FILENAME_PROC_PID_STATUS, },
+    { .name = "COREDUMP_PROC_MAPS",         .file = FILENAME_MAPS, },
+    { .name = "COREDUMP_PROC_LIMITS",       .file = FILENAME_LIMITS, },
+    { .name = "COREDUMP_PROC_CGROUP",       .file = FILENAME_CGROUP, },
+    { .name = "COREDUMP_ENVIRON",           .file = FILENAME_ENVIRON, },
+    { .name = "COREDUMP_CWD",               .file = FILENAME_PWD, },
+    { .name = "COREDUMP_ROOT",              .file = FILENAME_ROOTDIR, },
+    { .name = "COREDUMP_OPEN_FDS",          .file = FILENAME_OPEN_FDS, },
+    { .name = "COREDUMP_UID",               .file = FILENAME_UID, },
+    //{ .name = "COREDUMP_GID",               .file = FILENAME_GID, },
+    { .name = "COREDUMP_PID",               .file = FILENAME_PID, },
+    { .name = "COREDUMP_PROC_MOUNTINFO",    .file = FILENAME_MOUNTINFO, },
 };
 
 /*
@@ -308,6 +309,14 @@ save_systemd_coredump_in_dump_directory(struct dump_dir *dd, struct crash_info *
     if (abrt_journal_get_cursor(info->ci_journal, &cursor) == 0)
         dd_save_text(dd, "journald_cursor", cursor);
     free(cursor);
+
+    const char *data = NULL;
+    size_t data_len = 0;
+
+    if (!abrt_journal_get_field(info->ci_journal, "COREDUMP_CONTAINER_CMDLINE", (const void **)&data, &data_len))
+    {
+        dd_save_binary(dd, FILENAME_CONTAINER_CMDLINE, data, data_len);
+    }
 
     for (size_t i = 0; i < info->ci_mapping_items; ++i)
     {
