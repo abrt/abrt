@@ -7,8 +7,10 @@ PYFILES= \
 	match.py \
 	utils.py
 
+if BUILD_PYTHON2
 abrtcli_PYTHON = $(PYFILES)
 abrtclidir = $(pyexecdir)/abrtcli
+endif
 
 config.py: config.py.in
 	sed -e s,\@LOCALE_DIR\@,$(localedir),g \

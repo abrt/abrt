@@ -56,12 +56,6 @@ IT_PROG_INTLTOOL([0.35.0])
 
 dnl ****** END ****************************************
 
-AM_PATH_PYTHON
-if test -z "$PYTHON"; then
-    echo "*** Essential program python not found" 1>&2
-    exit 1
-fi
-
 AC_PATH_PROG([ASCIIDOC], [asciidoc], [no])
 [if test "$ASCIIDOC" = "no"]
 [then]
@@ -80,13 +74,50 @@ AC_PATH_PROG([XMLTO], [xmlto], [no])
     [exit 1]
 [fi]
 
-AC_PATH_PROG([PYTHON_CONFIG], [python-config], [no])
-[if test "$PYTHON_CONFIG" = "no"]
+AC_ARG_WITH(python2,
+AS_HELP_STRING([--with-python2],[build Python2 support (default is YES)]),
+ABRT_PARSE_WITH([python2]))
+
+[if test -z "$NO_PYTHON2"]
 [then]
-    [echo "The python-config program was not found in the search path. Please ensure"]
-    [echo "that it is installed and its directory is included in the search path."]
-    [echo "Then run configure again before attempting to build ABRT."]
-    [exit 1]
+    AM_CONDITIONAL(BUILD_PYTHON2, true)
+    AC_PATH_PROG([PYTHON], [python], [no])
+    [if test "$PYTHON" == "no"]
+    [then]
+        [echo "The python program was not found in the search path. Please ensure"]
+        [echo "that it is installed and its directory is included in the search path or"]
+        [echo "pass --without-python2 to ./configure."]
+        [echo "Then run configure again before attempting to build ABRT."]
+        [exit 1]
+    [fi]
+
+    AC_PATH_PROG([PYTHON_CONFIG], [python-config], [no])
+    [if test "$PYTHON_CONFIG" = "no"]
+    [then]
+        [echo "The python-config program was not found in the search path. Please ensure"]
+        [echo "that it is installed and its directory is included in the search path or"]
+        [echo "pass --without-python2 to ./configure."]
+        [echo "Then run configure again before attempting to build ABRT."]
+        [exit 1]
+    [fi]
+
+    PYTHON_CFLAGS=`python-config --cflags 2> /dev/null`
+    PYTHON_LIBS=`python-config --libs 2> /dev/null`
+
+    AC_SUBST([PYTHON2_PREFIX], ['${prefix}'])
+    AC_SUBST([PYTHON2_EXEC_PREFIX], ['${exec_prefix}'])
+
+    PYTHON2_DIR=`$PYTHON -c "import distutils.sysconfig; \
+        print(distutils.sysconfig.get_python_lib(0,0,prefix='$PYTHON2_PREFIX'))"`
+    PYTHON2_EXECDIR=`$PYTHON -c "import distutils.sysconfig; \
+        print(distutils.sysconfig.get_python_lib(1,0,prefix='$PYTHON2_EXEC_PREFIX'))"`
+
+    AC_SUBST(PYTHON_CFLAGS)
+    AC_SUBST(PYTHON_LIBS)
+    AC_SUBST(pythondir, $PYTHON2_DIR)
+    AC_SUBST(pyexecdir, $PYTHON2_EXECDIR)
+[else]
+    AM_CONDITIONAL(BUILD_PYTHON2, false)
 [fi]
 
 AC_ARG_WITH(python3,
@@ -174,12 +205,6 @@ ABRT_PARSE_WITH([pythontests]))
 [else]
     AM_CONDITIONAL(HAVE_PYTHON_NOSE, false)
 [fi]
-
-PYTHON_CFLAGS=`python-config --cflags 2> /dev/null`
-PYTHON_LIBS=`python-config --libs 2> /dev/null`
-
-AC_SUBST(PYTHON_CFLAGS)
-AC_SUBST(PYTHON_LIBS)
 
 PKG_CHECK_MODULES([GTK], [gtk+-3.0])
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.43])

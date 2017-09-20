@@ -1,7 +1,4 @@
 confdir = $(CONF_DIR)
-pyhookdir = $(pyexecdir)
-py3hookdir = $(py3execdir)
-
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 
 dist_pluginsconf_DATA = \
@@ -68,18 +65,31 @@ abrt_merge_pstoreoops_LDADD = \
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
+EXTRA_DIST = \
+    abrt-install-ccpp-hook.in \
+    abrt-harvest-pstoreoops.in
+
+if BUILD_PYTHON2
+pyhookdir = $(pyexecdir)
+
 pyhook_PYTHON = \
 	abrt_exception_handler.py \
 	abrt.pth
+
+EXTRA_DIST += \
+    abrt_exception_handler.py.in
+endif
+
+if BUILD_PYTHON3
+py3hookdir = $(py3execdir)
 
 py3hook_PYTHON = \
 	abrt_exception_handler3.py \
 	abrt3.pth
 
-EXTRA_DIST = abrt_exception_handler.py.in \
-	abrt_exception_handler3.py.in \
-	abrt-install-ccpp-hook.in \
-	abrt-harvest-pstoreoops.in
+EXTRA_DIST += \
+    abrt_exception_handler3.py.in
+endif
 
 if BUILD_ADDON_VMCORE
 sbin_SCRIPTS += \
