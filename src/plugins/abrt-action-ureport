@@ -130,6 +130,7 @@ if __name__ == "__main__":
         report_type = dd.load_text("analyzer", 0)
 
     core_backtrace_exists = dd.exist("core_backtrace")
+    packaged = dd.exist("package")
     reported_to = dd.load_text("reported_to", DD_FAIL_QUIETLY_ENOENT)
     ureports_counter = try_parse_number(dd, "ureports_counter")
     count = try_parse_number(dd, "count")
@@ -163,6 +164,21 @@ if __name__ == "__main__":
             log1("uReport can't be sent without core_backtrace. Exiting.")
             sys.exit(1)
 
+    if not packaged:
+        log1("Problem comes from unpackaged executable.")
+
+        process_unpackaged_str = os.getenv("uReport_ProcessUnpackaged")
+        if not process_unpackaged_str:
+            augeas_conf = get_augeas("libreport", "/etc/libreport/plugins/ureport.conf")
+            process_unpackaged_str = augeas_conf.get("/files/etc/libreport/plugins/ureport.conf/ProcessUnpackaged")
+        process_unpackaged = False
+        if process_unpackaged_str:
+            process_unpackaged = process_unpackaged_str.lower() in ['yes', '1', 'on']
+
+        if not process_unpackaged:
+            log_warning(_("Problem comes from unpackaged executable. Unable to create uReport."))
+            sys.exit(1)
+
     exitcode = spawn_and_wait("reporter-ureport")
     if exitcode == 0 or exitcode == 70:
         dd = dd_opendir(dirname, 0)
@@ -180,8 +196,8 @@ if __name__ == "__main__":
 
         email = os.getenv("uReport_ContactEmail")
         if not email:
-            augeas = get_augeas("libreport", "/etc/libreport/plugins/ureport.conf")
-            email = augeas.get("/files/etc/libreport/plugins/ureport.conf/ContactEmail")
+            augeas_conf = get_augeas("libreport", "/etc/libreport/plugins/ureport.conf")
+            email = augeas_conf.get("/files/etc/libreport/plugins/ureport.conf/ContactEmail")
 
         if email:
             log1("Attaching ContactEmail: " + email)
