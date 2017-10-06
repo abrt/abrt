@@ -39,7 +39,7 @@ rlJournalStart
 
         TmpDir=$(mktemp -d)
         pushd $TmpDir
-        rlAssertRpm "abrt-addon-python"
+        rlAssertRpm "python2-abrt-addon"
         rlFileBackup $TFILE
         rlRun "python $TFILE" 0 "Run unmodified $TFILE"
     rlPhaseEnd

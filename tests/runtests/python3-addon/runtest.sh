@@ -37,7 +37,7 @@ rlJournalStart
 
         TmpDir=$(mktemp -d)
         pushd $TmpDir
-        rlAssertRpm "abrt-addon-python3"
+        rlAssertRpm "python3-abrt-addon"
     rlPhaseEnd
 
     rlPhaseStartTest
