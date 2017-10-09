@@ -16,7 +16,13 @@
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#ifdef HAVE_POLKIT
 #include <polkit/polkit.h>
+#endif
 
 #include <glib-object.h>
 #include <gio/gio.h>
@@ -2355,6 +2361,7 @@ static int abrt_p2_service_private_init(AbrtP2ServicePrivate *pv,
         return 0;
     }
 
+#ifdef HAVE_POLKIT
     GError *local_error = NULL;
     g_polkit_authority = pv->p2srv_pk_authority = polkit_authority_get_sync(NULL,
                                                                             &local_error);
@@ -2368,6 +2375,7 @@ static int abrt_p2_service_private_init(AbrtP2ServicePrivate *pv,
 
     ++g_polkit_authority_refs;
     abrt_p2_session_class_set_polkit_authority(g_polkit_authority);
+#endif
     return 0;
 
 error_return:

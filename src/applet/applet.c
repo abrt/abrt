@@ -20,12 +20,19 @@
 # include <locale.h>
 #endif
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <gio/gdesktopappinfo.h>
 #define GDK_DISABLE_DEPRECATION_WARNINGS
 /* https://bugzilla.gnome.org/show_bug.cgi?id=734826 */
 #include <gtk/gtk.h>
 
+#ifdef HAVE_POLKIT
 #include <polkit/polkit.h>
+#endif
+
 #include <libnotify/notify.h>
 #include <glib.h>
 
@@ -453,6 +460,7 @@ static bool is_gnome_abrt_available(void)
 
 static bool is_user_admin(void)
 {
+#ifdef HAVE_POLKIT
     GError *error = NULL;
     bool ret = false;
     GPermission *perm = polkit_permission_new_sync ("org.freedesktop.problems.getall",
@@ -465,6 +473,9 @@ static bool is_user_admin(void)
     g_object_unref (perm);
 
     return ret;
+#else
+    return true;
+#endif
 }
 
 static gboolean

@@ -10,6 +10,7 @@ abrt_applet_CPPFLAGS = \
     -DLIBREPORT_PLUGINS_CONF_DIR=\"$(LIBREPORT_PLUGINS_CONF_DIR)\" \
     -DLOCALEDIR=\"$(localedir)\" \
     $(GTK_CFLAGS) \
+    $(GIO_UNIX_CFLAGS) \
     $(POLKIT_CFLAGS) \
     $(LIBREPORT_GTK_CFLAGS) \
     -D_GNU_SOURCE
@@ -21,6 +22,7 @@ abrt_applet_LDADD = \
     -lgthread-2.0 \
     $(LIBNOTIFY_LIBS) \
     $(GTK_LIBS) \
+    $(GIO_UNIX_LIBS) \
     $(POLKIT_LIBS)
 
 @INTLTOOL_DESKTOP_RULE@
