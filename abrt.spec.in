@@ -460,7 +460,11 @@ Requires: %{name}-libs = %{version}-%{release}
 Requires: %{name}-dbus = %{version}-%{release}
 Requires: dbus-python
 Requires: libreport-python
-Requires: python-gobject
+%if 0%{?rhel:%{rhel} == 7}
+Requires: python-gobject-base
+%else
+Requires: python2-gobject-base
+%endif
 %{?python_provide:%python_provide python2-abrt}
 # Remove before F30
 Provides: %{name}-python = %{version}-%{release}
@@ -499,7 +503,7 @@ Requires: libreport-python3
 Provides: %{name}-python3 = %{version}-%{release}
 Provides: %{name}-python3%{?_isa} = %{version}-%{release}
 Obsoletes: %{name}-python3 < 2.10.4
-Requires: python3-gobject
+Requires: python3-gobject-base
 BuildRequires: python3-nose
 BuildRequires: python3-sphinx
 BuildRequires: libreport-python3
