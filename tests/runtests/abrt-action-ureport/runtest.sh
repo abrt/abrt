@@ -82,7 +82,7 @@ rlJournalStart
         get_crash_path
 
 
-        rlRun "augtool rm /files/etc/libreport/plugins/ureport.conf/ContactEmail" 0 "rm ContactEmail settings frim ureport.conf"
+        rlRun "augtool rm /files/etc/libreport/plugins/ureport.conf/ContactEmail" 0 "rm ContactEmail settings from ureport.conf"
         rlRun "echo 0 > $crash_PATH/ureports_counter" 0 "set ureports_counter to 0"
 
         ./fakefaf.py &> server2.log &
@@ -106,6 +106,98 @@ rlJournalStart
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
     rlPhaseEnd
 
+    rlPhaseStartTest "report unpackaged problem if configured"
+        prepare
+        generate_crash_unpack
+        wait_for_hooks
+        get_crash_path
+
+
+        rlLog "unset environment variable uReport_ProcessUnpackaged"
+        unset uReport_ProcessUnpackaged
+        rlRun "augtool set /files/etc/libreport/plugins/ureport.conf/ProcessUnpackaged yes" 0 "set processing of unpackaged in ureport.conf"
+        rlRun "echo 0 > $crash_PATH/ureports_counter" 0 "set ureports_counter to 0"
+
+        ./fakefaf.py &> server3.log &
+        sleep 1
+
+        pushd $crash_PATH
+        /usr/libexec/abrt-action-ureport -vvv &> $TmpDir/ureport3.log
+        popd # crash_PATH
+
+        kill %1
+
+        rlAssertGrep "curl: Connected to 127.0.0.1 (127.0.0.1) port 12345 (#0)" ureport3.log
+        rlAssertGrep "curl sent header: 'POST /faf/reports/new/ HTTP/1" ureport3.log
+
+        rlAssertGrep "Problem comes from unpackaged executable." ureport3.log
+        rlAssertNotGrep "Problem comes from unpackaged executable. Unable to create uReport." ureport3.log
+
+        rlAssertGrep ".* - - \[.*\] \"POST /faf/reports/new/ HTTP/1.1\" 202 -" server3.log
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+    rlPhaseEnd
+
+    rlPhaseStartTest "report unpackaged problem if environment variable set"
+        prepare
+        generate_crash_unpack
+        wait_for_hooks
+        get_crash_path
+
+
+        rlLog "set environment variable uReport_ProcessUnpackaged"
+        export uReport_ProcessUnpackaged="yes"
+        rlRun "augtool rm /files/etc/libreport/plugins/ureport.conf/ProcessUnpackaged" 0 "unset processing of unpackaged in ureport.conf"
+        rlRun "echo 0 > $crash_PATH/ureports_counter" 0 "set ureports_counter to 0"
+
+        ./fakefaf.py &> server4.log &
+        sleep 1
+
+        pushd $crash_PATH
+        /usr/libexec/abrt-action-ureport -vvv &> $TmpDir/ureport4.log
+        popd # crash_PATH
+
+        kill %1
+
+        rlAssertGrep "curl: Connected to 127.0.0.1 (127.0.0.1) port 12345 (#0)" ureport4.log
+        rlAssertGrep "curl sent header: 'POST /faf/reports/new/ HTTP/1" ureport4.log
+
+        rlAssertGrep "Problem comes from unpackaged executable." ureport4.log
+        rlAssertNotGrep "Problem comes from unpackaged executable. Unable to create uReport." ureport4.log
+
+        rlAssertGrep ".* - - \[.*\] \"POST /faf/reports/new/ HTTP/1.1\" 202 -" server4.log
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+    rlPhaseEnd
+
+    rlPhaseStartTest "do not report unpackaged problem"
+        prepare
+        generate_crash_unpack
+        wait_for_hooks
+        get_crash_path
+
+
+        rlLog "unset environment variable uReport_ProcessUnpackaged"
+        unset uReport_ProcessUnpackaged
+        rlRun "augtool rm /files/etc/libreport/plugins/ureport.conf/ProcessUnpackaged" 0 "unset processing of unpackaged in ureport.conf"
+        rlRun "echo 0 > $crash_PATH/ureports_counter" 0 "set ureports_counter to 0"
+
+        ./fakefaf.py &> server5.log &
+        sleep 1
+
+        pushd $crash_PATH
+        /usr/libexec/abrt-action-ureport -vvv &> $TmpDir/ureport5.log
+        popd # crash_PATH
+
+        kill %1
+
+        rlAssertNotGrep "curl: Connected to 127.0.0.1 (127.0.0.1) port 12345 (#0)" ureport5.log
+        rlAssertNotGrep "curl sent header: 'POST /faf/reports/new/ HTTP/1" ureport5.log
+
+        rlAssertGrep "Problem comes from unpackaged executable." ureport5.log
+        rlAsserttGrep "Problem comes from unpackaged executable. Unable to create uReport." ureport5.log
+
+        rlAssertNotGrep ".* - - \[.*\] \"POST /faf/reports/new/ HTTP/1.1\" 202 -" server5.log
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+    rlPhaseEnd
 
     rlPhaseStartCleanup
         rlBundleLogs abrt $(ls server* ureport*)
