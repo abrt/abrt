@@ -121,6 +121,19 @@ function generate_python3_exception() {
     su -c will_python3_raise $1
 }
 
+function generate_crash_unpack() {
+    rlLog "Generate unpackaged crash"
+    pushd /tmp
+    gcc -o crash_unpack -xc - << 'EOF'
+#include <stdlib.h>
+int main () { abort(); }
+EOF
+
+    su -c ./crash_unpack
+    rm crash_unpack
+    popd # /tmp
+}
+
 function load_abrt_conf() {
     ABRT_CONF_DUMP_LOCATION=`sed -n '/^DumpLocation[ \t]*=/ s/.*=[ \t]*//p' /etc/abrt/abrt.conf 2>/dev/null`
 
