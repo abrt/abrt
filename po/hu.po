@@ -27,8 +27,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-08-06 10:25-0400\n"
-"Last-Translator: Délczegi Csaba <delczegicsaba@gmail.com>\n"
+"PO-Revision-Date: 2017-10-31 08:32-0400\n"
+"Last-Translator: Meskó Balázs <meskobalazs@gmail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/hu/)\n"
 "Language: hu\n"
@@ -63,15 +63,17 @@ msgid "Oops!"
 msgstr "Hoppá!"
 
 #: ../src/applet/applet.c:616
+#, fuzzy
 msgid "Report"
 msgstr "Jelentés"
 
 #: ../src/applet/applet.c:625
+#, fuzzy
 msgid "Restart"
 msgstr "Újraindítás"
 
 #: ../src/applet/applet.c:694
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
 "reported."
@@ -80,7 +82,7 @@ msgstr ""
 "automatikusan bejelentésre került."
 
 #: ../src/applet/applet.c:699
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
 "internet is available."
@@ -90,7 +92,7 @@ msgstr ""
 
 #: ../src/applet/applet.c:705 ../src/applet/applet.c:719
 #: ../src/applet/applet.c:747
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
@@ -99,7 +101,7 @@ msgstr ""
 "fel a kapcsolatot a fejlesztővel, ha szeretné bejelenteni a hibát."
 
 #: ../src/applet/applet.c:713
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
@@ -108,6 +110,7 @@ msgstr ""
 "segíteni a hiba megoldásában, kérjük küldjön egy hibajelentést."
 
 #: ../src/applet/applet.c:732
+#, fuzzy
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
@@ -116,6 +119,7 @@ msgstr ""
 "A probléma automatikusan bejelentésre került. "
 
 #: ../src/applet/applet.c:736
+#, fuzzy
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
@@ -124,6 +128,7 @@ msgstr ""
 "A probléma bejelentésre kerül, amint lesz internetkapcsolat."
 
 #: ../src/applet/applet.c:741
+#, fuzzy
 msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
@@ -132,27 +137,28 @@ msgstr ""
 "segíteni a probléma megoldásában, kérjük küldjön egy hibajelentést."
 
 #: ../src/applet/applet.c:786
-#, c-format
+#, fuzzy, c-format
 msgid "Can't show notification: %s"
 msgstr "Az értesítés nem jeleníthető meg: %s"
 
 #. TODO: Terminate child's process?
 #: ../src/applet/applet.c:818 ../src/daemon/abrt-upload-watch.c:168
-#, c-format
+#, fuzzy, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "GIO csatorna nem olvasható: %s"
 
 #: ../src/applet/applet.c:896
-#, c-format
+#, fuzzy, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "GIO csatorna kódolása nem állítható be: %s"
 
 #: ../src/applet/applet.c:900
-#, c-format
+#, fuzzy, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "GIO nem blokkoló módja nem állítható be: %s"
 
 #: ../src/applet/applet.c:1186
+#, fuzzy
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -163,6 +169,7 @@ msgstr ""
 "Alkalmazás, amely értesíti a felhasználót ha hibát észlel az ABRT\n"
 
 #: ../src/configuration-gui/abrt-config-widget.c:483
+#, fuzzy
 msgid ""
 "The configuration option above has been moved to GSettings and the switch is "
 "linked to the value of the setting 'report-technical-problems' from the "
@@ -173,26 +180,32 @@ msgstr ""
 "az „org.gnome.desktop.privacy” sémában."
 
 #: ../src/configuration-gui/abrt-config-widget.c:501
+#, fuzzy
 msgid "The configuration option above can be configured in"
 msgstr "A fenti konfigurációs beállítás itt állítható be:"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
+#, fuzzy
 msgid "Ask before stealing directory"
 msgstr "Kérdezzen a mappa kisajátítása előtt"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
+#, fuzzy
 msgid "Automatically send uReport"
 msgstr "uReport automatikus küldése"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
+#, fuzzy
 msgid "Shortened reporting"
 msgstr "Rövidített jelentés"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
+#, fuzzy
 msgid "Silent shortened reporting"
 msgstr "Csendben elküldött rövidített jelentés"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
+#, fuzzy
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
 "space consuming operation. ABRT provides a service which generates the stack "
@@ -210,6 +223,7 @@ msgstr ""
 "lesz tárolva. A 'Rákérdez' opcióval mindig megkérdezi a felhasználót."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
+#, fuzzy
 msgid ""
 "ABRT stores problem data in directories. Whenever ABRT needs writable "
 "directory, the directory is moved from the system location to your home "
@@ -222,6 +236,7 @@ msgstr ""
 "akkor az ABRT kérdés nélkül elvégzi az átmozgatást."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
+#, fuzzy
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
 "uses uReports  for fast global duplicate detection. In default configuration "
@@ -235,6 +250,7 @@ msgstr ""
 "kerülnek elküldésre."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
+#, fuzzy
 msgid ""
 "With this option enabled reporting process started by click on Report button "
 "in problem notification bubble will be interrupted after uReport is sent. "
@@ -246,6 +262,7 @@ msgstr ""
 "keresőt, hogy befejezze a jelentést."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
+#, fuzzy
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
@@ -255,6 +272,7 @@ msgstr ""
 "beállítás engedélyezett."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
+#, fuzzy
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
@@ -263,14 +281,17 @@ msgstr ""
 "hozzáféréssel jelenti a hibát, ha az bizalmas adatot tartalmazhat."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
+#, fuzzy
 msgid "Request private ticket for sensitive information"
 msgstr "Privát jegy kérése érzékeny információk miatt"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
+#, fuzzy
 msgid "Notify incomplete problems"
 msgstr "Értesítsen a hiányos problémákról"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
+#, fuzzy
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
@@ -281,26 +302,32 @@ msgstr ""
 "hibajelentéseket küldjön, így ezeket nem engedi elküldeni."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
+#, fuzzy
 msgid "Always"
 msgstr "Mindig"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:15
+#, fuzzy
 msgid "Never"
 msgstr "Soha"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:16
+#, fuzzy
 msgid "Ask"
 msgstr "Kérdezzen"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
+#, fuzzy
 msgid "Upload coredump for backtrace generation"
 msgstr "Hibabejelentés feltöltése a hibakereséséhez"
 
 #: ../src/configuration-gui/system-config-abrt.c:79
+#, fuzzy
 msgid "_Close"
 msgstr "_Bezárás"
 
 #: ../src/configuration-gui/system-config-abrt.c:88
+#, fuzzy
 msgid "_Defaults"
 msgstr "_Alapbeállítások"
 
@@ -746,6 +773,7 @@ msgstr ""
 "sikertelen"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:41
+#, fuzzy
 msgid ""
 "& [options] -d DIR\n"
 "\n"
@@ -764,45 +792,49 @@ msgstr ""
 #. * and component only.  This is not supposed to happen often.
 #. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
-#, c-format
+#, fuzzy, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr "A nyomkövetési értelmezés sikertelen ennél: %s"
+msgstr "A nyomkövetési adatok értelmezése sikertelen ennél: %s"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:150
+#, fuzzy
 msgid "Crash thread not found"
 msgstr "Az összeomlás szála nem található"
 
 #: ../src/plugins/abrt-action-analyze-c.c:130
+#, fuzzy
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
 msgstr ""
-"& [-v] -d DIR\n"
+"& [-v] -d KÖNYVTÁR\n"
 "\n"
-"Kiszámítja és elmenti a DIR hibagyűjtő könyvtárban az összeomlási adatok "
-"UUID-it"
+"Kiszámítja és elmenti a KÖNYVTÁR hibagyűjtő könyvtárban az összeomlási "
+"adatok UUID-ját"
 
 #: ../src/plugins/abrt-action-analyze-core.in:72
-#, c-format
+#, fuzzy, c-format
 msgid "Analyzing coredump '%s'"
 msgstr "A(z) „%s” összeomlási adatok elemzése"
 
 #: ../src/plugins/abrt-action-analyze-core.in:110
-#, c-format
+#, fuzzy, c-format
 msgid "Missing build id: %s"
 msgstr "Hiányzó építési azonosító: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:142
-#, c-format
+#, fuzzy, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
 msgstr "Használat: %s [-v] [-o OUTFILE] -c COREFILE"
 
 #: ../src/plugins/abrt-action-analyze-core.in:164
+#, fuzzy
 msgid "COREFILE is not specified"
 msgstr "A COREFILE nincs megadva"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
+#, fuzzy
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
@@ -814,6 +846,7 @@ msgstr ""
 "mappájába"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:79
+#, fuzzy
 msgid ""
 "The backtrace does not contain enough meaningful function frames to be "
 "reported. It is annoying but it does not necessary signalize a problem with "
@@ -827,6 +860,7 @@ msgstr ""
 "keresztül."
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:73
+#, fuzzy
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
@@ -838,7 +872,7 @@ msgstr ""
 "mappájába"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:113
-#, c-format
+#, fuzzy, c-format
 msgid "Module '%s' was loaded - won't report this crash"
 msgstr "Az „%s” modul betöltődött – nem jelenti ezt az összeomlást"
 

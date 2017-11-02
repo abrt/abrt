@@ -11,6 +11,7 @@
 # Ding-Yi Chen <dchen@redhat.com>, 2016. #zanata
 # Jakub Filak <jfilak@redhat.com>, 2016. #zanata
 # 張仁傑 <s9727453@gmail.com>, 2016. #zanata
+# Cheng-Chia Tseng <pswo10680@gmail.com>, 2017. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -19,8 +20,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-07-14 08:40-0400\n"
-"Last-Translator: Ding-Yi Chen <dchen@redhat.com>\n"
+"PO-Revision-Date: 2017-09-05 03:02-0400\n"
+"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/fedora-"
 "abrt/language/zh_TW/)\n"
 "Language: zh-TW\n"
@@ -67,14 +68,14 @@ msgstr "重新啟動"
 msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
 "reported."
-msgstr "我們很抱歉，%s 似乎當掉了。此問題已經自動回報。"
+msgstr "我們很抱歉，%s 似乎崩潰了。此問題已經自動回報。"
 
 #: ../src/applet/applet.c:699
 #, c-format
 msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
 "internet is available."
-msgstr "我們很抱歉，%s 似乎當掉了。此問題會在網際網路可用時回報。"
+msgstr "我們很抱歉，%s 似乎崩潰了。此問題會在網際網路可用時回報。"
 
 #: ../src/applet/applet.c:705 ../src/applet/applet.c:719
 #: ../src/applet/applet.c:747
@@ -82,14 +83,14 @@ msgstr "我們很抱歉，%s 似乎當掉了。此問題會在網際網路可用
 msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
-msgstr "我們很抱歉，%s 似乎當掉了。如果您想要回報該議題，請聯絡開發者。"
+msgstr "我們很抱歉，%s 似乎崩潰了。如果您想要回報該議題，請聯絡開發者。"
 
 #: ../src/applet/applet.c:713
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
-msgstr "我們很抱歉，%s 似乎當掉了。若您想要協助解決這個議題，請傳送回報。"
+msgstr "我們很抱歉，%s 似乎崩潰了。若您想要協助解決這個議題，請傳送回報。"
 
 #: ../src/applet/applet.c:732
 msgid ""
@@ -140,23 +141,21 @@ msgstr "& [-v] [DIR]...\n"
 "新問題被 ABRT 偵測到時通知使用者的面板程式\n"
 
 #: ../src/configuration-gui/abrt-config-widget.c:483
-#, fuzzy
 msgid ""
 "The configuration option above has been moved to GSettings and the switch is "
 "linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
-"上述的配置選項已被移動，GSettings並且開關被連接到該設置的值，報告技術-問題\n"
-"從架構org.gnome.desktop.privacy"
+"上述的組態選項已移動到 GSettings，而切換開關與「org.gnome.desktop.privacy」schema 的「report-"
+"technical-problems」設定值連動。"
 
 #: ../src/configuration-gui/abrt-config-widget.c:501
-#, fuzzy
 msgid "The configuration option above can be configured in"
-msgstr "配置選項可以在被配置以上"
+msgstr "上述的組態選項可以在此設定"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr "在佔用目錄前詢問"
+msgstr "在佔取目錄前詢問"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
@@ -179,7 +178,8 @@ msgid ""
 "With option 'Never' the stack trace will be always generated locally. With "
 "option 'Ask' ABRT will always ask the user."
 msgstr ""
-"核心轉儲文件，為了發生堆疊這是時間和空間的耗時的操作，ABRT提供了一個服務產生從核心轉儲的堆疊，但你必須將信息轉儲上傳到該服務，選項：不經詢問總是上傳核心轉儲，選項：從不這個堆疊將會總是在本地產生，選項：問ABRT總是詢問使用者"
+"需要有核心傾印檔案才能生成堆疊追蹤，而堆疊追蹤是相當耗費時間與空間的操作。ABRT "
+"提供從核心傾印生成堆疊追蹤的服務，但您必須將核心傾印上傳至此服務中。選項「總是」，不經詢問就上傳核心傾印。選項「永不」，總是在本機上生成堆疊追蹤。選項「詢問」，總事會詢問使用者。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -241,16 +241,15 @@ msgstr "總是"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:15
 msgid "Never"
-msgstr ""
+msgstr "永不"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:16
 msgid "Ask"
 msgstr "詢問"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
-#, fuzzy
 msgid "Upload coredump for backtrace generation"
-msgstr "上傳核心文件從回遡上一代"
+msgstr "上傳核心傾印供產生回溯資訊"
 
 #: ../src/configuration-gui/system-config-abrt.c:79
 msgid "_Close"
@@ -385,7 +384,7 @@ msgstr "無剩餘問題空間"
 #: ../src/dbus/abrt-dbus.c:715
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr "無法從問題目錄「%2$s」刪除「%1$s」元素"
+msgstr "無法從「%2$s」問題目錄刪除「%1$s」元素"
 
 #: ../src/dbus/abrt-dbus.c:876 ../src/dbus/abrt-configuration.c:983
 #: ../src/daemon/abrtd.c:426
@@ -437,12 +436,12 @@ msgstr "直接與使用者溝通"
 
 #: ../src/daemon/abrt-handle-event.c:405
 msgid "Increment the nice value by INCREMENT"
-msgstr ""
+msgstr "透過 INCREMENT 值遞增良值"
 
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
-msgstr "無工作器可用，緩衝也塞滿。略過「%s」封存"
+msgstr "無工作器可用，緩衝也填滿。略過「%s」封存"
 
 #: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
@@ -660,7 +659,7 @@ msgstr "「{0}」處理成功"
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
 msgid "Generating backtrace"
-msgstr "正在產生追蹤資訊"
+msgstr "正在產生回溯資訊"
 
 #: ../src/lib/problem_api_dbus.c:42
 #, c-format
@@ -680,11 +679,11 @@ msgstr "刪除問題目錄失敗：%s"
 #: ../src/lib/problem_api_dbus.c:131
 #, c-format
 msgid "D-Bus GetInfo method call failed: %s"
-msgstr ""
+msgstr "D-Bus GetInfo 方法呼叫失敗：%s"
 
 #: ../src/lib/problem_api_dbus.c:166
 msgid "Can't get problem data from abrt-dbus"
-msgstr ""
+msgstr "無法從 abrt-dbus 取得問題資料"
 
 #: ../src/lib/problem_api_dbus.c:193
 #, c-format
@@ -711,13 +710,13 @@ msgstr "無法建立暫存檔「%s」"
 msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
 "problems '%s'"
-msgstr "無法寫入「%s」。問題「%s」不會從忽略的問題「%s」中移除"
+msgstr "無法寫入「%s」。「%s」問題不會從忽略的「%s」問題中移除"
 
 #. Something nefarious happened
 #: ../src/lib/ignored_problems.c:264
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
-msgstr "無法將「%s」重新命名為「%s」。無法移除問題「%s」"
+msgstr "無法將「%s」重新命名為「%s」。無法移除「%s」問題"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:41
 msgid ""
@@ -727,8 +726,8 @@ msgid ""
 "and identifies crash function in problem directory DIR"
 msgstr "& [選項] -d DIR\n"
 "\n"
-"在問題目錄 DIR 內分析 C/C++ 追蹤資訊、產生複本雜湊、\n"
-"追蹤資料評等、辨識當機函式"
+"在問題目錄 DIR 內分析 C/C++ 回溯資訊、產生複本雜湊、\n"
+"回溯資料評等、辨識當機函式"
 
 #. 
 #. * The parser failed. Compute the duphash from the executable
@@ -738,7 +737,7 @@ msgstr "& [選項] -d DIR\n"
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr "%s 的追蹤解析失敗"
+msgstr "%s 的回溯解析失敗"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:150
 msgid "Crash thread not found"
@@ -792,7 +791,7 @@ msgid ""
 "your computer. ABRT will not allow you to create a report in a bug tracking "
 "system but you can contact kernel maintainers via e-mail."
 msgstr ""
-"回追資訊包含的有意義函式框架不足以回報。這很惱人，但不需要將之視為您電腦有問題的訊號。ABRT "
+"回溯資訊包含的有意義函式框架不足以回報。這很惱人，但不需要將之視為您電腦有問題的訊號。ABRT "
 "不會讓您在臭蟲追蹤系統中建立回報，但您可以透過電子郵件聯絡內核維護者。"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:73
@@ -816,7 +815,7 @@ msgid ""
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr "&  [-v] -d DIR\n"
 "\n"
-"計算並儲存 python 當掉傾印的 UUID 與 DUPHASH"
+"計算並儲存 python 崩潰傾印的 UUID 與 DUPHASH"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:52
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
@@ -853,7 +852,7 @@ msgstr "內核記錄指出有偵測到硬體錯誤。\n"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:88
 msgid "cannot open problem directory '{0}'"
-msgstr "無法打開問題目錄"
+msgstr "無法打開「{0}」問題目錄"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:102
 msgid "Problem directory error: {0}"
@@ -861,27 +860,27 @@ msgstr "問題目錄錯誤"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:117
 msgid "Using product '{0}' from /etc/os-release."
-msgstr ""
+msgstr "使用 /etc/os-release 中的「{0}」產品。"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:119
 msgid "Using product {0}."
-msgstr "使用的產品"
+msgstr "使用 {0} 產品。"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:121
 msgid "Using product version {0}."
-msgstr "使用的產品版本"
+msgstr "使用 {0} 產品版本"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:133
 msgid "Duplicate bugzilla bug '#{0}' was found"
-msgstr ""
+msgstr "找到重複的 bugzilla 臭蟲「#{0}」"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:135
 msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
-msgstr ""
+msgstr "沒有「abrt_hash:{0}」的 bugzilla 臭蟲"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:140
 msgid "Warning: abrt-bodhi do not support Product version 'Rawhide'"
-msgstr ""
+msgstr "警告：abrt-bodhi 不支援「Rawhide」產品版本"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
@@ -890,7 +889,7 @@ msgid ""
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
 msgstr "& [選項] -d DIR\n"
 "\n"
-"分析問題目錄 DIR 內的核心傾印，產生並儲存追蹤資訊"
+"分析問題目錄 DIR 內的核心傾印，產生並儲存回溯資訊"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
@@ -906,7 +905,7 @@ msgstr "若 gdb 執行超過 NUM 秒就終止它"
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr "追蹤資訊已產生並儲存，計 %u 位元組"
+msgstr "回溯資訊已產生並儲存，計 %u 位元組"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:40
 msgid ""
@@ -915,7 +914,7 @@ msgid ""
 "Creates coredump-level backtrace from core dump and corresponding binary"
 msgstr "& [-v] [-r] -d DIR\n"
 "\n"
-"從核心傾印與相對應的二進位檔建立 coredump-level 追蹤資料"
+"從核心傾印與相對應的二進位檔建立 coredump-level 回溯資料"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
@@ -924,7 +923,7 @@ msgstr "不要製作雜湊指紋"
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
 msgid "Generating core_backtrace"
-msgstr "正在 core_backtrace..."
+msgstr "正在生成核心回溯(_B)"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:81
 msgid "Error: GDB did not return any data"
@@ -968,6 +967,29 @@ msgid ""
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
 msgstr ""
+"用法：%s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH[:PATH]...]\n"
+"\n"
+"為所有列在 BUILD_IDS_FILE 中的 build-id 安裝 debuginfos\n"
+"到 CACHEDIR 中，使用 TMPDIR 作為暫存臨設區。\n"
+"CACHEDIR 中的舊檔案會被刪除，直到資料小於 SIZE。\n"
+"\n"
+"從 /etc/abrt/plugins/CCpp.conf 中讀取組態檔。\n"
+"\n"
+"    -v          詳盡\n"
+"    -y          非互動，假定所有問題皆答「是」\n"
+"    --ids       預設：build_ids\n"
+"    --tmpdir    預設：@LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     列表請以半形分號分隔各目錄。第一個目錄會用來儲存安裝的\n"
+"                debuginfos.\n"
+"                預設：/var/cache/abrt-dir\n"
+"    --size_mb   預設：4096\n"
+"    --pkgmgr   預設：CCpp.conf 中的 PackageManager 或 'dnf'\n"
+"    -e,--exact  僅下載指定的檔案\n"
+"    --repo      搜尋軟體庫時使用的樣式。\n"
+"                預設：*debug*\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:176
 msgid "Can't open {0}: {1}"
@@ -1006,14 +1028,19 @@ msgid ""
 "Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
 "ABRT system cache."
 msgstr ""
+"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+"\t[-r REPO]\n"
+"\n"
+"為所有列在 BUILD_IDS_FILE 中的 build-ids 安裝 debuginfo 軟體包到\n"
+"ABRT 系統快取中。"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:66
 msgid "Noninteractive, assume 'Yes' to all questions"
-msgstr ""
+msgstr "無互動，假定所有回答皆「是」"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:67
 msgid "- means STDIN, default: build_ids"
-msgstr ""
+msgstr "- 代表 STDIN，預設：build_ids"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
 msgid "Download only specified files"
@@ -1021,7 +1048,7 @@ msgstr "只有下載特別的檔案"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
 msgid "Pattern to use when searching for repos, default: *debug*"
-msgstr ""
+msgstr "搜尋軟體庫時的樣式，預設為：*debug*"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
 msgid "Ignored option"
@@ -1032,13 +1059,13 @@ msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
-msgstr "確定要上傳核心傾印？(它可能包含敏感資料)。若您的答案為「否」，將會在本地建立堆疊追蹤。(這可能需要下載大量資料)。"
+msgstr "確定要上傳核心傾印？(它可能包含敏感資料)。若您的答案為「否」，將會在本地建立堆疊回溯。(這可能需要下載大量資料)。"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:72
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
-msgstr "您想要在本機上生成堆疊追蹤嗎？(這可能需要下載巨量資料，不過報告若無堆疊追蹤便無法繼續。)"
+msgstr "您想要在本機上生成堆疊回溯嗎？(這可能需要下載巨量資料，不過報告若無堆疊回溯便無法繼續。)"
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -1204,7 +1231,7 @@ msgstr "跳入無效的位址"
 #: ../src/plugins/abrt-gdb-exploitable:674
 msgid ""
 "Access past the end of mapped file, invalid address, unaligned access, etc"
-msgstr "存取已通過映射檔案的結尾、無效的位址、無對齊的存取..."
+msgstr "存取已通過映射檔案的結尾、無效的位址、無對齊的存取…等"
 
 #: ../src/plugins/abrt-gdb-exploitable:693
 msgid "Can't get signal no and do exploitability analysis\n"
@@ -1216,11 +1243,11 @@ msgstr "可能的崩潰原因："
 
 #: ../src/plugins/abrt-gdb-exploitable:707
 msgid "Exploitable rating (0-9 scale): "
-msgstr "可利用等級 (0-9 規模)："
+msgstr "可利用等級 (0-9 分級)："
 
 #: ../src/plugins/abrt-gdb-exploitable:709
 msgid "Current instruction: "
-msgstr "目前指令："
+msgstr "目前指示："
 
 #: ../src/plugins/abrt-gdb-exploitable:711
 msgid "Exploitability analysis came up empty\n"
@@ -1302,7 +1329,7 @@ msgstr "不能更新這個程式:找不到oops訊息"
 
 #: ../src/plugins/abrt-dump-oops.c:183
 msgid "More oopses found: process only the first one"
-msgstr ""
+msgstr "找到更多 oops：僅處理第一則"
 
 #: ../src/plugins/abrt-dump-journal-core.c:361
 #: ../src/plugins/abrt-dump-journal-core.c:397
@@ -1338,6 +1365,16 @@ msgid ""
 "\n"
 "The last seen position is saved in "
 msgstr ""
+"& [-vsf] [-e]/[-c CURSOR] [-t INT]/[-T] [-d DIR]/[-D]\n"
+"\n"
+"從 systemd-journal 中抽出核心傾印\n"
+"\n"
+"-c 和 -e 選項互相衝突，因為兩者都會指定第一則閱讀訊息。\n"
+"\n"
+"-e 僅用於 -f 時，因為日誌的追尋會在沒有可用的上次查看位置時\n"
+"從頭讀取整份檔案\n"
+"\n"
+"上次查看位置儲存於 "
 
 #: ../src/plugins/abrt-dump-journal-core.c:498
 msgid "Create new problem directory in DIR for every coredump"
@@ -1416,6 +1453,16 @@ msgid ""
 "\n"
 "The last seen position is saved in "
 msgstr ""
+"& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
+"\n"
+"從 systemd-journal 中抽出 oops\n"
+"\n"
+"-c 和 -e 選項互相衝突，因為兩者都會指定第一則閱讀訊息。\n"
+"\n"
+"-e 僅用於 -f 時，因為日誌的追尋會在沒有可用的上次查看位置時\n"
+"從頭讀取整份檔案\n"
+"\n"
+"上次查看位置儲存於 "
 
 #: ../src/plugins/abrt-dump-journal-oops.c:231
 #: ../src/plugins/abrt-dump-journal-xorg.c:197
@@ -1425,13 +1472,13 @@ msgstr "從所有機器讀取日誌檔"
 #: ../src/plugins/abrt-dump-journal-oops.c:232
 #: ../src/plugins/abrt-dump-journal-xorg.c:198
 msgid "Read all journal files from directory at PATH"
-msgstr ""
+msgstr "從 PATH 目錄中閱讀所有日誌檔"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:279
 #: ../src/plugins/abrt-dump-journal-xorg.c:273
 #, c-format
 msgid "Cannot initialize systemd-journal in directory '%s'"
-msgstr ""
+msgstr "無法初始化「%s」目錄中的 systemd-journal"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:288
 msgid "Cannot filter systemd-journal to kernel data only"
@@ -1441,11 +1488,11 @@ msgstr "無法過濾 systemd-journal 僅取用內核資料"
 #: ../src/plugins/abrt-dump-journal-xorg.c:298
 #, c-format
 msgid "Failed to start watch from cursor '%s'"
-msgstr "無法從游標「%s」啟動監視"
+msgstr "無法從「%s」游標啟動監視"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:61
 msgid "Failed to parse Backtrace from journal"
-msgstr ""
+msgstr "無法解析日誌中的 Backtrace"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:143
 #, c-format
@@ -1465,28 +1512,41 @@ msgid ""
 "parameter\n"
 "-j or in %s conf file.\n"
 msgstr ""
+"& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
+"\n"
+"從 systemd-journal 中抽出 Xorg 崩潰\n"
+"\n"
+"-c 和 -e 選項互相衝突，因為兩者都會指定第一則閱讀訊息。\n"
+"\n"
+"-e 僅用於 -f 時，因為日誌的追尋會在沒有可用的上次查看位置時\n"
+"從頭讀取整份檔案\n"
+"\n"
+"上次查看位置儲存於 %s\n"
+"\n"
+"日誌過濾是必要的參數，且必須以 -j 參數指定，或在\n"
+"%s conf 檔中指定。\n"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:189
 msgid "Print found crashes on standard output"
-msgstr ""
+msgstr "於標準輸出列印找到的崩潰"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:190
 msgid "Create new problem directory in DIR for every crash found"
-msgstr ""
+msgstr "在每個找到的崩潰 DIR 目錄中建立新的問題目錄"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:199
 msgid "Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)"
-msgstr ""
+msgstr "日誌過濾，如「_COMM=gdm-x-session」（可能給予多次）"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:265
 msgid ""
 "Journal filter must be specified either by parameter -j or stored in /etc/"
 "abrt/plugins/xorg.conf file"
-msgstr ""
+msgstr "日誌過濾必須用參數 -j 或以儲存在 /etc/abrt/plugins/xorg.conf 檔中的內容指定"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:282
 msgid "Cannot filter systemd-journal to Xorg data only"
-msgstr ""
+msgstr "無法將 systemd-journal 過濾為僅剩 Xorg 資料"
 
 #: ../src/plugins/abrt-dump-xorg.c:35
 msgid ""
@@ -1495,7 +1555,7 @@ msgid ""
 "Extract Xorg crash from FILE (or standard input)"
 msgstr "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
-"從 FILE (或標準輸出) 抽出 Xorg 當機資訊"
+"從 FILE (或標準輸出) 抽出 Xorg 崩潰資訊"
 
 #: ../src/plugins/abrt-dump-xorg.c:53
 msgid "Print found crash data on standard output"
@@ -1503,11 +1563,11 @@ msgstr "將找到的崩潰資料列印在標準輸出上"
 
 #: ../src/plugins/abrt-dump-xorg.c:54
 msgid "Create problem directory in DIR for every crash found"
-msgstr "在 DIR 內為每個找到的當機資料建立問題目錄"
+msgstr "在 DIR 內為每個找到的崩潰資料建立問題目錄"
 
 #: ../src/plugins/abrt-dump-xorg.c:108
 msgid "Failed to parse Backtrace from log file"
-msgstr ""
+msgstr "無法從紀錄檔中解析 Backtrace"
 
 #. abrt_journal_set_cursor() prints error message in verbose mode
 #: ../src/plugins/abrt-journal.c:274
@@ -1528,7 +1588,7 @@ msgstr "不還原日誌監視的位置：不存在「%s」檔案"
 #: ../src/plugins/abrt-journal.c:304
 #, c-format
 msgid "Cannot restore journal watch's position form file '%s'"
-msgstr "無法從檔案「%s」還原日誌監視的位置"
+msgstr "無法還原「%s」日誌監視位置格式檔案"
 
 #: ../src/plugins/abrt-journal.c:311
 #, c-format
@@ -1561,7 +1621,7 @@ msgstr "無法將日誌從檔案「%s」移到游標處"
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
-msgstr "回追伺服器無法使用，因為當掉資訊過大。請嘗試本地端回追處理。"
+msgstr "追溯伺服器無法使用，因為崩潰資訊過大。請嘗試本地端回追處理。"
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
@@ -1570,7 +1630,7 @@ msgstr "回追伺服器無法使用，因為當掉資訊過大。請嘗試本地
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
 msgid "Can't create temporary file in "
-msgstr "無法建立暫存檔於"
+msgstr "無法建立暫存檔於 "
 
 #: ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
@@ -1613,7 +1673,7 @@ msgstr "來自伺服器的回應無效：遺失 HTTP 訊息本文。"
 msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official '%s' repositories?"
-msgstr "回追伺服器無法處理軟體包「%s.%s」。\n"
+msgstr "追溯伺服器無法處理軟體包「%s.%s」。\n"
 "該軟體包是否來自官方「%s」軟體庫？"
 
 #: ../src/plugins/abrt-retrace-client.c:444
@@ -1632,14 +1692,14 @@ msgstr "伺服器已拒絕您的請求。"
 #: ../src/plugins/abrt-retrace-client.c:500
 #, c-format
 msgid "'%s' must be a regular file in order to use Retrace server."
-msgstr "若要使用回追伺服器，「%s」必須是一般檔案。"
+msgstr "若要使用追溯伺服器，「%s」必須是一般檔案。"
 
 #: ../src/plugins/abrt-retrace-client.c:520
 #, c-format
 msgid ""
 "The size of your crash is %s, but the retrace server only accepts crashes "
 "smaller or equal to %s."
-msgstr "您的崩潰資訊大小為 %s，但是回追伺服器僅接受小於或等於 %s 的崩潰資訊。"
+msgstr "您的崩潰資訊大小為 %s，但是追溯伺服器僅接受小於或等於 %s 的崩潰資訊。"
 
 #: ../src/plugins/abrt-retrace-client.c:540
 msgid "The server does not support xz-compressed tarballs."
@@ -1648,7 +1708,7 @@ msgstr "伺服器不支援 xz 壓縮版 tarball。"
 #: ../src/plugins/abrt-retrace-client.c:577
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
-msgstr "回追伺服器不支援「%s」發行版。"
+msgstr "追溯伺服器不支援「%s」發行版。"
 
 #: ../src/plugins/abrt-retrace-client.c:581
 msgid "The server is not able to handle your request."
@@ -1656,7 +1716,7 @@ msgstr "伺服器無法處理您的請求。"
 
 #: ../src/plugins/abrt-retrace-client.c:600
 msgid "Unknown package sent to Retrace server."
-msgstr "傳送給回追伺服器的軟體包不明。"
+msgstr "傳送給追溯伺服器的軟體包不明。"
 
 #: ../src/plugins/abrt-retrace-client.c:609
 msgid "Preparing an archive to upload"
@@ -1667,7 +1727,7 @@ msgstr "正在準備要上傳的封存檔"
 msgid ""
 "The size of your archive is %s, but the retrace server only accepts archives "
 "smaller or equal to %s."
-msgstr "您的封存檔大小為 %s，但是回追伺服器僅接受小於或等於 %s 的封存檔。"
+msgstr "您的封存檔大小為 %s，但是追溯伺服器僅接受小於或等於 %s 的封存檔。"
 
 #: ../src/plugins/abrt-retrace-client.c:640
 #, c-format
@@ -1705,7 +1765,7 @@ msgstr "上傳成功"
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
-msgstr "您的問題目錄已損毀，無法被回追伺服器處理。"
+msgstr "您的問題目錄已損毀，無法被追溯伺服器處理。"
 
 #: ../src/plugins/abrt-retrace-client.c:769
 msgid ""
@@ -1762,21 +1822,21 @@ msgstr "紀錄至 syslog"
 
 #: ../src/plugins/abrt-retrace-client.c:1219
 msgid "allow insecure connection to retrace server"
-msgstr "允許連接至回追伺服器的不安全連線"
+msgstr "允許連接至追溯伺服器的不安全連線"
 
 #: ../src/plugins/abrt-retrace-client.c:1221
 msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
-msgstr "在上傳封存檔之前，不要檢查回追伺服器是否可以處理給定的軟體包"
+msgstr "在上傳封存檔之前，不要檢查追溯伺服器是否可以處理給定的軟體包"
 
 #: ../src/plugins/abrt-retrace-client.c:1224
 msgid "retrace server URL"
-msgstr "回追伺服器網址"
+msgstr "追溯伺服器網址"
 
 #: ../src/plugins/abrt-retrace-client.c:1226
 msgid "retrace server port"
-msgstr "回追伺服器連接埠"
+msgstr "追溯伺服器連接埠"
 
 #: ../src/plugins/abrt-retrace-client.c:1228
 msgid "(debug) show received HTTP headers"
@@ -1800,11 +1860,11 @@ msgstr "為投票操作而延遲"
 
 #: ../src/plugins/abrt-retrace-client.c:1237
 msgid "(debug) do not delete temporary archive created from dump dir in "
-msgstr "(除錯) 不要從此目錄內的傾印目錄刪除已建立的暫存封存檔："
+msgstr "（除錯）不要從此目錄內的傾印目錄刪除已建立的暫存封存檔："
 
 #: ../src/plugins/abrt-retrace-client.c:1239
 msgid "For status, backtrace, and log operations"
-msgstr "狀態、追蹤、紀錄等操作"
+msgstr "狀態、回溯、紀錄等操作"
 
 #: ../src/plugins/abrt-retrace-client.c:1241
 msgid "id of your task on server"
@@ -1852,7 +1912,7 @@ msgstr "本地端 GNU 除錯器"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr "下載 debuginfo 軟體包並透過本地端的 GDB 產生追蹤資訊"
+msgstr "下載 debuginfo 軟體包並透過本地端的 GDB 產生回溯資訊"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
@@ -1865,7 +1925,7 @@ msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
-msgstr "傳送核心傾印至遠端回追伺服器來分析"
+msgstr "傳送核心傾印至遠端追溯伺服器來分析"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
@@ -1875,16 +1935,19 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
-"上傳核心傾印資料至伺服器，該伺服器會產生回追資料並回傳。優點：不需要下載 debuginfo 軟體包、回追伺服器資料庫中的 debuginfo "
-"比較完整、回追伺服器可能會產生比較良好的追蹤資料。缺點：您需要上傳核心傾印檔案，該檔案包含當掉程式的所有資料，包括您的私人資料 (如果有的話)。"
+"Uploads coredump to a server, which generates backtrace and returns it. Pros:"
+" no need for debuginfo downloads. Retrace server's database of debuginfos is "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
+"private data, if any."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Retrace server URL"
-msgstr "回追伺服器網址"
+msgstr "追溯伺服器網址"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Address of the retrace server"
-msgstr "回追伺服器的位址"
+msgstr "追溯伺服器的位址"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:5
 msgid "Insecure"
@@ -1933,7 +1996,7 @@ msgstr "當連接至伺服器時遭遇錯誤"
 #: ../src/plugins/https-utils.c:77
 #, c-format
 msgid "An error occurred while connecting to '%s'"
-msgstr "當連接至「%s」時遭遇錯誤"
+msgstr "當連接到「%s」時遭遇錯誤"
 
 #: ../src/plugins/https-utils.c:97
 #, c-format
@@ -2085,7 +2148,7 @@ msgstr "遭遇一項內核問題，但您的內核已經損壞 (旗標：%s)。�
 #: ../src/plugins/oops-utils.c:228
 #, c-format
 msgid " Tainted modules: %s."
-msgstr "損壞的模組：%s。"
+msgstr " 損壞的模組：%s。"
 
 #: ../src/plugins/bodhi.c:468
 msgid "List of bug ids"
@@ -2153,7 +2216,7 @@ msgstr "「%s」辨識出一個以上的問題目錄"
 
 #: ../src/cli/abrt-cli.c:130
 msgid "Usage: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
-msgstr ""
+msgstr "用法：abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
 
 #: ../src/cli/abrt-cli.c:134
 msgid "List problems [in DIRs]"
@@ -2186,7 +2249,7 @@ msgstr "請見 'abrt-cli COMMAND --help' 以瞭解更多資訊"
 
 #: ../src/cli/list.c:127
 msgid "& list [options]"
-msgstr ""
+msgstr "& list [options]"
 
 #: ../src/cli/list.c:136 ../src/cli-ng/abrtcli/cli.py:121
 #: ../src/cli-ng/abrtcli/cli.py:264
@@ -2230,7 +2293,7 @@ msgstr "沒有這個問題目錄「%s」"
 
 #: ../src/cli/status.c:66
 msgid "& status"
-msgstr ""
+msgstr "& status"
 
 #: ../src/cli/status.c:74 ../src/cli-ng/abrtcli/cli.py:260
 msgid "Print only the problem count without any message"
@@ -2248,12 +2311,12 @@ msgstr "ABRT 已偵測到 %u 項問題。若要取得更多資訊，請執行：
 #: ../src/cli/report.c:34
 #, c-format
 msgid "Can't find problem '%s'"
-msgstr ""
+msgstr "找不到「%s」問題"
 
 #: ../src/cli/report.c:42
 #, c-format
 msgid "Problem '%s' cannot be reported"
-msgstr ""
+msgstr "無法回報「%s」問題"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/report.c:63 ../src/cli/process.c:70
@@ -2291,7 +2354,7 @@ msgstr "正在回報「%s」"
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:127
 msgid "For next problem press ENTER:"
-msgstr "下個問題請按 ENTER 鍵。"
+msgstr "下個問題請按 ENTER 鍵："
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/process.c:138
@@ -2305,114 +2368,115 @@ msgstr "僅選取時間戳記之後的問題"
 
 #: ../src/cli-ng/abrtcli/cli.py:33
 msgid "Problem has no backtrace"
-msgstr ""
+msgstr "問題沒有回溯資料"
 
 #: ../src/cli-ng/abrtcli/cli.py:35
 msgid "Start retracing process?"
-msgstr ""
+msgstr "開始追溯程序？"
 
 #: ../src/cli-ng/abrtcli/cli.py:40
 msgid "Show backtrace of a problem"
-msgstr ""
+msgstr "顯示問題的回溯資料"
 
 #: ../src/cli-ng/abrtcli/cli.py:50
 msgid "This"
-msgstr ""
+msgstr "這個"
 
 #: ../src/cli-ng/abrtcli/cli.py:52
 msgid "Last"
-msgstr ""
+msgstr "上個"
 
 #: ../src/cli-ng/abrtcli/cli.py:54
 msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
-msgstr ""
+msgstr "{} 問題不屬 C/C++ 類型。無法安裝 debuginfo"
 
 #: ../src/cli-ng/abrtcli/cli.py:64 ../src/cli-ng/abrtcli/cli.py:99
 msgid ""
 "Permission denied: '{}'\n"
 "If this is a system problem try running this command as root"
-msgstr ""
+msgstr "拒絕許可：「{}」\n"
+"如果這式系統問題，請試著以 root 身份執行此指令"
 
 #: ../src/cli-ng/abrtcli/cli.py:71
 msgid "Install required debuginfo for given problem"
-msgstr ""
+msgstr "為指定問題安裝必須的 debuginfo"
 
 #: ../src/cli-ng/abrtcli/cli.py:106
 msgid "Run GDB against a problem"
-msgstr ""
+msgstr "對問題執行 GDB"
 
 #: ../src/cli-ng/abrtcli/cli.py:117 ../src/cli-ng/abrtcli/cli.py:153
 msgid "Output format"
-msgstr ""
+msgstr "輸出格式"
 
 #: ../src/cli-ng/abrtcli/cli.py:119 ../src/cli-ng/abrtcli/cli.py:155
 msgid "Built-in output format"
-msgstr ""
+msgstr "內建輸出格式"
 
 #: ../src/cli-ng/abrtcli/cli.py:145 ../src/cli-ng/abrtcli/match.py:89
 msgid "No problems"
-msgstr ""
+msgstr "沒有問題"
 
 #: ../src/cli-ng/abrtcli/cli.py:147
 msgid "List problems"
-msgstr ""
+msgstr "列出問題"
 
 #: ../src/cli-ng/abrtcli/cli.py:167
 msgid "Print information about problem"
-msgstr ""
+msgstr "列印問題的相關資訊"
 
 #: ../src/cli-ng/abrtcli/cli.py:173
 msgid "Prompt before removal"
-msgstr ""
+msgstr "在移除前先提示"
 
 #: ../src/cli-ng/abrtcli/cli.py:174
 msgid "Do not prompt before removal"
-msgstr ""
+msgstr "不要在移除前先提示"
 
 #. force prompt for last problem to avoid accidents
 #: ../src/cli-ng/abrtcli/cli.py:182
 msgid "Are you sure you want to delete this problem?"
-msgstr ""
+msgstr "您是否要刪除此問題？"
 
 #: ../src/cli-ng/abrtcli/cli.py:186
 msgid "Removed"
-msgstr ""
+msgstr "已移除"
 
 #: ../src/cli-ng/abrtcli/cli.py:188
 msgid "Remove problem"
-msgstr ""
+msgstr "移除問題"
 
 #: ../src/cli-ng/abrtcli/cli.py:199
 msgid "Report problem"
-msgstr ""
+msgstr "移除問題"
 
 #: ../src/cli-ng/abrtcli/cli.py:204
 msgid "Perform local retracing"
-msgstr ""
+msgstr "執行本機追溯"
 
 #: ../src/cli-ng/abrtcli/cli.py:206
 msgid "Perform remote retracing using retrace server"
-msgstr ""
+msgstr "使用追溯伺服器執行遠端追溯"
 
 #: ../src/cli-ng/abrtcli/cli.py:208
 msgid "Force retracing even if backtrace already exists"
-msgstr ""
+msgstr "即使回溯資料已經存在仍強制追溯"
 
 #: ../src/cli-ng/abrtcli/cli.py:223
 msgid "Problem already has a backtrace"
-msgstr ""
+msgstr "問題已經有回溯資料"
 
 #: ../src/cli-ng/abrtcli/cli.py:224
 msgid "Run abrt retrace with -f/--force to retrace again"
-msgstr ""
+msgstr "以 -f/--force 再次執行 abrt 追溯"
 
 #: ../src/cli-ng/abrtcli/cli.py:225
 msgid "Show backtrace?"
-msgstr ""
+msgstr "顯示回溯資料？"
 
 #: ../src/cli-ng/abrtcli/cli.py:229
 msgid "No retracing possible for this problem type"
-msgstr ""
+msgstr "此問題類型沒有追溯可能"
 
 #: ../src/cli-ng/abrtcli/cli.py:233
 msgid ""
@@ -2421,48 +2485,49 @@ msgid ""
 "Local retracing requires downloading potentially large amount of debuginfo "
 "data"
 msgstr ""
+"上傳核心傾印並執行遠端追溯？（這可能包含敏感資料）。若您回答「否」，則會在本機生成堆疊追蹤。本機追溯可能必須下載大量的 debuginfo 資料"
 
 #: ../src/cli-ng/abrtcli/cli.py:248
 msgid "Remote retracing"
-msgstr ""
+msgstr "遠端追溯"
 
 #: ../src/cli-ng/abrtcli/cli.py:251
 msgid "Local retracing"
-msgstr ""
+msgstr "本機追溯"
 
 #: ../src/cli-ng/abrtcli/cli.py:255
 msgid "Generate backtrace from coredump"
-msgstr ""
+msgstr "從核心傾印生成回溯資料"
 
 #: ../src/cli-ng/abrtcli/cli.py:280
 msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
-msgstr ""
+msgstr "ABRT 已偵測到 { } 個問題。若想瞭解更多資訊請執行： abrt list{}"
 
 #: ../src/cli-ng/abrtcli/cli.py:283
 msgid "Print count of the recent crashes"
-msgstr ""
+msgstr "列印最近的崩潰數目"
 
 #: ../src/cli-ng/abrtcli/cli.py:292
 msgid "Authenticate and show all problems on this machine"
-msgstr ""
+msgstr "核對身份並顯示此機器上的所有問題"
 
 #: ../src/cli-ng/abrtcli/match.py:96
 msgid "No problem(s) matched"
-msgstr ""
+msgstr "沒有符合的問題"
 
 #: ../src/cli-ng/abrtcli/match.py:116
 msgid "Ambiguous match specified resulting in multiple problems:"
-msgstr ""
+msgstr "模糊符合多個問題中的指定結果："
 
 #: ../src/cli-ng/abrtcli/utils.py:78
 msgid "Not reportable"
-msgstr ""
+msgstr "無可回報"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
-msgstr "傳送核心傾印至遠端回追伺服器來分析，若遠端分析失敗或可執行本地端分析"
+msgstr "傳送核心傾印至遠端追溯伺服器來分析，若遠端分析失敗或可執行本地端分析"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
 msgid ""
@@ -2474,9 +2539,9 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
-"上傳核心傾印資料至伺服器，該伺服器會產生回追資料並回傳。如果使用者此刻不想上傳核心傾印資料至其他地方，事件會改以本地端分析執行。優點：不需要下載 "
-"debuginfo 軟體包、回追伺服器資料庫中的 debuginfo "
-"比較完整、回追伺服器可能會產生比較良好的追蹤資料。缺點：您需要上傳核心傾印檔案，該檔案包含崩潰程式的所有資料，包括您的私人資料 (如果有的話)。"
+"上傳核心傾印資料至伺服器，該伺服器會產生回溯資料並回傳。如果使用者此刻不想上傳核心傾印資料至其他地方，事件會改以本地端分析執行。優點：不需要下載 "
+"debuginfo 軟體包、追溯伺服器資料庫中的 debuginfo "
+"比較完整、追溯伺服器可能會產生比較良好的回溯資料。缺點：您需要上傳核心傾印檔案，該檔案包含崩潰程式的所有資料，包括您的私人資料（如果有的話）。"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
