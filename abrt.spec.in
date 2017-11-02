@@ -61,8 +61,8 @@
     %define docdirversion -%{version}
 %endif
 
-%define libreport_ver 2.9.2
-%define satyr_ver 0.22
+%define libreport_ver 2.9.3
+%define satyr_ver 0.24
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
@@ -1177,6 +1177,19 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Thu Nov 02 2017 Julius Milan <jmilan@redhat.com> 2.10.5-1
+- Translation updates
+- a-action-ureport: add option 'ProcessUnpackaged'
+- spec: change dependency on python{2,3}-gobject
+- applet: Additional changes to allow optional polkit
+- doc: remove obsolete doxygen tags
+- dbus: Additional changes to allow optional polkit
+- cli-ng: Explicitly state python version in shebangs
+- spec: rename python binary packages
+- a-d-journal-core: Save mountinfo from journal
+- a-d-journal-core: Save container cmdline
+- logging: rename omitted log() to log_warning()
+
 * Mon Aug 28 2017 Matej Habrnal <mhabrnal@redhat.com> 2.10.4-1
 - Translation updates
 - logging: rename log() to log_warning()
