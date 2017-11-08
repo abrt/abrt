@@ -13,6 +13,8 @@ Vendor:     abrt
 %description
 All binary files in this package crash.
 
+%global debug_package %{nil}
+
 %prep
 %setup -q -c
 
