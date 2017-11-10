@@ -84,7 +84,7 @@ rlJournalStart
 
         sed "s/4.2.8-yocto-standard-1968fcd27440e21d39a0b9e14a3be2ad/<KERNEL_VERSION>/" \
             $EXAMPLES_PATH/oops-kernel-panic-hung-tasks-arm.test > \
-            $TmpDir/oops_kernel_panic_hung_tasks_arm.test
+            $TmpDir/oops_not_reportable_kernel_panic_hung_tasks_arm.test
 
         pushd $TmpDir
     rlPhaseEnd
