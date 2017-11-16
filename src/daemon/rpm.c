@@ -353,7 +353,10 @@ struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_
     if (r)
         goto error;
 
-    p->p_nvr = xasprintf("%s-%s-%s", p->p_name, p->p_version, p->p_release);
+    if (strcmp(p->p_epoch, "0") == 0)
+        p->p_nvr = xasprintf("%s-%s-%s", p->p_name, p->p_version, p->p_release);
+    else
+        p->p_nvr = xasprintf("%s:%s-%s-%s", p->p_epoch, p->p_name, p->p_version, p->p_release);
 
     rpmdbFreeIterator(iter);
     rpmtsFree(ts);
