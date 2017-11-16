@@ -379,7 +379,7 @@ Process #PID# (will_segfault) crashed in crash()
 -- Support: https://bugzilla.redhat.com/
 -- Documentation: man:abrt(1)
 -- 
--- will_segfault killed by signal 11
+-- will_segfault killed by SIGSEGV
 -- 
 -- Use the abrt command-line tool for further analysis or to report
 -- the problem to the appropriate support site.
