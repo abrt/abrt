@@ -342,25 +342,22 @@ EOF
     rlPhaseStartTest "ccpp crash abrt-ccpp"
         OUTPUT="ccpp_abrt"
 cat > ${OUTPUT}.right << END
-Process #PID# (will_segfault) crashed in crash()
--- Subject: ABRT has detected unexpected termination: will_segfault
+Process #PID# (will_stackoverflow) crashed in f()
+-- Subject: ABRT has detected unexpected termination: will_stackoverflow
 -- Defined-By: ABRT
 -- Support: https://bugzilla.redhat.com/
 -- Documentation: man:abrt(1)
 -- 
--- will_segfault killed by SIGSEGV
+-- will_stackoverflow killed by SIGSEGV
 -- 
--- #1 crash in /usr/bin/will_segfault
--- #2 varargs in /usr/bin/will_segfault
--- #3 f in /usr/bin/will_segfault
--- #4 callback in /usr/bin/will_segfault
--- #5 call_me_back in /usr/lib64/libwillcrash.so.0.0.0
+-- #1 f in /usr/bin/will_stackoverflow
+-- #2 main in /usr/bin/will_stackoverflow
 -- 
 -- Use the abrt command-line tool for further analysis or to report
 -- the problem to the appropriate support site.
 END
 
-        check_crash "will_segfault" $OUTPUT
+        check_crash "will_stackoverflow" $OUTPUT
     rlPhaseEnd
 
     rlPhaseStartTest "ccpp crash systemd-coredump"
@@ -373,19 +370,19 @@ END
 
         OUTPUT="ccpp_systemd"
 cat > ${OUTPUT}.right << END
-Process #PID# (will_segfault) crashed in crash()
--- Subject: ABRT has detected unexpected termination: will_segfault
+Process #PID# (will_stackoverflow) crashed in f()
+-- Subject: ABRT has detected unexpected termination: will_stackoverflow
 -- Defined-By: ABRT
 -- Support: https://bugzilla.redhat.com/
 -- Documentation: man:abrt(1)
 -- 
--- will_segfault killed by SIGSEGV
+-- will_stackoverflow killed by SIGSEGV
 -- 
 -- Use the abrt command-line tool for further analysis or to report
 -- the problem to the appropriate support site.
 END
 
-        check_crash "will_segfault" $OUTPUT
+        check_crash "will_stackoverflow" $OUTPUT
 
         rlRun "setenforce $SELINUX_MODE"
         rlRun "ulimit -c $OLD_ULIMIT"
