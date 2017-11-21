@@ -5,7 +5,7 @@ import sys
 import os
 
 def assert_equals(current, expected):
-    if current != expected:
+    if str(expected) not in str(current):
         print "%s != %s" % (str(current), str(expected))
         sys.exit(1)
 

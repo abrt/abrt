@@ -39,7 +39,7 @@ if core_backtrace['executable'] in expected:
 
 for (i, frame) in enumerate(trace):
     if core_backtrace['executable'] in expected:
-        assert frame['function_name'] == expected[core_backtrace['executable']][i]
+        assert expected[core_backtrace['executable']][i] in frame['function_name']
 
     assert isinstance(frame['address'], int)
     assert isinstance(frame['build_id'], unicode)
