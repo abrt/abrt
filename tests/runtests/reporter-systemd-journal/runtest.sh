@@ -421,7 +421,7 @@ Process #PID# (will_python3_raise) of user $(id -u) encountered an uncaught Zero
 -- 
 -- will_python3_raise:3:<module>:ZeroDivisionError: division by zero
 -- 
--- #1 <module> in /bin/will_python3_raise:3
+-- #1 <module> in /usr/bin/will_python3_raise:3
 -- 
 -- Use the abrt command-line tool for further analysis or to report
 -- the problem to the appropriate support site.
