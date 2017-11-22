@@ -401,7 +401,7 @@ Process #PID# (will_python_raise) of user $(id -u) encountered an uncaught ZeroD
 -- 
 -- will_python_raise:3:<module>:ZeroDivisionError: integer division or modulo by zero
 -- 
--- #1 <module> in /bin/will_python_raise:3
+-- #1 <module> in /usr/bin/will_python_raise:3
 -- 
 -- Use the abrt command-line tool for further analysis or to report
 -- the problem to the appropriate support site.
