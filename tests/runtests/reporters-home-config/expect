@@ -1,0 +1,32 @@
+#!/usr/bin/expect -f
+
+set dir [lindex $argv 0]
+
+spawn reporter-mantisbt -v -d $dir
+
+set timeout 180
+
+# timeout handler
+proc itstime {args} {
+    puts "!! expect timeout !!"
+        exit 1
+}
+
+while {1} {
+    expect {
+
+        eof {break}
+
+        timeout { itstime }
+
+        "Credentials are not provided by configuration. Please enter your MantisBT login" {
+            send "aaa\n"
+        }
+        "Credentials are not provided by configuration. Please enter the password" {
+            send "bbb\n"
+        }
+        "Invalid password or login." {
+            send "\n"
+        }
+    }
+}
