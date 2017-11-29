@@ -69,6 +69,8 @@ rlJournalStart
         rlRun "kill -11 %3" 0 "Kill process #2"
 
         rlRun "$CLI_LIST 2>&1 | tee cli_list.log"
+
+        sleep 1
         kill %1 || kill -9 %1 # kill tailf
 
         wait_for_sosreport
