@@ -37,7 +37,8 @@ bin_PROGRAMS += \
 endif
 
 libexec_PROGRAMS = \
-    abrt-action-install-debuginfo-to-abrt-cache
+    abrt-action-install-debuginfo-to-abrt-cache \
+    abrt-container-logger
 
 libexec_SCRIPTS = \
     abrt-action-generate-machine-id \
@@ -464,6 +465,9 @@ abrt_bodhi_SOURCES = \
     $(LIBREPORT_WEB_LIBS) \
     ../lib/libabrt.la
 endif
+
+abrt_container_logger_SOURCES = \
+    abrt-container-logger.c
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 

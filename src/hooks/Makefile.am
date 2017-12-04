@@ -74,7 +74,9 @@ pyhook_PYTHON = \
 
 py3hook_PYTHON = \
 	abrt_exception_handler3.py \
-	abrt3.pth
+	abrt3.pth \
+	abrt_exception_handler3_container.py \
+	abrt3_container.pth
 
 EXTRA_DIST = abrt_exception_handler.py.in \
 	abrt_exception_handler3.py.in \
