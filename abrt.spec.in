@@ -308,6 +308,14 @@ Obsoletes: abrt-addon-python3 < 2.10.4
 This package contains python 3 hook and python analyzer plugin for handling
 uncaught exception in python 3 programs.
 
+%package -n python3-abrt-container-addon
+Summary: %{name}'s container addon for catching Python 3 exceptions
+Conflicts: python3-abrt-addon
+
+%description -n python3-abrt-container-addon
+This package contains python 3 hook and handling uncaught exception in python 3
+programs in container.
+
 %package plugin-sosreport
 Summary: %{name}'s plugin for building automatic sosreports
 Requires: sos
@@ -1048,8 +1056,15 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_journalcatalogdir}/abrt_python3.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_python3_format.conf
 %{_mandir}/man5/python3_event.conf.5*
-%{python3_sitearch}/abrt*
-%{python3_sitearch}/__pycache__/abrt*
+%{python3_sitearch}/abrt3.pth
+%{python3_sitearch}/abrt_exception_handler3.py
+%{python3_sitearch}/__pycache__/abrt_exception_handler3.*
+
+%files -n python3-abrt-container-addon
+%{python3_sitearch}/abrt3_container.pth
+%{python3_sitearch}/abrt_exception_handler3_container.py
+%{python3_sitearch}/__pycache__/abrt_exception_handler3_container.*
+%attr(6755, root, root) %{_libexecdir}/abrt-container-logger
 
 %files plugin-sosreport
 %defattr(-,root,root,-)
