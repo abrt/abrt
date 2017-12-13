@@ -66,7 +66,7 @@ rlJournalStart
         sed -i "s/^\(BUG_REPORT_URL\)=.*/\1 = /" "${crash_PATH}/${FILENAME_OSRELEASE}"
 
         rlRun "reporter-bugzilla -v -c bugzilla.conf -d ${crash_PATH} 2>&1 | tee  output-not-set.log" 0 "No bugzilla url in os-release, defaults to bugzilla.redhat.com"
-        rlAssertGrep "Status: NEW https://bugzilla.redhat.com/show_bug.cgi?id=1410984" output-not-set.log
+        rlAssertGrep "Status: [A-Z _]* https://bugzilla.redhat.com/show_bug.cgi?id=1410984" output-not-set.log
 
     rlPhaseEnd
 
@@ -76,7 +76,7 @@ rlJournalStart
         sed -i "/^BUG_REPORT_URL=/d" "${crash_PATH}/${FILENAME_OSRELEASE}"
 
         rlRun "reporter-bugzilla -v -c bugzilla.conf -d problem_dir 2>&1 | tee output-no-url-option.log" 0 "No bugzilla url in os-release, defaults to bugzilla.redhat.com"
-        rlAssertGrep "Status: NEW https://bugzilla.redhat.com/show_bug.cgi?id=1410984" output-no-url-option.log
+        rlAssertGrep "Status: [A-Z _]* https://bugzilla.redhat.com/show_bug.cgi?id=1410984" output-no-url-option.log
 
     rlPhaseEnd
 
