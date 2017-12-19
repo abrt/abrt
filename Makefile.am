@@ -25,6 +25,7 @@ if HAVE_SYSTEMD
                                   init-scripts/abrt-journal-core.service \
                                   init-scripts/abrt-oops.service \
                                   init-scripts/abrt-xorg.service \
+                                  init-scripts/abrt-dockerd.service \
                                   init-scripts/abrt-pstoreoops.service \
                                   init-scripts/abrt-upload-watch.service
 
@@ -44,6 +45,7 @@ else
                         init-scripts/abrt-ccpp \
                         init-scripts/abrt-oops \
                         init-scripts/abrt-xorg \
+                        init-scripts/abrt-dockerd \
                         init-scripts/abrt-vmcore \
                         init-scripts/abrt-pstoreoops \
                         init-scripts/abrt-upload-watch

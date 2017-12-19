@@ -21,6 +21,8 @@ bin_PROGRAMS = \
     abrt-dump-journal-oops \
     abrt-dump-xorg \
     abrt-dump-journal-xorg \
+    abrt-dump-dockerd \
+    abrt-dump-journal-dockerd \
     abrt-action-analyze-c \
     abrt-action-analyze-python \
     abrt-action-analyze-oops \
@@ -136,6 +138,7 @@ EXTRA_DIST = \
     https-utils.h \
     oops-utils.h \
     xorg-utils.h \
+    dockerd-utils.h \
     abrt-journal.h \
     post_report.xml.in \
     abrt-action-analyze-ccpp-local.in \
@@ -232,6 +235,19 @@ libxorg_utils_a_CFLAGS = \
     -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
     -D_GNU_SOURCE
 
+noinst_LIBRARIES += libdockerd-utils.a
+libdockerd_utils_a_SOURCES = \
+    dockerd-utils.c \
+    dockerd-utils.h
+libdockerd_utils_a_CFLAGS = \
+    -I$(srcdir)/../include \
+    $(SYSTEMD_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    $(GLIB_CFLAGS) \
+    $(JSON_C_CFLAGS) \
+    -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
+    -D_GNU_SOURCE
+
 abrt_dump_journal_oops_SOURCES = \
     oops-utils.c \
     abrt-dump-journal-oops.c
@@ -281,6 +297,43 @@ abrt_dump_xorg_LDADD = \
     libxorg-utils.a \
     $(GLIB_LIBS) \
     $(LIBREPORT_LIBS) \
+    ../lib/libabrt.la
+
+abrt_dump_journal_dockerd_SOURCES = \
+    abrt-dump-journal-dockerd.c
+abrt_dump_journal_dockerd_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    $(JSON_C_CFLAGS) \
+    -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
+    -DVAR_STATE=\"$(VAR_STATE)\" \
+    -D_GNU_SOURCE
+abrt_dump_journal_dockerd_LDADD = \
+    libabrt-journal.a \
+    libdockerd-utils.a \
+    $(GLIB_LIBS) \
+    $(LIBREPORT_LIBS) \
+    $(JSON_C_LIBS) \
+    $(SYSTEMD_LIBS) \
+    ../lib/libabrt.la
+
+abrt_dump_dockerd_SOURCES = \
+    abrt-dump-dockerd.c
+abrt_dump_dockerd_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    $(JSON_C_CFLAGS) \
+    -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
+    -D_GNU_SOURCE
+abrt_dump_dockerd_LDADD = \
+    libdockerd-utils.a \
+    $(GLIB_LIBS) \
+    $(LIBREPORT_LIBS) \
+    $(JSON_C_LIBS) \
     ../lib/libabrt.la
 
 abrt_dump_journal_core_SOURCES = \

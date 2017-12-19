@@ -1,0 +1,11 @@
+[Unit]
+Description=ABRT dockerd log watcher
+After=abrtd.service
+Requisite=abrtd.service
+
+[Service]
+# systemd requires absolute paths to executables
+ExecStart=/usr/bin/abrt-dump-journal-dockerd -fxtD
+
+[Install]
+WantedBy=multi-user.target

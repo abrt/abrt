@@ -1,0 +1,99 @@
+#!/bin/bash
+# Start ABRT dockerd log watcher
+#
+# chkconfig: 35 82 16
+# description: Watches system log for crashes inside docker containers, creates problem directories for each crash
+### BEGIN INIT INFO
+# Provides: abrt-dockerd
+# Required-Start: $abrtd
+# Default-Stop: 0 1 2 6
+# Default-Start: 3 5
+# Short-Description: Watches system log for crashes inside docker containers, creates problem directories for each such crash
+# Description: Watches system log for crashes inside docker containers, creates problem directories for each such crash
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# For debugging
+dry_run=false
+verbose=false
+
+LOCK="/var/lock/subsys/abrt-dockerd"
+PIDF="/var/run/abrt-dockerd.pid"
+
+RETVAL=0
+
+check() {
+	# Check that we're a privileged user
+	[ "`id -u`" = 0 ] || exit 4
+}
+
+start() {
+	check
+	kill "`cat -- "$PIDF" 2>/dev/null`" 2>/dev/null
+	rm -f -- "$PIDF" 2>/dev/null
+	# Watch and scan /var/log/messages
+	setsid abrt-watch-log -F "`abrt-dump-dockerd -m`" /var/log/messages -- abrt-dump-dockerd -xD </dev/null >/dev/null 2>&1 &
+	echo $! >"$PIDF"
+	$dry_run || touch -- "$LOCK"
+	return $RETVAL
+}
+
+stop() {
+	check
+	kill "`cat -- "$PIDF" 2>/dev/null`" 2>/dev/null
+	rm -f -- "$PIDF" 2>/dev/null
+	$dry_run || rm -f -- "$LOCK"
+	return $RETVAL
+}
+
+restart() {
+	stop
+	start
+}
+
+reload() {
+	restart
+}
+
+case "$1" in
+start)
+	start
+	;;
+stop)
+	stop
+	;;
+reload)
+	reload
+	;;
+force-reload)
+	echo "$0: Unimplemented feature."
+	RETVAL=3
+	;;
+restart)
+	restart
+	;;
+condrestart)
+	# Is it already running?
+	if test -f "$LOCK"; then   # yes
+		$verbose && printf "Running, restarting\n"
+		restart
+	fi
+	;;
+status)
+	# Is it already running?
+	if test -f "$LOCK"; then   # yes
+		$verbose && printf "Running\n"
+		RETVAL=0
+	else
+		$verbose && printf "Not running\n"
+		RETVAL=3  # "stopped normally"
+	fi
+	;;
+*)
+	echo $"Usage: $0 {start|stop|status|restart|condrestart|reload|force-reload}"
+	RETVAL=2
+esac
+
+exit $RETVAL
