@@ -243,6 +243,15 @@ Requires: abrt-libs = %{version}-%{release}
 This package contains plugin for collecting Xorg crash information from Xorg
 log.
 
+%package addon-dockerd
+Summary: %{name}'s docker addon
+Requires: curl
+Requires: %{name} = %{version}-%{release}
+Requires: abrt-libs = %{version}-%{release}
+
+%description addon-dockerd
+This package contains plugin for collecting crashes inside docker containers.
+
 %if %{?have_kexec_tools} == 1
 %package addon-vmcore
 Summary: %{name}'s vmcore addon
@@ -364,6 +373,7 @@ Requires: abrt-addon-vmcore
 Requires: abrt-addon-ccpp
 Requires: python3-abrt-addon
 Requires: abrt-addon-xorg
+Requires: abrt-addon-dockerd
 %if 0%{?rhel}
 Requires: libreport-rhel >= %{libreport_ver}
 Requires: libreport-plugin-rhtsupport >= %{libreport_ver}
@@ -402,6 +412,7 @@ Requires: abrt-addon-vmcore
 Requires: abrt-addon-ccpp
 Requires: python3-abrt-addon
 Requires: abrt-addon-xorg
+Requires: abrt-addon-dockerd
 # Default config of addon-ccpp requires gdb
 BuildRequires: gdb-headless
 Requires: gdb-headless
@@ -632,6 +643,10 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %systemd_post abrt-xorg.service
 %journal_catalog_update
 
+%post addon-dockerd
+%systemd_post abrt-dockerd.service
+%journal_catalog_update
+
 %post -n python2-abrt-addon
 %journal_catalog_update
 
@@ -663,6 +678,9 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %preun addon-xorg
 %systemd_preun abrt-xorg.service
 
+%preun addon-dockerd
+%systemd_preun abrt-dockerd.service
+
 %if %{?have_kexec_tools} == 1
 %preun addon-vmcore
 %systemd_preun abrt-vmcore.service
@@ -686,6 +704,9 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 
 %postun addon-xorg
 %systemd_postun_with_restart abrt-xorg.service
+
+%postun addon-dockerd
+%systemd_postun_with_restart abrt-dockerd.service
 
 %if %{?have_kexec_tools} == 1
 %postun addon-vmcore
@@ -789,6 +810,9 @@ service abrt-oops condrestart >/dev/null 2>&1 || :
 
 %posttrans addon-xorg
 service abrt-xorg condrestart >/dev/null 2>&1 || :
+
+%posttrans addon-dockerd
+service abrt-dockerd condrestart >/dev/null 2>&1 || :
 
 %if %{?have_kexec_tools} == 1
 %posttrans addon-vmcore
@@ -1029,6 +1053,17 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_bindir}/abrt-dump-journal-xorg
 %{_mandir}/man1/abrt-dump-xorg.1*
 %{_mandir}/man1/abrt-dump-journal-xorg.1*
+
+%files addon-dockerd
+%if %{with systemd}
+%{_unitdir}/abrt-dockerd.service
+%else
+%{_initrddir}/abrt-dockerd
+%endif
+%{_bindir}/abrt-dump-dockerd
+%{_bindir}/abrt-dump-journal-dockerd
+%{_mandir}/man1/abrt-dump-dockerd.1*
+%{_mandir}/man1/abrt-dump-journal-dockerd.1*
 
 %if %{?have_kexec_tools} == 1
 %files addon-vmcore
