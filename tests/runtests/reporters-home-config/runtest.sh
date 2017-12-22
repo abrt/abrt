@@ -44,6 +44,12 @@ rlJournalStart
     rlPhaseStartSetup
         check_prior_crashes
 
+        # ensure local config exists
+        mkdir -p  ~/.config/libreport/
+        touch ~/.config/libreport/bugzilla.conf
+        touch ~/.config/libreport/rhtsupport.conf
+        touch ~/.config/libreport/mantisbt.conf
+
         rlFileBackup $GLOBAL_BUGZILLA_CONF $GLOBAL_RHTSUPPORT_CONF $GLOBAL_MANTISBT_CONF \
             $LOCAL_BUGZILLA_CONF $LOCAL_RHTSUPPORT_CONF $LOCAL_MANTISBT_CONF
 
@@ -54,12 +60,6 @@ rlJournalStart
         augtool clear /files${GLOBAL_RHTSUPPORT_CONF}/Password
         augtool clear /files${GLOBAL_MANTISBT_CONF}/Login
         augtool clear /files${GLOBAL_MANTISBT_CONF}/Password
-
-        # ensure local config exists (for augtool)
-        mkdir -p  ~/.config/libreport/
-        touch ~/.config/libreport/bugzilla.conf
-        touch ~/.config/libreport/rhtsupport.conf
-        touch ~/.config/libreport/mantisbt.conf
 
         TmpDir=$(mktemp -d)
         cp -v $TEST_DIR/expect $TmpDir/expect
