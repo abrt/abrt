@@ -57,7 +57,7 @@ function confDBusGetProperty() {
 
 rlJournalStart
     rlPhaseStartSetup
-        killall abrt-configuration
+        rlWaitForCmd "killall -qw abrt-configuration" -t 5
 
         INTERFACES_DIR=`pkg-config --variable=problemsconfigurationdir abrt`
         export INTERFACES_DIR
@@ -84,7 +84,7 @@ rlJournalStart
         echo "<node><interface></foo></blah>" > $INVALID_XML_PATH
 
         rlRun "abrt-configuration >$LOG_FILE 2>&1 &"
-        killall abrt-configuration
+        rlWaitForCmd "killall -w abrt-configuration" -t 5
 
         rlAssertGrep "Could not parse interface file '$INVALID_XML_PATH':" $LOG_FILE
 
@@ -98,7 +98,7 @@ rlJournalStart
         echo "<node name='/foo/blah'><interface name='foo.blah'><property name='success' type='b' access='readwrite'/></interface></node>" > $XML_PATH
 
         rlRun "abrt-configuration >$LOG_FILE 2>&1 &"
-        killall abrt-configuration
+        rlWaitForCmd "killall -w abrt-configuration" -t 5
 
         rlAssertGrep "Configuration node '/foo/blah' misses annotation 'com.redhat.problems.ConfFile'" $LOG_FILE
         rlAssertGrep "Configuration node '/foo/blah' misses annotation 'com.redhat.problems.DefaultConfFile'" $LOG_FILE
@@ -113,7 +113,7 @@ rlJournalStart
         echo "<node name='/foo/blah'><annotation name='com.redhat.problems.DefaultConfFile' value='/etc/abrt/abrt.conf'/><interface name='foo.blah'><property name='success' type='b' access='readwrite'/></interface></node>" > $XML_PATH
 
         rlRun "abrt-configuration >$LOG_FILE 2>&1 &"
-        killall abrt-configuration
+        rlWaitForCmd "killall -w abrt-configuration" -t 5
 
         rlAssertGrep "Configuration node '/foo/blah' misses annotation 'com.redhat.problems.ConfFile'" $LOG_FILE
 
@@ -127,7 +127,7 @@ rlJournalStart
         echo "<node name='/foo/blah'><annotation name='com.redhat.problems.ConfFile' value='/etc/abrt/abrt.conf'/><interface name='foo.blah'><property name='success' type='b' access='readwrite'/></interface></node>" > $XML_PATH
 
         rlRun "abrt-configuration >$LOG_FILE 2>&1 &"
-        killall abrt-configuration
+        rlWaitForCmd "killall -w abrt-configuration" -t 5
 
         rlAssertGrep "Configuration node '/foo/blah' misses annotation 'com.redhat.problems.DefaultConfFile'" $LOG_FILE
 
@@ -149,7 +149,7 @@ rlJournalStart
              > $XML_PATH
 
         rlRun "abrt-configuration >$LOG_FILE 2>&1 &"
-        killall abrt-configuration
+        rlWaitForCmd "killall -w abrt-configuration" -t 5
 
         rlAssertGrep "Property 'success' misses annotation 'com.redhat.problems.DefaultConfFile'" $LOG_FILE
 
@@ -171,7 +171,7 @@ rlJournalStart
              > $XML_PATH
 
         rlRun "abrt-configuration >$LOG_FILE 2>&1 &"
-        killall abrt-configuration
+        rlWaitForCmd "killall -w abrt-configuration" -t 5
 
         rlAssertGrep "Property 'success' misses annotation 'com.redhat.problems.ConfFile'" $LOG_FILE
 
@@ -198,7 +198,7 @@ rlJournalStart
 
         rlAssertGrep "Error .*abrt.*file.*access.*error.*: Could not load configuration from '/proc/cpuinfo/foo/blah/abrt.conf'" $RUN_LOG_FILE
 
-        killall abrt-configuration
+        rlWaitForCmd "killall -w abrt-configuration" -t 5
 
         rlRun "rm $XML_PATH"
     rlPhaseEnd
@@ -228,7 +228,7 @@ rlJournalStart
         rlRun "confDBusSetPropertyDefault blah AutoreportingEnabled" 0
         rlAssertEquals "Reset 'AutoreportingEnabled' value" "_$(confDBusGetProperty blah AutoreportingEnabled)" "_$DEFAULT_AUTO_REPORTING"
 
-        killall abrt-configuration
+        rlWaitForCmd "killall -w abrt-configuration" -t 5
 
         rlRun "rm $XML_PATH"
         rlRun "rm /tmp/abrt.conf"
@@ -260,7 +260,7 @@ rlJournalStart
 
         rlAssertGrep "Error .*abrt.*file.*access.*error.*: Could not load configuration from '/proc/cpuinfo/abrt/conf.d/abrt.conf'" $RUN_LOG_FILE
 
-        killall abrt-configuration
+        rlWaitForCmd "killall -w abrt-configuration" -t 5
 
         rlRun "rm $XML_PATH"
     rlPhaseEnd
@@ -283,7 +283,7 @@ rlJournalStart
         rlRun "confDBusGetProperty blah SuperSuccess >$RUN_LOG_FILE 2>&1"
         rlRun "confDBusSetProperty blah SuperSuccess array:boolean '[False]'" 1
 
-        killall abrt-configuration
+        rlWaitForCmd "killall -w abrt-configuration" -t 5
 
         rlAssertGrep "Property 'SuperSuccess' has unsupported getter type" $LOG_FILE
         rlAssertGrep "Property 'SuperSuccess' has unsupported setter type" $LOG_FILE
