@@ -211,7 +211,6 @@ PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.43])
 PKG_CHECK_MODULES([DBUS], [dbus-1])
 PKG_CHECK_MODULES([LIBXML], [libxml-2.0])
 PKG_CHECK_MODULES([LIBNOTIFY], [libnotify >= 0.7.0])
-PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([LIBREPORT], [libreport])
 PKG_CHECK_MODULES([LIBREPORT_GTK], [libreport-gtk])
 PKG_CHECK_MODULES([GIO], [gio-2.0])
@@ -459,6 +458,19 @@ ABRT_PARSE_WITH([polkit]))
     PKG_CHECK_MODULES([POLKIT], [polkit-gobject-1])
     PKG_CHECK_MODULES([POLKIT_AGENT], [polkit-agent-1])
     AC_DEFINE(HAVE_POLKIT, [], [Have polkit support.])
+[fi]
+
+AC_ARG_WITH(retrace,
+    AS_HELP_STRING([--with-retrace],
+        [Add abrt-retrace-client plugin (default is YES)]),
+    ABRT_PARSE_WITH([retrace]))
+
+[if test -z "$NO_RETRACE"]
+[then]
+    PKG_CHECK_MODULES([NSS], [nss])
+    AM_CONDITIONAL(BUILD_RETRACE_CLIENT, true)
+[else]
+    AM_CONDITIONAL(BUILD_RETRACE_CLIENT, false)
 [fi]
 
 # Initialize the test suite.

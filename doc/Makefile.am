@@ -25,7 +25,9 @@ MAN1_TXT += abrt-dump-journal-oops.txt
 MAN1_TXT += abrt-dump-journal-xorg.txt
 MAN1_TXT += abrt-dump-xorg.txt
 MAN1_TXT += abrt-auto-reporting.txt
+if BUILD_RETRACE_CLIENT
 MAN1_TXT += abrt-retrace-client.txt
+endif
 MAN1_TXT += abrt-handle-upload.txt
 MAN1_TXT += abrt-harvest-pstoreoops.txt
 MAN1_TXT += abrt-merge-pstoreoops.txt
@@ -60,7 +62,9 @@ MAN5_TXT += gpg_keys.conf.txt
 MAN5_PREFORMATTED =
 MAN5_PREFORMATTED += abrt_event.conf.5
 MAN5_PREFORMATTED += ccpp_event.conf.5
+if BUILD_RETRACE_CLIENT
 MAN5_PREFORMATTED += ccpp_retrace_event.conf.5
+endif
 MAN5_PREFORMATTED += gconf_event.conf.5
 MAN5_PREFORMATTED += koops_event.conf.5
 if BUILD_PYTHON2
