@@ -25,6 +25,9 @@
 # build abrt-atomic subpackage
 %bcond_without atomic
 
+# build abrt-retrace-client by default
+%bcond_without retrace
+
 %ifarch aarch64
 %define have_kexec_tools 0
 %else
@@ -226,8 +229,10 @@ Requires: cpio
 Requires: gdb-headless
 Requires: elfutils
 %if 0%{!?rhel:1}
+%if %{with retrace}
 # abrt-action-perform-ccpp-analysis wants to run analyze_RetraceServer:
 Requires: %{name}-retrace-client
+%endif
 %endif
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-addon-coredump-helper = %{version}-%{release}
@@ -252,6 +257,7 @@ Requires: abrt-libs = %{version}-%{release}
 %description addon-upload-watch
 This package contains hook for uploaded problems.
 
+%if %{with retrace}
 %package retrace-client
 Summary: %{name}'s retrace client
 Requires: %{name} = %{version}-%{release}
@@ -262,6 +268,7 @@ Requires: p11-kit-trust
 %description retrace-client
 This package contains the client application for Retrace server
 which is able to analyze C/C++ crashes remotely.
+%endif
 
 %package addon-kerneloops
 Summary: %{name}'s kerneloops addon
@@ -444,7 +451,9 @@ Requires: abrt-addon-xorg
 Requires: libreport-rhel >= %{libreport_ver}
 Requires: libreport-plugin-rhtsupport >= %{libreport_ver}
 %else
+%if %{with retrace}
 Requires: abrt-retrace-client
+%endif
 %if %{with bodhi}
 Requires: abrt-plugin-bodhi
 %endif
@@ -487,7 +496,9 @@ Requires: gnome-abrt
 Requires: libreport-rhel >= %{libreport_ver}
 Requires: libreport-plugin-rhtsupport >= %{libreport_ver}
 %else
+%if %{with retrace}
 Requires: abrt-retrace-client
+%endif
 %if %{with bodhi}
 Requires: abrt-plugin-bodhi
 %endif
@@ -624,6 +635,9 @@ CFLAGS="%{optflags} -Werror" %configure \
 %endif
 %if %{without atomic}
         --without-atomic \
+%endif
+%if %{without retrace}
+        --without-retrace \
 %endif
 %if 0%{?rhel}
         --enable-suggest-autoreporting \
@@ -1040,6 +1054,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man5/vimrc_event.conf.5*
 %{_datadir}/libreport/events/analyze_CCpp.xml
 %{_datadir}/libreport/events/analyze_LocalGDB.xml
+%{_datadir}/libreport/events/analyze_RetraceServer.xml
 %{_datadir}/libreport/events/collect_xsession_errors.xml
 %{_datadir}/libreport/events/collect_GConf.xml
 %{_datadir}/libreport/events/collect_vimrc_user.xml
@@ -1065,12 +1080,13 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man*/abrt-upload-watch.*
 
 
+%if %{with retrace}
 %files retrace-client
 %{_bindir}/abrt-retrace-client
 %{_mandir}/man1/abrt-retrace-client.1*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/ccpp_retrace_event.conf
 %{_mandir}/man5/ccpp_retrace_event.conf.5*
-%{_datadir}/libreport/events/analyze_RetraceServer.xml
+%endif
 
 %files addon-kerneloops
 %config(noreplace) %{_sysconfdir}/libreport/events.d/koops_event.conf

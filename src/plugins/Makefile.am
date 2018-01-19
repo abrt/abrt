@@ -28,8 +28,12 @@ bin_PROGRAMS = \
     abrt-action-trim-files \
     abrt-action-generate-backtrace \
     abrt-action-generate-core-backtrace \
-    abrt-action-analyze-backtrace \
+    abrt-action-analyze-backtrace
+
+if BUILD_RETRACE_CLIENT
+bin_PROGRAMS += \
     abrt-retrace-client
+endif
 
 if BUILD_BODHI
 bin_PROGRAMS += \
@@ -101,7 +105,6 @@ eventsconfdir = $(EVENTS_CONF_DIR)
 
 dist_eventsconf_DATA = \
     ccpp_event.conf \
-    ccpp_retrace_event.conf \
     koops_event.conf \
     xorg_event.conf \
     smart_event.conf \
@@ -116,6 +119,11 @@ endif
 
 if BUILD_PYTHON3
 dist_eventsconf_DATA += python3_event.conf
+endif
+
+if BUILD_RETRACE_CLIENT
+dist_eventsconf_DATA += \
+    ccpp_retrace_event.conf
 endif
 
 if BUILD_BODHI
@@ -152,7 +160,6 @@ EXTRA_DIST = \
     abrt-action-generate-machine-id \
     abrt-action-ureport \
     abrt-gdb-exploitable \
-    https-utils.h \
     oops-utils.h \
     xorg-utils.h \
     abrt-journal.h \
@@ -164,6 +171,11 @@ EXTRA_DIST = \
     abrt_python3.catalog.in \
     abrt_python.catalog.in \
     abrt_xorg.catalog.in
+
+if BUILD_RETRACE_CLIENT
+EXTRA_DIST += \
+    https-utils.h
+endif
 
 if BUILD_ADDON_VMCORE
 bin_SCRIPTS += \
@@ -444,6 +456,7 @@ abrt_action_install_debuginfo_to_abrt_cache_CPPFLAGS = \
     -Wl,-z,relro -Wl,-z,now \
     -pie
 
+if BUILD_RETRACE_CLIENT
 abrt_retrace_client_SOURCES = \
     abrt-retrace-client.c \
     https-utils.c
@@ -460,6 +473,7 @@ abrt_retrace_client_SOURCES = \
      $(LIBREPORT_LIBS) \
      $(SATYR_LIBS) \
      $(NSS_LIBS)
+endif
 
 if BUILD_BODHI
 abrt_bodhi_SOURCES = \
