@@ -34,6 +34,7 @@ PACKAGE="abrt"
 
 DOCKER_IMAGE="fedora"
 DOCKER_NAME=abrt_integration_test
+DOCKER_NAME1=abrt_integration_test1
 
 rlJournalStart
     rlPhaseStartSetup
@@ -67,10 +68,21 @@ rlJournalStart
         rlAssertNotDiffer                                    $crash_PATH/docker_inspect      docker_inspect
         rlAssertGrep      "docker"                          "$crash_PATH/container_cmdline"
 
-        rlRun "docker rm abrt_integration_test"
+        rlRun "abrt-cli st > old_status"
+        rlRun "docker run --name $DOCKER_NAME1 $DOCKER_IMAGE /usr/bin/bash -c \"timeout -s ABRT 30 sleep 100\"" 124
+        wait_for_hooks
+        wait_for_process "abrt-hook-ccpp"
+        rlRun "abrt-cli st > new_status"
+        rlAssertDiffer new_status old_status
+        rlRun "sed -i 's/1/2/' old_status"
+        rlAssertNotDiffer new_status old_status
+
+        rlRun "docker rm abrt_integration_test abrt_integration_test1"
     rlPhaseEnd
 
     rlPhaseStartTest "Kill sleep in fedora image with ccpp-plugin"
+        abrt-cli rm $crash_PATH
+        get_crash_path
         abrt-cli rm $crash_PATH
         rlRun "systemctl stop abrt-journal-core"
         rlRun "systemctl start abrt-ccpp"
@@ -90,10 +102,19 @@ rlJournalStart
         rlAssertNotDiffer                                    $crash_PATH/docker_inspect      docker_inspect
         rlAssertGrep      "docker"                          "$crash_PATH/container_cmdline"
 
-        rlRun "docker rm abrt_integration_test"
+        rlRun "abrt-cli st > old_status"
+        rlRun "docker run --name $DOCKER_NAME1 $DOCKER_IMAGE /usr/bin/bash -c \"timeout -s ABRT 60 sleep 100\"" 124
+        wait_for_hooks
+        wait_for_process "abrt-hook-ccpp"
+        rlRun "abrt-cli st > new_status"
+        rlAssertDiffer new_status old_status
+
+        rlRun "docker rm abrt_integration_test abrt_integration_test1"
     rlPhaseEnd
 
     rlPhaseStartCleanup
+        abrt-cli rm $crash_PATH
+        get_crash_path
         abrt-cli rm $crash_PATH
         popd # TmpDir
         rm -rf $TmpDir
