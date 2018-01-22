@@ -279,9 +279,9 @@ AC_SUBST(SUPPORT_URL)
 AC_SUBST([AUGEAS_LENS_LIB_DIR], [$with_augeaslenslibdir])
 
 AC_PATH_PROG(AUGPARSE, augparse, no)
-[if test "$ARGPARSE" = "no"]
+[if test "$AUGPARSE" = "no"]
 [then]
-    [echo "The argparse program was not found in the search path. Please ensure"]
+    [echo "The augparse program was not found in the search path. Please ensure"]
     [echo "that it is installed and its directory is included in the search path."]
     [echo "Then run configure again before attempting to build ABRT."]
     [exit 1]
