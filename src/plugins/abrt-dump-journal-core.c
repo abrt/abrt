@@ -502,10 +502,13 @@ main(int argc, char *argv[])
         OPT_t = 1 << 6,
         OPT_T = 1 << 7,
         OPT_f = 1 << 8,
+        OPT_a = 1 << 9,
+        OPT_J = 1 << 10,
     };
 
     char *cursor = NULL;
     char *dump_location = NULL;
+    char *journal_dir = NULL;
     int throttle = 0;
 
     /* Keep enum above and order of options below in sync! */
@@ -519,6 +522,8 @@ main(int argc, char *argv[])
         OPT_INTEGER('t', NULL, &throttle, _("Throttle problem directory creation to 1 per INT second")),
         OPT_BOOL(  'T', NULL, NULL, _("Same as -t INT, INT is specified in plugins/CCpp.conf")),
         OPT_BOOL(  'f', NULL, NULL, _("Follow systemd-journal from the last seen position (if available)")),
+        OPT_BOOL(  'a', NULL, NULL, _("Read journal files from all machines")),
+        OPT_STRING('J', NULL, &journal_dir,  "PATH", _("Read all journal files from directory at PATH")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -574,8 +579,18 @@ main(int argc, char *argv[])
            (env_journal_filter ? (gpointer)env_journal_filter : (gpointer)"SYSLOG_IDENTIFIER=systemd-coredump"));
 
     abrt_journal_t *journal = NULL;
-    if (abrt_journal_new(&journal))
-        error_msg_and_die(_("Cannot open systemd-journal"));
+    if ((opts & OPT_J))
+    {
+        log_debug("Using journal files from directory '%s'", journal_dir);
+
+        if (abrt_journal_open_directory(&journal, journal_dir))
+            error_msg_and_die(_("Cannot initialize systemd-journal in directory '%s'"), journal_dir);
+    }
+    else
+    {
+        if (((opts & OPT_a) ? abrt_journal_new_merged : abrt_journal_new)(&journal))
+            error_msg_and_die(_("Cannot open systemd-journal"));
+    }
 
     if (abrt_journal_set_journal_filter(journal, coredump_journal_filter) < 0)
         error_msg_and_die(_("Cannot filter systemd-journal to systemd-coredump data only"));
