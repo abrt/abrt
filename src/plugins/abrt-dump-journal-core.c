@@ -318,6 +318,16 @@ save_systemd_coredump_in_dump_directory(struct dump_dir *dd, struct crash_info *
     const char *data = NULL;
     size_t data_len = 0;
 
+    /* This journal field is not present most of the time, because it is
+     * created only for coredumps from processes running in a container.
+     *
+     * Printing out the log message would be confusing hence.
+     *
+     * If we find more similar fields, we should not add more if statements
+     * but encode this in the struct field_mapping.
+     *
+     * For now, it would be just vasting of memory and time.
+     */
     if (!abrt_journal_get_field(info->ci_journal, "COREDUMP_CONTAINER_CMDLINE", (const void **)&data, &data_len))
     {
         dd_save_binary(dd, FILENAME_CONTAINER_CMDLINE, data, data_len);
