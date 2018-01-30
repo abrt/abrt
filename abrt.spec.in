@@ -26,13 +26,11 @@
 %define dbus_devel dbus-1-devel
 %define libjson_devel libjson-devel
 %define nss_devel mozilla-nss-devel
-%define systemd_units systemd
 %define shadow_utils pwdutils
 %else
 %define dbus_devel dbus-devel
 %define libjson_devel json-c-devel
 %define nss_devel nss-devel
-%define systemd_units systemd-units
 %define shadow_utils shadow-utils
 %endif
 
@@ -91,7 +89,8 @@ BuildRequires: dbus-1-glib-devel
 Requires: dbus-1-glib
 %endif
 
-Requires: %{systemd_units}
+%{?systemd_requires}
+Requires: systemd
 Requires: %{name}-libs = %{version}-%{release}
 Requires: python3-%{name} = %{version}-%{release}
 Requires(pre): %{shadow_utils}
