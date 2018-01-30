@@ -2,12 +2,6 @@
 # platform-dependent
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
-%if 0%{?fedora:%{fedora} < 14}%{?rhel:%{rhel} < 7}
-    %bcond_with systemd
-%else
-    %bcond_without systemd
-%endif
-
 %if 0%{?rhel}%{?suse_version}
     %bcond_with bodhi
 %else
@@ -25,19 +19,7 @@
 
 # rpmbuild --define 'desktopvendor mystring'
 %if "x%{desktopvendor}" == "x"
-    %if %{with systemd}
-        %define desktopvendor %(source /etc/os-release; echo ${ID})
-    %else
-        %if 0%{?rhel} >= 6
-            %define desktopvendor redhat
-        %else
-            %if 0%{?suse_version}
-                %define desktopvendor suse
-            %else
-                %define desktopvendor fedora
-            %endif
-        %endif
-    %endif
+    %define desktopvendor %(source /etc/os-release; echo ${ID})
 %endif
 
 %if 0%{?suse_version}
@@ -109,9 +91,7 @@ BuildRequires: dbus-1-glib-devel
 Requires: dbus-1-glib
 %endif
 
-%if %{with systemd}
 Requires: %{systemd_units}
-%endif
 Requires: %{name}-libs = %{version}-%{release}
 Requires: python3-%{name} = %{version}-%{release}
 Requires(pre): %{shadow_utils}
@@ -543,9 +523,6 @@ autoconf
 %define var_base_dir spool
 
 CFLAGS="%{optflags} -Werror" %configure \
-%if 0%{?suse_version}
-        --with-systemdsystemunitdir="%{_unitdir}" \
-%endif
 %if %{without bodhi}
         --without-bodhi \
 %endif
@@ -585,7 +562,6 @@ find $RPM_BUILD_ROOT -name "*.py[co]" -delete
 
 # remove all .la and .a files
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
-mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
 mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-di
 mkdir -p $RPM_BUILD_ROOT/var/run/abrt
 mkdir -p $RPM_BUILD_ROOT/var/%{var_base_dir}/abrt
@@ -813,12 +789,8 @@ killall abrt-dbus >/dev/null 2>&1 || :
 
 %files -f %{name}.lang
 %doc README.md COPYING
-%if %{with systemd}
 %{_unitdir}/abrtd.service
 %{_tmpfilesdir}/abrt.conf
-%else
-%{_initrddir}/abrtd
-%endif
 %{_sbindir}/abrtd
 %{_sbindir}/abrt-server
 %{_sbindir}/abrt-auto-reporting
@@ -924,12 +896,8 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_journalcatalogdir}/abrt_ccpp.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_ccpp_format.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_journal_ccpp_format.conf
-%if %{with systemd}
 %{_unitdir}/abrt-ccpp.service
 %{_unitdir}/abrt-journal-core.service
-%else
-%{_initrddir}/abrt-ccpp
-%endif
 
 %dir %{_localstatedir}/lib/abrt
 
@@ -977,11 +945,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 
 %files addon-upload-watch
 %{_sbindir}/abrt-upload-watch
-%if %{with systemd}
 %{_unitdir}/abrt-upload-watch.service
-%else
-%{_initrddir}/abrt-upload-watch
-%endif
 %{_mandir}/man*/abrt-upload-watch.*
 
 
@@ -999,11 +963,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man5/koops_event.conf.5*
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/oops.conf
 %{_datadir}/%{name}/conf.d/plugins/oops.conf
-%if %{with systemd}
 %{_unitdir}/abrt-oops.service
-%else
-%{_initrddir}/abrt-oops
-%endif
 
 %dir %{_localstatedir}/lib/abrt
 
@@ -1020,11 +980,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_journalcatalogdir}/abrt_xorg.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_xorg_format.conf
 %{_mandir}/man5/xorg_event.conf.5*
-%if %{with systemd}
 %{_unitdir}/abrt-xorg.service
-%else
-%{_initrddir}/abrt-xorg
-%endif
 %{_bindir}/abrt-dump-xorg
 %{_bindir}/abrt-dump-journal-xorg
 %{_mandir}/man1/abrt-dump-xorg.1*
@@ -1037,11 +993,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/vmcore.conf
 %{_datadir}/%{name}/conf.d/plugins/vmcore.conf
 %{_datadir}/libreport/events/analyze_VMcore.xml
-%if %{with systemd}
 %{_unitdir}/abrt-vmcore.service
-%else
-%{_initrddir}/abrt-vmcore
-%endif
 %{_sbindir}/abrt-harvest-vmcore
 %{_bindir}/abrt-action-analyze-vmcore
 %{_bindir}/abrt-action-check-oops-for-alt-component
@@ -1055,11 +1007,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %endif
 
 %files addon-pstoreoops
-%if %{with systemd}
 %{_unitdir}/abrt-pstoreoops.service
-%else
-%{_initrddir}/abrt-pstoreoops
-%endif
 %{_sbindir}/abrt-harvest-pstoreoops
 %{_bindir}/abrt-merge-pstoreoops
 %{_mandir}/man1/abrt-harvest-pstoreoops.1*
