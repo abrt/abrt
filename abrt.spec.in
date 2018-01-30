@@ -105,6 +105,37 @@ Requires: libreport-plugin-rhtsupport
 Requires: libreport-plugin-systemd-journal
 %endif
 
+#gui
+BuildRequires: libreport-gtk-devel >= %{libreport_ver}
+BuildRequires: gsettings-desktop-schemas-devel >= 3.15
+#addon-ccpp
+BuildRequires: gdb-headless
+BuildRequires: libcap-devel
+#addon-kerneloops
+BuildRequires: systemd-devel
+%if %{with bodhi}
+# plugin-bodhi
+BuildRequires: %{libjson_devel}
+BuildRequires: libreport-web-devel >= %{libreport_ver}
+%endif
+#desktop
+#Default config of addon-ccpp requires gdb
+BuildRequires: gdb-headless
+#dbus
+BuildRequires: polkit-devel
+#python2-abrt
+BuildRequires: python-nose
+BuildRequires: python-sphinx
+BuildRequires: libreport-python
+#python2-abrt-doc
+BuildRequires: python2-devel
+#python3-abrt
+BuildRequires: python3-nose
+BuildRequires: python3-sphinx
+BuildRequires: libreport-python3
+#python3-abrt-doc
+BuildRequires: python3-devel
+
 %description
 %{name} is a tool to help users to detect defects in applications and
 to create a bug report with all information needed by maintainer to fix it.
@@ -142,8 +173,6 @@ Requires: %{name} = %{version}-%{release}
 Requires: %{name}-dbus = %{version}-%{release}
 Requires: gnome-abrt
 Requires: gsettings-desktop-schemas >= 3.15
-BuildRequires: libreport-gtk-devel >= %{libreport_ver}
-BuildRequires: gsettings-desktop-schemas-devel >= 3.15
 # we used to have abrt-applet, now abrt-gui includes it:
 Provides: abrt-applet = %{version}-%{release}
 Obsoletes: abrt-applet < 0.0.5
@@ -164,8 +193,6 @@ This package contains hook for C/C++ crashed programs.
 %package addon-ccpp
 Summary: %{name}'s C/C++ addon
 Requires: cpio
-BuildRequires: gdb-headless
-BuildRequires: libcap-devel
 Requires: gdb-headless
 Requires: elfutils
 %if 0%{!?rhel:1}
@@ -200,7 +227,6 @@ which is able to analyze C/C++ crashes remotely.
 
 %package addon-kerneloops
 Summary: %{name}'s kerneloops addon
-BuildRequires: systemd-devel
 Requires: curl
 Requires: %{name} = %{version}-%{release}
 %if 0%{!?rhel:1}
@@ -250,9 +276,7 @@ This package contains plugin for collecting kernel oopses from pstore storage.
 %if %{with bodhi}
 %package plugin-bodhi
 Summary: %{name}'s bodhi plugin
-BuildRequires: %{libjson_devel}
 Requires: %{name} = %{version}-%{release}
-BuildRequires: libreport-web-devel >= %{libreport_ver}
 Obsoletes: libreport-plugin-bodhi > 0.0.1
 Provides: libreport-plugin-bodhi = %{version}-%{release}
 
@@ -381,8 +405,6 @@ Requires: abrt-addon-vmcore
 Requires: abrt-addon-ccpp
 Requires: python3-abrt-addon
 Requires: abrt-addon-xorg
-# Default config of addon-ccpp requires gdb
-BuildRequires: gdb-headless
 Requires: gdb-headless
 Requires: abrt-gui
 Requires: gnome-abrt
@@ -424,7 +446,6 @@ hosts.
 %package dbus
 Summary: ABRT DBus service
 Requires: %{name} = %{version}-%{release}
-BuildRequires: polkit-devel
 Requires: abrt-libs = %{version}-%{release}
 
 %description dbus
@@ -449,9 +470,6 @@ Requires: python2-gobject-base
 Provides: %{name}-python = %{version}-%{release}
 Provides: %{name}-python%{?_isa} = %{version}-%{release}
 Obsoletes: %{name}-python < 2.10.4
-BuildRequires: python-nose
-BuildRequires: python-sphinx
-BuildRequires: libreport-python
 
 %description -n python2-abrt
 High-level API for querying, creating and manipulating
@@ -460,7 +478,6 @@ problems handled by ABRT in Python.
 %package -n python2-abrt-doc
 Summary: ABRT Python API Documentation
 BuildArch: noarch
-BuildRequires: python2-devel
 Requires: %{name} = %{version}-%{release}
 Requires: python2-abrt = %{version}-%{release}
 # Remove before F30
@@ -483,9 +500,6 @@ Provides: %{name}-python3 = %{version}-%{release}
 Provides: %{name}-python3%{?_isa} = %{version}-%{release}
 Obsoletes: %{name}-python3 < 2.10.4
 Requires: python3-gobject-base
-BuildRequires: python3-nose
-BuildRequires: python3-sphinx
-BuildRequires: libreport-python3
 
 %description -n python3-abrt
 High-level API for querying, creating and manipulating
@@ -494,7 +508,6 @@ problems handled by ABRT in Python 3.
 %package -n python3-abrt-doc
 Summary: ABRT Python API Documentation
 BuildArch: noarch
-BuildRequires: python3-devel
 Requires: %{name} = %{version}-%{release}
 Requires: python3-%{name} = %{version}-%{release}
 # Remove before F30
