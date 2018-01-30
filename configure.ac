@@ -196,12 +196,6 @@ PKG_CHECK_MODULES([SYSTEMD], [libsystemd])
 PKG_CHECK_MODULES([GSETTINGS_DESKTOP_SCHEMAS], [gsettings-desktop-schemas >= 3.15.1])
 
 PKG_PROG_PKG_CONFIG
-AC_ARG_WITH([systemdsystemunitdir],
-        AS_HELP_STRING([--with-systemdsystemunitdir=DIR], [Directory for systemd service files]),
-        [], [with_systemdsystemunitdir=$($PKG_CONFIG --variable=systemdsystemunitdir systemd)])
-AC_SUBST([systemdsystemunitdir], [$with_systemdsystemunitdir])
-AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$with_systemdsystemunitdir"])
-
 AC_ARG_WITH([dbusinterfacedir],
         AS_HELP_STRING([--with-dbusinterfacedir=DIR], [Directory for dbus interface files]),
         [], [with_dbusinterfacedir=${datadir}/dbus-1/interfaces])

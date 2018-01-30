@@ -1,13 +1,3 @@
-%{!?python_site: %global python_site %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
-# platform-dependent
-%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
-
-%if 0%{?fedora:%{fedora} < 14}%{?rhel:%{rhel} < 7}
-    %bcond_with systemd
-%else
-    %bcond_without systemd
-%endif
-
 %if 0%{?rhel}%{?suse_version}
     %bcond_with bodhi
 %else
@@ -25,32 +15,18 @@
 
 # rpmbuild --define 'desktopvendor mystring'
 %if "x%{desktopvendor}" == "x"
-    %if %{with systemd}
-        %define desktopvendor %(source /etc/os-release; echo ${ID})
-    %else
-        %if 0%{?rhel} >= 6
-            %define desktopvendor redhat
-        %else
-            %if 0%{?suse_version}
-                %define desktopvendor suse
-            %else
-                %define desktopvendor fedora
-            %endif
-        %endif
-    %endif
+    %define desktopvendor %(source /etc/os-release; echo ${ID})
 %endif
 
 %if 0%{?suse_version}
 %define dbus_devel dbus-1-devel
 %define libjson_devel libjson-devel
 %define nss_devel mozilla-nss-devel
-%define systemd_units systemd
 %define shadow_utils pwdutils
 %else
 %define dbus_devel dbus-devel
 %define libjson_devel json-c-devel
 %define nss_devel nss-devel
-%define systemd_units systemd-units
 %define shadow_utils shadow-utils
 %endif
 
@@ -109,9 +85,8 @@ BuildRequires: dbus-1-glib-devel
 Requires: dbus-1-glib
 %endif
 
-%if %{with systemd}
-Requires: %{systemd_units}
-%endif
+%{?systemd_requires}
+Requires: systemd
 Requires: %{name}-libs = %{version}-%{release}
 Requires: python3-%{name} = %{version}-%{release}
 Requires(pre): %{shadow_utils}
@@ -125,6 +100,37 @@ Requires: libreport-plugin-rhtsupport
 %if 0%{?fedora}
 Requires: libreport-plugin-systemd-journal
 %endif
+
+#gui
+BuildRequires: libreport-gtk-devel >= %{libreport_ver}
+BuildRequires: gsettings-desktop-schemas-devel >= 3.15
+#addon-ccpp
+BuildRequires: gdb-headless
+BuildRequires: libcap-devel
+#addon-kerneloops
+BuildRequires: systemd-devel
+%if %{with bodhi}
+# plugin-bodhi
+BuildRequires: %{libjson_devel}
+BuildRequires: libreport-web-devel >= %{libreport_ver}
+%endif
+#desktop
+#Default config of addon-ccpp requires gdb
+BuildRequires: gdb-headless
+#dbus
+BuildRequires: polkit-devel
+#python2-abrt
+BuildRequires: python-nose
+BuildRequires: python-sphinx
+BuildRequires: libreport-python
+#python2-abrt-doc
+BuildRequires: python2-devel
+#python3-abrt
+BuildRequires: python3-nose
+BuildRequires: python3-sphinx
+BuildRequires: libreport-python3
+#python3-abrt-doc
+BuildRequires: python3-devel
 
 %description
 %{name} is a tool to help users to detect defects in applications and
@@ -163,8 +169,6 @@ Requires: %{name} = %{version}-%{release}
 Requires: %{name}-dbus = %{version}-%{release}
 Requires: gnome-abrt
 Requires: gsettings-desktop-schemas >= 3.15
-BuildRequires: libreport-gtk-devel >= %{libreport_ver}
-BuildRequires: gsettings-desktop-schemas-devel >= 3.15
 # we used to have abrt-applet, now abrt-gui includes it:
 Provides: abrt-applet = %{version}-%{release}
 Obsoletes: abrt-applet < 0.0.5
@@ -185,8 +189,6 @@ This package contains hook for C/C++ crashed programs.
 %package addon-ccpp
 Summary: %{name}'s C/C++ addon
 Requires: cpio
-BuildRequires: gdb-headless
-BuildRequires: libcap-devel
 Requires: gdb-headless
 Requires: elfutils
 %if 0%{!?rhel:1}
@@ -221,7 +223,6 @@ which is able to analyze C/C++ crashes remotely.
 
 %package addon-kerneloops
 Summary: %{name}'s kerneloops addon
-BuildRequires: systemd-devel
 Requires: curl
 Requires: %{name} = %{version}-%{release}
 %if 0%{!?rhel:1}
@@ -271,9 +272,7 @@ This package contains plugin for collecting kernel oopses from pstore storage.
 %if %{with bodhi}
 %package plugin-bodhi
 Summary: %{name}'s bodhi plugin
-BuildRequires: %{libjson_devel}
 Requires: %{name} = %{version}-%{release}
-BuildRequires: libreport-web-devel >= %{libreport_ver}
 Obsoletes: libreport-plugin-bodhi > 0.0.1
 Provides: libreport-plugin-bodhi = %{version}-%{release}
 
@@ -402,8 +401,6 @@ Requires: abrt-addon-vmcore
 Requires: abrt-addon-ccpp
 Requires: python3-abrt-addon
 Requires: abrt-addon-xorg
-# Default config of addon-ccpp requires gdb
-BuildRequires: gdb-headless
 Requires: gdb-headless
 Requires: abrt-gui
 Requires: gnome-abrt
@@ -445,7 +442,6 @@ hosts.
 %package dbus
 Summary: ABRT DBus service
 Requires: %{name} = %{version}-%{release}
-BuildRequires: polkit-devel
 Requires: abrt-libs = %{version}-%{release}
 
 %description dbus
@@ -470,9 +466,6 @@ Requires: python2-gobject-base
 Provides: %{name}-python = %{version}-%{release}
 Provides: %{name}-python%{?_isa} = %{version}-%{release}
 Obsoletes: %{name}-python < 2.10.4
-BuildRequires: python-nose
-BuildRequires: python-sphinx
-BuildRequires: libreport-python
 
 %description -n python2-abrt
 High-level API for querying, creating and manipulating
@@ -481,7 +474,6 @@ problems handled by ABRT in Python.
 %package -n python2-abrt-doc
 Summary: ABRT Python API Documentation
 BuildArch: noarch
-BuildRequires: python2-devel
 Requires: %{name} = %{version}-%{release}
 Requires: python2-abrt = %{version}-%{release}
 # Remove before F30
@@ -504,9 +496,6 @@ Provides: %{name}-python3 = %{version}-%{release}
 Provides: %{name}-python3%{?_isa} = %{version}-%{release}
 Obsoletes: %{name}-python3 < 2.10.4
 Requires: python3-gobject-base
-BuildRequires: python3-nose
-BuildRequires: python3-sphinx
-BuildRequires: libreport-python3
 
 %description -n python3-abrt
 High-level API for querying, creating and manipulating
@@ -515,7 +504,6 @@ problems handled by ABRT in Python 3.
 %package -n python3-abrt-doc
 Summary: ABRT Python API Documentation
 BuildArch: noarch
-BuildRequires: python3-devel
 Requires: %{name} = %{version}-%{release}
 Requires: python3-%{name} = %{version}-%{release}
 # Remove before F30
@@ -543,9 +531,6 @@ autoconf
 %define var_base_dir spool
 
 CFLAGS="%{optflags} -Werror" %configure \
-%if 0%{?suse_version}
-        --with-systemdsystemunitdir="%{_unitdir}" \
-%endif
 %if %{without bodhi}
         --without-bodhi \
 %endif
@@ -585,7 +570,6 @@ find $RPM_BUILD_ROOT -name "*.py[co]" -delete
 
 # remove all .la and .a files
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
-mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
 mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-di
 mkdir -p $RPM_BUILD_ROOT/var/run/abrt
 mkdir -p $RPM_BUILD_ROOT/var/%{var_base_dir}/abrt
@@ -813,12 +797,8 @@ killall abrt-dbus >/dev/null 2>&1 || :
 
 %files -f %{name}.lang
 %doc README.md COPYING
-%if %{with systemd}
 %{_unitdir}/abrtd.service
 %{_tmpfilesdir}/abrt.conf
-%else
-%{_initrddir}/abrtd
-%endif
 %{_sbindir}/abrtd
 %{_sbindir}/abrt-server
 %{_sbindir}/abrt-auto-reporting
@@ -924,12 +904,8 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_journalcatalogdir}/abrt_ccpp.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_ccpp_format.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_journal_ccpp_format.conf
-%if %{with systemd}
 %{_unitdir}/abrt-ccpp.service
 %{_unitdir}/abrt-journal-core.service
-%else
-%{_initrddir}/abrt-ccpp
-%endif
 
 %dir %{_localstatedir}/lib/abrt
 
@@ -977,11 +953,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 
 %files addon-upload-watch
 %{_sbindir}/abrt-upload-watch
-%if %{with systemd}
 %{_unitdir}/abrt-upload-watch.service
-%else
-%{_initrddir}/abrt-upload-watch
-%endif
 %{_mandir}/man*/abrt-upload-watch.*
 
 
@@ -999,11 +971,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man5/koops_event.conf.5*
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/oops.conf
 %{_datadir}/%{name}/conf.d/plugins/oops.conf
-%if %{with systemd}
 %{_unitdir}/abrt-oops.service
-%else
-%{_initrddir}/abrt-oops
-%endif
 
 %dir %{_localstatedir}/lib/abrt
 
@@ -1020,11 +988,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_journalcatalogdir}/abrt_xorg.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_xorg_format.conf
 %{_mandir}/man5/xorg_event.conf.5*
-%if %{with systemd}
 %{_unitdir}/abrt-xorg.service
-%else
-%{_initrddir}/abrt-xorg
-%endif
 %{_bindir}/abrt-dump-xorg
 %{_bindir}/abrt-dump-journal-xorg
 %{_mandir}/man1/abrt-dump-xorg.1*
@@ -1037,11 +1001,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/vmcore.conf
 %{_datadir}/%{name}/conf.d/plugins/vmcore.conf
 %{_datadir}/libreport/events/analyze_VMcore.xml
-%if %{with systemd}
 %{_unitdir}/abrt-vmcore.service
-%else
-%{_initrddir}/abrt-vmcore
-%endif
 %{_sbindir}/abrt-harvest-vmcore
 %{_bindir}/abrt-action-analyze-vmcore
 %{_bindir}/abrt-action-check-oops-for-alt-component
@@ -1055,11 +1015,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %endif
 
 %files addon-pstoreoops
-%if %{with systemd}
 %{_unitdir}/abrt-pstoreoops.service
-%else
-%{_initrddir}/abrt-pstoreoops
-%endif
 %{_sbindir}/abrt-harvest-pstoreoops
 %{_bindir}/abrt-merge-pstoreoops
 %{_mandir}/man1/abrt-harvest-pstoreoops.1*
