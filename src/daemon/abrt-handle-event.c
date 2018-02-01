@@ -229,6 +229,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
     type = dd_load_text(dd, FILENAME_TYPE);
     free(executable);
     executable = dd_load_text_ext(dd, FILENAME_EXECUTABLE, DD_FAIL_QUIETLY_ENOENT);
+    char *container_id = dd_load_text_ext(dd, FILENAME_CONTAINER_ID, DD_FAIL_QUIETLY_ENOENT);
     dup_uuid_init(dd);
     dup_corebt_init(dd);
     dd_close(dd);
@@ -265,7 +266,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
             continue;
 
         char *dd_uid = NULL, *dd_type = NULL;
-        char *dd_executable = NULL;
+        char *dd_executable = NULL, *dd_container_id = NULL;
 
         if (strcmp(dump_dir_name, dump_dir_name2) == 0)
             goto next; /* we are never a dup of ourself */
@@ -277,6 +278,16 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
         logmode = sv_logmode;
         if (!dd)
             goto next;
+
+        /* problems from different containers are not duplicates */
+        if (container_id != NULL)
+        {
+            dd_container_id = dd_load_text_ext(dd, FILENAME_CONTAINER_ID, DD_FAIL_QUIETLY_ENOENT);
+            if (dd_container_id != NULL && strcmp(container_id, dd_container_id) != 0)
+            {
+                goto next;
+            }
+        }
 
         /* crashes of different users are not considered duplicates */
         dd_uid = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT);
@@ -316,11 +327,13 @@ next:
         dd_close(dd);
         free(dd_uid);
         free(dd_type);
+        free(dd_container_id);
     }
     closedir(dir);
 
 end:
     free((char*)dump_dir_name);
+    free(container_id);
     return retval;
 }
 
