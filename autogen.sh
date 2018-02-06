@@ -23,7 +23,7 @@ parse_build_requires_from_spec_file()
     sed 's/@PACKAGE_VERSION@/1/' < $PACKAGE.spec.in | sed 's/@.*@//' > $TEMPFILE
     rpmspec -P $TEMPFILE | grep "^\(Build\)\?Requires:" | \
         tr -s " " | tr "," "\n" | cut -f2- -d " " | \
-        grep -v "^"$PACKAGE | sort -u | sed -E 's/^(.*) (.*)$/"\1 \2"/' | tr \" \'
+        grep -v "\(^\|python[23]-\)"$PACKAGE | sort -u | sed -E 's/^(.*) (.*)$/"\1 \2"/' | tr \" \'
     rm $TEMPFILE
 }
 
