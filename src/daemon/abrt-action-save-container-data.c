@@ -141,7 +141,7 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
     json = json_tokener_parse(output);
     free(output);
 
-    if (is_error(json))
+    if (json == NULL)
     {
         error_msg("Unable parse response from docker");
         goto dump_docker_info_cleanup;
