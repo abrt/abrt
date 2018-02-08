@@ -419,7 +419,7 @@ static GHashTable *bodhi_query_list(const char *query, const char *release)
 //    log_warning("%s", post_state->body);
 
     json_object *json = json_tokener_parse(post_state->body);
-    if (is_error(json))
+    if (json == NULL)
         error_msg_and_die("fatal: unable parse response from bodhi server");
 
     /* we must check the http_resp_code because only error responses contain
