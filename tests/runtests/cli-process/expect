@@ -4,7 +4,7 @@ set action [lindex $argv 0]
 set since [lindex $argv 1]
 set since_val [lindex $argv 2]
 
-spawn abrt-cli p $since $since_val
+spawn -noecho sh -c "abrt-cli p $since $since_val && sleep 0.5"
 
 set timeout 10
 
