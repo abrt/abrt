@@ -1156,6 +1156,20 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Mon Feb 19 2018 Matej Habrnal <mhabrnal@redhat.com> 2.10.6-1
+- Translation updates
+- hooks: introduce docker hook for Python3
+- spec: introduce Python3 hook for container
+- Remove deprecated is_error macro
+- ldconfig is not needed in rawhide
+- remove python_sitearch macro
+- remove python_site macro
+- move BuildRequires to top
+- remove systemd-units and replace it with systemd macro
+- remove init.d services
+- a-h-event: Do not deduplicate different containers
+- rpm: include epocho in package element if > 0
+
 * Thu Nov 02 2017 Julius Milan <jmilan@redhat.com> 2.10.5-1
 - Translation updates
 - a-action-ureport: add option 'ProcessUnpackaged'
