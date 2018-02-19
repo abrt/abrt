@@ -13,6 +13,7 @@
 # Jakub Filak <jfilak@redhat.com>, 2016. #zanata
 # Emin Tufan Çetin <etcetin@gmail.com>, 2017. #zanata
 # Martin Kutlak <mkutlak@redhat.com>, 2017. #zanata
+# Bora Can Aslı <boracasli14@aol.com>, 2018. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -21,8 +22,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-06-15 08:18-0400\n"
-"Last-Translator: Martin Kutlak <mkutlak@redhat.com>\n"
+"PO-Revision-Date: 2018-02-02 05:44-0500\n"
+"Last-Translator: Bora Can Aslı <boracasli14@aol.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/tr/)\n"
 "Language: tr\n"
@@ -31,7 +32,7 @@ msgstr ""
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
-msgstr "Sorun Raporlama"
+msgstr "Sorun Bildirme"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2
 msgid "View and report application crashes"
@@ -132,17 +133,17 @@ msgstr "Bildirim gösterilemiyor: %s"
 #: ../src/applet/applet.c:818 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr ""
+msgstr "Gio kanalından okunamıyor: '%s'"
 
 #: ../src/applet/applet.c:896
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr ""
+msgstr "Gio kanalının kodlaması ayarlanamıyor: %s"
 
 #: ../src/applet/applet.c:900
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr ""
+msgstr "Gio kanalı için kilitlenmeme modu açılamıyor: %s"
 
 #: ../src/applet/applet.c:1186
 msgid ""
@@ -150,6 +151,12 @@ msgid ""
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr ""
+"& [-v] [DIR]...\n"
+"\\n\n"
+"\\n\n"
+"ABRT tarafından yeni sorunlar algılandığında kullanıcıyı bilgilendiren küçük "
+"uygulama\n"
+"\\n\n"
 
 #: ../src/configuration-gui/abrt-config-widget.c:483
 msgid ""
@@ -157,14 +164,17 @@ msgid ""
 "linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
+"Yukarıdaki yapılandırma seçeneği GSettings'e taşınmıştır ve düğme ise 'org."
+"gnome.desktop.privacy' şemasından 'report-technical-problems' ayarının "
+"değeriyle bağlantılıdır."
 
 #: ../src/configuration-gui/abrt-config-widget.c:501
 msgid "The configuration option above can be configured in"
-msgstr ""
+msgstr "Yukarıdaki yapılandırma seçeneği yapılandırılabilir:"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr ""
+msgstr "Dizini çalmadan önce sor"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
@@ -172,11 +182,11 @@ msgstr "uRaporunu Otomatik Olarak Gönder"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
-msgstr ""
+msgstr "Kısaltılmış bildirme"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
-msgstr ""
+msgstr "Sessiz kısaltılmış bildirme"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
@@ -187,6 +197,13 @@ msgid ""
 "With option 'Never' the stack trace will be always generated locally. With "
 "option 'Ask' ABRT will always ask the user."
 msgstr ""
+"Ana bellek dökümü dosyası zaman ve alandan yiyen bir işlem olan yığın "
+"izlemeyi oluşturmak için gereklidir. ABRT ana bellek dökümünden yığın "
+"izlemeyi oluşturan bir hizmet sunmaktadır, ancak bu hizmete ana bellek "
+"dökümünü yüklemek zorundasınız. 'Her zaman' seçeneğiyle ABRT ana bellek "
+"dökümünü sormadan yükleyecektir. 'Asla' seçeneğiyle yığın izleme her zaman "
+"yerel olarak oluşturulacaktır. 'Sor' seçeneğiyle ABRT hep kullanıcıya "
+"soracaktır."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -195,6 +212,9 @@ msgid ""
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
 msgstr ""
+"ABRT sorun verilerini dizinlerde saklar. ABRT ne zaman yazılabilir bir "
+"dizine ihtiyaç duyarsa, dizin sistem konumundan ev dizininize taşınır. Bu "
+"seçenek devre dışı bırakılırsa ABRT sorun dizinini sormadan taşıyacaktır."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
@@ -203,6 +223,11 @@ msgid ""
 "uReport is sent at beginning of reporting process. With this option enabled "
 "uReports are sent automatically immediately after problem detection."
 msgstr ""
+"uReport bir sorunun kısa ve tamamen anonim bir açıklamasıdır. ABRT "
+"uReport'ları hızlı küresel kopya tespiti için kullanır. Varsayılan "
+"yapılandırmada uReport bildirme işleminin başında gönderilir. Bu özellik "
+"etkin olduğunda uReport'lar sorun tespitinden hemen sonra otomatikman "
+"gönderilir."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
@@ -210,22 +235,31 @@ msgid ""
 "in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
+"Bu özellik etkinleştirildiğinde uReport gönderildikten sonra sorun bildirim "
+"balonundan Bildir düğmesine tıklatılarak başlatılan bildirme işlemi yarıda "
+"kalacaktır. Tam rapor göndermek için varsayılan sorun tarayıcısını her zaman "
+"kullanabilirsiniz."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
+"Bu özellik etkinleştirildiğinde ABRT asla bildirilmiş sorunlar hakkında "
+"bildirim göstermez. Eğer sadece Kısaltılmış bildirme etkinse etkisini "
+"gösterir."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
 msgstr ""
+"Bu özellik etkinleştirildiğinde, eğer muhtemelen hassas veriler tespit "
+"edilirse ABRT her zaman kısıtlı erişimi olan bir hata bileti oluşturur."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid "Request private ticket for sensitive information"
-msgstr ""
+msgstr "Hassas bilgiler için özel bilet talep et"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Notify incomplete problems"
@@ -359,14 +393,13 @@ msgid "Not Authorized"
 msgstr "Yetkili Değil"
 
 #: ../src/dbus/abrt-dbus.c:285
-#, fuzzy
 msgid "Can't open the problem"
-msgstr "Sorun açılamaz"
+msgstr "Sorun açılamıyor"
 
 #: ../src/dbus/abrt-dbus.c:317
 #, c-format
 msgid "'%s' element can't be modified"
-msgstr ""
+msgstr "'%s' elemanında değişiklik yapılamıyor"
 
 #: ../src/dbus/abrt-dbus.c:536
 msgid "Chowning directory failed. Check system logs for more details."
@@ -379,12 +412,12 @@ msgstr ""
 
 #: ../src/dbus/abrt-dbus.c:680
 msgid "No problem space left"
-msgstr ""
+msgstr "Sorun alanı kalmadı"
 
 #: ../src/dbus/abrt-dbus.c:715
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr ""
+msgstr "'%s' elemanı '%s' sorun dizininden silinemiyor."
 
 #: ../src/dbus/abrt-dbus.c:876 ../src/dbus/abrt-configuration.c:983
 #: ../src/daemon/abrtd.c:426
@@ -397,11 +430,11 @@ msgstr ""
 #: ../src/dbus/abrt-dbus.c:903 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:459
 msgid "Exit after NUM seconds of inactivity"
-msgstr ""
+msgstr "NUM saniye hareketsizlikten sonra çık"
 
 #: ../src/dbus/abrt-dbus.c:921 ../src/dbus/abrt-configuration.c:1021
 msgid "This program must be run as root."
-msgstr ""
+msgstr "Bu program root olarak çalıştırılmalıdır."
 
 #: ../src/daemon/abrtd.c:389
 msgid ""
@@ -426,11 +459,11 @@ msgstr ""
 
 #: ../src/daemon/abrt-handle-event.c:403
 msgid "Run EVENT on DIR"
-msgstr ""
+msgstr "EVENT olayını DIR'de çalıştır"
 
 #: ../src/daemon/abrt-handle-event.c:404
 msgid "Communicate directly to the user"
-msgstr ""
+msgstr "Direkt kullanıcıya ilet"
 
 #: ../src/daemon/abrt-handle-event.c:405
 msgid "Increment the nice value by INCREMENT"

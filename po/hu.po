@@ -12,13 +12,10 @@
 # teknos.ferenc <teknos.ferenc@gmail.com>, 2013-2014
 # Zoltan Hoppár <zoltanh721@fedoraproject.org>, 2011-2013
 # Zoltan Hoppár <zoltanh721@fedoraproject.org>, 2014
-# Délczegi Csaba <delczegicsaba@gmail.com>, 2016. #zanata
 # Meskó Balázs <meskobalazs@gmail.com>, 2016. #zanata
 # Zoltan Hoppar <zoltanh721@fedoraproject.org>, 2016. #zanata
-# Délczegi Csaba <delczegicsaba@gmail.com>, 2017. #zanata
 # Meskó Balázs <meskobalazs@gmail.com>, 2017. #zanata
-# Norbert Makula <iamreallynotapokemon@gmail.com>, 2017. #zanata
-# TheWanderer <sz.kornelgeza@gmail.com>, 2017. #zanata
+# Meskó Balázs <meskobalazs@gmail.com>, 2018. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -27,8 +24,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-10-31 08:32-0400\n"
-"Last-Translator: Meskó Balázs <meskobalazs@gmail.com>\n"
+"PO-Revision-Date: 2018-01-13 04:16-0500\n"
+"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/hu/)\n"
 "Language: hu\n"
@@ -46,12 +43,12 @@ msgstr "Alkalmazás összeomlások megtekintése és jelentése"
 #: ../src/applet/applet.c:260 ../src/cli/report.c:51
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr "A(z) „%s” tulajdona nem átvehető"
+msgstr "A(z) „%s” tulajdonjoga nem vehető át"
 
 #: ../src/applet/applet.c:268
 #, c-format
 msgid "Can't open directory for writing '%s'"
-msgstr "A(z) „%s” mappa nem nyitható meg írásra"
+msgstr "A(z) „%s” könyvtár nem nyitható meg írásra"
 
 #: ../src/applet/applet.c:546 ../src/applet/applet.c:564
 #, c-format
@@ -63,54 +60,51 @@ msgid "Oops!"
 msgstr "Hoppá!"
 
 #: ../src/applet/applet.c:616
-#, fuzzy
 msgid "Report"
 msgstr "Jelentés"
 
 #: ../src/applet/applet.c:625
-#, fuzzy
 msgid "Restart"
 msgstr "Újraindítás"
 
 #: ../src/applet/applet.c:694
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
 "reported."
 msgstr ""
-"Elnézést kérünk, úgy néz ki, hogy a(z) %s csomag összeomlott. A probléma "
+"Elnézést kérünk, úgy néz ki, hogy a(z) %s összeomlott. A probléma "
 "automatikusan bejelentésre került."
 
 #: ../src/applet/applet.c:699
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
 "internet is available."
 msgstr ""
-"Elnézést kérünk, úgy néz ki, hogy a(z) %s csomag összeomlott. A probléma "
+"Elnézést kérünk, úgy néz ki, hogy a(z) %s összeomlott. A probléma "
 "bejelentésre kerül, amint lesz internetkapcsolat. "
 
 #: ../src/applet/applet.c:705 ../src/applet/applet.c:719
 #: ../src/applet/applet.c:747
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
 msgstr ""
-"Elnézést kérünk, úgy néz ki, hogy a(z) %s csomag összeomlott. Kérjük vegye "
-"fel a kapcsolatot a fejlesztővel, ha szeretné bejelenteni a hibát."
+"Elnézést kérünk, úgy néz ki, hogy a(z) %s összeomlott. Vegye fel a "
+"kapcsolatot a fejlesztővel, ha szeretné bejelenteni a hibát."
 
 #: ../src/applet/applet.c:713
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
 msgstr ""
-"Elnézést kérünk, úgy néz ki, hogy a(z) %s csomag összeomlott. Ha szeretne "
-"segíteni a hiba megoldásában, kérjük küldjön egy hibajelentést."
+"Elnézést kérünk, úgy néz ki, hogy a(z) %s összeomlott. Ha szeretne segíteni "
+"a hiba megoldásában, küldjön hibajelentést."
 
 #: ../src/applet/applet.c:732
-#, fuzzy
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
@@ -119,7 +113,6 @@ msgstr ""
 "A probléma automatikusan bejelentésre került. "
 
 #: ../src/applet/applet.c:736
-#, fuzzy
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
@@ -128,48 +121,45 @@ msgstr ""
 "A probléma bejelentésre kerül, amint lesz internetkapcsolat."
 
 #: ../src/applet/applet.c:741
-#, fuzzy
 msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
 msgstr ""
 "Elnézést kérünk, úgy néz ki, hogy egy probléma lépett fel. Ha szeretne "
-"segíteni a probléma megoldásában, kérjük küldjön egy hibajelentést."
+"segíteni a probléma megoldásában, küldjön hibajelentést."
 
 #: ../src/applet/applet.c:786
-#, fuzzy, c-format
+#, c-format
 msgid "Can't show notification: %s"
 msgstr "Az értesítés nem jeleníthető meg: %s"
 
 #. TODO: Terminate child's process?
 #: ../src/applet/applet.c:818 ../src/daemon/abrt-upload-watch.c:168
-#, fuzzy, c-format
+#, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr "GIO csatorna nem olvasható: %s"
+msgstr "Nem lehet olvasni a GIO csatornát: „%s”"
 
 #: ../src/applet/applet.c:896
-#, fuzzy, c-format
+#, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr "GIO csatorna kódolása nem állítható be: %s"
+msgstr "Nem lehet beállítani a GIO csatorna kódolását: %s"
 
 #: ../src/applet/applet.c:900
-#, fuzzy, c-format
+#, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr "GIO nem blokkoló módja nem állítható be: %s"
+msgstr "Nem lehet beállítani a GIO csatorna nem blokkoló módját: %s"
 
 #: ../src/applet/applet.c:1186
-#, fuzzy
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr ""
-"& [-v] [DIR]...\n"
+"& [-v] [KÖNYVTÁR]…\n"
 "\n"
-"Alkalmazás, amely értesíti a felhasználót ha hibát észlel az ABRT\n"
+"Alkalmazás, amely értesíti a felhasználót, ha az ABRT hibát észlel\n"
 
 #: ../src/configuration-gui/abrt-config-widget.c:483
-#, fuzzy
 msgid ""
 "The configuration option above has been moved to GSettings and the switch is "
 "linked to the value of the setting 'report-technical-problems' from the "
@@ -180,32 +170,26 @@ msgstr ""
 "az „org.gnome.desktop.privacy” sémában."
 
 #: ../src/configuration-gui/abrt-config-widget.c:501
-#, fuzzy
 msgid "The configuration option above can be configured in"
 msgstr "A fenti konfigurációs beállítás itt állítható be:"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
-#, fuzzy
 msgid "Ask before stealing directory"
 msgstr "Kérdezzen a mappa kisajátítása előtt"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
-#, fuzzy
 msgid "Automatically send uReport"
 msgstr "uReport automatikus küldése"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
-#, fuzzy
 msgid "Shortened reporting"
 msgstr "Rövidített jelentés"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
-#, fuzzy
 msgid "Silent shortened reporting"
 msgstr "Csendben elküldött rövidített jelentés"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
-#, fuzzy
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
 "space consuming operation. ABRT provides a service which generates the stack "
@@ -214,65 +198,60 @@ msgid ""
 "With option 'Never' the stack trace will be always generated locally. With "
 "option 'Ask' ABRT will always ask the user."
 msgstr ""
-"A hibabejelentő fájl ( coredump file ) elkészítéséhez szükséges, idő- és "
-"tárhely igényes, hogy elkészüljön az ideiglenes tárhelyen ( stack trace ). "
-"Az ABRT szolgáltatást nyújt a hibabejelentő fájl elkészítéséhez az "
-"ideiglenes tárhelyről de ehhez fel kell tölteni a szolgáltatáshoz. A "
-"'Mindig' opcióval az ABRT mindig feltölti a hibabejelentő fájlt megkérdezés "
-"nélkül. A 'Soha' opcióval az ideiglenes tárhelyről készült adat helyileg "
-"lesz tárolva. A 'Rákérdez' opcióval mindig megkérdezi a felhasználót."
+"Az összeomlási adatok szükségesek a veremkiíratás létrehozásához, amely idő- "
+"és tárigényes művelet. Az ABRT olyan szolgáltatást nyújt, amely előállítja a "
+"veremkiíratást az összeomlási adatokból, de ehhez fel kell töltenie az "
+"összeomlási adatokat. A „Mindig” beállítás esetén az ABRT mindig, rákérdezés "
+"nélkül, feltölti az összeomlási adatokat. A „Soha” beállítás esetén a "
+"veremkiíratás helyben lesz elkészítve. A „Rákérdez” beállítás esetén pedig "
+"mindig megkérdezi a felhasználót, hogy mit tegyen."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
-#, fuzzy
 msgid ""
 "ABRT stores problem data in directories. Whenever ABRT needs writable "
 "directory, the directory is moved from the system location to your home "
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
 msgstr ""
-"Az ABRT mappákban tárolja a hibákra vonatkozó adatokat. Amikor az ABRT-nak "
-"szüksége van írási jogosultságra, a mappát átmozgatja egy bizonyos "
-"rendszerbeli helyről a felhasználó mappájába. Ha ez a beállítás letiltott, "
-"akkor az ABRT kérdés nélkül elvégzi az átmozgatást."
+"Az ABRT könyvtárakban tárolja a problémaadatokat. Ha az ABRT-nak szüksége "
+"van írási jogosultságra, a mappát átmozgatja a rendszerszintű helyről a "
+"felhasználói mappájába. Ha ez a beállítás ki van kapcsolva, akkor az ABRT "
+"kérdés nélkül végzi el az átmozgatást."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
-#, fuzzy
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
 "uses uReports  for fast global duplicate detection. In default configuration "
 "uReport is sent at beginning of reporting process. With this option enabled "
 "uReports are sent automatically immediately after problem detection."
 msgstr ""
-"Az uReport egy rövid és teljesen névtelen leírása egy problémának. Az ABRT "
+"A uReport egy rövid és teljesen névtelen leírása egy problémának. Az ABRT "
 "ezeket az uReportokat használja a gyors és globális duplikátum azonosításra. "
-"Alaphelyzetben az uReport a jelentési folyamat előtt kerül elküldésre. Ezzel "
+"Alaphelyzetben a uReport a jelentési folyamat elején kerül elküldésre. Ezzel "
 "a beállítással az uReportok kérdés nélkül, rögtön a probléma észlelése után, "
 "kerülnek elküldésre."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
-#, fuzzy
 msgid ""
 "With this option enabled reporting process started by click on Report button "
 "in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
-"Ha ez a beállítás engedélyezett, akkor a jelentési folyamat, amit a probléma "
-"értesítő ablakban lévő „Jelentés” gombbal aktivált, megszakítódik, miután az "
-"uReport elküldésre került. Bármikor használhatja az alapértelmezett probléma "
-"keresőt, hogy befejezze a jelentést."
+"Ha ez a beállítás engedélyezett, akkor a probléma értesítő ablakban lévő "
+"„Jelentés” gombbal elindított jelentési folyamat megszakításra kerül, miután "
+"az uReport elküldésre került. Bármikor használhatja az alapértelmezett "
+"problémakeresőt, hogy teljes jelentést tegyen."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
-#, fuzzy
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
 "Ha ez a beállítás engedélyezett, akkor az ABRT sosem jelenít meg értesítést "
-"a jelentett problémáról. Csak akkor van hatása, ha a „Rövidített jelentés” "
+"a jelentett problémákról. Csak akkor van hatása, ha a „Rövidített jelentés” "
 "beállítás engedélyezett."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
-#, fuzzy
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
@@ -281,53 +260,44 @@ msgstr ""
 "hozzáféréssel jelenti a hibát, ha az bizalmas adatot tartalmazhat."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
-#, fuzzy
 msgid "Request private ticket for sensitive information"
 msgstr "Privát jegy kérése érzékeny információk miatt"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
-#, fuzzy
 msgid "Notify incomplete problems"
-msgstr "Értesítsen a hiányos problémákról"
+msgstr "Jelezze a hiányos problémákat"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
-#, fuzzy
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
 msgstr ""
-"Hiányos hibák akkor észlelhetőek, amikor a számítógép épp kikapcsol, vagy a "
-"felhasználó kijelentkezik. Mivel az ABRT célja, hogy hasznos "
+"Félkész hibák akkor észlelhetőek, amikor a számítógép épp kikapcsol vagy a "
+"felhasználó kiléptetése zajlik. Mivel az ABRT célja, hogy hasznos "
 "hibajelentéseket küldjön, így ezeket nem engedi elküldeni."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
-#, fuzzy
 msgid "Always"
 msgstr "Mindig"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:15
-#, fuzzy
 msgid "Never"
 msgstr "Soha"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:16
-#, fuzzy
 msgid "Ask"
 msgstr "Kérdezzen"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
-#, fuzzy
 msgid "Upload coredump for backtrace generation"
 msgstr "Hibabejelentés feltöltése a hibakereséséhez"
 
 #: ../src/configuration-gui/system-config-abrt.c:79
-#, fuzzy
 msgid "_Close"
 msgstr "_Bezárás"
 
 #: ../src/configuration-gui/system-config-abrt.c:88
-#, fuzzy
 msgid "_Defaults"
 msgstr "_Alapbeállítások"
 
@@ -390,7 +360,7 @@ msgstr "Gyökérkönyvtár a konténerparancsok futtatásához"
 #: ../src/daemon/abrt-server.c:847 ../src/dbus/abrt-dbus.c:894
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:444
 msgid "& [options]"
-msgstr "& [beállítások]"
+msgstr "& [kapcsolók]"
 
 #: ../src/daemon/abrt-server.c:858
 msgid "Use NUM as client uid"
@@ -533,14 +503,14 @@ msgid ""
 "If UPLOAD_DIRECTORY is not provided, uses a value of\n"
 "WatchCrashdumpArchiveDir option from abrt.conf"
 msgstr ""
-"& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
+"& [-vs] [-w SZÁM] [-c MiB] [FELTÖLTÉSI_KÖNYVTÁR]\n"
 "\n"
 "\n"
-"Figyeli az UPLOAD_DIRECTORY könyvtárat és kibontja a bejövő archívumokat\n"
-"a bejövő DumpLocation helyre amit az abrt.conf határoz meg.\n"
+"Figyeli a FELTÖLTÉSI_KÖNYVTÁRat, és kibontja a bejövő archívumokat\n"
+"a DumpLocation helyre, ami az abrt.conf fájlban van megadva\n"
 "\n"
-"Ha az UPLOAD_DIRECTORY nincs megadva, akkor a\n"
-"WatchCrashdumpArchiveDir beállítást alkalmazza az abrt.conf fájlból"
+"Ha a FELTÖLTÉSI_KÖNYVTÁR nincs megadva, akkor a\n"
+"WatchCrashdumpArchiveDir értéket használja az abrt.conf fájlból"
 
 #: ../src/daemon/abrt-upload-watch.c:281
 msgid "Daemize"
@@ -773,18 +743,18 @@ msgstr ""
 "sikertelen"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:41
-#, fuzzy
 msgid ""
 "& [options] -d DIR\n"
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
 msgstr ""
-"& [beállítások] -d DIR\n"
+"& [kapcsolók] -d KÖNYVTÁR\n"
 "\n"
-"Elemzi a  C/C++ nyomkövetési adatokat, előállít duplikációs hash fájlokat,\n"
-"nyomkövetési adatminősítést, és azonosítja az összeomlott\n"
-"funkciót a hibagyűjtő DIR könyvtárban"
+"Elemzi a  C/C++ nyomkövetési adatokat, előállítja a duplikációs hash "
+"fájlokat,\n"
+"nyomkövetési minősítést, és azonosítja az összeomlott függvényt a\n"
+"hibagyűjtő KÖNYVTÁRban"
 
 #. 
 #. * The parser failed. Compute the duphash from the executable
@@ -792,17 +762,15 @@ msgstr ""
 #. * and component only.  This is not supposed to happen often.
 #. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
-#, fuzzy, c-format
+#, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "A nyomkövetési adatok értelmezése sikertelen ennél: %s"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:150
-#, fuzzy
 msgid "Crash thread not found"
 msgstr "Az összeomlás szála nem található"
 
 #: ../src/plugins/abrt-action-analyze-c.c:130
-#, fuzzy
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
@@ -810,43 +778,40 @@ msgid ""
 msgstr ""
 "& [-v] -d KÖNYVTÁR\n"
 "\n"
-"Kiszámítja és elmenti a KÖNYVTÁR hibagyűjtő könyvtárban az összeomlási "
-"adatok UUID-ját"
+"Kiszámítja és elmenti a hibagyűjtő KÖNYVTÁRban az összeomlási adatok UUID-"
+"ját"
 
 #: ../src/plugins/abrt-action-analyze-core.in:72
-#, fuzzy, c-format
+#, c-format
 msgid "Analyzing coredump '%s'"
 msgstr "A(z) „%s” összeomlási adatok elemzése"
 
 #: ../src/plugins/abrt-action-analyze-core.in:110
-#, fuzzy, c-format
+#, c-format
 msgid "Missing build id: %s"
-msgstr "Hiányzó építési azonosító: %s"
+msgstr "Hiányzó összeállítási azonosító: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:142
-#, fuzzy, c-format
+#, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr "Használat: %s [-v] [-o OUTFILE] -c COREFILE"
+msgstr "Használat: %s [-v] [-o KIMENET] -c COREFÁJL"
 
 #: ../src/plugins/abrt-action-analyze-core.in:164
-#, fuzzy
 msgid "COREFILE is not specified"
-msgstr "A COREFILE nincs megadva"
+msgstr "A COREFÁJL nincs megadva"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
-#, fuzzy
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
 msgstr ""
-"& [-v] -d DIR\n"
+"& [-v] -d KÖNYVTÁR\n"
 "\n"
-"Kiszámolja és elmenti az UUID és DUPHASH értékeket az oops problématár DIR "
-"mappájába"
+"Kiszámolja és elmenti az UUID és DUPHASH értékeket az oops probléma "
+"KÖNYVTÁRba"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:79
-#, fuzzy
 msgid ""
 "The backtrace does not contain enough meaningful function frames to be "
 "reported. It is annoying but it does not necessary signalize a problem with "
@@ -856,23 +821,21 @@ msgstr ""
 "A hibajelentés nem tartalmaz elegendő értékes információt, hogy bejelentésre "
 "kerüljön. Zavaró lehet, de nem jelent problémát a számítógépével "
 "kapcsolatban. Az ABRT nem engedélyezi, hogy jelentést készítsen egy "
-"hibakereső rendszerben, de értesítheti a kernel karbantartókat e-mail-en "
-"keresztül."
+"hibakereső rendszerben, de e-mailben értesítheti a kernel karbantartókat."
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:73
-#, fuzzy
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
 msgstr ""
-"& [-v] -d DIR\n"
+"& [-v] -d KÖNYVTÁR\n"
 "\n"
-"Kiszámolja és elmenti az UUID és DUPHASH értékeket az xorg problématár DIR "
-"mappájába"
+"Kiszámolja és elmenti az UUID és DUPHASH értékeket az xorg probléma "
+"KÖNYTÁRba"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:113
-#, fuzzy, c-format
+#, c-format
 msgid "Module '%s' was loaded - won't report this crash"
 msgstr "Az „%s” modul betöltődött – nem jelenti ezt az összeomlást"
 
@@ -882,9 +845,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
-"& [-v] -d DIR\n"
+"& [-v] -d KÖNYVTÁR\n"
 "\n"
-"Kiszámítja és elmenti a UUID és DUPHASH értékeket a python összeomlási "
+"Kiszámítja és elmenti a UUID és a DUPHASH értékeket a python összeomlási "
 "adatokból"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:52
@@ -897,17 +860,17 @@ msgstr "A(z) „{0}” fájl nem létezik"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:82
 msgid "Extracting the oops text from core"
-msgstr "Oops szöveg kibontása a core-ból"
+msgstr "Oops szöveg kinyerése az összeomlási adatokból"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
 msgid "Can't process {0}:\n"
 "{1}"
-msgstr "nem feldolgozható {0}:\n"
+msgstr "A(z) {0} nem dolgozhatófel:\n"
 "{1}"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "Can't extract the oops message: '{0}'"
-msgstr "Oops üzenet nem nyerhető ki: „{0}”"
+msgstr "Nem nyerhető ki oops üzenet: „{0}”"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:98
 msgid "Oops text extracted successfully"
@@ -918,16 +881,16 @@ msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
 msgstr ""
-"A kernelnapló szerint hardver hiba történt.\n"
-"Ez valószínűleg nem egy szoftverhiba.\n"
+"A kernelnapló szerint hardverhiba lett észlelve.\n"
+"Ez valószínűleg nem szoftverhiba.\n"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:88
 msgid "cannot open problem directory '{0}'"
-msgstr "a(z) „{0}” könyvtár nem nyitható meg"
+msgstr "a(z) „{0}” problémakönyvtár nem nyitható meg"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:102
 msgid "Problem directory error: {0}"
-msgstr "Problématár hiba: {0}"
+msgstr "Problémakönyvtár hiba: {0}"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:117
 msgid "Using product '{0}' from /etc/os-release."
@@ -939,7 +902,7 @@ msgstr "A(z) „{0}” termék használva."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:121
 msgid "Using product version {0}."
-msgstr "A(z) „{0}” termékverzió használva."
+msgstr "A(z) „{0}” termékverzió használata."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:133
 msgid "Duplicate bugzilla bug '#{0}' was found"
@@ -959,9 +922,9 @@ msgid ""
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
 msgstr ""
-"& [beállítások] -d DIR\n"
+"& [kapcsolók] -d KÖNYVTÁR\n"
 "\n"
-"Elemzi a összeomlási adatokat a hibagyűjtő DIR mappában, előállítja és "
+"Elemzi a összeomlási adatokat a hibagyűjtő KÖNYVTÁRban, előállítja és "
 "elmenti a nyomkövetési adatokat "
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
@@ -986,10 +949,10 @@ msgid ""
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
 msgstr ""
-"& [-v] [-r] -d DIR\n"
+"& [-v] [-r] -d KÖNYVTÁR\n"
 "\n"
-"Egy coredump-szintű visszakövetést készít a veremkiíratásból és a kapcsolódó "
-"binárisból"
+"Egy összeomlási adat szintű visszakövetést készít az összeomlási adatokból "
+"és a kapcsolódó binárisból"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
@@ -1014,7 +977,7 @@ msgid "Exiting on user command"
 msgstr "Kilépés felhasználói utasításra"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:89
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -1042,32 +1005,34 @@ msgid ""
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
 msgstr ""
-"Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
-"[--size_mb=SIZE]\n"
-"       [-e, --exact=PATH[:PATH]...]\n"
+"Használat: %s [-vy] [--ids=AZONOSÍTÓ_FÁJL] [--pkgmgr=(yum|dnf)]\n"
+"       [--tmpdir=IDEIGLENES_KÖNYVTÁR]\n"
+"       [--cache=GYORSÍTÓR_KÖNYVTÁR[:DEBUGINFO_KÖNYVTÁR1:"
+"DEBUGINFO_KÖNYVTÁR2…]]\n"
+"       [--size_mb=MÉRET] [-e, --exact=ÚTVONAL[:ÚTVONAL]…]\n"
 "\n"
-"Telepíti a debuginfókat minden build-id-hoz, melyek szerepelnek a "
-"BUILD_IDS_FILE-ban a CACHDIR-be, a TMPDIR használatával mint átmeneti "
-"(vég)célterület.\n"
-"A régi fájlok törlésre kerülnek a CACHEDIR-ben amíg kisebb mint a SIZE.\n"
+"Telepíti a debuginfo csomagokat a GYORSÍTÓTÁR_KÖNYVTÁRba minden az\n"
+"AZONOSÍTÓ_FÁJLban szereplő összeállítási azonosítóhoz, az "
+"IDEIGLENES_KÖNYVTÁRat \n"
+"használva átmeneti tárolóként. A GYORSÍTÓTÁR_KÖNYVTÁRban lévő régi fájlok \n"
+"törlésre kerülnek.\n"
 "\n"
-"Konfiguráció beolvasása a /etc/abrt/plugins/CCpp.conf-ból\n"
+"A konfigurációt az /etc/abrt/plugins/CCpp.conf fájlból olvassa be\n"
 "\n"
-"    -v          Be verbose\n"
-"    -y          Noninteractive, assume 'Yes' to all questions\n"
-"    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"    -v          Részletes kimenet\n"
+"    -y          Nem interaktív, minden kérdés „Igen” választ ad\n"
+"    --ids       Alapértelmezett: build_ids\n"
+"    --tmpdir    Alapértelmezett: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
 "RANDOM_SUFFIX\n"
-"    --cache     Colon separated list of directories. The first one is used "
-"for\n"
-"                saving installed debuginfos.\n"
-"                Default: /var/cache/abrt-dir\n"
-"    --size_mb   Default: 4096\n"
-"    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
-"    -e,--exact  Download only specified files\n"
-"    --repo      Pattern to use when searching for repos.\n"
-"                Default: *debug*\n"
+"    --cache     Pontokkal elválasztott könyvtárlista. Az első a debuginfo\n"
+"                csomagok mentésére lesz használva.\n"
+"                Alapértelmezett: /var/cache/abrt-dir\n"
+"    --size_mb   Alapértelmezett: 4096\n"
+"    --pkgmgr    Alapértelmezett: PackageManager értéke a CCpp.conf fájlban "
+"vagy 'dnf'\n"
+"    -e,--exact  Csak a megadott fájlok letöltése\n"
+"    --repo      A tárolók keresésére használt minta.\n"
+"                Alapértelmezett: *debug*\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:176
 msgid "Can't open {0}: {1}"
@@ -1076,8 +1041,8 @@ msgstr "{0} nem nyitható meg: {1}"
 #: ../src/plugins/abrt-action-install-debuginfo.in:213
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr ""
-"A veremkiíratás {0} debuginfo fájlra hivatkozik, közülük {1} nincs telepítve."
-""
+"Az összeomlási adatok a(z) {0} debuginfo fájlra hivatkoznak, közülük {1} "
+"nincs telepítve."
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:216
 msgid "{0} of debuginfo files are not installed"
@@ -1110,11 +1075,11 @@ msgid ""
 "Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
 "ABRT system cache."
 msgstr ""
-"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
-"    [-r REPO]\n"
+"& [-y] [-i AZONOSÍTÓ_FÁJL|-i -] [-e ÚTVONAL[:ÚTVONAL]…]\n"
+"\t[-r TÁROLÓ]\n"
 "\n"
-"Hibakereső csomagok telepítése minden build-id-hoz, melyek szerepelnek a "
-"BUILS_IDS_FILE - ban az ABRT rendszer gyorsítótárába."
+"Debuginfo csomagok telepítése az ABRT rendszer gyorsítótárba minden az "
+"AZONOSÍTÓ_FÁJLban szereplő összeállítási azonosítóhoz."
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:66
 msgid "Noninteractive, assume 'Yes' to all questions"
@@ -1122,7 +1087,7 @@ msgstr "Nem-interaktív, „Igen” feltételezése minden kérdésnél"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:67
 msgid "- means STDIN, default: build_ids"
-msgstr "- "
+msgstr "- STDIN-t jelent, alapértelmezés: build_ids"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
 msgid "Download only specified files"
@@ -1142,8 +1107,8 @@ msgid ""
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
 msgstr ""
-"Feltölthetjük a veremkiíratást? (Érzékeny adatokat is tartalmazhat) Ha a "
-"válasza „Nem”, akkor a veremkövetési adatok helyben kerülnek előállításra. "
+"Feltölthetőek az összeomlási adatok? (Érzékeny adatokat is tartalmazhat). Ha "
+"a válasza „Nem”, akkor a veremkövetési adatok helyben lesznek előállítva. "
 "(Ezzel nagy mennyiségű adat kerülhet letöltésre)."
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:72
@@ -1163,15 +1128,15 @@ msgid ""
 "SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
-"& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
+"& [-v] [-d MÉRET:KÖNYVTÁR]... [-f MÉRET:KÖNYVTÁR]... [-p KÖNYVTÁR] [FÁJL]…\n"
 "\n"
-"Törli a hibakönyvtárakat (-d) vagy fájlokat (-f) a DIR könyvtárakban amíg "
-"kisebb nem lesz mint a SIZE méret.\n"
-"FILE fájlok megőriződnek (sosem kerülnek törlésre)."
+"Törli a hibakönyvtárakat (-d) vagy fájlokat (-f) a KÖNYVTÁRakban, amíg "
+"kisebbek nem lesznek mint a MÉRET.\n"
+"A FÁJLok megőrződnek (sosem kerülnek törlésre)."
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
-msgstr "A teljes hibagyűjtő könyvtárak törlése"
+msgstr "Teljes hibakönyvtárak törlése"
 
 #: ../src/plugins/abrt-action-trim-files.c:237
 msgid "Delete files inside this directory"
@@ -1179,12 +1144,12 @@ msgstr "Törölje a könyvtáron belüli összes fájlt"
 
 #: ../src/plugins/abrt-action-trim-files.c:238
 msgid "Preserve this directory"
-msgstr "Könyvtár megőrzése"
+msgstr "Ezen könyvtár megőrzése"
 
 #: ../src/plugins/abrt-action-ureport:59
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr "Nem lehet elindítani ezt: „%s”, a hibaüzenet ez volt: „%s”"
+msgstr "A(z) „%s” nem indítható el, a hibaüzenet ez volt: „%s”"
 
 #: ../src/plugins/abrt-action-ureport:70
 #, c-format
@@ -1221,7 +1186,7 @@ msgstr "A report-ureport sikertelen, a kilépési kód: %d"
 
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
-msgstr "A felhasználói térben levő program jelzést küldött"
+msgstr "A felhasználói térben levő kódból érkezett szignál"
 
 #: ../src/plugins/abrt-gdb-exploitable:533
 msgid "Signal sent by timer/IO/async event"
@@ -1389,24 +1354,25 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-oops.c:104
 msgid "Save the extracted information in PROBLEM"
-msgstr "Mentse a kivonatolt információkat PROBLÉMA gyüjtőbe"
+msgstr "A kinyert információk mentése a PROBLÉMÁba"
 
 #: ../src/plugins/abrt-dump-oops.c:105
 #: ../src/plugins/abrt-dump-journal-oops.c:226
 #: ../src/plugins/abrt-dump-journal-xorg.c:192
 #: ../src/plugins/abrt-dump-xorg.c:56
 msgid "Make the problem directory world readable"
-msgstr "A dump könyvtár környezetének olvashatóvá tétele"
+msgstr "A problémakönyvtár bárki által olvashatóvá tétele"
 
 #: ../src/plugins/abrt-dump-oops.c:106
 #: ../src/plugins/abrt-dump-journal-oops.c:227
 #: ../src/plugins/abrt-dump-journal-xorg.c:193
 msgid "Throttle problem directory creation to 1 per second"
-msgstr "Aktiválja a probéma mappa létrehozását 1 másodpercenként"
+msgstr ""
+"A problémakönyvtár létrehozásának korlátozása másodpercenként egy alkalomra"
 
 #: ../src/plugins/abrt-dump-oops.c:107 ../src/plugins/abrt-dump-xorg.c:57
 msgid "Print search string(s) to stdout and exit"
-msgstr "Nyomtassa ki a keresési string(eke)t az stdout-ra és lépjen ki"
+msgstr "Keresési karakterláncok kiírása a szabványos kimenetre, majd kilépés"
 
 #: ../src/plugins/abrt-dump-oops.c:127
 #: ../src/plugins/abrt-dump-journal-oops.c:128
@@ -1455,73 +1421,80 @@ msgid ""
 "\n"
 "The last seen position is saved in "
 msgstr ""
+"& [-vsf] [-e]/[-c KURZOR] [-t EGÉSZ]/[-T] [-d KÖNYVTÁR]/[-D]\n"
+"\n"
+"Összeomlási adatok kinyerése a systemd-journal-ből\n"
+"\n"
+"A -c és -e kapcsolók ütköznek, mert mindkettő az először felolvasott "
+"üzenetet adja meg.\n"
+"\n"
+"Az -e csak az -f esetén hasznos, mert a napló követése az egész napló "
+"felolvasásával kezdődik, ha nem érhető el a legutóbbi pozíció.\n"
+"\n"
+"A legutóbbi pozíció itt kerül mentésre:"
 
 #: ../src/plugins/abrt-dump-journal-core.c:498
-#, fuzzy
 msgid "Create new problem directory in DIR for every coredump"
-msgstr "Új probléma könyvtár késtítése minden coredump-hoz a DIR mappában"
+msgstr "Új probléma könyvtár készítése minden veremkiíratáshoz a KÖNYVTÁRban"
 
 #: ../src/plugins/abrt-dump-journal-core.c:500
 #: ../src/plugins/abrt-dump-journal-oops.c:228
 #: ../src/plugins/abrt-dump-journal-xorg.c:194
-#, fuzzy
 msgid "Start reading systemd-journal from the CURSOR position"
-msgstr "A kurzor pozíciójátol kezdi el olvasni a systemd-journal-t"
+msgstr "A systemd-journal olvasása a kurzor pozíciójától kezdve"
 
 #: ../src/plugins/abrt-dump-journal-core.c:501
 #: ../src/plugins/abrt-dump-journal-oops.c:229
 #: ../src/plugins/abrt-dump-journal-xorg.c:195
-#, fuzzy
 msgid "Start reading systemd-journal from the end"
-msgstr "A systemd-journal végétől kezdi el olvasni"
+msgstr "A systemd-journal olvasása a végétől"
 
 #: ../src/plugins/abrt-dump-journal-core.c:502
 msgid "Throttle problem directory creation to 1 per INT second"
 msgstr ""
-"Aktiválja a probléma mappa létrehozását INT másodpercenként egy alkalommal"
+"A problémakönyvtár létrehozásának korlátozása EGÉSZ másodpercenként egy "
+"alkalomra"
 
 #: ../src/plugins/abrt-dump-journal-core.c:503
 msgid "Same as -t INT, INT is specified in plugins/CCpp.conf"
 msgstr ""
+"Ugyanaz, mint a -t EGÉSZ, az EGÉSZ a plugins/CCpp.conf-ban van megadva"
 
 #: ../src/plugins/abrt-dump-journal-core.c:504
 #: ../src/plugins/abrt-dump-journal-oops.c:230
 #: ../src/plugins/abrt-dump-journal-xorg.c:196
-#, fuzzy
 msgid "Follow systemd-journal from the last seen position (if available)"
-msgstr "Folytatja a systemd-journal utolsó helyzetétől ( ha lehetséges )"
+msgstr ""
+"A systemd-journal követése a legutóbb látott pozíciótól (ha az elérhető)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:515
 #: ../src/plugins/abrt-dump-journal-oops.c:246
 #: ../src/plugins/abrt-dump-journal-xorg.c:213
-#, fuzzy
 msgid "You need to specify either -c CURSOR or -e"
-msgstr "Meg kell határoznia, hogy -c kurzor vagy -e"
+msgstr "A -c KURZOR vagy -e kapcsolók egyikét kell megadnia"
 
 #: ../src/plugins/abrt-dump-journal-core.c:561
 #: ../src/plugins/abrt-dump-journal-oops.c:284
 #: ../src/plugins/abrt-dump-journal-xorg.c:278
-#, fuzzy
 msgid "Cannot open systemd-journal"
-msgstr "Nem tudja megnyitni a systemd-journal-t"
+msgstr "A systemd-journal nem nyitható meg"
 
 #: ../src/plugins/abrt-dump-journal-core.c:564
-#, fuzzy
 msgid "Cannot filter systemd-journal to systemd-coredump data only"
-msgstr "Nem tudja a systemd-journal-t kiszűrni a systemd-coredump adataiból"
+msgstr "A systemd-journal nem szűrhető le csak systemd-coredump adatokra"
 
 #: ../src/plugins/abrt-dump-journal-core.c:569
 #: ../src/plugins/abrt-dump-journal-oops.c:293
 #: ../src/plugins/abrt-dump-journal-xorg.c:291
 msgid "Cannot seek to the end of journal"
-msgstr "A napló vége nem található"
+msgstr "Nem lehet a napló végére görgetni"
 
 #: ../src/plugins/abrt-dump-journal-core.c:572
 #: ../src/plugins/abrt-dump-journal-oops.c:309
 #: ../src/plugins/abrt-dump-journal-xorg.c:307
 #, c-format
 msgid "Failed to set systemd-journal cursor '%s'"
-msgstr "A systemd-journal cursor '%s' állítása nem sikerült"
+msgstr "A(z) „%s” systemd-journal kurzor beállítása meghiúsult"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:40
 #: ../src/plugins/abrt-dump-journal-xorg.c:52
@@ -1541,37 +1514,47 @@ msgid ""
 "\n"
 "The last seen position is saved in "
 msgstr ""
+"& [-vsoxtf] [-e]/[-c KURZOR] [-d KÖNYVTÁR]/[-D]\n"
+"\n"
+"Oops adatok kinyerése a systemd-journal-ből\n"
+"\n"
+"A -c és -e kapcsolók ütköznek, mert mindkettő az először felolvasott "
+"üzenetet adja meg.\n"
+"\n"
+"Az -e csak az -f esetén hasznos, mert a napló követése az egész napló "
+"felolvasásával kezdődik, ha nem érhető el a legutóbbi pozíció.\n"
+"\n"
+"A legutóbbi pozíció itt kerül mentésre:"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:231
 #: ../src/plugins/abrt-dump-journal-xorg.c:197
-#, fuzzy
 msgid "Read journal files from all machines"
 msgstr "Naplófájlok olvasása az összes gépről"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:232
 #: ../src/plugins/abrt-dump-journal-xorg.c:198
 msgid "Read all journal files from directory at PATH"
-msgstr "Minden naplófájl olvasása a PATH mappából"
+msgstr "Összes naplófájl olvasása a PATH-on"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:279
 #: ../src/plugins/abrt-dump-journal-xorg.c:273
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot initialize systemd-journal in directory '%s'"
-msgstr "Nem sikerült a systemd-journal figyelő előkészítése a '%s' mappában"
+msgstr "Nem sikerült a systemd-journal előkészítése a(z) „%s” mappában"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:288
 msgid "Cannot filter systemd-journal to kernel data only"
-msgstr ""
+msgstr "A systemd-journal nem szűrhető le csak kernel adatokra"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:300
 #: ../src/plugins/abrt-dump-journal-xorg.c:298
 #, c-format
 msgid "Failed to start watch from cursor '%s'"
-msgstr ""
+msgstr "Nem sikerült a figyelés elindítása a(z) „%s” kurzortól"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:61
 msgid "Failed to parse Backtrace from journal"
-msgstr ""
+msgstr "A nyomkövetés feldolgozása a naplóból meghiúsult"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:143
 #, c-format
@@ -1591,6 +1574,21 @@ msgid ""
 "parameter\n"
 "-j or in %s conf file.\n"
 msgstr ""
+"& [-vsoxtf] [-e]/[-c KURZOR] [-d KÖNYVTÁR]/[-D]\n"
+"\n"
+"Xorg összeomlás kinyerése a systemd-journal-ből\n"
+"\n"
+"A -c és -e kapcsolók ütköznek, mert mindkettő az először olvasott üzenetet "
+"adja meg.\n"
+"\n"
+"Az -e csak az -f használata esetén hasznos, mert a napló követése a teljes "
+"napló \n"
+"beolvasása után történik, ha a legutóbbi pozíció nem érhető el.\n"
+"\n"
+"A legutóbbi pozíció ide került mentésre: %s\n"
+"\n"
+"A napló szűrő kötelező paraméter, és vagy a -j paraméterrel kell megadni,\n"
+"vagy a(z) %s konfigurációs fájlban.\n"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:189
 msgid "Print found crashes on standard output"
@@ -1599,21 +1597,24 @@ msgstr "Talált ütközések kiírása a szabványos kimenetre"
 #: ../src/plugins/abrt-dump-journal-xorg.c:190
 msgid "Create new problem directory in DIR for every crash found"
 msgstr ""
-"Készítsen mindig új mappát DIR mappában minden egyes ütközéshez amit talál"
+"Készítsen új problémakönyvtárat a KÖNYVTÁRban minden egyes talált "
+"összeomláshoz"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:199
 msgid "Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)"
-msgstr ""
+msgstr "Napló szűrő, például „_COMM=gdm-x-session” (többször is megadható)"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:265
 msgid ""
 "Journal filter must be specified either by parameter -j or stored in /etc/"
 "abrt/plugins/xorg.conf file"
 msgstr ""
+"A napló szűrőt vagy a -j paraméterrel kell megadni, vagy az /etc/abrt/"
+"plugins/xorg.conf fájlban"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:282
 msgid "Cannot filter systemd-journal to Xorg data only"
-msgstr ""
+msgstr "A systemd-journal nem szűrhető le csak Xorg adatokra"
 
 #: ../src/plugins/abrt-dump-xorg.c:35
 msgid ""
@@ -1621,78 +1622,86 @@ msgid ""
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
 msgstr ""
-"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+"& [-vsoxm] [-d KÖNYVTÁR]/[-D] [FÁJL]\n"
 "\n"
-"Bontsa ki az Xorg összeomlást a FILE-ból (vagy szabványos bemenetről)"
+"Bontsa ki az Xorg összeomlást a FÁJLból (vagy szabványos bemenetről)"
 
 #: ../src/plugins/abrt-dump-xorg.c:53
 msgid "Print found crash data on standard output"
-msgstr "Nyomtassa ki az összeomlási adatokat a szabványos kimenetre"
+msgstr "Az összeomlási adatok kiírása a szabványos kimenetre"
 
 #: ../src/plugins/abrt-dump-xorg.c:54
 msgid "Create problem directory in DIR for every crash found"
 msgstr ""
-"Készítsen mindig új mappát DIR mappában minden egyes ütközéshez amit talál"
+"Készítsen problémakönyvtárat a KÖNYVTÁRban minden egyes talált összeomláshoz"
 
 #: ../src/plugins/abrt-dump-xorg.c:108
 msgid "Failed to parse Backtrace from log file"
-msgstr ""
+msgstr "A nyomkövetés értelmezése a naplófájlból meghiúsult"
 
 #. abrt_journal_set_cursor() prints error message in verbose mode
 #: ../src/plugins/abrt-journal.c:274
 msgid "Cannot save journal watch's position"
-msgstr ""
+msgstr "A napló figyelési pozíciója nem menthető"
 
 #: ../src/plugins/abrt-journal.c:284
 #, c-format
 msgid "Cannot save journal watch's position: open('%s')"
-msgstr ""
+msgstr "A napló figyelési pozíciója nem menthető: megnyitás(„%s”)"
 
 #. Only notice because this is expected
 #: ../src/plugins/abrt-journal.c:302
 #, c-format
 msgid "Not restoring journal watch's position: file '%s' does not exist"
 msgstr ""
+"Nem kerül visszaállításra a napló figyelési pozíciója: a(z) „%s” fájl nem "
+"létezik"
 
 #: ../src/plugins/abrt-journal.c:304
 #, c-format
 msgid "Cannot restore journal watch's position form file '%s'"
-msgstr ""
+msgstr "A napló figyelési pozíciója nem állítható helyre a(z) „%s” fájlból"
 
 #: ../src/plugins/abrt-journal.c:311
 #, c-format
 msgid "Cannot restore journal watch's position: path '%s' is not regular file"
 msgstr ""
+"A napló figyelési pozíciója nem állítható helyre: a(z) „%s” útvonal nem "
+"szabályos fájl"
 
 #: ../src/plugins/abrt-journal.c:317
 #, c-format
 msgid ""
 "Cannot restore journal watch's position: file '%s' exceeds %dB size limit"
 msgstr ""
+"A napló figyelési pozíciója nem állítható helyre: a(z) „%s” meghaladja a(z) "
+"%dB-os méretkorlátot"
 
 #: ../src/plugins/abrt-journal.c:325
 #, c-format
 msgid "Cannot restore journal watch's position: open('%s')"
-msgstr ""
+msgstr "A napló figyelési pozíciója nem állítható helyre: megnyitás(„%s”)"
 
 #: ../src/plugins/abrt-journal.c:334
 #, c-format
 msgid "Cannot restore journal watch's position: cannot read entire file '%s'"
 msgstr ""
+"A napló figyelési pozíciója nem állítható helyre: nem olvasható a teljes "
+"„%s” fájl"
 
 #. abrt_journal_set_cursor() prints error message in verbose mode
 #: ../src/plugins/abrt-journal.c:346
 #, c-format
 msgid "Failed to move the journal to a cursor from file '%s'"
-msgstr ""
+msgstr "Nem sikerült a napló mozgatása a kurzorhoz a(z) „%s” fájlhoz"
 
 #: ../src/plugins/abrt-retrace-client.c:70
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
 msgstr ""
-"A nyomkövető kiszolgáló nem használható ebben az esetben, mivel az "
-"összeomlás túl nagy volt. Próbálja meg a helyi nyomkövetést."
+"A nyomkövetési kiszolgáló nem használható, mert az összeomlási adatok túl "
+"nagyok. Próbálja meg a helyi nyomkövetést."
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
@@ -1701,13 +1710,13 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
 msgid "Can't create temporary file in "
-msgstr "Nem lehet létrehozni az ideiglenes fájlt"
+msgstr "Az ideiglenes fájl nem hozható létre"
 
 #: ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
 #, c-format
 msgid "Can't execute '%s'"
-msgstr "'%s' nem végrehajtható"
+msgstr "A(z) „%s” nem hajtható végre"
 
 #: ../src/plugins/abrt-retrace-client.c:211
 #: ../src/plugins/abrt-retrace-client.c:398
@@ -1715,7 +1724,7 @@ msgstr "'%s' nem végrehajtható"
 #: ../src/plugins/abrt-retrace-client.c:842
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr "%d hosszúságú HTTP fejléc küldése sikertelen: NSS hiba %d."
+msgstr "%d hosszúságú HTTP fejléc küldése meghiúsult: NSS hiba: %d."
 
 #: ../src/plugins/abrt-retrace-client.c:223
 #: ../src/plugins/abrt-retrace-client.c:412
@@ -1737,7 +1746,7 @@ msgstr "Váratlan HTTP válasz a kiszolgálótól: %d\n"
 #: ../src/plugins/abrt-retrace-client.c:992
 #: ../src/plugins/abrt-retrace-client.c:1062
 msgid "Invalid response from server: missing HTTP message body."
-msgstr "Hibás válasz a kiszolgálótól: hiányzó HTTP üzenettörzs."
+msgstr "Érvénytelen válasz a kiszolgálótól: hiányzó HTTP üzenettörzs."
 
 #: ../src/plugins/abrt-retrace-client.c:424
 #, c-format
@@ -1745,12 +1754,12 @@ msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official '%s' repositories?"
 msgstr ""
-"Nyomkövető kiszolgáló képtelen feldolgozni ezt a csomagot '%s.%s'.\n"
-"Ez része bármelyik hivatalos %s tárolónak?"
+"A nyomkövetési kiszolgáló nem tudta feldolgozni a(z) „%s.%s” csomagot.\n"
+"Ez része bármelyik hivatalos „%s” tárolónak?"
 
 #: ../src/plugins/abrt-retrace-client.c:444
 msgid "Querying server settings"
-msgstr "Kiszolgáló beállításainak lekérdezése."
+msgstr "Kiszolgálóbeállítások lekérdezése"
 
 #: ../src/plugins/abrt-retrace-client.c:452
 msgid "The server is fully occupied. Try again later."
@@ -1774,6 +1783,8 @@ msgid ""
 "The size of your crash is %s, but the retrace server only accepts crashes "
 "smaller or equal to %s."
 msgstr ""
+"Az összeomlás mérete %s, de a nyomkövetési kiszolgáló csak %s-os vagy annál "
+"kisebb méretű összeomlásokat fogad."
 
 #: ../src/plugins/abrt-retrace-client.c:540
 msgid "The server does not support xz-compressed tarballs."
@@ -1802,11 +1813,13 @@ msgid ""
 "The size of your archive is %s, but the retrace server only accepts archives "
 "smaller or equal to %s."
 msgstr ""
+"Az archívum mérete %s, de a nyomkövetési kiszolgáló csak %s-os vagy annál "
+"kisebb méretű archívumokat fogad."
 
 #: ../src/plugins/abrt-retrace-client.c:640
 #, c-format
 msgid "You are going to upload %s. Continue?"
-msgstr ""
+msgstr "Ezt fogja feltölteni: %s. Folytatja?"
 
 #: ../src/plugins/abrt-retrace-client.c:649
 msgid "Cancelled by user"
@@ -1860,7 +1873,7 @@ msgstr "Érvénytelen válasz a kiszolgálótól: hiányzó X-Task-Password."
 
 #: ../src/plugins/abrt-retrace-client.c:795
 msgid "Retrace job started"
-msgstr "Retrace feladat elkezdődött"
+msgstr "Nyomkövetési feladat elkezdődött"
 
 #: ../src/plugins/abrt-retrace-client.c:808
 #, c-format
@@ -1901,35 +1914,35 @@ msgstr "naplózás a rendszernaplóba"
 
 #: ../src/plugins/abrt-retrace-client.c:1219
 msgid "allow insecure connection to retrace server"
-msgstr "nem biztonságos kapcsolat engedélyezése a nyomkövető szerverrel"
+msgstr "nem biztonságos kapcsolat engedélyezése a nyomkövetési kiszolgálóval"
 
 #: ../src/plugins/abrt-retrace-client.c:1221
 msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
 msgstr ""
-"ne ellenőrizze, hogy a nyomkövető szerver képes-e feldolgozni a megadott "
-"csomagot, mielőtt feltöltené az archívumot"
+"ne ellenőrizze, hogy a nyomkövetési kiszolgáló képes-e feldolgozni a "
+"megadott csomagot, mielőtt feltöltené az archívumot"
 
 #: ../src/plugins/abrt-retrace-client.c:1224
 msgid "retrace server URL"
-msgstr "nyomkövető kiszolgáló URL"
+msgstr "nyomkövetési kiszolgáló URL"
 
 #: ../src/plugins/abrt-retrace-client.c:1226
 msgid "retrace server port"
-msgstr "Nyomkövető kiszolgáló port"
+msgstr "nyomkövetési kiszolgáló port"
 
 #: ../src/plugins/abrt-retrace-client.c:1228
 msgid "(debug) show received HTTP headers"
-msgstr "(debug) kapott HTTP fejlécek megjelenítése"
+msgstr "(hibakeresés) kapott HTTP fejlécek megjelenítése"
 
 #: ../src/plugins/abrt-retrace-client.c:1229
 msgid "For create and batch operations"
-msgstr "Összeállításhoz és tömeges műveletekhez"
+msgstr "Létrehozási és kötegelt műveletekhez"
 
 #: ../src/plugins/abrt-retrace-client.c:1231
 msgid "read data from ABRT problem directory"
-msgstr "adatok begyűjtése az ABRT hibagyűjtő könyvtárából"
+msgstr "adatok begyűjtése az ABRT hibakönyvtárból"
 
 #: ../src/plugins/abrt-retrace-client.c:1233
 msgid "read data from coredump"
@@ -1942,11 +1955,12 @@ msgstr "Lekérdezési műveletek késleltetése"
 #: ../src/plugins/abrt-retrace-client.c:1237
 msgid "(debug) do not delete temporary archive created from dump dir in "
 msgstr ""
-"(debug) nem törli az ideiglenes könyvtárban lévő létrehozott archívumot"
+"(hibakeresés) nem törli az problémakönyvtárból létrehozott ideiglenes "
+"archívumot"
 
 #: ../src/plugins/abrt-retrace-client.c:1239
 msgid "For status, backtrace, and log operations"
-msgstr "Az állapothoz, nyomkövetési, és a napló műveletekhez"
+msgstr "Állapothoz, nyomkövetési és napló műveletekhez"
 
 #: ../src/plugins/abrt-retrace-client.c:1241
 msgid "id of your task on server"
@@ -1954,34 +1968,34 @@ msgstr "a feladat azonosítója a kiszolgálón"
 
 #: ../src/plugins/abrt-retrace-client.c:1243
 msgid "password of your task on server"
-msgstr "feladat jelszava a kiszolgálón"
+msgstr "a feladat jelszava a kiszolgálón"
 
 #: ../src/plugins/abrt-retrace-client.c:1247
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch/exploitable"
 msgstr ""
-"abrt-retrace-client <művelet> [beállítások]\n"
+"abrt-retrace-client <művelet> [kapcsolók]\n"
 "Műveletek: create/status/backtrace/log/batch/exploitable"
 
 #: ../src/plugins/abrt-retrace-client.c:1292
 #: ../src/plugins/abrt-retrace-client.c:1298
 msgid "Either problem directory or coredump is needed."
-msgstr "Vagy hibagyűjtő könyvtár vagy hibaanyag szükséges."
+msgstr "Vagy problémakönyvtár vagy összeomlási adatok szükségesek."
 
 #: ../src/plugins/abrt-retrace-client.c:1304
 #: ../src/plugins/abrt-retrace-client.c:1312
 #: ../src/plugins/abrt-retrace-client.c:1320
 #: ../src/plugins/abrt-retrace-client.c:1328
 msgid "Task id is needed."
-msgstr "Feladat ID szükséges."
+msgstr "Feladatazonosító szükséges."
 
 #: ../src/plugins/abrt-retrace-client.c:1306
 #: ../src/plugins/abrt-retrace-client.c:1314
 #: ../src/plugins/abrt-retrace-client.c:1322
 #: ../src/plugins/abrt-retrace-client.c:1330
 msgid "Task password is needed."
-msgstr "Feladat jelszava szükséges."
+msgstr "Feladat jelszó szükséges."
 
 #: ../src/plugins/abrt-retrace-client.c:1334
 #, c-format
@@ -1990,12 +2004,12 @@ msgstr "Ismeretlen művelet: %s."
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
-msgstr "Helyi GNU Debugger"
+msgstr "Helyi GNU hibakereső"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgstr ""
-"Debuginfo csomagok letöltése és nyomkövetési információ előállítása helyben "
+"Debuginfo csomagok letöltése és nyomkövetési információk helyi előállítása "
 "GDB segítségével"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
@@ -2004,13 +2018,15 @@ msgid ""
 "and take up disk space. However, unlike RetraceServer, doesn't send coredump "
 "to remote machines."
 msgstr ""
-"Szükséges a debuginfo csomagok letöltése, ami elég sokáig eltarthat, és sok "
-"helyet emészthet fel. Akérhogyis, a nyomkövető szervertől eltérően, nem küld "
-"adatokat a távoli gépek felé."
+"A debuginfo csomagok letöltése szükséges, ami elég sokáig eltarthat, és sok "
+"helyet emészthet fel. Akárhogy is, a RetraceServertől eltérően, nem küld "
+"adatokat távoli gépeknek."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
-msgstr "A core dump küldése a nyomkövető szervernek további analízisre"
+msgstr ""
+"Az összeomlási adatok elküldése a nyomkövetési kiszolgálónak további "
+"elemzésre"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
@@ -2020,20 +2036,20 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
-"Feltölti a coredump fájlokat a szerverre, ami nyomkövetési adatokat generál "
-"és visszaküldi ezeket. Előnye: nincs szükség a debuginfo csomagok "
-"letöltésére, valamint a nyomkövető szerver jobb eredményekre képes  a "
-"teljesebb debuginfo csomagjaival. Hátrányok: a feltöltött coredump fájlok az "
-"összedőlt programból származnak, ami privát adatokat is tartalmazhat, ha van "
-"benne ilyen."
+"Feltölti az összeomlási adatokat a kiszolgáló, amely visszakövetést készít, "
+"és visszaküldi azokat. Előnye: nincs szükség a debuginfo csomagok "
+"letöltésére, valamint a nyomkövető kiszolgáló jobb eredményekre képes a "
+"teljesebb debuginfo csomagjaival. Hátrányok: a feltöltött összeomlási adatok "
+"az összeomlott programból származnak, és így akár személyes adatokat is "
+"tartalmazhatnak."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Retrace server URL"
-msgstr "Nyomkövető szerver URL"
+msgstr "Nyomkövetési kiszolgáló URL"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Address of the retrace server"
-msgstr "A nyomkövető szerver címe"
+msgstr "A nyomkövetési kiszolgáló címe"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:5
 msgid "Insecure"
@@ -2041,7 +2057,7 @@ msgstr "Nem biztonságos"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 msgid "Whether or not to use insecure connection"
-msgstr "Függetlenül attól, hogy használ vagy sem nem biztonságos kapcsolatot"
+msgstr "Használjon-e nem biztonságos kapcsolatot"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
@@ -2049,9 +2065,9 @@ msgid ""
 "fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
 "&gt;(warning)&lt;/a&gt;"
 msgstr ""
-"Írjon \"insecure\"-t hogy engedélyezze a nem biztonságos kapcsolatot &lt;a "
+"Írja be hogy „insecure” a nem biztonságos kapcsolat engedélyezéséhez &lt;a "
 "href=\"https://fedorahosted.org/abrt/wiki/"
-"AbrtRetraceServerInsecureConnection\" &gt;(warning)&lt;/a&gt;"
+"AbrtRetraceServerInsecureConnection\" &gt;(figyelmeztetés)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
@@ -2120,30 +2136,30 @@ msgstr "Rossz tanúsítvány érkezett. „%s” alany, „%s” kibocsátó."
 #: ../src/plugins/https-utils.c:149
 #, c-format
 msgid "Failed to get slot 'PEM Token #0': %d."
-msgstr "Nincs hely a 'PEM Token #0': %d."
+msgstr "Nincs hely: „PEM token #0”: %d."
 
 #: ../src/plugins/https-utils.c:182
 #, c-format
 msgid "Can't resolve host name '%s'. NSS error %d."
-msgstr "A kiszolgálónév '%s' nem feloldható. NSS hiba %d."
+msgstr "A(z) „%s” nem oldható fel. NSS hiba: %d."
 
 #. Host exists, but has neither IPv4 nor IPv6??
 #: ../src/plugins/https-utils.c:203
 #, c-format
 msgid "Can't resolve host name '%s'."
-msgstr "A kiszolgálónév '%s' nem feloldható."
+msgstr "A(z) „%s” kiszolgálónév nem oldható fel."
 
 #: ../src/plugins/https-utils.c:210
 msgid "Failed to set socket blocking mode."
-msgstr "Socket blokkolási mód beállítása sikertelen."
+msgstr "A foglalat blokkolási módjának beállítása meghiúsult."
 
 #: ../src/plugins/https-utils.c:213
 msgid "Failed to wrap TCP socket by SSL."
-msgstr "TCP tördelése SSL-lel sikertelen."
+msgstr "A TCP foglalat SSL-be csomagolása meghiúsult."
 
 #: ../src/plugins/https-utils.c:215
 msgid "Failed to enable client handshake to SSL socket."
-msgstr "A kliens kapcsolódása sikertelen az SSL sockethez."
+msgstr "Az ügyfél kézfogása sikertelen volt az SSL foglalathoz."
 
 #: ../src/plugins/https-utils.c:220
 msgid "Failed to enable SSL3."
@@ -2155,80 +2171,80 @@ msgstr "A TLS engedélyezése sikertelen."
 
 #: ../src/plugins/https-utils.c:224
 msgid "Failed to set URL to SSL socket."
-msgstr "Hiba az URL beállításakor az SSL csatornára."
+msgstr "Hiba az SSL foglalat URL beállításakor."
 
 #: ../src/plugins/https-utils.c:233
 #, c-format
 msgid "Can't connect to '%s'"
-msgstr "Kapcsolódás nem lehetséges ide: '%s'"
+msgstr "Nem lehet ide kapcsolódni: „%s”"
 
 #: ../src/plugins/https-utils.c:241
 msgid "Failed to set certificate hook."
-msgstr "Sikertelen aláírás rögzítés."
+msgstr "A tanúsítvány hurok beállítása sikertelen."
 
 #: ../src/plugins/https-utils.c:247
 msgid "Failed to set handshake callback."
-msgstr "Nem sikerült egy közös paraméterű visszahívást beállítani."
+msgstr "A kézfogás visszahívás beállítása meghiúsult."
 
 #: ../src/plugins/https-utils.c:251
 msgid "Failed to reset handshake."
-msgstr "Nem sikerült a közös paraméterek alaphelyzetbe állítása."
+msgstr "Nem sikerült a kézfogás visszaállítása."
 
 #: ../src/plugins/https-utils.c:258
 #, c-format
 msgid "Failed to complete SSL handshake: NSS error %d."
-msgstr "SSL kapcsolat handshake befejezése nem sikerült: NSS hiba %d."
+msgstr "Az SSL kézfogás befejezése meghiúsult: NSS hiba: %d."
 
 #: ../src/plugins/https-utils.c:267
 msgid "Failed to close SSL socket."
-msgstr "Nem sikerült lezárni az SSL csatornát."
+msgstr "Az SSL foglalat lezárása meghiúsult."
 
 #: ../src/plugins/https-utils.c:332
 #, c-format
 msgid "Malformed HTTP response header: '%s'"
-msgstr "Hibás formátumú HTTP válasz fejléc: '%s'"
+msgstr "Rosszul formázott HTTP válasz fejléc: „%s”"
 
 #: ../src/plugins/https-utils.c:369
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
-msgstr "Hiba az adatok fogadásakor: NSS hiba %d."
+msgstr "Hiba az adatok fogadásakor: NSS hiba: %d."
 
 #: ../src/plugins/https-utils.c:398
 msgid "Malformed chunked response."
-msgstr "Rossz formátumú csonka válasz."
+msgstr "Rosszul formázott csonka válasz."
 
 #: ../src/plugins/https-utils.c:423
 msgid "Failed to initialize NSS."
-msgstr "Sikertelen NSS beállítás."
+msgstr "Az NSS előkészítése meghiúsult."
 
 #: ../src/plugins/https-utils.c:429
 msgid "Failed to initialize security module."
-msgstr "A biztonsági modul beállítása nem sikerült."
+msgstr "A biztonsági modul előkészítése meghiúsult."
 
 #: ../src/plugins/https-utils.c:444
 msgid "Failed to shutdown NSS."
-msgstr "NSS leállítása sikertelen."
+msgstr "Az NSS leállítása meghiúsult."
 
 #: ../src/plugins/oops-utils.c:73
 #, c-format
 msgid "Sleeping for %d seconds"
-msgstr "Kivárás %d másodpercig"
+msgstr "Alvás %d másodpercig"
 
 #: ../src/plugins/oops-utils.c:200
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
 msgstr ""
-"Kernelhiba történt egy hibás BIOS miatt. Sajnálatos módon, az ilyen "
-"problémákat nem tudják a kernel programozók kijavítani."
+"Kernelhiba történt egy BIOS hiba miatt. Sajnos az ilyen problémákat nem "
+"tudják a kernel karbantartók javítani."
 
 #: ../src/plugins/oops-utils.c:205
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
 msgstr ""
-"Kernelhiba történt és a hardvere nem támogatott, ezért a kernel programozók "
-"nem tudják megjavítani ezt a problémát."
+"Kernelhiba történt, de a hardvere nem támogatott, ezért a kernel "
+"karbantartók nem tudják kijavítani ezt a problémát."
 
 #: ../src/plugins/oops-utils.c:220
 #, c-format
@@ -2236,13 +2252,13 @@ msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"Kernelhiba történt, de a kernele összekeveredett más kóddal (flags: %s). A "
-"kernel karbantartói képtelenek analizálni ezeket a jelentéseket."
+"Kernelhiba történt, de a kernele más kóddal kevert (jelzők: %s). A kernel "
+"karbantartók nem tudják elemezni az ilyen jelentéseket."
 
 #: ../src/plugins/oops-utils.c:228
 #, c-format
 msgid " Tainted modules: %s."
-msgstr "Tainted állapotú modulok: %s"
+msgstr "Más kóddal kevert modulok: %s."
 
 #: ../src/plugins/bodhi.c:468
 msgid "List of bug ids"
@@ -2250,7 +2266,7 @@ msgstr "Hibaazonosítók listája"
 
 #: ../src/plugins/bodhi.c:469
 msgid "Specify a bodhi server url"
-msgstr "Adjon meg egy bodhi kiszolgáló URL-t"
+msgstr "Adja meg a bodhi kiszolgáló URL-ét"
 
 #: ../src/plugins/bodhi.c:470
 msgid "Specify a release"
@@ -2262,9 +2278,10 @@ msgid ""
 "\n"
 "Search for updates on bodhi server"
 msgstr ""
-"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"& [-v] [-r[KIADÁS]] (-b AZONOSÍTÓ1[,AZONOSÍTÓ2,...] | CSOMAG-NÉV) [CSOMAG-"
+"NÉV]…\n"
 "\n"
-"Keressen frissítéseket bodhi szervereken"
+"Frissítések keresése a bodhi kiszolgálon"
 
 #: ../src/plugins/bodhi.c:542
 msgid "Searching for updates"
@@ -2272,12 +2289,12 @@ msgstr "Frissítések keresése"
 
 #: ../src/plugins/bodhi.c:548
 msgid "No updates for this package found"
-msgstr "Ehhez a csomaghoz frissítések nem találhatóak"
+msgstr "Nincs frissítés ehhez a csomaghoz"
 
 #. strbuf_free(q);
 #: ../src/plugins/bodhi.c:577
 msgid "Local version of the package is newer than available updates"
-msgstr "A helyben lévő csomag verziója frissebb mint a frissítésekben levő"
+msgstr "A helyi csomag verziója frissebb, mint az elérhető frissítéseké"
 
 #: ../src/plugins/bodhi.c:594
 #, c-format
@@ -2285,8 +2302,8 @@ msgid ""
 "An update exists which might fix your problem. You can install it by running:"
 " %s. Do you want to continue with reporting the bug?"
 msgstr ""
-"Ehhez egy frissítés létezik, ami lehet megoldja a problémát. Ez telepítheti "
-"a következő futtatásával: %s. Kívánja folytatni a hiba bejelentését?"
+"Létezik egy frissítés, ami lehet hogy megoldja a problémát. A következő "
+"futtatásával telepítheti: %s. Folytatja a hiba bejelentését?"
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
 msgid ""
@@ -2294,67 +2311,64 @@ msgid ""
 "\n"
 "Scans files for split oops message. Can print and/or delete them."
 msgstr ""
-"& [-v] [-od] FILE... \n"
+"& [-v] [-od] FÁJL… \n"
 "\n"
-"\n"
-"\n"
-"Az osztott  oops üzeneteket kinyomtathatja/törölheti az átviszgált fájlban  ."
-""
+"Fájlok átvizsgálása osztott  oops üzenetek után. Kiírathatja vagy törölheti "
+"őket."
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:97
 msgid "Print found oopses"
-msgstr "A nyomtatás során talált oops "
+msgstr "Talált oops üzenetek kiírása"
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:98
 msgid "Delete files with found oopses"
-msgstr "Fájlok törlése közben oops történt"
+msgstr "Oops üzeneteket tartalmazó fájlok törlése"
 
 #: ../src/cli/abrt-cli-core.c:100
 #, c-format
 msgid "'%s' identifies more than one problem directory"
-msgstr ""
-"'%s' egyidejűleg egyszerre több problémagyüjtő könyvtára is azonosított"
+msgstr "A(z) „%s” több mint egy problémakönyvtárat is azonosít"
 
 #: ../src/cli/abrt-cli.c:130
 msgid "Usage: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
-msgstr ""
+msgstr "Használat: abrt-cli [--authenticate] [--version] PARANCS [KÖNYVTÁR]…"
 
 #: ../src/cli/abrt-cli.c:134
 msgid "List problems [in DIRs]"
-msgstr "Listázza a még be nem jelentett hibákat [DIR könyvtárakban]"
+msgstr "Problémák listázása [a KÖNYVTÁRakban]"
 
 #: ../src/cli/abrt-cli.c:135
 msgid "Remove problem directory DIR"
-msgstr "Hibagyűjtő DIR könyvtár eltávolítása"
+msgstr "A hibatároló KÖNYVTÁR eltávolítása"
 
 #: ../src/cli/abrt-cli.c:136
 msgid "Analyze and report problem data in DIR"
-msgstr "Elemzi és bejelenti a hibaadatokat a DIR könyvtárban"
+msgstr "A KÖNYVTÁRban lévő problémaadatok elemzése és bejelentése"
 
 #: ../src/cli/abrt-cli.c:137
 msgid "Print information about DIR"
-msgstr "Információk nyomtatása DIR könyvtárról"
+msgstr "Információk kiírása a KÖNYVTÁRról"
 
 #: ../src/cli/abrt-cli.c:138
 msgid "Print the count of the recent crashes"
-msgstr "Írja ki a legutóbbi összeomlások számát"
+msgstr "A legutóbbi összeomlások számának kiírása"
 
 #: ../src/cli/abrt-cli.c:139
 msgid "Process multiple problems"
-msgstr ""
+msgstr "Több probléma feldolgozása"
 
 #: ../src/cli/abrt-cli.c:162
 msgid "See 'abrt-cli COMMAND --help' for more information"
-msgstr "Tekintse meg az 'abrt-cli PARANCS --help' a további információkért"
+msgstr "További információkért lásd: „abrt-cli PARANCS --help”"
 
 #: ../src/cli/list.c:127
 msgid "& list [options]"
-msgstr ""
+msgstr "& list [kapcsolók]"
 
 #: ../src/cli/list.c:136 ../src/cli-ng/abrtcli/cli.py:121
 #: ../src/cli-ng/abrtcli/cli.py:264
 msgid "List only not-reported problems"
-msgstr "Csak a nem jelentett problémákat listázza"
+msgstr "Csak a nem jelentett problémák listázása"
 
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:138 ../src/cli/list.c:191
@@ -2364,14 +2378,14 @@ msgstr "Részletes jelentés megjelenítése"
 #: ../src/cli/list.c:139 ../src/cli-ng/abrtcli/cli.py:113
 msgid "List only the problems more recent than specified timestamp"
 msgstr ""
-"Csak azoknak az esetek számát jelenítse meg ami frissebb, mintt a "
-"meghatározott időbélyeg"
+"Csak azon esetek számát jelenítse meg, amelyek frissebbek mint a megadott "
+"időbélyeg"
 
 #: ../src/cli/list.c:140 ../src/cli-ng/abrtcli/cli.py:115
 msgid "List only the problems older than specified timestamp"
 msgstr ""
-"Csak azokat a megadott eseteket jelenítse meg amik régebbiek mint az "
-"időbélyeg"
+"Csak azokat a megadott eseteket jelenítse meg, amelyek régebbiek mint a "
+"megadott időbélyeg"
 
 #: ../src/cli/list.c:166
 #, c-format
@@ -2380,22 +2394,22 @@ msgid ""
 "issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
 msgstr ""
-"Az Autoreport képesség (önműködő jelentés) ki van kapcsolva. Kérem "
-"engedélyezze root jogú felhasználóként a 'abrt-auto-reporting enabled' "
-"paranccsal.\n"
+"Az automatikus jelentés ki van kapcsolva. Fontolja meg a bekapcsolását az "
+"„abrt-auto-reporting enabled” parancs root felhasználóként történő "
+"kiadásával.\n"
 
 #: ../src/cli/list.c:183
 msgid "& info [options] DIR..."
-msgstr "& info [opciók] DIR..."
+msgstr "& info [kapcsolók] KÖNYVTÁR…"
 
 #: ../src/cli/list.c:192
 msgid "Text larger than this will be shown abridged"
-msgstr "Szöveg nagyobb, ezért így fog megjelenni rövidített szövegként"
+msgstr "Az ennél nagyobb szöveg rövidítettként fog megjelenni"
 
 #: ../src/cli/list.c:212
 #, c-format
 msgid "No such problem directory '%s'"
-msgstr "Nincs ilyen problémát tartalmazó könyvtár  '%s'"
+msgstr "Nem létezik a(z) „%s” problémakönyvtár"
 
 #: ../src/cli/status.c:66
 msgid "& status"
@@ -2404,21 +2418,20 @@ msgstr "& status"
 #: ../src/cli/status.c:74 ../src/cli-ng/abrtcli/cli.py:260
 msgid "Print only the problem count without any message"
 msgstr ""
-"Jelenítse meg csak azoknak az eseteknek a számát ahol minden üzenet nélkül "
-"történt"
+"Csak azoknak az eseteknek a számát jelenítse meg, amelyeknél nincs üzenet"
 
 #: ../src/cli/status.c:75 ../src/cli-ng/abrtcli/cli.py:262
 msgid "Print only the problems more recent than specified timestamp"
 msgstr ""
-"Csak azoknak az eseteknek a számát jelenítse meg, ami a megjelölt időbélyeg "
-"óta történt"
+"Csak azoknak az eseteknek a számát jelenítse meg, amelyek a megjelölt "
+"időbélyegnél frissebbek"
 
 #: ../src/cli/status.c:91
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
 msgstr ""
-"Az ABRT több hibát is talált %u (s) . További információhoz  futtasa az abrt-"
-"cli list %s parancsot\n"
+"Az ABRT %u problémát talált. További információkért futtassa: abrt-cli "
+"list%s\n"
 
 #: ../src/cli/report.c:34
 #, c-format
@@ -2441,7 +2454,7 @@ msgstr "& report [kapcsolók] KÖNYVTÁR…"
 
 #: ../src/cli/report.c:89
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "A PROBLÉMA_KÖNYVTÁR eltávolítása a bejelentés után"
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
@@ -2459,27 +2472,27 @@ msgstr "A(z) „%s” bejelentése."
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:127
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "A következő problémához nyomja meg az ENTER gombot:"
 
 #: ../src/cli/process.c:138
 msgid "Without --since argument, iterates over all detected problems."
-msgstr ""
+msgstr "A --since argumentum nélkül végigmegy az összes észlelt problémán."
 
 #: ../src/cli/process.c:144
 msgid "Selects only problems detected after timestamp"
-msgstr ""
+msgstr "Csak az adott időpont után észlelt problémák kiválasztása"
 
 #: ../src/cli-ng/abrtcli/cli.py:33
 msgid "Problem has no backtrace"
-msgstr ""
+msgstr "A problémának nincs nyomkövetése"
 
 #: ../src/cli-ng/abrtcli/cli.py:35
 msgid "Start retracing process?"
-msgstr ""
+msgstr "Elindítja a nyomkövetési folyamatot?"
 
 #: ../src/cli-ng/abrtcli/cli.py:40
 msgid "Show backtrace of a problem"
-msgstr ""
+msgstr "A probléma nyomkövetésének megjelenítése"
 
 #: ../src/cli-ng/abrtcli/cli.py:50
 msgid "This"
@@ -2487,25 +2500,27 @@ msgstr "Ez"
 
 #: ../src/cli-ng/abrtcli/cli.py:52
 msgid "Last"
-msgstr ""
+msgstr "Legutóbbi"
 
 #: ../src/cli-ng/abrtcli/cli.py:54
 msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
-msgstr ""
+msgstr "A(z) {} probléma nem C/C++ típusú. Nem telepíthető debuginfo csomag"
 
 #: ../src/cli-ng/abrtcli/cli.py:64 ../src/cli-ng/abrtcli/cli.py:99
 msgid ""
 "Permission denied: '{}'\n"
 "If this is a system problem try running this command as root"
 msgstr ""
+"Hozzáférés megtagadva: „{}”\n"
+"Ha ez egy rendszerprobléma, akkor próbálja rootként futtatni ezt a parancsot"
 
 #: ../src/cli-ng/abrtcli/cli.py:71
 msgid "Install required debuginfo for given problem"
-msgstr ""
+msgstr "A szükséges debuginfo csomag telepítése az adott problémához"
 
 #: ../src/cli-ng/abrtcli/cli.py:106
 msgid "Run GDB against a problem"
-msgstr ""
+msgstr "GDB futtatása a problémával szemben"
 
 #: ../src/cli-ng/abrtcli/cli.py:117 ../src/cli-ng/abrtcli/cli.py:153
 msgid "Output format"
@@ -2521,64 +2536,66 @@ msgstr "Nincsenek problémák"
 
 #: ../src/cli-ng/abrtcli/cli.py:147
 msgid "List problems"
-msgstr ""
+msgstr "Problémák felsorolása"
 
 #: ../src/cli-ng/abrtcli/cli.py:167
 msgid "Print information about problem"
-msgstr ""
+msgstr "Információk kiírása a problémáról"
 
 #: ../src/cli-ng/abrtcli/cli.py:173
 msgid "Prompt before removal"
-msgstr ""
+msgstr "Kérdés az eltávolítás előtt"
 
 #: ../src/cli-ng/abrtcli/cli.py:174
 msgid "Do not prompt before removal"
-msgstr ""
+msgstr "Ne kérdezzen az eltávolítás előtt"
 
 #. force prompt for last problem to avoid accidents
 #: ../src/cli-ng/abrtcli/cli.py:182
 msgid "Are you sure you want to delete this problem?"
-msgstr ""
+msgstr "Biztosan törli ezt a problémát?"
 
 #: ../src/cli-ng/abrtcli/cli.py:186
 msgid "Removed"
-msgstr ""
+msgstr "Eltávolítva"
 
 #: ../src/cli-ng/abrtcli/cli.py:188
 msgid "Remove problem"
-msgstr ""
+msgstr "Probléma eltávolítása"
 
 #: ../src/cli-ng/abrtcli/cli.py:199
 msgid "Report problem"
-msgstr ""
+msgstr "Probléma jelentése"
 
 #: ../src/cli-ng/abrtcli/cli.py:204
 msgid "Perform local retracing"
-msgstr ""
+msgstr "Helyi nyomkövetés elvégzése"
 
 #: ../src/cli-ng/abrtcli/cli.py:206
 msgid "Perform remote retracing using retrace server"
-msgstr ""
+msgstr "Távoli nyomkövetés végrehajtása a nyomkövetési kiszolgálón"
 
 #: ../src/cli-ng/abrtcli/cli.py:208
 msgid "Force retracing even if backtrace already exists"
 msgstr ""
+"Nyomkövetés kényszerítése, akkor is, ha már vannak elérhető nyomkövetési "
+"adatok"
 
 #: ../src/cli-ng/abrtcli/cli.py:223
 msgid "Problem already has a backtrace"
-msgstr ""
+msgstr "A problémához már tartoznak nyomkövetési adatok"
 
 #: ../src/cli-ng/abrtcli/cli.py:224
 msgid "Run abrt retrace with -f/--force to retrace again"
-msgstr ""
+msgstr "Futtassa újra az abrt nyomkövetést az -f/--force kapcsolóval"
 
 #: ../src/cli-ng/abrtcli/cli.py:225
 msgid "Show backtrace?"
-msgstr ""
+msgstr "Megjeleníti a nyomkövetést?"
 
 #: ../src/cli-ng/abrtcli/cli.py:229
 msgid "No retracing possible for this problem type"
-msgstr ""
+msgstr "Nem lehetséges a nyomkövetés az ilyen típusú problémánál"
 
 #: ../src/cli-ng/abrtcli/cli.py:233
 msgid ""
@@ -2587,50 +2604,57 @@ msgid ""
 "Local retracing requires downloading potentially large amount of debuginfo "
 "data"
 msgstr ""
+"Feltölti az összeomlási adatokat, és elvégzi a távoli nyomkövetést? "
+"(Érzékeny adatokat tartalmazhat). Ha a válasza „Nem”, akkor a veremkiíratás "
+"helyben lesz előállítva. A helyi nyomkövetéshez nagy mennyiségű debuginfo "
+"adat letöltése lehet szükséges."
 
 #: ../src/cli-ng/abrtcli/cli.py:248
 msgid "Remote retracing"
-msgstr ""
+msgstr "Távoli nyomkövetés"
 
 #: ../src/cli-ng/abrtcli/cli.py:251
 msgid "Local retracing"
-msgstr ""
+msgstr "Helyi nyomkövetés"
 
 #: ../src/cli-ng/abrtcli/cli.py:255
 msgid "Generate backtrace from coredump"
-msgstr ""
+msgstr "Nyomkövetés előállítása az összeomlási adatokból"
 
 #: ../src/cli-ng/abrtcli/cli.py:280
 msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
 msgstr ""
+"Az ABRT {} problémát észlelt. Tovább információkért futtassa ezt: abrt "
+"list{}"
 
 #: ../src/cli-ng/abrtcli/cli.py:283
 msgid "Print count of the recent crashes"
-msgstr ""
+msgstr "A legutóbbi összeomlások számának kiírása"
 
 #: ../src/cli-ng/abrtcli/cli.py:292
 msgid "Authenticate and show all problems on this machine"
-msgstr ""
+msgstr "Hitelesítés és a számítógép összes problémájának megjelenítése"
 
 #: ../src/cli-ng/abrtcli/match.py:96
 msgid "No problem(s) matched"
-msgstr ""
+msgstr "Nincs egyező probléma"
 
 #: ../src/cli-ng/abrtcli/match.py:116
 msgid "Ambiguous match specified resulting in multiple problems:"
-msgstr ""
+msgstr "Ellentmondásos találat megadva, ez több problémát is okoz:"
 
 #: ../src/cli-ng/abrtcli/utils.py:78
 msgid "Not reportable"
-msgstr ""
+msgstr "Nem jelenthető"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
 msgstr ""
-"Küldje a core dump-ot a távoli Retrace kiszolgálónak analízisre vagy "
-"készítse el helyben az analízist, ha a távoli folyamat sikertelen lenne"
+"Küldje el az összeomlási adatokat a távoli nyomkövető kiszolgálónak "
+"elemzésre, vagy végezze el helyben az elemzést, ha a távoli folyamat "
+"meghiúsulna"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
 msgid ""
@@ -2642,6 +2666,14 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
+"Feltölti az összeomlási adatokat egy kiszolgálónak, amely előállítja a "
+"nyomkövetést, és visszaadja azt. Ha a felhasználó nem akarja feltölteni az "
+"összeomlási adatait, akkor helyben lesz elemezve. A helyi elemzést akkor is "
+"lefut, ha a távoli elemzés meghiúsult. Előnyök: nincs szükség debuginfo "
+"csomagok letöltésére. A nyomkövetési kiszolgáló debuginfo adatai teljesebbek."
+" A nyomkövetési kiszolgáló jobb nyomkövetést adhat vissza. Hátrányok: az "
+"összeomlási adatok tartalmazzák az összeomlott program összes adatát, a "
+"személyes adatait is."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -2651,20 +2683,20 @@ msgstr "VM mag elemzése"
 msgid ""
 "Install kernel debuginfo packages, generate kernel log and oops message"
 msgstr ""
-"Telepítse a kernel debuginfo csomagokat, állítson elő kernel log-ot, és "
-"hibaüzeneteket."
+"Telepítse a kernel debuginfo csomagjait, állítson elő kernel naplót és oops "
+"üzenetet."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
 "Needs to install kernel debuginfo packages, which might take significant "
 "time, and take up disk space."
 msgstr ""
-"Szükséges a kernel debuginfo csomagok telepítése, ami elég sokáig eltarthat, "
-"és rengeteg tárhelyet emészthet fel."
+"A kernel debuginfo csomagjainak telepítése szükséges, amely jelentős ideig "
+"eltarthat, és tárhelyet foglal."
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
-msgstr "GConf konfiguráció begyüjtése"
+msgstr "GConf konfiguráció begyűjtése"
 
 #: ../src/plugins/collect_GConf.xml.in.h:2
 msgid "Save configuration from application's GConf directory"
@@ -2675,8 +2707,8 @@ msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
 msgstr ""
-"A gconftool-2 --recursive-list /apps/executable és elmenti, mint "
-"'gconf_subtree' elemként."
+"Futtatja a gconftool-2 --recursive-list /apps/executable parancsot, és "
+"„gconf_subtree” elemként elmenti."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
@@ -2691,8 +2723,8 @@ msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
 msgstr ""
-"Ellenőrzi hogy a vimrc és gvimrc fájlok jelen vannak-e az /etc könyvtárban "
-"és elmenti őket, mint system_vimrc és system_gvimrc."
+"Ellenőrzi hogy a vimrc és gvimrc fájlok jelen vannak-e az /etc könyvtárban, "
+"majd system_vimrc és system_gvimrc néven lementi őket."
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid "Collect yours vim configuration files"
@@ -2700,15 +2732,15 @@ msgstr "Begyűjti a vim konfigurációs fájlokat"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:2
 msgid "Save .vimrc and .gvimrc from your home directory"
-msgstr "A .vimrc és .gvimrc fájlok fájlok mentése a /home könyvtárból"
+msgstr "A .vimrc és .gvimrc fájlok fájlok mentése a saját könyvtárába"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
 "Checks if there are .vimrc and .gvimrc in your home directory and saves them "
 "as user_vimrc and user_gvimrc, respectively."
 msgstr ""
-"Ellenőrzi hogy a .vimrc és .gvimrc fájlok jelen vannak-e az /home "
-"könyvtárban és elmenti őket, mint system_vimrc és system_gvimrc."
+"Ellenőrzi hogy a .vimrc és .gvimrc fájlok jelen vannak-e a saját "
+"könyvtárban, majd user_vimrc és user_gvimrc néven lementi őket."
 
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"
@@ -2716,7 +2748,7 @@ msgstr "Jelentés beküldése"
 
 #: ../src/plugins/post_report.xml.in.h:2
 msgid "Executed after the reporting is finished"
-msgstr "Végrehajtásra kerül miután a jelentés elkészült"
+msgstr "A jelentés elkészülte után indításra kerül"
 
 #: ../src/plugins/post_report.xml.in.h:3
 msgid "Used for updating of the databases"

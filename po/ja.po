@@ -18,6 +18,7 @@
 # Noriko Mizumoto <noriko@redhat.com>, 2015. #zanata
 # Ooyama Yosiyuki <qqke6wd9k@apricot.ocn.ne.jp>, 2015. #zanata
 # Noriko Mizumoto <noriko@redhat.com>, 2016. #zanata
+# Casey Jones <nahareport@live.com>, 2018. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -26,8 +27,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-03-03 02:16-0500\n"
-"Last-Translator: Noriko Mizumoto <noriko@redhat.com>\n"
+"PO-Revision-Date: 2018-02-16 08:49-0500\n"
+"Last-Translator: Casey Jones <nahareport@live.com>\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/ja/)\n"
 "Language: ja\n"
@@ -157,7 +158,7 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.c:501
 msgid "The configuration option above can be configured in"
-msgstr ""
+msgstr "上の設定オプションはここで設定できます"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
@@ -996,6 +997,29 @@ msgid ""
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
 msgstr ""
+"使い方: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH[:PATH]...]\n"
+"\n"
+"BUILD_IDS_FILE に記載されている全 build-id の debuginfo を CACHEDIR に\n"
+"インストールします。TMPDIR を一時的なステージングエリアに使用します。\n"
+"CACHEDIR の大きさが SIZE に減少するまで CACHEDIR 内の古いファイルが削除されます。\n"
+"\n"
+"/etc/abrt/plugins/CCpp.conf から設定を読み取ります。\n"
+"\n"
+"    -v          冗長表示にする\n"
+"    -y          非インテラクティブ、すべての質問に「はい」と答える\n"
+"    --ids       デフォルト: build_ids\n"
+"    --tmpdir    デフォルト: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     コロン区切りの辞書リスト。1番目のものはインストールされた\n"
+"                debuginfoの保存に使用されます。\n"
+"                デフォルト: /var/cache/abrt-dir\n"
+"    --size_mb   デフォルト: 4096\n"
+"    --pkgmgr   デフォルト:  CCpp.conf または 'dnf' の PackageManager\n"
+"    -e,--exact  指定したファイルのみダウンロードする\n"
+"    --repo      リポジトリの検索時に使用するパターン\n"
+"                デフォルト: *debug*\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:176
 msgid "Can't open {0}: {1}"
@@ -1012,7 +1036,7 @@ msgstr "{0} debuginfo ファイルがインストールされていません"
 #: ../src/plugins/abrt-action-install-debuginfo.in:235
 #, c-format
 msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
-msgstr ""
+msgstr "CCppアドオンの無効な設定です。サポートされないパッケージマネージャー: '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:253
 msgid "Missing requested file: {0}"
@@ -1034,26 +1058,31 @@ msgid ""
 "Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
 "ABRT system cache."
 msgstr ""
+"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+"\t[-r REPO]\n"
+"\n"
+"BUILD_IDS_FILE に記載されているすべての build-id の debuginfo パッケージを\n"
+"ABRT システムキャッシュにインストールします。"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:66
 msgid "Noninteractive, assume 'Yes' to all questions"
-msgstr ""
+msgstr "非対話式、すべての質問に 'Yes' と答える"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:67
 msgid "- means STDIN, default: build_ids"
-msgstr ""
+msgstr "- STDIN の意味、デフォルト: build_ids"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
 msgid "Download only specified files"
-msgstr ""
+msgstr "指定したファイルのみダウンロードする"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
 msgid "Pattern to use when searching for repos, default: *debug*"
-msgstr ""
+msgstr "リポジトリ検索に使用するパターン、デフォルト: *debug*"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
 msgid "Ignored option"
-msgstr ""
+msgstr "無視オプション"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:63
 msgid ""
@@ -1331,32 +1360,32 @@ msgstr "regex のコンパイルに失敗しました"
 
 #: ../src/plugins/abrt-dump-oops.c:177
 msgid "Can't update the problem: no oops found"
-msgstr ""
+msgstr "問題を更新できません: ウップスが見つかりません"
 
 #: ../src/plugins/abrt-dump-oops.c:183
 msgid "More oopses found: process only the first one"
-msgstr ""
+msgstr "複数のウップスが見つかりました: 1番目のものだけ実行します"
 
 #: ../src/plugins/abrt-dump-journal-core.c:361
 #: ../src/plugins/abrt-dump-journal-core.c:397
 msgid "Failed to obtain all required information from journald"
-msgstr ""
+msgstr "journaldが必要な全情報を取得できませんでした"
 
 #. We don't want to update the counter here.
 #: ../src/plugins/abrt-dump-journal-core.c:421
 #, c-format
 msgid "Not saving repeating crash after %ds (limit is %ds)"
-msgstr ""
+msgstr " %ds 後に繰り返されたクラッシュは保存されません( %ds が制限です)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:427
 msgid "Failed to save detect problem data in abrt database"
-msgstr ""
+msgstr "abrtデータベースに検知プログラムデータを保存できませんでした"
 
 #: ../src/plugins/abrt-dump-journal-core.c:447
 #: ../src/plugins/abrt-dump-journal-oops.c:165
 #: ../src/plugins/abrt-dump-journal-xorg.c:121
 msgid "Failed to initialize systemd-journal watch"
-msgstr ""
+msgstr "systemd-journal watchの初期化に失敗しました"
 
 #: ../src/plugins/abrt-dump-journal-core.c:467
 msgid ""
@@ -1371,6 +1400,16 @@ msgid ""
 "\n"
 "The last seen position is saved in "
 msgstr ""
+"& [-vsf] [-e]/[-c CURSOR] [-t INT]/[-T] [-d DIR]/[-D]\n"
+"\n"
+"systemd-journalからコアダンプを抽出します\n"
+"\n"
+"-c と -e オプションはどちらも最初の読み込みメッセージを指定するため競合します。\n"
+"\n"
+"-e は -f と一緒に使います。これは前回の閲覧位置が利用できない場合、\n"
+"以下ジャーナルはジャーナル全体の読み込みから開始されるためです。\n"
+"\n"
+"前回の閲覧位置はここに保存されます "
 
 #: ../src/plugins/abrt-dump-journal-core.c:498
 msgid "Create new problem directory in DIR for every coredump"
@@ -1380,33 +1419,33 @@ msgstr "検出されるコアダンプごと DIR 内に新規の問題ディレ�
 #: ../src/plugins/abrt-dump-journal-oops.c:228
 #: ../src/plugins/abrt-dump-journal-xorg.c:194
 msgid "Start reading systemd-journal from the CURSOR position"
-msgstr ""
+msgstr "CURSOR 位置からsystemd-journalを読み始めます"
 
 #: ../src/plugins/abrt-dump-journal-core.c:501
 #: ../src/plugins/abrt-dump-journal-oops.c:229
 #: ../src/plugins/abrt-dump-journal-xorg.c:195
 msgid "Start reading systemd-journal from the end"
-msgstr ""
+msgstr "最後からsystemd-journalを読み始めます"
 
 #: ../src/plugins/abrt-dump-journal-core.c:502
 msgid "Throttle problem directory creation to 1 per INT second"
-msgstr ""
+msgstr "問題のディレクトリの作成を毎INT秒 1 個に制限"
 
 #: ../src/plugins/abrt-dump-journal-core.c:503
 msgid "Same as -t INT, INT is specified in plugins/CCpp.conf"
-msgstr ""
+msgstr "-t INTと同じです、INTはplugins/CCpp.confで指定されます。"
 
 #: ../src/plugins/abrt-dump-journal-core.c:504
 #: ../src/plugins/abrt-dump-journal-oops.c:230
 #: ../src/plugins/abrt-dump-journal-xorg.c:196
 msgid "Follow systemd-journal from the last seen position (if available)"
-msgstr ""
+msgstr "前回の閲覧位置(利用可能な場合)から下のsystemd-journal"
 
 #: ../src/plugins/abrt-dump-journal-core.c:515
 #: ../src/plugins/abrt-dump-journal-oops.c:246
 #: ../src/plugins/abrt-dump-journal-xorg.c:213
 msgid "You need to specify either -c CURSOR or -e"
-msgstr ""
+msgstr "-c CURSOR または -e のどちらかを指定する必要があります"
 
 #: ../src/plugins/abrt-dump-journal-core.c:561
 #: ../src/plugins/abrt-dump-journal-oops.c:284
@@ -1416,7 +1455,7 @@ msgstr "systemd-journal を開けません"
 
 #: ../src/plugins/abrt-dump-journal-core.c:564
 msgid "Cannot filter systemd-journal to systemd-coredump data only"
-msgstr ""
+msgstr "systemd-coredump データのみsystemd-journalをフィルターできません"
 
 #: ../src/plugins/abrt-dump-journal-core.c:569
 #: ../src/plugins/abrt-dump-journal-oops.c:293
@@ -1449,36 +1488,46 @@ msgid ""
 "\n"
 "The last seen position is saved in "
 msgstr ""
+"& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
+"\n"
+"systemd-journalからウップスを抽出します\n"
+"\n"
+"-c と -e オプションはどちらも最初の読み込みメッセージを指定するため競合します。\n"
+"\n"
+"-e は -f と一緒に使います。これは前回の閲覧位置が利用できない場合、\n"
+"以下ジャーナルはジャーナル全体の読み込みから開始されるためです。\n"
+"\n"
+"前回の閲覧位置はここに保存されます "
 
 #: ../src/plugins/abrt-dump-journal-oops.c:231
 #: ../src/plugins/abrt-dump-journal-xorg.c:197
 msgid "Read journal files from all machines"
-msgstr ""
+msgstr "全マシンからジャーナルファイルを読む"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:232
 #: ../src/plugins/abrt-dump-journal-xorg.c:198
 msgid "Read all journal files from directory at PATH"
-msgstr ""
+msgstr "PATHのディレクトリから全ジャーナルファイルを読む"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:279
 #: ../src/plugins/abrt-dump-journal-xorg.c:273
 #, c-format
 msgid "Cannot initialize systemd-journal in directory '%s'"
-msgstr ""
+msgstr "ディレクトリ '%s' のsystemd-journal を初期化できません"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:288
 msgid "Cannot filter systemd-journal to kernel data only"
-msgstr ""
+msgstr "systemd-journal からカーネルデータのみをフィルタできません"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:300
 #: ../src/plugins/abrt-dump-journal-xorg.c:298
 #, c-format
 msgid "Failed to start watch from cursor '%s'"
-msgstr ""
+msgstr "カーソル '%s' から見始めることができませんでした"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:61
 msgid "Failed to parse Backtrace from journal"
-msgstr ""
+msgstr "ジャーナルからバックトレースの変換に失敗しました"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:143
 #, c-format
@@ -1498,28 +1547,41 @@ msgid ""
 "parameter\n"
 "-j or in %s conf file.\n"
 msgstr ""
+"& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
+"\n"
+"systemd-journalからXorgクラッシュを抽出します\n"
+"\n"
+"-c と -e オプションはどちらも最初の読み込みメッセージを指定するため競合します。\n"
+"\n"
+"-e は -f と一緒に使います。これは前回の閲覧位置が利用できない場合、\n"
+"以下ジャーナルはジャーナル全体の読み込みから開始されるためです。\n"
+"\n"
+"前回の閲覧位置は  %s に保存されます\n"
+"\n"
+"ジャーナルフィルラーはパラメーターが必要で、パラメーター -j または\n"
+"設定ファイルの %s によって指定されなければいけません。\n"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:189
 msgid "Print found crashes on standard output"
-msgstr ""
+msgstr "見つけたクラッシュを標準出力に表示します"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:190
 msgid "Create new problem directory in DIR for every crash found"
-msgstr ""
+msgstr "検出されるクラッシュごと DIR 内に問題ディレクトリを作成します"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:199
 msgid "Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)"
-msgstr ""
+msgstr "ジャーナルフィルター 例 '_COMM=gdm-x-session' (何度も指定されるかもしれません)"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:265
 msgid ""
 "Journal filter must be specified either by parameter -j or stored in /etc/"
 "abrt/plugins/xorg.conf file"
-msgstr ""
+msgstr "ジャーナルフィルターはパラメーター -j または/etc/abrt/plugins/xorg.confファイルで指定されなければいけません"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:282
 msgid "Cannot filter systemd-journal to Xorg data only"
-msgstr ""
+msgstr "systemd-journal からXorgデータのみをフィルターできません"
 
 #: ../src/plugins/abrt-dump-xorg.c:35
 msgid ""
@@ -1540,55 +1602,55 @@ msgstr "検出されるクラッシュごと DIR 内に問題ディレクトリ�
 
 #: ../src/plugins/abrt-dump-xorg.c:108
 msgid "Failed to parse Backtrace from log file"
-msgstr ""
+msgstr "ログファイルからバックトレースの変換に失敗しました"
 
 #. abrt_journal_set_cursor() prints error message in verbose mode
 #: ../src/plugins/abrt-journal.c:274
 msgid "Cannot save journal watch's position"
-msgstr ""
+msgstr "ジャーナルの閲覧位置を保存できません"
 
 #: ../src/plugins/abrt-journal.c:284
 #, c-format
 msgid "Cannot save journal watch's position: open('%s')"
-msgstr ""
+msgstr "ジャーナルの閲覧位置を保存できません: 開く('%s')"
 
 #. Only notice because this is expected
 #: ../src/plugins/abrt-journal.c:302
 #, c-format
 msgid "Not restoring journal watch's position: file '%s' does not exist"
-msgstr ""
+msgstr "ジャーナルの閲覧位置をリストアできません: ファイル '%s' がありません"
 
 #: ../src/plugins/abrt-journal.c:304
 #, c-format
 msgid "Cannot restore journal watch's position form file '%s'"
-msgstr ""
+msgstr "ジャーナルの閲覧位置をファイル '%s' からリストアできません"
 
 #: ../src/plugins/abrt-journal.c:311
 #, c-format
 msgid "Cannot restore journal watch's position: path '%s' is not regular file"
-msgstr ""
+msgstr "ジャーナルの閲覧位置をリストアできません: パス '%s' は通常のファイルではありません"
 
 #: ../src/plugins/abrt-journal.c:317
 #, c-format
 msgid ""
 "Cannot restore journal watch's position: file '%s' exceeds %dB size limit"
-msgstr ""
+msgstr "ジャーナルの閲覧位置をリストアできません: ファイル '%s' は %dB のサイズ制限を超えています"
 
 #: ../src/plugins/abrt-journal.c:325
 #, c-format
 msgid "Cannot restore journal watch's position: open('%s')"
-msgstr ""
+msgstr "ジャーナルの閲覧位置をリストアできません: 開く('%s')"
 
 #: ../src/plugins/abrt-journal.c:334
 #, c-format
 msgid "Cannot restore journal watch's position: cannot read entire file '%s'"
-msgstr ""
+msgstr "ジャーナルの閲覧位置をリストアできません: ファイル '%s' の全体を読めません"
 
 #. abrt_journal_set_cursor() prints error message in verbose mode
 #: ../src/plugins/abrt-journal.c:346
 #, c-format
 msgid "Failed to move the journal to a cursor from file '%s'"
-msgstr ""
+msgstr "ファイル '%s' のカーソルに移動することができませんでした"
 
 #: ../src/plugins/abrt-retrace-client.c:70
 msgid ""
@@ -2191,7 +2253,7 @@ msgstr "'%s' が複数の問題ディレクトリを確認しました"
 
 #: ../src/cli/abrt-cli.c:130
 msgid "Usage: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
-msgstr ""
+msgstr "使い方: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/abrt-cli.c:134
@@ -2225,7 +2287,7 @@ msgstr "詳細については abrt-cli COMMAND --help を参照してくださ�
 
 #: ../src/cli/list.c:127
 msgid "& list [options]"
-msgstr ""
+msgstr "& list [options]"
 
 #: ../src/cli/list.c:136 ../src/cli-ng/abrtcli/cli.py:121
 #: ../src/cli-ng/abrtcli/cli.py:264
@@ -2270,7 +2332,7 @@ msgstr "そのような問題ディレクトリ '%s' はありません"
 
 #: ../src/cli/status.c:66
 msgid "& status"
-msgstr ""
+msgstr "& status"
 
 #: ../src/cli/status.c:74 ../src/cli-ng/abrtcli/cli.py:260
 msgid "Print only the problem count without any message"
@@ -2288,12 +2350,12 @@ msgstr "ABRT により %u 件の問題が検出されました。次を実行し
 #: ../src/cli/report.c:34
 #, c-format
 msgid "Can't find problem '%s'"
-msgstr ""
+msgstr "問題 '%s' が見つかりません"
 
 #: ../src/cli/report.c:42
 #, c-format
 msgid "Problem '%s' cannot be reported"
-msgstr ""
+msgstr "問題 '%s' は報告できません"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/report.c:63 ../src/cli/process.c:70
@@ -2345,15 +2407,15 @@ msgstr "タイムスタンプ後に検出された問題のみを選択します
 
 #: ../src/cli-ng/abrtcli/cli.py:33
 msgid "Problem has no backtrace"
-msgstr ""
+msgstr "問題はバックトレースを持っていません"
 
 #: ../src/cli-ng/abrtcli/cli.py:35
 msgid "Start retracing process?"
-msgstr ""
+msgstr "プロセスのリトレースをスタートしますか？"
 
 #: ../src/cli-ng/abrtcli/cli.py:40
 msgid "Show backtrace of a problem"
-msgstr ""
+msgstr "問題のバックトレースを表示する"
 
 #: ../src/cli-ng/abrtcli/cli.py:50
 msgid "This"
@@ -2371,88 +2433,89 @@ msgstr "{} 問題は C/C++ タイプではないためデバッグ情報をイ�
 msgid ""
 "Permission denied: '{}'\n"
 "If this is a system problem try running this command as root"
-msgstr ""
+msgstr "パーミッションが拒否されました: '{}'\n"
+"システムの問題の場合、コマンドをrootとして実行してみてください"
 
 #: ../src/cli-ng/abrtcli/cli.py:71
 msgid "Install required debuginfo for given problem"
-msgstr ""
+msgstr "インストールにはこの問題のdeguninfoが必要です"
 
 #: ../src/cli-ng/abrtcli/cli.py:106
 msgid "Run GDB against a problem"
-msgstr ""
+msgstr "問題に対しGDBを実行する"
 
 #: ../src/cli-ng/abrtcli/cli.py:117 ../src/cli-ng/abrtcli/cli.py:153
 msgid "Output format"
-msgstr ""
+msgstr "出力形式"
 
 #: ../src/cli-ng/abrtcli/cli.py:119 ../src/cli-ng/abrtcli/cli.py:155
 msgid "Built-in output format"
-msgstr ""
+msgstr "組み込みの出力方式"
 
 #: ../src/cli-ng/abrtcli/cli.py:145 ../src/cli-ng/abrtcli/match.py:89
 msgid "No problems"
-msgstr ""
+msgstr "問題ありません"
 
 #: ../src/cli-ng/abrtcli/cli.py:147
 msgid "List problems"
-msgstr ""
+msgstr "問題の一覧"
 
 #: ../src/cli-ng/abrtcli/cli.py:167
 msgid "Print information about problem"
-msgstr ""
+msgstr "問題についての情報を表示する"
 
 #: ../src/cli-ng/abrtcli/cli.py:173
 msgid "Prompt before removal"
-msgstr ""
+msgstr "削除の前に確認する"
 
 #: ../src/cli-ng/abrtcli/cli.py:174
 msgid "Do not prompt before removal"
-msgstr ""
+msgstr "削除の前に確認しない"
 
 #. force prompt for last problem to avoid accidents
 #: ../src/cli-ng/abrtcli/cli.py:182
 msgid "Are you sure you want to delete this problem?"
-msgstr ""
+msgstr "この問題を削除しても良いですか？"
 
 #: ../src/cli-ng/abrtcli/cli.py:186
 msgid "Removed"
-msgstr ""
+msgstr "削除しました"
 
 #: ../src/cli-ng/abrtcli/cli.py:188
 msgid "Remove problem"
-msgstr ""
+msgstr "問題を削除する"
 
 #: ../src/cli-ng/abrtcli/cli.py:199
 msgid "Report problem"
-msgstr ""
+msgstr "問題を報告する"
 
 #: ../src/cli-ng/abrtcli/cli.py:204
 msgid "Perform local retracing"
-msgstr ""
+msgstr "ローカルリトレースを実行する"
 
 #: ../src/cli-ng/abrtcli/cli.py:206
 msgid "Perform remote retracing using retrace server"
-msgstr ""
+msgstr "リトレースサーバーを使ってリモートリトレースを実行する"
 
 #: ../src/cli-ng/abrtcli/cli.py:208
 msgid "Force retracing even if backtrace already exists"
-msgstr ""
+msgstr "バックトレースが既にあっても強制的にリトレースを実行する"
 
 #: ../src/cli-ng/abrtcli/cli.py:223
 msgid "Problem already has a backtrace"
-msgstr ""
+msgstr "問題は既にバックトレースを持っています"
 
 #: ../src/cli-ng/abrtcli/cli.py:224
 msgid "Run abrt retrace with -f/--force to retrace again"
-msgstr ""
+msgstr "もう一度リトレースするためにabrtリトレースを -f/--force オプションで実行する"
 
 #: ../src/cli-ng/abrtcli/cli.py:225
 msgid "Show backtrace?"
-msgstr ""
+msgstr "バックトレースを表示しますか？"
 
 #: ../src/cli-ng/abrtcli/cli.py:229
 msgid "No retracing possible for this problem type"
-msgstr ""
+msgstr "この問題タイプではリトレースはできません"
 
 #: ../src/cli-ng/abrtcli/cli.py:233
 msgid ""
@@ -2461,42 +2524,44 @@ msgid ""
 "Local retracing requires downloading potentially large amount of debuginfo "
 "data"
 msgstr ""
+"コアダンプをアップロードしてリモートリトレースを実行しますか？(これには機密情報が含まれている可能性があります) "
+"「いいえ」の場合にはスタックトレースがローカルに生成されます。ローカルリトレースは大量のdebuginfoデータのダウンロードを行う可能性があります"
 
 #: ../src/cli-ng/abrtcli/cli.py:248
 msgid "Remote retracing"
-msgstr ""
+msgstr "リモートリトレース"
 
 #: ../src/cli-ng/abrtcli/cli.py:251
 msgid "Local retracing"
-msgstr ""
+msgstr "ローカルリトレース"
 
 #: ../src/cli-ng/abrtcli/cli.py:255
 msgid "Generate backtrace from coredump"
-msgstr ""
+msgstr "コアダンプからバックトレースを生成する"
 
 #: ../src/cli-ng/abrtcli/cli.py:280
 msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
-msgstr ""
+msgstr "ABRTは {} 問題を検出しました。詳細はこれを実行してください: abrt list{}"
 
 #: ../src/cli-ng/abrtcli/cli.py:283
 msgid "Print count of the recent crashes"
-msgstr ""
+msgstr "最新のクラッシュ回数を表示する"
 
 #: ../src/cli-ng/abrtcli/cli.py:292
 msgid "Authenticate and show all problems on this machine"
-msgstr ""
+msgstr "認証してこのマシンの全問題を表示する。"
 
 #: ../src/cli-ng/abrtcli/match.py:96
 msgid "No problem(s) matched"
-msgstr ""
+msgstr "問題が一致しません。"
 
 #: ../src/cli-ng/abrtcli/match.py:116
 msgid "Ambiguous match specified resulting in multiple problems:"
-msgstr ""
+msgstr "あいまい検索で複数の問題が見つかりました:"
 
 #: ../src/cli-ng/abrtcli/utils.py:78
 msgid "Not reportable"
-msgstr ""
+msgstr "報告できません"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
@@ -2514,6 +2579,10 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
+"コアダンプをサーバーにアップロードします。これによりバックトレースが生成され返されます。コアダンプをどこにもアップロードしたくない場合、 "
+"ローカルの分析が行われます。リモートの分析に失敗した場合にもローカルの分析が実行されます。debuginfo "
+"をダウンロードする必要がない点が利点となります。リトレースサーバーの debaguinfo "
+"データベースの方がより完全なデータベースとなるため、リトレースサーバーの方がより適切なバックトレースを生成することができます。一方、アップロードするコアダンプにはクラッシュしたプログラムの全データが含まれるため、プライベートデータがある場合には、そのデータも含まれることになります。"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
