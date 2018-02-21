@@ -15,6 +15,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/types.h>
 
 #define INIT_PROC_STDERR_FD_PATH "/proc/1/fd/2"
 
@@ -25,7 +26,6 @@ int main(int argc, char *argv[])
         "\n"
         "\nThe tool reads from standard input and writes to '"INIT_PROC_STDERR_FD_PATH"'";
 
-    /* the tool expects one parameter STR */
     if (argc > 1)
     {
         fprintf(stderr, "%s\n", program_usage_string);
@@ -35,9 +35,27 @@ int main(int argc, char *argv[])
     FILE *f = fopen(INIT_PROC_STDERR_FD_PATH, "w");
     if (f == NULL)
     {
-        perror("Failed to open '"INIT_PROC_STDERR_FD_PATH"'");
-        return 2;
+        perror("Failed to open '"INIT_PROC_STDERR_FD_PATH"' as root");
+
+        /* Try to open the 'INIT_PROC_STDERR_FD_PATH' as normal user because of
+           https://github.com/minishift/minishift/issues/2058
+        */
+        if (seteuid(getuid()) == 0)
+        {
+            f = fopen(INIT_PROC_STDERR_FD_PATH, "w");
+            if (f == NULL)
+            {
+                perror("Failed to open '"INIT_PROC_STDERR_FD_PATH"' as user");
+                return 2;
+            }
+        }
+        else
+        {
+            perror("Failed to setuid");
+            return 3;
+        }
     }
+
     setvbuf (f, NULL, _IONBF, 0);
 
     char buffer[BUFSIZ];
@@ -52,7 +70,8 @@ int main(int argc, char *argv[])
         if (fwrite(buffer, bytes_read, 1, f) != 1)
         {
             perror("Failed to write to '"INIT_PROC_STDERR_FD_PATH"'");
-            return 3;
+            fclose(f);
+            return 4;
         }
     }
     fclose(f);
