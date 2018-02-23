@@ -47,7 +47,8 @@ def write_dump(tb_text, tb):
         "pid": os.getpid(),
         "executable": executable,
         "reason": tb_text.splitlines()[0],
-        "backtrace": tb_text
+        "backtrace": tb_text,
+        "type": "Python3"
     }
 
     import json
