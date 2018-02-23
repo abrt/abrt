@@ -70,7 +70,9 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 pyhook_PYTHON = \
 	abrt_exception_handler.py \
-	abrt.pth
+	abrt.pth \
+	abrt_exception_handler_container.py \
+	abrt_container.pth
 
 py3hook_PYTHON = \
 	abrt_exception_handler3.py \
