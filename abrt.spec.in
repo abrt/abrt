@@ -294,6 +294,14 @@ Obsoletes: abrt-addon-python < 2.10.4
 This package contains python hook and python analyzer plugin for handling
 uncaught exception in python programs.
 
+%package -n python2-abrt-container-addon
+Summary: %{name}'s container addon for catching Python 2 exceptions
+Conflicts: python2-abrt-addon
+
+%description -n python2-abrt-container-addon
+This package contains python 2 hook and handling uncaught exception in python 2
+programs in container.
+
 %package -n python3-abrt-addon
 Summary: %{name}'s addon for catching and analyzing Python 3 exceptions
 Requires: %{name} = %{version}-%{release}
@@ -1045,8 +1053,13 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_journalcatalogdir}/abrt_python.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_python_format.conf
 %{_mandir}/man5/python_event.conf.5*
-%{python_sitearch}/abrt*.py*
 %{python_sitearch}/abrt.pth
+%{python_sitearch}/abrt_exception_handler.*
+
+%files -n python2-abrt-container-addon
+%{python_sitearch}/abrt_container.pth
+%{python_sitearch}/abrt_exception_handler_container.*
+%attr(6755, root, root) %{_libexecdir}/abrt-container-logger-python2
 
 %files -n python3-abrt-addon
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python3.conf
