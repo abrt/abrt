@@ -1169,6 +1169,14 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Mon Feb 26 2018 Matej Habrnal <mhabrnal@redhat.com> 2.10.7-1
+- Translation updates
+- hooks: introduce docker hook for Python2
+- hook: add type to Python3 container exception handler
+- spec: introduce docker hook for Python2
+- Add ABRT hexa stickers
+- a-container-logger: workaround permission issue in minishift
+
 * Mon Feb 19 2018 Matej Habrnal <mhabrnal@redhat.com> 2.10.6-1
 - Translation updates
 - hooks: introduce docker hook for Python3
