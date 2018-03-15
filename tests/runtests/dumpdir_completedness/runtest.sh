@@ -35,7 +35,7 @@ PACKAGE="abrt"
 DDFILES="abrt_version analyzer architecture cmdline component count cpuinfo executable hostname kernel last_occurrence os_release package pkg_arch pkg_epoch pkg_name pkg_release pkg_version pkg_vendor pkg_fingerprint reason time type uid username uuid os_info runlevel"
 
 CCPP_FILES="core_backtrace coredump dso_list environ limits maps open_fds pid pwd cgroup global_pid  proc_pid_status"
-PYTHON_FILES="backtrace"
+PYTHON_FILES="backtrace interpreter"
 
 rlJournalStart
     rlPhaseStartSetup
