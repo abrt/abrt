@@ -359,11 +359,11 @@ Requires: %{name} = %{version}-%{release}
 Requires: libreport-cli >= %{libreport_ver}
 Requires: abrt-libs = %{version}-%{release}
 Requires: abrt-dbus
-Requires: python2-abrt
+Requires: python3-abrt
 Requires: abrt-addon-ccpp
-Requires: python-argh
-Requires: python-argcomplete
-Requires: python-humanize
+Requires: python3-argh
+Requires: python3-argcomplete
+Requires: python3-humanize
 
 %description cli-ng
 New generation command line interface for ABRT
@@ -1098,7 +1098,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %files cli-ng
 %config(noreplace) %{_sysconfdir}/bash_completion.d/abrt.bash_completion
 %{_bindir}/abrt
-%{python_sitearch}/abrtcli/
+%{python3_sitearch}/abrtcli/
 %{_mandir}/man1/abrt.1*
 
 %files desktop
