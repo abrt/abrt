@@ -8,7 +8,7 @@ PYFILES= \
 	utils.py
 
 abrtcli_PYTHON = $(PYFILES)
-abrtclidir = $(pyexecdir)/abrtcli
+abrtclidir = $(py3execdir)/abrtcli
 
 config.py: config.py.in
 	sed -e s,\@LOCALE_DIR\@,$(localedir),g \
