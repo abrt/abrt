@@ -1170,6 +1170,13 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Wed Mar 21 2018 Matej Habrnal <mhabrnal@redhat.com> 2.10.8-1
+- Translation updates
+- spec: use Python3 as default in abrt-cli-ng
+- cli-ng: use Python3 as default
+- Add a new element 'interpreter' for python problems
+- retrace-client: Require nss-pem
+
 * Mon Feb 26 2018 Matej Habrnal <mhabrnal@redhat.com> 2.10.7-1
 - Translation updates
 - hooks: introduce docker hook for Python2
