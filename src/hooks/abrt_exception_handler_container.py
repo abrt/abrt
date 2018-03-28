@@ -23,6 +23,7 @@ Module for the ABRT exception handling hook in container
 import sys
 import os
 from subprocess import Popen, PIPE
+from time import strftime
 
 def log(msg):
     """Log message to stderr"""
@@ -42,17 +43,18 @@ def write_dump(tb_text, tb):
         executable = sys.argv[0]
 
     data = {
-        "pid": os.getpid(),
+        "type": "Python",
         "executable": executable,
         "reason": tb_text.splitlines()[0],
         "backtrace": tb_text,
-        "type": "Python"
+        "time": strftime("%s"),
+        "pid": os.getpid()
     }
 
     import json
     try:
-        json_str = '{{"ABRT": {0}}}\n'.format(json.dumps(data))
-        p = Popen(['/usr/libexec/abrt-container-logger-python2'], stdin=PIPE)
+        json_str = '{0}\n'.format(json.dumps(data))
+        p = Popen(['container-exception-logger'], stdin=PIPE)
         p.communicate(input=json_str.encode())
     except Exception as e:
         log("ERROR: {}\n".format(e))
