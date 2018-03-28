@@ -37,9 +37,7 @@ bin_PROGRAMS += \
 endif
 
 libexec_PROGRAMS = \
-    abrt-action-install-debuginfo-to-abrt-cache \
-    abrt-container-logger \
-    abrt-container-logger-python2
+    abrt-action-install-debuginfo-to-abrt-cache
 
 libexec_SCRIPTS = \
     abrt-action-generate-machine-id \
@@ -466,15 +464,6 @@ abrt_bodhi_SOURCES = \
     $(LIBREPORT_WEB_LIBS) \
     ../lib/libabrt.la
 endif
-
-abrt_container_logger_SOURCES = \
-    abrt-container-logger.c
-
-# we decided to duplicate this binary for python2 package because we don't want to
-# create a new subpackage which ships just this small binary and also Python2
-# will be deprecated soon
-abrt_container_logger_python2_SOURCES = \
-    abrt-container-logger.c
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
