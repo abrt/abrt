@@ -298,6 +298,7 @@ uncaught exception in python programs.
 %package -n python2-abrt-container-addon
 Summary: %{name}'s container addon for catching Python 2 exceptions
 Conflicts: python2-abrt-addon
+Requires: container-exception-logger
 
 %description -n python2-abrt-container-addon
 This package contains python 2 hook and handling uncaught exception in python 2
@@ -320,6 +321,7 @@ uncaught exception in python 3 programs.
 %package -n python3-abrt-container-addon
 Summary: %{name}'s container addon for catching Python 3 exceptions
 Conflicts: python3-abrt-addon
+Requires: container-exception-logger
 
 %description -n python3-abrt-container-addon
 This package contains python 3 hook and handling uncaught exception in python 3
@@ -1060,7 +1062,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %files -n python2-abrt-container-addon
 %{python_sitearch}/abrt_container.pth
 %{python_sitearch}/abrt_exception_handler_container.*
-%attr(6755, root, root) %{_libexecdir}/abrt-container-logger-python2
 
 %files -n python3-abrt-addon
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python3.conf
@@ -1078,7 +1079,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{python3_sitearch}/abrt3_container.pth
 %{python3_sitearch}/abrt_exception_handler3_container.py
 %{python3_sitearch}/__pycache__/abrt_exception_handler3_container.*
-%attr(6755, root, root) %{_libexecdir}/abrt-container-logger
 
 %files plugin-sosreport
 %defattr(-,root,root,-)
