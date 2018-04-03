@@ -90,10 +90,6 @@ def handle_exception(etype, value, tb):
             if value.errno == errno.EPIPE:
                 return sys.__excepthook__(etype, value, tb)
 
-        # (In this case we can't reliably determine package)
-        log("detected unhandled Python exception in '{0}'"
-               .format(sys.argv[0]))
-
         import traceback
 
         elist = traceback.format_exception(etype, value, tb)
