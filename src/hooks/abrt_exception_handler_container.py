@@ -26,7 +26,7 @@ from subprocess import Popen, PIPE
 
 def log(msg):
     """Log message to stderr"""
-    sys.stderr.write(msg)
+    sys.stderr.write(msg + '\n')
 
 def write_dump(tb_text, tb):
     if sys.argv[0]:
@@ -87,9 +87,6 @@ def handleMyException((etype, value, tb)):
         if etype == IOError or etype == OSError:
             if value.errno == errno.EPIPE:
                 return sys.__excepthook__(etype, value, tb)
-
-        log("detected unhandled Python exception in '{0}'"
-            .format(sys.argv[0]))
 
         import traceback
 
