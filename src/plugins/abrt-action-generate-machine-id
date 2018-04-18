@@ -20,8 +20,10 @@
 """This module provides algorithms for generating Machine IDs.
 """
 
+import os
 import sys
 from argparse import ArgumentParser
+from subprocess import check_output
 import logging
 
 import hashlib
@@ -35,38 +37,26 @@ def generate_machine_id_dmidecode():
 
     """
 
-    try:
-        import dmidecode
-    except ImportError as ex:
-        raise RuntimeError("Could not import dmidecode module: {0}"
-                .format(str(ex)))
+    if not os.path.isfile("/usr/sbin/dmidecode"):
+        raise RuntimeError("Could not find dmidecode. It might not be available for this " \
+                           "architecture.")
 
-    dmixml = dmidecode.dmidecodeXML()
-    # Fetch all DMI data into a libxml2.xmlDoc object
-    dmixml.SetResultType(dmidecode.DMIXML_DOC)
-    xmldoc = dmixml.QuerySection('all')
-
-    # Do some XPath queries on the XML document
-    dmixp = xmldoc.xpathNewContext()
-
-    # What to look for - XPath expressions
-    keys = ['/dmidecode/SystemInfo/Manufacturer',
-            '/dmidecode/SystemInfo/ProductName',
-            '/dmidecode/SystemInfo/SerialNumber',
-            '/dmidecode/SystemInfo/SystemUUID']
+    # What to look for
+    keys = ['system-manufacturer',
+            'system-product-name',
+            'system-serial-number',
+            'system-uuid']
 
     # Create a sha256 of ^ for machine_id
     machine_id = hashlib.sha256()
 
-    # Run xpath expressions
+    # Run dmidecode command
     for k in keys:
-        data = dmixp.xpathEval(k)
-        for d in data:
-            # Update the hash as we find the fields we are looking for
-            machine_id.update(d.get_content().encode())
+        data = check_output(["dmidecode", "-s", k]).strip()
 
-    del dmixp
-    del xmldoc
+        # Update the hash as we find the fields we are looking for
+        machine_id.update(data)
+
     # Create sha256 digest
     return machine_id.hexdigest()
 
