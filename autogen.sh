@@ -19,14 +19,12 @@ EOH
 parse_build_requires_from_spec_file()
 {
     PACKAGE=$1
-    grep "^\(Build\)\?Requires:" $PACKAGE.spec.in | grep -v "%{name}" | tr -s " " | tr "," "\n" | cut -f2 -d " " | grep -v "^"$PACKAGE | sort -u | while read br;
-    do
-        if [ "%" = ${br:0:1} ]; then
-            grep "%define $(echo $br | sed -e 's/%{\(.*\)}/\1/')" $PACKAGE.spec.in | sed -e 's/^[ \t]*//' | tr -s " " | cut -f3 -d" "
-        else
-            echo $br
-        fi
-    done | tr "\n" " "
+    TEMPFILE=$(mktemp -u --suffix=.spec)
+    sed 's/@PACKAGE_VERSION@/1/' < $PACKAGE.spec.in | sed 's/@.*@//' > $TEMPFILE
+    rpmspec -P $TEMPFILE | grep "^\(Build\)\?Requires:" | \
+        tr -s " " | tr "," "\n" | cut -f2- -d " " | \
+        grep -v "\(^\|python[23]-\)"$PACKAGE | sort -u | sed -E 's/^(.*) (.*)$/"\1 \2"/' | tr \" \'
+    rm $TEMPFILE
 }
 
 list_build_dependencies()
@@ -42,10 +40,9 @@ case "$1" in
         ;;
     "sysdeps")
             DEPS_LIST=$(list_build_dependencies)
-
             if [ "$2" == "--install" ]; then
                 set -x verbose
-                sudo dnf install --setopt=strict=0 $DEPS_LIST
+                eval sudo dnf install --setopt=strict=0 $DEPS_LIST
                 set +x verbose
             else
                 echo $DEPS_LIST
