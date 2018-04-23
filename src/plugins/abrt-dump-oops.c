@@ -180,7 +180,7 @@ int main(int argc, char **argv)
                 }
             default:
                 {
-                    log_notice(_("More oopses found: process only the first one"));
+                    log_notice(_("More oopses found: process only the last one"));
                 }
                 /* falls trought */
             case 1:
@@ -188,7 +188,7 @@ int main(int argc, char **argv)
                     struct dump_dir *dd = dd_opendir(problem_dir, /*open for writing*/0);
                     if (dd)
                     {
-                        abrt_oops_save_data_in_dump_dir(dd, (char *)oops_list->data, /*no proc modules*/NULL);
+                        abrt_oops_save_data_in_dump_dir(dd, (char *)g_list_last(oops_list)->data, /*no proc modules*/NULL);
                         dd_close(dd);
                     }
                 }
