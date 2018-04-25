@@ -54,7 +54,7 @@ BuildRequires: rpm-devel >= 4.6
 BuildRequires: desktop-file-utils
 BuildRequires: libnotify-devel
 #why? BuildRequires: file-devel
-BuildRequires: python-devel
+BuildRequires: python2-devel
 BuildRequires: python3-devel
 BuildRequires: gettext
 BuildRequires: libxml2-devel
@@ -66,15 +66,15 @@ BuildRequires: doxygen
 BuildRequires: xmlto
 BuildRequires: libreport-devel >= %{libreport_ver}
 BuildRequires: satyr-devel >= %{satyr_ver}
-BuildRequires: systemd-python
+BuildRequires: python2-systemd
 BuildRequires: python3-systemd
 BuildRequires: augeas
 BuildRequires: libselinux-devel
-BuildRequires: python-argcomplete
+BuildRequires: python2-argcomplete
 BuildRequires: python3-argcomplete
-BuildRequires: python-argh
+BuildRequires: python2-argh
 BuildRequires: python3-argh
-BuildRequires: python-humanize
+BuildRequires: python2-humanize
 BuildRequires: python3-humanize
 
 Requires: libreport >= %{libreport_ver}
@@ -120,15 +120,15 @@ BuildRequires: gdb-headless
 #dbus
 BuildRequires: polkit-devel
 #python2-abrt
-BuildRequires: python-nose
-BuildRequires: python-sphinx
-BuildRequires: libreport-python
+BuildRequires: python2-nose
+BuildRequires: python2-sphinx
+BuildRequires: python2-libreport
 #python2-abrt-doc
 BuildRequires: python2-devel
 #python3-abrt
 BuildRequires: python3-nose
 BuildRequires: python3-sphinx
-BuildRequires: libreport-python3
+BuildRequires: python3-libreport
 #python3-abrt-doc
 BuildRequires: python3-devel
 
@@ -198,7 +198,7 @@ Requires: %{name}-retrace-client
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-addon-coredump-helper = %{version}-%{release}
 Requires: abrt-libs = %{version}-%{release}
-Requires: libreport-python3
+Requires: python3-libreport
 
 %description addon-ccpp
 This package contains %{name}'s C/C++ analyzer plugin.
@@ -284,7 +284,7 @@ Search for a new updates in bodhi server.
 %package -n python2-abrt-addon
 Summary: %{name}'s addon for catching and analyzing Python exceptions
 Requires: %{name} = %{version}-%{release}
-Requires: systemd-python
+Requires: python2-systemd
 Requires: python2-abrt
 # Remove before F30
 Provides: abrt-addon-python = %{version}-%{release}
@@ -473,8 +473,8 @@ Summary: ABRT Python API
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-libs = %{version}-%{release}
 Requires: %{name}-dbus = %{version}-%{release}
-Requires: dbus-python
-Requires: libreport-python
+Requires: python2-dbus
+Requires: python2-libreport
 %if 0%{?rhel:%{rhel} == 7}
 Requires: python-gobject-base
 %else
@@ -508,7 +508,7 @@ Requires: %{name} = %{version}-%{release}
 Requires: %{name}-libs = %{version}-%{release}
 Requires: %{name}-dbus = %{version}-%{release}
 Requires: python3-dbus
-Requires: libreport-python3
+Requires: python3-libreport
 %{?python_provide:%python_provide python3-abrt}
 # Remove before F30
 Provides: %{name}-python3 = %{version}-%{release}
