@@ -1,3 +1,21 @@
+# http://fedoraproject.org/wiki/Packaging:Guidelines#PIE
+# http://fedoraproject.org/wiki/Hardened_Packages
+%global _hardened_build 1
+
+%if 0%{?fedora} || 0%{?rhel} > 7
+# Enable python3 build by default
+%bcond_without python3
+%else
+%bcond_with python3
+%endif
+
+%if 0%{?rhel} > 7 || 0%{?fedora} > 28
+# Disable python2 build by default
+%bcond_with python2
+%else
+%bcond_without python2
+%endif
+
 %if 0%{?rhel}%{?suse_version}
     %bcond_with bodhi
 %else
@@ -54,8 +72,6 @@ BuildRequires: rpm-devel >= 4.6
 BuildRequires: desktop-file-utils
 BuildRequires: libnotify-devel
 #why? BuildRequires: file-devel
-BuildRequires: python2-devel
-BuildRequires: python3-devel
 BuildRequires: gettext
 BuildRequires: libxml2-devel
 BuildRequires: intltool
@@ -66,16 +82,23 @@ BuildRequires: doxygen
 BuildRequires: xmlto
 BuildRequires: libreport-devel >= %{libreport_ver}
 BuildRequires: satyr-devel >= %{satyr_ver}
-BuildRequires: python2-systemd
-BuildRequires: python3-systemd
 BuildRequires: augeas
 BuildRequires: libselinux-devel
+%if %{with python2}
+BuildRequires: python2-devel
+BuildRequires: python2-systemd
 BuildRequires: python2-argcomplete
-BuildRequires: python3-argcomplete
 BuildRequires: python2-argh
-BuildRequires: python3-argh
 BuildRequires: python2-humanize
+%endif # with python2
+%if %{with python3}
+BuildRequires: python3-devel
+BuildRequires: python3-systemd
+BuildRequires: python3-argcomplete
+BuildRequires: python3-argh
 BuildRequires: python3-humanize
+BuildRequires: python3-devel
+%endif # with python3
 
 Requires: libreport >= %{libreport_ver}
 Requires: satyr >= %{satyr_ver}
@@ -90,8 +113,15 @@ Requires: systemd
 Requires: %{name}-libs = %{version}-%{release}
 Requires: python3-%{name} = %{version}-%{release}
 Requires(pre): %{shadow_utils}
+%if %{with python2}
+Requires: python2-augeas
+Requires: python2-dbus
+Requires: python2-dmidecode
+%endif # with python2
+%if %{with python3}
 Requires: python3-augeas
 Requires: python3-dbus
+%endif # with python3
 %ifarch aarch64 i686 x86_64
 Requires: dmidecode
 %endif
@@ -111,9 +141,9 @@ BuildRequires: gdb-headless
 BuildRequires: libcap-devel
 #addon-kerneloops
 BuildRequires: systemd-devel
+BuildRequires: %{libjson_devel}
 %if %{with bodhi}
 # plugin-bodhi
-BuildRequires: %{libjson_devel}
 BuildRequires: libreport-web-devel >= %{libreport_ver}
 %endif
 #desktop
@@ -121,18 +151,21 @@ BuildRequires: libreport-web-devel >= %{libreport_ver}
 BuildRequires: gdb-headless
 #dbus
 BuildRequires: polkit-devel
+%if %{with python2}
 #python2-abrt
-BuildRequires: python2-nose
 BuildRequires: python2-sphinx
 BuildRequires: python2-libreport
 #python2-abrt-doc
 BuildRequires: python2-devel
+%endif # with python2
+%if %{with python3}
 #python3-abrt
 BuildRequires: python3-nose
 BuildRequires: python3-sphinx
 BuildRequires: python3-libreport
 #python3-abrt-doc
 BuildRequires: python3-devel
+%endif # with python3
 
 %description
 %{name} is a tool to help users to detect defects in applications and
@@ -200,7 +233,12 @@ Requires: %{name}-retrace-client
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-addon-coredump-helper = %{version}-%{release}
 Requires: abrt-libs = %{version}-%{release}
+%if %{with python2}
+Requires: python2-libreport
+%endif # with python2
+%if %{with python3}
 Requires: python3-libreport
+%endif # with python3
 
 %description addon-ccpp
 This package contains %{name}'s C/C++ analyzer plugin.
@@ -253,8 +291,14 @@ Summary: %{name}'s vmcore addon
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-addon-kerneloops
 Requires: kexec-tools
+%if %{with python2}
+Requires: python2-abrt
+Requires: python2-augeas
+%endif # with python2
+%if %{with python3}
 Requires: python3-abrt
 Requires: python3-augeas
+%endif # with python3
 Requires: util-linux
 
 %description addon-vmcore
@@ -283,6 +327,7 @@ Provides: libreport-plugin-bodhi = %{version}-%{release}
 Search for a new updates in bodhi server.
 %endif
 
+%if %{with python2}
 %package -n python2-abrt-addon
 Summary: %{name}'s addon for catching and analyzing Python exceptions
 Requires: %{name} = %{version}-%{release}
@@ -305,7 +350,9 @@ Requires: container-exception-logger
 %description -n python2-abrt-container-addon
 This package contains python 2 hook and handling uncaught exception in python 2
 programs in container.
+%endif # with python2
 
+%if %{with python3}
 %package -n python3-abrt-addon
 Summary: %{name}'s addon for catching and analyzing Python 3 exceptions
 Requires: %{name} = %{version}-%{release}
@@ -328,6 +375,7 @@ Requires: container-exception-logger
 %description -n python3-abrt-container-addon
 This package contains python 3 hook and handling uncaught exception in python 3
 programs in container.
+%endif # with python3
 
 %package plugin-sosreport
 Summary: %{name}'s plugin for building automatic sosreports
@@ -357,6 +405,7 @@ Requires: abrt-dbus
 This package contains a simple command line client for processing abrt reports
 in command line environment.
 
+%if %{with python3}
 %package cli-ng
 Summary: %{name}'s improved command line interface
 Requires: %{name} = %{version}-%{release}
@@ -371,6 +420,7 @@ Requires: python3-humanize
 
 %description cli-ng
 New generation command line interface for ABRT
+%endif # with python3
 
 %package cli
 Summary: Virtual package to make easy default installation on non-graphical environments
@@ -382,7 +432,12 @@ Requires: abrt-addon-pstoreoops
 Requires: abrt-addon-vmcore
 %endif
 Requires: abrt-addon-ccpp
+%if %{with python2}
+Requires: python2-abrt-addon
+%endif # with python2
+%if %{with python3}
 Requires: python3-abrt-addon
+%endif # with python3
 Requires: abrt-addon-xorg
 %if 0%{?rhel}
 Requires: libreport-rhel >= %{libreport_ver}
@@ -420,7 +475,9 @@ Requires: abrt-addon-pstoreoops
 Requires: abrt-addon-vmcore
 %endif
 Requires: abrt-addon-ccpp
+%if %{with python2}
 Requires: python3-abrt-addon
+%endif # with python2
 Requires: abrt-addon-xorg
 Requires: gdb-headless
 Requires: abrt-gui
@@ -469,7 +526,7 @@ Requires: abrt-libs = %{version}-%{release}
 ABRT DBus service which provides org.freedesktop.problems API on dbus and
 uses PolicyKit to authorize to access the problem data.
 
-
+%if %{with python2}
 %package -n python2-abrt
 Summary: ABRT Python API
 Requires: %{name} = %{version}-%{release}
@@ -503,7 +560,9 @@ Obsoletes: %{name}-python-doc < 2.10.4
 
 %description -n python2-abrt-doc
 Examples and documentation for ABRT Python API.
+%endif # with python2
 
+%if %{with python3}
 %package -n python3-abrt
 Summary: ABRT Python 3 API
 Requires: %{name} = %{version}-%{release}
@@ -533,6 +592,7 @@ Obsoletes: %{name}-python3-doc < 2.10.4
 
 %description -n python3-abrt-doc
 Examples and documentation for ABRT Python 3 API.
+%endif # with python3
 
 %package console-notification
 Summary: ABRT console notification script
@@ -552,6 +612,12 @@ autoconf
 %define var_base_dir spool
 
 CFLAGS="%{optflags} -Werror" %configure \
+%if %{without python2}
+        --without-python2 \
+%endif # with python2
+%if %{without python3}
+        --without-python3 \
+%endif # with python3
 %if %{without bodhi}
         --without-bodhi \
 %endif
@@ -607,7 +673,12 @@ ln -sf %{_datadir}/applications/abrt-applet.desktop ${RPM_BUILD_ROOT}%{_sysconfd
 rm -f %{buildroot}%{_infodir}/dir
 
 %check
-make check
+make check|| {
+    # find and print the logs of failed test
+    # do not cat tests/testsuite.log because it contains a lot of bloat
+    find tests/testsuite.dir -name "testsuite.log" -print -exec cat '{}' \;
+    exit 1
+}
 
 %pre
 #uidgid pair 173:173 reserved in setup rhbz#670231
@@ -637,11 +708,15 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %systemd_post abrt-xorg.service
 %journal_catalog_update
 
+%if %{with python2}
 %post -n python2-abrt-addon
 %journal_catalog_update
+%endif # with python2
 
+%if %{with python3}
 %post -n python3-abrt-addon
 %journal_catalog_update
+%endif # with python3
 
 %if %{?have_kexec_tools} == 1
 %post addon-vmcore
@@ -737,7 +812,7 @@ fi
 %systemd_postun_with_restart abrt-coredump-helper.service
 %endif # with atomic
 
-%if 0%{?fedora} > 27
+%if 0%{?fedora} > 27 || 0%{?rhel} > 7
 # ldconfigi and gtk-update-icon-cache is not needed
 %else
 %post libs -p /sbin/ldconfig
@@ -1050,6 +1125,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man1/abrt-harvest-pstoreoops.1*
 %{_mandir}/man1/abrt-merge-pstoreoops.1*
 
+%if %{with python2}
 %files -n python2-abrt-addon
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python.conf
 %{_datadir}/%{name}/conf.d/plugins/python.conf
@@ -1064,7 +1140,9 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %files -n python2-abrt-container-addon
 %{python_sitearch}/abrt_container.pth
 %{python_sitearch}/abrt_exception_handler_container.*
+%endif # with python2
 
+%if %{with python3}
 %files -n python3-abrt-addon
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python3.conf
 %{_datadir}/%{name}/conf.d/plugins/python3.conf
@@ -1081,6 +1159,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{python3_sitearch}/abrt3_container.pth
 %{python3_sitearch}/abrt_exception_handler3_container.py
 %{python3_sitearch}/__pycache__/abrt_exception_handler3_container.*
+%endif # with python3
 
 %files plugin-sosreport
 %defattr(-,root,root,-)
@@ -1097,11 +1176,13 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_bindir}/abrt-cli
 %{_mandir}/man1/abrt-cli.1*
 
+%if %{with python3}
 %files cli-ng
 %config(noreplace) %{_sysconfdir}/bash_completion.d/abrt.bash_completion
 %{_bindir}/abrt
 %{python3_sitearch}/abrtcli/
 %{_mandir}/man1/abrt.1*
+%endif # with python3
 
 %files desktop
 
@@ -1154,19 +1235,23 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/*.css
 %config(noreplace) %{_sysconfdir}/libreport/events.d/abrt_dbus_event.conf
 
+%if %{with python2}
 %files -n python2-abrt
 %{python_sitearch}/problem/
 %{_mandir}/man5/abrt-python.5*
 
 %files -n python2-abrt-doc
 %{python_sitelib}/problem_examples
+%endif # with python2
 
+%if %{with python3}
 %files -n python3-abrt
 %{python3_sitearch}/problem/
 %{_mandir}/man5/abrt-python3.5*
 
 %files -n python3-abrt-doc
 %{python3_sitelib}/problem_examples
+%endif # with python3
 
 %files console-notification
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh

@@ -47,8 +47,12 @@ MAN5_TXT =
 MAN5_TXT += abrt.conf.txt
 MAN5_TXT += abrt-action-save-package-data.conf.txt
 MAN5_TXT += abrt-xorg.conf.txt
+if BUILD_PYTHON2
 MAN5_TXT += abrt-python.conf.txt
+endif
+if BUILD_PYTHON3
 MAN5_TXT += abrt-python3.conf.txt
+endif
 MAN5_TXT += abrt-CCpp.conf.txt
 MAN5_TXT += abrt-oops.conf.txt
 MAN5_TXT += gpg_keys.conf.txt
@@ -59,8 +63,12 @@ MAN5_PREFORMATTED += ccpp_event.conf.5
 MAN5_PREFORMATTED += ccpp_retrace_event.conf.5
 MAN5_PREFORMATTED += gconf_event.conf.5
 MAN5_PREFORMATTED += koops_event.conf.5
+if BUILD_PYTHON2
 MAN5_PREFORMATTED += python_event.conf.5
+endif
+if BUILD_PYTHON3
 MAN5_PREFORMATTED += python3_event.conf.5
+endif
 MAN5_PREFORMATTED += smart_event.conf.5
 MAN5_PREFORMATTED += vimrc_event.conf.5
 MAN5_PREFORMATTED += xorg_event.conf.5

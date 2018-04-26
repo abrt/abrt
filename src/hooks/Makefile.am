@@ -3,8 +3,6 @@ pluginsconfdir = $(PLUGINS_CONF_DIR)
 
 dist_pluginsconf_DATA = \
     CCpp.conf \
-    python.conf \
-    python3.conf \
     oops.conf
 
 if BUILD_ATOMIC
@@ -69,8 +67,11 @@ EXTRA_DIST = \
     abrt-install-ccpp-hook.in \
     abrt-harvest-pstoreoops.in
 
+ALL_DEPENDENCES =
 if BUILD_PYTHON2
 pyhookdir = $(pyexecdir)
+dist_pluginsconf_DATA += python.conf
+ALL_DEPENDENCES += abrt_exception_handler.py
 
 pyhook_PYTHON = \
 	abrt_exception_handler.py \
@@ -84,6 +85,8 @@ endif
 
 if BUILD_PYTHON3
 py3hookdir = $(py3execdir)
+dist_pluginsconf_DATA += python3.conf
+ALL_DEPENDENCES += abrt_exception_handler3.py
 
 py3hook_PYTHON = \
 	abrt_exception_handler3.py \
@@ -108,7 +111,7 @@ endif
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc)) $(man1_MANS)
 
 # Generate on build
-all: abrt_exception_handler.py abrt_exception_handler3.py
+all: $(ALL_DEPENDENCES)
 
 # Must be synchronized with another sed call below.
 abrt_exception_handler.py: abrt_exception_handler.py.in
@@ -129,12 +132,16 @@ CCpp.conf: CCpp.conf.in
 
 # RPM fix: we need to regenerate abrt_exception_handler.py, because it has the default ddir
 install-data-local:
+if BUILD_PYTHON2
 	sed -e s,\@VAR_RUN\@,\"$(VAR_RUN)\",g \
 	    -e s,\@CONF_DIR\@,\"$(CONF_DIR)\",g \
 	    abrt_exception_handler.py.in >abrt_exception_handler.py
+endif
+if BUILD_PYTHON3
 	sed -e s,\@VAR_RUN\@,\"$(VAR_RUN)\",g \
 	    -e s,\@CONF_DIR\@,\"$(CONF_DIR)\",g \
 	    abrt_exception_handler3.py.in >abrt_exception_handler3.py
+endif
 
 abrt-install-ccpp-hook: abrt-install-ccpp-hook.in
 	sed -e s,\@VAR_RUN\@,$(VAR_RUN),g \
