@@ -92,7 +92,9 @@ Requires: python3-%{name} = %{version}-%{release}
 Requires(pre): %{shadow_utils}
 Requires: python3-augeas
 Requires: python3-dbus
-Requires: python3-dmidecode
+%ifarch aarch64 i686 x86_64
+Requires: dmidecode
+%endif
 Requires: libreport-plugin-ureport
 %if 0%{?rhel}
 Requires: libreport-plugin-rhtsupport
