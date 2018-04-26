@@ -3,7 +3,13 @@
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
+if BUILD_PYTHON2
 SPHINXBUILD   = sphinx-build
+endif
+# prefer Python3 sphinx
+if BUILD_PYTHON3
+SPHINXBUILD   = sphinx-build-3
+endif
 PAPER         =
 BUILDDIR      = _build
 
@@ -162,9 +168,12 @@ EXTRA_DIST = \
 	properties.rst \
 	usage.rst
 
-man5_MANS = _build/man/abrt-python.5
+man5_MANS =
+if BUILD_PYTHON2
+man5_MANS += _build/man/abrt-python.5
 
 _build/man/abrt-python.5: problem-config man
+endif
 
 if BUILD_PYTHON3
 man5_MANS += _build/man/abrt-python3.5

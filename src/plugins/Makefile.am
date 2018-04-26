@@ -70,19 +70,32 @@ libreportpluginconfdir = $(LIBREPORT_PLUGINS_CONF_DIR)
 dist_libreportpluginconf_DATA = \
     catalog_ccpp_format.conf \
     catalog_journal_ccpp_format.conf \
-    catalog_python_format.conf \
-    catalog_python3_format.conf \
     catalog_koops_format.conf \
     catalog_xorg_format.conf
+
+if BUILD_PYTHON2
+dist_libreportpluginconf_DATA += catalog_python_format.conf
+endif
+
+if BUILD_PYTHON3
+dist_libreportpluginconf_DATA += catalog_python3_format.conf
+endif
 
 journalcatalogdir = $(JOURNAL_CATALOG_DIR)
 
 dist_journalcatalog_DATA = \
     abrt_ccpp.catalog \
     abrt_koops.catalog \
-    abrt_python3.catalog \
-    abrt_python.catalog \
     abrt_xorg.catalog
+
+if BUILD_PYTHON2
+dist_journalcatalog_DATA += abrt_python.catalog
+endif
+
+if BUILD_PYTHON3
+dist_journalcatalog_DATA += abrt_python3.catalog
+endif
+
 
 eventsconfdir = $(EVENTS_CONF_DIR)
 
@@ -91,13 +104,19 @@ dist_eventsconf_DATA = \
     ccpp_retrace_event.conf \
     koops_event.conf \
     xorg_event.conf \
-    python_event.conf \
-    python3_event.conf \
     smart_event.conf \
     sosreport_event.conf \
     machine-id_event.conf \
     gconf_event.conf \
     vimrc_event.conf
+
+if BUILD_PYTHON2
+dist_eventsconf_DATA += python_event.conf
+endif
+
+if BUILD_PYTHON3
+dist_eventsconf_DATA += python3_event.conf
+endif
 
 if BUILD_BODHI
 dist_eventsconf_DATA += \
