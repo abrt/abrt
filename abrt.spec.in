@@ -116,7 +116,6 @@ Requires(pre): %{shadow_utils}
 %if %{with python2}
 Requires: python2-augeas
 Requires: python2-dbus
-Requires: python2-dmidecode
 %endif # with python2
 %if %{with python3}
 Requires: python3-augeas
@@ -476,8 +475,11 @@ Requires: abrt-addon-vmcore
 %endif
 Requires: abrt-addon-ccpp
 %if %{with python2}
-Requires: python3-abrt-addon
+Requires: python2-abrt-addon
 %endif # with python2
+%if %{with python3}
+Requires: python3-abrt-addon
+%endif # with python3
 Requires: abrt-addon-xorg
 Requires: gdb-headless
 Requires: abrt-gui
