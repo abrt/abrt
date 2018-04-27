@@ -193,10 +193,10 @@ ABRT_PARSE_WITH([pythontests]))
 [if test -z "$NO_PYTHONTESTS"]
 [then]
     AM_CONDITIONAL(HAVE_PYTHON_NOSE, true)
-    AC_PATH_PROG([PYTHON_NOSE], [nosetests], [no])
+    AC_PATH_PROG([PYTHON_NOSE], [nosetests-3], [no])
     [if test "$PYTHON_NOSE" = "no"]
     [then]
-        [echo "The nosetests program was not found in the search path. Please ensure"]
+        [echo "The nosetests-3 program was not found in the search path. Please ensure"]
         [echo "that it is installed and its directory is included in the search path or"]
         [echo "pass --without-pythontests to ./configure."]
         [echo "Then run configure again before attempting to build ABRT."]

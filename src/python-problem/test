@@ -1,10 +1,10 @@
 #!/bin/bash
 
-which nosetests &> /dev/null
+which nosetests-3 &> /dev/null
 if [ $? -ne 0 ]; then
-    echo 'python-nose package required'
+    echo 'python3-nose package required'
     exit 1
 fi
 
 export PYTHONPATH="problem/.libs/:$PYTHONPATH"
-nosetests --with-coverage --cover-package=problem --nocapture --no-skip --verbose tests/*.py
+nosetests-3 --with-coverage --cover-package=problem --nocapture --no-skip --verbose tests/*.py
