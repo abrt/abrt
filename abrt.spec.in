@@ -1257,6 +1257,19 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Fri Apr 27 2018 Matej Habrnal <mhabrnal@redhat.com> 2.10.9-1
+- build: conditionalize the Python2 and Python3
+- cli-ng,hooks,python-problem: Allow python to be optional at build time
+- spec: fix ambiguous Python 2 dependency declarations
+- plugins: a-a-g-machine-id use dmidecode command
+- spec: use dmidecode instead of python3-dmidecode
+- hooks: use container-exception-logger tool
+- spec: container python hooks require cel
+- hooks: do not write any additional logs
+- a-a-s-package-data: add python3.7 to known Interpreters
+- autogen: ignore abrt's python packages
+- correctly parse buildrequires from spec file
+
 * Wed Mar 21 2018 Matej Habrnal <mhabrnal@redhat.com> 2.10.8-1
 - Translation updates
 - spec: use Python3 as default in abrt-cli-ng
