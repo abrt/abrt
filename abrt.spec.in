@@ -290,13 +290,14 @@ Summary: %{name}'s vmcore addon
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-addon-kerneloops
 Requires: kexec-tools
+%if %{with python3}
+Requires: python3-abrt
+Requires: python3-augeas
+%else
 %if %{with python2}
 Requires: python2-abrt
 Requires: python2-augeas
 %endif # with python2
-%if %{with python3}
-Requires: python3-abrt
-Requires: python3-augeas
 %endif # with python3
 Requires: util-linux
 
@@ -431,9 +432,6 @@ Requires: abrt-addon-pstoreoops
 Requires: abrt-addon-vmcore
 %endif
 Requires: abrt-addon-ccpp
-%if %{with python2}
-Requires: python2-abrt-addon
-%endif # with python2
 %if %{with python3}
 Requires: python3-abrt-addon
 %endif # with python3
@@ -474,9 +472,6 @@ Requires: abrt-addon-pstoreoops
 Requires: abrt-addon-vmcore
 %endif
 Requires: abrt-addon-ccpp
-%if %{with python2}
-Requires: python2-abrt-addon
-%endif # with python2
 %if %{with python3}
 Requires: python3-abrt-addon
 %endif # with python3
