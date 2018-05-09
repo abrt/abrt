@@ -232,12 +232,14 @@ Requires: %{name}-retrace-client
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-addon-coredump-helper = %{version}-%{release}
 Requires: abrt-libs = %{version}-%{release}
+%if %{with python3}
+Requires: python3-libreport
+%else
 %if %{with python2}
 Requires: python2-libreport
 %endif # with python2
-%if %{with python3}
-Requires: python3-libreport
 %endif # with python3
+
 
 %description addon-ccpp
 This package contains %{name}'s C/C++ analyzer plugin.
