@@ -113,13 +113,14 @@ Requires: systemd
 Requires: %{name}-libs = %{version}-%{release}
 Requires: python3-%{name} = %{version}-%{release}
 Requires(pre): %{shadow_utils}
+%if %{with python3}
+Requires: python3-augeas
+Requires: python3-dbus
+%else
 %if %{with python2}
 Requires: python2-augeas
 Requires: python2-dbus
 %endif # with python2
-%if %{with python3}
-Requires: python3-augeas
-Requires: python3-dbus
 %endif # with python3
 %ifarch aarch64 i686 x86_64
 Requires: dmidecode
