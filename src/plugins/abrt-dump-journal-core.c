@@ -17,6 +17,10 @@
 
 #define ABRT_JOURNAL_WATCH_STATE_FILE VAR_STATE"/abrt-dump-journal-core.state"
 
+enum {
+    ABRT_CORE_PRINT_STDOUT = 1 << 0,
+};
+
 /*
  * A journal message is a set of key value pairs in the following format:
  *   FIELD_NAME=${binary data}
@@ -85,6 +89,7 @@ typedef struct
 {
     const char *awc_dump_location;
     int awc_throttle;
+    int awc_run_flags;
 }
 abrt_watch_core_conf_t;
 
@@ -313,6 +318,16 @@ save_systemd_coredump_in_dump_directory(struct dump_dir *dd, struct crash_info *
     const char *data = NULL;
     size_t data_len = 0;
 
+    /* This journal field is not present most of the time, because it is
+     * created only for coredumps from processes running in a container.
+     *
+     * Printing out the log message would be confusing hence.
+     *
+     * If we find more similar fields, we should not add more if statements
+     * but encode this in the struct field_mapping.
+     *
+     * For now, it would be just vasting of memory and time.
+     */
     if (!abrt_journal_get_field(info->ci_journal, "COREDUMP_CONTAINER_CMDLINE", (const void **)&data, &data_len))
     {
         dd_save_binary(dd, FILENAME_CONTAINER_CMDLINE, data, data_len);
@@ -355,10 +370,24 @@ abrt_journal_core_to_abrt_problem(struct crash_info *info, const char *dump_loca
 }
 
 /*
+ * Prints a core info to stdout.
+ */
+static int
+abrt_journal_core_to_stdout(struct crash_info *info)
+{
+    printf(_("UID=%9i; SIG=%2i (%4s); EXE=%s\n"),
+           info->ci_uid,
+           info->ci_signal_no,
+           info->ci_signal_name,
+           info->ci_executable_path);
+    return 0;
+}
+
+/*
  * Creates an abrt problem from a journal message
  */
 static int
-abrt_journal_dump_core(abrt_journal_t *journal, const char *dump_location)
+abrt_journal_dump_core(abrt_journal_t *journal, const char *dump_location, int run_flags)
 {
     struct crash_info info = { 0 };
     info.ci_journal = journal;
@@ -380,7 +409,10 @@ abrt_journal_dump_core(abrt_journal_t *journal, const char *dump_location)
         goto dump_cleanup;
     }
 
-    r = abrt_journal_core_to_abrt_problem(&info, dump_location);
+    if ((run_flags & ABRT_CORE_PRINT_STDOUT))
+        r = abrt_journal_core_to_stdout(&info);
+    else
+        r = abrt_journal_core_to_abrt_problem(&info, dump_location);
 
 dump_cleanup:
     if (info.ci_executable_path != NULL)
@@ -439,10 +471,21 @@ abrt_journal_watch_cores(abrt_journal_watch_t *watch, void *user_data)
         goto watch_cleanup;
     }
 
-    if (abrt_journal_core_to_abrt_problem(&info, conf->awc_dump_location))
+    if ((conf->awc_run_flags & ABRT_CORE_PRINT_STDOUT))
     {
-        error_msg(_("Failed to save detect problem data in abrt database"));
-        goto watch_cleanup;
+        if (abrt_journal_core_to_stdout(&info))
+        {
+            error_msg(_("Failed to print detect problem data to stdout"));
+            goto watch_cleanup;
+        }
+    }
+    else
+    {
+        if (abrt_journal_core_to_abrt_problem(&info, conf->awc_dump_location))
+        {
+            error_msg(_("Failed to save detect problem data in abrt database"));
+            goto watch_cleanup;
+        }
     }
 
     abrt_journal_update_occurrence(info.ci_executable_path, current);
@@ -502,11 +545,16 @@ main(int argc, char *argv[])
         OPT_t = 1 << 6,
         OPT_T = 1 << 7,
         OPT_f = 1 << 8,
+        OPT_a = 1 << 9,
+        OPT_J = 1 << 10,
+        OPT_o = 1 << 11,
     };
 
     char *cursor = NULL;
     char *dump_location = NULL;
+    char *journal_dir = NULL;
     int throttle = 0;
+    int run_flags = 0;
 
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -519,6 +567,9 @@ main(int argc, char *argv[])
         OPT_INTEGER('t', NULL, &throttle, _("Throttle problem directory creation to 1 per INT second")),
         OPT_BOOL(  'T', NULL, NULL, _("Same as -t INT, INT is specified in plugins/CCpp.conf")),
         OPT_BOOL(  'f', NULL, NULL, _("Follow systemd-journal from the last seen position (if available)")),
+        OPT_BOOL(  'a', NULL, NULL, _("Read journal files from all machines")),
+        OPT_STRING('J', NULL, &journal_dir,  "PATH", _("Read all journal files from directory at PATH")),
+        OPT_BOOL(  'o', NULL, NULL, _("Print found oopses on standard output")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -533,6 +584,9 @@ main(int argc, char *argv[])
 
     /* Initialize ABRT configuration */
     load_abrt_conf();
+
+    if ((opts & OPT_o))
+        run_flags |= ABRT_CORE_PRINT_STDOUT;
 
     if (opts & OPT_D)
     {
@@ -574,8 +628,18 @@ main(int argc, char *argv[])
            (env_journal_filter ? (gpointer)env_journal_filter : (gpointer)"SYSLOG_IDENTIFIER=systemd-coredump"));
 
     abrt_journal_t *journal = NULL;
-    if (abrt_journal_new(&journal))
-        error_msg_and_die(_("Cannot open systemd-journal"));
+    if ((opts & OPT_J))
+    {
+        log_debug("Using journal files from directory '%s'", journal_dir);
+
+        if (abrt_journal_open_directory(&journal, journal_dir))
+            error_msg_and_die(_("Cannot initialize systemd-journal in directory '%s'"), journal_dir);
+    }
+    else
+    {
+        if (((opts & OPT_a) ? abrt_journal_new_merged : abrt_journal_new)(&journal))
+            error_msg_and_die(_("Cannot open systemd-journal"));
+    }
 
     if (abrt_journal_set_journal_filter(journal, coredump_journal_filter) < 0)
         error_msg_and_die(_("Cannot filter systemd-journal to systemd-coredump data only"));
@@ -601,6 +665,7 @@ main(int argc, char *argv[])
         abrt_watch_core_conf_t conf = {
             .awc_dump_location = dump_location,
             .awc_throttle = throttle,
+            .awc_run_flags = run_flags,
         };
 
         watch_journald(journal, &conf);
@@ -608,7 +673,7 @@ main(int argc, char *argv[])
         abrt_journal_save_current_position(journal, ABRT_JOURNAL_WATCH_STATE_FILE);
     }
     else
-        abrt_journal_dump_core(journal, dump_location);
+        abrt_journal_dump_core(journal, dump_location, run_flags);
 
     abrt_journal_free(journal);
     free_abrt_conf_data();
