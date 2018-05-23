@@ -142,37 +142,6 @@ static const char *ssl_get_configdir()
     return NULL;
 }
 
-static PK11GenericObject *nss_load_cacert(const char *filename)
-{
-    PK11SlotInfo *slot = PK11_FindSlotByName("PEM Token #0");
-    if (!slot)
-        error_msg_and_die(_("Failed to get slot 'PEM Token #0': %d."), PORT_GetError());
-
-    CK_ATTRIBUTE template[4];
-    CK_OBJECT_CLASS class = CKO_CERTIFICATE;
-
-#define PK11_SETATTRS(x,id,v,l) \
-    do {                        \
-        (x)->type = (id);       \
-        (x)->pValue=(v);        \
-        (x)->ulValueLen = (l);  \
-    } while (0)
-
-    PK11_SETATTRS(&template[0], CKA_CLASS, &class, sizeof(class));
-    CK_BBOOL cktrue = CK_TRUE;
-    PK11_SETATTRS(&template[1], CKA_TOKEN, &cktrue, sizeof(CK_BBOOL));
-    PK11_SETATTRS(&template[2], CKA_LABEL, (unsigned char*)filename, strlen(filename)+1);
-    PK11_SETATTRS(&template[3], CKA_TRUST, &cktrue, sizeof(CK_BBOOL));
-    PK11GenericObject *cert = PK11_CreateGenericObject(slot, template, 4, PR_FALSE);
-    PK11_FreeSlot(slot);
-    return cert;
-}
-
-static char *ssl_get_password(PK11SlotInfo *slot, PRBool retry, void *arg)
-{
-    return NULL;
-}
-
 void ssl_connect(struct https_cfg *cfg, PRFileDesc **tcp_sock, PRFileDesc **ssl_sock)
 {
     PRAddrInfo *addrinfo = PR_GetAddrInfoByName(cfg->url, PR_AF_UNSPEC, PR_AI_ADDRCONFIG);
@@ -411,7 +380,7 @@ char *http_join_chunked(char *body, int bodylen)
     return strbuf_free_nobuf(result);
 }
 
-void nss_init(SECMODModule **mod, PK11GenericObject **cert)
+void nss_init(SECMODModule **mod)
 {
     SECStatus sec_status;
     const char *configdir = ssl_get_configdir();
@@ -422,21 +391,19 @@ void nss_init(SECMODModule **mod, PK11GenericObject **cert)
     if (SECSuccess != sec_status)
         error_msg_and_die(_("Failed to initialize NSS."));
 
-    char *user_module = xstrdup("library=libnsspem.so name=PEM");
-    *mod = SECMOD_LoadUserModule(user_module, NULL, PR_FALSE);
-    free(user_module);
-    if (!*mod || !(*mod)->loaded)
-        error_msg_and_die(_("Failed to initialize security module."));
-
-    *cert = nss_load_cacert("/etc/pki/tls/certs/ca-bundle.crt");
-    PK11_SetPasswordFunc(ssl_get_password);
-    NSS_SetDomesticPolicy();
+    // Initialize the trusted certificate store.
+    char module_name[] = "library=libnssckbi.so name=\"Root Certs\"";
+    *mod = SECMOD_LoadUserModule(module_name, NULL, PR_FALSE);
+    if (*mod == NULL || !(*mod)->loaded)
+    {
+        const PRErrorCode err = PR_GetError();
+        error_msg_and_die("error: NSPR error code %d: %s\n", err, PR_ErrorToName(err));
+    }
 }
 
-void nss_close(SECMODModule *mod, PK11GenericObject *cert)
+void nss_close(SECMODModule *mod)
 {
     SSL_ClearSessionCache();
-    PK11_DestroyGenericObject(cert);
     SECMOD_UnloadUserModule(mod);
     SECMOD_DestroyModule(mod);
     SECStatus sec_status = NSS_Shutdown();

@@ -1281,8 +1281,7 @@ int main(int argc, char **argv)
 
     /* Initialize NSS */
     SECMODModule *mod;
-    PK11GenericObject *cert;
-    nss_init(&mod, &cert);
+    nss_init(&mod);
 
     /* Run the desired operation. */
     int result = 0;
@@ -1334,7 +1333,7 @@ int main(int argc, char **argv)
         error_msg_and_die(_("Unknown operation: %s."), operation);
 
     /* Shutdown NSS. */
-    nss_close(mod, cert);
+    nss_close(mod);
 
     return result;
 }
