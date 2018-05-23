@@ -61,7 +61,7 @@ int http_get_response_code(const char *message);
 void http_print_headers(FILE *file, const char *message);
 char *tcp_read_response(PRFileDesc *tcp_sock);
 char *http_join_chunked(char *body, int bodylen);
-void nss_init(SECMODModule **mod, PK11GenericObject **cert);
-void nss_close(SECMODModule *mod, PK11GenericObject *cert);
+void nss_init(SECMODModule **mod);
+void nss_close(SECMODModule *mod);
 
 #endif
