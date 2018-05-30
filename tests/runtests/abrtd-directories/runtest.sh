@@ -45,7 +45,6 @@ rlJournalStart
         TmpDir=$(mktemp -d)
         pushd $TmpDir
     rlPhaseEnd
-
     rlPhaseStartTest
         # abrtd creates the dump location
         rlRun "systemctl restart abrtd"
@@ -76,11 +75,65 @@ rlJournalStart
         wait_for_hooks
         get_crash_path
 
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+    rlPhaseEnd
+
+    rlPhaseStartTest "change DumpLocation"
+        NEW_ABRT_CONF_DUMP_LOCATION="/var/spool/abrt-test"
+
+        rlRun "systemctl restart abrtd"
+        rlRun "systemctl restart abrt-ccpp.service"
+
+        prepare
+        generate_crash
+        wait_for_hooks
+        get_crash_path
+
+        # dump dir was created in $ABRT_CONF_DUMP_LOCATION
+        rlRun "[[ _$crash_PATH == _"$ABRT_CONF_DUMP_LOCATION"* ]]"
+        rlRun "[[ _$crash_PATH != "_$NEW_ABRT_CONF_DUMP_LOCATION"* ]]"
+
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+
+        # set a new dump directory location
+        rlRun "augtool set /files/etc/abrt/abrt.conf/DumpLocation $NEW_ABRT_CONF_DUMP_LOCATION"
+
+        rlRun "systemctl restart abrtd"
+        rlRun "systemctl restart abrt-ccpp.service"
+
+        # generate a new crash
+        prepare
+        generate_crash
+        wait_for_hooks
+        get_crash_path
+
+        # dump dir was created in $NEW_ABRT_CONF_DUMP_LOCATION
+        rlRun "[[ _$crash_PATH == _"$NEW_ABRT_CONF_DUMP_LOCATION"* ]]"
+
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+
+        # set a dump directory location to default
+        rlRun "augtool rm /files/etc/abrt/abrt.conf/DumpLocation"
+
+        rlRun "systemctl restart abrtd"
+        rlRun "systemctl restart abrt-ccpp.service"
+
+        # generate a new crash
+        prepare
+        generate_crash
+        wait_for_hooks
+        get_crash_path
+
+        # dump dir was created in $ABRT_CONF_DUMP_LOCATION
+        rlRun "[[ _$crash_PATH == "_$ABRT_CONF_DUMP_LOCATION"* ]]"
+        rlRun "[[ _$crash_PATH != "_$NEW_ABRT_CONF_DUMP_LOCATION"* ]]"
+
+        rlRun "rm -rf $NEW_ABRT_CONF_DUMP_LOCATION" 0 "Remove crash directory"
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
     rlPhaseEnd
 
     rlPhaseStartCleanup
         rlBundleLogs abrt $(ls *.log)
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd
