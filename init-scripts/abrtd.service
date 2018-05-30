@@ -8,6 +8,7 @@ After=livesys.service
 [Service]
 Type=dbus
 BusName=org.freedesktop.problems.daemon
+ExecStartPre=/usr/bin/bash -c "pkill abrt-dbus || :"
 ExecStart=/usr/sbin/abrtd -d -s
 
 [Install]
