@@ -14,6 +14,7 @@
 # Emin Tufan Çetin <etcetin@gmail.com>, 2017. #zanata
 # Martin Kutlak <mkutlak@redhat.com>, 2017. #zanata
 # Bora Can Aslı <boracasli14@aol.com>, 2018. #zanata
+# Muhammet Kara <muhammet.k@gmail.com>, 2018. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -22,13 +23,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-02-02 05:44-0500\n"
-"Last-Translator: Bora Can Aslı <boracasli14@aol.com>\n"
+"PO-Revision-Date: 2018-05-01 04:00+0000\n"
+"Last-Translator: Muhammet Kara <muhammet.k@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/tr/)\n"
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Zanata 3.9.6\n"
+"X-Generator: Zanata 4.4.5\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -294,7 +295,7 @@ msgstr "_Kapat"
 
 #: ../src/configuration-gui/system-config-abrt.c:88
 msgid "_Defaults"
-msgstr ""
+msgstr "_Öntanımlılar"
 
 #: ../src/configuration-gui/system-config-abrt.c:116
 #: ../src/configuration-gui/main.c:36
@@ -338,17 +339,19 @@ msgstr "Yapılandırma dosyası"
 
 #: ../src/daemon/abrt-action-save-package-data.c:455
 msgid "Use this directory as RPM root"
-msgstr ""
+msgstr "Bu dizini RPM kök dizini olarak kullan"
 
 #: ../src/daemon/abrt-action-save-container-data.c:254
 msgid "& [-v] -d DIR\n"
 "\n"
 "Save container metadata"
-msgstr ""
+msgstr "& [-v] -d DIR\n"
+"\n"
+"Konteyner üst verilerini kaydet"
 
 #: ../src/daemon/abrt-action-save-container-data.c:266
 msgid "Root directory for running container commands"
-msgstr ""
+msgstr "Konteyner komutlarının çalıştırılacağı kök dizin"
 
 #: ../src/daemon/abrt-server.c:847 ../src/dbus/abrt-dbus.c:894
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:444
@@ -408,7 +411,7 @@ msgstr ""
 #: ../src/dbus/abrt-dbus.c:665
 #, c-format
 msgid "Can't get size of '%s'"
-msgstr ""
+msgstr "'%s'in boyutu alınamıyor"
 
 #: ../src/dbus/abrt-dbus.c:680
 msgid "No problem space left"
@@ -505,7 +508,7 @@ msgstr ""
 
 #: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
-msgstr ""
+msgstr "Kimlik doğrulamayı kapatır"
 
 #: ../src/daemon/abrt-auto-reporting.c:234
 msgid "Red Hat Support user name"
@@ -616,11 +619,11 @@ msgstr ""
 
 #: ../src/daemon/abrt-handle-upload.in:221
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}', '{1}' konumuna taşınamıyor"
 
 #: ../src/daemon/abrt-handle-upload.in:226
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}', '{1}' konumuna kopyalanamıyor"
 
 #: ../src/daemon/abrt-handle-upload.in:230
 msgid "Verification error on '{0}'"
@@ -632,7 +635,7 @@ msgstr ""
 
 #: ../src/daemon/abrt-handle-upload.in:236
 msgid "Can't create '{0}' directory"
-msgstr ""
+msgstr "'{0}' dizini oluşturulamıyor"
 
 #: ../src/daemon/abrt-handle-upload.in:240
 msgid "Can't unpack '{0}'"
@@ -801,7 +804,8 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
 msgid "Can't process {0}:\n"
 "{1}"
-msgstr ""
+msgstr "{0} işlenemiyor:\n"
+"{1}"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "Can't extract the oops message: '{0}'"
