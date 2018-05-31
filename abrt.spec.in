@@ -1257,6 +1257,18 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Thu May 31 2018 Matej Marusak <mmarusak@redhat.com> 2.10.10-1
+- Translation updates
+- Changelog: Update changelog
+- Remove dependency on deprecated nss-pem
+- spec: abrt do not require python2
+- spec: abrt-addon-ccpp do not require python2
+- spec: drop python2-abrt-addon requires
+- spec: fix bugs in python requires
+- cores: comment an unclearing statement
+- cores: print to stdout
+- cores: read all journal files
+
 * Fri Apr 27 2018 Matej Habrnal <mhabrnal@redhat.com> 2.10.9-1
 - build: conditionalize the Python2 and Python3
 - cli-ng,hooks,python-problem: Allow python to be optional at build time

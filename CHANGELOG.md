@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.10.10]
 ### Removed
 - Requirements on Python 2
 - Dependency on nss-pem
@@ -123,7 +125,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.10.9...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.10.10...HEAD
+[2.10.10]: https://github.com/abrt/abrt/compare/2.10.9...2.10.10
 [2.10.9]: https://github.com/abrt/abrt/compare/2.10.8...2.10.9
 [2.10.8]: https://github.com/abrt/abrt/compare/2.10.7...2.10.8
 [2.10.7]: https://github.com/abrt/abrt/compare/2.10.6...2.10.7
