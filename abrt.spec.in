@@ -644,7 +644,7 @@ CFLAGS="%{optflags} -Werror" %configure \
         --enable-suggest-autoreporting \
         --enable-authenticated-autoreporting \
 %endif
-%ifnarch arm armhfp armv7hl armv7l aarch64
+%ifnarch %{arm}
         --enable-native-unwinder \
 %endif
 %if %{?have_kexec_tools} == 0
