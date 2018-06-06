@@ -65,13 +65,13 @@ static struct dump_dir *dd;
  * %t - UNIX time of dump
  * %P - global pid
  * %I - crash thread tid
- * %e - executable filename (can contain white spaces)
+ * %h - hostname
+ * %e - executable filename (can contain white spaces, must be placed at the end)
  * %% - output one "%"
  */
 /* Hook must be installed with exactly the same sequence of %c specifiers.
- * Last one, %h, may be omitted (we can find it out).
  */
-static const char percent_specifiers[] = "%scpugtePi";
+static const char percent_specifiers[] = "%scpugtPIhe";
 static char *core_basename = (char*) "core";
 
 static DIR *open_cwd(pid_t pid)
@@ -146,7 +146,8 @@ static int setfscreatecon_raw(security_context_t context)
 }
 #endif
 
-static int open_user_core(uid_t uid, uid_t fsuid, gid_t fsgid, pid_t pid, char **percent_values)
+static int open_user_core(uid_t uid, uid_t fsuid, gid_t fsgid, pid_t pid,
+                          char **percent_values, const char *executable_filename)
 {
     proc_cwd = open_cwd(pid);
     if (proc_cwd == NULL)
@@ -196,7 +197,13 @@ static int open_user_core(uid_t uid, uid_t fsuid, gid_t fsgid, pid_t pid, char *
             {
                 const char *val = "%";
                 if (specifier_num > 0) /* not %% */
+                {
                     val = percent_values[specifier_num - 1];
+                    /* if %e (executable filename), use executable from
+                     * /proc/PID/exe symlink if exists */
+                    if (percent_specifiers[specifier_num] == 'e' && executable_filename)
+                        val = executable_filename;
+                }
                 //log_warning("c:'%c'", c);
                 //log_warning("val:'%s'", val);
 
@@ -917,9 +924,9 @@ int main(int argc, char** argv)
 
     if (argc < 8)
     {
-        /* percent specifier:         %s   %c              %p  %u  %g  %t   %P         %T        */
-        /* argv:                  [0] [1]  [2]             [3] [4] [5] [6]  [7]        [8]       */
-        error_msg_and_die("Usage: %s SIGNO CORE_SIZE_LIMIT PID UID GID TIME GLOBAL_PID GLOBAL_TID", argv[0]);
+        /* percent specifier:         %s   %c              %p  %u  %g  %t   %P         %I         %h       %e   */
+        /* argv:                  [0] [1]  [2]             [3] [4] [5] [6]  [7]        [8]        [9]      [10] */
+        error_msg_and_die("Usage: %s SIGNO CORE_SIZE_LIMIT PID UID GID TIME GLOBAL_PID GLOBAL_TID HOSTNAME BINARY_NAME", argv[0]);
     }
 
     /* Not needed on 2.6.30.
@@ -1016,13 +1023,21 @@ int main(int argc, char** argv)
 
     snprintf(path, sizeof(path), "%s/last-ccpp", g_settings_dump_location);
 
+    char *executable = get_executable_at(pid_proc_fd);
+    const char *last_slash = NULL;
+    if (executable)
+    {
+        last_slash = strrchr(executable, '/');
+        /* if the last_slash was found, skip it */
+        if (last_slash) ++last_slash;
+    }
+
     /* Open a fd to compat coredump, if requested and is possible */
     int user_core_fd = -1;
     if (setting_MakeCompatCore && ulimit_c != 0)
         /* note: checks "user_pwd == NULL" inside; updates core_basename */
-        user_core_fd = open_user_core(uid, fsuid, fsgid, pid, &argv[1]);
+        user_core_fd = open_user_core(uid, fsuid, fsgid, pid, &argv[1], (const char *)last_slash);
 
-    char *executable = get_executable_at(pid_proc_fd);
     if (executable == NULL)
     {
         /* readlink on /proc/$PID/exe failed, don't create abrt dump dir */
@@ -1031,9 +1046,6 @@ int main(int argc, char** argv)
         return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
-    const char *last_slash = strrchr(executable, '/');
-    /* if the last_slash was found, skip it */
-    if (last_slash) ++last_slash;
 
     /* ignoring crashes */
     if (executable && is_path_ignored(setting_ignored_paths, executable))
