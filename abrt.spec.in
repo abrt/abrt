@@ -643,6 +643,9 @@ make %{?_smp_mflags}
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT \
+%if %{with python3}
+             PYTHON=%{__python3} \
+%endif # with python3
              mandir=%{_mandir} \
              dbusabrtdocdir=%{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/
 
