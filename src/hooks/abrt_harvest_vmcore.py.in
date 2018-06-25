@@ -128,13 +128,15 @@ def create_abrtd_info(dest, uuid):
     return dd
 
 
-def delete_and_close(dd, dd_dirname):
+def delete_and_close(dd):
     """
     Deletes the given dump directory and closes it.
 
     dd - dump directory object
-    dd_dirname - full path to dump directory
     """
+    # Save the directory name as the directory object could be destroyed during
+    # delete().
+    dd_dirname = dd.name
     if not dd.delete() == 0:
         sys.stderr.write("Unable to delete '%s'\n" % (dd_dirname))
         return
