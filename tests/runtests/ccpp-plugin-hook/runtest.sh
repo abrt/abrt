@@ -51,13 +51,13 @@ rlJournalStart
         rlLog "MakeCompatCore bck: '$HOOK_BCK'"
         rlRun "augtool set /files/etc/abrt/plugins/CCpp.conf/MakeCompatCore yes"
 
-        OGPGCH_BCK=$(augtool get /files/etc/abrt/plugins/abrt-action-save-package-data.conf/OpenGPGCheck | cut -d'=' -f2 | tr -d ' ')
+        OGPGCH_BCK=$(augtool get /files/etc/abrt/abrt-action-save-package-data.conf/OpenGPGCheck | cut -d'=' -f2 | tr -d ' ')
         rlLog "MakeCompatCore bck: '$OGPGCH_BCK'"
-        rlRun "augtool set /files/etc/abrt/plugins/abrt-action-save-package-data.conf/OpenGPGCheck no"
+        rlRun "augtool set /files/etc/abrt/abrt-action-save-package-data.conf/OpenGPGCheck no"
 
-        PUNPACKAGED_BCK=$(augtool get /files/etc/abrt/plugins/abrt-action-save-package-data.conf/ProcessUnpackaged | cut -d'=' -f2 | tr -d ' ')
+        PUNPACKAGED_BCK=$(augtool get /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged | cut -d'=' -f2 | tr -d ' ')
         rlLog "MakeCompatCore bck: '$PUNPACKAGED_BCK'"
-        rlRun "augtool set /files/etc/abrt/plugins/abrt-action-save-package-data.conf/ProcessUnpackaged yes"
+        rlRun "augtool set /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged yes"
 
         ULIMIT_BCK=$(ulimit -c)
         rlLog "ulimit -c bck: '$ULIMIT_BCK'"
@@ -98,8 +98,8 @@ rlJournalStart
         rlRun "echo '$HOOK_BCK' > $HOOK_PATH" 0 "Restore old hook"
         rlRun "systemctl start abrt-ccpp"
         rlRun "augtool set /files/etc/abrt/plugins/CCpp.conf/MakeCompatCore $CCORE_BCK" 0 "Restore old MakeCompatCor"
-        rlRun "augtool set /files/etc/abrt/plugins/abrt-action-save-package-data.conf/OpenGPGCheck $OGPGCH_BCK"
-        rlRun "augtool set /files/etc/abrt/plugins/abrt-action-save-package-data.conf/ProcessUnpackaged $PUNPACKAGED_BCK"
+        rlRun "augtool set /files/etc/abrt/abrt-action-save-package-data.conf/OpenGPGCheck $OGPGCH_BCK"
+        rlRun "augtool set /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged $PUNPACKAGED_BCK"
         rlRun "ulimit -c $ULIMIT_BCK"
     rlPhaseEnd
     rlJournalPrintText
