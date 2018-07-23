@@ -16,11 +16,14 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "https-utils.h"
+#include <spawn.h>
 
 #define MAX_FORMATS 16
 #define MAX_RELEASES 32
 #define MAX_DOTS_PER_LINE 80
 #define MIN_EXPLOITABLE_RATING 4
+
+extern char **environ;
 
 enum
 {
@@ -92,6 +95,13 @@ static void args_add_if_exists(const char *args[],
  */
 static int create_archive(bool unlink_temp)
 {
+    pid_t xz_child, tar_child;
+    int err;
+    int xz_attr_set = 0, tar_attr_set = 0;
+    int xz_actions_set = 0, tar_actions_set = 0;
+    posix_spawnattr_t xz_attr, tar_attr;
+    posix_spawn_file_actions_t xz_actions, tar_actions;
+
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return -1;
@@ -119,17 +129,32 @@ static int create_archive(bool unlink_temp)
     xpipe(tar_xz_pipe);
 
     fflush(NULL); /* paranoia */
-    pid_t xz_child = vfork();
-    if (xz_child == -1)
-        perror_msg_and_die("vfork");
-    if (xz_child == 0)
+
+    if ((err = posix_spawn_file_actions_init(&xz_actions)) != 0
+#ifdef POSIX_SPAWN_USEVFORK
+         || (err = posix_spawnattr_init(&xz_attr)) != 0
+         || (xz_attr_set = 1,
+             err = posix_spawnattr_setflags(&xz_attr, POSIX_SPAWN_USEVFORK)) != 0
+#endif
+         || (xz_actions_set = 1,
+             err = posix_spawn_file_actions_addclose(&xz_actions, tar_xz_pipe[1])) != 0
+         || (err = posix_spawn_file_actions_adddup2(&xz_actions, tar_xz_pipe[0], STDIN_FILENO)) != 0
+         || (err = posix_spawn_file_actions_adddup2(&xz_actions, tempfd, STDOUT_FILENO)) != 0)
     {
-        close(tar_xz_pipe[1]);
-        xmove_fd(tar_xz_pipe[0], STDIN_FILENO);
-        xmove_fd(tempfd, STDOUT_FILENO);
-        execvp(xz_args[0], (char * const*)xz_args);
-        perror_msg_and_die(_("Can't execute '%s'"), xz_args[0]);
+        if (xz_actions_set == 1)
+            posix_spawn_file_actions_destroy(&xz_actions);
+
+        if (xz_attr_set == 1)
+            posix_spawnattr_destroy(&xz_attr);
+
+        perror_msg_and_die("posix_spawn init");
     }
+    if ((err = posix_spawnp(&xz_child, xz_args[0], &xz_actions, &xz_attr, (char * const*)xz_args, environ)) != 0)
+        perror_msg_and_die(_("Can't execute '%s'"), xz_args[0]);
+
+    if ((err = posix_spawn_file_actions_destroy(&xz_actions)) != 0
+         || ((xz_attr_set == 1) && ((err = posix_spawnattr_destroy(&xz_attr)) != 0)))
+         perror_msg_and_die("posix_spawn destroy");
 
     close(tar_xz_pipe[0]);
 
@@ -157,16 +182,33 @@ static int create_archive(bool unlink_temp)
     dd_close(dd);
 
     fflush(NULL); /* paranoia */
-    pid_t tar_child = vfork();
-    if (tar_child == -1)
-        perror_msg_and_die("vfork");
-    if (tar_child == 0)
+
+    const char *dev_null_path = "/dev/null";
+
+    if ((err = posix_spawn_file_actions_init(&xz_actions)) != 0
+#ifdef POSIX_SPAWN_USEVFORK
+         || (err = posix_spawnattr_init(&tar_attr)) != 0
+         || (tar_attr_set = 1,
+             err = posix_spawnattr_setflags(&tar_attr, POSIX_SPAWN_USEVFORK)) != 0
+#endif
+         || (tar_actions_set = 1,
+             err = posix_spawn_file_actions_addopen(&tar_actions, STDIN_FILENO, dev_null_path, O_RDWR, 0)) != 0
+         || (err = posix_spawn_file_actions_adddup2(&tar_actions, tar_xz_pipe[1], STDOUT_FILENO)) != 0)
     {
-        xmove_fd(xopen("/dev/null", O_RDWR), STDIN_FILENO);
-        xmove_fd(tar_xz_pipe[1], STDOUT_FILENO);
-        execvp(tar_args[0], (char * const*)tar_args);
-        perror_msg_and_die(_("Can't execute '%s'"), tar_args[0]);
+         if (tar_actions_set == 1)
+             posix_spawn_file_actions_destroy(&tar_actions);
+
+         if (tar_attr_set == 1)
+             posix_spawnattr_destroy(&tar_attr);
+
+         perror_msg_and_die("posix_spawn init");
     }
+    if ((err = posix_spawnp(&tar_child, tar_args[0], &tar_actions, &tar_attr, (char * const*)tar_args, environ)) != 0)
+        perror_msg_and_die(_("Can't execute '%s'"), tar_args[0]);
+
+    if ((err = posix_spawn_file_actions_destroy(&tar_actions)) != 0
+         || ((tar_attr_set == 1) && ((err = posix_spawnattr_destroy(&tar_attr)) != 0)))
+         perror_msg_and_die("posix_spawn destroy");
 
     free((void*)tar_args[2]);
     close(tar_xz_pipe[1]);

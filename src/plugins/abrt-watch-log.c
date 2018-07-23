@@ -17,11 +17,13 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 #include <sys/inotify.h>
+#include <spawn.h>
 #include "libabrt.h"
 
 #define MAX_SCAN_BLOCK  (4*1024*1024)
 #define READ_AHEAD          (10*1024)
 
+extern char **environ;
 static unsigned page_size;
 
 static bool memstr(void *buf, unsigned size, const char *str)
@@ -46,6 +48,12 @@ static bool memstr(void *buf, unsigned size, const char *str)
 
 static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, char **prog)
 {
+    pid_t pid;
+    int err;
+    int attr_set = 0, fd_actions_set = 0;
+    posix_spawnattr_t attr;
+    posix_spawn_file_actions_t fd_actions;
+
     /* fstat(fd, &statbuf) was just done by caller */
 
     off_t cur_pos = lseek(fd, 0, SEEK_CUR);
@@ -98,16 +106,31 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
     }
 
     fflush(NULL); /* paranoia */
-    pid_t pid = vfork();
-    if (pid < 0)
-        perror_msg_and_die("vfork");
-    if (pid == 0)
+
+    if ((err = posix_spawn_file_actions_init(&fd_actions)) != 0
+#ifdef POSIX_SPAWN_USEVFORK
+         || (err = posix_spawnattr_init(&attr)) != 0
+         || (attr_set = 1,
+             err = posix_spawnattr_setflags(&attr, POSIX_SPAWN_USEVFORK)) != 0
+#endif
+         || (fd_actions_set = 1,
+             err = posix_spawn_file_actions_adddup2(&fd_actions, fd, STDIN_FILENO)) != 0)
     {
-        xmove_fd(fd, STDIN_FILENO);
-        log_debug("Execing '%s'", prog[0]);
-        execvp(prog[0], prog);
-        perror_msg_and_die("Can't execute '%s'", prog[0]);
+        if (attr_set == 1)
+            posix_spawnattr_destroy(&attr);
+
+        if (fd_actions_set == 1)
+            posix_spawn_file_actions_destroy(&fd_actions);
+
+        perror_msg_and_die("posix_spawn init");
     }
+
+    if ((err = posix_spawnp(&pid, prog[0], &fd_actions, &attr, prog, environ)) != 0)
+        perror_msg_and_die(_("Can't execute '%s'"), prog[0]);
+
+    if ((err = posix_spawn_file_actions_destroy(&fd_actions)) != 0
+         || ((attr_set == 1) && ((err = posix_spawnattr_destroy(&attr)) != 0)))
+         perror_msg_and_die("posix_spawn destroy");
 
     safe_waitpid(pid, NULL, 0);
 
