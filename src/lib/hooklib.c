@@ -353,11 +353,11 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
     /* Limit bt depth. With no limit, gdb sometimes OOMs the machine */
     unsigned bt_depth = 1024;
     const char *thread_apply_all = "thread apply all -ascending";
-    const char *full = " full";
+    const char *full = "full ";
     char *bt = NULL;
     while (1)
     {
-        args[bt_cmd_index] = xasprintf("%s backtrace %u%s", thread_apply_all, bt_depth, full);
+        args[bt_cmd_index] = xasprintf("%s backtrace %s%u", thread_apply_all, full, bt_depth);
         bt = exec_vp(args, /*redirect_stderr:*/ 1, timeout_sec, NULL);
         free(args[bt_cmd_index]);
         if ((bt && strnlen(bt, 256*1024) < 256*1024) || bt_depth <= 32)
