@@ -1164,11 +1164,9 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %endif # with python3
 
 %files plugin-sosreport
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/sosreport_event.conf
 
 %files plugin-machine-id
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/machine-id_event.conf
 %{_libexecdir}/abrt-action-generate-machine-id
 
