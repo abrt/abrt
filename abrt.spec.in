@@ -332,6 +332,7 @@ Search for a new updates in bodhi server.
 %if %{with python2}
 %package -n python2-abrt-addon
 Summary: %{name}'s addon for catching and analyzing Python exceptions
+BuildArch: noarch
 Requires: %{name} = %{version}-%{release}
 Requires: python2-systemd
 Requires: python2-abrt
@@ -357,6 +358,7 @@ programs in container.
 %if %{with python3}
 %package -n python3-abrt-addon
 Summary: %{name}'s addon for catching and analyzing Python 3 exceptions
+BuildArch: noarch
 Requires: %{name} = %{version}-%{release}
 Requires: python3-systemd
 Requires: python3-abrt
