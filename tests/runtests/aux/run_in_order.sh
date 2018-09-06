@@ -60,8 +60,8 @@ for test_dir in $testlist; do
     fi
 
     # collect /var/log/messages
-    start=$( grep -n "MARK: $short_testname.*" '/var/log/messages'  | tail -n 1 | awk -F: '{print $1}' )
-    end=$( grep -n "MARK: End: $short_testname.*" '/var/log/messages'  | tail -n 1 | awk -F: '{print $1}' )
+    start=$( grep -n --text "MARK: $short_testname.*" '/var/log/messages'  | tail -n 1 | awk -F: '{print $1}' )
+    end=$( grep -n --text "MARK: End: $short_testname.*" '/var/log/messages'  | tail -n 1 | awk -F: '{print $1}' )
     start=$[ $start + 2 ]
     end=$[ $end - 2 ]
 
