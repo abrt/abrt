@@ -58,7 +58,6 @@ export PACKAGES="abrt \
                  abrt-addon-coredump-helper \
                  abrt-addon-kerneloops \
                  abrt-addon-pstoreoops \
-                 python2-abrt-addon \
                  python3-abrt-addon \
                  abrt-addon-upload-watch \
                  abrt-addon-vmcore \
@@ -66,7 +65,7 @@ export PACKAGES="abrt \
                  abrt-desktop \
                  abrt-cli \
                  abrt-devel \
-                 python2-abrt \
+                 python3-abrt \
                  abrt-cli-ng \
                  abrt-console-notification \
                  libreport \
