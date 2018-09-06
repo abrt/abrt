@@ -38,8 +38,8 @@ function run_stage() {
     syslog "$endmsg"
 
     # collect /var/log/messages for the stage
-    start=$( grep -n "MARK: Running.*: ${1}" '/var/log/messages'  | tail -n 1 | awk -F: '{print $1}' )
-    end=$( grep -n "MARK: End.*: ${1}" '/var/log/messages'  | tail -n 1 | awk -F: '{print $1}' )
+    start=$( grep -n --text "MARK: Running.*: ${1}" '/var/log/messages'  | tail -n 1 | awk -F: '{print $1}' )
+    end=$( grep -n --text "MARK: End.*: ${1}" '/var/log/messages'  | tail -n 1 | awk -F: '{print $1}' )
     start=$[ $start + 2 ]
     end=$[ $end - 2 ]
 
