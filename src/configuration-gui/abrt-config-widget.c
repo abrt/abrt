@@ -27,9 +27,6 @@
 #include "libabrt.h"
 #include <assert.h>
 
-#define ABRT_CONFIG_WIDGET_GET_PRIVATE(o) \
-    (G_TYPE_INSTANCE_GET_PRIVATE((o), TYPE_ABRT_CONFIG_WIDGET, AbrtConfigWidgetPrivate))
-
 #define WID(s) GTK_WIDGET(gtk_builder_get_object(self->priv->builder, s))
 
 #define UI_FILE_NAME "abrt-config-widget.glade"
@@ -107,7 +104,7 @@ struct AbrtConfigWidgetPrivate {
     AbrtConfigWidgetOption options[_ABRT_OPT_END_];
 };
 
-G_DEFINE_TYPE(AbrtConfigWidget, abrt_config_widget, GTK_TYPE_BOX)
+G_DEFINE_TYPE_WITH_PRIVATE(AbrtConfigWidget, abrt_config_widget, GTK_TYPE_BOX)
 
 enum {
     SN_CHANGED,
@@ -213,8 +210,6 @@ abrt_config_widget_class_init(AbrtConfigWidgetClass *klass)
     GObjectClass *object_class = G_OBJECT_CLASS(klass);
 
     object_class->finalize = abrt_config_widget_finalize;
-
-    g_type_class_add_private(klass, sizeof(AbrtConfigWidgetPrivate));
 
     s_signals[SN_CHANGED] = g_signal_new ("changed",
                              G_TYPE_FROM_CLASS (klass),
@@ -413,7 +408,7 @@ abrt_config_widget_init(AbrtConfigWidget *self)
 {
     GError *error = NULL;
 
-    self->priv = ABRT_CONFIG_WIDGET_GET_PRIVATE(self);
+    self->priv = abrt_config_widget_get_instance_private(self);
 
     self->priv->builder = gtk_builder_new();
     gtk_builder_set_translation_domain(self->priv->builder, GETTEXT_PACKAGE);
