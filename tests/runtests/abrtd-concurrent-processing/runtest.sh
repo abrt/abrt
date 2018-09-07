@@ -116,7 +116,7 @@ EOF
         create_dump_director ${REMOVED_DD}.new
         dd if=/dev/zero of=${REMOVED_DD}.new/huge count=80 bs=1048576
         rlRun "mv ${REMOVED_DD}.new ${REMOVED_DD}" 0
-        echo "import problem; problem.notify_new_path(\"${REMOVED_DD}\")" | python
+        echo "import problem; problem.notify_new_path(\"${REMOVED_DD}\")" | python3
 
         c=0
         while [ -d ${REMOVED_DD} ]
@@ -162,7 +162,7 @@ EOF
         create_dump_director ${REMOVED_DD}.new
         dd if=/dev/zero of=${REMOVED_DD}.new/huge count=50 bs=1048576
         rlRun "mv ${REMOVED_DD}.new ${REMOVED_DD}" 0
-        echo "import problem; problem.notify_new_path(\"${REMOVED_DD}\")" | python
+        echo "import problem; problem.notify_new_path(\"${REMOVED_DD}\")" | python3
         sleep 1
         rlAssertExists ${REMOVED_DD}
 
@@ -173,7 +173,7 @@ EOF
         echo "`which will_segfault`" > /${NOT_REMOVED_DD}.new/executable
         echo "`which will_segfault`" > /${NOT_REMOVED_DD}.new/cmdline
         rlRun "mv ${NOT_REMOVED_DD}.new ${NOT_REMOVED_DD}" 0
-        echo "import problem; problem.notify_new_path(\"${NOT_REMOVED_DD}\")" | python
+        echo "import problem; problem.notify_new_path(\"${NOT_REMOVED_DD}\")" | python3
 
         c=0
         while [ -d ${REMOVED_DD} ]
@@ -249,7 +249,7 @@ EOF
         echo "`which will_abort`" > /${BREAK_DD}.new/executable
         echo "`which will_abort`" > /${BREAK_DD}.new/cmdline
         rlRun "mv ${BREAK_DD}.new ${BREAK_DD}" 0
-        echo "import problem; problem.notify_new_path(\"${BREAK_DD}\")" | python
+        echo "import problem; problem.notify_new_path(\"${BREAK_DD}\")" | python3
         sleep 1
         rlAssertExists ${BREAK_DD}
 
@@ -273,7 +273,7 @@ EOF
         echo "`which will_segfault`" > /${NOT_REMOVED_DD}.new/executable
         echo "`which will_segfault`" > /${NOT_REMOVED_DD}.new/cmdline
         rlRun "mv ${NOT_REMOVED_DD}.new ${NOT_REMOVED_DD}" 0
-        echo "import problem; problem.notify_new_path(\"${NOT_REMOVED_DD}\")" | python
+        echo "import problem; problem.notify_new_path(\"${NOT_REMOVED_DD}\")" | python3
 
         c=0
         while [ -d ${crash_PATH} ]

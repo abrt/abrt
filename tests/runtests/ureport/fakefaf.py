@@ -1,10 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 # Single purpose HTTP server
 # - accepts POST of ureport JSON and dumps it to a file
 
 import sys
 import json
-import BaseHTTPServer, cgi
+import http.server as BaseHTTPServer
+import cgi
 
 class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_POST(self):
@@ -30,7 +31,8 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 
         ureport = json.load(form['file'].file)
         with open(self.save_ureport, 'w') as fh:
-            json.dump(ureport, fh, indent=2)
+            ureport_dump = json.dumps(ureport, indent=2).encode()
+            fh.write(ureport_dump)
 
         response = {
             'bthash': '691cf824e3e07457156125636e86c50279e29496',
@@ -49,10 +51,11 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
             ],
             'result': True
         }
-        json.dump(response, self.wfile, indent=2)
+        response_dump = json.dumps(response, indent=2).encode()
+        self.wfile.write(response_dump)
 
 PORT = 12345
-print "Serving at port", PORT
+print("Serving at port", PORT)
 
 Handler.save_ureport = sys.argv[1] if len(sys.argv) > 1 else 'ureport.json'
 httpd = BaseHTTPServer.HTTPServer(("", PORT), Handler)

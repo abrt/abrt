@@ -34,7 +34,6 @@ PACKAGE="abrt"
 
 LIBREPORT_EVENTS_D="/etc/libreport/events.d"
 CCPP_EVENT_CONF=$LIBREPORT_EVENTS_D/post_create_will_abort_event.conf
-PYTHON_EVENT_CONF=$LIBREPORT_EVENTS_D/post_create_will_python_raise_event.conf
 PYTHON3_EVENT_CONF=$LIBREPORT_EVENTS_D/post_create_will_python3_raise_event.conf
 
 # $1 - command
@@ -100,14 +99,6 @@ EVENT=post-create type=CCpp
     exit 0
 EOF
 
-        cat > $PYTHON_EVENT_CONF <<EOF
-EVENT=post-create type=Python
-    sleep 30
-    echo "Starting loop ..."
-    python2 -c 'import os; os.kill(os.getpid(), 11)'
-    exit 0
-EOF
-
         cat > $PYTHON3_EVENT_CONF <<EOF
 EVENT=post-create type=Python3
     sleep 30
@@ -127,10 +118,6 @@ EOF
         test_no_debug will_segfault
     rlPhaseEnd
 
-    rlPhaseStartTest "Python hook - no debug"
-        test_no_debug will_python_raise
-    rlPhaseEnd
-
     rlPhaseStartTest "Python3 hook - no debug"
         test_no_debug will_python3_raise
     rlPhaseEnd
@@ -147,10 +134,6 @@ EOF
         test_debug will_segfault
     rlPhaseEnd
 
-    rlPhaseStartTest "Python hook - debug"
-        test_debug will_python_raise
-    rlPhaseEnd
-
     rlPhaseStartTest "Python3 hook - debug"
         test_debug will_python3_raise
     rlPhaseEnd
@@ -160,7 +143,7 @@ EOF
         rlBundleLogs abrt $(ls *.log)
         popd # TmpDir
         rm -rf $TmpDir
-        rm -f $CCPP_EVENT_CONF $PYTHON_EVENT_CONF $PYTHON3_EVENT_CONF
+        rm -f $CCPP_EVENT_CONF $PYTHON3_EVENT_CONF
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd
