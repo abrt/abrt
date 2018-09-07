@@ -106,7 +106,7 @@ EOF
 
     rlPhaseStartTest "process remove"
         prepare
-        generate_python_segfault
+        generate_python3_exception
         wait_for_hooks
         get_crash_path
 

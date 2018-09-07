@@ -390,26 +390,6 @@ END
         rlRun "systemctl start abrt-ccpp"
     rlPhaseEnd
 
-    rlPhaseStartTest "python crash"
-        OUTPUT="python"
-cat > ${OUTPUT}.right << END
-Process #PID# (will_python_raise) of user $(id -u) encountered an uncaught ZeroDivisionError exception
--- Subject: ABRT has detected an uncaught ZeroDivisionError exception in will_python_raise
--- Defined-By: ABRT
--- Support: https://bugzilla.redhat.com/
--- Documentation: man:abrt(1)
--- 
--- will_python_raise:3:<module>:ZeroDivisionError: integer division or modulo by zero
--- 
--- #1 <module> in /usr/bin/will_python_raise:3
--- 
--- Use the abrt command-line tool for further analysis or to report
--- the problem to the appropriate support site.
-END
-
-        check_crash "will_python_raise" $OUTPUT
-    rlPhaseEnd
-
     rlPhaseStartTest "python3 crash"
         OUTPUT="python3"
 cat > ${OUTPUT}.right << END

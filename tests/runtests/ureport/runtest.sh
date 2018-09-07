@@ -62,23 +62,23 @@ rlJournalStart
         rlRun "abrt-cli rm $crash_PATH"
     rlPhaseEnd
 
-    rlPhaseStartTest "python"
+    rlPhaseStartTest "python3"
         prepare
-        generate_python_exception
+        generate_python3_exception
         wait_for_hooks
         get_crash_path
 
-        ./fakefaf.py python_ureport &
+        ./fakefaf.py python3_ureport &
         sleep 1
-        rlRun "reporter-ureport -vvv --insecure --url http://localhost:12345/faf -d $crash_PATH &> python_reporter" 70 "Send uReport"
+        rlRun "reporter-ureport -vvv --insecure --url http://localhost:12345/faf -d $crash_PATH &> python3_reporter" 70 "Send uReport"
         kill %1
 
-        rlRun "./ureport-valid.py python_ureport" 70 "Validate uReport contents"
+        rlRun "./ureport-valid.py python3_ureport" 70 "Validate uReport contents"
 
-        cp $crash_PATH/reported_to python_reported_to
-        rlAssertGrep "BTHASH=" python_reported_to
-        rlAssertGrep "retrace.fedoraproject.org/faf/reports" python_reported_to
-        rlAssertGrep "bugzilla.redhat.com/show_bug.cgi" python_reported_to
+        cp $crash_PATH/reported_to python3_reported_to
+        rlAssertGrep "BTHASH=" python3_reported_to
+        rlAssertGrep "retrace.fedoraproject.org/faf/reports" python3_reported_to
+        rlAssertGrep "bugzilla.redhat.com/show_bug.cgi" python3_reported_to
 
         rlRun "abrt-cli rm $crash_PATH"
     rlPhaseEnd
@@ -106,7 +106,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlBundleLogs abrt ccpp_* python_*
+        rlBundleLogs abrt ccpp_* python3_*
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd

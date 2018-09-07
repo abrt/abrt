@@ -91,11 +91,11 @@ rlJournalStart
         rlRun "abrt-cli rm $crash_PATH"
     rlPhaseEnd
 
-    rlPhaseStartTest "Python plugin"
+    rlPhaseStartTest "Python3 plugin"
         prepare
 
         # crashing bin from my_crash package
-        python_crash
+        python3_crash
 
         wait_for_hooks
         get_crash_path

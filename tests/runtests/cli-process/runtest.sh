@@ -247,7 +247,7 @@ EOF
     rlPhaseStartTest "process --since"
         prepare
         # abrt-ccpp ignores repeated crashes of a single executable
-        generate_python_segfault
+        generate_python3_exception
         wait_for_hooks
         get_crash_path
 

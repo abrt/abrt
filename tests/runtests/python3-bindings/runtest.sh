@@ -2,8 +2,8 @@
 # vim: dict=/usr/share/beakerlib/dictionary.vim cpt=.,w,b,u,t,i,k
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-#   runtest.sh of python-bindings
-#   Description: Tests the python-bindings for ABRT API
+#   runtest.sh of python3-bindings
+#   Description: Tests the python3-bindings for ABRT API
 #   Author: Jiri Moskovcak <jmoskovc@redhat.com>
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -29,7 +29,7 @@
 . /usr/share/beakerlib/beakerlib.sh
 . ../aux/lib.sh
 
-TEST="python-bindings"
+TEST="python3-bindings"
 PACKAGE="abrt"
 
 rlJournalStart

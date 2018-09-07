@@ -28,11 +28,11 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p  $RPM_BUILD_ROOT
 mkdir -p ${RPM_BUILD_ROOT}/usr/sbin
 cp usr/sbin/ccpp_crash  ${RPM_BUILD_ROOT}/usr/sbin/ccpp_crash
-cp usr/sbin/python_crash  ${RPM_BUILD_ROOT}/usr/sbin/python_crash
+cp usr/sbin/python3_crash  ${RPM_BUILD_ROOT}/usr/sbin/python3_crash
 
 %files
 %defattr(-,root,root,-)
 %{_sbindir}/ccpp_crash
-%{_sbindir}/python_crash
+%{_sbindir}/python3_crash
 
 %changelog

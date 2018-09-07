@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Stolen from faf, namely from the faf/pyfaf/ureport.py file.
 #
@@ -6,29 +6,29 @@ import re
 import sys
 
 # 2.0.12 | 2.0.13.35.g1033 | 2.0.12.26.gc7ab.dirty
-ABRT_VERSION_PARSER = re.compile("^([0-9]+)\.([0-9]+)\.([0-9]+)(\..*)?$")
+ABRT_VERSION_PARSER = re.compile(r"^([0-9]+)\.([0-9]+)\.([0-9]+)(\..*)?$")
 
-RE_ARCH = re.compile("^[0-9a-zA-Z_]+$")
-RE_EXEC = re.compile("^[0-9a-zA-Z<>/_\.\-\+]+$")
-RE_FUNCHASH = re.compile("^[a-zA-Z0-9\;\_\:\,\?]+$")
-RE_HEX = re.compile("^(0[xX])?[0-9a-fA-F]+$")
-RE_NONEMPTY = re.compile("^.+$")
-RE_PACKAGE = re.compile("^[0-9a-zA-Z_\.\+\-~]+$")
-RE_PHRASE = re.compile("^[0-9a-zA-Z_<>:\*\+=~@\?\!\ &(),\/\|\`\'\^\-\.\[\]\$\#]+$")
-RE_PROJNAME = re.compile("^[0-9a-zA-Z \+\-\)\(\._~]+$")
+RE_ARCH = re.compile(r"^[0-9a-zA-Z_]+$")
+RE_EXEC = re.compile(r"^[0-9a-zA-Z<>/_\.\-\+]+$")
+RE_FUNCHASH = re.compile(r"^[a-zA-Z0-9\;\_\:\,\?]+$")
+RE_HEX = re.compile(r"^(0[xX])?[0-9a-fA-F]+$")
+RE_NONEMPTY = re.compile(r"^.+$")
+RE_PACKAGE = re.compile(r"^[0-9a-zA-Z_\.\+\-~]+$")
+RE_PHRASE = re.compile(r"^[0-9a-zA-Z_<>:\*\+=~@\?\!\ &(),\/\|\`\'\^\-\.\[\]\$\#]+$")
+RE_PROJNAME = re.compile(r"^[0-9a-zA-Z \+\-\)\(\._~]+$")
 # 17, 12.2, 6.4, 7.0 Alpha3, 6.4 Beta, Rawhide, Tumbleweed
-RE_OSVERSION = re.compile("^[0-9a-zA-Z]+(\.[0-9]+)?( (Alpha|Beta)[0-9]*)?$")
-RE_SEPOL = re.compile("^[a-zA-Z0-9_\.\-]+(:[a-zA-Z0-9_\.\-]+){3,4}$")
-RE_TAINT = re.compile("^[A-Z ]+$")
+RE_OSVERSION = re.compile(r"^[0-9a-zA-Z]+(\.[0-9]+)?( (Alpha|Beta)[0-9]*)?$")
+RE_SEPOL = re.compile(r"^[a-zA-Z0-9_\.\-]+(:[a-zA-Z0-9_\.\-]+){3,4}$")
+RE_TAINT = re.compile(r"^[A-Z ]+$")
 
 MAX_UREPORT_LENGTH = 1 << 22 # 4MB
 MAX_ATTACHMENT_LENGTH = 1 << 20 # 1MB (just metadata)
 
 PACKAGE_CHECKER = {
-  "name":         { "mand": True, "type": basestring, "re": RE_PACKAGE, "maxlen": 255 },
-  "version":      { "mand": True, "type": basestring, "re": RE_PACKAGE, "maxlen": 255 },
-  "release":      { "mand": True, "type": basestring, "re": RE_PACKAGE, "maxlen": 255 },
-  "architecture": { "mand": True, "type": basestring, "re": RE_ARCH, "maxlen": 255 },
+  "name":         { "mand": True, "type": str, "re": RE_PACKAGE, "maxlen": 255 },
+  "version":      { "mand": True, "type": str, "re": RE_PACKAGE, "maxlen": 255 },
+  "release":      { "mand": True, "type": str, "re": RE_PACKAGE, "maxlen": 255 },
+  "architecture": { "mand": True, "type": str, "re": RE_ARCH, "maxlen": 255 },
   "epoch":        { "mand": True, "type": int }
 }
 
@@ -40,24 +40,24 @@ RELATED_PACKAGES_ELEM_CHECKER = {
 RELATED_PACKAGES_CHECKER = { "type": dict, "checker": RELATED_PACKAGES_ELEM_CHECKER }
 
 NV_CHECKER = {
-  "name":    { "mand": True, "type": basestring, "re": RE_PROJNAME, "maxlen": 255 },
-  "version": { "mand": True, "type": basestring, "re": RE_PACKAGE, "maxlen": 255 }
+  "name":    { "mand": True, "type": str, "re": RE_PROJNAME, "maxlen": 255 },
+  "version": { "mand": True, "type": str, "re": RE_PACKAGE, "maxlen": 255 }
 }
 
 SELINUX_CHECKER = {
-  "mode":           { "mand": True,  "type": basestring , "re": re.compile("^(enforcing|permissive|disabled)$", re.IGNORECASE) },
-  "context":        { "mand": False, "type": basestring,  "re": RE_SEPOL, "maxlen": 255 },
+  "mode":           { "mand": True,  "type": str , "re": re.compile(r"^(enforcing|permissive|disabled)$", re.IGNORECASE) },
+  "context":        { "mand": False, "type": str,  "re": RE_SEPOL, "maxlen": 255 },
   "policy_package": { "mand": False, "type": dict, "checker": PACKAGE_CHECKER }
 }
 
 COREBT_ELEM_CHECKER = {
   "thread":   { "mand": True, "type": int },
   "frame":    { "mand": True, "type": int },
-  "buildid":  { "mand": False, "type": basestring, "re": RE_PACKAGE, "maxlen": 255 },
-  "path":     { "mand": False, "type": basestring, "re": RE_EXEC, "maxlen": 255 },
+  "buildid":  { "mand": False, "type": str, "re": RE_PACKAGE, "maxlen": 255 },
+  "path":     { "mand": False, "type": str, "re": RE_EXEC, "maxlen": 255 },
   "offset":   { "mand": True, "type": int },
-  "funcname": { "mand": False, "type": basestring, "re": RE_PHRASE, "trunc": 255 },
-  "funchash": { "mand": False, "type": basestring, "re": RE_FUNCHASH, "maxlen": 255 }
+  "funcname": { "mand": False, "type": str, "re": RE_PHRASE, "trunc": 255 },
+  "funchash": { "mand": False, "type": str, "re": RE_FUNCHASH, "maxlen": 255 }
 }
 
 COREBT_CHECKER = { "type": dict, "checker": COREBT_ELEM_CHECKER }
@@ -71,53 +71,53 @@ PROC_LIMITS_CHECKER = {
 }
 
 OS_CHECKER = {
-  "name":    { "mand": True, "type": basestring, "re": RE_PROJNAME, "maxlen": 255 },
-  "version": { "mand": True, "type": basestring, "re": RE_OSVERSION, "maxlen": 255 }
+  "name":    { "mand": True, "type": str, "re": RE_PROJNAME, "maxlen": 255 },
+  "version": { "mand": True, "type": str, "re": RE_OSVERSION, "maxlen": 255 }
 }
 
 OS_STATE_CHECKER = {
-    "suspend":  { "mand": True, "type": basestring, "re": re.compile("^(yes|no)$", re.IGNORECASE) },
-    "boot":     { "mand": True, "type": basestring, "re": re.compile("^(yes|no)$", re.IGNORECASE) },
-    "login":    { "mand": True, "type": basestring, "re": re.compile("^(yes|no)$", re.IGNORECASE) },
-    "logout":   { "mand": True, "type": basestring, "re": re.compile("^(yes|no)$", re.IGNORECASE) },
-    "shutdown": { "mand": True, "type": basestring, "re": re.compile("^(yes|no)$", re.IGNORECASE) }
+    "suspend":  { "mand": True, "type": str, "re": re.compile(r"^(yes|no)$", re.IGNORECASE) },
+    "boot":     { "mand": True, "type": str, "re": re.compile(r"^(yes|no)$", re.IGNORECASE) },
+    "login":    { "mand": True, "type": str, "re": re.compile(r"^(yes|no)$", re.IGNORECASE) },
+    "logout":   { "mand": True, "type": str, "re": re.compile(r"^(yes|no)$", re.IGNORECASE) },
+    "shutdown": { "mand": True, "type": str, "re": re.compile(r"^(yes|no)$", re.IGNORECASE) }
 }
 
 UREPORT_CHECKER = {
   "ureport_version":   { "mand": False, "type": int },
-  "type":              { "mand": True,  "type": basestring,  "re": re.compile("^(python|userspace|kerneloops)$", re.IGNORECASE) },
-  "reason":            { "mand": True,  "type": basestring,  "re": RE_NONEMPTY, "trunc": 512 },
+  "type":              { "mand": True,  "type": str,  "re": re.compile(r"^(python|userspace|kerneloops)$", re.IGNORECASE) },
+  "reason":            { "mand": True,  "type": str,  "re": RE_NONEMPTY, "trunc": 512 },
   "uptime":            { "mand": False, "type": int },
   "serial":            { "mand": True,  "type": int },
-  "component":         { "mand": False, "type": basestring,  "re": RE_PACKAGE, "maxlen": 255 },
-  "executable":        { "mand": False, "type": basestring,  "re": RE_EXEC, "maxlen": 255 },
+  "component":         { "mand": False, "type": str,  "re": RE_PACKAGE, "maxlen": 255 },
+  "executable":        { "mand": False, "type": str,  "re": RE_EXEC, "maxlen": 255 },
   "installed_package": { "mand": True,  "type": dict, "checker": PACKAGE_CHECKER },
   "running_package":   { "mand": False, "type": dict, "checker": PACKAGE_CHECKER },
   "related_packages":  { "mand": True,  "type": list, "checker": RELATED_PACKAGES_CHECKER },
   "os":                { "mand": True,  "type": dict, "checker": OS_CHECKER },
-  "architecture":      { "mand": True,  "type": basestring,  "re": RE_ARCH, "maxlen": 255 },
+  "architecture":      { "mand": True,  "type": str,  "re": RE_ARCH, "maxlen": 255 },
   "reporter":          { "mand": True,  "type": dict, "checker": NV_CHECKER },
   "crash_thread":      { "mand": True,  "type": int },
   "core_backtrace":    { "mand": True,  "type": list, "checker": COREBT_CHECKER },
-  "user_type":         { "mand": False, "type": basestring,  "re": re.compile("^(root|nologin|local|remote)$", re.IGNORECASE) },
+  "user_type":         { "mand": False, "type": str,  "re": re.compile(r"^(root|nologin|local|remote)$", re.IGNORECASE) },
   "os_state":          { "mand": False, "type": dict,  "checker": OS_STATE_CHECKER },
   "selinux":           { "mand": False, "type": dict, "checker": SELINUX_CHECKER },
-  "kernel_taint_state":{ "mand": False, "type": basestring,  "re": RE_TAINT, "maxlen": 255 },
+  "kernel_taint_state":{ "mand": False, "type": str,  "re": RE_TAINT, "maxlen": 255 },
   "proc_status":       { "mand": False, "type": dict, "checker": PROC_STATUS_CHECKER },
   "proc_limits":       { "mand": False, "type": dict, "checker": PROC_LIMITS_CHECKER },
-  "oops":              { "mand": False, "type": basestring, "maxlen": 1 << 16 },
+  "oops":              { "mand": False, "type": str, "maxlen": 1 << 16 },
 }
 
 # just metadata, large objects are uploaded separately
 ATTACHMENT_CHECKER = {
-  "type":   { "mand": True, "type": basestring, "re": RE_PHRASE, "maxlen": 64 },
-  "bthash": { "mand": True, "type": basestring, "re": RE_HEX,    "maxlen": 64 },
-  "data":   { "mand": True, "type": basestring, "re": RE_PHRASE, "maxlen": 1024 },
+  "type":   { "mand": True, "type": str, "re": RE_PHRASE, "maxlen": 64 },
+  "bthash": { "mand": True, "type": str, "re": RE_HEX,    "maxlen": 64 },
+  "data":   { "mand": True, "type": str, "re": RE_PHRASE, "maxlen": 1024 },
 }
 
 def ureport2to1(ureport2):
     if "ureport_version" not in ureport2 or ureport2["ureport_version"] != 2:
-        raise ValueError, "uReport2 is required"
+        raise ValueError("uReport2 is required")
 
     ureport1 = { "ureport_version": 1, }
 
@@ -280,8 +280,8 @@ def ureport2to1(ureport2):
                             new_frame["funcname"] = ("<{0}>"
                                 .format(frame["special_function"]))
                     else:
-                        raise ValueError, ("type '{0}' is not supported"
-                                           .format(ureport1["type"]))
+                        raise ValueError("type '{0}' is not supported"
+                                         .format(ureport1["type"]))
 
                     ureport1["core_backtrace"].append(new_frame)
 
@@ -302,16 +302,16 @@ def validate(obj, checker=UREPORT_CHECKER):
 
     # check for expected type
     if not isinstance(obj, expected):
-        raise Exception, "typecheck failed: expected {0}, had {1}; {2}".format(expected.__name__, type(obj).__name__, obj)
+        raise Exception("typecheck failed: expected {0}, had {1}; {2}".format(expected.__name__, type(obj).__name__, obj))
 
     # str checks
-    if isinstance(obj, basestring):
+    if isinstance(obj, str):
         if "re" in checker and checker["re"].match(obj) is None:
-            raise Exception, 'string "{0}" contains illegal characters'.format(obj)
+            raise Exception('string "{0}" contains illegal characters'.format(obj))
         if "trunc" in checker and len(obj) > checker["trunc"]:
             obj = obj[:checker["trunc"]]
         if "maxlen" in checker and len(obj) > checker["maxlen"]:
-            raise Exception, 'string "{0}" is too long (maximum {1})'.format(obj, checker["maxlen"])
+            raise Exception('string "{0}" is too long (maximum {1})'.format(obj, checker["maxlen"]))
     # list - apply checker["checker"] to every element
     elif isinstance(obj, list):
         obj = [validate(elem, checker["checker"]) for elem in obj]
@@ -333,20 +333,20 @@ def validate(obj, checker=UREPORT_CHECKER):
             except KeyError:
                 # fail for mandatory elements
                 if subchkr["mand"]:
-                    raise Exception, "missing mandatory element '{0}'".format(key)
+                    raise Exception("missing mandatory element '{0}'".format(key))
                 # just skip optional
                 continue
 
             try:
                 obj[key] = validate(value, subchkr)
-            except Exception, msg:
+            except Exception as msg:
                 # queue error messages
-                raise Exception, "error validating '{0}': {1}".format(key, msg)
+                raise Exception("error validating '{0}': {1}".format(key, msg))
 
         # excessive elements - error
         keys = clone.keys()
         if keys:
-            raise Exception, "unknown elements present: {0}".format(keys)
+            raise Exception("unknown elements present: {0}".format(keys))
 
     return obj
 
