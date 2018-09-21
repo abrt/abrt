@@ -114,7 +114,6 @@ static void stop_abrt_server(struct abrt_server_proc *proc)
 
 static void dispose_abrt_server(struct abrt_server_proc *proc)
 {
-    close(proc->fdout);
     free(proc->dirname);
 
     if (proc->watch_id > 0)
@@ -231,8 +230,7 @@ static gboolean abrt_server_output_cb(GIOChannel *channel, GIOCondition conditio
     GList *item = g_list_find_custom(s_processes, &fdout, (GCompareFunc)abrt_server_compare_fdout);
     if (item == NULL)
     {
-        log_warning("Closing a pipe fd (%d) without a process assigned", fdout);
-        close(fdout);
+        log_warning("Removing an input channel fd (%d) without a process assigned", fdout);
         return FALSE;
     }
 

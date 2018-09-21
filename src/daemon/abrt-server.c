@@ -364,7 +364,6 @@ static int run_post_create(const char *dirname, struct response *resp)
     g_main_loop_unref(context.main_loop);
     g_io_channel_unref(channel_signal);
     close(g_signal_pipe[1]);
-    close(g_signal_pipe[0]);
 
     log_notice("Waiting finished");
 
