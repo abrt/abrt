@@ -40,7 +40,7 @@ function confDBusSetProperty() {
     #          --dest=com.redhat.problems.configuration /com/redhat/problems/configuration/$1 org.freedesktop.DBus.Properties.Set \
     #          string:"com.redhat.problems.configuration.$1" string:$2 variant:$3:$4 | awk -v first=1 '{ if (first) { first=0 } else { print } } /Error/ { print }'
     #
-    echo "import dbus; bus = dbus.SystemBus(); proxy = bus.get_object(\"com.redhat.problems.configuration\", \"/com/redhat/problems/configuration/$1\"); problems = dbus.Interface(proxy, dbus_interface=\"org.freedesktop.DBus.Properties\"); problems.Set(\"com.redhat.problems.configuration.$1\", \"$2\", $4)" | python
+    echo "import dbus; bus = dbus.SystemBus(); proxy = bus.get_object(\"com.redhat.problems.configuration\", \"/com/redhat/problems/configuration/$1\"); problems = dbus.Interface(proxy, dbus_interface=\"org.freedesktop.DBus.Properties\"); problems.Set(\"com.redhat.problems.configuration.$1\", \"$2\", $4)" | python3
 }
 
 function confDBusSetPropertyDefault() {
@@ -372,12 +372,12 @@ rlJournalStart
         rlAssertEquals "Reset 'VerboseLog' value" "_$(confDBusGetProperty ccpp VerboseLog)" "_"
     rlPhaseEnd
 
-    rlPhaseStartTest "Read/Write Python configuration"
-        rlAssertEquals "Get 'RequireAbsolutePath' value" "_$(confDBusGetProperty python RequireAbsolutePath)" "_"
-        rlRun "confDBusSetProperty python RequireAbsolutePath boolean False" 0
-        rlAssertEquals "Set 'RequireAbsolutePath' value" "_$(confDBusGetProperty python RequireAbsolutePath)" "_false"
-        rlRun "confDBusSetPropertyDefault python RequireAbsolutePath" 0
-        rlAssertEquals "Reset 'RequireAbsolutePath' value" "_$(confDBusGetProperty python RequireAbsolutePath)" "_"
+    rlPhaseStartTest "Read/Write Python3 configuration"
+        rlAssertEquals "Get 'RequireAbsolutePath' value" "_$(confDBusGetProperty python3 RequireAbsolutePath)" "_"
+        rlRun "confDBusSetProperty python3 RequireAbsolutePath boolean False" 0
+        rlAssertEquals "Set 'RequireAbsolutePath' value" "_$(confDBusGetProperty python3 RequireAbsolutePath)" "_false"
+        rlRun "confDBusSetPropertyDefault python3 RequireAbsolutePath" 0
+        rlAssertEquals "Reset 'RequireAbsolutePath' value" "_$(confDBusGetProperty python3 RequireAbsolutePath)" "_"
     rlPhaseEnd
 
     rlPhaseStartTest "Read/Write VMcore configuration"
