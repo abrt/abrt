@@ -25,12 +25,12 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.end_headers()
 
         if self.path != '/faf/reports/new/':
-            with open(self.save_ureport, 'w') as fh:
+            with open(self.save_ureport, 'wb') as fh:
                 fh.write('{"invalid_request_path": "%s"}' % self.path)
             return
 
         ureport = json.load(form['file'].file)
-        with open(self.save_ureport, 'w') as fh:
+        with open(self.save_ureport, 'wb') as fh:
             ureport_dump = json.dumps(ureport, indent=2).encode()
             fh.write(ureport_dump)
 
