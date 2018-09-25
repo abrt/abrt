@@ -1,0 +1,11 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+
+<node name="/com/redhat/problems/configuration/python3">
+    <annotation name="com.redhat.problems.ConfFile" value="/etc/abrt/plugins/python3.conf" />
+    <annotation name="com.redhat.problems.DefaultConfFile" value="/usr/share/abrt/conf.d/plugins/python3.conf" />
+
+    <interface name="com.redhat.problems.configuration.python3">
+        <property name="RequireAbsolutePath" type="b" access="readwrite" />
+    </interface>
+</node>
