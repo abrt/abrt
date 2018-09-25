@@ -1221,7 +1221,12 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.abrt.xml
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.ccpp.xml
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.oops.xml
+%if %{with python2}
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.python.xml
+%endif # with python2
+%if %{with python3}
+%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.python3.xml
+%endif # with python3
 %if %{?have_kexec_tools} == 1
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.vmcore.xml
 %endif
