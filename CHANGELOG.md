@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.11.0]
+### Changed
+- Architecture of python[2,3]-abrt-addon packages was changed to noarch.
+- Restarting abrtd daemon forces abrt-dbus to reload configuration files.
+### Fixed
+- Fixed issue with local backtrace generation.
+- Fixed bug that caused daemon to consume 100% of CPU core.
+- Fixed issue with abrt not resolving a hostname in coredump filenames.
+
 ## [2.10.10]
 ### Removed
 - Requirements on Python 2
@@ -125,7 +134,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.10.10...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.11.0...HEAD
+[2.11.0]: https://github.com/abrt/abrt/compare/2.10.10...2.11.0
 [2.10.10]: https://github.com/abrt/abrt/compare/2.10.9...2.10.10
 [2.10.9]: https://github.com/abrt/abrt/compare/2.10.8...2.10.9
 [2.10.8]: https://github.com/abrt/abrt/compare/2.10.7...2.10.8

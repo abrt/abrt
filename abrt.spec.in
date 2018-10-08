@@ -1275,6 +1275,25 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Mon Oct 08 2018 Martin Kutlak <mkutlak@redhat.com> 2.11.0-1
+- Translation updates
+- configure.ac: fix augparse typo
+- plugins: Allow abrt-retrace-client to be optional at build time
+- spec: Build python*-abrt-addon packages as noarch
+- daemon: Fix double closed fd race condition
+- gui: Replace deprecated g_type_class_add_private
+- harvest_vmcore: Fix missing argument error during delete_and_close()
+- sosreport: plugin "general" split into two new plugins
+- plugins: Replace vfork with posix_spawn
+- defattr is not needed since rpm 4.2
+- python_sitearch -> python2_sitearch
+- lib: Correct the syntax for gdb backtrace command
+- gui-config: Remove deprecated GTK functions
+- spec: remove duplicated python3-devel
+- abrtd.service: force abrt-dbus to load changes from conf
+- ccpp: add %h and %e parameter into abrt-hook-ccpp
+- spec: set PYTHON variable because of ./py-compile
+
 * Thu May 31 2018 Matej Marusak <mmarusak@redhat.com> 2.10.10-1
 - Translation updates
 - Changelog: Update changelog
