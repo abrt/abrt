@@ -6,6 +6,7 @@
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
 # Kris Thomsen <lakristho@gmail.com>, 2011-2012
 # scootergrisen <scootergrisen@gmail.com>, 2017. #zanata
+# scootergrisen <scootergrisen@gmail.com>, 2018. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -14,13 +15,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-05-01 04:27+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
+"PO-Revision-Date: 2018-10-04 01:41+0000\n"
+"Last-Translator: scootergrisen <scootergrisen@gmail.com>\n"
 "Language-Team: Danish (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/da/)\n"
 "Language: da\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 4.4.5\n"
+"X-Generator: Zanata 4.6.2\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -215,7 +216,7 @@ msgid ""
 "uReport is sent at beginning of reporting process. With this option enabled "
 "uReports are sent automatically immediately after problem detection."
 msgstr ""
-"uReport er kort og fuldstædig anonym beskrivelse af et problem. ABRT bruger "
+"uReport er kort og fuldstændig anonym beskrivelse af et problem. ABRT bruger "
 "uReport'er til hurtig global duplikatregistrering. I standardkonfigurationen "
 "sendes uReport i begyndelse af rapporteringsprocessen. Men denne "
 "valgmulighed aktiveret sendes uReport'er automatisk med det samme når et "
@@ -365,7 +366,7 @@ msgstr "Brug NUM som klient-uid"
 #: ../src/plugins/abrt-dump-journal-xorg.c:188
 #: ../src/plugins/abrt-dump-xorg.c:52
 msgid "Log to syslog"
-msgstr "Skriv til syslog"
+msgstr "Log til syslog"
 
 #: ../src/daemon/abrt-server.c:860 ../src/daemon/abrtd.c:460
 msgid "Add program names to log"
@@ -457,15 +458,15 @@ msgstr "Dæmonisér ikke"
 
 #: ../src/daemon/abrtd.c:458
 msgid "Log to syslog even with -d"
-msgstr "Skriv til syslog, selv med -d"
+msgstr "Log til syslog, selv med -d"
 
 #: ../src/daemon/abrt-handle-event.c:394
 msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
-msgstr "& [-v -i -n FORØGELSE] -e|--event BEGIVENHED MAPPE..."
+msgstr "& [-v -i -n FORØGELSE] -e|--event HÆNDELSE MAPPE..."
 
 #: ../src/daemon/abrt-handle-event.c:403
 msgid "Run EVENT on DIR"
-msgstr "Kør BEGIVENHED på MAPPE"
+msgstr "Kør HÆNDELSE på MAPPE"
 
 #: ../src/daemon/abrt-handle-event.c:404
 msgid "Communicate directly to the user"
@@ -1002,7 +1003,7 @@ msgstr ""
 "    --tmpdir    Standard: @STOR_DATA_MIDLERTIDIG_MAPPE@/abrt-tmp-debuginfo-"
 "TILFÆLDIGT_SUFFIKS\n"
 "    --cache     Kolonsepareret liste af mapper. Den første bruges til at\n"
-"                gemme installerede fejlsøgnigsinfo'er.\n"
+"                gemme installerede fejlsøgningsinfo'er.\n"
 "                Standard: /var/cache/abrt-dir\n"
 "    --size_mb   Standard: 4096\n"
 "    --pkgmgr    Standard: PackageManager fra CCpp.conf eller \"dnf\"\n"
@@ -1166,7 +1167,7 @@ msgstr "Signal sendt af userspace-kode"
 
 #: ../src/plugins/abrt-gdb-exploitable:533
 msgid "Signal sent by timer/IO/async event"
-msgstr "Signal sendt af timer-/IO-/async-begivenhed"
+msgstr "Signal sendt af timer-/IO-/async-hændelse"
 
 #: ../src/plugins/abrt-gdb-exploitable:541
 msgid "Signal has siginfo.si_code = SI_USER"
@@ -2207,14 +2208,14 @@ msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"Der opstod et kerneproblem men din kerne er blev forstyrret (flag:%s). "
-"Kernevedligeholdere er ikke i stand til at diagnostisere forstyrrede "
+"Der opstod et kerneproblem men din kerne er blev manipuleret (flag:%s). "
+"Kernevedligeholdere er ikke i stand til at diagnostisere manipulerede "
 "rapporter."
 
 #: ../src/plugins/oops-utils.c:228
 #, c-format
 msgid " Tainted modules: %s."
-msgstr " Forstyrrede moduler: %s."
+msgstr " Manipulerede moduler: %s."
 
 #: ../src/plugins/bodhi.c:468
 msgid "List of bug ids"
@@ -2608,13 +2609,13 @@ msgid ""
 "private data, if any."
 msgstr ""
 "Uploader kernedump til en server, som genererer backtracet og returnerer det."
-" Hvis brugeren ikke vil uploade sin kernedump nogen steder udfører "
-"begivenheden lokal analyse. Lokal analyse kører begivenhed hvis fjern-"
-"analyse ikke lykkes. Fordele: ingen behov til at downloade fejlsøgningsinfo. "
-"Retraceserverens database over fejlsøgningsinformationer er mere komplet. "
-"Retraceserveren genererer muligvis bedre backtraces. Ulemper: "
-"kernedumpninger som du uploader indeholder alle data fra det nedbrudte "
-"program, inklusiv dine private data, hvis de er tilstede."
+" Hvis brugeren ikke vil uploade sin kernedump nogen steder udfører hændelsen "
+"lokal analyse. Lokal analyse kører hændelsen hvis fjern-analyse ikke lykkes. "
+"Fordele: ingen behov til at downloade fejlsøgningsinfo. Retraceserverens "
+"database over fejlsøgningsinformationer er mere komplet. Retraceserveren "
+"genererer muligvis bedre backtraces. Ulemper: kernedumpninger som du "
+"uploader indeholder alle data fra det nedbrudte program, inklusiv dine "
+"private data, hvis de er tilstede."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
