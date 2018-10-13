@@ -1,0 +1,10 @@
+#!/bin/bash
+
+export scriptdir="$(builtin cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+
+hostname="$(hostname -s)"
+full_hostname="$(hostname)"
+
+for f in "$scriptdir"/*.template; do
+    cat "$f" | sed -e "s/:HOSTNAME:/${hostname}/" -e "s/:FULL_HOSTNAME:/${full_hostname}/" > "${f%%.template}"
+done
