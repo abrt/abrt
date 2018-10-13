@@ -20,6 +20,7 @@
 #include <satyr/thread.h>
 
 #include <regex.h>
+#include <string.h>
 
 #define _GNU_SOURCE 1 /* for strcasestr */
 #include "libabrt.h"
@@ -279,6 +280,36 @@ void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
     int lines_info_size = 0;
     struct abrt_koops_line_info *lines_info = NULL;
 
+    /* prepare hostname search string (needle) */
+    unsigned hsz = 256;
+    char *hostname = xmalloc(hsz);
+    char *short_needle = xmalloc(hsz+10);
+    char *long_needle = xmalloc(hsz+10);
+
+    if (gethostname(hostname, hsz) != 0) {
+        hostname[0] = '\0';
+    } else {
+        char *dot_str = strchr(hostname, '.');
+
+        unsigned dot_pos;
+        if (dot_str != NULL) {
+            dot_pos = dot_str - hostname;
+        } else {
+            hostname[hsz-1] = '\0';
+            dot_pos = strlen(hostname);
+        }
+
+        short_needle[0] = ' ';
+        short_needle[1] = '\0';
+        strncat(short_needle, hostname, dot_pos);
+        strncat(short_needle, " kernel: ", 10);
+
+        long_needle[0] = ' ';
+        long_needle[1] = '\0';
+        strncat(long_needle, hostname, hsz-1);
+        strncat(long_needle, " kernel: ", 10);
+    }
+
     /* Split buffer into lines */
 
     if (buflen != 0)
@@ -334,6 +365,12 @@ void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
                 }
                 goto next_line;
             }
+
+            /* check if the machine hostname is contained in the message hostname */
+            if (hostname[0] != '\0' && !strstr(c, short_needle) && !strstr(c, long_needle)) {
+                goto next_line;
+            }
+
             c = kernel_str + sizeof("kernel: ")-1;
         }
 
@@ -354,6 +391,9 @@ next_line:
 
     koops_extract_oopses_from_lines(oops_list, lines_info, lines_info_size);
     free(lines_info);
+    free(hostname);
+    free(short_needle);
+    free(long_needle);
 }
 
 void koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_koops_line_info *lines_info, int lines_info_size)

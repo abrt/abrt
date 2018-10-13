@@ -68,11 +68,14 @@ TESTSUITE_AT = \
 EXTRA_DIST += $(TESTSUITE_AT) $(TESTSUITE_FILES)
 TESTSUITE = $(srcdir)/testsuite
 MAINTAINERCLEANFILES = Makefile.in $(TESTSUITE)
-check_DATA = atconfig atlocal $(TESTSUITE)
+check_DATA = atconfig atlocal prepare-data $(TESTSUITE)
 DISTCLEANFILES = atconfig
 EXTRA_DIST += atlocal.in
 EXTRA_DIST += koops-test.h
 EXTRA_DIST += GList_append.supp
+
+prepare-data:
+	${top_builddir}/tests/examples/prepare-data
 
 atconfig: $(top_builddir)/config.status
 	(cd ${top_builddir} && ./config.status ${subdir}/atconfig)

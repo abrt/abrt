@@ -13,6 +13,9 @@ export -f syslog
 export -f echo_success
 export -f echo_failure
 
+# prepare test data
+../examples/prepare-data
+
 # prepare output directory
 rm -rf $OUTPUT_ROOT
 mkdir -p $OUTPUT_ROOT
