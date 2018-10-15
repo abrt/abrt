@@ -25,8 +25,8 @@ EXTRA_DIST = package.m4 ignored_problems_data
 ## ------------ ##
 
 TESTSUITE_FILES =
-TESTSUITE_FILES += examples/koops-tainted-g
-TESTSUITE_FILES += examples/koops-tainted-insane
+TESTSUITE_FILES += examples/koops-tainted-g.template
+TESTSUITE_FILES += examples/koops-tainted-insane.template
 TESTSUITE_FILES += examples/koops-tainted-spaces
 TESTSUITE_FILES += examples/cut_here.right
 TESTSUITE_FILES += examples/oops-kernel-3.x.x
@@ -42,7 +42,7 @@ TESTSUITE_FILES += examples/oops-with-jiffies.test
 TESTSUITE_FILES += examples/oops-with-jiffies.right
 TESTSUITE_FILES += examples/oops_recursive_locking1.test
 TESTSUITE_FILES += examples/oops_recursive_locking1.right
-TESTSUITE_FILES += examples/nmi_oops.test
+TESTSUITE_FILES += examples/nmi_oops.test.template
 TESTSUITE_FILES += examples/nmi_oops.right
 TESTSUITE_FILES += examples/nmi_oops_hash.test
 TESTSUITE_FILES += examples/nmi_oops_hash.right
