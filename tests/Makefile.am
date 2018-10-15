@@ -73,6 +73,7 @@ DISTCLEANFILES = atconfig
 EXTRA_DIST += atlocal.in
 EXTRA_DIST += koops-test.h
 EXTRA_DIST += GList_append.supp
+EXTRA_DIST += examples/prepare-data
 
 prepare-data:
 	${top_builddir}/tests/examples/prepare-data
