@@ -69,6 +69,7 @@ License: GPLv2+
 URL: https://abrt.readthedocs.org/
 Source: https://github.com/abrt/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 BuildRequires: %{dbus_devel}
+BuildRequires: hostname
 BuildRequires: gtk3-devel
 BuildRequires: glib2-devel >= 2.43
 BuildRequires: rpm-devel >= 4.6
