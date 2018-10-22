@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import json
 import sys
@@ -6,12 +6,12 @@ import os
 
 def assert_equals(current, expected):
     if str(expected) not in str(current):
-        print "%s != %s" % (str(current), str(expected))
+        print("%s != %s" % (str(current), str(expected)))
         sys.exit(1)
 
 def assert_isinstance(obj, typ):
     if not isinstance(obj, typ):
-        print "%s isn't instance of %s" % (str(obj), str(typ))
+        print("%s isn't instance of %s" % (str(obj), str(typ)))
         sys.exit(1)
 
 arch = sys.argv[2]
@@ -61,7 +61,7 @@ try:
     with open(sys.argv[1], 'r') as fh:
         core_backtrace = json.load(fh)
 except Exception as ex:
-    print str(ex)
+    print(str(ex))
     sys.exit(1)
 
 assert_equals(core_backtrace['executable'], executable)
@@ -71,19 +71,19 @@ assert_equals(len(threads), 1)
 assert_equals(threads[0]['crash_thread'], True)
 trace = threads[0]['frames']
 
-print "++++ core_backtrace.frames of %s:" % (executable)
+print("++++ core_backtrace.frames of %s:" % (executable))
 for (i, frame) in enumerate(trace):
-    print "Function:", frame['function_name'], "- file name:", frame['file_name']
-print "----"
+    print("Function:", frame['function_name'], "- file name:", frame['file_name'])
+print("----")
 
 assert_equals(len(trace), len(expected))
 
 for (i, frame) in enumerate(trace):
     assert_equals(frame['function_name'], expected[i][0])
     assert_isinstance(frame['address'], int)
-    assert_isinstance(frame['build_id'], unicode)
+    assert_isinstance(frame['build_id'], str)
     assert_isinstance(frame['build_id_offset'], int)
 
     if not any(map(lambda k: k in frame['file_name'], expected[i][1])):
-        print "%s not in %s" % (frame['file_name'], str(expected[i][1]))
+        print("%s not in %s" % (frame['file_name'], str(expected[i][1])))
         sys.exit(1)
