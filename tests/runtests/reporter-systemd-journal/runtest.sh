@@ -350,8 +350,8 @@ Process #PID# (will_stackoverflow) crashed in f()
 -- 
 -- will_stackoverflow killed by SIGSEGV
 -- 
--- #1 f in /usr/bin/will_stackoverflow
--- #2 main in /usr/bin/will_stackoverflow
+-- #1 [will_stackoverflow] f
+-- #2 [will_stackoverflow] main
 -- 
 -- Use the abrt command-line tool for further analysis or to report
 -- the problem to the appropriate support site.
@@ -401,7 +401,7 @@ Process #PID# (will_python3_raise) of user $(id -u) encountered an uncaught Zero
 -- 
 -- will_python3_raise:3:<module>:ZeroDivisionError: division by zero
 -- 
--- #1 <module> in /usr/bin/will_python3_raise:3
+-- #1 [/usr/bin/will_python3_raise:3] <module>
 -- 
 -- Use the abrt command-line tool for further analysis or to report
 -- the problem to the appropriate support site.
