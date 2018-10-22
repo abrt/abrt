@@ -286,15 +286,21 @@ void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
     char *short_needle = xmalloc(hsz+10);
     char *long_needle = xmalloc(hsz+10);
 
-    if (gethostname(hostname, hsz) != 0) {
+    if (gethostname(hostname, hsz) != 0)
+    {
         hostname[0] = '\0';
-    } else {
+    }
+    else
+    {
         char *dot_str = strchr(hostname, '.');
 
         unsigned dot_pos;
-        if (dot_str != NULL) {
+        if (dot_str != NULL)
+        {
             dot_pos = dot_str - hostname;
-        } else {
+        }
+        else
+        {
             hostname[hsz-1] = '\0';
             dot_pos = strlen(hostname);
         }
@@ -367,7 +373,8 @@ void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
             }
 
             /* check if the machine hostname is contained in the message hostname */
-            if (hostname[0] != '\0' && !strstr(c, short_needle) && !strstr(c, long_needle)) {
+            if (hostname[0] != '\0' && !strstr(c, short_needle) && !strstr(c, long_needle))
+            {
                 goto next_line;
             }
 
