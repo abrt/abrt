@@ -6,6 +6,8 @@ import locale
 import gettext
 import hashlib
 import re
+import subprocess
+from systemd import journal
 
 GETTEXT_PROGNAME = "abrt"
 
@@ -54,6 +56,22 @@ def open_or_die(filename, mode):
         sys.stderr.write(str(e) + "\n")
         sys.exit(1)
     return f
+
+
+def journal_has_string(identifier, string):
+    j = journal.Reader()
+    j.this_boot()
+    j.this_machine()
+    j.log_level(journal.LOG_INFO)
+    j.add_match(SYSLOG_IDENTIFIER=identifier, MESSAGE=string)
+
+    return bool(list(j))
+
+
+def tail_journal_with_search(identifier, maxlen):
+    args = ['journalctl', '-b', '-n', str(maxlen), '-t', str(identifier)]
+    logs = subprocess.check_output(args, stderr=subprocess.STDOUT, universal_newlines=True)
+    return logs
 
 
 if __name__ == "__main__":
@@ -131,9 +149,25 @@ if __name__ == "__main__":
         f.close()
         sys.exit(0)
     #
+    # Check systemd-journal for MCEs.
+    #
+    if journal_has_string("mcelog", "Hardware event. This is not a software error."):
+        f = open_or_die("backtrace", "w")
+        f.write("The kernel log indicates that hardware errors were detected.\n")
+        f.write("System log may have more information.\n")
+        f.write("The last 20 mcelog lines of system log are:\n")
+        f.write("==========================================\n")
+        # print last 20 journal messages
+        # journalctl -b -n20 -t mcelog
+        l = tail_journal_with_search('mcelog', 20)
+        for line in l:
+            f.write(line)
+        f.close()
+        sys.exit(0)
+    #
     # On RHEL7, mcelog is run so that its output ends up in syslog.
     # Do we see that?
-    if file_has_string("/var/log/messages", "mcelog: Hardware event"):
+    elif file_has_string("/var/log/messages", "mcelog: Hardware event"):
         f = open_or_die("backtrace", "w")
         f.write("The kernel log indicates that hardware errors were detected.\n")
         f.write("System log may have more information.\n")
