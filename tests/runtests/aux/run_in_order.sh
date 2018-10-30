@@ -89,7 +89,7 @@ for test_dir in $testlist; do
     # check test result
     test_result="FAIL"
     if [ -e $logfile ]; then
-        if ! grep -q FAIL $logfile; then
+        if ! grep -qE "FAIL(\s|$)" $logfile; then
             test_result="PASS"
         fi
     fi
