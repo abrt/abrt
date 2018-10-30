@@ -173,10 +173,10 @@ ABRT_PARSE_WITH([pythondoc]))
 [if test -z "$NO_PYTHONDOC"]
 [then]
     AM_CONDITIONAL(HAVE_PYTHON_SPHINX, true)
-    AC_PATH_PROG([PYTHON_SPHINX], [sphinx-build], [no])
+    AC_PATH_PROG([PYTHON_SPHINX], [sphinx-build-3], [no])
     [if test "$PYTHON_SPHINX" = "no"]
     [then]
-        [echo "The sphinx-build program was not found in the search path. Please ensure"]
+        [echo "The sphinx-build-3 program was not found in the search path. Please ensure"]
         [echo "that it is installed and its directory is included in the search path or"]
         [echo "pass --without-pythondoc to ./configure."]
         [echo "Then run configure again before attempting to build ABRT."]
