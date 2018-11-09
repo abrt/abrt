@@ -185,7 +185,7 @@ static int create_archive(bool unlink_temp)
 
     const char *dev_null_path = "/dev/null";
 
-    if ((err = posix_spawn_file_actions_init(&xz_actions)) != 0
+    if ((err = posix_spawn_file_actions_init(&tar_actions)) != 0
 #ifdef POSIX_SPAWN_USEVFORK
          || (err = posix_spawnattr_init(&tar_attr)) != 0
          || (tar_attr_set = 1,
