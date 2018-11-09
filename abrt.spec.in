@@ -36,12 +36,10 @@
 %if 0%{?suse_version}
 %define dbus_devel dbus-1-devel
 %define libjson_devel libjson-devel
-%define nss_devel mozilla-nss-devel
 %define shadow_utils pwdutils
 %else
 %define dbus_devel dbus-devel
 %define libjson_devel json-c-devel
-%define nss_devel nss-devel
 %define shadow_utils shadow-utils
 %endif
 
@@ -74,7 +72,7 @@ BuildRequires: gettext
 BuildRequires: libxml2-devel
 BuildRequires: intltool
 BuildRequires: libtool
-BuildRequires: %{nss_devel}
+BuildRequires: libsoup-devel
 BuildRequires: asciidoc
 BuildRequires: doxygen
 BuildRequires: xmlto
@@ -259,6 +257,7 @@ Requires: %{name} = %{version}-%{release}
 Requires: xz
 Requires: tar
 Requires: p11-kit-trust
+Requires: libsoup
 
 %description retrace-client
 This package contains the client application for Retrace server

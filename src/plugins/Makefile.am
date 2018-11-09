@@ -463,16 +463,16 @@ abrt_retrace_client_SOURCES = \
  abrt_retrace_client_CFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-     $(NSS_CFLAGS) \
      $(GLIB_CFLAGS) \
      -D_GNU_SOURCE \
      -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
      -DLARGE_DATA_TMP_DIR=\"$(LARGE_DATA_TMP_DIR)\" \
-     $(LIBREPORT_CFLAGS)
+     $(LIBREPORT_CFLAGS) \
+     $(LIBSOUP_CFLAGS)
  abrt_retrace_client_LDADD = \
      $(LIBREPORT_LIBS) \
-     $(SATYR_LIBS) \
-     $(NSS_LIBS)
+     $(LIBSOUP_LIBS) \
+     $(SATYR_LIBS)
 endif
 
 if BUILD_BODHI
