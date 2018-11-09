@@ -21,14 +21,7 @@
 #define ABRT_HTTPS_UTILS_H_
 
 #include <libreport/client.h>
-#include <nspr.h>
-#include <nss.h>
-#include <pk11pub.h>
-#include <ssl.h>
-#include <sslproto.h>
-#include <sslerr.h>
-#include <secerr.h>
-#include <secmod.h>
+#include <libsoup/soup.h>
 #include "libabrt.h"
 
 #if HAVE_LOCALE_H
@@ -37,31 +30,17 @@
 
 struct language
 {
-    char *locale;
-    char *encoding;
-    char *accept_charset;
-    char *accept_language;
+    char *charset;
 };
 void get_language(struct language *lang);
 
 struct https_cfg
 {
-    const char *url;
-    unsigned port;
+    const char *uri;
     bool ssl_allow_insecure;
 };
 
 void alert_server_error(const char *peer_name);
 void alert_connection_error(const char *peer_name);
-void ssl_connect(struct https_cfg *cfg, PRFileDesc **tcp_sock, PRFileDesc **ssl_sock);
-void ssl_disconnect(PRFileDesc *ssl_sock);
-char *http_get_header_value(const char *message, const char *header_name);
-char *http_get_body(const char *message);
-int http_get_response_code(const char *message);
-void http_print_headers(FILE *file, const char *message);
-char *tcp_read_response(PRFileDesc *tcp_sock);
-char *http_join_chunked(char *body, int bodylen);
-void nss_init(SECMODModule **mod);
-void nss_close(SECMODModule *mod);
 
 #endif
