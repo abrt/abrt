@@ -2,9 +2,10 @@
 _Name=Problem Reporting
 _Comment=View and report application crashes
 Icon=abrt
-Exec=abrt-applet
+Exec=abrt-applet --gapplication-service
 Terminal=false
 Type=Application
 NoDisplay=true
 X-GNOME-Autostart-enabled=true
 X-GNOME-UsesNotifications=true
+DBusActivatable=true

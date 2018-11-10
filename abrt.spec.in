@@ -668,9 +668,9 @@ mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/lib/abrt
 
 desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
-        src/applet/abrt-applet.desktop
+        src/applet/org.freedesktop.problems.applet.desktop
 
-ln -sf %{_datadir}/applications/abrt-applet.desktop ${RPM_BUILD_ROOT}%{_sysconfdir}/xdg/autostart/
+ln -sf %{_datadir}/applications/org.freedesktop.problems.applet.desktop ${RPM_BUILD_ROOT}%{_sysconfdir}/xdg/autostart/
 
 # After everything is installed, remove info dir
 rm -f %{buildroot}%{_infodir}/dir
@@ -985,8 +985,9 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_bindir}/abrt-applet
 %{_bindir}/system-config-abrt
 #%%{_bindir}/test-report
-%{_datadir}/applications/abrt-applet.desktop
-%config(noreplace) %{_sysconfdir}/xdg/autostart/abrt-applet.desktop
+%{_datadir}/applications/org.freedesktop.problems.applet.desktop
+%config(noreplace) %{_sysconfdir}/xdg/autostart/org.freedesktop.problems.applet.desktop
+%{_datadir}/dbus-1/services/org.freedesktop.problems.applet.service
 %{_mandir}/man1/abrt-applet.1*
 %{_mandir}/man1/system-config-abrt.1*
 
