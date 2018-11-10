@@ -207,10 +207,9 @@ ABRT_PARSE_WITH([pythontests]))
 [fi]
 
 PKG_CHECK_MODULES([GTK], [gtk+-3.0])
-PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.43])
+PKG_CHECK_MODULES([GLIB], [gio-2.0 >= 2.43.0 glib-2.0 >= 2.43.0])
 PKG_CHECK_MODULES([DBUS], [dbus-1])
 PKG_CHECK_MODULES([LIBXML], [libxml-2.0])
-PKG_CHECK_MODULES([LIBNOTIFY], [libnotify >= 0.7.0])
 PKG_CHECK_MODULES([LIBREPORT], [libreport])
 PKG_CHECK_MODULES([LIBREPORT_GTK], [libreport-gtk])
 PKG_CHECK_MODULES([LIBSOUP], [libsoup-2.4])

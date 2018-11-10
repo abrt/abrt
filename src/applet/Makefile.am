@@ -1,37 +1,46 @@
 bin_PROGRAMS = abrt-applet
 #test-report
 
-abrt_applet_SOURCES = \
-    applet.c
-abrt_applet_CPPFLAGS = \
-    -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
+abrt_applet_SOURCES =          \
+    abrt-applet-application.c  \
+    abrt-applet-application.h  \
+    abrt-applet-main.c         \
+    abrt-applet-problem-info.c \
+    abrt-applet-problem-info.h
+abrt_applet_CPPFLAGS =              \
+    -DGNU_SOURCE                    \
     -DLIBEXEC_DIR=\"$(libexecdir)\" \
-    -DLIBREPORT_PLUGINS_CONF_DIR=\"$(LIBREPORT_PLUGINS_CONF_DIR)\" \
-    -DLOCALEDIR=\"$(localedir)\" \
-    $(GTK_CFLAGS) \
-    $(GIO_UNIX_CFLAGS) \
-    $(POLKIT_CFLAGS) \
-    $(LIBREPORT_GTK_CFLAGS) \
-    -D_GNU_SOURCE
-abrt_applet_LDADD = \
-    ../lib/libabrt.la \
+    -DLOCALEDIR=\"$(localedir)\"    \
+    -I$(srcdir)/../include          \
+    $(GLIB_CFLAGS)                  \
+    $(GTK_CFLAGS)                   \
+    $(LIBREPORT_GTK_CFLAGS)         \
+    $(POLKIT_CFLAGS)
+abrt_applet_LDADD =       \
+    ../lib/libabrt.la     \
+    $(GLIB_LIBS)          \
+    $(GTK_LIBS)           \
+    $(LIBNOTIFY_LIBS)     \
     $(LIBREPORT_GTK_LIBS) \
-    -labrt_dbus \
-    -lglib-2.0 \
-    -lgthread-2.0 \
-    $(LIBNOTIFY_LIBS) \
-    $(GTK_LIBS) \
-    $(GIO_UNIX_LIBS) \
     $(POLKIT_LIBS)
 
 @INTLTOOL_DESKTOP_RULE@
 
 autostartdir = $(sysconfdir)/xdg/autostart
-autostart_in_files = abrt-applet.desktop.in
+autostart_in_files = org.freedesktop.problems.applet.desktop.in
 
 autostart_DATA = $(autostart_in_files:.desktop.in=.desktop)
 
+dbusservicedir = $(datadir)/dbus-1/services
+dbusservice_in_files = org.freedesktop.problems.applet.service.in
+
+dbusservice_DATA = org.freedesktop.problems.applet.service
+
+org.freedesktop.problems.applet.service: org.freedesktop.problems.applet.service.in Makefile
+	$(AM_V_GEN) sed -e "s|\@bindir\@|$(bindir)|" $< > $@
+
 CLEANFILES = $(autostart_in_files:.desktop.in=.desktop)
 
-EXTRA_DIST = $(autostart_in_files)
+EXTRA_DIST =              \
+    $(autostart_in_files) \
+    $(dbusservice_in_files)
