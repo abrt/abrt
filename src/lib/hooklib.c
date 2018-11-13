@@ -469,9 +469,11 @@ int signal_is_fatal(int signal_no, const char **name)
     // We have real-world reports from users who see buggy programs
     // dying with SIGTRAP, uncommented it too:
         case SIGTRAP: signame = "TRAP"; break; //Trace/breakpoint trap
+    // SIGSYS is sent when a process uses a forbidden syscall, which is
+    // definitely a program bug
+        case SIGSYS : signame = "SYS" ; break; //Bad argument to routine (SVr4)
     // These usually aren't caused by bugs:
       //case SIGQUIT: signame = "QUIT"; break; //Quit from keyboard
-      //case SIGSYS : signame = "SYS" ; break; //Bad argument to routine (SVr4)
       //case SIGXCPU: signame = "XCPU"; break; //CPU time limit exceeded (4.2BSD)
       //case SIGXFSZ: signame = "XFSZ"; break; //File size limit exceeded (4.2BSD)
     }
