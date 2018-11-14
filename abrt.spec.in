@@ -28,12 +28,6 @@
 # build abrt-retrace-client by default
 %bcond_without retrace
 
-%ifarch aarch64
-%define have_kexec_tools 0
-%else
-%define have_kexec_tools 1
-%endif
-
 # rpmbuild --define 'desktopvendor mystring'
 %if "x%{desktopvendor}" == "x"
     %define desktopvendor %(source /etc/os-release; echo ${ID})
@@ -294,7 +288,6 @@ Requires: abrt-libs = %{version}-%{release}
 This package contains plugin for collecting Xorg crash information from Xorg
 log.
 
-%if %{?have_kexec_tools} == 1
 %package addon-vmcore
 Summary: %{name}'s vmcore addon
 Requires: %{name} = %{version}-%{release}
@@ -314,7 +307,6 @@ Requires: util-linux
 %description addon-vmcore
 This package contains plugin for collecting kernel crash information from
 vmcore files.
-%endif
 
 %package addon-pstoreoops
 Summary: %{name}'s pstore oops addon
@@ -440,9 +432,7 @@ Requires: %{name} = %{version}-%{release}
 Requires: abrt-tui
 Requires: abrt-addon-kerneloops
 Requires: abrt-addon-pstoreoops
-%if %{?have_kexec_tools} == 1
 Requires: abrt-addon-vmcore
-%endif
 Requires: abrt-addon-ccpp
 %if %{with python3}
 Requires: python3-abrt-addon
@@ -482,9 +472,7 @@ Summary: Virtual package to make easy default installation on desktop environmen
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-addon-kerneloops
 Requires: abrt-addon-pstoreoops
-%if %{?have_kexec_tools} == 1
 Requires: abrt-addon-vmcore
-%endif
 Requires: abrt-addon-ccpp
 %if %{with python3}
 Requires: python3-abrt-addon
@@ -647,9 +635,6 @@ CFLAGS="%{optflags} -Werror" %configure \
 %ifnarch %{arm}
         --enable-native-unwinder \
 %endif
-%if %{?have_kexec_tools} == 0
-        --disable-addon-vmcore \
-%endif
         --with-defaultdumplocation=/var/%{var_base_dir}/abrt \
         --enable-doxygen-docs \
         --enable-dump-time-unwind \
@@ -737,11 +722,9 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %journal_catalog_update
 %endif # with python3
 
-%if %{?have_kexec_tools} == 1
 %post addon-vmcore
 %systemd_post abrt-vmcore.service
 %journal_catalog_update
-%endif
 
 %post addon-pstoreoops
 %systemd_post abrt-pstoreoops.service
@@ -762,10 +745,8 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %preun addon-xorg
 %systemd_preun abrt-xorg.service
 
-%if %{?have_kexec_tools} == 1
 %preun addon-vmcore
 %systemd_preun abrt-vmcore.service
-%endif
 
 %preun addon-pstoreoops
 %systemd_preun abrt-pstoreoops.service
@@ -786,10 +767,8 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %postun addon-xorg
 %systemd_postun_with_restart abrt-xorg.service
 
-%if %{?have_kexec_tools} == 1
 %postun addon-vmcore
 %systemd_postun_with_restart abrt-vmcore.service
-%endif
 
 %postun addon-pstoreoops
 %systemd_postun_with_restart abrt-pstoreoops.service
@@ -893,7 +872,6 @@ service abrt-oops condrestart >/dev/null 2>&1 || :
 %posttrans addon-xorg
 service abrt-xorg condrestart >/dev/null 2>&1 || :
 
-%if %{?have_kexec_tools} == 1
 %posttrans addon-vmcore
 service abrt-vmcore condrestart >/dev/null 2>&1 || :
 # Copy the configuration file to plugin's directory
@@ -902,7 +880,6 @@ test -f /etc/abrt/abrt-harvest-vmcore.conf && {
     mv -b /etc/abrt/abrt-harvest-vmcore.conf /etc/abrt/plugins/vmcore.conf
 }
 exit 0
-%endif
 
 %posttrans addon-pstoreoops
 service abrt-pstoreoops condrestart >/dev/null 2>&1 || :
@@ -1119,7 +1096,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man1/abrt-dump-xorg.1*
 %{_mandir}/man1/abrt-dump-journal-xorg.1*
 
-%if %{?have_kexec_tools} == 1
 %files addon-vmcore
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vmcore_event.conf
 %{_mandir}/man5/vmcore_event.conf.5*
@@ -1137,7 +1113,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man1/abrt-action-check-oops-for-hw-error.1*
 %{_journalcatalogdir}/abrt_vmcore.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_vmcore_format.conf
-%endif
 
 %files addon-pstoreoops
 %{_unitdir}/abrt-pstoreoops.service
@@ -1246,9 +1221,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %if %{with python3}
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.python3.xml
 %endif # with python3
-%if %{?have_kexec_tools} == 1
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.vmcore.xml
-%endif
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.xorg.xml
 %{_datadir}/dbus-1/system-services/org.freedesktop.problems.service
 %{_datadir}/dbus-1/system-services/com.redhat.problems.configuration.service
