@@ -133,29 +133,10 @@ function abrtElementsHandlingTest() {
 }
 
 function abrtMaxCrashReportsSizeTest() {
-    resp=`su $2 -c "python <<EOF
-import dbus
-import sys
-proxy=dbus.SystemBus().get_object('org.freedesktop.problems', '/org/freedesktop/problems')
-iface=dbus.Interface(proxy, 'org.freedesktop.problems')
-try:
-    iface.SetElement(\"$1\", \"onemibofx\", 1024*1024*\"x\")
-except dbus.exceptions.DBusException as e:
-    print \"%s: %s\" % (e.get_dbus_name(), e.get_dbus_message())
-EOF"`
+    rlRun "resp=\$(./set_element.py $1 onemibofx 1 1024)"
     rlAssertEquals "No free space detected" "_$resp" "_org.freedesktop.problems.Failure: No problem space left"
 
-    resp=`su $2 -c "python <<EOF
-import dbus
-import sys
-proxy=dbus.SystemBus().get_object('org.freedesktop.problems', '/org/freedesktop/problems')
-iface=dbus.Interface(proxy, 'org.freedesktop.problems')
-try:
-    iface.SetElement(\"$1\", \"onemibofx\", 512*1024*\"x\")
-    iface.SetElement(\"$1\", \"onemibofx\", 512*1024*\"x\")
-except dbus.exceptions.DBusException as e:
-    print \"%s: %s\" % (e.get_dbus_name(), e.get_dbus_message())
-EOF"`
+    rlRun "resp=\$(./set_element.py $1 onemibofx 2 512)"
     rlAssertEquals "Size limit correctly checks the size limit according to a new size of an element" "_$resp" "_"
 }
 
