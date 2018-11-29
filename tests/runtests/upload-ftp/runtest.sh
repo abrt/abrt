@@ -31,15 +31,21 @@
 TEST="upload-ftp"
 PACKAGE="abrt"
 REPORTED_TO=problem_dir/reported_to
+PYFTPDLIB_PREINSTALLED=0
 
 rlJournalStart
     rlPhaseStartSetup
+        if rlCheckRpm python3-pyftpdlib; then
+            PYFTPDLIB_PREINSTALLED=1
+        fi
+
+        dnf install -qy python3-pyftpdlib &> /dev/null
+
         TmpDir=$(mktemp -d)
-        cp ftpserver.py $TmpDir
         cp -R problem_dir $TmpDir
+        mkdir "${TmpDir}/target"
+        python3 -m pyftpdlib --directory=$TmpDir/target --port=2121 --write &
         pushd $TmpDir
-        mkdir target
-        python ftpserver.py --directory=$TmpDir/target --port=2121 --write &
         sleep 2
     rlPhaseEnd
 
@@ -74,6 +80,10 @@ rlJournalStart
         kill %1 # ftp server
         popd # TmpDir
         rm -rf $TmpDir
+
+        if [ $PYFTPDLIB_PREINSTALLED != 1 ]; then
+            dnf erase -qy python3-pyftpdlib
+        fi
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd
