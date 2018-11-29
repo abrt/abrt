@@ -1,20 +1,20 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Single purpose HTTP server
 # - serves files specified as arguments in order of appearance
 
 
 import os
 import sys
-import BaseHTTPServer
+import http.server
 
-class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
+class Handler(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
-        data = self.rfile.read(int(self.headers.getheader('content-length')))
+        data = self.rfile.read(int(self.headers.get('content-length')))
 
         try:
             attachment = data.splitlines()[4:-1]
         except Exception as ex:
-            print str(ex)
+            print(str(ex))
             self.reply_false(400)
             return
 
@@ -23,9 +23,9 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
             return
 
         try:
-            value = Handler.expected_iter.next()
-            print 'Expected', value
-            print 'Received', attachment[0]
+            value = next(Handler.expected_iter)
+            print('Expected', value)
+            print('Received', attachment[0])
             if value != attachment[0]:
                 self.reply_false(400)
         except StopIteration:
@@ -37,36 +37,36 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.send_response(response_code)
         self.send_header("Content-type", "application/json")
         self.end_headers()
-        self.wfile.write('{"result": true}')
+        self.wfile.write(b'{"result": true}')
 
     def reply_false(self, response_code):
         self.send_response(response_code)
         self.send_header("Content-type", "application/json")
         self.end_headers()
-        self.wfile.write('{"result": false}')
+        self.wfile.write(b'{"result": false}')
 
 
 PORT = 12345
-print "Serving at port", PORT
+print("Serving at port", PORT)
 
 Handler.expected_iter = [
-'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "RHBZ", "data": "851210" }',
-'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "RHBZ", "data": "12345" }',
-'{ "bthash": "DEADBEAF", "type": "RHBZ", "data": "851210" }',
-'{ "bthash": "DEADBEAF", "type": "RHBZ", "data": "12345" }',
-'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "email", "data": "argument@redhat.com" }',
-'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "email", "data": "environment@redhta.com" }',
-'{ "bthash": "DEADBEAF", "type": "email", "data": "argument@redhat.com" }',
-'{ "bthash": "DEADBEAF", "type": "email", "data": "environment@redhta.com" }',
-'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "comment", "data": "command line user comment" }',
-'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "comment", "data": "dir user comment" }',
-'{ "bthash": "DEADBEAF", "type": "comment", "data": "command line user comment" }',
-'{ "bthash": "DEADBEAF", "type": "comment", "data": "dir user comment" }',
-'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "url1", "data": "http:\/\/bugzilla.redhat.com\/1000000" }',
-'{ "bthash": "DEADBEAF", "type": "url2", "data": "http:\/\/bugzilla.redhat.com\/1000001" }',
-'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "url3", "data": "https:\/\/bugzilla.redhat.com\/show_bug.cgi?id=851210" }',
-'{ "bthash": "DEADBEAF", "type": "url4", "data": "https:\/\/bugzilla.redhat.com\/show_bug.cgi?id=851210" }',
+b'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "RHBZ", "data": "851210" }',
+b'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "RHBZ", "data": "12345" }',
+b'{ "bthash": "DEADBEAF", "type": "RHBZ", "data": "851210" }',
+b'{ "bthash": "DEADBEAF", "type": "RHBZ", "data": "12345" }',
+b'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "email", "data": "argument@redhat.com" }',
+b'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "email", "data": "environment@redhta.com" }',
+b'{ "bthash": "DEADBEAF", "type": "email", "data": "argument@redhat.com" }',
+b'{ "bthash": "DEADBEAF", "type": "email", "data": "environment@redhta.com" }',
+b'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "comment", "data": "command line user comment" }',
+b'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "comment", "data": "dir user comment" }',
+b'{ "bthash": "DEADBEAF", "type": "comment", "data": "command line user comment" }',
+b'{ "bthash": "DEADBEAF", "type": "comment", "data": "dir user comment" }',
+b'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "url1", "data": "http:\/\/bugzilla.redhat.com\/1000000" }',
+b'{ "bthash": "DEADBEAF", "type": "url2", "data": "http:\/\/bugzilla.redhat.com\/1000001" }',
+b'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "url3", "data": "https:\/\/bugzilla.redhat.com\/show_bug.cgi?id=851210" }',
+b'{ "bthash": "DEADBEAF", "type": "url4", "data": "https:\/\/bugzilla.redhat.com\/show_bug.cgi?id=851210" }',
 ].__iter__()
 
-httpd = BaseHTTPServer.HTTPServer(("", PORT), Handler)
+httpd = http.server.HTTPServer(("", PORT), Handler)
 httpd.serve_forever()
