@@ -1,11 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Single purpose HTTP server
 # - serves files specified as arguments in order of appearance
 
 
 import os
 import sys
-import BaseHTTPServer
+import http.server
 import xml.etree.ElementTree as ET
 
 def print_method_param_value(value_element, stream=sys.stdout, prefix="", suffix="\n"):
@@ -34,13 +34,13 @@ def print_method_param_member(member_element, stream=sys.stdout):
     print_method_param_value(member_element[1][0], stream, "\t")
 
 
-class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
+class Handler(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
         self.send_response(200)
         self.send_header("Content-type", "text/xml")
         self.end_headers()
 
-        data_as_string = self.rfile.read(int(self.headers.getheader('content-length')))
+        data_as_string = self.rfile.read(int(self.headers.get('content-length')))
         call = ET.fromstring(data_as_string)
         method_name = "unknown"
         if call.tag != "methodCall" and call[0].tag != "methodName":
@@ -60,7 +60,7 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
                         print_method_param_member(member, logf)
                         print_method_param_member(member, sys.stdout)
 
-        response = "#! invalid pyserve response"
+        response = b"#! invalid pyserve response"
         if not self.filelist:
             sys.stderr.write("No more files to serve\n")
         else:
@@ -81,38 +81,23 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
         sys.stderr.flush()
         sys.stdout.flush()
 
-        self.reply(response)
-
-
-    def reply(self, response):
-        try:
-            # redirect stdout to client
-            stdout = sys.stdout
-            sys.stdout = self.wfile
-            print(response)
-        finally:
-            sys.stdout = stdout # restore
+        self.wfile.write(response)
 
 
 filelist = []
 for fn in sys.argv[2:]:
     try:
-        with open(fn) as f:
+        with open(fn, "rb") as f:
             filelist.append((fn, f.read()))
-            sys.stdout.write("Loaded: ")
-            sys.stdout.write(fn)
-            sys.stdout.write("\n")
-            sys.stdout.flush()
+            print("Loaded:", fn)
     except Exception as ex:
-        sys.stderr.write(str(ex))
-        sys.stderr.write("\n")
-        sys.stderr.flush()
+        print(str(ex))
 
 filelist.reverse()
 
 PORT = 12345
-print "Serving at port", PORT
+print("Serving at port", PORT)
 Handler.filelist = filelist
 Handler.prefix = sys.argv[1]
-httpd = BaseHTTPServer.HTTPServer(("", PORT), Handler)
+httpd = http.server.HTTPServer(("", PORT), Handler)
 httpd.serve_forever()
