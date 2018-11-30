@@ -1,0 +1,135 @@
+# Order of the tests
+# ------------------
+# - basic build/install tests
+# abrt-nightly-build
+# run-abrtd
+
+# abrt-make-check
+# btparser-make-check
+# libreport-make-check
+
+# - core
+abrtd-directories
+dbus-message
+socket-api
+abrtd-inotify-flood
+abrtd-concurrent-processing
+abrtd-infinite-event-loop
+symlinks-rhbz-895442
+abrt-auto-reporting-sanity
+meaningful-logs
+abrt-crash-unpackaged
+
+# - addons
+dumpdir_completedness
+ccpp-plugin
+ccpp-plugin-java
+ccpp-plugin-config
+ccpp-plugin-hook-unwind
+ccpp-plugin-selinux
+ccpp-plugin-debug
+ccpp-plugin-core-size
+python3-addon
+
+# - containers
+#docker-essentials
+
+# - tools tests
+cli-sanity
+cli-ng-sanity
+cli-status
+cli-authentication
+cli-process
+console-notifications
+check-hook-install
+ccpp-plugin-hook
+ccpp-plugin-hook-ignoring
+dumpoops
+dumpxorg
+dbus-api
+dbus-NewProblem
+dbus-elements-handling
+dbus-configuration
+dbus-argument-validation
+#dbus-problems2-sanity
+#bodhi
+oops-processing
+oops-sanity
+oops-alt-component
+journal-oops-processing
+abrt-dump-journal-core
+journal-xorg-crash-processing
+abrt-python3
+python3-bindings
+kernel-vmcore-harvest
+abrt-action-install-debuginfo
+#abrt-action-find-bodhi-update
+
+# - problem data tests
+duptest-occurrence
+duptest-analyzer
+duptest-uuid
+incomplete-problem
+
+# - reporting tests
+bugzilla-bt-reattach
+bugzilla-dupe-search
+bugzilla-default-url
+bugzilla-comment-format
+bugzilla-private-reports
+
+rhts-test
+rhts-problem-report-api
+
+reporter-mantisbt
+reporter-systemd-journal
+
+reporters-home-config
+
+mailx-reporting
+mailx-dead-letter
+localized-reporting
+verify-that-report-edits
+upload-scp
+upload-ftp
+upload-filename
+upload-handling
+upload-watcher-stress-test
+reporter-upload-ssh-keys
+reporter-upload-ask-password
+ureport
+ureport-attachments
+
+abrt-action-ureport
+
+blacklisted-package
+blacklisted-path
+blacklisted-script
+dont-blame-interpret
+abrt-should-return-rating-0-on-fail
+
+#bz591504-sparse-core-files-performance-hit
+bz618602-core_pattern-handler-truncates-parameters
+bz636913-abrt-should-ignore-SystemExit-exception
+bz652338-removed-proc-PID
+compat-cores
+
+systemd-init
+journald-integration
+
+pstoreoops
+pstoreoops-harvest
+
+event-configuration
+report-cli-ask-functions
+
+# - random
+augeas
+
+# - more or less destructive tests
+non-fatal-mce
+
+# - outdated tests
+#bz623142-abrt-should-not-report-bugs-against-systems-with-TAINT_HARDWARE_UNSUPPORTED-set
+#python-addon
+#abrt-python
