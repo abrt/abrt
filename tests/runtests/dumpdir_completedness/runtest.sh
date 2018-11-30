@@ -57,8 +57,7 @@ rlJournalStart
         CRASHING_RPM=$(grep "Wrote:" rpmbuild.log | grep -v debuginfo | grep -v src.rpm | sed 's/Wrote: //g')
         rlRun "rm rpmbuild.log"
 
-        gpg --import gpg_abrt_public.key
-        gpg --import gpg_abrt_private.key
+        gpg --import --batch gpg_abrt_public.key gpg_abrt_private.key
 
         killall -q gpg-agent
         gpg-agent --homedir $HOME/.gnupg --allow-loopback --daemon
