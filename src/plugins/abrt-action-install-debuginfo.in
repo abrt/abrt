@@ -196,11 +196,12 @@ if __name__ == "__main__":
         # it makes sense to NOT setuid abrt-action-trim-files too,
         # but instead run it as our child:
         sys.stdout.flush()
+        build_paths = build_ids_to_path(cachedirs[0], b_ids)
         try:
             pid = os.fork()
             if pid == 0:
                 argv = ["abrt-action-trim-files", "-f", "%um:%s" % (size_mb, cachedirs[0]), "--"]
-                argv.extend(build_ids_to_path(cachedirs[0], b_ids))
+                argv.extend(build_paths)
                 log2("abrt-action-trim-files %s", argv);
                 os.execvp("abrt-action-trim-files", argv);
                 error_msg_and_die("Can't execute '%s'", "abrt-action-trim-files");
@@ -247,7 +248,43 @@ if __name__ == "__main__":
                                     noninteractive=noninteractive,
                                     repo_pattern=repo_pattern,
                                     releasever=releasever)
+            downloader.find_packages(missing)
+
+            # Check how much space we need in cache
+            # If we don't have enough space, find files we need to keep in cache
+            # and start removing all others until we have enough space.
+            # Before removing also check, if we are able to make enough space.
+            # It does not make sense to delete everything just to find out we
+            # still need more space
+            res = os.statvfs(cachedirs[0])
+            free_space = float(res.f_bsize * res.f_bavail) / (1024 * 1024)
+            all_space = float(res.f_bsize * res.f_blocks) / (1024 * 1024)
+            install_size = downloader.get_install_size() / (1024 * 1024)
+            if install_size > free_space:
+                unnecessary_files_size = 0
+                for dirpath, dirnames, filenames in os.walk(os.path.join(cachedirs[0], "usr/lib/debug/.build-id")):
+                    for filename in [f for f in filenames if f.endswith(".debug")]:
+                        fl = os.path.join(dirpath, filename)
+                        if os.path.isfile(fl) and fl not in build_paths:
+                            unnecessary_files_size += os.stat(fl).st_size / (1024*1024)
+
+                if unnecessary_files_size + free_space >= install_size:
+                    size_mb = all_space - install_size
+                    try:
+                        pid = os.fork()
+                        if pid == 0:
+                            argv = ["abrt-action-trim-files", "-f", "%um:%s" % (size_mb, cachedirs[0]), "--"]
+                            argv.extend(build_paths)
+                            log2("abrt-action-trim-files %s", argv)
+                            os.execvp("abrt-action-trim-files", argv)
+                            error_msg_and_die("Can't execute '%s'", "abrt-action-trim-files")
+                        if pid > 0:
+                            os.waitpid(pid, 0)
+                    except Exception as e:
+                        error_msg("Can't execute abrt-action-trim-files: %s", e)
+
             result = downloader.download(missing, download_exact_files=exact_fls)
+
         except OSError as ex:
             if ex.errno == errno.EPIPE:
                 clean_up(TMPDIR, silent=True)
