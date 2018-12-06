@@ -182,6 +182,7 @@ Development libraries and headers for %{name}.
 
 %package gui-libs
 Summary: Libraries for %{name}-gui
+Requires: %{name}-libs = %{version}-%{release}
 
 %description gui-libs
 Libraries for %{name}-gui.
@@ -510,6 +511,7 @@ environment.
 %package atomic
 Summary: Package to make easy default installation on Atomic hosts.
 Requires: %{name}-addon-coredump-helper = %{version}-%{release}
+Requires: %{name}-libs = %{version}-%{release}
 Conflicts: %{name}-addon-ccpp
 
 %description atomic
