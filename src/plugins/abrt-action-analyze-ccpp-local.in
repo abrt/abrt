@@ -26,8 +26,9 @@ if $INSTALL_DI; then
     EXTRA_ARGS=
     for osrel in "${DUMP_DIR:-.}/os_info_in_rootdir" "${DUMP_DIR:-.}/os_info"
     do
-        if [ -e $osrel ]; then
-            . $osrel
+        if [ -e "$osrel" ]; then
+            # shellcheck source=/dev/null
+            . "$osrel"
             if [ -n "$VERSION_ID" ]; then
                 EXTRA_ARGS="--releasever=$VERSION_ID"
                 break
