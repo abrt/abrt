@@ -1,3 +1,4 @@
+#!/bin/sh
 # If shell is not connect to a terminal, return immediately, because this script
 # should print out ABRT's status and it is senseless to continue without
 # terminal.
