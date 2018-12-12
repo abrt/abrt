@@ -26,11 +26,11 @@ if [ ! -f "$LPATHDIR" ]; then
     mkdir -p "$LPATHDIR" >"$ABRT_DEBUG_LOG" 2>&1 || return 0
 fi
 
-TMPPATH=`mktemp --tmpdir="$LPATHDIR" lastnotification.XXXXXXXX 2> "$ABRT_DEBUG_LOG"`
+TMPPATH=$(mktemp --tmpdir="$LPATHDIR" lastnotification.XXXXXXXX 2> "$ABRT_DEBUG_LOG")
 
 SINCE=0
 if [ -f "$SINCEFILE" ]; then
-    SINCE=`cat $SINCEFILE 2>"$ABRT_DEBUG_LOG"`
+    SINCE=$(cat "$SINCEFILE" 2>"$ABRT_DEBUG_LOG")
 fi
 
 # always update the lastnotification
