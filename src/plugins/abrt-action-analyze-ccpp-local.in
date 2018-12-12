@@ -36,9 +36,7 @@ if $INSTALL_DI; then
         fi
     done
 
-    ${EXECUTABLE} ${EXTRA_ARGS} --size_mb=4096
-fi
-
-if [ $? = 0 ]; then
-    abrt-action-generate-backtrace && abrt-action-analyze-backtrace
+   if ${EXECUTABLE} "${EXTRA_ARGS}" --size_mb=4096; then
+       abrt-action-generate-backtrace && abrt-action-analyze-backtrace
+   fi
 fi
