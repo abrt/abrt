@@ -58,7 +58,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 fh.write('{"invalid_request_path": "%s"}' % self.path)
             return
 
-        json.dump(response, self.wfile, indent=2)
+        self.wfile.write(json.dumps(response, indent=2).encode('utf-8'))
+
+    def log_message(self, format, *args):
+        super(Handler, self).log_message(format, *args)
+
+        sys.stderr.flush()
 
 PORT = 12345
 print("Serving at port", PORT)
