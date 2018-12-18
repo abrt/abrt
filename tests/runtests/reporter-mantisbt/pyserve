@@ -1,51 +1,39 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Single purpose HTTP server
 # - serves files specified as arguments in order of appearance
 
 
 import os
 import sys
-import BaseHTTPServer
-#from pprint import pprint
+import http.server
 
-class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
+class Handler(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
+        content_length = self.headers.get('content-length')
+        request = self.rfile.read(int(content_length))
 
-        print self.rfile.read(int(self.headers.getheader('content-length')))
+        print(request.decode('utf-8'), flush=True)
 
         response = self.dummy_response
         if not self.filelist:
-            print 'No more files to serve - sending dummy response'
-            sys.stdout.flush()
+            print('No more files to serve - sending dummy response', flush=True)
         else:
             response = self.filelist.pop()
-        self.reply(response)
-
-    def reply(self, response):
-        try:
-            #redirect stdout to client
-            stdout = sys.stdout
-            sys.stdout = self.wfile
-            print response
-            stdout.flush()
-        finally:
-            sys.stdout = stdout # restore
-            pass
+        self.wfile.write(response);
 
 PORT = 12345
-print "Serving at port", PORT
+print("Serving at port", PORT)
 sys.stdout.flush()
 
 filelist = []
 for file in sys.argv[1:]:
     if os.path.isfile(file):
-        print "Adding file %s" % file
-        sys.stdout.flush()
-        with open(file) as f:
+        print("Adding file", file, flush=True)
+        with open(file, "rb") as f:
             filelist.append(f.read())
 
 filelist.reverse()
 Handler.filelist = filelist
-Handler.dummy_response = open("dummy", "r").read()
-httpd = BaseHTTPServer.HTTPServer(("", PORT), Handler)
+Handler.dummy_response = open("dummy", "rb").read()
+httpd = http.server.HTTPServer(("", PORT), Handler)
 httpd.serve_forever()
