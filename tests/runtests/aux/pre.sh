@@ -10,9 +10,12 @@ dnf clean metadata
 if [ "${REINSTALL_PRE}" = "1" ]; then
     echo 'REINSTALL_PRE set'
 
-    rpm -qa abrt\* libreport\* satyr\* will-crash\* \
+    rpm -qa abrt\* libreport\* python3-abrt\* satyr\* will-crash\* \
         | xargs rpm -e --nodeps
 
+    # If there is still something installed that is in PACKAGES, this will
+    # leave those packages broken, and you will find yourself scratching your
+    # head, as “dnf install” does not reinstall.
     rm -rf /etc/abrt/
     rm -rf /etc/libreport/
 
