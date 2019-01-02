@@ -126,7 +126,8 @@ rlJournalStart
 
         # backup journal logs before we delete them
         rlFileBackup --clean --namespace "journal" "/var/log/journal"
-        rlRun "rm -rf /var/log/journal/*" 0 "!! Removing all journal logs !!"
+        rlRun "journalctl --flush --rotate" 0 "Flushing and rotating journal files"
+        rlRun "journalctl --vacuum-size=1" 0 "Vacuuming archived journal files"
         rlRun "EXAMPLES_PATH=\"../../examples\""
         rlRun "abrt-dump-oops -xD $EXAMPLES_PATH/$OOPS_NONFATAL 2>&1" 0 "Dump MCE OOPS"
 
