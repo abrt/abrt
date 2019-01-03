@@ -49,7 +49,7 @@ rlJournalStart
         wait_for_hooks
         get_crash_path
 
-        rlRun "./expect skip &> process.log" 0 "Running abrt-cli process via expect"
+        rlRun "./expect s process $crash_PATH &> process.log" 0 "Running abrt-cli process via expect"
 
         rlAssertGrep "reason:" process.log
         rlAssertGrep "time:" process.log
@@ -63,7 +63,7 @@ rlJournalStart
     rlPhaseStartTest "process action info"
 
         #abrt-cli info $crash_PATH
-        rlRun "./expect info &> process-info.log" 0 "Running abrt-cli info via expect"
+        rlRun "./expect i process $crash_PATH &> process-info.log" 0 "Running abrt-cli info via expect"
 
         rlAssertGrep "reason:" process-info.log
         rlAssertGrep "time:" process-info.log
@@ -84,7 +84,7 @@ rlJournalStart
         rlRun "echo not-reportable > $crash_PATH/not-reportable" 0 "Creating not-reportable file"
 
         #abrt-cli skip $crash_PATH
-        rlRun "./expect skip &> notrep.log" 0 "Running abrt-cli skip via expect"
+        rlRun "./expect s process $crash_PATH &> notrep.log" 0 "Running abrt-cli skip via expect"
 
         rlAssertGrep "reason:" notrep.log
         rlAssertGrep "time:" notrep.log
@@ -96,7 +96,7 @@ rlJournalStart
         rlRun "rm -f $crash_PATH/not-reportable" 0 "Removing not-reportable file"
 
         #abrt-cli skip $crash_PATH
-        rlRun "./expect skip &> notrep.log" 0 "Running abrt-cli skip via expect"
+        rlRun "./expect s process $crash_PATH &> notrep.log" 0 "Running abrt-cli skip via expect"
 
         rlAssertGrep "reason:" notrep.log
         rlAssertGrep "time:" notrep.log
@@ -159,8 +159,8 @@ EOF
 
         rlAssertExists "$event_conf_file"
 
-        rlRun "./expect report &> process_report.log" 0 "Running abrt-cli reporting via expect"
-        rlRun "abrt-cli e $crash_PATH &> report.log"
+        rlRun "./expect e process $crash_PATH &> process_report.log" 0 "Running abrt-cli reporting via expect"
+        rlRun "./expect - report $crash_PATH &> report.log" 0 "Running abrt-cli reporting via expect"
 
         rlAssertGrep "$(cat report.log)" process_report.log
 
@@ -222,8 +222,8 @@ EOF
 
         rlAssertExists "$event_conf_file"
 
-        rlRun "./expect report --unsafe &> process_report_unsafe.log" 0 "Running abrt-cli reporting via expect"
-        rlRun "abrt-cli e --unsafe $crash_PATH &> report_unsafe.log"
+        rlRun "./expect e process --unsafe $crash_PATH &> process_report_unsafe.log" 0 "Running abrt-cli reporting via expect"
+        rlRun "./expect - report --unsafe $crash_PATH &> report_unsafe.log" 0 "Running abrt-cli reporting via expect"
 
         rlAssertGrep "$(cat report_unsafe.log)" process_report_unsafe.log
 
@@ -238,7 +238,7 @@ EOF
         rlAssertExists "$crash_PATH"
 
         #abrt-cli remove
-        rlRun "./expect remove" 0 "Running abrt-cli remove via expect"
+        rlRun "./expect rm process $crash_PATH" 0 "Running abrt-cli remove via expect"
 
         rlAssertNotExists "$crash_PATH"
 
@@ -268,7 +268,7 @@ EOF
 
         rlLog "PATH2 = $crash2_PATH"
 
-        rlRun "./expect skip --since $second_crash_last_occurrence &> since.log" 0 "Running abrt-cli skip --since via expect"
+        rlRun "./expect s process --since $second_crash_last_occurrence &> since.log" 0 "Running abrt-cli skip --since via expect"
 
         rlAssertGrep "$crash2_PATH" since.log
         rlAssertNotGrep "$crash_PATH" since.log
