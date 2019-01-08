@@ -13,6 +13,7 @@
 # feonsu <feonsu@gmail.com>, 2016. #zanata
 # Dusan Kazik <prescott66@gmail.com>, 2017. #zanata
 # Matej Marusak <mmarusak@redhat.com>, 2017. #zanata
+# Matej Marusak <mmarusak@redhat.com>, 2018. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -21,8 +22,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-04-17 08:07+0000\n"
-"Last-Translator: Dusan Kazik <prescott66@gmail.com>\n"
+"PO-Revision-Date: 2018-10-18 12:31+0000\n"
+"Last-Translator: Matej Marusak <mmarusak@redhat.com>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/sk/)\n"
 "Language: sk\n"
@@ -165,7 +166,7 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.c:501
 msgid "The configuration option above can be configured in"
-msgstr ""
+msgstr "Horeuvedená voľba môže byť zmenená v"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
@@ -334,7 +335,9 @@ msgstr "Použiť tento adresár ako RPM root"
 msgid "& [-v] -d DIR\n"
 "\n"
 "Save container metadata"
-msgstr ""
+msgstr "& [-v] -d DIR\n"
+"\n"
+"Ulož metadáta kontajneru"
 
 #: ../src/daemon/abrt-action-save-container-data.c:266
 msgid "Root directory for running container commands"
@@ -524,15 +527,15 @@ msgstr "Musíte tiež zadať --username pre --password"
 
 #: ../src/daemon/abrt-auto-reporting.c:258
 msgid "You can use either --username or --certificate"
-msgstr ""
+msgstr "Je možné použiť buď --username alebo --certificate"
 
 #: ../src/daemon/abrt-auto-reporting.c:264
 msgid "You can use either --username or --anonymous"
-msgstr ""
+msgstr "Je možné použiť buď --username alebo --anonymous"
 
 #: ../src/daemon/abrt-auto-reporting.c:270
 msgid "You can use either --anonymous or --certificate"
-msgstr ""
+msgstr "Je možné použiť buď --anonymous alebo --certificate"
 
 #: ../src/daemon/abrt-auto-reporting.c:277
 msgid "Invalid number of arguments"
@@ -623,11 +626,11 @@ msgstr "Nedá sa skopírovať '{0}' do '{1}'"
 
 #: ../src/daemon/abrt-handle-upload.in:230
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "Chyba verifikácie v '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:232
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "Odbaľujem '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:236
 msgid "Can't create '{0}' directory"
@@ -639,7 +642,7 @@ msgstr "Nedá sa rozbaliť '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:260
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' spracovaný úspešne"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
@@ -664,7 +667,7 @@ msgstr "Zlyhalo odstránenie adresára s problémom: %s"
 #: ../src/lib/problem_api_dbus.c:131
 #, c-format
 msgid "D-Bus GetInfo method call failed: %s"
-msgstr ""
+msgstr "Volanie metódy D-Bus GetInfo skončilo chybne: %s"
 
 #: ../src/lib/problem_api_dbus.c:166
 msgid "Can't get problem data from abrt-dbus"
@@ -744,12 +747,12 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "Analyzujem coredump '%s'"
 
 #: ../src/plugins/abrt-action-analyze-core.in:110
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "Chýba build id: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:142
 #, c-format
@@ -758,7 +761,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-core.in:164
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "COREFILE nie je zadaný"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
@@ -777,6 +780,10 @@ msgid ""
 "your computer. ABRT will not allow you to create a report in a bug tracking "
 "system but you can contact kernel maintainers via e-mail."
 msgstr ""
+"Backtrace neobsahuje dostatočné množstvo zmysluplných rámcov s funkciami aby "
+"mohol byť nahlásaný. Je to nepríjemné, ale neznamená nutne problém vo vašom "
+"počítači. ABRT nedovolí vytvoriť report ale môžte kontaktovať správcov "
+"kernelu e-mailom."
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:73
 msgid ""
@@ -804,7 +811,7 @@ msgstr "& [-v] -d DIR\n"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:52
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
-msgstr ""
+msgstr "Použitie: {0} [-v[v]] [--core=VMCORE]"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:79
 msgid "File {0} doesn't exist"
@@ -836,7 +843,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-find-bodhi-update:88
 msgid "cannot open problem directory '{0}'"
-msgstr ""
+msgstr "nie je možné otvoriť adresár '{0}'"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:102
 msgid "Problem directory error: {0}"
