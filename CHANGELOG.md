@@ -5,6 +5,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Dbus configuration for Python3
+- abrt-cli does not ignore rsyslog host info anymore and incorrectly assumes
+that the receiving host had a problem
+- Filter kernel oopses based on logged hostname as logs can be collected from
+multiple machines
+- Add systemd-journal to places to check for MCE logs
+- Turn on native-unwinder for aarch64
+- Generate problem reports for SIGSYS
+- Clean cache if more space is needed
+
+### Changed
+- Port retrace-client to libsoup
+- Port applet to GApplication/GNotification
+- ShellCheck fixes
 
 ## [2.11.0]
 ### Changed
