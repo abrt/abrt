@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.11.1]
 ### Added
 - Dbus configuration for Python3
 - abrt-cli does not ignore rsyslog host info anymore and incorrectly assumes
@@ -149,7 +151,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.11.0...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.11.1...HEAD
+[2.11.1]: https://github.com/abrt/abrt/compare/2.11.0...2.11.1
 [2.11.0]: https://github.com/abrt/abrt/compare/2.10.10...2.11.0
 [2.10.10]: https://github.com/abrt/abrt/compare/2.10.9...2.10.10
 [2.10.9]: https://github.com/abrt/abrt/compare/2.10.8...2.10.9

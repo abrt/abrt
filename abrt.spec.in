@@ -1256,6 +1256,34 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Tue Jan 08 2019 Matej Marusak <mmarusak@redhat.com> 2.11.1-1
+- Translation updates
+- Update CHANGELOG.md
+- a-a-install-debuginfo: Clean cache if we need space
+- shellcheck: Use command instead of type
+- shellcheck: Check exit code directly with if mycmd
+- shellcheck: Suppress shellcheck warning SC1090
+- shellcheck: Use $(...) instead of legacy backticked
+- cli: Add a shebang
+- applet: Port to GApplication/GNotification
+- spec: Add explicit package-version requirement of abrt-libs
+- Introduce pylintrc
+- augeas: Adjust testsuite to changes in libreport
+- signal_is_fatal: generate problem reports for SIGSYS
+- plugins: retrace-client: Port to libsoup
+- plugins: retrace-client: Fix copy-paste error
+- revert: spec: disable addon-vmcore on aarch64
+- spec: turn on --enable-native-unwinder aarch64
+- configure: Replace sphinx-build check with sphinx-build-3
+- a-a-c-o-f-hw-error: Check systemd-journal for MCE logs
+- koops: Filter kernel oopses based on logged hostname
+- add hostname BR for tests
+- add new prepare-data to dist files
+- fix tests names for dist target after making templates from them
+- fix for MCE events: Bug 1613182 - abrt-cli ignores rsyslog host info and incorrectly assumes that the receiving host had a problem
+- dbus: Add configuration for Python3
+- Add . to etc
+
 * Mon Oct 08 2018 Martin Kutlak <mkutlak@redhat.com> 2.11.0-1
 - Translation updates
 - configure.ac: fix augparse typo
