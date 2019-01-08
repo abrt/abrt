@@ -25,6 +25,15 @@ enum {
 
 static guint s_signals[SN_LAST_SIGNAL] = { 0 };
 
+struct _AbrtP2TaskPrivate
+{
+    gint32 p2t_status;
+    GVariant *p2t_details;
+    GVariant *p2t_results;
+    gint32 p2t_code;
+    GCancellable *p2t_cancellable;
+};
+
 G_DEFINE_TYPE_WITH_PRIVATE(AbrtP2Task, abrt_p2_task, G_TYPE_OBJECT)
 
 static void abrt_p2_task_finalize(GObject *gobject)
@@ -74,17 +83,24 @@ static void abrt_p2_task_class_init(AbrtP2TaskClass *klass)
 
 static void abrt_p2_task_init(AbrtP2Task *self)
 {
-    self->pv = abrt_p2_task_get_instance_private(self);
-    self->pv->p2t_details = g_variant_new("a{sv}", NULL);
+    AbrtP2TaskPrivate *pv;
+
+    pv = abrt_p2_task_get_instance_private(self);
+
+    pv->p2t_details = g_variant_new("a{sv}", NULL);
 }
 
 static void abrt_p2_task_change_status(AbrtP2Task *task,
             AbrtP2TaskStatus status)
 {
-    if (task->pv->p2t_status == status)
+    AbrtP2TaskPrivate *pv;
+
+    pv = abrt_p2_task_get_instance_private(task);
+
+    if (pv->p2t_status == status)
         return;
 
-    task->pv->p2t_status = status;
+    pv->p2t_status = status;
 
     g_signal_emit(task,
                   s_signals[SN_STATUS_CHANGED],
@@ -94,53 +110,77 @@ static void abrt_p2_task_change_status(AbrtP2Task *task,
 
 AbrtP2TaskStatus abrt_p2_task_status(AbrtP2Task *task)
 {
-    return task->pv->p2t_status;
+    AbrtP2TaskPrivate *pv;
+
+    pv = abrt_p2_task_get_instance_private(task);
+
+    return pv->p2t_status;
 }
 
 GVariant *abrt_p2_task_details(AbrtP2Task *task)
 {
-    return g_variant_ref(task->pv->p2t_details);
+    AbrtP2TaskPrivate *pv;
+
+    pv = abrt_p2_task_get_instance_private(task);
+
+    return g_variant_ref(pv->p2t_details);
 }
 
 void abrt_p2_task_add_detail(AbrtP2Task *task,
             const char *key,
             GVariant *value)
 {
+    AbrtP2TaskPrivate *pv;
     GVariantDict dict;
-    g_variant_dict_init(&dict, task->pv->p2t_details);
+
+    pv = abrt_p2_task_get_instance_private(task);
+
+    g_variant_dict_init(&dict, pv->p2t_details);
     g_variant_dict_insert(&dict, key, "v", value);
 
-    if (task->pv->p2t_details)
-        g_variant_unref(task->pv->p2t_details);
+    if (pv->p2t_details)
+        g_variant_unref(pv->p2t_details);
 
-    task->pv->p2t_details = g_variant_dict_end(&dict);
+    pv->p2t_details = g_variant_dict_end(&dict);
 }
 
 void abrt_p2_task_set_response(AbrtP2Task *task,
             GVariant *response)
 {
-    if (task->pv->p2t_results != NULL)
+    AbrtP2TaskPrivate *pv;
+
+    pv = abrt_p2_task_get_instance_private(task);
+
+    if (pv->p2t_results != NULL)
         log_warning("Task already has response assigned");
 
-    task->pv->p2t_results = response;
+    pv->p2t_results = response;
 }
 
 bool abrt_p2_task_is_cancelled(AbrtP2Task *task)
 {
-    return (task->pv->p2t_cancellable
-              && g_cancellable_is_cancelled(task->pv->p2t_cancellable))
-           || task->pv->p2t_status == ABRT_P2_TASK_STATUS_CANCELED;
+    AbrtP2TaskPrivate *pv;
+
+    pv = abrt_p2_task_get_instance_private(task);
+
+    return (pv->p2t_cancellable
+              && g_cancellable_is_cancelled(pv->p2t_cancellable))
+           || pv->p2t_status == ABRT_P2_TASK_STATUS_CANCELED;
 }
 
 void abrt_p2_task_cancel(AbrtP2Task *task,
             GError **error)
 {
+    AbrtP2TaskPrivate *pv;
+
     if (abrt_p2_task_is_cancelled(task))
         return;
 
-    if (task->pv->p2t_status == ABRT_P2_TASK_STATUS_RUNNING)
-        g_cancellable_cancel(task->pv->p2t_cancellable);
-    else if (task->pv->p2t_status == ABRT_P2_TASK_STATUS_STOPPED)
+    pv = abrt_p2_task_get_instance_private(task);
+
+    if (pv->p2t_status == ABRT_P2_TASK_STATUS_RUNNING)
+        g_cancellable_cancel(pv->p2t_cancellable);
+    else if (pv->p2t_status == ABRT_P2_TASK_STATUS_STOPPED)
     {
         ABRT_P2_TASK_VIRTUAL_CANCEL(task, error);
 
@@ -157,8 +197,12 @@ void abrt_p2_task_finish(AbrtP2Task *task,
             gint32 *code,
             GError **error)
 {
-    if (   task->pv->p2t_status != ABRT_P2_TASK_STATUS_DONE
-        && task->pv->p2t_status != ABRT_P2_TASK_STATUS_FAILED)
+    AbrtP2TaskPrivate *pv;
+
+    pv = abrt_p2_task_get_instance_private(task);
+
+    if (   pv->p2t_status != ABRT_P2_TASK_STATUS_DONE
+        && pv->p2t_status != ABRT_P2_TASK_STATUS_FAILED)
     {
         g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
                 "Cannot finalize undone task");
@@ -170,12 +214,12 @@ void abrt_p2_task_finish(AbrtP2Task *task,
     if (*error != NULL)
         return;
 
-    if (task->pv->p2t_results)
-        *result = g_variant_ref(task->pv->p2t_results);
+    if (pv->p2t_results)
+        *result = g_variant_ref(pv->p2t_results);
     else
         *result = g_variant_new("a{sv}", NULL);
 
-    *code = task->pv->p2t_code;
+    *code = pv->p2t_code;
 }
 
 static void abrt_p2_task_finish_gtask(GObject *source_object,
@@ -183,12 +227,15 @@ static void abrt_p2_task_finish_gtask(GObject *source_object,
            gpointer user_data)
 {
     AbrtP2Task *task = ABRT_P2_TASK(source_object);
+    AbrtP2TaskPrivate *pv;
 
     if (!g_task_is_valid(result, task))
     {
         error_msg("BUG:%s:%s: invalid GTask", __FILE__, __func__);
         return;
     }
+
+    pv = abrt_p2_task_get_instance_private(task);
 
     GError *error = NULL;
     const gint32 code = g_task_propagate_int(G_TASK(result), &error);
@@ -203,7 +250,7 @@ static void abrt_p2_task_finish_gtask(GObject *source_object,
     {
         log_debug("Task done");
 
-        task->pv->p2t_code = code - ABRT_P2_TASK_CODE_DONE;
+        pv->p2t_code = code - ABRT_P2_TASK_CODE_DONE;
         abrt_p2_task_change_status(task, ABRT_P2_TASK_STATUS_DONE);
     }
     else if (abrt_p2_task_is_cancelled(task))
@@ -263,8 +310,8 @@ static void abrt_p2_task_finish_gtask(GObject *source_object,
         abrt_p2_task_change_status(task, ABRT_P2_TASK_STATUS_FAILED);
     }
 
-    g_object_unref(task->pv->p2t_cancellable);
-    task->pv->p2t_cancellable = NULL;
+    g_object_unref(pv->p2t_cancellable);
+    pv->p2t_cancellable = NULL;
 }
 
 static void abrt_p2_task_thread(GTask *task,
@@ -289,8 +336,12 @@ void abrt_p2_task_start(AbrtP2Task *task,
             GVariant *options,
             GError **error)
 {
-    if (   task->pv->p2t_status != ABRT_P2_TASK_STATUS_NEW
-        && task->pv->p2t_status != ABRT_P2_TASK_STATUS_STOPPED)
+    AbrtP2TaskPrivate *pv;
+
+    pv = abrt_p2_task_get_instance_private(task);
+
+    if (   pv->p2t_status != ABRT_P2_TASK_STATUS_NEW
+        && pv->p2t_status != ABRT_P2_TASK_STATUS_STOPPED)
     {
         g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
                     "Cannot start task that is not new or stopped");
@@ -302,9 +353,9 @@ void abrt_p2_task_start(AbrtP2Task *task,
     if (*error != NULL)
         return;
 
-    task->pv->p2t_cancellable = g_cancellable_new();
+    pv->p2t_cancellable = g_cancellable_new();
     GTask *gtask = g_task_new(task,
-                              task->pv->p2t_cancellable,
+                              pv->p2t_cancellable,
                               abrt_p2_task_finish_gtask,
                               NULL);
 

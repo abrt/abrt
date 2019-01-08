@@ -45,20 +45,11 @@ G_BEGIN_DECLS
 GType abrt_p2_task_get_type (void);
 
 #define ABRT_TYPE_P2_TASK (abrt_p2_task_get_type ())
-#define ABRT_P2_TASK(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), ABRT_TYPE_P2_TASK, AbrtP2Task))
-#define ABRT_P2_TASK_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), ABRT_TYPE_P2_TASK, AbrtP2TaskClass))
-#define ABRT_IS_P2_TASK(obj)(G_TYPE_CHECK_INSTANCE_TYPE ((obj), ABRT_TYPE_P2_TASK))
-#define ABRT_IS_P2_TASK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), ABRT_TYPE_P2_TASK))
-#define ABRT_P2_TASK_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), ABRT_TYPE_P2_TASK, AbrtP2TaskClass))
+G_DECLARE_DERIVABLE_TYPE(AbrtP2Task, abrt_p2_task, ABRT, P2_TASK, GObject)
 
 typedef struct _AbrtP2Task        AbrtP2Task;
 typedef struct _AbrtP2TaskClass   AbrtP2TaskClass;
 typedef struct _AbrtP2TaskPrivate AbrtP2TaskPrivate;
-
-static inline void glib_autoptr_cleanup_AbrtP2Task(AbrtP2Task **task)
-{
-    glib_autoptr_cleanup_GObject((GObject **)task);
-}
 
 typedef enum {
     ABRT_P2_TASK_STATUS_NEW,
@@ -94,21 +85,6 @@ struct _AbrtP2TaskClass
     void (*status_changed)(AbrtP2Task *task, gint32 status);
 
     gpointer padding[12];
-};
-
-struct _AbrtP2TaskPrivate
-{
-    gint32 p2t_status;
-    GVariant *p2t_details;
-    GVariant *p2t_results;
-    gint32 p2t_code;
-    GCancellable *p2t_cancellable;
-};
-
-struct _AbrtP2Task
-{
-    GObject parent_instance;
-    AbrtP2TaskPrivate *pv;
 };
 
 AbrtP2TaskStatus abrt_p2_task_status(AbrtP2Task *task);
