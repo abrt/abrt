@@ -1076,6 +1076,16 @@ static GVariant *entry_object_dbus_get_property(GDBusConnection *connection,
 
                 g_variant_builder_add(&value_builder, "{sv}", "BTHASH", variant);
             }
+            field = report_result_get_workflow(r);
+            if (NULL != field)
+            {
+                GVariant *variant;
+
+                variant = g_variant_new_take_string(field);
+                variant = g_variant_new_variant(variant);
+
+                g_variant_builder_add(&value_builder, "{sv}", "WORKFLOW", variant);
+            }
 
             field = report_result_get_label(r);
 
