@@ -1040,35 +1040,54 @@ static GVariant *entry_object_dbus_get_property(GDBusConnection *connection,
         for (GList *iter = reports; iter != NULL; iter = g_list_next(iter))
         {
             GVariantBuilder value_builder;
+            char *field;
+
             g_variant_builder_init(&value_builder, G_VARIANT_TYPE("a{sv}"));
 
             struct report_result *r = (struct report_result *)iter->data;
 
-            if (r->url != NULL)
+            field = report_result_get_url(r);
+            if (NULL != field)
             {
-                GVariant *data = g_variant_new_variant(g_variant_new_string(r->url));
-                g_variant_builder_add(&value_builder, "{sv}", "URL", data);
+                GVariant *variant;
+
+                variant = g_variant_new_take_string(field);
+                variant = g_variant_new_variant(variant);
+
+                g_variant_builder_add(&value_builder, "{sv}", "URL", variant);
             }
-            if (r->msg != NULL)
+            field = report_result_get_message(r);
+            if (NULL != field)
             {
-                GVariant *data = g_variant_new_variant(g_variant_new_string(r->msg));
-                g_variant_builder_add(&value_builder, "{sv}", "MSG", data);
+                GVariant *variant;
+
+                variant = g_variant_new_take_string(field);
+                variant = g_variant_new_variant(variant);
+
+                g_variant_builder_add(&value_builder, "{sv}", "MSG", variant);
             }
-            if (r->bthash != NULL)
+            field = report_result_get_bthash(r);
+            if (NULL != field)
             {
-                GVariant *data = g_variant_new_variant(g_variant_new_string(r->bthash));
-                g_variant_builder_add(&value_builder, "{sv}", "BTHASH", data);
+                GVariant *variant;
+
+                variant = g_variant_new_take_string(field);
+                variant = g_variant_new_variant(variant);
+
+                g_variant_builder_add(&value_builder, "{sv}", "BTHASH", variant);
             }
 
+            field = report_result_get_label(r);
+
             GVariant *children[2];
-            children[0] = g_variant_new_string(r->label);
+            children[0] = g_variant_new_take_string(field);
             children[1] = g_variant_builder_end(&value_builder);
             GVariant *entry = g_variant_new_tuple(children, 2);
 
             g_variant_builder_add_value(&top_builder, entry);
         }
 
-        g_list_free_full(reports, (GDestroyNotify)free_report_result);
+        g_list_free_full(reports, (GDestroyNotify)report_result_free);
 
         retval = g_variant_builder_end(&top_builder);
 
