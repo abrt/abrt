@@ -197,6 +197,7 @@ if __name__ == "__main__":
         # but instead run it as our child:
         sys.stdout.flush()
         build_paths = build_ids_to_path(cachedirs[0], b_ids)
+        print("Cleaning cache...")
         try:
             pid = os.fork()
             if pid == 0:
@@ -207,6 +208,12 @@ if __name__ == "__main__":
                 error_msg_and_die("Can't execute '%s'", "abrt-action-trim-files");
             if pid > 0:
                 os.waitpid(pid, 0);
+                # Print this message in try, as while we waited user could exit the reporting
+                # process. Then it causes BrokenPipeError. BZ#1501178
+                try:
+                    print("Cache cleaning has finished")
+                except IOError:
+                    sys.exit(0)
         except Exception as e:
             error_msg("Can't execute abrt-action-trim-files: %s", e);
 
