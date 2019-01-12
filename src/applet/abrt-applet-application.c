@@ -296,9 +296,9 @@ new_dir_exists (GList **new_dirs)
     cachedir = g_get_user_cache_dir ();
     dirlist_name = concat_path_file (cachedir, "abrt");
 
-    g_free (dirlist_name);
-
     g_mkdir_with_parents (dirlist_name, 0777);
+
+    g_free (dirlist_name);
 
     dirlist_name = concat_path_file (cachedir, "abrt/applet_dirlist");
     fp = fopen (dirlist_name, "r+");
