@@ -158,7 +158,8 @@ int main(int argc, char *argv[])
 
     char program_usage_string[strlen(program_usage_string_template)
                             + strlen(ABRT_JOURNAL_XORG_WATCH_STATE_FILE)
-                            + strlen(XORG_CONF_PATH)];
+                            + strlen(XORG_CONF_PATH)
+                            + 1/*terminating null*/];
     sprintf(program_usage_string, program_usage_string_template,
             ABRT_JOURNAL_XORG_WATCH_STATE_FILE, XORG_CONF_PATH);
 
