@@ -67,7 +67,11 @@ if __name__ == "__main__":
             help="Be verbose")
 
     OPTIONS = CMDARGS.parse_args()
-    DIR_PATH = os.path.abspath(OPTIONS.problem_dir)
+    try:
+        DIR_PATH = os.path.abspath(OPTIONS.problem_dir)
+    except FileNotFoundError as ex:
+        error_msg(_("Problem directory error: {0}").format(ex))
+        sys.exit(RETURN_FAILURE)
 
     verbose = 0
     ABRT_VERBOSE = os.getenv("ABRT_VERBOSE")
