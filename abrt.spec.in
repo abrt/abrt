@@ -811,9 +811,7 @@ fi
 %systemd_postun_with_restart abrt-coredump-helper.service
 %endif # with atomic
 
-%if 0%{?fedora} > 27 || 0%{?rhel} > 7
-# ldconfigi and gtk-update-icon-cache is not needed
-%else
+%if 0%{?rhel} && 0%{?rhel} <= 7
 %post libs -p /sbin/ldconfig
 
 %postun libs -p /sbin/ldconfig
@@ -884,13 +882,6 @@ exit 0
 
 %posttrans addon-pstoreoops
 service abrt-pstoreoops condrestart >/dev/null 2>&1 || :
-
-%if 0%{?fedora} > 27
-# gtk-update-icon-cache is not needed
-%else
-%posttrans gui
-gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-%endif
 
 %posttrans dbus
 # Force abrt-dbus to restart like we do with the other services
