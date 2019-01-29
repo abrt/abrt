@@ -228,6 +228,13 @@ AC_ARG_WITH([dbusinterfacedir],
         [], [with_dbusinterfacedir=${datadir}/dbus-1/interfaces])
 AC_SUBST([dbusinterfacedir], [$with_dbusinterfacedir])
 
+AC_ARG_WITH([systemduserunitdir],
+            [AS_HELP_STRING([--with-systemduserunitdir=DIR],
+                            [Directory for systemd user service unit files (default=PREFIX/lib/systemd/user)])],
+            [],
+            [with_systemduserunitdir='${prefix}/lib/systemd/user'])
+AC_SUBST([systemduserunitdir], [$with_systemduserunitdir])
+
 AC_ARG_WITH(largedatatmpdir,
             [AS_HELP_STRING([--with-largedatatmpdir=DIR],
                            [Directory where potentially large data are created (default: /var/tmp)])],
@@ -505,6 +512,7 @@ AC_CONFIG_FILES([
 	src/daemon/abrt-handle-upload
 	src/hooks/Makefile
 	src/applet/Makefile
+	src/applet/systemd/Makefile
 	src/cli/Makefile
 	src/cli-ng/Makefile
 	src/cli-ng/abrtcli/Makefile

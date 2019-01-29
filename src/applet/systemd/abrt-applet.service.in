@@ -1,0 +1,12 @@
+[Unit]
+Description=ABRT Notification Daemon
+PartOf=graphical-session.target
+
+[Service]
+Type=dbus
+BusName=org.freedesktop.problems.applet
+ExecStart=@bindir@/abrt-applet --gapplication-service
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
