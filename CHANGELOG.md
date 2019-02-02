@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.12.0]
+### Added
+- Print message when debug info cache is being cleaned
+- Add support for exporting workflows used in reporting over D-Bus
+
+### Changed
+- Print error message instead of triggering an exception in abrt-action-find-bodhi-update
+- Adapt to changes in libreport API
+
+### Fixed
+- Fix user after free when creating problem directory structure
+- Fix buffer overrun when printing help output in abrt-dump-journal-xorg
+
 ## [2.11.1]
 ### Added
 - Dbus configuration for Python3
@@ -151,7 +164,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.11.1...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.12.0...HEAD
+[2.12.0]: https://github.com/abrt/abrt/compare/2.11.1...2.12.0
 [2.11.1]: https://github.com/abrt/abrt/compare/2.11.0...2.11.1
 [2.11.0]: https://github.com/abrt/abrt/compare/2.10.10...2.11.0
 [2.10.10]: https://github.com/abrt/abrt/compare/2.10.9...2.10.10
