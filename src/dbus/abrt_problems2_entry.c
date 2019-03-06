@@ -796,7 +796,7 @@ int abrt_p2_entry_save_elements_in_dump_dir(struct dump_dir *dd,
                 continue;
             }
 
-            if (r >= max_size)
+            if (r < item_stat.st_size && r >= max_size)
             {
                 error_msg("File descriptor was truncated due to size limit");
 
