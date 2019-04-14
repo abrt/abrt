@@ -70,7 +70,7 @@ EOF
 
     # retrace server
     cat > $retrace_conf << EOF
-RETRACE_SERVER_URL = 127.0.0.1
+RETRACE_SERVER_URI = 127.0.0.1
 RETRACE_SERVER_INSECURE = insecure
 EOF
 
@@ -138,7 +138,7 @@ function restore_configuration()
     rlRun "cp -v $retrace_event_conf'.backup' $retrace_event_conf" 0
     rlRun "rm -f $mantis_format_conf" 0
 
-    rlRun "unset RETRACE_SERVER_URL" 0
+    rlRun "unset RETRACE_SERVER_URI" 0
     rlRun "unset RETRACE_SERVER_PORT" 0
     rlRun "unset RETRACE_SERVER_INSECURE" 0
 }
