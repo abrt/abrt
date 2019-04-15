@@ -557,6 +557,8 @@ static int create(SoupSession  *session,
 
     struct retrace_settings *settings = get_settings(session);
 
+    g_return_val_if_fail(NULL != settings, EXIT_FAILURE);
+
     if (settings->running_tasks >= settings->max_running_tasks)
     {
         alert(_("The server is fully occupied. Try again later."));
