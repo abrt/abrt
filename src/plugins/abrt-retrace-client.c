@@ -238,10 +238,56 @@ static int create_archive(bool unlink_temp)
     return tempfd;
 }
 
+G_GNUC_NULL_TERMINATED
+static SoupURI *build_uri_from_config(struct https_cfg *config,
+                                      const char       *segment,
+                                      ...)
+{
+    SoupURI *uri;
+    va_list args;
+    g_autofree const char *path = NULL;
+
+    g_return_val_if_fail(NULL != config, NULL);
+
+    uri = soup_uri_new_with_base(NULL, config->uri);
+    /* Really only for compatibility. */
+    if (NULL == soup_uri_get_scheme(uri))
+    {
+        g_autofree char *uri_string = NULL;
+
+        uri_string = g_strdup_printf("https://%s", config->uri);
+        uri = soup_uri_new(uri_string);
+    }
+
+    if (NULL == segment)
+    {
+        return uri;
+    }
+
+    path = soup_uri_get_path(uri);
+    path = g_build_path("/", path, segment, NULL);
+
+    va_start(args, segment);
+
+    for (segment = va_arg(args, const char *); NULL != segment; segment = va_arg(args, const char *))
+    {
+        g_autofree const char *tmp = NULL;
+
+        tmp = path;
+        path = g_build_path("/", path, segment, NULL);
+    }
+
+    va_end(args);
+
+    soup_uri_set_path(uri, path);
+
+    return uri;
+}
+
 struct retrace_settings *get_settings(SoupSession *session)
 {
     struct retrace_settings *settings;
-    g_autofree char *uri = NULL;
+    g_autoptr(SoupURI) uri = NULL;
     g_autoptr(SoupMessage) message = NULL;
     guint response_code;
     g_autoptr(SoupBuffer) response = NULL;
@@ -250,8 +296,8 @@ struct retrace_settings *get_settings(SoupSession *session)
     const char *row;
 
     settings = xzalloc(sizeof(*settings));
-    uri = g_strdup_printf("%s/settings", cfg.uri);
-    message = soup_message_new("GET", uri);
+    uri = build_uri_from_config(&cfg, "settings", NULL);
+    message = soup_message_new_from_uri("GET", uri);
 
     soup_message_headers_append(message->request_headers, "Accept-Charset", lang.charset);
 
@@ -417,14 +463,14 @@ static int check_package(SoupSession   *session,
                          char         **msg)
 {
     g_autofree char *release_id = NULL;
-    g_autofree char *uri = NULL;
+    g_autoptr(SoupURI) uri = NULL;
     g_autoptr(SoupMessage) message = NULL;
     guint response_code;
     g_autoptr(SoupBuffer) response = NULL;
 
     release_id = get_release_id(osinfo, arch);
-    uri = g_strdup_printf("%s/checkpackage", cfg.uri);
-    message = soup_message_new("GET", uri);
+    uri = build_uri_from_config(&cfg, "checkpackage", NULL);
+    message = soup_message_new_from_uri("GET", uri);
 
     soup_message_headers_append(message->request_headers, "X-Package-NVR", nvr);
     soup_message_headers_append(message->request_headers, "X-Package-Arch", arch);
@@ -510,6 +556,8 @@ static int create(SoupSession  *session,
     }
 
     struct retrace_settings *settings = get_settings(session);
+
+    g_return_val_if_fail(NULL != settings, EXIT_FAILURE);
 
     if (settings->running_tasks >= settings->max_running_tasks)
     {
@@ -714,7 +762,7 @@ static int create(SoupSession  *session,
         }
     }
 
-    g_autofree char *uri = NULL;
+    g_autoptr(SoupURI) uri = NULL;
     g_autoptr(SoupMessage) message = NULL;
     g_autoptr(GMappedFile) file = NULL;
     char *contents;
@@ -724,8 +772,8 @@ static int create(SoupSession  *session,
     g_autoptr(SoupBuffer) response = NULL;
     const char *header_value;
 
-    uri = g_strdup_printf("%s/create", cfg.uri);
-    message = soup_message_new("POST", uri);
+    uri = build_uri_from_config(&cfg, "create", NULL);
+    message = soup_message_new_from_uri("POST", uri);
     file = g_mapped_file_new_from_fd(tempfd, FALSE, NULL);
     contents = g_mapped_file_get_contents(file);
     task_type_string = g_strdup_printf("%d", task_type);
@@ -840,14 +888,14 @@ static void status(SoupSession  *session,
                    char        **task_status,
                    char        **status_message)
 {
-    g_autofree char *uri = NULL;
+    g_autoptr(SoupURI) uri = NULL;
     g_autoptr(SoupMessage) message = NULL;
     guint response_code;
     g_autoptr(SoupBuffer) response = NULL;
     const char *task_status_header;
 
-    uri = g_strdup_printf("%s/%s", cfg.uri, task_id);
-    message = soup_message_new("GET", uri);
+    uri = build_uri_from_config(&cfg, task_id, NULL);
+    message = soup_message_new_from_uri("GET", uri);
 
     soup_message_headers_append(message->request_headers, "X-Task-Password", task_password);
     soup_message_headers_append(message->request_headers, "Accept-Charset", lang.charset);
@@ -902,13 +950,13 @@ static void backtrace(SoupSession  *session,
                       const char   *task_password,
                       char        **backtrace)
 {
-    g_autofree char *uri = NULL;
+    g_autoptr(SoupURI) uri = NULL;
     g_autoptr(SoupMessage) message = NULL;
     guint response_code;
     g_autoptr(SoupBuffer) response = NULL;
 
-    uri = g_strdup_printf("%s/%s/backtrace", cfg.uri, task_id);
-    message = soup_message_new("GET", uri);
+    uri = build_uri_from_config(&cfg, task_id, "backtrace", NULL);
+    message = soup_message_new_from_uri("GET", uri);
 
     soup_message_headers_append(message->request_headers, "X-Task-Password", task_password);
     soup_message_headers_append(message->request_headers, "Accept-Charset", lang.charset);
@@ -968,13 +1016,13 @@ static void exploitable(SoupSession  *session,
                         const char   *task_password,
                         char        **exploitable_text)
 {
-    g_autofree char *uri = NULL;
+    g_autoptr(SoupURI) uri = NULL;
     g_autoptr(SoupMessage) message = NULL;
     guint response_code;
     g_autoptr(SoupBuffer) response = NULL;
 
-    uri = g_strdup_printf("%s/%s/exploitable", cfg.uri, task_id);
-    message = soup_message_new("GET", uri);
+    uri = build_uri_from_config(&cfg, task_id, "exploitable", NULL);
+    message = soup_message_new_from_uri("GET", uri);
 
     soup_message_headers_append(message->request_headers, "X-Task-Password", task_password);
     soup_message_headers_append(message->request_headers, "Accept-Charset", lang.charset);
@@ -1029,13 +1077,13 @@ static void run_log(SoupSession *session,
                     const char  *task_id,
                     const char  *task_password)
 {
-    g_autofree char *uri = NULL;
+    g_autoptr(SoupURI) uri = NULL;
     g_autoptr(SoupMessage) message = NULL;
     guint response_code;
     g_autoptr(SoupBuffer) response = NULL;
 
-    uri = g_strdup_printf("%s/%s/log", cfg.uri, task_id);
-    message = soup_message_new("GET", uri);
+    uri = build_uri_from_config(&cfg, task_id, "log", NULL);
+    message = soup_message_new_from_uri("GET", uri);
 
     soup_message_headers_append(message->request_headers, "X-Task-Password", task_password);
     soup_message_headers_append(message->request_headers, "Accept-Charset", lang.charset);
