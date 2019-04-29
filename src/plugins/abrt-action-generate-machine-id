@@ -23,7 +23,7 @@
 import os
 import sys
 from argparse import ArgumentParser
-from subprocess import check_output
+from subprocess import check_output, CalledProcessError
 import logging
 
 import hashlib
@@ -52,7 +52,10 @@ def generate_machine_id_dmidecode():
 
     # Run dmidecode command
     for k in keys:
-        data = check_output(["dmidecode", "-s", k]).strip()
+        try:
+            data = check_output(["dmidecode", "-s", k]).strip()
+        except (OSError, CalledProcessError) as ex:
+            raise RuntimeError("Execution of dmidecode failed: {0}".format(str(ex)))
 
         # Update the hash as we find the fields we are looking for
         machine_id.update(data)
