@@ -11,11 +11,6 @@ dist_dbusabrtinterfaces_DATA = \
 	com.redhat.problems.configuration.oops.xml \
 	com.redhat.problems.configuration.xorg.xml
 
-if BUILD_PYTHON2
-dist_dbusabrtinterfaces_DATA += \
-	com.redhat.problems.configuration.python.xml
-endif
-
 if BUILD_PYTHON3
 dist_dbusabrtinterfaces_DATA += \
 	com.redhat.problems.configuration.python3.xml

@@ -77,10 +77,6 @@ dist_libreportpluginconf_DATA = \
     catalog_koops_format.conf \
     catalog_xorg_format.conf
 
-if BUILD_PYTHON2
-dist_libreportpluginconf_DATA += catalog_python_format.conf
-endif
-
 if BUILD_PYTHON3
 dist_libreportpluginconf_DATA += catalog_python3_format.conf
 endif
@@ -91,10 +87,6 @@ dist_journalcatalog_DATA = \
     abrt_ccpp.catalog \
     abrt_koops.catalog \
     abrt_xorg.catalog
-
-if BUILD_PYTHON2
-dist_journalcatalog_DATA += abrt_python.catalog
-endif
 
 if BUILD_PYTHON3
 dist_journalcatalog_DATA += abrt_python3.catalog
@@ -112,10 +104,6 @@ dist_eventsconf_DATA = \
     machine-id_event.conf \
     gconf_event.conf \
     vimrc_event.conf
-
-if BUILD_PYTHON2
-dist_eventsconf_DATA += python_event.conf
-endif
 
 if BUILD_PYTHON3
 dist_eventsconf_DATA += python3_event.conf
@@ -169,7 +157,6 @@ EXTRA_DIST = \
     abrt_ccpp.catalog.in \
     abrt_koops.catalog.in \
     abrt_python3.catalog.in \
-    abrt_python.catalog.in \
     abrt_xorg.catalog.in
 
 if BUILD_RETRACE_CLIENT

@@ -74,96 +74,40 @@ AC_PATH_PROG([XMLTO], [xmlto], [no])
     [exit 1]
 [fi]
 
-AC_ARG_WITH(python2,
-AS_HELP_STRING([--with-python2],[build Python2 support (default is YES)]),
-ABRT_PARSE_WITH([python2]))
-
-[if test -z "$NO_PYTHON2"]
-[then]
-    AM_CONDITIONAL(BUILD_PYTHON2, true)
-    AC_PATH_PROG([PYTHON], [python], [no])
-    [if test "$PYTHON" == "no"]
-    [then]
-        [echo "The python program was not found in the search path. Please ensure"]
-        [echo "that it is installed and its directory is included in the search path or"]
-        [echo "pass --without-python2 to ./configure."]
-        [echo "Then run configure again before attempting to build ABRT."]
-        [exit 1]
-    [fi]
-
-    AC_PATH_PROG([PYTHON_CONFIG], [python-config], [no])
-    [if test "$PYTHON_CONFIG" = "no"]
-    [then]
-        [echo "The python-config program was not found in the search path. Please ensure"]
-        [echo "that it is installed and its directory is included in the search path or"]
-        [echo "pass --without-python2 to ./configure."]
-        [echo "Then run configure again before attempting to build ABRT."]
-        [exit 1]
-    [fi]
-
-    PYTHON_CFLAGS=`python-config --cflags 2> /dev/null`
-    PYTHON_LIBS=`python-config --libs 2> /dev/null`
-
-    AC_SUBST([PYTHON2_PREFIX], ['${prefix}'])
-    AC_SUBST([PYTHON2_EXEC_PREFIX], ['${exec_prefix}'])
-
-    PYTHON2_DIR=`$PYTHON -c "import distutils.sysconfig; \
-        print(distutils.sysconfig.get_python_lib(0,0,prefix='$PYTHON2_PREFIX'))"`
-    PYTHON2_EXECDIR=`$PYTHON -c "import distutils.sysconfig; \
-        print(distutils.sysconfig.get_python_lib(1,0,prefix='$PYTHON2_EXEC_PREFIX'))"`
-
-    AC_SUBST(PYTHON_CFLAGS)
-    AC_SUBST(PYTHON_LIBS)
-    AC_SUBST(pythondir, $PYTHON2_DIR)
-    AC_SUBST(pyexecdir, $PYTHON2_EXECDIR)
-[else]
-    AM_CONDITIONAL(BUILD_PYTHON2, false)
-[fi]
-
 AC_ARG_WITH(python3,
 AS_HELP_STRING([--with-python3],[build Python3 support (default is YES)]),
 ABRT_PARSE_WITH([python3]))
 
 [if test -z "$NO_PYTHON3"]
 [then]
-    AM_CONDITIONAL(BUILD_PYTHON3, true)
-    AC_PATH_PROG([PYTHON3], [python3], [no])
-    [if test "$PYTHON3" == "no"]
-    [then]
-        [echo "The python3 program was not found in the search path. Please ensure"]
-        [echo "that it is installed and its directory is included in the search path or"]
-        [echo "pass --without-python3 to ./configure."]
-        [echo "Then run configure again before attempting to build ABRT."]
-        [exit 1]
-    [fi]
+    AM_CONDITIONAL([BUILD_PYTHON3], [true])
+    AM_PATH_PYTHON(
+        [3.6],,
+        [AC_MSG_ERROR([
+    The python3 program was not found in the search path. Please ensure
+    that it is installed and its directory is included in the search path or
+    pass --without-python3 to ./configure.
+    Then run configure again before attempting to build ABRT.
+        ])]
+    )
 
-    AC_PATH_PROG([PYTHON3_CONFIG], [python3-config], [no])
+    AC_PATH_PROG([PYTHON3_CONFIG], [python${PYTHON_VERSION}-config], [no])
     [if test "$PYTHON3_CONFIG" = "no"]
     [then]
-        [echo "The python3-config program was not found in the search path. Please ensure"]
+        [echo "The python${PYTHON_VERSION}-config program was not found in the search path. Please ensure"]
         [echo "that it is installed and its directory is included in the search path or"]
         [echo "pass --without-python3 to ./configure."]
         [echo "Then run configure again before attempting to build ABRT."]
         [exit 1]
     [fi]
 
-    PYTHON3_CFLAGS=`python3-config --cflags 2> /dev/null`
-    PYTHON3_LIBS=`python3-config --libs 2> /dev/null`
+    PYTHON3_CFLAGS=`${PYTHON3_CONFIG} --cflags 2> /dev/null`
+    PYTHON3_LIBS=`${PYTHON3_CONFIG} --libs 2> /dev/null`
 
-    AC_SUBST([PYTHON3_PREFIX], ['${prefix}'])
-    AC_SUBST([PYTHON3_EXEC_PREFIX], ['${exec_prefix}'])
-
-    PYTHON3_DIR=`$PYTHON3 -c "import distutils.sysconfig; \
-        print(distutils.sysconfig.get_python_lib(0,0,prefix='$PYTHON3_PREFIX'))"`
-    PYTHON3_EXECDIR=`$PYTHON3 -c "import distutils.sysconfig; \
-        print(distutils.sysconfig.get_python_lib(1,0,prefix='$PYTHON3_EXEC_PREFIX'))"`
-
-    AC_SUBST(PYTHON3_CFLAGS)
-    AC_SUBST(PYTHON3_LIBS)
-    AC_SUBST(python3dir, $PYTHON3_DIR)
-    AC_SUBST(py3execdir, $PYTHON3_EXECDIR)
+    AC_SUBST([PYTHON3_CFLAGS])
+    AC_SUBST([PYTHON3_LIBS])
 [else]
-    AM_CONDITIONAL(BUILD_PYTHON3, false)
+    AM_CONDITIONAL([BUILD_PYTHON3], [false])
 [fi]
 
 AC_ARG_WITH(pythondoc,

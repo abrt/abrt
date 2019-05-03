@@ -9,13 +9,6 @@
 %bcond_with python3
 %endif
 
-%if 0%{?rhel} > 7 || 0%{?fedora} > 28
-# Disable python2 build by default
-%bcond_with python2
-%else
-%bcond_without python2
-%endif
-
 %if 0%{?rhel}%{?suse_version}
     %bcond_with bodhi
 %else
@@ -80,13 +73,6 @@ BuildRequires: libreport-devel >= %{libreport_ver}
 BuildRequires: satyr-devel >= %{satyr_ver}
 BuildRequires: augeas
 BuildRequires: libselinux-devel
-%if %{with python2}
-BuildRequires: python2-devel
-BuildRequires: python2-systemd
-BuildRequires: python2-argcomplete
-BuildRequires: python2-argh
-BuildRequires: python2-humanize
-%endif # with python2
 %if %{with python3}
 BuildRequires: python3-devel
 BuildRequires: python3-systemd
@@ -111,11 +97,6 @@ Requires(pre): %{shadow_utils}
 %if %{with python3}
 Requires: python3-augeas
 Requires: python3-dbus
-%else
-%if %{with python2}
-Requires: python2-augeas
-Requires: python2-dbus
-%endif # with python2
 %endif # with python3
 %ifarch aarch64 i686 x86_64
 Requires: dmidecode
@@ -146,13 +127,6 @@ BuildRequires: libreport-web-devel >= %{libreport_ver}
 BuildRequires: gdb-headless
 #dbus
 BuildRequires: polkit-devel
-%if %{with python2}
-#python2-abrt
-BuildRequires: python2-sphinx
-BuildRequires: python2-libreport
-#python2-abrt-doc
-BuildRequires: python2-devel
-%endif # with python2
 %if %{with python3}
 #python3-abrt
 BuildRequires: python3-nose
@@ -233,10 +207,6 @@ Requires: %{name}-addon-coredump-helper = %{version}-%{release}
 Requires: abrt-libs = %{version}-%{release}
 %if %{with python3}
 Requires: python3-libreport
-%else
-%if %{with python2}
-Requires: python2-libreport
-%endif # with python2
 %endif # with python3
 
 
@@ -296,11 +266,6 @@ Requires: kexec-tools
 %if %{with python3}
 Requires: python3-abrt
 Requires: python3-augeas
-%else
-%if %{with python2}
-Requires: python2-abrt
-Requires: python2-augeas
-%endif # with python2
 %endif # with python3
 Requires: util-linux
 
@@ -328,32 +293,6 @@ Provides: libreport-plugin-bodhi = %{version}-%{release}
 %description plugin-bodhi
 Search for a new updates in bodhi server.
 %endif
-
-%if %{with python2}
-%package -n python2-abrt-addon
-Summary: %{name}'s addon for catching and analyzing Python exceptions
-BuildArch: noarch
-Requires: %{name} = %{version}-%{release}
-Requires: python2-systemd
-Requires: python2-abrt
-# Remove before F30
-Provides: abrt-addon-python = %{version}-%{release}
-Provides: abrt-addon-python%{?_isa} = %{version}-%{release}
-Obsoletes: abrt-addon-python < 2.10.4
-
-%description -n python2-abrt-addon
-This package contains python hook and python analyzer plugin for handling
-uncaught exception in python programs.
-
-%package -n python2-abrt-container-addon
-Summary: %{name}'s container addon for catching Python 2 exceptions
-Conflicts: python2-abrt-addon
-Requires: container-exception-logger
-
-%description -n python2-abrt-container-addon
-This package contains python 2 hook and handling uncaught exception in python 2
-programs in container.
-%endif # with python2
 
 %if %{with python3}
 %package -n python3-abrt-addon
@@ -528,42 +467,6 @@ Requires: abrt-libs = %{version}-%{release}
 ABRT DBus service which provides org.freedesktop.problems API on dbus and
 uses PolicyKit to authorize to access the problem data.
 
-%if %{with python2}
-%package -n python2-abrt
-Summary: ABRT Python API
-Requires: %{name} = %{version}-%{release}
-Requires: %{name}-libs = %{version}-%{release}
-Requires: %{name}-dbus = %{version}-%{release}
-Requires: python2-dbus
-Requires: python2-libreport
-%if 0%{?rhel:%{rhel} == 7}
-Requires: python-gobject-base
-%else
-Requires: python2-gobject-base
-%endif
-%{?python_provide:%python_provide python2-abrt}
-# Remove before F30
-Provides: %{name}-python = %{version}-%{release}
-Provides: %{name}-python%{?_isa} = %{version}-%{release}
-Obsoletes: %{name}-python < 2.10.4
-
-%description -n python2-abrt
-High-level API for querying, creating and manipulating
-problems handled by ABRT in Python.
-
-%package -n python2-abrt-doc
-Summary: ABRT Python API Documentation
-BuildArch: noarch
-Requires: %{name} = %{version}-%{release}
-Requires: python2-abrt = %{version}-%{release}
-# Remove before F30
-Provides: %{name}-python-doc = %{version}-%{release}
-Obsoletes: %{name}-python-doc < 2.10.4
-
-%description -n python2-abrt-doc
-Examples and documentation for ABRT Python API.
-%endif # with python2
-
 %if %{with python3}
 %package -n python3-abrt
 Summary: ABRT Python 3 API
@@ -614,9 +517,6 @@ autoconf
 %define var_base_dir spool
 
 CFLAGS="%{optflags} -Werror" %configure \
-%if %{without python2}
-        --without-python2 \
-%endif # with python2
 %if %{without python3}
         --without-python3 \
 %endif # with python3
@@ -709,11 +609,6 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %post addon-xorg
 %systemd_post abrt-xorg.service
 %journal_catalog_update
-
-%if %{with python2}
-%post -n python2-abrt-addon
-%journal_catalog_update
-%endif # with python2
 
 %if %{with python3}
 %post -n python3-abrt-addon
@@ -1118,23 +1013,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man1/abrt-harvest-pstoreoops.1*
 %{_mandir}/man1/abrt-merge-pstoreoops.1*
 
-%if %{with python2}
-%files -n python2-abrt-addon
-%config(noreplace) %{_sysconfdir}/%{name}/plugins/python.conf
-%{_datadir}/%{name}/conf.d/plugins/python.conf
-%{_mandir}/man5/abrt-python.conf.5*
-%config(noreplace) %{_sysconfdir}/libreport/events.d/python_event.conf
-%{_journalcatalogdir}/abrt_python.catalog
-%config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_python_format.conf
-%{_mandir}/man5/python_event.conf.5*
-%{python2_sitearch}/abrt.pth
-%{python2_sitearch}/abrt_exception_handler.*
-
-%files -n python2-abrt-container-addon
-%{python2_sitearch}/abrt_container.pth
-%{python2_sitearch}/abrt_exception_handler_container.*
-%endif # with python2
-
 %if %{with python3}
 %files -n python3-abrt-addon
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python3.conf
@@ -1212,9 +1090,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.abrt.xml
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.ccpp.xml
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.oops.xml
-%if %{with python2}
-%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.python.xml
-%endif # with python2
 %if %{with python3}
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.python3.xml
 %endif # with python3
@@ -1228,15 +1103,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/*.html
 %{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/*.css
 %config(noreplace) %{_sysconfdir}/libreport/events.d/abrt_dbus_event.conf
-
-%if %{with python2}
-%files -n python2-abrt
-%{python2_sitearch}/problem/
-%{_mandir}/man5/abrt-python.5*
-
-%files -n python2-abrt-doc
-%{python_sitelib}/problem_examples
-%endif # with python2
 
 %if %{with python3}
 %files -n python3-abrt

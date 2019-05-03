@@ -68,23 +68,9 @@ EXTRA_DIST = \
     abrt-harvest-pstoreoops.in
 
 ALL_DEPENDENCES =
-if BUILD_PYTHON2
-pyhookdir = $(pyexecdir)
-dist_pluginsconf_DATA += python.conf
-ALL_DEPENDENCES += abrt_exception_handler.py
-
-pyhook_PYTHON = \
-	abrt_exception_handler.py \
-	abrt.pth \
-	abrt_exception_handler_container.py \
-	abrt_container.pth
-
-EXTRA_DIST += \
-    abrt_exception_handler.py.in
-endif
 
 if BUILD_PYTHON3
-py3hookdir = $(py3execdir)
+py3hookdir = $(pyexecdir)
 dist_pluginsconf_DATA += python3.conf
 ALL_DEPENDENCES += abrt_exception_handler3.py
 
@@ -132,11 +118,6 @@ CCpp.conf: CCpp.conf.in
 
 # RPM fix: we need to regenerate abrt_exception_handler.py, because it has the default ddir
 install-data-local:
-if BUILD_PYTHON2
-	sed -e s,\@VAR_RUN\@,\"$(VAR_RUN)\",g \
-	    -e s,\@CONF_DIR\@,\"$(CONF_DIR)\",g \
-	    abrt_exception_handler.py.in >abrt_exception_handler.py
-endif
 if BUILD_PYTHON3
 	sed -e s,\@VAR_RUN\@,\"$(VAR_RUN)\",g \
 	    -e s,\@CONF_DIR\@,\"$(CONF_DIR)\",g \
