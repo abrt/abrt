@@ -7,15 +7,33 @@ abrt-handle-upload - Unpacks and moves problem data.
 
 SYNOPSIS
 --------
-'abrt-handle-upload' ABRT_DIR UPLOAD_DIR FILENAME
+'abrt-handle-upload' [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME
 
 DESCRIPTION
 -----------
 
 The tool unpacks FILENAME located in UPLOAD_DIR and moves the problem data
-found in it to ABRT_DIR. It supports unpacking tarballs compressed by gzip,
-bzip2 or xz. It's called by abrtd when a new file is noticed in the upload
-directory configured by the 'WatchCrashdumpArchiveDir' option.
+found in it to ABRT_SPOOL_DIR. It supports unpacking tarballs
+compressed by gzip, bzip2 or xz. It's called by abrtd when a new file
+is noticed in the upload directory configured by the
+'WatchCrashdumpArchiveDir' option.
+
+OPTIONS
+-------
+-v::
+   Be more verbose. Can be given multiple times
+
+-d::
+   Delete uploaded archive
+
+ABRT_SPOOL_DIR::
+   Directory where archives are unpacked to
+
+UPLOAD_DIR::
+   Directory where uploaded archives are stored
+
+FILENAME::
+   File name of the uploaded archive to unpack
 
 AUTHORS
 -------
