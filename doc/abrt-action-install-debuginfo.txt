@@ -1,5 +1,5 @@
 abrt-action-install-debuginfo(1)
-==============================
+================================
 
 NAME
 ----
@@ -7,7 +7,10 @@ abrt-action-install-debuginfo - Install debuginfos for build-ids
 
 SYNOPSIS
 --------
-'abrt-action-install-debuginfo' [-vy] [--ids=BUILD_IDS_FILE] [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE] [-e PATH]
+'abrt-action-install-debuginfo' [-vy] [--ids=BUILD_IDS_FILE]
+   [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]]
+   [--size_mb=SIZE] [--pkgmgr=(yum|dnf)] [-e PATH[:PATH...]]
+   [--releasever=RELEASEVER] [--repo=PATTERN]
 
 DESCRIPTION
 -----------
@@ -21,7 +24,7 @@ OPTIONS
    Be more verbose. Can be given multiple times.
 
 -y::
-   Noninteractive, assume 'Yes' to all questions
+   Noninteractive, assume "Yes" to all questions
 
 --ids::
    Path to file with list of build ids. Default: build_ids
@@ -30,16 +33,24 @@ OPTIONS
    Path to tmp directory. Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX
 
 --cache::
-   Path to cache directory. Default: /var/cache/abrt-di
+   Path to cache directory. Default: /var/cache/abrt-dir
 
 --size_mb::
    Default: 4096
 
+--pkgmgr::
+   Package manager to use. Default: PackageManager from CCpp.conf
+   or "dnf"
+
 -e,--exact::
    Download only specified files
 
--R,--releasever::
+--releasever::
    Set specific version of Operating System
+
+--repo::
+   Glob pattern to use when searching for repositories.
+   Default: "\*debug*"
 
 AUTHORS
 -------
