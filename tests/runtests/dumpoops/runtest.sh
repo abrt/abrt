@@ -38,6 +38,7 @@ rlJournalStart
         cp $EXAMPLES_PATH/oops*.test $TmpDir
         cp $EXAMPLES_PATH/not_oops*.test $TmpDir
         rlRun "pushd $TmpDir"
+        rlRun "sed -i 's/coprbox\.den/$( hostname )/' oops_full_hostname.test"
     rlPhaseEnd
 
     rlPhaseStartTest OOPS
