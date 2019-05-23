@@ -81,7 +81,6 @@ if __name__ == "__main__":
         except:
             pass
 
-    PROGNAME = os.path.basename(sys.argv[0])
     help_text = _(
             "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
             "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
@@ -109,7 +108,7 @@ if __name__ == "__main__":
             "    --releasever RELEASEVER\n"
             "                Pass this OS version to package managers.\n"
             # --keeprpms is not documented yet because it's a NOP so far
-    ) % PROGNAME
+    ) % os.path.basename(sys.argv[0])
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], "vyhe",
