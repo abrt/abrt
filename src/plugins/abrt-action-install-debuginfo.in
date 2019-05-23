@@ -74,13 +74,6 @@ if __name__ == "__main__":
     # localization
     init_gettext()
 
-    ABRT_VERBOSE = os.getenv("ABRT_VERBOSE")
-    if (ABRT_VERBOSE):
-        try:
-            verbose = int(ABRT_VERBOSE)
-        except:
-            pass
-
     help_text = _(
             "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
             "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
