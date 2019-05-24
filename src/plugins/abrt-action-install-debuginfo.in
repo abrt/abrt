@@ -226,12 +226,12 @@ if __name__ == "__main__":
                  "exact=", "repo=", "pkgmgr=", "releasever="])
     except getopt.GetoptError as err:
         print(err) # prints something like "option -a not recognized"
-        exit(RETURN_FAILURE)
+        sys.exit(RETURN_FAILURE)
 
     for opt, arg in opts:
         if opt in ("-h", "--help"):
             print(help_text)
-            exit(0)
+            sys.exit(RETURN_OK)
         elif opt == "-v":
             config.verbosity += 1
         elif opt == "-y":
@@ -288,13 +288,12 @@ if __name__ == "__main__":
 
     def sigterm_handler(signum, frame):
         clean_up(config.tmp_dir, silent=True)
-        exit(RETURN_OK)
+        sys.exit(RETURN_OK)
 
     def sigint_handler(signum, frame):
         clean_up(config.tmp_dir)
         print("\n{0}".format(_("Exiting on user command")))
         sys.stdout.flush()
-        # ??! without "sys.", I am getting segv!
         sys.exit(RETURN_OK)
 
     # abrt-server can send SIGTERM to abort the download
