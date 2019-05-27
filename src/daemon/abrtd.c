@@ -435,7 +435,24 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
 {
     uint8_t signo;
     gsize len = 0;
-    g_io_channel_read_chars(gio, (void*) &signo, 1, &len, NULL);
+    GError *error = NULL;
+    GIOStatus stat = g_io_channel_read_chars(gio, (void*) &signo, 1, &len, &error);
+    if (stat == G_IO_STATUS_ERROR)
+    {
+        /* An error occurred on the channel. Report it and quit. */
+        error_msg_and_die("Can't read from gio channel: '%s'",
+                error ? error->message : "");
+    }
+    if (stat == G_IO_STATUS_AGAIN)
+    {
+        /* No new data available. Continue as usual. */
+        return G_SOURCE_CONTINUE;
+    }
+    if (stat == G_IO_STATUS_EOF)
+    {
+        /* The channel has reached its end. Remove this event. */
+        return G_SOURCE_REMOVE;
+    }
     if (len == 1)
     {
         /* we did receive a signal */
@@ -463,7 +480,7 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
         }
     }
     start_idle_timeout();
-    return TRUE; /* "please don't remove this event" */
+    return G_SOURCE_CONTINUE; /* "please don't remove this event" */
 }
 
 static void sanitize_dump_dir_rights(void)
