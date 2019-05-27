@@ -162,7 +162,7 @@ handle_signal_pipe_cb(GIOChannel *gio, GIOCondition condition, gpointer user_dat
     for (;;)
     {
         GError *error = NULL;
-        GIOStatus stat = g_io_channel_read_chars(gio, (void *)signals, sizeof(signals), &len, NULL);
+        GIOStatus stat = g_io_channel_read_chars(gio, (void *)signals, sizeof(signals), &len, &error);
         if (stat == G_IO_STATUS_ERROR)
         {
             error_msg_and_die(_("Can't read from gio channel: '%s'"), error ? error->message : "");
