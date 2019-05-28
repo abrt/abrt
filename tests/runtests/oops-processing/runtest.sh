@@ -54,8 +54,9 @@ rlJournalStart
         check_prior_crashes
 
         TmpDir=$(mktemp -d)
-        sed "s/2.6.27.9-159.fc10.i686/<KERNEL_VERSION>/" \
-            $EXAMPLES_PATH/oops1.test > \
+        cat $EXAMPLES_PATH/oops1.test.template | \
+            sed "s/2.6.27.9-159.fc10.i686/<KERNEL_VERSION>/" | \
+            sed "s/:HOSTNAME:/$( hostname )/" > \
             $TmpDir/oops1.test
 
         sed "s/2.6.27.9-159.fc10.i686/<KERNEL_VERSION>/" \
@@ -89,8 +90,8 @@ rlJournalStart
         pushd $TmpDir
     rlPhaseEnd
 
-    rlPhaseStartTest OOPS
-        for oops in oops*.test; do
+    for oops in oops*.test; do
+        rlPhaseStartTest "OOPS: $oops"
             prepare
 
             rpm_version="$( rpm -q --qf "%{version}-%{release}.%{arch}\n" kernel | tail -n 1 | tr -d '\n' )"
@@ -140,8 +141,8 @@ rlJournalStart
             rlRun "cat $crash_PATH/pkg_fingerprint"
 
             rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
-        done
-    rlPhaseEnd
+        rlPhaseEnd
+    done
 
     rlPhaseStartTest "Drop unreliable OOPS"
         prepare
