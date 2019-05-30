@@ -462,6 +462,7 @@ hosts.
 Summary: ABRT DBus service
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-libs = %{version}-%{release}
+Requires: dbus-tools
 
 %description dbus
 ABRT DBus service which provides org.freedesktop.problems API on dbus and
