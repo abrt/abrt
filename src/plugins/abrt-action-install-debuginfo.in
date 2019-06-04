@@ -3,29 +3,37 @@
 # WARNING: python -u means unbuffered I/O without it the messages are
 # passed to the parent asynchronously which looks bad in clients.
 
-PROGNAME = "abrt-action-install-debuginfo"
-
 import sys
 import os
 import errno
 import getopt
-import reportclient
-from subprocess import Popen, PIPE
-from reportclient import verbose, log_warning, log1, log2, set_verbosity, error_msg_and_die, error_msg
+from reportclient import log2, set_verbosity, error_msg_and_die, error_msg
 import time
-from reportclient.debuginfo import DebugInfoDownload, filter_installed_debuginfos, build_ids_to_path, clean_up
+from reportclient.debuginfo import filter_installed_debuginfos, build_ids_to_path, clean_up
 import problem
 
 # everything was ok
 RETURN_OK = 0
 # serious problem, should be logged somewhere
 RETURN_FAILURE = 2
-# path to tmp directory has to be global because of clean_up()
-TMPDIR = None
 
 GETTEXT_PROGNAME = "abrt"
 import locale
 import gettext
+
+class Config:
+    verbosity = 0
+    tmp_dir = None
+    fbuild_ids = "build_ids"
+    cachedirs = []
+    size_mb = 4096
+    keeprpms = False
+    noninteractive = False
+    exact_fls = False
+    missing = None
+    repo_pattern = "*debug*"
+    pkgmgr = None
+    releasever = None
 
 _ = lambda x: gettext.gettext(x)
 
@@ -43,49 +51,146 @@ def init_gettext():
     gettext.bindtextdomain(GETTEXT_PROGNAME, '/usr/share/locale')
     gettext.textdomain(GETTEXT_PROGNAME)
 
-def sigterm_handler(signum, frame):
-    clean_up(TMPDIR, silent=True)
-    exit(RETURN_OK)
-
-def sigint_handler(signum, frame):
-    clean_up(TMPDIR)
-    print("\n{0}".format(_("Exiting on user command")))
-    sys.stdout.flush()
-    # ??! without "sys.", I am getting segv!
-    sys.exit(RETURN_OK)
-
 import signal
 
-if __name__ == "__main__":
-    # abrt-server can send SIGTERM to abort the download
-    signal.signal(signal.SIGTERM, sigterm_handler)
-    # ctrl-c
-    signal.signal(signal.SIGINT, sigint_handler)
-    fbuild_ids = "build_ids"
-    cachedirs = []
-    size_mb = 4096
-    keeprpms = False
-    noninteractive = False
+def run(config):
+    missing = config.missing
     b_ids = []
-    exact_fls = False
-    missing = None
-    repo_pattern = "*debug*"
-    pkgmgr = None
-    releasever = None
+
+    if missing == None:
+        fin = sys.stdin
+        if config.fbuild_ids != "-":
+            try:
+                fin = open(config.fbuild_ids, "r")
+            except IOError as ex:
+                error_msg_and_die(_("Can't open {0}: {1}").format(config.fbuild_ids, ex))
+        for line in fin.readlines():
+            b_ids.append(line.strip('\n'))
+
+        if not b_ids:
+            return RETURN_FAILURE
+
+        # Delete oldest/biggest files from cachedir.
+        # (Note that we need to do it before we check for missing debuginfos)
+        #
+        # We can do it as a separate step in report_event.conf, but this
+        # would require setuid'ing abrt-action-trim-files to abrt:abrt.
+        # Since we (via abrt-action-install-debuginfo-to-abrt-cache)
+        # are already running setuid,
+        # it makes sense to NOT setuid abrt-action-trim-files too,
+        # but instead run it as our child:
+        sys.stdout.flush()
+        build_paths = build_ids_to_path(config.cachedirs[0], b_ids)
+        print("Cleaning cache...")
+        try:
+            pid = os.fork()
+            if pid == 0:
+                argv = ["abrt-action-trim-files", "-f", "%um:%s" % (config.size_mb, config.cachedirs[0]), "--"]
+                argv.extend(build_paths)
+                log2("abrt-action-trim-files %s", argv);
+                os.execvp("abrt-action-trim-files", argv);
+                error_msg_and_die("Can't execute '%s'", "abrt-action-trim-files");
+            if pid > 0:
+                os.waitpid(pid, 0);
+                print("Cache cleaning has finished")
+        except Exception as e:
+            error_msg("Can't execute abrt-action-trim-files: %s", e);
+
+        missing = filter_installed_debuginfos(b_ids, config.cachedirs)
+
+    exact_file_missing = False
+    result = RETURN_OK
+    if missing:
+        log2("%s", missing)
+        if len(b_ids) > 0:
+            print(_("Coredump references {0} debuginfo files, {1} of them are not installed").format(len(b_ids), len(missing)))
+        else:
+            # Only --exact FILE[:FILE2]... was specified
+            print(_("{0} of debuginfo files are not installed").format(len(missing)))
+
+        download_class = None
+        if config.pkgmgr == "dnf":
+            from reportclient.dnfdebuginfo import DNFDebugInfoDownload
+            download_class = DNFDebugInfoDownload
+        elif config.pkgmgr == "yum":
+            from reportclient.yumdebuginfo import YumDebugInfoDownload
+            download_class = YumDebugInfoDownload
+        else:
+            sys.stderr.write(_("Invalid configuration of CCpp addon, unsupported Package manager: '%s'") % (config.pkgmgr))
+            return RETURN_FAILURE
+
+        # TODO: should we pass keep_rpms=keeprpms to DebugInfoDownload here??
+        try:
+            downloader = download_class(cache=config.cachedirs[0], tmp=config.tmp_dir,
+                                    noninteractive=config.noninteractive,
+                                    repo_pattern=config.repo_pattern,
+                                    releasever=config.releasever)
+            downloader.find_packages(missing)
+
+            # Check how much space we need in cache
+            # If we don't have enough space, find files we need to keep in cache
+            # and start removing all others until we have enough space.
+            # Before removing also check, if we are able to make enough space.
+            # It does not make sense to delete everything just to find out we
+            # still need more space
+            res = os.statvfs(config.cachedirs[0])
+            free_space = float(res.f_bsize * res.f_bavail) / (1024 * 1024)
+            all_space = float(res.f_bsize * res.f_blocks) / (1024 * 1024)
+            install_size = downloader.get_install_size() / (1024 * 1024)
+            if install_size > free_space:
+                unnecessary_files_size = 0
+                for dirpath, dirnames, filenames in os.walk(os.path.join(config.cachedirs[0], "usr/lib/debug/.build-id")):
+                    for filename in [f for f in filenames if f.endswith(".debug")]:
+                        fl = os.path.join(dirpath, filename)
+                        if os.path.isfile(fl) and fl not in build_paths:
+                            unnecessary_files_size += os.stat(fl).st_size / (1024*1024)
+
+                if unnecessary_files_size + free_space >= install_size:
+                    config.size_mb = all_space - install_size
+                    try:
+                        pid = os.fork()
+                        if pid == 0:
+                            argv = ["abrt-action-trim-files", "-f", "%um:%s" % (config.size_mb, config.cachedirs[0]), "--"]
+                            argv.extend(build_paths)
+                            log2("abrt-action-trim-files %s", argv)
+                            os.execvp("abrt-action-trim-files", argv)
+                            error_msg_and_die("Can't execute '%s'", "abrt-action-trim-files")
+                        if pid > 0:
+                            os.waitpid(pid, 0)
+                    except Exception as e:
+                        error_msg("Can't execute abrt-action-trim-files: %s", e)
+
+            result = downloader.download(missing, download_exact_files=config.exact_fls)
+
+        except OSError as ex:
+            if ex.errno == errno.EPIPE:
+                raise
+            error_msg_and_die("Can't download debuginfos: %s", ex)
+
+        if config.exact_fls:
+            for bid in missing:
+                if not os.path.isfile(bid):
+                    print(_("Missing requested file: {0}").format(bid))
+                    exact_file_missing = True
+
+        missing = filter_installed_debuginfos(b_ids, config.cachedirs)
+        for bid in missing:
+            print(_("Missing debuginfo file: {0}").format(bid))
+
+    if not missing and not exact_file_missing:
+        print(_("All debuginfo files are available"))
+
+    if exact_file_missing:
+        result = RETURN_FAILURE
+
+    return result
+
+if __name__ == "__main__":
+    config = Config()
 
     # localization
     init_gettext()
 
-    ABRT_VERBOSE = os.getenv("ABRT_VERBOSE")
-    if (ABRT_VERBOSE):
-        try:
-            verbose = int(ABRT_VERBOSE)
-        except:
-            pass
-
-    PROGNAME = os.path.basename(sys.argv[0])
-    # ____________________________________________________________________________________ 7
-    # ______01234567890123456789012345678901234567890123456789012345678901234567890123456789
     help_text = _(
             "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
             "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
@@ -113,7 +218,7 @@ if __name__ == "__main__":
             "    --releasever RELEASEVER\n"
             "                Pass this OS version to package managers.\n"
             # --keeprpms is not documented yet because it's a NOP so far
-    ) % PROGNAME
+    ) % os.path.basename(sys.argv[0])
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], "vyhe",
@@ -121,197 +226,86 @@ if __name__ == "__main__":
                  "exact=", "repo=", "pkgmgr=", "releasever="])
     except getopt.GetoptError as err:
         print(err) # prints something like "option -a not recognized"
-        exit(RETURN_FAILURE)
+        sys.exit(RETURN_FAILURE)
 
     for opt, arg in opts:
         if opt in ("-h", "--help"):
             print(help_text)
-            exit(0)
+            sys.exit(RETURN_OK)
         elif opt == "-v":
-            verbose += 1
+            config.verbosity += 1
         elif opt == "-y":
-            noninteractive = True
+            config.noninteractive = True
         elif opt == "--ids":
-            fbuild_ids = arg
+            config.fbuild_ids = arg
         elif opt == "--cache":
-            cachedirs = arg.split(':')
+            config.cachedirs = arg.split(':')
         elif opt == "--size_mb":
             try:
-                size_mb = int(arg)
+                config.size_mb = int(arg)
             except:
                 pass
         elif opt == "--tmpdir":
-            TMPDIR = arg
+            config.tmp_dir = arg
         elif opt == "--keeprpms":
-            keeprpms = True
+            config.keeprpms = True
         # --exact takes precedence over --ids
         elif opt in ("-e", "--exact"):
-            missing = arg.split(':')
-            exact_fls = True
+            config.missing = arg.split(':')
+            config.exact_fls = True
         elif opt == "--repo":
-            repo_pattern = arg
+            config.repo_pattern = arg
         elif opt == "--pkgmgr":
-            pkgmgr = arg
+            config.pkgmgr = arg
         elif opt == "--releasever":
-            releasever = arg
+            config.releasever = arg
 
-    set_verbosity(verbose)
+    set_verbosity(config.verbosity)
 
-    if not cachedirs:
-        cachedirs = ["/var/cache/abrt-di"]
+    if not config.cachedirs:
+        config.cachedirs = ["/var/cache/abrt-di"]
         try:
             conf = problem.load_plugin_conf_file("CCpp.conf")
         except OSError as ex:
             print(ex)
         else:
-            cachedirs = conf.get("DebuginfoLocation", cachedirs[0]).split(":")
+            config.cachedirs = conf.get("DebuginfoLocation", config.cachedirs[0]).split(":")
 
-    if not TMPDIR:
+    if not config.tmp_dir:
         # security people prefer temp subdirs in app's private dir, like /var/run/abrt
         # and we switched to /tmp but Fedora feature tmp-on-tmpfs appeared, hence we must
         # not use /tmp for potential big data anymore
-        TMPDIR = "@LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-%s.%u" % (time.strftime("%Y-%m-%d-%H:%M:%S"), os.getpid())
+        config.tmp_dir = "@LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-%s.%u" % (time.strftime("%Y-%m-%d-%H:%M:%S"), os.getpid())
 
-
-    if missing == None:
-        fin = sys.stdin
-        if fbuild_ids != "-":
-            try:
-                fin = open(fbuild_ids, "r")
-            except IOError as ex:
-                error_msg_and_die(_("Can't open {0}: {1}").format(fbuild_ids, ex))
-        for line in fin.readlines():
-            b_ids.append(line.strip('\n'))
-
-        if not b_ids:
-            exit(RETURN_FAILURE)
-
-        # Delete oldest/biggest files from cachedir.
-        # (Note that we need to do it before we check for missing debuginfos)
-        #
-        # We can do it as a separate step in report_event.conf, but this
-        # would require setuid'ing abrt-action-trim-files to abrt:abrt.
-        # Since we (via abrt-action-install-debuginfo-to-abrt-cache)
-        # are already running setuid,
-        # it makes sense to NOT setuid abrt-action-trim-files too,
-        # but instead run it as our child:
-        sys.stdout.flush()
-        build_paths = build_ids_to_path(cachedirs[0], b_ids)
-        print("Cleaning cache...")
+    if not config.pkgmgr:
         try:
-            pid = os.fork()
-            if pid == 0:
-                argv = ["abrt-action-trim-files", "-f", "%um:%s" % (size_mb, cachedirs[0]), "--"]
-                argv.extend(build_paths)
-                log2("abrt-action-trim-files %s", argv);
-                os.execvp("abrt-action-trim-files", argv);
-                error_msg_and_die("Can't execute '%s'", "abrt-action-trim-files");
-            if pid > 0:
-                os.waitpid(pid, 0);
-                # Print this message in try, as while we waited user could exit the reporting
-                # process. Then it causes BrokenPipeError. BZ#1501178
-                try:
-                    print("Cache cleaning has finished")
-                except IOError:
-                    sys.exit(0)
-        except Exception as e:
-            error_msg("Can't execute abrt-action-trim-files: %s", e);
-
-        missing = filter_installed_debuginfos(b_ids, cachedirs)
-
-    exact_file_missing = False
-    result = RETURN_OK
-    if missing:
-        log2("%s", missing)
-        if len(b_ids) > 0:
-            print(_("Coredump references {0} debuginfo files, {1} of them are not installed").format(len(b_ids), len(missing)))
-        else:
-            # Only --exact FILE[:FILE2]... was specified
-            print(_("{0} of debuginfo files are not installed").format(len(missing)))
-
-        if pkgmgr is None:
-            try:
-                conf = problem.load_plugin_conf_file("CCpp.conf")
-            except OSError as ex:
-                sys.stderr.write("{0}".format(str(ex)))
-                sys.exit(RETURN_FAILURE)
-
-            pkgmgr = conf.get("PackageManager", "dnf").lower()
-
-        download_class = None
-        if pkgmgr == "dnf":
-            from reportclient.dnfdebuginfo import DNFDebugInfoDownload
-            download_class = DNFDebugInfoDownload
-        elif pkgmgr == "yum":
-            from reportclient.yumdebuginfo import YumDebugInfoDownload
-            download_class = YumDebugInfoDownload
-        else:
-            sys.stderr.write(_("Invalid configuration of CCpp addon, unsupported Package manager: '%s'") % (pkgmgr))
-            sys.exit(RETURN_FAILURE)
-
-        # TODO: should we pass keep_rpms=keeprpms to DebugInfoDownload here??
-        try:
-            downloader = download_class(cache=cachedirs[0], tmp=TMPDIR,
-                                    noninteractive=noninteractive,
-                                    repo_pattern=repo_pattern,
-                                    releasever=releasever)
-            downloader.find_packages(missing)
-
-            # Check how much space we need in cache
-            # If we don't have enough space, find files we need to keep in cache
-            # and start removing all others until we have enough space.
-            # Before removing also check, if we are able to make enough space.
-            # It does not make sense to delete everything just to find out we
-            # still need more space
-            res = os.statvfs(cachedirs[0])
-            free_space = float(res.f_bsize * res.f_bavail) / (1024 * 1024)
-            all_space = float(res.f_bsize * res.f_blocks) / (1024 * 1024)
-            install_size = downloader.get_install_size() / (1024 * 1024)
-            if install_size > free_space:
-                unnecessary_files_size = 0
-                for dirpath, dirnames, filenames in os.walk(os.path.join(cachedirs[0], "usr/lib/debug/.build-id")):
-                    for filename in [f for f in filenames if f.endswith(".debug")]:
-                        fl = os.path.join(dirpath, filename)
-                        if os.path.isfile(fl) and fl not in build_paths:
-                            unnecessary_files_size += os.stat(fl).st_size / (1024*1024)
-
-                if unnecessary_files_size + free_space >= install_size:
-                    size_mb = all_space - install_size
-                    try:
-                        pid = os.fork()
-                        if pid == 0:
-                            argv = ["abrt-action-trim-files", "-f", "%um:%s" % (size_mb, cachedirs[0]), "--"]
-                            argv.extend(build_paths)
-                            log2("abrt-action-trim-files %s", argv)
-                            os.execvp("abrt-action-trim-files", argv)
-                            error_msg_and_die("Can't execute '%s'", "abrt-action-trim-files")
-                        if pid > 0:
-                            os.waitpid(pid, 0)
-                    except Exception as e:
-                        error_msg("Can't execute abrt-action-trim-files: %s", e)
-
-            result = downloader.download(missing, download_exact_files=exact_fls)
-
+            conf = problem.load_plugin_conf_file("CCpp.conf")
         except OSError as ex:
-            if ex.errno == errno.EPIPE:
-                clean_up(TMPDIR, silent=True)
-                exit(RETURN_FAILURE)
-            error_msg_and_die("Can't download debuginfos: %s", ex)
+            sys.stderr.write(str(ex))
+            config.pkgmgr = "dnf"
+        else:
+            config.pkgmgr = conf.get("PackageManager", "dnf").lower()
 
-        if exact_fls:
-            for bid in missing:
-                if not os.path.isfile(bid):
-                    print(_("Missing requested file: {0}").format(bid))
-                    exact_file_missing = True
+    def sigterm_handler(signum, frame):
+        clean_up(config.tmp_dir, silent=True)
+        sys.exit(RETURN_OK)
 
-        missing = filter_installed_debuginfos(b_ids, cachedirs)
-        for bid in missing:
-            print(_("Missing debuginfo file: {0}").format(bid))
+    def sigint_handler(signum, frame):
+        clean_up(config.tmp_dir)
+        print("\n{0}".format(_("Exiting on user command")))
+        sys.stdout.flush()
+        sys.exit(RETURN_OK)
 
-    if not missing and not exact_file_missing:
-        print(_("All debuginfo files are available"))
+    # abrt-server can send SIGTERM to abort the download
+    signal.signal(signal.SIGTERM, sigterm_handler)
+    # ctrl-c
+    signal.signal(signal.SIGINT, sigint_handler)
 
-    if exact_file_missing:
-        result = RETURN_FAILURE
-
-    exit(result)
+    try:
+        sys.exit(run(config))
+    # report-gtk likely closed the pipes on us (user canceled).
+    # The reason we get SIGPIPEd is that this script runs under a different user,
+    # so the most common case is lack of permissions to SIGTERM successfully.
+    except BrokenPipeError:
+        clean_up(config.tmp_dir, silent=True)
+        sys.exit(RETURN_OK)
