@@ -37,7 +37,6 @@ void test(struct result **res)
 
     close(conf_fd);
 
-    setenv("ABRT_DEFAULT_CONF_DIR", "/tmp", 1);
     setenv("ABRT_CONF_DIR", "/tmp", 1);
     setenv("ABRT_CONF_FILE_NAME", strrchr(conf_file, '/') + 1, 1);
 
@@ -59,7 +58,6 @@ void test(struct result **res)
 
     unsetenv("ABRT_CONF_FILE_NAME");
     unsetenv("ABRT_CONF_DIR");
-    unsetenv("ABRT_DEFAULT_CONF_DIR");
 
     for (struct result **iter = res; NULL != *iter; ++iter)
     {
