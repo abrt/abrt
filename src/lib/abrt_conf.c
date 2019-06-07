@@ -21,7 +21,7 @@
 #define ABRT_CONF "abrt.conf"
 
 char *        g_settings_sWatchCrashdumpArchiveDir = NULL;
-unsigned int  g_settings_nMaxCrashReportsSize = 1000;
+unsigned int  g_settings_nMaxCrashReportsSize = 5000;
 char *        g_settings_dump_location = NULL;
 bool          g_settings_delete_uploaded = 0;
 bool          g_settings_autoreporting = 0;
