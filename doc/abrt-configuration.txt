@@ -43,7 +43,6 @@ Example of the configuration XML file:
 ------------
 <node name="/com/redhat/problems/configuration/ccpp">
     <annotation name="com.redhat.problems.ConfFile" value="/etc/abrt/plugins/CCpp.conf" />
-    <annotation name="com.redhat.problems.DefaultConfFile" value="/usr/share/abrt/conf.d/plugins/CCpp.conf" />
 
     <interface name="com.redhat.problems.configuration.ccpp">
         <property name="MakeCompatCore" type="b" access="readwrite"/>

@@ -5,6 +5,10 @@ NAME
 ----
 abrt-python3.conf - Configuration file for ABRT's python 3 crash hook
 
+SYNOPSIS
+--------
+/etc/abrt/plugins/python3.conf
+
 DESCRIPTION
 -----------
 Currently, only one item exists:
@@ -14,6 +18,10 @@ RequireAbsolutePath = 'yes' / 'no' ...::
    and saved even in scripts which are run without full path
    in sys.argv[0].
    Default is 'yes': do not save them.
+
+FILES
+-----
+/etc/abrt/plugins/python3.conf
 
 SEE ALSO
 --------

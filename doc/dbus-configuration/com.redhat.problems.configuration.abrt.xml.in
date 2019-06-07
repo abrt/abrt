@@ -3,7 +3,6 @@
 
 <node name="/com/redhat/problems/configuration/abrt">
     <annotation name="com.redhat.problems.ConfFile" value="/etc/abrt/abrt.conf" />
-    <annotation name="com.redhat.problems.DefaultConfFile" value="/usr/share/abrt/conf.d/abrt.conf" /> 
 
     <interface name="com.redhat.problems.configuration.abrt">
         <property name="WatchCrashdumpArchiveDir" type="s" access="readwrite">
@@ -22,32 +21,26 @@
 
         <property name="OpenGPGCheck" type="b" access="readwrite">
             <annotation name="com.redhat.problems.ConfFile" value="/etc/abrt/abrt-action-save-package-data.conf" />
-            <annotation name="com.redhat.problems.DefaultConfFile" value="/usr/share/abrt/conf.d/abrt-action-save-package-data.conf" /> 
         </property>
 
         <property name="BlackList" type="as" access="readwrite">
             <annotation name="com.redhat.problems.ConfFile" value="/etc/abrt/abrt-action-save-package-data.conf" />
-            <annotation name="com.redhat.problems.DefaultConfFile" value="/usr/share/abrt/conf.d/abrt-action-save-package-data.conf" /> 
         </property>
 
         <property name="BlackListPaths" type="as" access="readwrite">
             <annotation name="com.redhat.problems.ConfFile" value="/etc/abrt/abrt-action-save-package-data.conf" />
-            <annotation name="com.redhat.problems.DefaultConfFile" value="/usr/share/abrt/conf.d/abrt-action-save-package-data.conf" /> 
         </property>
 
         <property name="Interpreters" type="as" access="readwrite">
             <annotation name="com.redhat.problems.ConfFile" value="/etc/abrt/abrt-action-save-package-data.conf" />
-            <annotation name="com.redhat.problems.DefaultConfFile" value="/usr/share/abrt/conf.d/abrt-action-save-package-data.conf" /> 
         </property>
 
         <property name="ProcessUnpackaged" type="b" access="readwrite">
             <annotation name="com.redhat.problems.ConfFile" value="/etc/abrt/abrt-action-save-package-data.conf" />
-            <annotation name="com.redhat.problems.DefaultConfFile" value="/usr/share/abrt/conf.d/abrt-action-save-package-data.conf" /> 
         </property>
 
         <property name="GPGKeysDir" type="s" access="readwrite">
             <annotation name="com.redhat.problems.ConfFile" value="/etc/abrt/gpg_keys.conf" />
-            <annotation name="com.redhat.problems.DefaultConfFile" value="/usr/share/abrt/conf.d/gpg_keys.conf" /> 
         </property>
     </interface>
 </node>

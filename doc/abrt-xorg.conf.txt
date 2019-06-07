@@ -5,6 +5,10 @@ NAME
 ----
 abrt-xorg.conf - Configuration file for abrt-action-analyze-xorg
 
+SYNOPSIS
+--------
+/etc/abrt/plugins/xorg.conf
+
 DESCRIPTION
 -----------
 The 'abrt-action-analyze-xorg' tool processes Xorg crash problem data
@@ -17,6 +21,10 @@ BlacklistedXorgModules = 'moduleName', 'moduleName' ...::
    Xorg crash will be ignored if any of the listed Xorg modules were loaded
    at the time of the crash. Module names should be without "_drv.so" suffix:
    use 'buggymodule', not 'buggymodule_drv' or 'buggymodule_drv.so'.
+
+FILES
+-----
+/etc/abrt/plugins/xorg.conf
 
 SEE ALSO
 --------

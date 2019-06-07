@@ -5,6 +5,10 @@ NAME
 ----
 abrt-vmcore.conf - Configuration file for Configuration file for ABRT's VMCore addon
 
+SYNOPSIS
+--------
+/etc/abrt/plugins/vmcore.conf
+
 DESCRIPTION
 -----------
 The configuration file consists of items in the format "Option = Value".
@@ -14,6 +18,10 @@ CopyVMcore = 'yes' / 'no'::
    Set to 'no' if you want vmcore to be moved, not copied, from /var/crash
    to ABRT's main problem directory.
    Default is to copy vmcore.
+
+FILES
+-----
+/etc/abrt/plugins/vmcore.conf
 
 SEE ALSO
 --------

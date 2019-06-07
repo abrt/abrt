@@ -3,7 +3,6 @@
 
 <node name="/com/redhat/problems/configuration/oops">
     <annotation name="com.redhat.problems.ConfFile" value="/etc/abrt/plugins/oops.conf" />
-    <annotation name="com.redhat.problems.DefaultConfFile" value="/usr/share/abrt/conf.d/plugins/oops.conf" />
 
     <interface name="com.redhat.problems.configuration.oops">
         <property name="OnlyFatalMCE" type="b" access="readwrite" />

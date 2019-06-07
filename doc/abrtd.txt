@@ -51,10 +51,15 @@ application type (for example BugBuddy for GNOME applications), crashes of this
 type will be handled by that tool and not by 'abrtd'. If you want 'abrtd' to
 handle these crashes, turn off the higher-level crash-catching tool.
 
-AUTHORS
--------
-* ABRT team
+FILES
+-----
+/etc/abrt/abrt.conf::
+    Configuration file for the daemon.
 
 SEE ALSO
 --------
 abrt.conf(5)
+
+AUTHORS
+-------
+* ABRT team

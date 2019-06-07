@@ -3,7 +3,6 @@
 
 <node name="/com/redhat/problems/configuration/vmcore">
     <annotation name="com.redhat.problems.ConfFile" value="/etc/abrt/plugins/vmcore.conf" />
-    <annotation name="com.redhat.problems.DefaultConfFile" value="/usr/share/abrt/conf.d/plugins/vmcore.conf" />
 
     <interface name="com.redhat.problems.configuration.vmcore">
         <property name="CopyVMcore" type="b" access="readwrite" />

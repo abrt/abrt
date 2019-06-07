@@ -5,6 +5,10 @@ NAME
 ----
 abrt-oops.conf - Configuration file for ABRT's Kernel Oops extractor
 
+SYNOPSIS
+--------
+/etc/abrt/plugins/oops.conf
+
 DESCRIPTION
 -----------
 The configuration file consists of items in the format "Option = Value".
@@ -17,6 +21,10 @@ DropNotReportableOopses = 'yes' / 'no'
 OnlyFatalMCE = 'yes' / 'no'
    If you want to see only fatal MCEs, set to "yes".
    Defaults is 'yes': detect only fatal ones.
+
+FILES
+-----
+/etc/abrt/plugins/oops.conf
 
 SEE ALSO
 --------
