@@ -189,14 +189,12 @@ int load_abrt_conf()
 
 static const char *const *get_conf_directories(void)
 {
-    static const char *base_directories[3];
+    static const char *base_directories[2];
 
-    const char *d = getenv("ABRT_DEFAULT_CONF_DIR");
-    const char *c = getenv("ABRT_CONF_DIR");
+    const char *d = getenv("ABRT_CONF_DIR");
 
-    base_directories[0] = d != NULL ? d : DEFAULT_CONF_DIR;
-    base_directories[1] = c != NULL ? d : CONF_DIR;
-    base_directories[2] = NULL;
+    base_directories[0] = d != NULL ? d : CONF_DIR;
+    base_directories[1] = NULL;
 
     return base_directories;
 }
@@ -209,7 +207,7 @@ int load_abrt_conf_file(const char *file, map_string_t *settings)
 
 int load_abrt_plugin_conf_file(const char *file, map_string_t *settings)
 {
-    static const char *const base_directories[] = { DEFAULT_PLUGINS_CONF_DIR, PLUGINS_CONF_DIR, NULL };
+    static const char *const base_directories[] = { PLUGINS_CONF_DIR, NULL };
 
     return load_conf_file_from_dirs(file, base_directories, settings, /*skip key w/o values:*/ false);
 }
