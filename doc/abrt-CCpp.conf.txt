@@ -5,6 +5,10 @@ NAME
 ----
 abrt-CCpp.conf - Configuration file for ABRT's core dump crash hook
 
+SYNOPSIS
+--------
+/etc/abrt/plugins/CCpp.conf
+
 DESCRIPTION
 -----------
 The configuration file consists of items in the format "Option = Value".
@@ -64,6 +68,10 @@ AllowedGroups = root, wheel, ...::
 
 VerboseLog = NUM::
    Used to make the hook more verbose
+
+FILES
+-----
+/etc/abrt/plugins/CCpp.conf
 
 SEE ALSO
 --------

@@ -6,6 +6,10 @@ NAME
 abrt-action-save-package-data.conf - Configuration file for
 abrt-action-save-package-data
 
+SYNOPSIS
+--------
+/etc/abrt/abrt-action-save-package-data.conf
+
 DESCRIPTION
 -----------
 The 'abrt-action-save-package-data' tool queries RPM database and saves package
@@ -31,9 +35,13 @@ ProcessUnpackaged = 'yes' | 'no'::
    to an installed package.
    The default is 'no'.
 
+FILES
+-----
+/etc/abrt/abrt-action-save-package-data.conf
+
 SEE ALSO
 --------
-abrt.conf(5)
+abrt.conf(5), gpg_keys.conf(5)
 
 AUTHORS
 -------

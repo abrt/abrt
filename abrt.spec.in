@@ -687,24 +687,14 @@ if [ -f /etc/abrt/plugins/CCpp.conf ]; then
     mv /etc/abrt/plugins/CCpp.conf /etc/abrt/plugins/CCpp.conf.rpmsave.atomic || exit 1;
 fi
 ln -sf /etc/abrt/plugins/CCpp_Atomic.conf /etc/abrt/plugins/CCpp.conf
-if [ -f /usr/share/abrt/conf.d/plugins/CCpp.conf ]; then
-    mv /usr/share/abrt/conf.d/plugins/CCpp.conf /usr/share/abrt/conf.d/plugins/CCpp.conf.rpmsave.atomic || exit 1;
-fi
-ln -sf /usr/share/abrt/conf.d/plugins/CCpp_Atomic.conf /usr/share/abrt/conf.d/plugins/CCpp.conf
 %systemd_post abrt-coredump-helper.service
 
 %preun atomic
 if [ -L /etc/abrt/plugins/CCpp.conf ]; then
     rm /etc/abrt/plugins/CCpp.conf
 fi
-if [ -L /usr/share/abrt/conf.d/plugins/CCpp.conf ]; then
-    rm /usr/share/abrt/conf.d/plugins/CCpp.conf
-fi
 if [ -f /etc/abrt/plugins/CCpp.conf.rpmsave.atomic ]; then
     mv /etc/abrt/plugins/CCpp.conf.rpmsave.atomic /etc/abrt/plugins/CCpp.conf || exit 1
-fi
-if [ -f  /usr/share/abrt/conf.d/plugins/CCpp.conf.rpmsave.atomic ]; then
-    mv /usr/share/abrt/conf.d/plugins/CCpp.conf.rpmsave.atomic /usr/share/abrt/conf.d/plugins/CCpp.conf || exit 1
 fi
 
 %postun atomic
@@ -806,12 +796,9 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_bindir}/abrt-action-analyze-xorg
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/org.freedesktop.problems.daemon.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-action-save-package-data.conf
-%{_datadir}/%{name}/conf.d/abrt-action-save-package-data.conf
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/xorg.conf
-%{_datadir}/%{name}/conf.d/plugins/xorg.conf
 %{_mandir}/man5/abrt-xorg.conf.5*
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys.conf
-%{_datadir}/%{name}/conf.d/gpg_keys.conf
 %{_mandir}/man5/gpg_keys.conf.5*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/abrt_event.conf
 %{_mandir}/man5/abrt_event.conf.5*
@@ -838,13 +825,9 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %files libs
 %{_libdir}/libabrt.so.*
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
-%{_datadir}/%{name}/conf.d/abrt.conf
 %{_mandir}/man5/abrt.conf.5*
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
-%dir %{_datadir}/%{name}
-%dir %{_datadir}/%{name}/conf.d
-%dir %{_datadir}/%{name}/conf.d/plugins
 
 # filesystem package should own /usr/share/augeas/lenses directory
 %{_datadir}/augeas/lenses/abrt.aug
@@ -891,7 +874,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %files addon-ccpp
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
-%{_datadir}/%{name}/conf.d/plugins/CCpp.conf
 %{_mandir}/man5/abrt-CCpp.conf.5*
 %{_libexecdir}/abrt-gdb-exploitable
 %{_journalcatalogdir}/abrt_ccpp.catalog
@@ -965,7 +947,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_koops_format.conf
 %{_mandir}/man5/koops_event.conf.5*
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/oops.conf
-%{_datadir}/%{name}/conf.d/plugins/oops.conf
 %{_unitdir}/abrt-oops.service
 
 %dir %{_localstatedir}/lib/abrt
@@ -993,7 +974,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vmcore_event.conf
 %{_mandir}/man5/vmcore_event.conf.5*
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/vmcore.conf
-%{_datadir}/%{name}/conf.d/plugins/vmcore.conf
 %{_datadir}/libreport/events/analyze_VMcore.xml
 %{_unitdir}/abrt-vmcore.service
 %{_sbindir}/abrt-harvest-vmcore
@@ -1017,7 +997,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %if %{with python3}
 %files -n python3-abrt-addon
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python3.conf
-%{_datadir}/%{name}/conf.d/plugins/python3.conf
 %{_mandir}/man5/abrt-python3.conf.5*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/python3_event.conf
 %{_journalcatalogdir}/abrt_python3.catalog
@@ -1060,7 +1039,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %files atomic
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp_Atomic.conf
 %{_unitdir}/abrt-coredump-helper.service
-%{_datadir}/%{name}/conf.d/plugins/CCpp_Atomic.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-action-save-package-data.conf
 %{_bindir}/abrt-action-save-package-data
 %{_mandir}/man1/abrt-action-save-package-data.1*
