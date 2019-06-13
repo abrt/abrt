@@ -43,6 +43,8 @@ rlJournalStart
         TmpDir=$(mktemp -d)
         cp verify_core_backtrace.py verify_core_backtrace_length.py will_segfault_in_new_pid.c will_segfault_locked_memory.c $TmpDir
         pushd $TmpDir
+
+        rlRun "augtool set /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged yes"
     rlPhaseEnd
 
     rlPhaseStartTest "CCpp plugin (testuser crash)"
@@ -177,6 +179,7 @@ EOF
         rlBundleLogs abrt $(echo *_ls) $(echo verify_result*)
         popd # TmpDir
         rm -rf $TmpDir
+        rlRun "augtool set /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged no"
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd

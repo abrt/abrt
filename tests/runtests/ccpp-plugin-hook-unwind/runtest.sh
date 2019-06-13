@@ -68,6 +68,8 @@ rlJournalStart
 
         old_suid_dumpable=$(cat /proc/sys/fs/suid_dumpable)
         rlRun "echo 2 > /proc/sys/fs/suid_dumpable" 0
+
+        rlRun "augtool set /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged yes"
     rlPhaseEnd
 
     rlPhaseStartTest "CreateCoreBacktrace enabled"
@@ -196,6 +198,7 @@ rlJournalStart
 
         rlRun "ulimit -c $old_ulimit" 0
         rlRun "echo $old_suid_dumpable > /proc/sys/fs/suid_dumpable" 0
+        rlRun "augtool set /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged no"
 
         popd # TmpDir
         rm -rf $TmpDir

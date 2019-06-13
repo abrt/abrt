@@ -41,6 +41,8 @@ rlJournalStart
         TmpDir=$(mktemp -d)
         cp -- fakefaf.py  "$TmpDir"
         pushd "$TmpDir"
+
+        rlRun "augtool set /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged yes"
     rlPhaseEnd
 
     rlPhaseStartTest "attaching contact email if configured"
@@ -203,6 +205,7 @@ rlJournalStart
         rlBundleLogs abrt $(ls server* ureport*)
         popd # TmpDir
         rm -rf -- "$TmpDir"
+        rlRun "augtool set /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged no"
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd

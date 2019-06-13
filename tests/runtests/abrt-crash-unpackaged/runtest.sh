@@ -40,6 +40,7 @@ rlJournalStart
 
         TmpDir=$(mktemp -d)
         pushd $TmpDir
+        rlRun "augtool set /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged yes"
     rlPhaseEnd
 
     rlPhaseStartTest "unpackaged binary problem dir check"
@@ -83,6 +84,7 @@ rlJournalStart
     rlPhaseStartCleanup
         popd # TmpDir
         rm -rf $TmpDir
+        rlRun "augtool set /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged no"
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd
