@@ -72,11 +72,11 @@ rlJournalStart
         rlRun "augtool set /files/etc/abrt/abrt-action-save-package-data.conf/ProcessUnpackaged yes"
     rlPhaseEnd
 
-    rlPhaseStartTest "CreateCoreBacktrace enabled"
+    rlPhaseStartTest "JITCoreDumpTracing enabled"
         rlLogInfo "VerboseLog = 3"
-        rlLogInfo "CreateCoreBacktrace = yes"
+        rlLogInfo "JITCoreDumpTracing = yes"
         rlRun "echo 'VerboseLog = 3' > $CFG_FILE" 0 "Set VerboseLog = 3"
-        rlRun "echo 'CreateCoreBacktrace = yes' >> $CFG_FILE" 0 "Set CreateCoreBacktrace = yes"
+        rlRun "echo 'JITCoreDumpTracing = yes' >> $CFG_FILE" 0 "Set JITCoreDumpTracing = yes"
 
         prepare
         generate_crash
@@ -91,7 +91,7 @@ rlJournalStart
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
     rlPhaseEnd
 
-    rlPhaseStartTest "CreateCoreBacktrace enabled - New PID namespace"
+    rlPhaseStartTest "JITCoreDumpTracing enabled - New PID namespace"
         # I did not use 'unshare --fork --pid will_segfault' because unshare
         # kills itself with the signal the child received.
         rlLogInfo "Build the binary"
@@ -113,10 +113,10 @@ rlJournalStart
 
     rlPhaseStartTest "SaveFullCore disabled"
         rlLogInfo "VerboseLog = 3"
-        rlLogInfo "CreateCoreBacktrace = yes"
+        rlLogInfo "JITCoreDumpTracing = yes"
         rlLogInfo "SaveFullCore = no"
         rlRun "echo 'VerboseLog = 3' > $CFG_FILE" 0 "Set VerboseLog = 3"
-        rlRun "echo 'CreateCoreBacktrace = yes' >> $CFG_FILE" 0 "Set CreateCoreBacktrace = yes"
+        rlRun "echo 'JITCoreDumpTracing = yes' >> $CFG_FILE" 0 "Set JITCoreDumpTracing = yes"
         rlRun "echo 'SaveFullCore = no' >> $CFG_FILE" 0 "Set SaveFullCore = no"
 
         prepare

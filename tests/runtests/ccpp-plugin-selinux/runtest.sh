@@ -66,7 +66,7 @@ rlJournalStart
         sed -i 's/\(ProcessUnpackaged\) = no/\1 = yes/g' $CFG_FILE
 
         # Test sigchld AVC
-        sed -i 's/\(CreateCoreBacktrace\) = no/\1 = yes/g' $CCPP_CFG_FILE
+        sed -i 's/\(JITCoreDumpTracing\) = no/\1 = yes/g' $CCPP_CFG_FILE
         sed -i 's/\(SaveFullCore\) = yes/\1 = no/g' $CCPP_CFG_FILE
     rlPhaseEnd
 

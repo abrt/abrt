@@ -434,11 +434,11 @@ static bool is_user_in_allowed_group(uid_t uid, const GList *list)
     return false;
 }
 
-static int test_configuration(bool setting_SaveFullCore, bool setting_CreateCoreBacktrace)
+static int test_configuration(bool setting_SaveFullCore, bool setting_JITCoreDumpTracing)
 {
-    if (!setting_SaveFullCore && !setting_CreateCoreBacktrace)
+    if (!setting_SaveFullCore && !setting_JITCoreDumpTracing)
     {
-        fprintf(stderr, "Both SaveFullCore and CreateCoreBacktrace are disabled - "
+        fprintf(stderr, "Both SaveFullCore and JITCoreDumpTracing are disabled - "
                         "at least one of them is needed for useful report.\n");
         return 1;
     }
@@ -865,7 +865,7 @@ int main(int argc, char** argv)
     bool setting_MakeCompatCore;
     bool setting_SaveBinaryImage;
     bool setting_SaveFullCore;
-    bool setting_CreateCoreBacktrace;
+    bool setting_JITCoreDumpTracing;
     bool setting_SaveContainerizedPackageData;
     bool setting_StandaloneHook;
     unsigned int setting_MaxCoreFileSize = g_settings_nMaxCrashReportsSize;
@@ -883,8 +883,15 @@ int main(int argc, char** argv)
         setting_SaveBinaryImage = value && string_to_bool(value);
         value = get_map_string_item_or_NULL(settings, "SaveFullCore");
         setting_SaveFullCore = value ? string_to_bool(value) : true;
-        value = get_map_string_item_or_NULL(settings, "CreateCoreBacktrace");
-        setting_CreateCoreBacktrace = value ? string_to_bool(value) : true;
+        value = get_map_string_item_or_NULL(settings, "JITCoreDumpTracing");
+        if (NULL == value)
+        {
+            /* Compatibility with existing configs.
+             * Remove when hell freezes over.
+             */
+            value = get_map_string_item_or_NULL(settings, "CreateCoreBacktrace");
+        }
+        setting_JITCoreDumpTracing = value ? string_to_bool(value) : true;
         value = get_map_string_item_or_NULL(settings, "IgnoredPaths");
         if (value)
             setting_ignored_paths = parse_list(value);
@@ -920,7 +927,7 @@ int main(int argc, char** argv)
     }
 
     if (argc == 2 && !strcmp(argv[1], "--test-config"))
-        return test_configuration(setting_SaveFullCore, setting_CreateCoreBacktrace);
+        return test_configuration(setting_SaveFullCore, setting_JITCoreDumpTracing);
 
     if (argc < 8)
     {
@@ -1449,12 +1456,12 @@ int main(int argc, char** argv)
 
         enum create_core_backtrace_status cbr = 0;
         /* Perform crash-time unwind of the guilty thread. */
-        if (tid > 0 && setting_CreateCoreBacktrace)
+        if (tid > 0 && setting_JITCoreDumpTracing)
         {
             log_debug("Creating core_backtrace\n");
             cbr = create_core_backtrace(dd, uid, fsuid, gid, fsgid, tid, executable, signal_no);
             if (cbr & CB_DISABLED)
-                log_warning("CreateCoreBacktrace is enabled but dump time unwinding is not supported");
+                log_warning("JITCoreDumpTracing is enabled but dump time unwinding is not supported");
         }
 
         /* Make sure we closed STDIN_FILENO to let kernel to wipe out the process. */
