@@ -851,8 +851,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %dir %{_datadir}/%{name}
 # all glade, gtkbuilder and py files for gui
 %{_datadir}/icons/hicolor/*/apps/*
-%{_datadir}/icons/hicolor/*/status/*
-%{_datadir}/%{name}/icons/hicolor/*/status/*
 %{_datadir}/%{name}/ui/*
 %{_bindir}/abrt-applet
 %{_bindir}/system-config-abrt
