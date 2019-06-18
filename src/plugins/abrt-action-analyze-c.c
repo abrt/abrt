@@ -259,6 +259,12 @@ int main(int argc, char **argv)
         sr_normalize_core_thread(thread);
 
         struct sr_core_frame *frame = thread->frames;
+        if (!frame)
+        {
+            log_info("Could not find any usable stack frame");
+            goto next;
+        }
+
         if (frame->function_name)
             dd_save_text(dd, FILENAME_CRASH_FUNCTION, frame->function_name);
 
