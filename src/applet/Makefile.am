@@ -1,5 +1,3 @@
-SUBDIRS = systemd
-
 bin_PROGRAMS = abrt-applet
 #test-report
 
@@ -28,6 +26,11 @@ abrt_applet_LDADD =       \
 
 @INTLTOOL_DESKTOP_RULE@
 
+autostartdir = $(sysconfdir)/xdg/autostart
+autostart_in_files = org.freedesktop.problems.applet.desktop.in
+
+autostart_DATA = $(autostart_in_files:.desktop.in=.desktop)
+
 dbusservicedir = $(datadir)/dbus-1/services
 dbusservice_in_files = org.freedesktop.problems.applet.service.in
 
@@ -36,11 +39,8 @@ dbusservice_DATA = org.freedesktop.problems.applet.service
 org.freedesktop.problems.applet.service: org.freedesktop.problems.applet.service.in Makefile
 	$(AM_V_GEN) sed -e "s|\@bindir\@|$(bindir)|" $< > $@
 
-desktopdir = $(datadir)/applications
-desktop_in_files = org.freedesktop.problems.applet.desktop.in
-
-desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
+CLEANFILES = $(autostart_in_files:.desktop.in=.desktop)
 
 EXTRA_DIST =              \
-    $(dbusservice_in_files) \
-    $(desktop_in_files)
+    $(autostart_in_files) \
+    $(dbusservice_in_files)
