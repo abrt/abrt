@@ -168,6 +168,12 @@ rlJournalStart
 
         rlRun "EXAMPLES_PATH=\"../../examples\""
 
+        # prepare oops1.test from template
+        cat $EXAMPLES_PATH/oops1.test.template | \
+            sed "s/2.6.27.9-159.fc10.i686/<KERNEL_VERSION>/" | \
+            sed "s/:HOSTNAME:/$( hostname )/" > \
+            $EXAMPLES_PATH/oops1.test
+
         # Hopefully we don't remove running kernel's package
         rlRun "sed s/2.6.27.9-159.fc10.i686/$(uname -r)/ $EXAMPLES_PATH/oops1.test | abrt-dump-oops -xD 2>&1 | grep 'abrt-dump-oops: Found oopses: [1-9]'" 0 "Found OOPS"
 
