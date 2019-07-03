@@ -10,11 +10,11 @@
 # Onuralp SEZER <thunderbirdtr@gmail.com>, 2012
 # Onur Baysan <onurbaysan@gmail.com>, 2011
 # Akın Ömeroğlu <akinomeroglu@gmail.com>, 2015. #zanata
-# Jakub Filak <jfilak@redhat.com>, 2016. #zanata
 # Emin Tufan Çetin <etcetin@gmail.com>, 2017. #zanata
 # Martin Kutlak <mkutlak@redhat.com>, 2017. #zanata
 # Bora Can Aslı <boracasli14@aol.com>, 2018. #zanata
 # Muhammet Kara <muhammet.k@gmail.com>, 2018. #zanata
+# Serdar Sağlam <teknomobil@msn.com>, 2019. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -23,8 +23,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-05-01 04:00+0000\n"
-"Last-Translator: Muhammet Kara <muhammet.k@gmail.com>\n"
+"PO-Revision-Date: 2019-05-10 10:12+0000\n"
+"Last-Translator: Serdar Sağlam <teknomobil@msn.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/tr/)\n"
 "Language: tr\n"
@@ -33,7 +33,7 @@ msgstr ""
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
-msgstr "Sorun Bildirme"
+msgstr "Sorun Bildir"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2
 msgid "View and report application crashes"
@@ -153,11 +153,9 @@ msgid ""
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr ""
 "& [-v] [DIR]...\n"
-"\\n\n"
-"\\n\n"
-"ABRT tarafından yeni sorunlar algılandığında kullanıcıyı bilgilendiren küçük "
+"\n"
+"ABRT tarafından yeni sorunlar tespit edildiğinde kullanıcıyı bilgilendiren "
 "uygulama\n"
-"\\n\n"
 
 #: ../src/configuration-gui/abrt-config-widget.c:483
 msgid ""
@@ -272,6 +270,9 @@ msgid ""
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
 msgstr ""
+"Bilgisayar kapatılırken veya kullanıcı oturumu kapatırken eksik sorunlar "
+"tespit edildi. Önemli sorun raporları sunmak için ABRT bu sorunları "
+"göndermenize izin vermeyecektir."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid "Always"
@@ -287,7 +288,7 @@ msgstr "Sor"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
 msgid "Upload coredump for backtrace generation"
-msgstr ""
+msgstr "Geri izleme üretimi için coredump yükle"
 
 #: ../src/configuration-gui/system-config-abrt.c:79
 msgid "_Close"
@@ -304,7 +305,7 @@ msgstr "Sorun Raporlama Yapılandırması"
 
 #: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
-msgstr ""
+msgstr "ABRT Sistem Konfigürasyonu Hakkında"
 
 #: ../src/configuration-gui/main.c:105
 msgid "About"
@@ -320,6 +321,9 @@ msgid ""
 "\n"
 "Query package database and save package and component name"
 msgstr ""
+"& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
+"\n"
+"Paket veritabanını sorgula ve paket ve bileşen adını kaydet"
 
 #: ../src/daemon/abrt-action-save-package-data.c:453
 #: ../src/daemon/abrt-action-save-container-data.c:265
@@ -331,7 +335,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
 msgid "Problem directory"
-msgstr "Dİzin problemi"
+msgstr "Sorun dizini"
 
 #: ../src/daemon/abrt-action-save-package-data.c:454
 msgid "Configuration file"
@@ -360,7 +364,7 @@ msgstr "& [seçenekler]"
 
 #: ../src/daemon/abrt-server.c:858
 msgid "Use NUM as client uid"
-msgstr ""
+msgstr "NUM’u istemci kullanıcı kimliği olarak kullan"
 
 #: ../src/daemon/abrt-server.c:859 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:97
@@ -382,7 +386,7 @@ msgstr "Bilinmeyen hata"
 #: ../src/dbus/abrt-dbus.c:167
 #, c-format
 msgid "'%s' is not a valid element name"
-msgstr ""
+msgstr "'%s' geçerli bir öge adı değil"
 
 #: ../src/dbus/abrt-dbus.c:219
 #, c-format
@@ -407,6 +411,8 @@ msgstr "'%s' elemanında değişiklik yapılamıyor"
 #: ../src/dbus/abrt-dbus.c:536
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
+"Chowning dizini başarısız oldu. Daha fazla ayrıntı için sistem günlüklerini "
+"kontrol edin."
 
 #: ../src/dbus/abrt-dbus.c:665
 #, c-format
@@ -429,6 +435,8 @@ msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr ""
+"'%s' ismi kaybedildi, lütfen ismin sahibi başka bir servisin çalışıp "
+"çalışmadığını kontrol edin.\n"
 
 #: ../src/dbus/abrt-dbus.c:903 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:459
@@ -447,6 +455,11 @@ msgid ""
 "problem. If you have time and want to help the developers in their effort to "
 "sort out this problem, please contact them directly."
 msgstr ""
+"Sorunlu veriler eksik. Bu genellikle bilgisayar kapatılırken veya kullanıcı "
+"oturumu kapatırken bir sorun tespit edildiğinde olur. Değerli sorun "
+"raporları sunmak için ABRT bu sorunu göndermenize izin vermeyecektir. "
+"Zamanınız varsa ve geliştiricilere bu sorunu çözme çabalarında yardımcı "
+"olmak istiyorsanız, lütfen doğrudan onlarla iletişim kurun."
 
 #: ../src/daemon/abrtd.c:457
 msgid "Do not daemonize"
@@ -495,16 +508,16 @@ msgstr ""
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr ""
+msgstr "Eşzamanlı çalışma sayısı. Öntanımlı"
 
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr ""
+msgstr "MiB'de azami önbellek boyutu. Öntanımlı"
 
 #: ../src/daemon/abrt-auto-reporting.c:198
 #: ../src/daemon/abrt-auto-reporting.c:206
 msgid "& [ "
-msgstr ""
+msgstr "& [ "
 
 #: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
@@ -516,7 +529,7 @@ msgstr "Red Hat Support kullanıcı adı"
 
 #: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
-msgstr ""
+msgstr "Red Hat destek parolası, verilmezse, bunun için bir istem verilecek"
 
 #: ../src/daemon/abrt-auto-reporting.c:236
 msgid "uReport SSL certificate paths or certificate type"
@@ -540,12 +553,12 @@ msgstr ""
 
 #: ../src/daemon/abrt-auto-reporting.c:277
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "Geçersiz sayıda argüman"
 
 #: ../src/daemon/abrt-auto-reporting.c:296
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "Bilinmeyen seçenek değeri: '%s'\n"
 
 #: ../src/daemon/abrt-auto-reporting.c:336
 msgid "Password:"
@@ -558,15 +571,15 @@ msgstr "Parola olmadan devam edilemez\n"
 #. Print only the part before ':' of a string like "username:password"
 #: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
-msgstr ""
+msgstr "HTTP Onaylı otomatik raporlama"
 
 #: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
-msgstr ""
+msgstr "SSL İstemcisi Onaylı otomatik raporlama"
 
 #: ../src/daemon/abrt-auto-reporting.c:384
 msgid "anonymous auto reporting"
-msgstr ""
+msgstr "anonim otomatik raporlama"
 
 #: ../src/daemon/abrt-handle-upload.in:135
 #, c-format
@@ -607,7 +620,7 @@ msgstr "Atlanıyor: '{0}' (sekme içeriyor)"
 
 #: ../src/daemon/abrt-handle-upload.in:194
 msgid "Can't change directory to '{0}'"
-msgstr ""
+msgstr "Dizin '{0}' olarak değiştirilemiyor"
 
 #: ../src/daemon/abrt-handle-upload.in:205
 msgid "Unknown file type: '{0}'"
@@ -615,7 +628,7 @@ msgstr "Bilinmeyen dosya türü: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:210
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "'{0}' içinde çalışma dizini oluşturulamıyor"
 
 #: ../src/daemon/abrt-handle-upload.in:221
 msgid "Can't move '{0}' to '{1}'"
@@ -627,11 +640,11 @@ msgstr "'{0}', '{1}' konumuna kopyalanamıyor"
 
 #: ../src/daemon/abrt-handle-upload.in:230
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "'{0}' üzerinde doğrulama hatası"
 
 #: ../src/daemon/abrt-handle-upload.in:232
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "'{0}' açılıyor"
 
 #: ../src/daemon/abrt-handle-upload.in:236
 msgid "Can't create '{0}' directory"
@@ -639,11 +652,11 @@ msgstr "'{0}' dizini oluşturulamıyor"
 
 #: ../src/daemon/abrt-handle-upload.in:240
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "'{0}' açılamadı"
 
 #: ../src/daemon/abrt-handle-upload.in:260
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' başarıyla işlendi"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
@@ -653,7 +666,7 @@ msgstr "Geri izleme üretiliyor"
 #: ../src/lib/problem_api_dbus.c:42
 #, c-format
 msgid "Can't connect to system DBus: %s"
-msgstr ""
+msgstr "DBus sistemine bağlanılamıyor: %s"
 
 #: ../src/lib/problem_api_dbus.c:68
 #, c-format
@@ -663,7 +676,7 @@ msgstr ""
 #: ../src/lib/problem_api_dbus.c:97
 #, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr ""
+msgstr "Sorunlu dizini silme başarısız oldu: %s"
 
 #: ../src/lib/problem_api_dbus.c:131
 #, c-format
@@ -727,7 +740,7 @@ msgstr "%s için geri izleme ayrıştırması başarısız oldu"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:150
 msgid "Crash thread not found"
-msgstr ""
+msgstr "Kilitlenme iş parçacığı bulunamadı"
 
 #: ../src/plugins/abrt-action-analyze-c.c:130
 msgid ""
@@ -769,6 +782,10 @@ msgid ""
 "your computer. ABRT will not allow you to create a report in a bug tracking "
 "system but you can contact kernel maintainers via e-mail."
 msgstr ""
+"Geri izleme, bildirilecek yeterli anlamlı fonksiyon çerçevesi içermiyor. Can "
+"sıkıcı bir durum ancak bilgisayarınız ile ilgili bir sorunu işaret etmesi "
+"gerekmez. ABRT bir hata izleme sisteminde rapor oluşturmanıza izin vermez, "
+"ancak e-posta yoluyla çekirdek sağlayıcılarla iletişime geçebilirsiniz."
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:73
 msgid ""
@@ -827,7 +844,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-find-bodhi-update:102
 msgid "Problem directory error: {0}"
-msgstr ""
+msgstr "Sorun dizini hatası: {0}"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:117
 msgid "Using product '{0}' from /etc/os-release."
@@ -894,7 +911,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:81
 msgid "Error: GDB did not return any data"
-msgstr ""
+msgstr "Hata: GDB hiçbir veri döndürmedi"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:95
 #, c-format
@@ -983,7 +1000,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
 msgid "Download only specified files"
-msgstr ""
+msgstr "Sadece belirtilen dosyaları indir"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
 msgid "Pattern to use when searching for repos, default: *debug*"
@@ -991,7 +1008,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
 msgid "Ignored option"
-msgstr ""
+msgstr "Yoksayılan seçenek"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:63
 msgid ""
@@ -999,12 +1016,17 @@ msgid ""
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
 msgstr ""
+"Çekirdek dökümü yüklenecek tamam mı? (Hassas veriler içerebilir). Cevabınız "
+"'Hayır' ise, yerel olarak bir yığın izi oluşturulur. (Çok miktarda veri "
+"indirebilir)."
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:72
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
 msgstr ""
+"Yerel olarak yığın izi oluşturmak istiyor musunuz? (Çok fazla veri "
+"indirebilir ancak raporlama yığın izlemesi olmadan devam edemez)."
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -1017,11 +1039,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
-msgstr ""
+msgstr "Tüm sorun dizinlerini sil"
 
 #: ../src/plugins/abrt-action-trim-files.c:237
 msgid "Delete files inside this directory"
-msgstr ""
+msgstr "Bu dizindeki dosyaları sil"
 
 #: ../src/plugins/abrt-action-trim-files.c:238
 msgid "Preserve this directory"
@@ -1040,19 +1062,19 @@ msgstr ""
 #: ../src/plugins/abrt-action-ureport:99
 #, c-format
 msgid "Usage: %s [-v]"
-msgstr ""
+msgstr "Kullanım: %s [-v]"
 
 #: ../src/plugins/abrt-action-ureport:120
 msgid "Unable to get current working directory as it was probably deleted"
-msgstr ""
+msgstr "Mevcut çalışma dizini muhtemelen silindiği için alınamadı"
 
 #: ../src/plugins/abrt-action-ureport:148
 msgid "A bug was already filed about this problem:"
-msgstr ""
+msgstr "Bu sorun hakkında zaten bir hata bildirildi:"
 
 #: ../src/plugins/abrt-action-ureport:158
 msgid "uReport was already sent, not sending it again"
-msgstr ""
+msgstr "uReport zaten gönderildi, tekrar yollamadı"
 
 #: ../src/plugins/abrt-action-ureport:179
 msgid "Adding you to CC List of the existing bugzilla bug"
@@ -1604,7 +1626,7 @@ msgstr "Sunucu, talebinizi değerlendiremiyor."
 
 #: ../src/plugins/abrt-retrace-client.c:600
 msgid "Unknown package sent to Retrace server."
-msgstr ""
+msgstr "Retrace sunucusuna bilinmeyen paket gönderildi."
 
 #: ../src/plugins/abrt-retrace-client.c:609
 msgid "Preparing an archive to upload"
@@ -1620,7 +1642,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:640
 #, c-format
 msgid "You are going to upload %s. Continue?"
-msgstr ""
+msgstr "%s yükleyeceksiniz. Devam et?"
 
 #: ../src/plugins/abrt-retrace-client.c:649
 msgid "Cancelled by user"
@@ -1629,7 +1651,7 @@ msgstr "Kullanıcı tarafından iptal edildi"
 #: ../src/plugins/abrt-retrace-client.c:683
 #, c-format
 msgid "Uploading %s\n"
-msgstr ""
+msgstr "Gönderiliyor %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:709
 #, c-format
@@ -1653,7 +1675,7 @@ msgstr "Yükleme başarılı"
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
-msgstr ""
+msgstr "Sorun dizininiz bozuk ve Retrace sunucusu tarafından işlenemiyor."
 
 #: ../src/plugins/abrt-retrace-client.c:769
 msgid ""
@@ -1680,7 +1702,6 @@ msgid "Task Id: %s\n"
 "Task Password: %s\n"
 msgstr "Görev Id: %s\n"
 "Görev Şifresi: %s\n"
-"\n"
 
 #: ../src/plugins/abrt-retrace-client.c:866
 msgid "Invalid response from server: missing X-Task-Status."
@@ -1691,7 +1712,6 @@ msgstr "Sunucudan geçersiz cevap: X-Task-Status kayıp"
 msgid "Task Status: %s\n"
 "%s\n"
 msgstr "Görev Durumu: %s\n"
-"\n"
 "%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:909
@@ -1706,14 +1726,16 @@ msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
 msgstr ""
+"Retrace başarısız oldu. Daha sonra tekrar deneyin ve sorun devam ederse, "
+"lütfen bu sorunu bildirin."
 
 #: ../src/plugins/abrt-retrace-client.c:1217
 msgid "log to syslog"
-msgstr "dökümden sys dökümüne"
+msgstr "syslog günlüğüne"
 
 #: ../src/plugins/abrt-retrace-client.c:1219
 msgid "allow insecure connection to retrace server"
-msgstr "Güvensiz geri izleme sunucu bağlantısına izin ver."
+msgstr "sunucuyu geri çekmek için güvenli olmayan bağlantıya izin ver"
 
 #: ../src/plugins/abrt-retrace-client.c:1221
 msgid ""
@@ -1723,7 +1745,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1224
 msgid "retrace server URL"
-msgstr "Geri"
+msgstr "sunucu URL'sini geri çek"
 
 #: ../src/plugins/abrt-retrace-client.c:1226
 msgid "retrace server port"
@@ -1838,7 +1860,7 @@ msgstr "Güvensiz"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 msgid "Whether or not to use insecure connection"
-msgstr ""
+msgstr "Güvenli olmayan bağlantı kullanılıp kullanılmayacağı"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
@@ -1944,11 +1966,11 @@ msgstr ""
 
 #: ../src/plugins/https-utils.c:220
 msgid "Failed to enable SSL3."
-msgstr ""
+msgstr "SSL3 etkinleştirilemedi."
 
 #: ../src/plugins/https-utils.c:222
 msgid "Failed to enable TLS."
-msgstr ""
+msgstr "TLS etkinleştirilemedi."
 
 #: ../src/plugins/https-utils.c:224
 msgid "Failed to set URL to SSL socket."
@@ -2016,6 +2038,8 @@ msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
 msgstr ""
+"Bozuk BIOS nedeniyle bir çekirdek sorunu oluştu. Ne yazık ki, bu tür "
+"sorunlar çekirdek bakım uzmanları tarafından çözülemez."
 
 #: ../src/plugins/oops-utils.c:205
 msgid ""
@@ -2124,7 +2148,7 @@ msgstr ""
 
 #: ../src/cli/abrt-cli.c:139
 msgid "Process multiple problems"
-msgstr ""
+msgstr "Birden fazla sorunu işle"
 
 #: ../src/cli/abrt-cli.c:162
 msgid "See 'abrt-cli COMMAND --help' for more information"
@@ -2132,12 +2156,12 @@ msgstr ""
 
 #: ../src/cli/list.c:127
 msgid "& list [options]"
-msgstr ""
+msgstr "& liste [seçenekler]"
 
 #: ../src/cli/list.c:136 ../src/cli-ng/abrtcli/cli.py:121
 #: ../src/cli-ng/abrtcli/cli.py:264
 msgid "List only not-reported problems"
-msgstr ""
+msgstr "Yalnızca bildirilmeyen sorunları listele"
 
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:138 ../src/cli/list.c:191
@@ -2177,7 +2201,7 @@ msgstr "'%s' sorun dizini yok"
 
 #: ../src/cli/status.c:66
 msgid "& status"
-msgstr ""
+msgstr "& durum"
 
 #: ../src/cli/status.c:74 ../src/cli-ng/abrtcli/cli.py:260
 msgid "Print only the problem count without any message"
@@ -2195,7 +2219,7 @@ msgstr ""
 #: ../src/cli/report.c:34
 #, c-format
 msgid "Can't find problem '%s'"
-msgstr ""
+msgstr "Sorun bulamıyorum '%s'"
 
 #: ../src/cli/report.c:42
 #, c-format
@@ -2320,11 +2344,11 @@ msgstr "Kaldırıldı"
 
 #: ../src/cli-ng/abrtcli/cli.py:188
 msgid "Remove problem"
-msgstr ""
+msgstr "Sorunu kaldır"
 
 #: ../src/cli-ng/abrtcli/cli.py:199
 msgid "Report problem"
-msgstr ""
+msgstr "Sorunu bildir"
 
 #: ../src/cli-ng/abrtcli/cli.py:204
 msgid "Perform local retracing"
@@ -2414,6 +2438,13 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
+"Colredump'ı sunucuya yükler, bu da backtrace oluşturur ve onu döndürür. "
+"Kullanıcı, sorunu herhangi bir yere yüklemek istemiyorsa, etkinlik yerel "
+"analiz yapar. Uzaktan analiz başarısız olursa, yerel analiz çalıştırma "
+"olayıdır. Artıları: debuginfo indirme işlemine gerek yok. Retrace "
+"sunucusunun debuginfos veritabanı daha tamamlandı. Retrace sunucusu daha iyi "
+"backtraces üretebilir. Eksileri: yüklediğiniz kayıt, varsa özel verileriniz "
+"de dahil olmak üzere, düşen programdaki tüm verileri içerir."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -2429,6 +2460,8 @@ msgid ""
 "Needs to install kernel debuginfo packages, which might take significant "
 "time, and take up disk space."
 msgstr ""
+"Önemli zaman alabilir ve disk alanı kaplayan çekirdek hata ayıklama "
+"paketlerini kurmanız gerekir."
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
@@ -2480,12 +2513,12 @@ msgstr ""
 
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"
-msgstr ""
+msgstr "Sorunu postala"
 
 #: ../src/plugins/post_report.xml.in.h:2
 msgid "Executed after the reporting is finished"
-msgstr ""
+msgstr "Raporlama tamamlandıktan sonra yürütülür"
 
 #: ../src/plugins/post_report.xml.in.h:3
 msgid "Used for updating of the databases"
-msgstr ""
+msgstr "Veritabanlarının güncellenmesi için kullanılır"

@@ -5,6 +5,8 @@
 # Translators:
 # Asier Iturralde Sarasola <asier.iturralde@gmail.com>, 2012
 # Asier Sarasua Garmendia <asier.sarasua@gmail.com>, 2017. #zanata
+# Julen Landa Alustiza <julen@zokormazo.info>, 2019. #zanata
+# Martin Kutlak <mkutlak@redhat.com>, 2019. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -13,8 +15,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-03-25 04:21+0000\n"
-"Last-Translator: Asier Sarasua Garmendia <asier.sarasua@gmail.com>\n"
+"PO-Revision-Date: 2019-07-03 02:54+0000\n"
+"Last-Translator: Martin Kutlak <mkutlak@redhat.com>\n"
 "Language-Team: Basque (http://www.transifex.com/projects/p/fedora-abrt/"
 "language/eu/)\n"
 "Language: eu\n"
@@ -27,26 +29,26 @@ msgstr "Akatsen jakinarazpena"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr ""
+msgstr "Ikusi eta jakinarazi aplikazioen hutsegiteak"
 
 #: ../src/applet/applet.c:260 ../src/cli/report.c:51
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr ""
+msgstr "Ezin da '%s'-ren jabetza bereganatu"
 
 #: ../src/applet/applet.c:268
 #, c-format
 msgid "Can't open directory for writing '%s'"
-msgstr ""
+msgstr "Ezin da '%s' direktorio idazteko iriki."
 
 #: ../src/applet/applet.c:546 ../src/applet/applet.c:564
 #, c-format
 msgid "Can't close notification: %s"
-msgstr ""
+msgstr "Ezin da notifikazioa itxi: %s"
 
 #: ../src/applet/applet.c:598
 msgid "Oops!"
-msgstr ""
+msgstr "Oops!"
 
 #: ../src/applet/applet.c:616
 msgid "Report"
@@ -62,6 +64,8 @@ msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
 "reported."
 msgstr ""
+"Barkatu, badirudi %s aplikazioak huts egin duela. Akatsa automatikoki "
+"jakinarazi da."
 
 #: ../src/applet/applet.c:699
 #, c-format
@@ -96,46 +100,53 @@ msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
 msgstr ""
+"Barkatu, badirudi osagai batek huts egin duela. Akatsa automatikoki "
+"jakinarazi da."
 
 #: ../src/applet/applet.c:736
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
 msgstr ""
+"Barkatu, badirudi osagai batek huts egin duela. Akatsa jakinaraziko da "
+"Internet eskuragarri dagoenean."
 
 #: ../src/applet/applet.c:741
 msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
 msgstr ""
+"Barkatu, badirudi osagai batek huts egin duela. Akatsa konpontzen lagundu "
+"nahi baduzu, bidali txosten bat."
 
 #: ../src/applet/applet.c:786
 #, c-format
 msgid "Can't show notification: %s"
-msgstr ""
+msgstr "Ezin da notifikazioa erakutsi: %s"
 
 #. TODO: Terminate child's process?
 #: ../src/applet/applet.c:818 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr ""
+msgstr "Ezin da irakurri gio kanaletik: '%s'"
 
 #: ../src/applet/applet.c:896
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr ""
+msgstr "Ezin da kodeketa ezarri gio kanalean: %s"
 
 #: ../src/applet/applet.c:900
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr ""
+msgstr "Ezin da piztu modu ez-blokeantea gio kanalean: %s"
 
 #: ../src/applet/applet.c:1186
+#, fuzzy
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
-msgstr ""
+msgstr "ABRTk detektatutako arazoak jakinarazten dituen trepeta\n"
 
 #: ../src/configuration-gui/abrt-config-widget.c:483
 msgid ""
