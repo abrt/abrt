@@ -6,6 +6,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.12.1]
+### Added
+- Require dbus-tools for dbus-send command.
+
+### Changed
+- ABRT won't process crashes coming from unpackaged applications by default.
+- Completely removed support for Python2.
+- Update new ABRT icon.
+- retrace-client defaults to https.
+- Updated man pages.
+- Removed configurations from /usr/share/abrt.
+- Removed provides for abrt-python packages.
+
+### Fixed
+- Gracefully handle exceptions comming from abrt-action-generate-machine-id.
+- Gracefully handle exceptions comming from abrt-action-install-debuginfo.
+- Use correct name of environment variable for retrace-server.
+
+
 ## [2.12.0]
 ### Added
 - Print message when debug info cache is being cleaned
@@ -164,7 +183,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.12.0...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.12.1...HEAD
+[2.12.1]: https://github.com/abrt/abrt/compare/2.12.0...2.12.1
 [2.12.0]: https://github.com/abrt/abrt/compare/2.11.1...2.12.0
 [2.11.1]: https://github.com/abrt/abrt/compare/2.11.0...2.11.1
 [2.11.0]: https://github.com/abrt/abrt/compare/2.10.10...2.11.0

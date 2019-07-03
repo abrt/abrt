@@ -1078,6 +1078,47 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Wed Jul 03 2019 Martin Kutlak <mkutlak@redhat.com> 2.12.1-1
+- Translation updates
+- Rename all abrt-python to python3-abrt
+- spec: Get rid of python provides
+- hooks: abrt-hook-ccpp: Rename CreateCoreBacktrace setting
+- Update icon
+- non-fatal-mce: prepare oops1.test from template before using it
+- meaningful-logs: check relative counts of lines instead of absolute
+- oops-processing: fixed oops1.test handling. reworked so each oops has its own phase
+- dumpoops: make sure hostname matches in oops_full_hostname.test
+- Revert "applet: Add systemd service unit"
+- a-a-analyze-c: Fix segfault when saving function name
+- Fix grammar in implementation docs
+- doc: Update man pages and mention locations of config files
+- augeas,build,spec: Remove references to default configs
+- daemon,lib: Update default config according to abrt.conf
+- plugins: abrt-action-install-debuginfo: Replace uses of exit()
+- plugins: abrt-action-install-debuginfo: Catch BrokenPipeError
+- plugins: abrt-action-install-debuginfo: Remove unused imports
+- daemon: Check return value after reading from channel
+- spec: Require dbus-tools
+- daemon: Don't process crashes from unpackaged apps by default
+- plugins: abrt-action-install-debuginfo: Remove duplicate code
+- plugins: abrt-action-install-debuginfo: Remove variable
+- plugins: abrt-action-install-debuginfo: Remove comment
+- plugins: abrt-action-install-debuginfo: Remove dead assignment
+- doc: Fix spelling mistake in path to cache
+- doc: Update man page for abrt-handle-upload
+- doc: Update man page and help for a-a-install-debuginfo
+- Nuke Python 2 support
+- plugins: Catch unhandled exception in a-a-g-machine-id
+- plugins: retrace-client: Bail out if we can’t get a config
+- plugins: retrace-client: Default to HTTPS in RETRACE_SERVER_URI
+- plugins: analyze_RetraceServer: Fix default RETRACE_SERVER_URI
+- plugins: Fix name of env variable for retrace server
+- configure.ac: Add dependency on libcap
+- dbus: entry: Don’t claim truncation when there was none
+- applet: Add systemd service unit
+- spec: Remove obsolete scriptlets
+- Makefile.am: Use correct locale when getting date
+
 * Sat Feb 02 2019 Ernestas Kulik <ekulik@redhat.com> - 2.12.0-1
 - Update to 2.12.0
 
