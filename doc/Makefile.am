@@ -50,7 +50,7 @@ MAN5_TXT += abrt.conf.txt
 MAN5_TXT += abrt-action-save-package-data.conf.txt
 MAN5_TXT += abrt-xorg.conf.txt
 if BUILD_PYTHON3
-MAN5_TXT += abrt-python3.conf.txt
+MAN5_TXT += python3-abrt.conf.txt
 endif
 MAN5_TXT += abrt-CCpp.conf.txt
 MAN5_TXT += abrt-oops.conf.txt

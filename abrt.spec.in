@@ -979,9 +979,9 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %if %{with python3}
 %files -n python3-abrt-addon
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python3.conf
-%{_mandir}/man5/abrt-python3.conf.5*
+%{_mandir}/man5/python3-abrt.conf.5*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/python3_event.conf
-%{_journalcatalogdir}/abrt_python3.catalog
+%{_journalcatalogdir}/python3_abrt.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_python3_format.conf
 %{_mandir}/man5/python3_event.conf.5*
 %{python3_sitearch}/abrt3.pth
@@ -1068,7 +1068,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %if %{with python3}
 %files -n python3-abrt
 %{python3_sitearch}/problem/
-%{_mandir}/man5/abrt-python3.5*
+%{_mandir}/man5/python3-abrt.5*
 
 %files -n python3-abrt-doc
 %{python3_sitelib}/problem_examples

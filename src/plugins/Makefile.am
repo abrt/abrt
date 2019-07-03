@@ -89,7 +89,7 @@ dist_journalcatalog_DATA = \
     abrt_xorg.catalog
 
 if BUILD_PYTHON3
-dist_journalcatalog_DATA += abrt_python3.catalog
+dist_journalcatalog_DATA += python3_abrt.catalog
 endif
 
 
@@ -156,7 +156,7 @@ EXTRA_DIST = \
     abrt-action-analyze-vulnerability.in \
     abrt_ccpp.catalog.in \
     abrt_koops.catalog.in \
-    abrt_python3.catalog.in \
+    python3_abrt.catalog.in \
     abrt_xorg.catalog.in
 
 if BUILD_RETRACE_CLIENT
