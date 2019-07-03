@@ -1,6 +1,5 @@
 import gettext
 import locale
-import humanize
 import logging
 
 GETTEXT_PROGNAME = "abrt"
@@ -22,11 +21,6 @@ def init():
         import os
         os.environ['LC_ALL'] = 'C'
         lcl = locale.setlocale(locale.LC_ALL, "")
-
-    try:
-        humanize.i18n.activate(lcl)
-    except IOError as ex:
-        logging.debug("Unsupported locale '{0}': {1}".format(lcl, str(ex)))
 
     gettext.bindtextdomain(progname, localedir)
     gettext.textdomain(progname)
