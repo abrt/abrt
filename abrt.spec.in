@@ -78,7 +78,6 @@ BuildRequires: python3-devel
 BuildRequires: python3-systemd
 BuildRequires: python3-argcomplete
 BuildRequires: python3-argh
-BuildRequires: python3-humanize
 %endif # with python3
 
 Requires: libreport >= %{libreport_ver}
@@ -344,7 +343,6 @@ Requires: python3-abrt
 Requires: abrt-addon-ccpp
 Requires: python3-argh
 Requires: python3-argcomplete
-Requires: python3-humanize
 
 Provides: %{name}-cli-ng = %{version}-%{release}
 Obsoletes: %{name}-cli-ng < 2.12.2
