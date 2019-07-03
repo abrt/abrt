@@ -11,7 +11,7 @@ import reportclient
 from reportclient import ask_yes_no, set_verbosity
 
 from abrtcli import config, l18n
-from abrtcli.l18n import _
+from abrtcli.l18n import _, N_
 from abrtcli.match import match_completer, match_get_problem
 
 from abrtcli.filtering import (filter_not_reported,
@@ -341,7 +341,9 @@ def status(args):
         return
 
     if not args.quiet or len(probs) > 0:
-        print(_('ABRT has detected {} problem(s). For more info run: abrt list{}')
+        print(N_('ABRT has detected a problem. For more information, run “abrt list{}”',
+                 'ABRT has detected {} problems. For more information, run “abrt list{}”',
+                 len(probs))
               .format(len(probs), since_append))
 
 status.__doc__ = _('Print count of the recent crashes')

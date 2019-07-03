@@ -150,7 +150,7 @@ class MatchTestCase(clitests.TestCase):
                     match_get_problem('nope')
 
             stdout = cap_stdout.getvalue()
-            self.assertIn("No problem(s) matched", stdout)
+            self.assertIn("No matching problems found", stdout)
 
             # Similar with last
             with captured_output() as (cap_stdout, cap_stderr):
