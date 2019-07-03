@@ -301,10 +301,6 @@ BuildArch: noarch
 Requires: %{name} = %{version}-%{release}
 Requires: python3-systemd
 Requires: python3-abrt
-# Remove before F30
-Provides: abrt-addon-python3 = %{version}-%{release}
-Provides: abrt-addon-python3%{?_isa} = %{version}-%{release}
-Obsoletes: abrt-addon-python3 < 2.10.4
 
 %description -n python3-abrt-addon
 This package contains python 3 hook and python analyzer plugin for handling
@@ -476,11 +472,6 @@ Requires: %{name}-libs = %{version}-%{release}
 Requires: %{name}-dbus = %{version}-%{release}
 Requires: python3-dbus
 Requires: python3-libreport
-%{?python_provide:%python_provide python3-abrt}
-# Remove before F30
-Provides: %{name}-python3 = %{version}-%{release}
-Provides: %{name}-python3%{?_isa} = %{version}-%{release}
-Obsoletes: %{name}-python3 < 2.10.4
 Requires: python3-gobject-base
 
 %description -n python3-abrt
@@ -492,9 +483,6 @@ Summary: ABRT Python API Documentation
 BuildArch: noarch
 Requires: %{name} = %{version}-%{release}
 Requires: python3-%{name} = %{version}-%{release}
-# Remove before F30
-Provides: %{name}-python3-doc = %{version}-%{release}
-Obsoletes: %{name}-python3-doc < 2.10.4
 
 %description -n python3-abrt-doc
 Examples and documentation for ABRT Python 3 API.
