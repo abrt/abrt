@@ -94,14 +94,14 @@ def match_get_problem(problem_match, allow_multiple=False, authenticate=False):
     if problem_match == 'last':
         probs = sort_problems(problem.list(auth=authenticate))
         if not probs:
-            print(_('No problems'))
+            print(_('No problems found'))
             sys.exit(0)
 
         prob = probs[0]
     else:
         probs = match_lookup(problem_match, authenticate=authenticate)
         if not probs:
-            print(_('No problem(s) matched'))
+            print(_('No matching problems found'))
             sys.exit(1)
         elif len(probs) > 1:
             if allow_multiple:
