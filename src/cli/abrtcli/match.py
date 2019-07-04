@@ -42,7 +42,7 @@ def match_completer(_prefix, _parsed_args, **_kwargs):
 
     by_human_id, by_short_id, by_path = get_match_data()
 
-    for short_id in by_short_id.keys():
+    for short_id in by_short_id:
         yield short_id
 
     for human_id, probs in by_human_id.items():
@@ -52,7 +52,7 @@ def match_completer(_prefix, _parsed_args, **_kwargs):
             for prob in probs:
                 yield '{0}@{1}'.format(human_id, prob.short_id)
 
-    for path in by_path.keys():
+    for path in by_path:
         yield path
 
 
