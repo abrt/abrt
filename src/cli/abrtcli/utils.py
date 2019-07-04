@@ -96,7 +96,7 @@ def fmt_problems(probs, fmt=MEDIUM_FMT):
                 if 'URL=' in rline:
                     rep_to, url = rline.split('URL=', 1)
                     if ': ' in rep_to:
-                        rep_to, rest = rep_to.split(': ')
+                        rep_to, _rest = rep_to.split(': ')
 
                     if tabular:
                         r_out += '\n{},{}'.format(rep_to, url)

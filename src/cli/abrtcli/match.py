@@ -18,7 +18,7 @@ def get_match_data(authenticate=False):
     by_path = {}
 
     for prob in problem.list(auth=authenticate):
-        comp_or_exe, val = get_human_identifier(prob)
+        _, val = get_human_identifier(prob)
 
         if val in by_human_id:
             by_human_id[val].append(prob)
@@ -35,7 +35,7 @@ def get_match_data(authenticate=False):
     return by_human_id, by_short_id, by_path
 
 
-def match_completer(prefix, parsed_args, **kwargs):
+def match_completer(_prefix, _parsed_args, **_kwargs):
     '''
     Completer generator used by cli commands using problem lookup
     '''
@@ -123,5 +123,5 @@ def match_collision(probs):
 
     print(_('Ambiguous match specified resulting in multiple problems:'))
     for prob in probs:
-        field, val = get_human_identifier(prob)
+        _field, val = get_human_identifier(prob)
         print('- {}@{} ({})'.format(val, prob.short_id, prob.time))
