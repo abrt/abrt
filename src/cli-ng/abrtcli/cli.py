@@ -306,7 +306,7 @@ retrace.__doc__ = _('Generate backtrace from coredump')
 
 
 @expects_obj
-@arg('-b', '--bare',
+@arg('-b', '--bare', action='store_true',
      help=_('Print only the problem count without any message'))
 @arg('-s', '--since', type=int,
      help=_('Print only the problems more recent than specified timestamp'))
