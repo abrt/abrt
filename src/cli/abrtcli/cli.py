@@ -44,10 +44,17 @@ def arg_verbose(func):
                        help=_('Print verbose information'))
     return argh_wrapper(abrt_wrapper)
 
+def arg_match(func):
+    argh_wrapper = arg('MATCH', nargs='?', default='last',
+                       completer=match_completer,
+                       help=_('Problem search pattern'))
+
+    return argh_wrapper(func)
+
 
 @aliases('bt')
 @expects_obj
-@arg('MATCH', nargs='?', default='last', completer=match_completer)
+@arg_match
 @arg_verbose
 def backtrace(args):
     prob = match_get_problem(args.MATCH, authenticate=args.authenticate)
@@ -67,7 +74,7 @@ backtrace.__doc__ = _('Show backtrace of a problem')
 @named('debuginfo-install')
 @aliases('di')
 @expects_obj
-@arg('MATCH', nargs='?', default='last', completer=match_completer)
+@arg_match
 @arg_verbose
 def di_install(args):
     prob = match_get_problem(args.MATCH, authenticate=args.authenticate)
@@ -98,7 +105,7 @@ di_install.__doc__ = _('Install required debuginfo for given problem')
 
 @expects_obj
 @arg('-d', '--debuginfo-install', help='Install debuginfo prior launching gdb')
-@arg('MATCH', nargs='?', default='last', completer=match_completer)
+@arg_match
 @arg_verbose
 def gdb(args):
     prob = match_get_problem(args.MATCH, authenticate=args.authenticate)
@@ -189,7 +196,7 @@ list_problems.__doc__ = _('List problems')
      help=_('Output format'))
 @arg('--pretty', choices=config.FORMATS, default='full',
      help=_('Built-in output format'))
-@arg('MATCH', nargs='?', default='last', completer=match_completer)
+@arg_match
 @arg_verbose
 def info(args):
     prob = match_get_problem(args.MATCH, allow_multiple=True, authenticate=args.authenticate)
@@ -208,7 +215,7 @@ info.__doc__ = _('Print information about problem')
 
 @aliases('rm')
 @expects_obj
-@arg('MATCH', nargs='?', default='last', completer=match_completer)
+@arg_match
 @arg('-i', help=_('Prompt before removal'), default=False)
 @arg('-f', help=_('Do not prompt before removal'), default=False)
 @arg_verbose
@@ -230,13 +237,13 @@ remove.__doc__ = _('Remove problem')
 
 @aliases('e')
 @expects_obj
-@arg('MATCH', nargs='?', default='last', completer=match_completer)
 @arg('-d', '--delete',
      help=_('Remove problem after reporting'),
      default=False)
 @arg('-u', "--unsafe",
      help=_('Ignore security checks to be able to report all problems'),
      default=False)
+@arg_match
 @arg_verbose
 def report(args):
     prob = match_get_problem(args.MATCH, authenticate=args.authenticate)
@@ -269,7 +276,7 @@ report.__doc__ = _('Report problem')
      help=_('Perform remote retracing using retrace server'))
 @arg('-f', '--force', action='store_true',
      help=_('Force retracing even if backtrace already exists'))
-@arg('MATCH', nargs='?', default='last', completer=match_completer)
+@arg_match
 @arg_verbose
 def retrace(args):
     # we might not get these var if called from backtrace
