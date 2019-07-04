@@ -260,14 +260,9 @@ report.__doc__ = _('Report problem')
 @arg_verbose
 def retrace(args):
     # we might not get these var if called from backtrace
-    local, remote, auth = False, False, False
-
-    if hasattr(args, 'local'):
-        local = args.local
-    if hasattr(args, 'remote'):
-        remote = args.remote
-    if hasattr(args, 'force'):
-        force = args.force
+    local = getattr(args, 'local', False)
+    remote = getattr(args, 'remote', False)
+    force = getattr(args, 'force', False)
 
     prob = match_get_problem(args.MATCH, auth=args.auth)
     if hasattr(prob, 'backtrace') and not force:
