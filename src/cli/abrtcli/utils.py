@@ -8,9 +8,10 @@ try:
 except ImportError:
     from io import StringIO
 
+import report
+
 from abrtcli.l18n import _
 from abrtcli.config import MEDIUM_FMT
-import report
 
 braces_re = re.compile(r'\{([^}]+)\}')
 
