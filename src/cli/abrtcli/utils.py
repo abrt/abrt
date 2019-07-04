@@ -164,10 +164,7 @@ def get_problem_field(prob, field):
     Return problem field `field` or None
     '''
 
-    try:
-        return getattr(prob, field)
-    except AttributeError:
-        return None
+    return getattr(prob, field, None)
 
 
 def get_human_identifier(prob):
