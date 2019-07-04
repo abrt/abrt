@@ -1,13 +1,12 @@
 import gettext
 import locale
-import logging
+
+from .config import LOCALE_DIR
 
 GETTEXT_PROGNAME = "abrt"
 
 _ = gettext.gettext
 N_ = gettext.ngettext
-
-from .config import LOCALE_DIR
 
 
 def init():
