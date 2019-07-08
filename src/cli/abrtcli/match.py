@@ -1,3 +1,4 @@
+import pathlib
 import sys
 import problem
 
@@ -30,7 +31,7 @@ def get_match_data(authenticate=False):
         else:
             by_short_id[prob.short_id] = [prob]
 
-        by_path[prob.path] = [prob]
+        by_path[prob.path] = prob
 
     return by_human_id, by_short_id, by_path
 
@@ -61,67 +62,54 @@ def match_lookup(in_arg, authenticate=False):
     Return problems that match `in_arg` passed on command line
     '''
 
+    if not in_arg:
+        problems = sort_problems(problem.list(auth=authenticate))
+
+        return [problems[0]] if problems else []
+    elif in_arg == '*':
+        return problem.list(auth=authenticate)
+
     by_human_id, by_short_id, by_path = get_match_data(authenticate=authenticate)
 
-    res = None
-
-    if in_arg in by_human_id:
-        res = by_human_id[in_arg]
-    elif in_arg in by_short_id:
-        res = by_short_id[in_arg]
-    elif '@' in in_arg:
+    if '@' in in_arg:
         human_id, short_id = in_arg.split('@', 1)
+        matches = [problem
+                   for component, problems in by_human_id.items()
+                   for problem in problems
+                   if human_id == component]
 
-        if human_id in by_human_id:
-            probs = by_human_id[human_id]
+        return list(filter(lambda p: p.short_id == short_id, matches))
+    else:
+        matches = [problem
+                   for component, problems in by_human_id.items()
+                   for problem in problems
+                   if in_arg == component]
+        if matches:
+            return matches
 
-            res = list(filter(lambda p: p.short_id == short_id, probs))
-    elif in_arg in by_path:
-        res = by_path[in_arg]
+        matches = [problems[0]
+                   for short_id, problems in by_short_id.items()
+                   if in_arg == short_id]
+        if matches:
+            return matches
 
-    return res
+    matches = [problem
+               for path, problem in by_path.items()
+               if pathlib.Path(in_arg).resolve().match(path)]
+    if matches:
+        return matches
+
+    return []
 
 
-def match_get_problem(problem_match, allow_multiple=False, authenticate=False):
+def match_get_problems(problem_match, authenticate=False):
     '''
     Return problem matching `problem_match` pattern
-    or exit if there are no such problems or pattern
-    results in multiple problems (unless `allow_multiple` is set
-    to True).
+    or exit if there are no such problems.
     '''
 
-    prob = None
-    if problem_match == 'last':
-        probs = sort_problems(problem.list(auth=authenticate))
-        if not probs:
-            print(_('No problems found'))
-            sys.exit(0)
-
-        prob = probs[0]
-    else:
-        probs = match_lookup(problem_match, authenticate=authenticate)
-        if not probs:
-            print(_('No matching problems found'))
-            sys.exit(1)
-        elif len(probs) > 1:
-            if allow_multiple:
-                return probs
-
-            match_collision(probs)
-            sys.exit(1)
-        else:
-            prob = probs[0]
-
-    return prob
-
-
-def match_collision(probs):
-    '''
-    Handle matches that result in multiple problems by telling user
-    to be more specific
-    '''
-
-    print(_('Ambiguous match specified resulting in multiple problems:'))
-    for prob in probs:
-        _field, val = get_human_identifier(prob)
-        print('- {}@{} ({})'.format(val, prob.short_id, prob.time))
+    probs = match_lookup(problem_match, authenticate=authenticate)
+    if not probs:
+        print(_('No matching problems found'))
+        sys.exit(1)
+    return probs

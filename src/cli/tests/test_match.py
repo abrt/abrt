@@ -10,7 +10,7 @@ import clitests
 
 from abrtcli.match import (get_match_data,
                            match_completer,
-                           match_get_problem,
+                           match_get_problems,
                            match_lookup)
 
 from abrtcli.utils import captured_output
@@ -60,7 +60,7 @@ class MatchTestCase(clitests.TestCase):
 
         for h in self.hashes:
             m = match_lookup(h)
-            self.assertTrue(len(m) >= 1)
+            self.assertGreaterEqual(len(m), 1)
 
     def test_match_lookup_human_id(self):
         '''
@@ -69,27 +69,24 @@ class MatchTestCase(clitests.TestCase):
 
         for h in self.human:
             m = match_lookup(h)
-            self.assertTrue(len(m) == 1)
+            self.assertEqual(len(m), 1)
 
     def test_match_lookup_combined(self):
         '''
-        Test match lookup by human id
+        Test match lookup by human id combined with short id
         '''
 
         for h in self.combined:
             m = match_lookup(h)
-            self.assertTrue(len(m) == 1)
+            self.assertEqual(len(m), 1)
 
     def test_match_lookup_collisions(self):
         '''
         Test match lookup handles collisions
         '''
 
-        m = match_lookup(self.collision_hash)
-        self.assertTrue(len(m) == 2)
-
         m = match_lookup(self.collision_human)
-        self.assertTrue(len(m) == 2)
+        self.assertEqual(len(m), 2)
 
     def test_match_lookup_nonexistent(self):
         '''
@@ -97,45 +94,27 @@ class MatchTestCase(clitests.TestCase):
         '''
 
         m = match_lookup('')
-        self.assertEqual(m, None)
+        self.assertEqual(len(m), 1)
+        self.assertEqual(m[0].id, 'ffe635cbdd54e3667511e718ceecac16133acc97')
 
     def test_match_get_problem_simple(self):
         '''
         Test that match_get_problem matches unique pattern
         '''
 
-        p = match_get_problem('polkitd')
-        self.assertEqual(p.component, 'polkitd')
-
-    def test_match_get_problem_last(self):
-        '''
-        Test that match_get_problem matches last problem
-        '''
-
-        p = match_get_problem('last')
-        self.assertEqual(p.uid, 1234)
+        p = match_get_problems('polkitd')
+        self.assertEqual(len(p), 1)
+        self.assertEqual(p[0].component, 'polkitd')
 
     def test_match_get_problem_multiple(self):
         '''
-        Test that match_get_problem fails when multiple problems match
+        Test that match_get_problem returns all matching problems
         '''
 
-        with captured_output() as (cap_stdout, cap_stderr):
-            with self.assertRaises(SystemExit):
-                match_get_problem('pavucontrol')
-
-        stdout = cap_stdout.getvalue()
-        self.assertIn("Ambiguous", stdout)
-        self.assertIn("pavucontrol@bc60a5c", stdout)
-        self.assertIn("pavucontrol@acbea5c", stdout)
-
-    def test_match_get_problem_multiple_allowed(self):
-        '''
-        Test that match_get_problem matches multiple problems when allowed
-        '''
-
-        p = match_get_problem('pavucontrol', allow_multiple=True)
+        p = match_get_problems('pavucontrol')
         self.assertEqual(len(p), 2)
+        self.assertEqual("%s@%s" % (p[0].component, p[0].short_id), "pavucontrol@bc60a5c")
+        self.assertEqual("%s@%s" % (p[1].component, p[1].short_id), "pavucontrol@acbea5c")
 
     def test_match_get_problem_empty_database(self):
         '''
@@ -147,7 +126,7 @@ class MatchTestCase(clitests.TestCase):
         with clitests.monkey_patch(problem, 'list', lambda *args, **kwargs: []):
             with captured_output() as (cap_stdout, cap_stderr):
                 with self.assertRaises(SystemExit):
-                    match_get_problem('nope')
+                    match_get_problems('nope')
 
             stdout = cap_stdout.getvalue()
             self.assertIn("No matching problems found", stdout)
@@ -155,10 +134,10 @@ class MatchTestCase(clitests.TestCase):
             # Similar with last
             with captured_output() as (cap_stdout, cap_stderr):
                 with self.assertRaises(SystemExit):
-                    match_get_problem('last')
+                    match_get_problems('last')
 
             stdout = cap_stdout.getvalue()
-            self.assertIn("No problems", stdout)
+            self.assertIn("No matching problems found", stdout)
 
     def test_match_get_problem_nonexistent(self):
         '''
@@ -166,7 +145,7 @@ class MatchTestCase(clitests.TestCase):
         '''
 
         with self.assertRaises(SystemExit):
-            match_get_problem('nope')
+            match_get_problems('nope')
 
 
 if __name__ == '__main__':

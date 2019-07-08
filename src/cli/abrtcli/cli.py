@@ -12,7 +12,7 @@ from reportclient import ask_yes_no, set_verbosity
 
 from abrtcli import config, i18n
 from abrtcli.i18n import _, N_
-from abrtcli.match import match_completer, match_get_problem
+from abrtcli.match import match_completer, match_get_problems
 
 from abrtcli.filtering import (filter_not_reported,
                                filter_since_timestamp,
@@ -45,9 +45,8 @@ def arg_verbose(func):
     return argh_wrapper(abrt_wrapper)
 
 def arg_match(func):
-    argh_wrapper = arg('MATCH', nargs='?', default='last',
-                       completer=match_completer,
-                       help=_('Problem search pattern'))
+    argh_wrapper = arg('MATCH', completer=match_completer, nargs='?',
+                       help=_('Problem search pattern)'))
 
     return argh_wrapper(func)
 
@@ -57,16 +56,17 @@ def arg_match(func):
 @arg_match
 @arg_verbose
 def backtrace(args):
-    prob = match_get_problem(args.MATCH, authenticate=args.authenticate)
-    if hasattr(prob, 'backtrace'):
-        print(fmt_problems(prob, fmt=config.BACKTRACE_FMT))
-    else:
-        print(_('Problem has no backtrace'))
-        if isinstance(prob, problem.Ccpp):
-            ret = ask_yes_no(_('Start retracing process?'))
-            if ret:
-                retrace(args)
-                print(fmt_problems(prob, fmt=config.BACKTRACE_FMT))
+    probs = match_get_problems(args.MATCH, authenticate=args.authenticate)
+    for prob in probs:
+        if hasattr(prob, 'backtrace'):
+            print(fmt_problems(prob, fmt=config.BACKTRACE_FMT))
+        else:
+            print(_('Problem has no backtrace'))
+            if isinstance(prob, problem.Ccpp):
+                ret = ask_yes_no(_('Start retracing process?'))
+                if ret:
+                    retrace(args)
+                    print(fmt_problems(prob, fmt=config.BACKTRACE_FMT))
 
 backtrace.__doc__ = _('Show backtrace of a problem')
 
@@ -77,64 +77,56 @@ backtrace.__doc__ = _('Show backtrace of a problem')
 @arg_match
 @arg_verbose
 def di_install(args):
-    prob = match_get_problem(args.MATCH, authenticate=args.authenticate)
-    if not isinstance(prob, problem.Ccpp):
-        which = _('This')
-        if args.MATCH == 'last':
-            which = _('Last')
-
-        print(_('{} problem is not of a C/C++ type. Can\'t install debuginfo')
-              .format(which))
-        sys.exit(1)
-
-    prob.chown()
-
-    with remember_cwd():
-        try:
-            os.chdir(prob.path)
-        except OSError:
-            print(_('Permission denied: \'{}\'\n'
-                    'If this is a system problem'
-                    ' try running this command as root')
-                  .format(prob.path))
+    probs = match_get_problems(args.MATCH, authenticate=args.authenticate)
+    for prob in probs:
+        if not isinstance(prob, problem.Ccpp):
+            print(_('The problem is not of a C/C++ type. Can\'t install debuginfo'))
             sys.exit(1)
-        subprocess.call(config.DEBUGINFO_INSTALL_CMD, shell=True)
+
+        prob.chown()
+
+        with remember_cwd():
+            try:
+                os.chdir(prob.path)
+            except OSError:
+                print(_('Permission denied: \'{}\'\n'
+                        'If this is a system problem'
+                        ' try running this command as root')
+                      .format(prob.path))
+                sys.exit(1)
+            subprocess.call(config.DEBUGINFO_INSTALL_CMD, shell=True)
 
 di_install.__doc__ = _('Install required debuginfo for given problem')
 
 
 @expects_obj
-@arg('-d', '--debuginfo-install', help='Install debuginfo prior launching gdb')
+@arg('-d', '--debuginfo-install', help='Install debuginfo prior launching GDB')
 @arg_match
 @arg_verbose
 def gdb(args):
-    prob = match_get_problem(args.MATCH, authenticate=args.authenticate)
-    if not isinstance(prob, problem.Ccpp):
-        which = 'This'
-        if args.MATCH == 'last':
-            which = 'Last'
-
-        print('{} problem is not of a C/C++ type. Can\'t run gdb'
-              .format(which))
-        sys.exit(1)
-
-    prob.chown()
-
-    if args.debuginfo_install:
-        di_install(args)
-
-    cmd = config.GDB_CMD.format(di_path=config.DEBUGINFO_PATH)
-
-    with remember_cwd():
-        try:
-            os.chdir(prob.path)
-        except OSError:
-            print(_('Permission denied: \'{}\'\n'
-                    'If this is a system problem'
-                    ' try running this command as root')
-                  .format(prob.path))
+    probs = match_get_problems(args.MATCH, authenticate=args.authenticate)
+    for prob in probs:
+        if not isinstance(prob, problem.Ccpp):
+            print(_('The problem is not of a C/C++ type. Can\'t run GDB'))
             sys.exit(1)
-        subprocess.call(cmd, shell=True)
+
+        prob.chown()
+
+        if args.debuginfo_install:
+            di_install(args)
+
+        cmd = config.GDB_CMD.format(di_path=config.DEBUGINFO_PATH)
+
+        with remember_cwd():
+            try:
+                os.chdir(prob.path)
+            except OSError:
+                print(_('Permission denied: \'{}\'\n'
+                        'If this is a system problem'
+                        ' try running this command as root')
+                      .format(prob.path))
+                sys.exit(1)
+            subprocess.call(cmd, shell=True)
 
 gdb.__doc__ = _('Run GDB against a problem')
 
@@ -199,7 +191,7 @@ list_problems.__doc__ = _('List problems')
 @arg_match
 @arg_verbose
 def info(args):
-    prob = match_get_problem(args.MATCH, allow_multiple=True, authenticate=args.authenticate)
+    probs = match_get_problems(args.MATCH, authenticate=args.authenticate)
     if not args.fmt:
         fmt = config.FULL_FMT
     else:
@@ -208,7 +200,7 @@ def info(args):
     if args.pretty != 'full':
         fmt = getattr(config, '{}_FMT'.format(args.pretty.upper()))
 
-    print(fmt_problems(prob, fmt=fmt))
+    print(fmt_problems(probs, fmt=fmt))
 
 info.__doc__ = _('Print information about problem')
 
@@ -220,17 +212,16 @@ info.__doc__ = _('Print information about problem')
 @arg('-f', help=_('Do not prompt before removal'), default=False)
 @arg_verbose
 def remove(args):
-    prob = match_get_problem(args.MATCH, authenticate=args.authenticate)
-    print(fmt_problems(prob, fmt=config.FULL_FMT))
+    probs = match_get_problems(args.MATCH, authenticate=args.authenticate)
+    for prob in probs:
+        print(fmt_problems(prob, fmt=config.FULL_FMT), '\n')
 
-    ret = True
-    if not args.f and (args.i or args.MATCH == 'last'):
-        # force prompt for last problem to avoid accidents
-        ret = ask_yes_no(_('Are you sure you want to delete this problem?'))
+        if not args.f:
+            if not ask_yes_no(_('Are you sure you want to delete this problem?')):
+                continue
 
-    if ret:
         prob.delete()
-        print(_('Removed'))
+        print(_('Removed'), '\n')
 
 remove.__doc__ = _('Remove problem')
 
@@ -246,25 +237,26 @@ remove.__doc__ = _('Remove problem')
 @arg_match
 @arg_verbose
 def report(args):
-    prob = match_get_problem(args.MATCH, authenticate=args.authenticate)
+    probs = match_get_problems(args.MATCH, authenticate=args.authenticate)
 
-    if prob.not_reportable and not args.unsafe:
-        if reportclient.verbose > 0:
-            print(prob.not_reportable_reason)
+    for prob in probs:
+        if prob.not_reportable and not args.unsafe:
+            if reportclient.verbose > 0:
+                print(prob.not_reportable_reason)
 
-        print(_('Problem \'{0}\' cannot be reported').format(prob.short_id))
-        sys.exit(1)
+            print(_('Problem \'{0}\' cannot be reported').format(prob.short_id))
+            sys.exit(1)
 
-    flags = libreport.LIBREPORT_WAIT | libreport.LIBREPORT_RUN_CLI
-    if args.unsafe:
-        flags |= libreport.LIBREPORT_IGNORE_NOT_REPORTABLE
+        flags = libreport.LIBREPORT_WAIT | libreport.LIBREPORT_RUN_CLI
+        if args.unsafe:
+            flags |= libreport.LIBREPORT_IGNORE_NOT_REPORTABLE
 
-    prob.chown()
+        prob.chown()
 
-    libreport.report_problem_in_dir(prob.path, flags)
+        libreport.report_problem_in_dir(prob.path, flags)
 
-    if args.delete:
-        prob.delete(prob.path)
+        if args.delete:
+            prob.delete(prob.path)
 
 report.__doc__ = _('Report problem')
 
@@ -284,38 +276,39 @@ def retrace(args):
     remote = getattr(args, 'remote', False)
     force = getattr(args, 'force', False)
 
-    prob = match_get_problem(args.MATCH, authenticate=args.authenticate)
-    if hasattr(prob, 'backtrace') and not force:
-        print(_('Problem already has a backtrace'))
-        print(_('Run abrt retrace with -f/--force to retrace again'))
-        ret = ask_yes_no(_('Show backtrace?'))
-        if ret:
-            print(fmt_problems(prob, fmt=config.BACKTRACE_FMT))
-    elif not isinstance(prob, problem.Ccpp):
-        print(_('No retracing possible for this problem type'))
-    else:
-        if not (local or remote):  # ask..
-            ret = ask_yes_no(
-                _('Upload core dump and perform remote'
-                  ' retracing? (It may contain sensitive data).'
-                  ' If your answer is \'No\', a stack trace will'
-                  ' be generated locally. Local retracing'
-                  ' requires downloading potentially large amount'
-                  ' of debuginfo data'))
-
+    probs = match_get_problems(args.MATCH, authenticate=args.authenticate)
+    for prob in probs:
+        if hasattr(prob, 'backtrace') and not force:
+            print(_('Problem already has a backtrace'))
+            print(_('Run abrt retrace with -f/--force to retrace again'))
+            ret = ask_yes_no(_('Show backtrace?'))
             if ret:
-                remote = True
-            else:
-                local = True
-
-        prob.chown()
-
-        if remote:
-            print(_('Remote retracing'))
-            run_event('analyze_RetraceServer', prob)
+                print(fmt_problems(prob, fmt=config.BACKTRACE_FMT))
+        elif not isinstance(prob, problem.Ccpp):
+            print(_('No retracing possible for this problem type'))
         else:
-            print(_('Local retracing'))
-            run_event('analyze_LocalGDB', prob)
+            if not (local or remote):  # ask..
+                ret = ask_yes_no(
+                    _('Upload core dump and perform remote'
+                      ' retracing? (It may contain sensitive data).'
+                      ' If your answer is \'No\', a stack trace will'
+                      ' be generated locally. Local retracing'
+                      ' requires downloading potentially large amount'
+                      ' of debuginfo data'))
+
+                if ret:
+                    remote = True
+                else:
+                    local = True
+
+            prob.chown()
+
+            if remote:
+                print(_('Remote retracing'))
+                run_event('analyze_RetraceServer', prob)
+            else:
+                print(_('Local retracing'))
+                run_event('analyze_LocalGDB', prob)
 
 
 retrace.__doc__ = _('Generate backtrace from coredump')
