@@ -692,7 +692,7 @@ void abrt_p2_service_notify_entry_object(AbrtP2Service *service,
     AbrtP2Entry *entry = abrt_p2_object_get_node(obj);
     uid_t owner_uid = abrt_p2_entry_get_owner(entry, error);
 
-    if (owner_uid >= 0)
+    if (error == NULL)
     {
         GList *session_objects = problems2_object_type_get_all_objects(
                                          &service->pv->p2srv_p2_session_type);
@@ -728,6 +728,9 @@ void abrt_p2_service_notify_entry_object(AbrtP2Service *service,
 
         g_list_free(session_objects);
     }
+    else
+        /* error message was already logged */
+        g_error_free(*error);
 }
 
 struct entry_object_save_elements_context
@@ -1366,6 +1369,11 @@ AbrtP2Object *abrt_p2_service_register_entry(AbrtP2Service *service,
 
     struct dump_dir *dd = dd_opendir(dd_dirname, DD_OPEN_FD_ONLY);
     uid_t owner = dd_get_owner(dd);
+
+    if (errno != 0)
+        log_debug("Failed to get owner of dump directory: %s",
+                  strerror(errno));
+
     dd_close(dd);
 
     struct user_info *user = abrt_p2_service_user_lookup(service, owner);
