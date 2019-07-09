@@ -969,7 +969,13 @@ uid_t abrt_p2_entry_get_owner(AbrtP2Entry *entry,
         return -1;
     }
 
-    const uid_t uid = dd_get_owner(dd);
+    int ret = 0;
+    const uid_t uid = dd_get_owner(dd, &ret);
+
+    if (ret != 0)
+        g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
+                    "Failed to get owner of dump directory");
+
     dd_close(dd);
 
     return uid;
