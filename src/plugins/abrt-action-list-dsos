@@ -84,15 +84,21 @@ if __name__ == "__main__":
                             outname = None
 
                         vendor = h[rpm.RPMTAG_VENDOR]
-                        if vendor != None:
+                        if vendor is not None and hasattr(vendor, 'decode'):
                             vendor = vendor.decode('utf-8')
 
+                        rpmtag_nevra = h[rpm.RPMTAG_NEVRA]
+                        # FIXME change from bugzilla #1693751
+                        # can be removed with rpm 4.15
+                        if hasattr(rpmtag_nevra, 'decode'):
+                            rpmtag_nevra = rpmtag_nevra.decode('utf-8')
+
                         outfile.write("%s %s (%s) %s\n" %
-                                    (path,
-                                     h[rpm.RPMTAG_NEVRA].decode('utf-8'),
-                                     vendor,
-                                     h[rpm.RPMTAG_INSTALLTIME])
-                                    )
+                                      (path,
+                                       rpmtag_nevra,
+                                       vendor,
+                                       h[rpm.RPMTAG_INSTALLTIME])
+                                      )
 
         except Exception as ex:
             error_msg_and_die("Can't get the DSO list: %s" % ex)
