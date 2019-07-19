@@ -27,16 +27,23 @@ class MatchTestCase(clitests.TestCase):
     human = ['/home/user/bin/user_app', 'unknown_problem', 'polkitd']
     collision_human = 'pavucontrol'
     combined = ['pavucontrol@bc60a5c', 'pavucontrol@acbea5c']
+    paths = [
+        '/var/tmp/abrt/ccpp-2015-03-16-14:41:47-7729',
+        '/var/tmp/abrt/ccpp-2015-06-16-14:41:47-7729',
+        '/var/tmp/abrt/ccpp-2015-05-16-14:41:47-7729',
+        '/var/tmp/abrt/ccpp-2014-03-16-14:41:47-7729',
+    ]
 
     def test_get_match_data(self):
         '''
         Test get_match_data returns correctly merged data
         '''
 
-        by_human_id, by_short_id = get_match_data()
-        self.assertEqual(len(by_human_id), 4)
+        by_human_id, by_short_id, by_path = get_match_data()
 
+        self.assertEqual(len(by_human_id), 4)
         self.assertEqual(len(by_short_id), 4)
+        self.assertEqual(len(by_path), 4)
 
     def test_match_completer(self):
         '''
@@ -44,7 +51,7 @@ class MatchTestCase(clitests.TestCase):
         '''
 
         pm = match_completer(None, None)
-        self.assertEqual(set(pm), set(self.hashes + self.human + self.combined))
+        self.assertEqual(set(pm), set(self.hashes + self.human + self.combined + self.paths))
 
     def test_match_lookup_hash(self):
         '''
