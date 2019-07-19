@@ -59,7 +59,7 @@ rlJournalStart
         rlAssertEquals "uid file contains the same id as user who causes the crash" $uid 0
         rlAssertEquals "pid in dumpdir name is the same as in pid element" ${crash_PATH##*-} "$(cat $crash_PATH/pid)"
 
-        rlRun "abrt-cli remove $crash_PATH"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "generate crash as abrt-journal-core-test user"
@@ -82,7 +82,7 @@ rlJournalStart
         rlAssertEquals "pid in dumpdir name is the same as in pid element" ${crash_PATH##*-} "$(cat $crash_PATH/pid)"
 
         rlRun "userdel -r -f abrt_core_test"
-        rlRun "abrt-cli remove $crash_PATH"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartCleanup

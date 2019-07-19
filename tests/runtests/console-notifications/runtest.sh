@@ -65,7 +65,7 @@ rlJournalStart
         LOG_NAME="interactive_shell_first_run.log"
         rlAssertNotExists $LNPATH
 
-        rlLog "ABRT should suggest user to run abrt-cli since"
+        rlLog "ABRT should suggest user to run abrt since"
         CANARY="CANARY_$(date +%s)_LIVES"
         # bash allows to run interactive shell with -c
         sh -l -i -c "echo $CANARY" >$LOG_NAME 2>&1
@@ -73,7 +73,7 @@ rlJournalStart
         rlAssertExists $LNPATH
 
         # ABRT worked as expected
-        rlAssertGrep "ABRT has detected .* problem(s).*For more info run:.*abrt-cli list.*" $LOG_NAME
+        rlAssertGrep "ABRT has detected .* problem(s).*For more info run:.*abrt list.*" $LOG_NAME
         # ABRT didn't break login
         rlAssertGrep "$CANARY" $LOG_NAME
     rlPhaseEnd
@@ -108,7 +108,7 @@ rlJournalStart
         generate_crash
         wait_for_hooks
 
-        rlLog "ABRT should suggest user to run abrt-cli list with --since"
+        rlLog "ABRT should suggest user to run abrt list with --since"
         rlRun "TS=$(cat $LNPATH)"
         CANARY="CANARY_$(date +%s)_LIVES"
         # bash allows to run interactive shell with -c
@@ -120,7 +120,7 @@ rlJournalStart
         rlAssertNotEquals "The time stamp file has been updated" "_$TN" "_$(cat $LNPATH)"
 
         # ABRT worked as expected
-        rlAssertGrep "ABRT has detected .* problem(s).*For more info run:.*abrt-cli list --since $TS.*" $LOG_NAME
+        rlAssertGrep "ABRT has detected .* problem(s).*For more info run:.*abrt list --since $TS.*" $LOG_NAME
         # ABRT didn't break login
         rlAssertGrep "$CANARY" $LOG_NAME
     rlPhaseEnd
@@ -197,7 +197,7 @@ rlJournalStart
         rlLog "This part of the test can sometimes fail. If this happens, run the test again"
         LOG_NAME="timeout.log"
 
-        # creating massive amounts of dump dirs to ensure 'abrt-cli status'
+        # creating massive amounts of dump dirs to ensure 'abrt status'
         # processing takes longer than console-notification's time out allows
         num_of_dump_dirs=10000
         rlLog "Creating $num_of_dump_dirs dumpdirs"
@@ -208,20 +208,20 @@ rlJournalStart
             fi
         done
 
-        (sleep 15; killall abrt-cli > killall.log 2>&1) &
+        (sleep 15; killall abrt > killall.log 2>&1) &
 
-        rlLog "ABRT emits a warning due to time out of abrt-cli status"
+        rlLog "ABRT emits a warning due to time out of abrt status"
         CANARY="CANARY_$(date +%s)_LIVES"
         sh -l -i -c "echo $CANARY" >$LOG_NAME 2>&1
 
         # ABRT worked as expected
-        rlAssertGrep "'abrt-cli status' timed out|Can't get problem list from abrt-dbus: Timeout was reached
+        rlAssertGrep "'abrt status' timed out|Can't get problem list from abrt-dbus: Timeout was reached
         " $LOG_NAME -E
         # ABRT didn't break login
         rlAssertGrep "$CANARY" $LOG_NAME
 
         sleep 6
-        rlAssertGrep "abrt-cli: no process .*" killall.log
+        rlAssertGrep "abrt: no process .*" killall.log
 
         rlRun "rm -rf $ABRT_CONF_DUMP_LOCATION/*"
     rlPhaseEnd

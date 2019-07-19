@@ -75,7 +75,7 @@ rlJournalStart
         wait_for_hooks
         get_crash_path
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "change DumpLocation"
@@ -93,7 +93,7 @@ rlJournalStart
         rlRun "[[ _$crash_PATH == _"$ABRT_CONF_DUMP_LOCATION"* ]]"
         rlRun "[[ _$crash_PATH != "_$NEW_ABRT_CONF_DUMP_LOCATION"* ]]"
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
 
         # set a new dump directory location
         rlRun "augtool set /files/etc/abrt/abrt.conf/DumpLocation $NEW_ABRT_CONF_DUMP_LOCATION"
@@ -110,7 +110,7 @@ rlJournalStart
         # dump dir was created in $NEW_ABRT_CONF_DUMP_LOCATION
         rlRun "[[ _$crash_PATH == _"$NEW_ABRT_CONF_DUMP_LOCATION"* ]]"
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
 
         # set a dump directory location to default
         rlRun "augtool rm /files/etc/abrt/abrt.conf/DumpLocation"
@@ -129,7 +129,7 @@ rlJournalStart
         rlRun "[[ _$crash_PATH != "_$NEW_ABRT_CONF_DUMP_LOCATION"* ]]"
 
         rlRun "rm -rf $NEW_ABRT_CONF_DUMP_LOCATION" 0 "Remove crash directory"
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartCleanup

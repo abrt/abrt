@@ -47,7 +47,7 @@ rlJournalStart
         wait_for_hooks
         get_crash_path
 
-        package="$(abrt-cli list | grep -i Package | awk '{ print $2 }' | tail -n1)"
+        package="$(abrt info | grep -i Package | awk '{ print $2 }')"
         user="$( id -u )"
 
         kill %1 || kill -9 %1 # kill dbus-monitor
@@ -58,7 +58,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
         rlBundleLogs abrt 'dbus.log'
         popd # TmpDir
         rm -rf $TmpDir

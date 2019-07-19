@@ -81,7 +81,7 @@ function run_test
             fi
         fi
 
-        rlRun "abrt-cli remove $crash_PATH"
+        rlRun "abrt remove $crash_PATH"
 }
 
 rlJournalStart

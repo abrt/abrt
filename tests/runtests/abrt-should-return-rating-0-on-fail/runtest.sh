@@ -56,7 +56,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "abrt-cli rm $crash_PATH" 0 "Delete the crash"
+        remove_problem_directory
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd

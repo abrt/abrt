@@ -65,7 +65,7 @@ rlJournalStart
     rlPhaseStartCleanup
         wait_for_hooks
         get_crash_path
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
 
         popd # $TmpDir
         rlRun "rm -r $TmpDir" 0 "Removing tmp directory"

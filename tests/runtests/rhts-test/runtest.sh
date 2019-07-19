@@ -258,7 +258,7 @@ rlJournalStart
         rlAssertGrep "(Attaching problem data to case)|(Adding comment to case) 'http://127.0.0.1:12345/rs/cases/00809787/attachments/382c3498-0f19-3edc-aa56-580cf0bc7251'" client_create3 -E
         rlAssertGrep "curl sent header: 'POST /rs/cases/[0-9]*/attachments/.*/(attachments|comments) HTTP/1" client_create3 -E
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
         rlRun "rm -rf $ABRT_CONF_DUMP_LOCATION/last-ccpp"
     rlPhaseEnd
 
@@ -306,7 +306,7 @@ rlJournalStart
         rlAssertGrep "(Attaching problem data to case)|(Adding comment to case) 'http://127.0.0.1:12345/rs/cases/00809787/attachments/382c3498-0f19-3edc-aa56-580cf0bc7251'" client_create4 -E
         rlAssertGrep "curl sent header: 'POST /rs/cases/[0-9]*/attachments/.*/(attachments|comments) HTTP/1" client_create4 -E
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
         rlRun "rm -rf $ABRT_CONF_DUMP_LOCATION/last-ccpp"
     rlPhaseEnd
 
@@ -355,7 +355,7 @@ rlJournalStart
         rlAssertGrep "(Attaching problem data to case)|(Adding comment to case) 'http://127.0.0.1:12345/rs/cases/00809787/attachments/382c3498-0f19-3edc-aa56-580cf0bc7251'" client_create5 -E
         rlAssertGrep "curl sent header: 'POST /rs/cases/[0-9]*/attachments/.*/(attachments|comments) HTTP/1" client_create5 -E
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
         rlRun "rm -rf $ABRT_CONF_DUMP_LOCATION/last-ccpp"
     rlPhaseEnd
 
@@ -405,7 +405,7 @@ rlJournalStart
         rlAssertGrep "(Attaching problem data to case)|(Adding comment to case) 'http://127.0.0.1:12345/rs/cases/00809787/attachments/382c3498-0f19-3edc-aa56-580cf0bc7251'" client_create6 -E
         rlAssertGrep "curl sent header: 'POST /rs/cases/[0-9]*/attachments/.*/(attachments|comments) HTTP/1" client_create6 -E
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartCleanup

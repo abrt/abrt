@@ -57,7 +57,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
         rlRun "ulimit -c $old_ulimit" 0
         rlBundleLogs abrt $(echo *_ls)
         popd # TmpDir

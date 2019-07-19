@@ -50,7 +50,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
-        rlRun "./expect $crash_PATH &> out" 0 "Running abrt-cli via expect"
+        rlRun "./expect $crash_PATH &> out" 0 "Running abrt via expect"
         rlLog "$(cat out)"
         rlAssertGrep "The report has been updated" out
 
@@ -64,7 +64,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "abrt-cli rm $crash_PATH" 0 "Delete $crash_PATH"
+        remove_problem_directory
         popd # TmpDir
         rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
         rlRun "rm /etc/libreport/events.d/test_event_*.conf" 0 "Removing test event config"

@@ -40,6 +40,6 @@ if [ -f "$TMPPATH" ]; then
     mv -f "$TMPPATH" "$SINCEFILE" >"$ABRT_DEBUG_LOG" 2>&1
 fi
 
-timeout 10s abrt-cli status --since="$SINCE" 2>"$ABRT_DEBUG_LOG" || echo "'abrt-cli status' timed out"
+timeout 10s abrt status --since="$SINCE" --not-reported --quiet 2>"$ABRT_DEBUG_LOG" || echo "'abrt status' timed out"
 
 unset ABRT_DEBUG_LOG LPATHDIR SINCEFILE TMPPATH SINCE

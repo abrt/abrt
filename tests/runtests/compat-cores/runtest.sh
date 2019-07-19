@@ -75,7 +75,7 @@ rlJournalStart
         rlLog "core: `ls -l`"
         rlRun '[ "xabrt-suid-test" == "x$(ls -l | grep "core.$killpid" | cut -d" " -f3)" ]' 0 "Checking if core is owned by abrt-suid-test"
 
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
         rlRun "rm core.$killpid"
     rlPhaseEnd
 
@@ -104,7 +104,7 @@ rlJournalStart
         rlAssertEquals "Checking if core has 0 Bytes" "x$(ls -l core.$killpid | cut -f5 -d' ')" "x0"
         rlRun "journalctl SYSLOG_IDENTIFIER=abrt-hook-ccpp --since=\"$SINCE\" | grep \"Can't open.*core.$killpid.*at '.*': Permission denied\""
 
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
         rlRun "rm core.$killpid"
     rlPhaseEnd
 
@@ -133,7 +133,7 @@ rlJournalStart
         rlAssertEquals "Checking if core has 0 Bytes" "x$(ls -l core.$killpid | cut -f5 -d' ')" "x0"
         rlRun "journalctl SYSLOG_IDENTIFIER=abrt-hook-ccpp --since=\"$SINCE\" | grep \".*core.$killpid.* at '.*' is not a regular file with link count 1 owned by UID(0)\""
 
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
         rlRun "rm core.$killpid"
     rlPhaseEnd
 
@@ -162,7 +162,7 @@ rlJournalStart
         rlAssertEquals "Checking if denied.conf is untouched" "x$(cat denied.conf)" "xall"
         rlRun "journalctl SYSLOG_IDENTIFIER=abrt-hook-ccpp --since=\"$SINCE\" | grep \".*core.$killpid.* at '.*' is not a regular file with link count 1 owned by UID(0)\""
 
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
         rlRun "rm denied.conf core.$killpid"
     rlPhaseEnd
 
@@ -188,7 +188,7 @@ rlJournalStart
         rlRun "journalctl SYSLOG_IDENTIFIER=abrt-hook-ccpp --since=\"$SINCE\" | grep \"Current suid_dumpable policy prevents from saving core dumps according to relative core_pattern\""
 
         rlRun "echo 0 > /proc/sys/fs/suid_dumpable" 0 "Set setuid no dump"
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "secure setuid dump - no override files"
@@ -233,7 +233,7 @@ rlJournalStart
         rlRun "systemctl stop abrt-ccpp"
         rlRun "echo \"$OLD_CORE\" > /proc/sys/kernel/core_pattern"
         rlRun "systemctl start abrt-ccpp"
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "secure setuid dump"
@@ -273,7 +273,7 @@ rlJournalStart
         rlRun "systemctl stop abrt-ccpp"
         rlRun "echo \"$OLD_CORE\" > /proc/sys/kernel/core_pattern"
         rlRun "systemctl start abrt-ccpp"
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartCleanup

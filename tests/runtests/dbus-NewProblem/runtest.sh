@@ -45,19 +45,17 @@ rlJournalStart
                     --dest=org.freedesktop.problems /org/freedesktop/problems org.freedesktop.problems.NewProblem \
                     dict:string:string:"analyzer","libreport","executable","$(which true)","uuid","1" > dbus_first_reply.log
         rlAssertGrep "^[ ]*string[ ]\+\"[^ ]\+\"$" dbus_first_reply.log
-        problem_ID1=`cat dbus_first_reply.log | tail -1 | sed 's/ *string *"\(.*\)"/\1/'`
+        problem_PATH1=`cat dbus_first_reply.log | tail -1 | sed 's/ *string *"\(.*\)"/\1/'`
 
         wait_for_hooks
 
-        rlAssertGreater "Problem data recorded" $(abrt-cli list | grep -c ${problem_ID1}) 0
+        rlRun "abrt info $problem_PATH1" 0 "Problem data recorded"
 
-        problem_PATH1="$(abrt-cli list | awk -v id=$problem_ID1 '$0 ~ "Directory:.*"id { print $2 }')"
         if [ ! -d "$problem_PATH1" ]; then
             rlDie "No crash dir generated, this shouldn't happen"
         fi
 
-        problem_UID1="$(abrt-cli info $problem_ID1 | awk '/uid:/ { print $2 }')"
-        rlAssertEquals "Problem uid is equal to 0" "0" "$problem_UID1"
+        rlAssert0 "Problem UID is 0" "$(abrt info --fmt={uid_username} $problem_PATH1 | awk '{ print $1 }')"
 
         prepare
 
@@ -70,14 +68,14 @@ rlJournalStart
 
         wait_for_hooks
 
-        rlAssertGreater "Problem data recorded" $(abrt-cli list | grep -c ${problem_ID2}) 0
+        rlRun "abrt info $problem_ID2" 0 "Problem data recorded"
 
-        problem_PATH2="$(abrt-cli list | awk -v id=${problem_ID2} '$0 ~ "Directory:.*"id { print $2 }')"
+        problem_PATH2="$(abrt info --fmt={path} $problem_ID2)"
         if [ ! -d "$problem_PATH2" ]; then
             rlDie "No crash dir generated, this shouldn't happen"
         fi
 
-        problem_UID2="$(abrt-cli info $problem_ID2 | awk '/uid:/ { print $2 }')"
+        problem_UID2="$(abrt info --fmt={uid_username} $problem_ID2 | awk '{ print $1 }')"
         rlAssertEquals "Problem uid equals to the passed uid" "$TEST_UID" "$problem_UID2"
 
         prepare
@@ -91,14 +89,14 @@ rlJournalStart
 
         wait_for_hooks
 
-        rlAssertGreater "Problem data recorded" $(abrt-cli list | grep -c ${problem_ID3}) 0
+        rlRun "abrt info $problem_ID3" 0 "Problem data recorded"
 
-        problem_PATH3="$(abrt-cli list | awk -v id=$problem_ID3 '$0 ~ "Directory:.*"id { print $2 }')"
+        problem_PATH3="$(abrt info --fmt={path} $problem_ID3)"
         if [ ! -d "$problem_PATH3" ]; then
             rlDie "No crash dir generated, this shouldn't happen"
         fi
 
-        problem_UID3="$(abrt-cli info $problem_ID3 | awk '/uid:/ { print $2 }')"
+        problem_UID3="$(abrt info --fmt={uid_username} $problem_ID3 | awk '{ print $1 }')"
         rlAssertEquals "Problem uid equals to caller's uid" "$TEST_UID" "$problem_UID3"
 
         prepare
@@ -112,23 +110,23 @@ rlJournalStart
 
         wait_for_hooks
 
-        rlAssertGreater "Problem data recorded" $(abrt-cli list | grep -c ${problem_ID4}) 0
+        rlRun "abrt info $problem_ID4" 0 "Problem data recorded"
 
-        problem_PATH4="$(abrt-cli list | awk -v id=$problem_ID4 '$0 ~ "Directory:.*"id { print $2 }')"
+        problem_PATH4="$(abrt info --fmt={path} $problem_ID4)"
         if [ ! -d "$problem_PATH4" ]; then
             rlDie "No crash dir generated, this shouldn't happen"
         fi
 
-        problem_UID4="$(abrt-cli info $problem_ID4 | awk '/uid:/ { print $2 }')"
+        problem_UID4="$(abrt info --fmt={uid_username} $problem_ID4 | awk '{ print $1 }')"
         rlAssertEquals "Passed uid is replaced by caller's uid" "$TEST_UID" "$problem_UID4"
     rlPhaseEnd
 
     rlPhaseStartCleanup
         rlRun "userdel -r -f abrtdbustest"
-        rlRun "abrt-cli rm $problem_PATH1" 0 "Remove crash directory"
-        rlRun "abrt-cli rm $problem_PATH2" 0 "Remove crash directory"
-        rlRun "abrt-cli rm $problem_PATH3" 0 "Remove crash directory"
-        rlRun "abrt-cli rm $problem_PATH4" 0 "Remove crash directory"
+        rlRun "abrt remove $problem_PATH1" 0 "Remove crash directory"
+        rlRun "abrt remove $problem_PATH2" 0 "Remove crash directory"
+        rlRun "abrt remove $problem_PATH3" 0 "Remove crash directory"
+        rlRun "abrt remove $problem_PATH4" 0 "Remove crash directory"
         rlBundleLogs abrt *.log
     rlPhaseEnd
     rlJournalPrintText

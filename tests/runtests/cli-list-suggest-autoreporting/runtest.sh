@@ -39,13 +39,13 @@ rlJournalStart
 
     rlPhaseStartTest "auto-reporting disabled"
         rlRun "abrt-auto-reporting disabled"
-        rlRun "abrt-cli list &> out"
+        rlRun "abrt list &> out"
         rlAssertGrep 'abrt-auto-reporting enabled' out
     rlPhaseEnd
 
     rlPhaseStartTest "auto-reporting enabled"
         rlRun "abrt-auto-reporting enabled"
-        rlRun "abrt-cli list &> out"
+        rlRun "abrt list &> out"
         rlAssertNotGrep 'enabled' out
     rlPhaseEnd
 

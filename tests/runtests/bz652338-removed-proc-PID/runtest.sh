@@ -45,9 +45,6 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
-        CLI_LIST="abrt-cli list"
-        CLI_RM="abrt-cli rm"
-
         tail -f -n 0 /var/log/messages > var-log-messages &
 
         sleep 2
@@ -68,7 +65,7 @@ rlJournalStart
         rlRun "kill -11 %2" 0 "Kill process #1"
         rlRun "kill -11 %3" 0 "Kill process #2"
 
-        rlRun "$CLI_LIST 2>&1 | tee cli_list.log"
+        rlRun "abrt list 2>&1 | tee cli_list.log"
 
         sleep 1
         kill %1 || kill -9 %1 # kill tailf
@@ -77,11 +74,11 @@ rlJournalStart
 
         rlAssertGrep "Skipping core dump" var-log-messages
 
-        rlRun "$CLI_LIST | grep package | grep abrt" 1 "abrtd did not crashed"
+        rlRun "abrt list --fmt={package} | grep abrt" 1 "abrtd did not crashed"
 
-        dirs="$($CLI_LIST | grep Directory | awk '{ print $2 }')"
+        dirs="$(abrt list --fmt={path})"
         for dir in $dirs; do
-            rlRun "$CLI_RM $dir" 0 "Dump dir removed ($dir)"
+            rlRun "abrt remove $dir" 0 "Dump dir removed ($dir)"
         done
     rlPhaseEnd
 

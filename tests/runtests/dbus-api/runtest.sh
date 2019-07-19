@@ -58,10 +58,8 @@ rlJournalStart
         generate_second_crash
         wait_for_hooks
 
-        rlAssertGreater "Second crash recorded" $(abrt-cli list | wc -l) 0
-        crash2_PATH="$(abrt-cli list | grep Directory \
-            | grep -v "$crash_PATH" \
-            | awk '{ print $2 }' | tail -n1)"
+        rlAssertGreater "Second crash recorded" $(abrt status --bare) 0
+        crash2_PATH="$(abrt list --fmt={path} | grep -v "$crash_PATH" | tail -n1)"
         if [ ! -d "$crash2_PATH" ]; then
             rlDie "No crash dir generated for second crash, this shouldn't happen"
         fi
@@ -72,8 +70,8 @@ rlJournalStart
         rlAssertGrep "$crash_PATH" dbus_second_reply.log
         rlAssertGrep "$crash2_PATH" dbus_second_reply.log
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
-        rlRun "abrt-cli rm $crash2_PATH" 0 "Remove second crash directory"
+        remove_problem_directory
+        rlRun "abrt remove $crash2_PATH" 0 "Remove second crash directory"
     rlPhaseEnd
 
     rlPhaseStartTest "FindProblemByElementInTimeRange"
@@ -93,7 +91,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
         rlBundleLogs abrt *.log
         popd # TmpDir
         rm -rf $TmpDir

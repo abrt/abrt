@@ -52,7 +52,7 @@ function test_create_dir {
 
     rlAssertGrep "Process $PID \(${CRASH_APP##*/}\) of user $USER_UID killed by SIGSEGV - dumping core" abrt_journal.log -E
 
-    rlRun "abrt-cli rm $crash_PATH" 0 "Removing problem dirs"
+    remove_problem_directory
 }
 
 function test_not_create_dir {
@@ -80,7 +80,7 @@ function test_not_create_dir {
     rlAssertNotGrep "Process $PID \(${CRASH_APP##*/}\) of user $USER_UID killed by $SIGNAL - dumping core" abrt_journal.log -E
 
     # no crash is generated
-    rlAssert0 "Crash should not be generated" $(abrt-cli list 2> /dev/null | wc -l)
+    rlAssert0 "Crash should not be generated" $(abrt status --bare 2> /dev/null)
 }
 
 function test_duplicate_crash {
@@ -102,7 +102,7 @@ function test_duplicate_crash {
     rlAssertGrep "Process $PID2 \(will_segfault\) of user $UID killed by SIGSEGV - ignoring \(${REASON}\)" abrt_journal.log -E
 
     get_crash_path
-    rlRun "abrt-cli rm $crash_PATH" 0 "Removing problem dirs"
+    remove_problem_directory
 }
 
 rlJournalStart

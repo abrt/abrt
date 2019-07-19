@@ -122,7 +122,7 @@ function check_crash()
     rlAssertNotDiffer $LOG_FILE $LOG_RIGHT
     diff $LOG_FILE $LOG_RIGHT
 
-    abrt-cli remove $crash_PATH
+    remove_problem_directory
 }
 
 rlJournalStart

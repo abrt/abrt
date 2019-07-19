@@ -68,7 +68,7 @@
           </row>
           <row>
             <entry>
-              <command>abrt-cli</command>
+              <command>abrt</command>
             </entry>
             <entry>
               <package>abrt-cli</package>
@@ -130,7 +130,7 @@
       Other files, such as <filename>backtrace</filename>, can be created during analysis depending on which analyzer method is used and its configuration settings. Each of these files holds specific information about the system and the problem itself. For example, the <filename>kernel</filename> file records the version of the crashed kernel.
     </para>
     <para>
-      After the problem directory is created and problem data gathered, you can further process, analyze and report the problem using either the <application>ABRT</application> GUI, or the <application>abrt-cli</application> utility for the command line. For more information about these tools, refer to <xref linkend="sect-abrt-gui"/> and <xref linkend="sect-abrt-cli"/> respectively.
+      After the problem directory is created and problem data gathered, you can further process, analyze and report the problem using either the <application>ABRT</application> GUI, or the <application>abrt</application> utility for the command line. For more information about these tools, refer to <xref linkend="sect-abrt-gui"/> and <xref linkend="sect-abrt-cli"/> respectively.
     </para>
     <note>
       <title>The report utility is no longer supported</title>
@@ -144,7 +144,7 @@
         …where <replaceable>target</replaceable> is either <emphasis role="bold">strata</emphasis> for reporting to RHTSupport or <emphasis role="bold">bugzilla</emphasis> for reporting to Bugzilla. <replaceable>ID</replaceable> stands for number identifying an existing problem case in the respective database, and <replaceable>file</replaceable> is a file containing information to be added to the problem case.
       </para>
       <para>
-        If you want to report new problems and you do not wish to use <application>abrt-cli</application>, you can now use the <application>report-cli</application> utility instead of <application>report</application>. Issue the following command to let <application>report-cli</application> to guide you through the problem reporting process:
+        If you want to report new problems and you do not wish to use <application>abrt</application>, you can now use the <application>report-cli</application> utility instead of <application>report</application>. Issue the following command to let <application>report-cli</application> to guide you through the problem reporting process:
       </para>
       <synopsis>
         <command>report-cli <option>-r</option> <replaceable>dump_directory</replaceable></command>
@@ -404,10 +404,10 @@ Starting abrt daemon:                                      [  OK  ]</screen>
       Problem data saved by <systemitem class="daemon">abrtd</systemitem> can be viewed, reported, and deleted using the command line interface.
     </para>
     <para>
-      General usage of the <application>abrt-cli</application> tool can be described using the following syntax:
+      General usage of the <application>abrt</application> tool can be described using the following syntax:
     </para>
     <synopsis>
-      <command>abrt-cli</command> <optional><option>--version</option></optional> <replaceable>command</replaceable> <optional><replaceable>args</replaceable></optional>
+      <command>abrt</command> <optional><option>--version</option></optional> <replaceable>command</replaceable> <optional><replaceable>args</replaceable></optional>
     </synopsis>
     <para>
       …where <replaceable>args</replaceable> stands for a problem data directory and/or options modifying the commands, and <replaceable>command</replaceable> is one of the following sub-commands:
@@ -434,75 +434,76 @@ Starting abrt daemon:                                      [  OK  ]</screen>
           </para>
       </listitem>
     </itemizedlist>
-    <para>To display help on particular <command>abrt-cli</command> command use:</para>
+    <para>To display help on particular <command>abrt</command> command use:</para>
     <synopsis>
-      <command>abrt-cli <replaceable>command</replaceable>
+      <command>abrt <replaceable>command</replaceable>
         <option>--help</option>
       </command>
     </synopsis>
     <para>
-      The rest of the commands used with <application>abrt-cli</application> are described in the following sections.
+      The rest of the commands used with <application>abrt</application> are described in the following sections.
     </para>
     <section id="sect-abrt-cli_viewing_problems">
       <title>Viewing Problems</title>
       <para>
-        To view detected problems, enter the <command>abrt-cli list</command> command:
+        To view detected problems, enter the <command>abrt list</command> command:
       </para>
-      <screen>~]#&#160;<command>abrt-cli list</command>
-Directory:      /var/spool/abrt/ccpp-2011-09-13-10:18:14-2895
-count:          2
-executable:     /usr/bin/gdb
-package:        gdb-7.2-48.el6
-time:           Tue 13 Sep 2011 10:18:14 AM CEST
-uid:            500
+      <screen>~]#&#160;<command>abrt list</command>
+Id           8c40dfb
+Component    coreutils
+Count        1
+Time         2019-07-18 08:27:56
+User id      1000 (user)
 
-Directory:      /var/spool/abrt/ccpp-2011-09-21-18:18:07-2841
-count:          1
-executable:     /bin/bash
-package:        bash-4.1.2-8.el6
-time:           Wed 21 Sep 2011 06:18:07 PM CEST
-uid:            500</screen>
-      <!--<para>Note that you can add one or more of the <option>- -full</option>, <option>- -detailed</option> or <option>- -verbose</option> flags to the <command>abrt-cli list</command> command to display more detailed data about the problem.</para>
-      <para>If you run <command>abrt-cli list</command> without any arguments, only crashes which have not yet been viewed are displayed.</para>
-      <para>Here are descriptions of various fields in the output:</para>-->
+Id           eda4baa
+Component    kernel
+Count        7
+Time         2019-07-15 09:21:36
+Reported to
+ABRT Server  https://retrace.fedoraproject.org/faf/reports/bthash/3a4d443e86a0f4378010b046756bdf91b84bb4f2
+             Not reportable
+             A kernel problem occurred, but your kernel has been tainted (flags:GW). Explanation:
+             W - Taint on warning.
+             Kernel maintainers are unable to diagnose tainted reports.
+      <!--<para>Here are descriptions of various fields in the output:</para>-->
       <itemizedlist>
         <listitem>
           <para>
-            <computeroutput>Directory</computeroutput> — Shows the problem data directory that contains all information about the problem.
+            <computeroutput>Id</computeroutput> — Unique identifier for the problem used in various commands.
           </para>
         </listitem>
         <listitem>
           <para>
-            <computeroutput>count</computeroutput> — Shows how many times this particular problem occurred.
+            <computeroutput>Component</computeroutput> — Indicates which package contains the crashed executable. If unpackaged, shows the full path to it.
           </para>
         </listitem>
         <listitem>
           <para>
-            <computeroutput>executable</computeroutput> — Indicates which binary or executable script crashed.
+            <computeroutput>Count</computeroutput> — Shows how many times this particular problem occurred.
           </para>
         </listitem>
         <listitem>
           <para>
-            <computeroutput>package</computeroutput> — Shows the name of the package that contains the program that caused the problem.
+            <computeroutput>Time</computeroutput> — Shows the date and time of the first occurrence of the problem.
           </para>
         </listitem>
         <listitem>
           <para>
-            <computeroutput>time</computeroutput> — Shows the date and time of the last occurrence of the problem.
+            <computeroutput>User id</computeroutput> — Shows the ID of the user which ran the program that crashed.
           </para>
         </listitem>
         <listitem>
           <para>
-            <computeroutput>uid</computeroutput> — Shows the ID of the user which ran the program that crashed.
+            <computeroutput>Reported to</computeroutput> — Lists places where problem reports have been sent.
           </para>
         </listitem>
       </itemizedlist>
       <para>
-        The following table shows options available with the <command>abrt-cli list</command> command. All options are mutually inclusive so you can combine them according to your need. The command output will be the most comprehensive if you combine all options, and you will receive the least details if you use no additional options.
+        The following table shows options available with the <command>abrt list</command> command.
       </para>
       <table
         id="tab-abrt-cli_list">
-        <title>The <command>abrt-cli list</command> command options</title>
+        <title>The <command>abrt list</command> command options</title>
         <tgroup
           cols="2">
           <colspec
@@ -529,31 +530,15 @@ uid:            500</screen>
 
               </entry>
               <entry>
-                With no additional option, the <command>abrt-cli list</command> command displays only basic information for problems that have not been reported yet.
+                With no additional option, the <command>abrt list</command> command displays only basic information for problems.
               </entry>
             </row>
             <row>
               <entry>
-                <option>-d</option>, <option>--detailed</option>
+                <option>--pretty {oneline,short,medium,full,email}</option>
               </entry>
               <entry>
-                Displays all stored information about problems listed, including a <filename>backtrace</filename> if it has already been generated.
-              </entry>
-            </row>
-            <row>
-              <entry>
-                <option>-f</option>, <option>--full</option>
-              </entry>
-              <entry>
-                Displays basic information for all problems including the already-reported ones.
-              </entry>
-            </row>
-            <row>
-              <entry>
-                <option>-v</option>, <option>--verbose</option>
-              </entry>
-              <entry>
-                Provides additional information on its actions.
+                Controls the verbosity of the output.
               </entry>
             </row>
           </tbody>
@@ -563,15 +548,15 @@ uid:            500</screen>
         If you want to view information just about one particular problem, you can use the command:
       </para>
         <synopsis>
-          <command>abrt-cli info</command> <replaceable>directory</replaceable>
+          <command>abrt info</command> <replaceable>[MATCH]</replaceable>
         </synopsis>
       <para>
-        …where <replaceable>directory</replaceable> stands for the <emphasis
-          role="bold">problem data directory</emphasis> of the problem that is being viewed. The following table shows options available with the <command>abrt-cli info</command> command. All options are mutually inclusive so you can combine them according to your need. The command output will be the most comprehensive if you combine all options, and you will receive the least details if you use no additional options.
+        …where <replaceable>MATCH</replaceable> is the <emphasis
+          role="bold">component, executable, type or short ID</emphasis> of the problem that is being viewed. The following table shows options available with the <command>abrt info</command> command.
       </para>
       <table
         id="tab-abrt-cli_info">
-        <title>The <command>abrt-cli info</command> command options</title>
+        <title>The <command>abrt info</command> command options</title>
         <tgroup
           cols="2">
           <colspec
@@ -598,7 +583,7 @@ uid:            500</screen>
 
               </entry>
               <entry>
-                With no additional option, the <command>abrt-cli info</command> command displays only basic information for the problem specified by the <systemitem>problem data directory</systemitem> argument.
+                With no additional option, the <command>abrt info</command> command displays only basic information for the problem specified by the <systemitem>match</systemitem> argument.
               </entry>
             </row>
             <row>
@@ -611,10 +596,10 @@ uid:            500</screen>
             </row>
             <row>
               <entry>
-                <option>-v</option>, <option>--verbose</option>
+                <option>--pretty {oneline,short,medium,full,email}</option>
               </entry>
               <entry>
-                <command>abrt-cli info</command> provides additional information on its actions.
+                Controls the verbosity of the output.
               </entry>
             </row>
           </tbody>
@@ -626,38 +611,34 @@ uid:            500</screen>
       <para>
         To report a certain problem, use the command:</para>
       <synopsis>
-        <command>abrt-cli report <replaceable>directory</replaceable></command>
+        <command>abrt report <replaceable>directory</replaceable></command>
       </synopsis>
-      <para>...where <replaceable>directory</replaceable> stands for the <emphasis
-          role="bold">problem data directory</emphasis> of the problem that is being reported. For example:
+      <para>…where <replaceable>MATCH</replaceable> is the <emphasis
+          role="bold">component, executable, type or short ID</emphasis> of the problem that is being reported. For example:
       </para>
-      <screen>~]$&#160;<command>abrt-cli report</command>&#160;<filename>/var/spool/abrt/ccpp-2011-09-13-10:18:14-2895</filename>
-How you would like to analyze the problem?
-1) Collect .xsession-errors
-2) Local GNU Debugger
-Select analyzer: _</screen>
+      <screen>~]$&#160;<command>abrt report</command>&#160;<literal>8c40dfb</literal>
+1 Report to CentOS Bug Tracker
+  Process the C/C++ crash using the CentOS infrastructure
+
+2 Report to Fedora
+  Process the C/C++ crash using the Fedora infrastructure
+
+Select a workflow to run: _</screen>
       <para>
-        <application>ABRT</application> prompts you to select an analyzer event for the problem that is being reported. After selecting an event, the problem is analyzed. This can take a considerable amount of time. When the problem report is ready, <command>abrt-cli</command> opens a text editor with the content of the report. You can see what is being reported, and you can fill in instructions on how to reproduce the crash and other comments. You should also check the backtrace, because the backtrace might be sent to a public server and viewed by anyone, depending on the problem reporter event settings.
+        <application>ABRT</application> prompts you to select the reporting workflow. After doing so, the problem is analyzed by running various event handlers as defined in the workflow. This can take a considerable amount of time. When the problem report is ready, a text editor will be opened with the content of the report. You can see what is being reported, and you can fill in instructions on how to reproduce the crash and other comments. You should also check the backtrace, because the backtrace might be sent to a public server and viewed by anyone, depending on the problem reporter event settings.
       </para>
       <note>
         <title>Selecting a preferred text editor</title>
         <para>
-          You can choose which text editor is used to check the reports. <command>abrt-cli</command> uses the editor defined in the <envar>ABRT_EDITOR</envar> environment variable. If the variable is not defined, it checks the <envar>VISUAL</envar> and <envar>EDITOR</envar> variables. If none of these variables is set, <command>vi</command> is used. You can set the preferred editor in your <filename>.bashrc</filename> configuration file. For example, if you prefer GNU Emacs, add the following line to the file:
+          You can choose which text editor is used to check the reports. <command>abrt</command> uses the editor defined in the <envar>ABRT_EDITOR</envar> environment variable. If the variable is not defined, it checks the <envar>VISUAL</envar> and <envar>EDITOR</envar> variables. If none of these variables is set, <command>vi</command> is used. You can set the preferred editor in your <filename>.bashrc</filename> configuration file. For example, if you prefer GNU Emacs, add the following line to the file:
       </para>
         <screen>export <varname>VISUAL</varname>=<userinput>emacs</userinput></screen>
       </note>
       <para>
-        When you are done with the report, save your changes and close the editor. You will be asked which of the configured <application>ABRT</application> reporter events you want to use to send the report.
-      </para>
-      <screen>How would you like to report the problem?
-1) Logger
-2) Red Hat Customer Support
-Select reporter(s): _</screen>
-      <para>
-        After selecting a reporting method, you can proceed with reviewing data to be sent with the report. The following table shows options available with the <command>abrt-cli report</command> command.
+        The following table shows options available with the <command>abrt report</command> command.
       </para>
       <table id="tab-abrt-cli_report">
-        <title>The <command>abrt-cli report</command> command options</title>
+        <title>The <command>abrt report</command> command options</title>
         <tgroup
           cols="2">
           <colspec
@@ -684,7 +665,15 @@ Select reporter(s): _</screen>
 
               </entry>
               <entry>
-                With no additional option, the <command>abrt-cli report</command> command provides the usual output.
+                With no additional option, the <command>abrt report</command> command provides the usual output.
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <option>-u</option>, <option>--unsafe</option>
+              </entry>
+              <entry>
+                Reports the problem regardless of its unreportable state.
               </entry>
             </row>
             <row>
@@ -692,7 +681,7 @@ Select reporter(s): _</screen>
                 <option>-v</option>, <option>--verbose</option>
               </entry>
               <entry>
-                <command>abrt-cli report</command> provides additional information on its actions.
+                <command>abrt report</command> provides additional information on its actions.
               </entry>
             </row>
           </tbody>
@@ -705,12 +694,13 @@ Select reporter(s): _</screen>
         If you are certain that you do not want to report a particular problem, you can delete it. To delete a problem so <application>ABRT</application> does not keep information about it, use the command:
       </para>
       <synopsis>
-        <command>abrt-cli rm <replaceable>directory</replaceable></command>
+        <command>abrt remove <replaceable>[MATCH]</replaceable></command>
       </synopsis>
       <para>
-        ...where <replaceable>directory</replaceable> stands for the problem data directory of the problem being deleted. For example:
+        …where <replaceable>MATCH</replaceable> is the <emphasis
+          role="bold">component, executable, type or short ID</emphasis> of the problem that is being viewed. For example:
       </para>
-      <screen>~]$ <command>abrt-cli rm</command> <filename>/var/spool/abrt/ccpp-2011-09-12-18:37:24-4413</filename>
+      <screen>~]$ <command>abrt remove</command> <literal>8c40dfb</literal>
 rm '/var/spool/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
       <note>
         <title>Deletion of a problem can lead to frequent ABRT notification</title>
@@ -719,10 +709,10 @@ rm '/var/spool/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
         </para>
       </note>
       <para>
-        The following table shows options available with the <command>abrt-cli rm</command> command.
+        The following table shows options available with the <command>abrt remove</command> command.
       </para>
       <table id="tab-abrt-cli_rm">
-        <title>The <command>abrt-cli rm</command> command options</title>
+        <title>The <command>abrt remove</command> command options</title>
         <tgroup
           cols="2">
           <colspec
@@ -746,18 +736,18 @@ rm '/var/spool/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
           <tbody>
             <row>
               <entry>
-
+                <option>-f</option>
               </entry>
               <entry>
-                With no additional option, the <command>abrt-cli rm</command> command removes the specified <systemitem>problem data directory</systemitem> with all its contents.
+                Forces removal without prompting.
               </entry>
             </row>
             <row>
               <entry>
-                <option>-v</option>, <option>--verbose</option>
+                <option>-i</option>
               </entry>
               <entry>
-                <command>abrt-cli rm</command> provides additional information on its actions.
+                Prompts before removal.
               </entry>
             </row>
           </tbody>
@@ -940,7 +930,7 @@ rm '/var/spool/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
         </varlistentry>
       </variablelist>
       <para>
-        Additional information about events (such as their description, names and types of parameters which can be passed to them as environment variables, and other properties) is stored in the <filename>/etc/libreport/events/<replaceable>event_name</replaceable>.xml</filename> files. These files are used by <application>abrt-gui</application> and <application>abrt-cli</application> to make the user interface more friendly. Do not edit these files unless you want to modify the standard installation.
+        Additional information about events (such as their description, names and types of parameters which can be passed to them as environment variables, and other properties) is stored in the <filename>/etc/libreport/events/<replaceable>event_name</replaceable>.xml</filename> files. These files are used by <application>abrt-gui</application> and <application>abrt</application> to make the user interface more friendly. Do not edit these files unless you want to modify the standard installation.
       </para>
     </section>
     <section id="sect-abrt-configuration-events-default_events">
@@ -1042,7 +1032,7 @@ rm '/var/spool/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
       <note>
         <title>Do not store sensitive data in global configuration files</title>
         <para>
-            All files in the <filename>/etc/libreport/</filename> directory hierarchy are world readable and are meant to be used as global settings. Thus, it is not advisable to store usernames, passwords or any other sensitive data in them. The per-user settings (set in the GUI application and readable by the owner of <varname>$HOME</varname> only) are stored in the <application>Gnome</application> keyring or can be stored in a text file in <filename>$HOME/.abrt/*.conf</filename> for use in <command>abrt-cli</command>.
+            All files in the <filename>/etc/libreport/</filename> directory hierarchy are world readable and are meant to be used as global settings. Thus, it is not advisable to store usernames, passwords or any other sensitive data in them. The per-user settings (set in the GUI application and readable by the owner of <varname>$HOME</varname> only) are stored in the <application>Gnome</application> keyring or can be stored in a text file in <filename>$HOME/.abrt/*.conf</filename> for use in <command>abrt</command>.
         </para>
       </note>
       <figure
@@ -1418,7 +1408,7 @@ rm '/var/spool/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
     <section id="sect-abrt-configuration-proxy_servers">
       <title>Uploading and Reporting Using a Proxy Server</title>
       <para>
-        The <application>reporter-bugzilla</application> and the <application>reporter-upload</application> tools respect the <envar>http_proxy</envar> and the <envar>ftp_proxy</envar> environment variables. When you use environment variables as a part of a reporting event, they inherit their values from the process which performs reporting, usually <application>abrt-gui</application> or <application>abrt-cli</application>. Therefore, you can specify <systemitem class="protocol">HTTP</systemitem> or <systemitem class="protocol">FTP</systemitem> proxy servers by using these variables in your working environment.
+        The <application>reporter-bugzilla</application> and the <application>reporter-upload</application> tools respect the <envar>http_proxy</envar> and the <envar>ftp_proxy</envar> environment variables. When you use environment variables as a part of a reporting event, they inherit their values from the process which performs reporting, usually <application>abrt-gui</application> or <application>abrt</application>. Therefore, you can specify <systemitem class="protocol">HTTP</systemitem> or <systemitem class="protocol">FTP</systemitem> proxy servers by using these variables in your working environment.
       </para>
       <para>
         If you arrange these tools to be a part of the <systemitem class="event">post-create</systemitem> event, they will run as children of the <systemitem class="daemon">abrtd</systemitem> process. You should either adjust the environment of abrtd or modify the rules to set these variables. For example:
@@ -1612,7 +1602,7 @@ ftp> <command>quit</command></screen>
 [1] 2823
 ~]$ <command>kill -s SEGV 2823</command></screen>
       <para>
-        <application>ABRT</application> should detect a crash shortly after executing the <command>kill</command> command. Check that the crash was detected by <application>ABRT</application> on the client system (this can be checked by examining the appropriate syslog file, by running the <command>abrt-cli list --full</command> command, or by examining the crash dump created in the <filename>/var/spool/abrt</filename> directory. On some systems <filename>/var/tmp/abrt</filename> directory is used), copied to the server system, unpacked on the server system and can be seen and acted upon using <command>abrt-cli</command> or <command>abrt-gui</command> on the server system.
+        <application>ABRT</application> should detect a crash shortly after executing the <command>kill</command> command. Check that the crash was detected by <application>ABRT</application> on the client system (this can be checked by examining the appropriate syslog file, by running the <command>abrt list</command> command, or by examining the crash dump created in the <filename>/var/spool/abrt</filename> directory. On some systems <filename>/var/tmp/abrt</filename> directory is used), copied to the server system, unpacked on the server system and can be seen and acted upon using <command>abrt</command> or <command>abrt-gui</command> on the server system.
       </para>
     </section>
   </section>

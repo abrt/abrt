@@ -67,7 +67,7 @@ rlJournalStart
         rlAssertGrep "$kernel_version" "$crash_PATH/pkg_version"
         rlAssertGrep "The kernel log indicates that hardware errors were detected." "$crash_PATH/backtrace"
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "MCE JOURNAL - Get mcelog from journal"
@@ -100,7 +100,7 @@ rlJournalStart
         rlAssertGrep "The last 20 mcelog lines of system log are" "$crash_PATH/backtrace"
         rlRun "cat $crash_PATH/backtrace"
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
 
         if [ -f "$MCE_LOG" ]; then
             rlFileRestore --namespace "mcelog"
@@ -145,7 +145,7 @@ rlJournalStart
         rlAssertGrep "However, neither /var/log/mcelog nor system log contain mcelog messages" "$crash_PATH/backtrace"
         rlRun "cat $crash_PATH/backtrace"
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
 
         if [ -f "$MCE_LOG" ]; then
             rlFileRestore --namespace "mcelog"
@@ -183,7 +183,7 @@ rlJournalStart
         rlAssertNotExists "$crash_PATH/not-reportable"
         rlAssertNotGrep "The kernel log indicates that hardware errors were detected." "$crash_PATH/backtrace"
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartCleanup

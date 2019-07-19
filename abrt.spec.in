@@ -339,27 +339,20 @@ Requires: %{name} = %{version}-%{release}
 Requires: libreport-cli >= %{libreport_ver}
 Requires: abrt-libs = %{version}-%{release}
 Requires: abrt-dbus
-
-%description tui
-This package contains a simple command line client for processing abrt reports
-in command line environment.
-
 %if %{with python3}
-%package cli-ng
-Summary: %{name}'s improved command line interface
-Requires: %{name} = %{version}-%{release}
-Requires: libreport-cli >= %{libreport_ver}
-Requires: abrt-libs = %{version}-%{release}
-Requires: abrt-dbus
 Requires: python3-abrt
 Requires: abrt-addon-ccpp
 Requires: python3-argh
 Requires: python3-argcomplete
 Requires: python3-humanize
 
-%description cli-ng
-New generation command line interface for ABRT
+Provides: %{name}-cli-ng = %{version}-%{release}
+Obsoletes: %{name}-cli-ng < 2.12.2
 %endif # with python3
+
+%description tui
+This package contains a simple command line client for processing abrt reports
+in command line environment.
 
 %package cli
 Summary: Virtual package to make easy default installation on non-graphical environments
@@ -519,7 +512,6 @@ CFLAGS="%{optflags} -Werror" %configure \
         --without-retrace \
 %endif
 %if 0%{?rhel}
-        --enable-suggest-autoreporting \
         --enable-authenticated-autoreporting \
 %endif
 %ifnarch %{arm}
@@ -562,9 +554,14 @@ desktop-file-install \
         src/applet/org.freedesktop.problems.applet.desktop
 
 ln -sf %{_datadir}/applications/org.freedesktop.problems.applet.desktop ${RPM_BUILD_ROOT}%{_sysconfdir}/xdg/autostart/
+%if %{with python3}
+ln -sf %{_bindir}/abrt %{buildroot}%{_bindir}/abrt-cli
+ln -sf %{_mandir}/man1/abrt.1 %{buildroot}%{_mandir}/man1/abrt-cli.1
+%endif
 
 # After everything is installed, remove info dir
 rm -f %{buildroot}%{_infodir}/dir
+
 
 %check
 make check|| {
@@ -1004,15 +1001,13 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %files cli
 
 %files tui
-%{_bindir}/abrt-cli
-%{_mandir}/man1/abrt-cli.1*
-
 %if %{with python3}
-%files cli-ng
 %config(noreplace) %{_sysconfdir}/bash_completion.d/abrt.bash_completion
 %{_bindir}/abrt
+%{_bindir}/abrt-cli
 %{python3_sitearch}/abrtcli/
 %{_mandir}/man1/abrt.1*
+%{_mandir}/man1/abrt-cli.1*
 %endif # with python3
 
 %files desktop

@@ -88,7 +88,7 @@ rlJournalStart
 
         rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace $(uname -i) $(cat ${crash_PATH}/executable)" 0 "All frames must have required members"
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "JITCoreDumpTracing enabled - New PID namespace"
@@ -108,7 +108,7 @@ rlJournalStart
 
         rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace $(uname -i) $(cat ${crash_PATH}/executable)" 0 "All frames must have required members"
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "SaveFullCore disabled"
@@ -129,7 +129,7 @@ rlJournalStart
 
         rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace $(uname -i) $(cat ${crash_PATH}/executable)" 0 "All frames must have required members"
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "glibc function on stack"
@@ -148,7 +148,7 @@ rlJournalStart
 
         rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace $(uname -i) $(cat ${crash_PATH}/executable)" 0 "All frames must have required members"
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "Unprivileged user running root set-uid program"
@@ -168,7 +168,7 @@ rlJournalStart
 
         rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace $(uname -i) $(cat ${crash_PATH}/executable)" 0 "Validating generated core_backtrace"
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "root running set-uid program as unprivileged user"
@@ -190,7 +190,7 @@ rlJournalStart
 
         rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace $(uname -i) $(cat ${crash_PATH}/executable)" 0 "Validating generated core_backtrace"
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartCleanup

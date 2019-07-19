@@ -140,7 +140,7 @@ rlJournalStart
             rlAssertEquals "kernel package" "$( rpm -qf --qf %{name}-%{version}-%{release} /boot/vmlinuz-$rpm_version )" "$(cat $crash_PATH/package)"
             rlRun "cat $crash_PATH/pkg_fingerprint"
 
-            rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+            remove_problem_directory
         rlPhaseEnd
     done
 

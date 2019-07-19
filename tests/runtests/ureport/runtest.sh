@@ -59,7 +59,7 @@ rlJournalStart
         rlAssertGrep "retrace.fedoraproject.org/faf/reports" ccpp_reported_to
         rlAssertGrep "bugzilla.redhat.com/show_bug.cgi" ccpp_reported_to
 
-        rlRun "abrt-cli rm $crash_PATH"
+        rlRun "abrt remove $crash_PATH"
     rlPhaseEnd
 
     rlPhaseStartTest "python3"
@@ -80,7 +80,7 @@ rlJournalStart
         rlAssertGrep "retrace.fedoraproject.org/faf/reports" python3_reported_to
         rlAssertGrep "bugzilla.redhat.com/show_bug.cgi" python3_reported_to
 
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "ureport with Authentication data"
@@ -102,7 +102,7 @@ rlJournalStart
 
         rlAssertGrep "\"auth\": {   \"hostname\": \"$hostname\"" reporter-ureport.log
 
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartCleanup

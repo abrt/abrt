@@ -89,7 +89,7 @@ rlJournalStart
         # Test sigchld AVC
         rlAssertExists "$crash_PATH/core_backtrace"
 
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
         rlRun "rm $CORE_NAME"
     rlPhaseEnd
 

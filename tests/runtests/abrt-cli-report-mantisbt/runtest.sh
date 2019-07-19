@@ -248,7 +248,7 @@ rlJournalStart
 
     rlPhaseStartCleanup
         restore_configuration
-        rlRun "abrt-cli remove $crash_PATH" 0
+        remove_problem_directory
         rlBundleLogs abrt testing-workflow.log testing-workflow-server.log
         popd # TmpDir
         rm -rf $TmpDir

@@ -69,7 +69,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
         rlRun "userdel -r -f testuser" 0
     rlPhaseEnd
 
@@ -87,7 +87,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "auto-load GDB script from /var/cache/abrt-di/"
@@ -114,7 +114,7 @@ EOF
 
         rlRun "rm /var/cache/abrt-di/usr/lib/debug/usr/bin/will_segfault-gdb.py"
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "crash in a non-init PID NS"
@@ -137,7 +137,7 @@ EOF
         rlAssertGrep "Name:[[:space:]]*will_segfault" $crash_PATH/proc_pid_status
         rlAssertGrep "will_segfault" $crash_PATH/cmdline
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "crash of a process with locked memory"
@@ -155,7 +155,7 @@ EOF
         rlAssertEquals "Detected the right process" "_./$EXECUTABLE" "_$(cat $crash_PATH/cmdline)"
         rlRun "grep VmLck $crash_PATH/proc_pid_status"
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "crash of a process with white space in its name"
@@ -171,7 +171,7 @@ EOF
         rlAssertEquals "Correct executable" "_$(pwd)/$EXECUTABLE" "_$(cat $crash_PATH/executable)"
         rlAssertEquals "Correct reason" "_$EXECUTABLE killed by SIGSEGV" "_$(cat $crash_PATH/reason)"
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartCleanup

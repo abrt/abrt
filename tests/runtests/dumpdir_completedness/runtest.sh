@@ -87,7 +87,7 @@ rlJournalStart
 
         rlAssertGrep "/usr/sbin/ccpp_crash" "$crash_PATH/core_backtrace"
 
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "Python3 plugin"
@@ -106,7 +106,7 @@ rlJournalStart
             rlAssertExists "$crash_PATH/$FILE"
         done
 
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartCleanup
