@@ -168,12 +168,8 @@ rlJournalStart
         fi
 
         wait_for_hooks
-        roots_problem_path="$(abrt-cli list $ABRT_CONF_DUMP_LOCATION | awk -v id=$roots_problem '$0 ~ "Directory:.*"id { print $2 }')"
-        if [ -z "$roots_problem_path" ]; then
-            rlDie "Not found path"
-        fi
 
-        rlRun "rm -f $roots_problem_path/sosreport.tar.*"
+        rlRun "rm -f $roots_problem/sosreport.tar.*"
 
         prepare
         rlLog "Create a problem data as the unprivileged user"
@@ -183,12 +179,8 @@ rlJournalStart
         fi
 
         wait_for_hooks
-        unprivilegeds_problem_path="$(abrt-cli list $ABRT_CONF_DUMP_LOCATION | awk -v id=$unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
-        if [ -z "$unprivilegeds_problem_path" ]; then
-            rlDie "Not found path"
-        fi
 
-        rlRun "rm -f $unprivilegeds_problem_path/sosreport.tar.*"
+        rlRun "rm -f $unprivilegeds_problem/sosreport.tar.*"
     rlPhaseEnd
 
     rlPhaseStartTest "Sanity tests"
@@ -212,8 +204,8 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "abrt-cli rm $roots_problem_path" 0 "Remove roots crash directory"
-        rlRun "abrt-cli rm $unprivilegeds_problem_path" 0 "Remove users crash directory"
+        rlRun "abrt remove $roots_problem_path" 0 "Remove roots crash directory"
+        rlRun "abrt remove $unprivilegeds_problem_path" 0 "Remove users crash directory"
     rlPhaseEnd
 
     rlPhaseStartSetup
@@ -229,12 +221,8 @@ rlJournalStart
         fi
 
         wait_for_hooks
-        roots_problem_path="$(abrt-cli list $ABRT_CONF_DUMP_LOCATION | awk -v id=$roots_problem '$0 ~ "Directory:.*"id { print $2 }')"
-        if [ -z "$roots_problem_path" ]; then
-            rlDie "Not found path problem path"
-        fi
 
-        rlRun "rm -f $roots_problem_path/sosreport.tar.*"
+        rlRun "rm -f $roots_problem/sosreport.tar.*"
 
         prepare
         rlLog "Create a problem data as the unprivileged user"
@@ -244,12 +232,8 @@ rlJournalStart
         fi
 
         wait_for_hooks
-        unprivilegeds_problem_path="$(abrt-cli list $ABRT_CONF_DUMP_LOCATION | awk -v id=$unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
-        if [ -z "$unprivilegeds_problem_path" ]; then
-            rlDie "Not found path problem path"
-        fi
 
-        rlRun "rm -f $unprivilegeds_problem_path/sosreport.tar.*"
+        rlRun "rm -f $unprivilegeds_problem/sosreport.tar.*"
 
         prepare
         rlLog "Create a problem data as the unprivileged user"
@@ -259,12 +243,8 @@ rlJournalStart
         fi
 
         wait_for_hooks
-        second_unprivilegeds_problem_path="$(abrt-cli list $ABRT_CONF_DUMP_LOCATION | awk -v id=$second_unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
-        if [ -z "$second_unprivilegeds_problem_path" ]; then
-            rlDie "Not found path problem path"
-        fi
 
-        rlRun "rm -f $second_unprivilegeds_problem_path/sosreport.tar.*"
+        rlRun "rm -f $second_unprivilegeds_problem/sosreport.tar.*"
     rlPhaseEnd
 
     rlPhaseStartTest "Handle elements as a user"

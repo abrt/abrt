@@ -74,7 +74,7 @@ rlJournalStart
         rlAssertGrep ".* - - \[.*\] \"POST /faf/reports/new/ HTTP/1.1\" 202 -" server.log
         rlAssertGrep ".* - - \[.*\] \"POST /faf/reports/attach/ HTTP/1.1\" 202 -" server.log
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "do not attach contact email if not configured"
@@ -105,7 +105,7 @@ rlJournalStart
 
         rlAssertGrep ".* - - \[.*\] \"POST /faf/reports/new/ HTTP/1.1\" 202 -" server2.log
         rlAssertNotGrep ".* - - \[.*\] \"POST /faf/reports/attach/ HTTP/1.1\" 202 -" server2.log
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "report unpackaged problem if configured"
@@ -136,7 +136,7 @@ rlJournalStart
         rlAssertNotGrep "Problem comes from unpackaged executable. Unable to create uReport." ureport3.log
 
         rlAssertGrep ".* - - \[.*\] \"POST /faf/reports/new/ HTTP/1.1\" 202 -" server3.log
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "report unpackaged problem if environment variable set"
@@ -167,7 +167,7 @@ rlJournalStart
         rlAssertNotGrep "Problem comes from unpackaged executable. Unable to create uReport." ureport4.log
 
         rlAssertGrep ".* - - \[.*\] \"POST /faf/reports/new/ HTTP/1.1\" 202 -" server4.log
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "do not report unpackaged problem"
@@ -198,7 +198,7 @@ rlJournalStart
         rlAsserttGrep "Problem comes from unpackaged executable. Unable to create uReport." ureport5.log
 
         rlAssertNotGrep ".* - - \[.*\] \"POST /faf/reports/new/ HTTP/1.1\" 202 -" server5.log
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartCleanup

@@ -92,7 +92,7 @@ function test_single_oops
     rlAssertGrep "kernel" "$crash_PATH/pkg_name"
     rlAssertGrep "$kernel_version" "$crash_PATH/pkg_version"
 
-    rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+    remove_problem_directory
 
     # Kill the dumper with TERM to verify that it can store its state.
     # Next time, the dumper should start following the journald from

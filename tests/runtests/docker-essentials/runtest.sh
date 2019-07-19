@@ -68,11 +68,11 @@ rlJournalStart
         rlAssertNotDiffer                                    $crash_PATH/docker_inspect      docker_inspect
         rlAssertGrep      "docker"                          "$crash_PATH/container_cmdline"
 
-        rlRun "abrt-cli st > old_status"
+        rlRun "abrt status > old_status"
         rlRun "docker run --name $DOCKER_NAME1 $DOCKER_IMAGE /usr/bin/bash -c \"timeout -s ABRT 30 sleep 100\"" 124
         wait_for_hooks
         wait_for_process "abrt-hook-ccpp"
-        rlRun "abrt-cli st > new_status"
+        rlRun "abrt status > new_status"
         rlAssertDiffer new_status old_status
         rlRun "sed -i 's/1/2/' old_status"
         rlAssertNotDiffer new_status old_status
@@ -81,9 +81,9 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "Kill sleep in fedora image with ccpp-plugin"
-        abrt-cli rm $crash_PATH
+        remove_problem_directory
         get_crash_path
-        abrt-cli rm $crash_PATH
+        remove_problem_directory
         rlRun "systemctl stop abrt-journal-core"
         rlRun "systemctl start abrt-ccpp"
         rlRun "docker run --name $DOCKER_NAME $DOCKER_IMAGE /usr/bin/bash -c \"timeout -s ABRT 1 sleep 10\"" 124
@@ -102,20 +102,20 @@ rlJournalStart
         rlAssertNotDiffer                                    $crash_PATH/docker_inspect      docker_inspect
         rlAssertGrep      "docker"                          "$crash_PATH/container_cmdline"
 
-        rlRun "abrt-cli st > old_status"
+        rlRun "abrt status > old_status"
         rlRun "docker run --name $DOCKER_NAME1 $DOCKER_IMAGE /usr/bin/bash -c \"timeout -s ABRT 60 sleep 100\"" 124
         wait_for_hooks
         wait_for_process "abrt-hook-ccpp"
-        rlRun "abrt-cli st > new_status"
+        rlRun "abrt status > new_status"
         rlAssertDiffer new_status old_status
 
         rlRun "docker rm abrt_integration_test abrt_integration_test1"
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        abrt-cli rm $crash_PATH
+        remove_problem_directory
         get_crash_path
-        abrt-cli rm $crash_PATH
+        remove_problem_directory
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd

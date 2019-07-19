@@ -59,7 +59,7 @@ rlPhaseStartSetup
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
         popd #TmpDir
         rm -rf $TmpDir
         rlFileRestore # CFG_FILE

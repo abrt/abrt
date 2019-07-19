@@ -183,7 +183,7 @@ EOF
         rlRun "rm -rf /var/cache/abrt-di/usr" 0,1 "Clean ABRT cache"
         rlRun "rm -r /usr/lib/debug/usr" 0,1
         rlRun "mv $TmpDir/usr /usr/lib/debug" 0,1
-        rlRun "abrt-cli rm $crash_PATH"
+        rlRun "abrt remove -f $crash_PATH"
         rlRun "userdel -r -f testuser"
         rlRun "popd"
         rlRun "rm -r $TmpDir" 0 "Removing tmp directory"

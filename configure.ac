@@ -267,17 +267,6 @@ fi
 AM_CONDITIONAL(DBUS_DOXYGEN_DOCS_ENABLED, test "$enable_doxygen_docs" = "yes")
 
 
-# Autoreporting advertisement
-
-AC_ARG_ENABLE(suggest-autoreporting,
-    AS_HELP_STRING([--enable-suggest-autoreporting],
-    [print messages encouraging users to enable autoreporting]),
-    [enable_suggest_autoreporting=$enableval],
-    [enable_suggest_autoreporting=no]
-)
-
-AM_CONDITIONAL(SUGGEST_AUTOREPORTING, test "$enable_suggest_autoreporting" = "yes")
-
 # Authenticated autoreporting
 
 AC_ARG_ENABLE(authenticated-autoreporting,
@@ -450,10 +439,9 @@ AC_CONFIG_FILES([
 	src/hooks/Makefile
 	src/applet/Makefile
 	src/cli/Makefile
-	src/cli-ng/Makefile
-	src/cli-ng/abrtcli/Makefile
-	src/cli-ng/tests/Makefile
-	src/cli-ng/tests/clitests/Makefile
+	src/cli/abrtcli/Makefile
+	src/cli/tests/Makefile
+	src/cli/tests/clitests/Makefile
 	src/configuration-gui/Makefile
 	src/configuration-gui/abrt_gui.pc
 	src/dbus/Makefile

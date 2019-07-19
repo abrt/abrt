@@ -69,8 +69,8 @@ rlJournalStart
             get_crash_path
 
             if [ -n "$crash_PATH" ]; then
-                rlRun "abrt-cli info $crash_PATH"
-                rlRun "abrt-cli rm $crash_PATH"
+                rlRun "abrt info $crash_PATH"
+                remove_problem_directory
             fi
 
             rlLog "Generate second crash (blacklisted path)"
@@ -80,7 +80,7 @@ rlJournalStart
             # and processing is stopped in post-create hook
             sleep 0.5
 
-            rlAssert0 "No crash recorded" $(abrt-cli list | wc -l)
+            rlAssert0 "No crash recorded" $(abrt status --bare)
         done
     rlPhaseEnd
 
@@ -94,8 +94,8 @@ rlJournalStart
         get_crash_path
 
         if [ -n "$crash_PATH" ]; then
-            rlRun "abrt-cli info $crash_PATH"
-            rlRun "abrt-cli rm $crash_PATH"
+            rlRun "abrt info $crash_PATH"
+            remove_problem_directory
         fi
     rlPhaseEnd
 

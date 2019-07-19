@@ -1,9 +1,9 @@
 #!/bin/bash
 
 function check_prior_crashes() {
-    rlAssert0 "No prior crashes recorded" $(abrt-cli list 2> /dev/null | wc -l)
-    if [ ! "_$(abrt-cli list 2> /dev/null | wc -l)" == "_0" ]; then
-        abrt-cli list
+    rlAssert0 "No prior crashes recorded" $(abrt status --bare)
+    if [ "$(abrt status --bare)" -ne 0 ]; then
+        abrt list
         rlDie "Won't proceed"
     fi
 }
@@ -36,13 +36,13 @@ function check_dump_dir_attributes_vmcore_rhel() {
 
 function get_crash_path() {
     rlLog "Get crash path"
-    rlAssertGreater "Crash recorded" $(abrt-cli list 2> /dev/null | wc -l) 0
-    crash_PATH="$(abrt-cli list 2> /dev/null | grep Directory | awk '{ print $2 }' | tail -n1)"
+    rlAssertGreater "Crash recorded" $(abrt status --bare) 0
+    crash_PATH="$(abrt info --fmt={path} 2> /dev/null)"
     if [ ! -d "$crash_PATH" ]; then
         echo "Dump location listing:"
         ls -l $ABRT_CONF_DUMP_LOCATION
-        echo "abrt-cli list:"
-        abrt-cli list
+        echo "abrt list:"
+        abrt list
         echo "Syslog:"
         print_syslog 10
         rlFail "No crash dir generated, this shouldn't happen"
@@ -186,4 +186,8 @@ function wait_for_server() {
         fi
         sleep 0.01
     done
+}
+
+function remove_problem_directory() {
+    rlRun "abrt remove '$crash_PATH'" 0 "Remove problem directory $crash_PATH"
 }

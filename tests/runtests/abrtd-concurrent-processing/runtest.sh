@@ -140,7 +140,7 @@ EOF
         rlAssertNotGrep "does not exist" $ABRT_LOG_FILE_1
 
         rm -f $STAGE1_FILE
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
 
         rlRun "killall abrt-handle-event" 1
         rlRun "killall abrt-server" 1
@@ -194,7 +194,7 @@ EOF
 
         wait_for_hooks
         get_crash_path
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
         sleep 1
 
         while [ ! -f ${READY_STAGE2_FILE} ]
@@ -220,7 +220,7 @@ EOF
 
         rm -f $STAGE1_FILE
         rm -f $STAGE2_FILE
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
 
         rlRun "killall abrt-handle-event" 1
         rlRun "killall abrt-server" 1
@@ -295,14 +295,14 @@ EOF
         touch $STAGE2_FILE
         wait_for_hooks
         get_crash_path
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
         sleep 1
 
         prepare
         touch $STAGE2_FILE
         wait_for_hooks
         get_crash_path
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
 
         rlLog "`ls -al $ABRT_CONF_DUMP_LOCATION`"
 

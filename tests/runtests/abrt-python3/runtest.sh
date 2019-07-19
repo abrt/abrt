@@ -59,7 +59,7 @@ rlJournalStart
         rlAssertNotDiffer watch_output watch_expected
         check_dump_dir_attributes $crash_PATH
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest list
@@ -70,7 +70,7 @@ rlJournalStart
 
         rlRun "python3 -c 'import problem; assert len(problem.list()) == 1'"
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest edit
@@ -99,7 +99,7 @@ rlJournalStart
         rlAssertExists $crash_PATH/reason
         rlAssertGrep "runtime" $crash_PATH/analyzer
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
 
 

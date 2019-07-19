@@ -8,8 +8,7 @@ source codes as described in [the installation guide](INSTALL.md).
     * augeas - ABRT configuration parsers
     * init-scripts - SysV init scripts and systemd services
     * src/applet - Desktop notifications daemon
-    * src/cli - Deprecated command line interface (abrt-cli)
-    * src/cli-ng - Next generation command line interface (abrt)
+    * src/cli - Command-line interface (abrt)
     * src/configuration-gui - Source codes of system-config-abrt
     * src/daemon - Source codes of abrtd
     * src/dbus - Source codes of abrt-dbus and Problems2 implementation

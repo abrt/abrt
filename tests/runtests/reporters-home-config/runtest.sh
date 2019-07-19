@@ -85,7 +85,7 @@ rlJournalStart
         rlAssertNotGrep "Login is not provided by configuration." out_bz_1
         rlAssertGrep "Password is not provided by configuration. Please enter the password for 'global_user':" out_bz_1
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "Check reporter-bugzilla, with local config"
@@ -107,7 +107,7 @@ rlJournalStart
         rlAssertNotGrep "Login is not provided by configuration." out_bz_2
         rlAssertNotGrep "Password is not provided by configuration." out_bz_2
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "Check config priority of reporter-bugzilla, with both global and local config"
@@ -130,7 +130,7 @@ rlJournalStart
         rlAssertNotGrep "Login is not provided by configuration." out_bz_3
         rlAssertGrep "Password is not provided by configuration. Please enter the password for 'local_user':" out_bz_3
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "Check reporter-rhtsupport, without local config"
@@ -152,7 +152,7 @@ rlJournalStart
         rlAssertNotGrep "Login is not provided by configuration." out_rhts_1
         rlAssertGrep "Password is not provided by configuration. Please enter the password for 'global_user'" out_rhts_1
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "Check reporter-rhtsupport, with local config"
@@ -174,7 +174,7 @@ rlJournalStart
         rlAssertNotGrep "Login is not provided by configuration." out_rhts_2
         rlAssertNotGrep "Password is not provided by configuration." out_rhts_2
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "Check config priority of reporter-rhtsupport, with both global and local config"
@@ -197,7 +197,7 @@ rlJournalStart
         rlAssertNotGrep "Login is not provided by configuration." out_rhts_3
         rlAssertGrep "Password is not provided by configuration. Please enter the password for 'local_user':" out_rhts_3
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     # since reporter-mantisbt behavior is "all or nothing" in case of credentials, i.e.
@@ -222,7 +222,7 @@ rlJournalStart
         # credentials are provided by global configuration
         rlAssertNotGrep "Credentials are not provided by configuration." out_mtbt_1
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "Check reporter-mantisbt, with local config"
@@ -240,7 +240,7 @@ rlJournalStart
         # credentials are provided by local configuration
         rlAssertNotGrep "Credentials are not provided by configuration." out_mtbt_2
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "Check config priority of reporter-mantisbt, with both global and local config 1"
@@ -263,7 +263,7 @@ rlJournalStart
         rlAssertGrep "Credentials are not provided by configuration." out_mtbt_3
         rlAssertNotGrep "Invalid password or login." out_mtbt_3
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "Check config priority of reporter-mantisbt, with both global and local config 2"
@@ -285,7 +285,7 @@ rlJournalStart
         rlAssertNotGrep "Credentials are not provided by configuration." out_mtbt_4
         rlAssertGrep "Invalid password or login." out_mtbt_4
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartCleanup

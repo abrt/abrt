@@ -59,7 +59,7 @@ rlJournalStart
         rlAssertNotExists $crash_PATH/pkg_vendor
         rlAssertNotExists $crash_PATH/pkg_version
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "packaged binary problem dir check"
@@ -78,7 +78,7 @@ rlJournalStart
         rlAssertExists $crash_PATH/pkg_vendor
         rlAssertExists $crash_PATH/pkg_version
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartCleanup

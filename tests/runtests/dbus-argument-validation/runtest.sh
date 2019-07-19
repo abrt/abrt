@@ -72,14 +72,14 @@ rlJournalStart
                         --dest=org.freedesktop.problems /org/freedesktop/problems org.freedesktop.problems.NewProblem \
                         dict:string:string:"analyzer","$banned","executable","$(which true)","uuid","1" 2>&1)
             rlAssertEquals "Problem wasn't created" "x$RES" "xError org.freedesktop.problems.Failure: Cannot create a new problem"
-            rlAssertEquals "No problem created" "_$(abrt-cli list 2> /dev/null | wc -l)" "_0"
+            rlAssert0 "No problem created" "$(abrt status --bare 2> /dev/null)"
 
             rlLog "Contents of type"
             RES=$(dbus-send --system --type=method_call --print-reply \
                         --dest=org.freedesktop.problems /org/freedesktop/problems org.freedesktop.problems.NewProblem \
                         dict:string:string:"type","$banned","executable","$(which true)","uuid","1" 2>&1)
             rlAssertEquals "Problem wasn't created" "x$RES" "xError org.freedesktop.problems.Failure: Cannot create a new problem"
-            rlAssertEquals "No problem created" "_$(abrt-cli list 2> /dev/null | wc -l)" "_0"
+            rlAssert0 "No problem created" "$(abrt status --bare 2> /dev/null)"
 
             prepare
 
@@ -94,7 +94,7 @@ rlJournalStart
             wait_for_hooks
 
             problem_ID=$(echo $RES | sed -n 's/^.*\s\+string "\(\/var\/.*\/abrt\/libreport-.*\)"\s*$/\1/p')
-            rlRun "abrt-cli rm $problem_ID"
+            rlRun "abrt remove $problem_ID"
         done
 
         rlLog "Non-root users is not allowed to create CCpp, Kerneloops, VMCore, Xorg"
@@ -103,7 +103,7 @@ rlJournalStart
                         --dest=org.freedesktop.problems /org/freedesktop/problems org.freedesktop.problems.NewProblem \
                         dict:string:string:\"type\",\"$banned\",\"executable\",\"$(which true)\",\"uid\",\"3\"" 2>&1)
             rlAssertEquals "Correct error message" "x$RES" "xError org.freedesktop.problems.Failure: You are not allowed to create element 'type' containing '$banned'"
-            rlAssertEquals "No problem created" "_$(abrt-cli list 2> /dev/null | wc -l)" "_0"
+            rlAssert0 "No problem created" "$(abrt status --bare 2> /dev/null)"
             sleep 1
         done
     rlPhaseEnd
@@ -171,7 +171,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
     rlPhaseEnd
 
     rlJournalPrintText

@@ -71,7 +71,7 @@ rlJournalStart
     rlPhaseStartCleanup
         rlRun "popd"
         rlRun "mv ${MAILX_EVENT_PATH}.backup $MAILX_EVENT_PATH"
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd

@@ -75,7 +75,7 @@ rlJournalStart
             rlLog "\"var_log_messages: \" `cat $crash_PATH/var_log_messages`"
         fi
 
-        rlRun "abrt-cli rm $crash_PATH" 0 "Removing problem dirs"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest
@@ -113,7 +113,7 @@ rlJournalStart
         fi
 
         popd
-        rlRun "abrt-cli rm $crash_PATH" 0 "Removing problem dirs"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest
@@ -155,7 +155,7 @@ rlJournalStart
         fi
 
         popd
-        rlRun "abrt-cli rm $crash_PATH" 0 "Removing problem dirs"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartCleanup

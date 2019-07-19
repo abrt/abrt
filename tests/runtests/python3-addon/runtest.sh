@@ -48,9 +48,9 @@ rlJournalStart
 
         check_dump_dir_attributes $crash_PATH
 
-        rlRun "abrt-cli info $crash_PATH | grep will_python3_raise" 0 "abrt-cli info should contain will_python3_raise"
-        rlRun "abrt-cli info $crash_PATH | grep 'Python'" 0 "abrt-cli info should contain 'Python'"
-        rlRun "abrt-cli rm $crash_PATH"
+        rlRun "abrt info $crash_PATH | grep will_python3_raise" 0 "abrt info should contain will_python3_raise"
+        rlRun "abrt info $crash_PATH | grep 'Python'" 0 "abrt info should contain 'Python'"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "Python exceptions test"
@@ -92,7 +92,7 @@ EOF
         prepare
         rlRun "./$CRASH_PY" 1
         sleep 10
-        rlAssert0 "No crash recorded" $(abrt-cli list | wc -l)
+        rlAssert0 "No crash recorded" $(abrt status --bare)
 
         rlRun "augtool set /files${PYTHON_CONF}/RequireAbsolutePath no" 0
 
@@ -108,7 +108,7 @@ EOF
 
     rlPhaseStartCleanup
         rlFileRestore
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd

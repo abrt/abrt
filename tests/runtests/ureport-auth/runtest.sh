@@ -296,7 +296,7 @@ rlJournalStart
         mv -f ${CFG}_bck ${CFG}
     rlPhaseEnd
     rlPhaseStartCleanup
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
         rlBundleLogs ureport_auth_logs ureport.log ureport_no_rhsm_certs.log $(ls *.log)
         popd # TmpDir
         rm -rf $TmpDir

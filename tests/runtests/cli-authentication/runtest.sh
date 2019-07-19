@@ -66,51 +66,28 @@ EOF
     rlPhaseEnd
 
     rlPhaseStartTest "list"
-        rlRun "abrt-cli list 2>&1 | sort | tee owner-list.log"
-        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt-cli -a list 2>&1 | tee auth-list.log"
+        rlRun "abrt list 2>&1 | sort | tee owner-list.log"
+        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt -a list 2>&1 | tee auth-list.log"
         normalize_file auth-list.log owner-list.log sort
         rlAssertNotDiffer owner-list.log auth-list.log.norm
     rlPhaseEnd
 
     rlPhaseStartTest "info"
-        rlRun "abrt-cli info $crash_PATH 2>&1 | tee owner-info.log"
-        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt-cli -a info $crash_PATH 2>&1 | tee auth-info.log"
+        rlRun "abrt info $crash_PATH 2>&1 | tee owner-info.log"
+        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt -a info $crash_PATH 2>&1 | tee auth-info.log"
         normalize_file auth-info.log owner-info.log cat
         rlAssertNotDiffer owner-info.log auth-info.log.norm
     rlPhaseEnd
 
-# TODO: Investigate further why this test sometimes fails.
-#    rlPhaseStartTest "process info"
-#        # Remove several big text files to avoid reaching out the size limits"
-#        rlRun "rm -f $crash_PATH/mountinfo"
-#        rlRun "rm -f $crash_PATH/environ"
-#        rlRun "rm -f $crash_PATH/maps"
-#
-#        rlRun "abrt-cli info -d $crash_PATH 2>&1 | tee owner-detailed-info.log"
-#        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt-cli -a process info 2>&1 | tee process-auth-info.log"
-#        normalize_file process-auth-info.log owner-detailed-info.log cat
-#        rlAssertNotDiffer owner-detailed-info.log process-auth-info.log.norm
-#    rlPhaseEnd
-
     rlPhaseStartTest "status"
-        rlRun "abrt-cli status 2>&1 | tee owner-status.log"
-        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt-cli -a status 2>&1 | tee auth-status.log"
+        rlRun "abrt status 2>&1 | tee owner-status.log"
+        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt -a status 2>&1 | tee auth-status.log"
         normalize_file auth-status.log owner-status.log cat
         rlAssertNotDiffer owner-status.log auth-status.log.norm
     rlPhaseEnd
 
     rlPhaseStartTest "remove"
-        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt-cli -a remove $crash_PATH 2>&1 | tee auth-remove.log"
-        rlAssertNotExists $crash_PATH
-    rlPhaseEnd
-
-    rlPhaseStartTest "process remove"
-        prepare
-        generate_python3_exception
-        wait_for_hooks
-        get_crash_path
-
-        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt-cli -a process remove 2>&1 | tee process-auth-remove.log"
+        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt -a remove $crash_PATH 2>&1 | tee auth-remove.log"
         rlAssertNotExists $crash_PATH
     rlPhaseEnd
 
@@ -124,30 +101,11 @@ EOF
         rlRun "echo -n runtests > $crash_PATH/type"
         rlRun "echo -n runtests > $crash_PATH/analyzer"
 
-        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt-cli -a report $crash_PATH 2>&1 | tee auth-report.log"
+        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt -a report $crash_PATH 2>&1 | tee auth-report.log"
         rlAssertExists $crash_PATH/have_been_here
         rlAssertGrep "It works!" $crash_PATH/have_been_here
 
-        rlRun "abrt-cli rm $crash_PATH"
-        rlAssertNotExists $crash_PATH
-    rlPhaseEnd
-
-    rlPhaseStartTest "process report"
-        sleep 1000 &
-        sleep 1
-        kill -ABRT %%
-        wait_for_hooks
-        get_crash_path
-
-        rlLog "Making the crash reportable with $RUNTESTS_EVENT_CONF_FILE"
-        rlRun "echo -n runtests > $crash_PATH/type"
-        rlRun "echo -n runtests > $crash_PATH/analyzer"
-
-        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt-cli -a process report 2>&1 | tee auth-report.log"
-        rlAssertExists $crash_PATH/have_been_here
-        rlAssertGrep "It works!" $crash_PATH/have_been_here
-
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
         rlAssertNotExists $crash_PATH
     rlPhaseEnd
 

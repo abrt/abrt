@@ -56,7 +56,7 @@ rlJournalStart
 
         generate_crash
 
-        rlAssert0 "No crash recorded" $(abrt-cli list | wc -l)
+        rlAssert0 "No crash recorded" $(abrt status --bare)
         rlRun "/usr/sbin/abrt-install-ccpp-hook install" 0 "Restore hook"
     rlPhaseEnd
     rlPhaseStartTest "MakeCompatCore"
@@ -77,7 +77,7 @@ rlJournalStart
         rlRun "file $core_fname > file_output" 0 "Run file on coredump"
         cat file_output
         rlAssertGrep "core file" file_output
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
         rlRun "rm -f $core_fname" 0 "Remove local coredump"
         unset core_fname
 
@@ -92,7 +92,7 @@ rlJournalStart
         ls core* > make_compat_core_no_pwd_ls
         core_fname="$(echo core*)"
         rlAssertNotExists "$core_fname"
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
 
         rlAssertDiffer make_compat_core_yes_pwd_ls make_compat_core_no_pwd_ls
         diff make_compat_core_yes_pwd_ls make_compat_core_no_pwd_ls > make_compat_core_diff
@@ -109,7 +109,7 @@ rlJournalStart
 
         ls $crash_PATH > save_binary_image_yes_ls
         rlAssertExists "$crash_PATH/binary"
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
 
         rlLogInfo "SaveBinaryImage = no"
         rlRun "echo 'SaveBinaryImage = no' > $CFG_FILE" 0 "Set SaveBinaryImage = no"
@@ -121,7 +121,7 @@ rlJournalStart
 
         ls $crash_PATH > save_binary_image_no_ls
         rlAssertNotExists "$crash_PATH/binary"
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
 
         rlAssertDiffer save_binary_image_yes_ls save_binary_image_no_ls
         diff save_binary_image_yes_ls save_binary_image_no_ls > save_binary_image_diff

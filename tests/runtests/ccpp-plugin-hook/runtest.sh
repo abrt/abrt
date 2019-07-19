@@ -88,7 +88,7 @@ rlJournalStart
         # core file should exist
         rlAssertExists "core.${P_PID}.${P_UID}.${P_GID}.${P_SIG}.${P_TIME}.${P_HOST}.${P_EXE##*/}"
 
-        rlRun "abrt-cli rm $crash_PATH"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartCleanup

@@ -180,7 +180,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
         rm -rf /etc/libreport/events.d/$EVENT_CONF_FILE
         popd # TmpDir
         rm -rf $TmpDir

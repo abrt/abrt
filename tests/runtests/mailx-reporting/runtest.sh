@@ -168,7 +168,7 @@ rlJournalStart
         rlRun "popd"
         rlRun "echo 'delete *' | mailx -u root" 0 "Delete mail"
         rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
-        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+        remove_problem_directory
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd

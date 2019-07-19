@@ -40,35 +40,41 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "status --help"
-        rlRun "abrt-cli status --help" 0
-        rlRun "abrt-cli status --help 2>&1 | grep 'Usage: abrt-cli'"
-        rlRun "abrt-cli status --help 2>&1 | grep 'bare'"
-        rlRun "abrt-cli status --help 2>&1 | grep 'since'"
+        rlRun "abrt status --help" 0
+        rlRun "abrt status --help 2>&1 | grep 'usage: abrt'"
+        rlRun "abrt status --help 2>&1 | grep 'bare'"
+        rlRun "abrt status --help 2>&1 | grep 'since'"
     rlPhaseEnd
 
     rlPhaseStartTest "status"
-        rlRun "abrt-cli status" 0
-        rlRun "abrt-cli status --bare" 0
-        rlRun "abrt-cli status --since 0" 0
+        rlRun "abrt status" 0
+        rlRun "abrt status --bare" 0
+        rlRun "abrt status --since 0" 0
 
+        prepare
         generate_crash
         wait_for_hooks
         get_crash_path
 
-        rlRun "abrt-cli status > status1.log"
+        rlRun "abrt status > status1.log"
         rlAssertGrep "ABRT has detected '\?1'\? problem(s)." status1.log
 
-        sleep 2 #just to make sure that SINCE > time of the previous crash
-        SINCE=`date +%s`
+        sleep 3 #just to make sure that SINCE > time of the previous crash
+        SINCE=$(date +%s)
+        # but, for crying out loud,
+        # don’t rely on the following commands taking at least a second
+        # OR on the time relation being anything but strict
+        SINCE=$((SINCE - 1))
 
+        prepare
         generate_python3_exception
         wait_for_hooks
         get_crash_path
 
-        rlRun "abrt-cli status > status2.log"
+        rlRun "abrt status > status2.log"
         rlAssertGrep "ABRT has detected '\?2'\? problem(s)." status2.log
 
-        rlRun "abrt-cli status --since=$SINCE > status3.log"
+        rlRun "abrt status --since=$SINCE > status3.log"
         rlAssertGrep "ABRT has detected '\?1'\? problem(s)." status3.log
 
     rlPhaseEnd
