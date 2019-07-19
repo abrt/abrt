@@ -15,6 +15,7 @@ def get_match_data(auth=False):
 
     by_human_id = {}
     by_short_id = {}
+    by_path = {}
 
     for prob in problem.list(auth=auth):
         comp_or_exe, val = get_human_identifier(prob)
@@ -29,7 +30,9 @@ def get_match_data(auth=False):
         else:
             by_short_id[prob.short_id] = [prob]
 
-    return by_human_id, by_short_id
+        by_path[prob.path] = [prob]
+
+    return by_human_id, by_short_id, by_path
 
 
 def match_completer(prefix, parsed_args, **kwargs):
@@ -37,7 +40,7 @@ def match_completer(prefix, parsed_args, **kwargs):
     Completer generator used by cli commands using problem lookup
     '''
 
-    by_human_id, by_short_id = get_match_data()
+    by_human_id, by_short_id, by_path = get_match_data()
 
     for short_id in by_short_id.keys():
         yield short_id
@@ -49,13 +52,16 @@ def match_completer(prefix, parsed_args, **kwargs):
             for prob in probs:
                 yield '{0}@{1}'.format(human_id, prob.short_id)
 
+    for path in by_path.keys():
+        yield path
+
 
 def match_lookup(in_arg, auth=False):
     '''
     Return problems that match `in_arg` passed on command line
     '''
 
-    by_human_id, by_short_id = get_match_data(auth=auth)
+    by_human_id, by_short_id, by_path = get_match_data(auth=auth)
 
     res = None
 
@@ -70,6 +76,8 @@ def match_lookup(in_arg, auth=False):
             probs = by_human_id[human_id]
 
             res = list(filter(lambda p: p.short_id == short_id, probs))
+    elif in_arg in by_path:
+        res = by_path[in_arg]
 
     return res
 
