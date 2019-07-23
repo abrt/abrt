@@ -312,6 +312,8 @@ retrace.__doc__ = _('Generate backtrace from coredump')
      help=_('Print only the problems more recent than specified timestamp'))
 @arg('-n', '--not-reported', default=False,
      help=_('List only not-reported problems'))
+@arg('-q', '--quiet', default=False,
+     help=_('Only display output when a problem had been detected'))
 @arg_verbose
 def status(args):
     probs = problem.list(auth=args.auth)
@@ -328,8 +330,9 @@ def status(args):
         print(len(probs))
         return
 
-    print(_('ABRT has detected {} problem(s). For more info run: abrt list{}')
-          .format(len(probs), since_append))
+    if not args.quiet or len(probs) > 0:
+        print(_('ABRT has detected {} problem(s). For more info run: abrt list{}')
+              .format(len(probs), since_append))
 
 status.__doc__ = _('Print count of the recent crashes')
 
