@@ -176,7 +176,7 @@ def list_problems(args):
 list_problems.__doc__ = _('List problems')
 
 
-@aliases('show')
+@aliases('i')
 @expects_obj
 @arg('--fmt', type=str,
      help=_('Output format'))
@@ -221,6 +221,7 @@ def remove(args):
 remove.__doc__ = _('Remove problem')
 
 
+@aliases('e')
 @expects_obj
 @arg('MATCH', nargs='?', default='last', completer=match_completer)
 @arg('-u', "--unsafe",
@@ -305,6 +306,7 @@ def retrace(args):
 retrace.__doc__ = _('Generate backtrace from coredump')
 
 
+@aliases('st')
 @expects_obj
 @arg('-b', '--bare', action='store_true',
      help=_('Print only the problem count without any message'))
