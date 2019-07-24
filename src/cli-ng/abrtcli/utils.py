@@ -64,7 +64,7 @@ def fmt_problems(probs, fmt=MEDIUM_FMT):
         }
 
         uid = get_problem_field(prob, 'uid')
-        if uid:
+        if uid is not None:
             username = get_problem_field(prob, 'username')
             if username:
                 uid_username = ('{0} ({1})'
@@ -167,7 +167,7 @@ def get_problem_field(prob, field):
     try:
         return getattr(prob, field)
     except AttributeError:
-        return
+        return None
 
 
 def get_human_identifier(prob):
