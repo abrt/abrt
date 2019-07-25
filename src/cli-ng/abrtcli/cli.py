@@ -224,6 +224,9 @@ remove.__doc__ = _('Remove problem')
 @aliases('e')
 @expects_obj
 @arg('MATCH', nargs='?', default='last', completer=match_completer)
+@arg('-d', '--delete',
+     help=_('Remove problem after reporting'),
+     default=False)
 @arg('-u', "--unsafe",
      help=_('Ignore security checks to be able to report all problems'),
      default=False)
@@ -245,6 +248,9 @@ def report(args):
     prob.chown()
 
     libreport.report_problem_in_dir(prob.path, flags)
+
+    if args.delete:
+        prob.delete(prob.path)
 
 report.__doc__ = _('Report problem')
 
