@@ -5,7 +5,7 @@ from abrtcli.l18n import _
 from abrtcli.utils import get_human_identifier, sort_problems
 
 
-def get_match_data(auth=False):
+def get_match_data(authenticate=False):
     '''
     Return tuple of two dictionaries: one with components as keys
     and one with short_ids as keys
@@ -17,7 +17,7 @@ def get_match_data(auth=False):
     by_short_id = {}
     by_path = {}
 
-    for prob in problem.list(auth=auth):
+    for prob in problem.list(auth=authenticate):
         comp_or_exe, val = get_human_identifier(prob)
 
         if val in by_human_id:
@@ -56,12 +56,12 @@ def match_completer(prefix, parsed_args, **kwargs):
         yield path
 
 
-def match_lookup(in_arg, auth=False):
+def match_lookup(in_arg, authenticate=False):
     '''
     Return problems that match `in_arg` passed on command line
     '''
 
-    by_human_id, by_short_id, by_path = get_match_data(auth=auth)
+    by_human_id, by_short_id, by_path = get_match_data(authenticate=authenticate)
 
     res = None
 
@@ -82,7 +82,7 @@ def match_lookup(in_arg, auth=False):
     return res
 
 
-def match_get_problem(problem_match, allow_multiple=False, auth=False):
+def match_get_problem(problem_match, allow_multiple=False, authenticate=False):
     '''
     Return problem matching `problem_match` pattern
     or exit if there are no such problems or pattern
@@ -92,14 +92,14 @@ def match_get_problem(problem_match, allow_multiple=False, auth=False):
 
     prob = None
     if problem_match == 'last':
-        probs = sort_problems(problem.list(auth=auth))
+        probs = sort_problems(problem.list(auth=authenticate))
         if not probs:
             print(_('No problems'))
             sys.exit(0)
 
         prob = probs[0]
     else:
-        probs = match_lookup(problem_match, auth=auth)
+        probs = match_lookup(problem_match, authenticate=authenticate)
         if not probs:
             print(_('No problem(s) matched'))
             sys.exit(1)

@@ -50,7 +50,7 @@ def arg_verbose(func):
 @arg('MATCH', nargs='?', default='last', completer=match_completer)
 @arg_verbose
 def backtrace(args):
-    prob = match_get_problem(args.MATCH, auth=args.auth)
+    prob = match_get_problem(args.MATCH, authenticate=args.authenticate)
     if hasattr(prob, 'backtrace'):
         print(fmt_problems(prob, fmt=config.BACKTRACE_FMT))
     else:
@@ -70,7 +70,7 @@ backtrace.__doc__ = _('Show backtrace of a problem')
 @arg('MATCH', nargs='?', default='last', completer=match_completer)
 @arg_verbose
 def di_install(args):
-    prob = match_get_problem(args.MATCH, auth=args.auth)
+    prob = match_get_problem(args.MATCH, authenticate=args.authenticate)
     if not isinstance(prob, problem.Ccpp):
         which = _('This')
         if args.MATCH == 'last':
@@ -101,7 +101,7 @@ di_install.__doc__ = _('Install required debuginfo for given problem')
 @arg('MATCH', nargs='?', default='last', completer=match_completer)
 @arg_verbose
 def gdb(args):
-    prob = match_get_problem(args.MATCH, auth=args.auth)
+    prob = match_get_problem(args.MATCH, authenticate=args.authenticate)
     if not isinstance(prob, problem.Ccpp):
         which = 'This'
         if args.MATCH == 'last':
@@ -147,7 +147,7 @@ gdb.__doc__ = _('Run GDB against a problem')
      help=_('List only not-reported problems'))
 @arg_verbose
 def list_problems(args):
-    probs = sort_problems(problem.list(auth=args.auth))
+    probs = sort_problems(problem.list(auth=args.authenticate))
 
     if args.since:
         probs = filter_since_timestamp(probs, args.since)
@@ -185,7 +185,7 @@ list_problems.__doc__ = _('List problems')
 @arg('MATCH', nargs='?', default='last', completer=match_completer)
 @arg_verbose
 def info(args):
-    prob = match_get_problem(args.MATCH, allow_multiple=True, auth=args.auth)
+    prob = match_get_problem(args.MATCH, allow_multiple=True, authenticate=args.authenticate)
     if not args.fmt:
         fmt = config.FULL_FMT
     else:
@@ -206,7 +206,7 @@ info.__doc__ = _('Print information about problem')
 @arg('-f', help=_('Do not prompt before removal'), default=False)
 @arg_verbose
 def remove(args):
-    prob = match_get_problem(args.MATCH, auth=args.auth)
+    prob = match_get_problem(args.MATCH, authenticate=args.authenticate)
     print(fmt_problems(prob, fmt=config.FULL_FMT))
 
     ret = True
@@ -229,7 +229,7 @@ remove.__doc__ = _('Remove problem')
      default=False)
 @arg_verbose
 def report(args):
-    prob = match_get_problem(args.MATCH, auth=args.auth)
+    prob = match_get_problem(args.MATCH, authenticate=args.authenticate)
 
     if prob.not_reportable and not args.unsafe:
         if reportclient.verbose > 0:
@@ -264,7 +264,7 @@ def retrace(args):
     remote = getattr(args, 'remote', False)
     force = getattr(args, 'force', False)
 
-    prob = match_get_problem(args.MATCH, auth=args.auth)
+    prob = match_get_problem(args.MATCH, authenticate=args.authenticate)
     if hasattr(prob, 'backtrace') and not force:
         print(_('Problem already has a backtrace'))
         print(_('Run abrt retrace with -f/--force to retrace again'))
@@ -313,7 +313,7 @@ retrace.__doc__ = _('Generate backtrace from coredump')
      help=_('Only display output when a problem had been detected'))
 @arg_verbose
 def status(args):
-    probs = problem.list(auth=args.auth)
+    probs = problem.list(auth=args.authenticate)
 
     since_append = ''
     if args.since:
@@ -338,7 +338,7 @@ def main():
     l18n.init()
 
     parser = ArghParser()
-    parser.add_argument('-a', '--auth',
+    parser.add_argument('-a', '--authenticate',
                         action='store_true',
                         help=_('Authenticate and show all problems'
                                ' on this machine'))
