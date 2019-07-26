@@ -91,6 +91,19 @@ class DBusProxy(object):
         return [str(prob) for prob in self._dbus_call('GetProblems')]
 
     def list_all(self):
+        if problem.config.HAVE_POLKIT:
+            import gi
+            gi.require_version('Polkit', '1.0')
+            gi.require_version('PolkitAgent', '1.0')
+            from gi.repository import Polkit
+            from gi.repository import PolkitAgent
+
+            subject = Polkit.UnixProcess.new(os.getpid())
+            agent = PolkitAgent.TextListener.new(None)
+
+            agent.register(PolkitAgent.RegisterFlags.RUN_IN_THREAD, subject,
+                           '/org/freedesktop/PolicyKit1/AuthenticationAgent',
+                           None)
         return [str(prob) for prob in self._dbus_call('GetAllProblems')]
 
 
