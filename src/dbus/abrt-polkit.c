@@ -79,8 +79,11 @@ static PolkitResult do_check(PolkitSubject *subject, const char *action_id)
 
     if (polkit_authorization_result_get_is_challenge(auth_result))
     {
-        /* Can't happen (happens only with
-         * POLKIT_CHECK_AUTHORIZATION_FLAGS_NONE flag) */
+        /* This will normally not happen, but, if it does, check if you registered
+         * an authentication agent with Polkit, because otherwise things will
+         * break in text consoles.
+         */
+        g_warn_if_reached();
         result = PolkitChallenge;
         goto out;
     }

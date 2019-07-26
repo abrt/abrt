@@ -402,6 +402,9 @@ ABRT_PARSE_WITH([polkit]))
     PKG_CHECK_MODULES([POLKIT], [polkit-gobject-1])
     PKG_CHECK_MODULES([POLKIT_AGENT], [polkit-agent-1])
     AC_DEFINE(HAVE_POLKIT, [], [Have polkit support.])
+    AC_SUBST([HAVE_POLKIT], ["True"])
+[else]
+    AC_SUBST([HAVE_POLKIT], ["False"])
 [fi]
 
 AC_ARG_WITH(retrace,

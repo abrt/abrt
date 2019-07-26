@@ -34,6 +34,7 @@ endif
 
 config.py: config.py.in
 	sed -e s,\@DEFAULT_DUMP_LOCATION\@,$(DEFAULT_DUMP_LOCATION),g \
+		-e s,\@HAVE_POLKIT\@,$(HAVE_POLKIT),g \
 		$< >$@
 
 EXTRA_DIST = config.py.in
