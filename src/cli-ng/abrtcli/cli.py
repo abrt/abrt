@@ -173,6 +173,13 @@ def list_problems(args):
     else:
         print(_('No problems'))
 
+    settings = problem.load_conf_file('abrt.conf')
+    if settings.get('AutoreportingEnabled', 'no') in ['disabled', 'no', '0', 'off']:
+        print()
+        print(_('The auto-reporting feature is disabled. '
+                'Please consider enabling it by issuing “abrt-auto-reporting enabled” as a user with root privileges.'))
+
+
 list_problems.__doc__ = _('List problems')
 
 
