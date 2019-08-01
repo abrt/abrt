@@ -1073,6 +1073,9 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Thu Aug 01 2019 Ernestas Kulik <ekulik@redhat.com> 2.12.2-1
+- Remove old CLI and move cli-ng subpackage files into tui subpackage
+
 * Wed Jul 03 2019 Martin Kutlak <mkutlak@redhat.com> 2.12.1-1
 - Translation updates
 - Rename all abrt-python to python3-abrt

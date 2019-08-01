@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.12.2]
+### Changed
+- abrt-cli was removed in favor of abrt-cli-ng
+
+### Fixed
+- Made the Python API register a text authentication agent for Polkit for privileged D-Bus calls
+- Fixed abrt-cli-ng commands and improved their compatibility with abrt-cli
+- Improved compatibility with RPM 4.14
+
 ## [2.12.1]
 ### Added
 - Require dbus-tools for dbus-send command.
@@ -183,7 +192,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.12.1...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.12.2...HEAD
+[2.12.2]: https://github.com/abrt/abrt/compare/2.12.1...2.12.2
 [2.12.1]: https://github.com/abrt/abrt/compare/2.12.0...2.12.1
 [2.12.0]: https://github.com/abrt/abrt/compare/2.11.1...2.12.0
 [2.11.1]: https://github.com/abrt/abrt/compare/2.11.0...2.11.1
