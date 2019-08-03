@@ -8,9 +8,9 @@ if [ $1 ]; then
 
     # clenaup BEFORE every test
     # stop services
-    service abrt-oops stop
-    service abrt-xorg stop
-    service abrtd stop &> /dev/null
+    systemctl stop abrt-oops
+    systemctl stop abrt-xorg
+    systemctl stop abrtd &> /dev/null
 
     # cleanup
     echo -n '|/usr/lib/systemd/systemd-coredump %P %u %g %s %t %c %e' > /var/run/abrt/saved_core_pattern
@@ -67,9 +67,9 @@ if [ $1 ]; then
         rpm -q $PACKAGES
     fi
 
-    service abrtd start
-    service abrt-ccpp start
-    service abrt-oops start
+    systemctl start abrtd
+    systemctl start abrt-ccpp
+    systemctl start abrt-oops
 
     # test delay
     if [ "${DELAY+set}" = "set" ]; then
