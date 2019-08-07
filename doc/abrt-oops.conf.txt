@@ -14,13 +14,17 @@ DESCRIPTION
 The configuration file consists of items in the format "Option = Value".
 The following items are recognized:
 
-DropNotReportableOopses = 'yes' / 'no'
-   If you want to see only reportable oopses, set to "yes".
-   Default is 'no': do not drop them.
+*DropNotReportableOopses = 'yes/no'*::
+   If enabled, ABRT will preserve only reportable oopses.
+   +
+   Default is 'no', keep all oopses.
 
-OnlyFatalMCE = 'yes' / 'no'
-   If you want to see only fatal MCEs, set to "yes".
-   Defaults is 'yes': detect only fatal ones.
+*OnlyFatalMCE = 'yes/no'*::
+   Many Machine Check Exceptions can be corrected and are thus not interesting
+   to users. Moreover, some hardware may produce plenty of MCEs by design.
+   Enabling this option will configure ABRT to detect only the fatal MCEs.
+   +
+   Default is 'no', detect all MCEs.
 
 FILES
 -----
@@ -28,6 +32,8 @@ FILES
 
 SEE ALSO
 --------
+abrt-dump-journal-oops(1),
+abrt-dump-oops(1),
 abrt.conf(5)
 
 AUTHORS

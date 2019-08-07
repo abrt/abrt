@@ -12,31 +12,15 @@ SYNOPSIS
 DESCRIPTION
 -----------
 This tool creates problem directory from Xorg crash extracted from
-systemd-journal.
-The tool can follow systemd-journal and extract Xorg crashes in time of their
-occurrence.
+'systemd-journal'. The tool can follow 'systemd-journal' and extract Xorg
+crashes in time of their occurrence.
 
 The following start from the last seen cursor. If the last seen cursor file
 does not exist, the following start by scanning the entire sytemd-journal or
 from the end if '-e' option is specified.
 
-Journal filter is required parameter and must be specified either by parameter
--j or in xorg.conf conf file.
-
-FILES
------
-/var/lib/abrt/abrt-dump-journal-xorg.state::
-   State file where systemd-journal cursor to the last seen message is saved.
-
-Configuration file
-~~~~~~~~~~~~~~~~~~
-The conf file is located in /etc/abrt/plugins/xorg.conf.
-Configuration file lines should have 'PARAM = VALUE' format. The parameters for
-abrt-dump-journal-xorg are:
-
-'JournalFilters'::
-   Specify list of comma separated filters which are used for searching Xorg
-   crashes in journal (e.g. JournalFilters = _COMM=gdm-x-session, [...])
+A journal filter is required and must be specified either by the -j option or in
+the 'xorg.conf' configuration file.
 
 OPTIONS
 -------
@@ -73,9 +57,20 @@ OPTIONS
 -j::
    Set journal filter (may be given many times)
 
+FILES
+-----
+/etc/abrt/plugins/xorg.conf::
+   Configuration file for ABRT's tools which work with Xorg crashes.
+
+/var/lib/abrt/abrt-dump-journal-xorg.state::
+   File with a saved 'systemd-journal' cursor to the last seen message.
+
 SEE ALSO
 --------
-abrt.conf(5), journalctl(1)
+abrt-action-analyze-xorg(1)
+abrt-xorg.conf(5)
+abrt.conf(5)
+journalctl(1)
 
 AUTHORS
 -------

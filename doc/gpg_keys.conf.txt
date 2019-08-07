@@ -14,10 +14,11 @@ DESCRIPTION
 The configuration file consists of items in the format "Option = Value".
 Currently, only one item exists:
 
-GPGKeysDir = 'directory'::
-   The path of the directory which contains files with GPG keys of known
+*GPGKeysDir = 'directory'*::
+   The path to the directory which contains files with GPG keys of known
    RPM repositories. These keys are used to verify package signatures.
-   Example: /etc/pki/rpm-gpg
+   +
+   Default is '/etc/pki/rpm-gpg'.
 
 FILES
 -----
@@ -26,6 +27,7 @@ FILES
 SEE ALSO
 --------
 abrt-action-save-package-data(1)
+abrt-action-save-package-data.conf(5)
 abrt.conf(5)
 
 AUTHORS
