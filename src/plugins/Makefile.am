@@ -196,6 +196,8 @@ endif
 confdir = $(PLUGINS_CONF_DIR)
 dist_conf_DATA = \
     xorg.conf
+defaultconfdir = $(DEFAULT_PLUGINS_CONF_DIR)
+dist_defaultconf_DATA = $(dist_conf_DATA)
 
 abrt_watch_log_SOURCES = \
     abrt-watch-log.c
