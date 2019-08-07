@@ -1054,25 +1054,13 @@ killall abrt-dbus >/dev/null 2>&1 || :
 
 %files dbus
 %{_sbindir}/abrt-dbus
-%{_sbindir}/abrt-configuration
 %{_mandir}/man8/abrt-dbus.8*
-%{_mandir}/man8/abrt-configuration.8*
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
 %{_datadir}/dbus-1/interfaces/org.freedesktop.Problems2.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.Problems2.Entry.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.Problems2.Session.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.Problems2.Task.xml
-%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.xml
-%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.abrt.xml
-%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.ccpp.xml
-%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.oops.xml
-%if %{with python3}
-%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.python3.xml
-%endif # with python3
-%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.vmcore.xml
-%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.xorg.xml
 %{_datadir}/dbus-1/system-services/org.freedesktop.problems.service
-%{_datadir}/dbus-1/system-services/com.redhat.problems.configuration.service
 %{_datadir}/polkit-1/actions/abrt_polkit.policy
 %dir %{_defaultdocdir}/%{name}-dbus%{docdirversion}/
 %dir %{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/

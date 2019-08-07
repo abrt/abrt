@@ -1,4 +1,4 @@
-SUBDIRS = problems-service dbus-configuration
+SUBDIRS = problems-service
 
 -include ../config.mak
 
@@ -79,7 +79,7 @@ MAN5_PREFORMATTED += vmcore_event.conf.5
 endif
 
 MAN8_TXT =
-MAN8_TXT += abrtd.txt abrt-dbus.txt abrt-configuration.txt
+MAN8_TXT += abrtd.txt abrt-dbus.txt
 
 # Manual pages are generated from .txt via Docbook
 man1_MANS = ${MAN1_TXT:%.txt=%.1}

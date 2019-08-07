@@ -1,6 +1,5 @@
 sbin_PROGRAMS = \
-    abrt-dbus \
-    abrt-configuration
+    abrt-dbus
 
 noinst_PROGRAMS = \
     abrt-problems2
@@ -78,26 +77,6 @@ abrt_problems2_LDADD = \
     $(POLKIT_LIBS) \
     -labrt_dbus
 
-abrt_configuration_SOURCES = \
-    abrt-configuration.c \
-    abrt-polkit.c \
-    abrt-polkit.h
-abrt_configuration_CPPFLAGS = \
-    -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    -DPROBLEMS_CONFIG_INTERFACES_DIR=\"$(PROBLEMS_CONFIG_INTERFACES_DIR)\" \
-    $(GIO_CFLAGS) \
-    $(DBUS_CFLAGS) \
-    $(LIBREPORT_CFLAGS) \
-    $(POLKIT_CFLAGS) \
-    -D_GNU_SOURCE
-abrt_configuration_LDADD = \
-    $(GIO_LIBS) \
-    ../lib/libabrt.la \
-    $(LIBREPORT_LIBS) \
-    $(POLKIT_LIBS)
-
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 polkitconfdir = ${datadir}/polkit-1/actions
@@ -107,8 +86,7 @@ dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/
 dist_dbusabrtconf_DATA = dbus-abrt.conf
 
 orgfreedesktopproblemsservicedir = ${datadir}/dbus-1/system-services
-dist_orgfreedesktopproblemsservice_DATA = org.freedesktop.problems.service \
-    com.redhat.problems.configuration.service
+dist_orgfreedesktopproblemsservice_DATA = org.freedesktop.problems.service
 
 IFACE_DEF_DIR=$(abs_top_srcdir)/doc/problems-service/
 
