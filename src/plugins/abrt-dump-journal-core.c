@@ -600,15 +600,6 @@ main(int argc, char *argv[])
         load_abrt_plugin_conf_file("CCpp.conf", settings);
         const char *value;
 
-        /* The following commented out lines are not supported by
-         * abrt-dump-journal-core but are supported by abrt-hook-ccpp */
-        //value = get_map_string_item_or_NULL(settings, "MakeCompatCore");
-        //setting_MakeCompatCore = value && string_to_bool(value);
-        //value = get_map_string_item_or_NULL(settings, "SaveBinaryImage");
-        //setting_SaveBinaryImage = value && string_to_bool(value);
-        //value = get_map_string_item_or_NULL(settings, "SaveFullCore");
-        //setting_SaveFullCore = value ? string_to_bool(value) : true;
-
         value = get_map_string_item_or_NULL(settings, "VerboseLog");
         if (value)
             g_verbose = xatoi_positive(value);
