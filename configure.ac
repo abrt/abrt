@@ -185,9 +185,11 @@ AC_CHECK_HEADER([sys/inotify.h], [],
 AC_CHECK_HEADERS([locale.h])
 
 CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
+DEFAULT_CONF_DIR='${datadir}/${PACKAGE_NAME}/conf.d'
 VAR_RUN='${localstatedir}/run'
 VAR_STATE='${localstatedir}/lib/${PACKAGE_NAME}'
 PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
+DEFAULT_PLUGINS_CONF_DIR='${datadir}/${PACKAGE_NAME}/conf.d/plugins'
 EVENTS_DIR='${datadir}/libreport/events'
 EVENTS_CONF_DIR='${sysconfdir}/libreport/events.d'
 JOURNAL_CATALOG_DIR='$(prefix)/lib/systemd/catalog'
@@ -316,9 +318,11 @@ AC_ARG_ENABLE([dump-time-unwind],
 [fi]
 
 AC_SUBST(CONF_DIR)
+AC_SUBST(DEFAULT_CONF_DIR)
 AC_SUBST(VAR_RUN)
 AC_SUBST(VAR_STATE)
 AC_SUBST(PLUGINS_CONF_DIR)
+AC_SUBST(DEFAULT_PLUGINS_CONF_DIR)
 AC_SUBST(EVENTS_CONF_DIR)
 AC_SUBST(JOURNAL_CATALOG_DIR)
 AC_SUBST(EVENTS_DIR)
