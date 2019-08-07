@@ -28,7 +28,7 @@
 #define DEFAULT_INTERPRETERS "python, python2, python2.7, python3, python3.3, " \
     "python3.4, python3.5, python3.6, python3.7, perl, perl5.16.2"
 
-static bool   settings_bOpenGPGCheck = false;
+static bool   settings_bOpenGPGCheck = true;
 static GList *settings_setOpenGPGPublicKeys = NULL;
 static GList *settings_setBlackListedPkgs = NULL;
 static GList *settings_setBlackListedPaths = NULL;

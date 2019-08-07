@@ -175,7 +175,7 @@ def harvest_vmcore(crash_dir):
         sys.stderr.write(str(ex))
         sys.exit(1)
     else:
-        copyvmcore = conf.get("CopyVMcore", "no")
+        copyvmcore = conf.get("CopyVMcore", "yes")
 
     try:
         conf = problem.load_conf_file("abrt.conf")

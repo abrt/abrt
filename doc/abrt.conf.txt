@@ -3,7 +3,7 @@ abrt.conf(5)
 
 NAME
 ----
-abrt.conf - Configuration file for abrt.
+abrt.conf - Configuration file for ABRT.
 
 SYNOPSIS
 --------
@@ -11,64 +11,78 @@ SYNOPSIS
 
 DESCRIPTION
 -----------
-'abrt' is a daemon that watches for application crashes. When a crash occurs, it
+'ABRT' is a daemon that watches for application crashes. When a crash occurs, it
 collects the problem data and takes action according to its configuration. This
-document describes abrt's configuration file.
+document describes ABRT's configuration file.
 
 The configuration file consists of items in the format "Option = Value".
 A description of each item follows:
 
-DumpLocation = 'directory'::
-   The directory where should 'abrt' store coredumps and all files which are
-   needed for reporting. The default is /var/spool/abrt.
+*DumpLocation = 'directory'*::
+   The directory where ABRT should store coredumps and other files which are
+   needed for reporting.
+   +
+   Default is '/var/spool/abrt'.
 
-MaxCrashReportsSize = 'number'::
-   The maximum disk space (specified in megabytes) that 'abrt'
-   will use for all the crash dumps. Specify a value here to ensure
-   that the crash dumps will not fill all available storage space.
-   The default is 1000.
+*MaxCrashReportsSize = 'number'*::
+   The maximum disk space (specified in MiB) that ABRT will use for all the
+   crash dumps. Specify a value here to ensure that the crash dumps will not
+   fill all available storage space.
+   +
+   Default is 5000.
 
-WatchCrashdumpArchiveDir = 'directory'::
+*WatchCrashdumpArchiveDir = 'directory'*::
    The daemon will watch this directory and call 'abrt-handle-upload' on files
    which appear there. This is used to auto-unpack crashdump tarballs uploaded
-   via ftp, scp, etc. The directory must exist and be writable for 'abrt'.
-   There is no default.
+   via FTP, SCP, etc. The directory must exist and be writable for 'abrt'.
+   +
+   Example: /var/spool/abrt-upload
+   +
+   Default is none, hence the feature is disabled.
 
-DeleteUploaded = 'yes/no'::
+*DeleteUploaded = 'yes/no'*::
    The daemon will delete an uploaded crashdump archive after an atempt to
    unpack it. An archive will be delete whether unpacking finishes successfully
    or not.
-   The default value is 'no'.
+   +
+   Default value is 'no'.
 
-DebugLevel = '0-100'::
+*DebugLevel = '0-100'*::
    Allows ABRT tools to detect problems in ABRT itself. By increasing the value
    you can force ABRT to detect, process and report problems in ABRT. You have
    to bare in mind that ABRT might fall into an infinite loop when handling
    problems caused by itself.
-   The default is 0 (non debug mode).
+   +
+   Default is 0 (non debug mode).
 
-AutoreportingEvent = 'event'::
+*AutoreportingEnabled = 'yes/no'*::
+   Enables automatic execution of the event configured in 'AutoreportingEvent'
+   option.
+   +
+   Default is 'no'.
+
+*AutoreportingEvent = 'event'*::
    A name of event which is run automatically after problem's detection. The
    event should perform some fast analysis and exit with 70 if the
    problem is known.
-   Default is report_uReport.
+   +
+   Default is 'report_uReport'.
 
-AutoreportingEnabled = 'yes/no'::
-   Enables automatic running of the event configured in AutoreportingEvent option.
-
-ShortenedReporting = 'yes/no'::
+*ShortenedReporting = 'yes/no'*::
    Enables shortened GUI reporting where the reporting is interrupted after
    AutoreportingEvent is done.
-   Default is Yes if application is running in GNOME desktop session; otherwise
-   No.
+   +
+   Default is 'yes' if application is running in a GNOME desktop session;
+   otherwise it's 'no'.
 
-ExploreChroots = 'true/false'::
+*ExploreChroots = 'yes/no'*::
    Enables various features exploring process's root directories if they differ
    from the default root directory. The folowing list includes examples of
    enabled features:
      * query the rpm database in the process's root directory
      * save files like /etc/os-release from the process's root directory
-   Default is false.
+   +
+   Default is 'no'.
 
 FILES
 -----

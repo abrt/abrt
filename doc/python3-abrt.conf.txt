@@ -1,5 +1,5 @@
 python3-abrt.conf(5)
-===================
+====================
 
 NAME
 ----
@@ -13,11 +13,12 @@ DESCRIPTION
 -----------
 Currently, only one item exists:
 
-RequireAbsolutePath = 'yes' / 'no' ...::
-   If set to 'no', unhandled python 3 exceptions will be caught
-   and saved even in scripts which are run without full path
-   in sys.argv[0].
-   Default is 'yes': do not save them.
+*RequireAbsolutePath = 'yes/no'*::
+   If enabled, unhandled Python 3 exceptions will be caught and saved only
+   in scripts which are executed with absolute path in 'sys.argv[0]'.
+   +
+   Default is 'yes', i.e. do not save crashes of applications executed from
+   a relative path.
 
 FILES
 -----

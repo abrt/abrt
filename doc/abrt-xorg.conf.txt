@@ -3,7 +3,8 @@ abrt-xorg.conf(5)
 
 NAME
 ----
-abrt-xorg.conf - Configuration file for abrt-action-analyze-xorg
+abrt-xorg.conf - Configuration file for 'abrt-action-analyze-xorg' and
+'abrt-dump-journal-xorg'
 
 SYNOPSIS
 --------
@@ -11,16 +12,19 @@ SYNOPSIS
 
 DESCRIPTION
 -----------
-The 'abrt-action-analyze-xorg' tool processes Xorg crash problem data
-and generates deduplication hashes for it.
-
 The configuration file consists of items in the format "Option = Value".
-Currently, only one item exists:
+Currently, two items exist:
 
-BlacklistedXorgModules = 'moduleName', 'moduleName' ...::
-   Xorg crash will be ignored if any of the listed Xorg modules were loaded
-   at the time of the crash. Module names should be without "_drv.so" suffix:
-   use 'buggymodule', not 'buggymodule_drv' or 'buggymodule_drv.so'.
+*BlacklistedXorgModules = 'list'*::
+   Comma-separated list of modules which make Xorg crashes non-reportable when
+   loaded. Names should be without "_drv.so" suffix.
+   +
+   Default is 'fglrx, nvidia, vboxvideo'.
+
+*JournalFilters = 'list'*::
+   Comma-separated list of filters used to search for Xorg crashes in journal.
+   +
+   Default is '_COMM=gdm-x-session, _COMM=gnome-shell'.
 
 FILES
 -----
@@ -29,6 +33,7 @@ FILES
 SEE ALSO
 --------
 abrt-action-analyze-xorg(1)
+abrt-dump-journal-xorg(1)
 abrt.conf(5)
 
 AUTHORS

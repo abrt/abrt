@@ -14,10 +14,11 @@ DESCRIPTION
 The configuration file consists of items in the format "Option = Value".
 Currently, only one item exists:
 
-CopyVMcore = 'yes' / 'no'::
-   Set to 'no' if you want vmcore to be moved, not copied, from /var/crash
-   to ABRT's main problem directory.
-   Default is to copy vmcore.
+*CopyVMcore = 'yes/no'*::
+   Enable to copy the 'vmcore' from '/var/crash' to ABRT's problem
+   directory (by default in '/var/spool/abrt') instead of moving it.
+   +
+   Default is 'yes', i.e. to copy the 'vmcore'.
 
 FILES
 -----

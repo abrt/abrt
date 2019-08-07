@@ -18,22 +18,32 @@ and component name to problem data.
 The configuration file consists of items in the format "Option = Value".
 A description of each item follows:
 
-OpenGPGCheck = 'yes' | 'no'::
-   When set to 'yes', 'abrt' will handle only crashes in executables which belong
-   to an installed package with valid GPG signature.
-   The default is 'yes'.
-   The files containing trusted GPG keys which are used to verify
-   the signatures are listed in the gpg_keys.conf configuration file.
-BlackList = 'packageName', 'packageName' ...::
-   'abrt' will ignore packages in this list and will not handle their crashes.
-BlackListedPaths = '`/path/to/ignore/*`', '`*/another/ignored/path*`' ...::
-   'abrt' will ignore crashes in executables whose absolute path matches
-   one of specified patterns.
-ProcessUnpackaged = 'yes' | 'no'::
-   When set to 'yes', 'abrt' will catch all crashes in the system.
-   When set to 'no', it will catch crashes only in executables which belong
-   to an installed package.
-   The default is 'no'.
+*OpenGPGCheck = 'yes/no'*::
+   If enabled, only crashes in signed packages will be analyzed. The list of
+   trusted public keys used to verify the signature is in /etc/gpg_keys.conf.
+   +
+   Default is 'yes'.
+*BlackList = 'list'*::
+   Crashes in packages listed here will be ignored by ABRT.
+   +
+   Default is `bash, mono-core, nspluginwrapper, strace, valgrind`.
+*BlackListedPaths = 'list'*::
+   Crashes in paths matching the glob patterns in this list will be ignored
+   by ABRT.
+   +
+   Default is `/usr/share/doc/*, */example*, /usr/bin/nspluginviewer,
+   /usr/lib*/firefox/plugin-container`
+*ProcessUnpackaged = 'yes/no'*::
+   If enabled, ABRT will process crashes from unpackaged executables.
+   +
+   Default is 'no'.
+*Interpreters = 'list'*::
+   Comma-separated list of names of language interpreters. If a crash occurs in
+   a program whose basename is equal to one of these, ABRT assigns the crash to the
+   executed script instead.
+   +
+   Default is `python, python2, python2.7, python3, python3.3, python3.4, python3.5,
+   python3.6, python3.7, perl, perl5.16.2`.
 
 FILES
 -----
@@ -41,7 +51,8 @@ FILES
 
 SEE ALSO
 --------
-abrt.conf(5), gpg_keys.conf(5)
+abrt.conf(5),
+gpg_keys.conf(5)
 
 AUTHORS
 -------
