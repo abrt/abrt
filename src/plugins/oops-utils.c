@@ -305,7 +305,7 @@ char *abrt_oops_string_filter_regex(void)
 
     load_abrt_plugin_conf_file("oops.conf", settings);
 
-    int only_fatal_mce = 1;
+    int only_fatal_mce = 0;
     try_get_map_string_item_as_bool(settings, "OnlyFatalMCE", &only_fatal_mce);
 
     free_map_string(settings);

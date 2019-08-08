@@ -280,6 +280,7 @@ abrt_dump_journal_xorg_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DVAR_STATE=\"$(VAR_STATE)\" \
     -D_GNU_SOURCE
 abrt_dump_journal_xorg_LDADD = \

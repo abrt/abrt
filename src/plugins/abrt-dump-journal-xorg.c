@@ -17,7 +17,8 @@
 #include "xorg-utils.h"
 #define ABRT_JOURNAL_XORG_WATCH_STATE_FILE VAR_STATE"/abrt-dump-journal-xorg.state"
 #define XORG_CONF "xorg.conf"
-#define XORG_CONF_PATH "/etc/abrt/plugins/"XORG_CONF
+#define XORG_CONF_PATH PLUGINS_CONF_DIR XORG_CONF
+#define XORG_DEFAULT_JOURNAL_FILTERS "_COMM=gdm-x-session, _COMM=gnome-shell"
 
 static void
 abrt_xorg_process_list_of_crashes(GList *crashes, const char *dump_location, int flags)
@@ -254,7 +255,12 @@ int main(int argc, char *argv[])
         log_notice("Loading settings from '%s'", XORG_CONF);
         load_abrt_plugin_conf_file(XORG_CONF, settings);
         log_debug("Loaded '%s'", XORG_CONF);
+
         const char *conf_journal_filters = get_map_string_item_or_NULL(settings, "JournalFilters");
+        if (!conf_journal_filters) {
+            conf_journal_filters = XORG_DEFAULT_JOURNAL_FILTERS;
+        }
+
         xorg_journal_filter = parse_list(conf_journal_filters);
         /* list data will be free by g_list_free_full */
         free_filter_list_data = true;
