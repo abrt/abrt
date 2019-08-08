@@ -21,6 +21,12 @@
 #include "rpm.h"
 
 #define GPG_CONF "gpg_keys.conf"
+#define DEFAULT_BLACKLISTED_PATHS "/usr/share/doc/*, */example*, " \
+    "/usr/bin/nspluginviewer, /usr/lib*/firefox/plugin-container"
+#define DEFAULT_BLACKLISTED_PKGS "bash, mono-core, nspluginwrapper, strace, valgrind"
+#define DEFAULT_GPG_KEYS_DIR "/etc/pki/rpm-gpg"
+#define DEFAULT_INTERPRETERS "python, python2, python2.7, python3, python3.3, " \
+    "python3.4, python3.5, python3.6, python3.7, perl, perl5.16.2"
 
 static bool   settings_bOpenGPGCheck = false;
 static GList *settings_setOpenGPGPublicKeys = NULL;
@@ -46,6 +52,8 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
         settings_setBlackListedPkgs = parse_list(value);
         remove_map_string_item(settings, "BlackList");
     }
+    else
+        settings_setBlackListedPkgs = parse_list(DEFAULT_BLACKLISTED_PKGS);
 
     value = get_map_string_item_or_NULL(settings, "BlackListedPaths");
     if (value)
@@ -53,6 +61,8 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
         settings_setBlackListedPaths = parse_list(value);
         remove_map_string_item(settings, "BlackListedPaths");
     }
+    else
+        settings_setBlackListedPaths = parse_list(DEFAULT_BLACKLISTED_PATHS);
 
     value = get_map_string_item_or_NULL(settings, "ProcessUnpackaged");
     if (value)
@@ -67,6 +77,8 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
         settings_Interpreters = parse_list(value);
         remove_map_string_item(settings, "Interpreters");
     }
+    else
+        settings_Interpreters = parse_list(DEFAULT_INTERPRETERS);
 
     map_string_iter_t iter;
     const char *name;
@@ -88,6 +100,10 @@ static void load_gpg_keys(void)
     }
 
     const char *gpg_keys_dir = get_map_string_item_or_NULL(settings, "GPGKeysDir");
+    if (gpg_keys_dir == NULL)
+    {
+        gpg_keys_dir = DEFAULT_GPG_KEYS_DIR;
+    }
     if (gpg_keys_dir != NULL && strcmp(gpg_keys_dir, "") != 0)
     {
         log_debug("Reading gpg keys from '%s'", gpg_keys_dir);

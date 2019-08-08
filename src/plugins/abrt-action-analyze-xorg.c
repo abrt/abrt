@@ -20,6 +20,7 @@
 #include "libabrt.h"
 
 #define XORG_CONF "xorg.conf"
+#define XORG_DEFAULT_BLACKLISTED_MODULES "fglrx, nvidia, vboxvideo"
 
 static
 void trim_spaces(char *str)
@@ -92,9 +93,15 @@ int main(int argc, char **argv)
     log_notice("Loading settings from '%s'", XORG_CONF);
     load_abrt_plugin_conf_file(XORG_CONF, settings);
     log_debug("Loaded '%s'", XORG_CONF);
-    char *BlacklistedXorgModules = xstrdup(get_map_string_item_or_empty(settings, "BlacklistedXorgModules"));
-    trim_spaces(BlacklistedXorgModules);
+
+    const char *value = get_map_string_item_or_NULL(settings, "BlacklistedXorgModules");
+    if (!value)
+        value = XORG_DEFAULT_BLACKLISTED_MODULES;
+
+    char *BlacklistedXorgModules = xstrdup(value);
     free_map_string(settings);
+
+    trim_spaces(BlacklistedXorgModules);
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
