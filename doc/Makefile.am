@@ -106,6 +106,10 @@ abrt-auto-reporting.txt: abrt-auto-reporting-unauthenticated.txt
 endif
 	cp $< $@
 
+abrt-CCpp.conf.txt: abrt-CCpp.conf.txt.in
+	sed -e s,\@DEFAULT_PACKAGE_MANAGER\@,$(DEFAULT_PACKAGE_MANAGER),g \
+	    $< > $@
+
 %.1 %.5 %.8: %.xml
 	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
 
@@ -115,5 +119,6 @@ endif
                            -aabrt_version=$(PACKAGE_VERSION) -o $@ $<
 
 EXTRA_DIST = $(MAN1_TXT) $(MAN5_TXT) $(MAN8_TXT) $(MAN5_PREFORMATTED) $(MAN_SOURCE)
+EXTRA_DIST += abrt-CCpp.conf.txt.in
 
 CLEANFILES = ${MAN1_TXT:%.txt=%.1} ${MAN5_TXT:%.txt=%.5} ${MAN8_TXT:%.txt=%.8}

@@ -495,6 +495,7 @@ to the shell
 autoconf
 
 %define var_base_dir spool
+%define default_dump_dir %{_localstatedir}/%{var_base_dir}/abrt
 
 CFLAGS="%{optflags} -Werror" %configure \
 %if %{without python3}
@@ -515,7 +516,7 @@ CFLAGS="%{optflags} -Werror" %configure \
 %ifnarch %{arm}
         --enable-native-unwinder \
 %endif
-        --with-defaultdumplocation=/var/%{var_base_dir}/abrt \
+        --with-defaultdumplocation=%{default_dump_dir} \
         --enable-doxygen-docs \
         --enable-dump-time-unwind \
         --disable-silent-rules
@@ -543,7 +544,7 @@ find $RPM_BUILD_ROOT -name "*.py[co]" -delete
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-di
 mkdir -p $RPM_BUILD_ROOT/var/run/abrt
-mkdir -p $RPM_BUILD_ROOT/var/%{var_base_dir}/abrt
+mkdir -p $RPM_BUILD_ROOT%{default_dump_dir}
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt-upload
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/lib/abrt
 
@@ -559,7 +560,6 @@ ln -sf %{_mandir}/man1/abrt.1 %{buildroot}%{_mandir}/man1/abrt-cli.1
 
 # After everything is installed, remove info dir
 rm -f %{buildroot}%{_infodir}/dir
-
 
 %check
 make check|| {
@@ -666,24 +666,14 @@ if [ -f /etc/abrt/plugins/CCpp.conf ]; then
     mv /etc/abrt/plugins/CCpp.conf /etc/abrt/plugins/CCpp.conf.rpmsave.atomic || exit 1;
 fi
 ln -sf /etc/abrt/plugins/CCpp_Atomic.conf /etc/abrt/plugins/CCpp.conf
-if [ -f /usr/share/abrt/conf.d/plugins/CCpp.conf ]; then
-    mv /usr/share/abrt/conf.d/plugins/CCpp.conf /usr/share/abrt/conf.d/plugins/CCpp.conf.rpmsave.atomic || exit 1;
-fi
-ln -sf /usr/share/abrt/conf.d/plugins/CCpp_Atomic.conf /usr/share/abrt/conf.d/plugins/CCpp.conf
 %systemd_post abrt-coredump-helper.service
 
 %preun atomic
 if [ -L /etc/abrt/plugins/CCpp.conf ]; then
     rm /etc/abrt/plugins/CCpp.conf
 fi
-if [ -L /usr/share/abrt/conf.d/plugins/CCpp.conf ]; then
-    rm /usr/share/abrt/conf.d/plugins/CCpp.conf
-fi
 if [ -f /etc/abrt/plugins/CCpp.conf.rpmsave.atomic ]; then
     mv /etc/abrt/plugins/CCpp.conf.rpmsave.atomic /etc/abrt/plugins/CCpp.conf || exit 1
-fi
-if [ -f  /usr/share/abrt/conf.d/plugins/CCpp.conf.rpmsave.atomic ]; then
-    mv /usr/share/abrt/conf.d/plugins/CCpp.conf.rpmsave.atomic /usr/share/abrt/conf.d/plugins/CCpp.conf || exit 1
 fi
 
 %postun atomic
@@ -732,8 +722,11 @@ if test ! -f %{_localstatedir}/lib/abrt/abrt-migrated ; then
 fi
 systemctl try-restart abrt-journal-core >/dev/null 2>&1 || :
 systemctl try-restart abrt-ccpp >/dev/null 2>&1 || :
-# Regenerate core_bactraces because of missing crash threads
-abrtdir=$(grep "DumpLocation" /etc/abrt/abrt.conf | cut -d'=' -f2 | tr -d ' ')
+# Regenerate core_backtraces because of missing crash threads
+abrtdir=$(grep "^\s*DumpLocation\b" /etc/abrt/abrt.conf | tail -1 | cut -d'=' -f2 | tr -d ' ')
+if test -z "$abrtdir"; then
+    abrtdir=%{default_dump_dir}
+fi
 if test -d "$abrtdir"; then
     for DD in `find "$abrtdir" -mindepth 1 -maxdepth 1 -type d`
     do
@@ -785,18 +778,15 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_bindir}/abrt-action-analyze-xorg
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/org.freedesktop.problems.daemon.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-action-save-package-data.conf
-%{_datadir}/%{name}/conf.d/abrt-action-save-package-data.conf
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/xorg.conf
-%{_datadir}/%{name}/conf.d/plugins/xorg.conf
 %{_mandir}/man5/abrt-xorg.conf.5*
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys.conf
-%{_datadir}/%{name}/conf.d/gpg_keys.conf
 %{_mandir}/man5/gpg_keys.conf.5*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/abrt_event.conf
 %{_mandir}/man5/abrt_event.conf.5*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/smart_event.conf
 %{_mandir}/man5/smart_event.conf.5*
-%dir %attr(@DEFAULT_DUMP_LOCATION_MODE@, root, abrt) %{_localstatedir}/%{var_base_dir}/%{name}
+%dir %attr(@DEFAULT_DUMP_LOCATION_MODE@, root, abrt) %{default_dump_dir}
 %dir %attr(0700, abrt, abrt) %{_localstatedir}/spool/%{name}-upload
 # abrtd runs as root
 %dir %attr(0755, root, root) %{_localstatedir}/run/%{name}
@@ -812,18 +802,14 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man1/abrt-auto-reporting.1*
 %{_mandir}/man8/abrtd.8*
 %{_mandir}/man5/abrt-action-save-package-data.conf.5*
-# {_mandir}/man5/pyhook.conf.5*
 
 %files libs
 %{_libdir}/libabrt.so.*
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
-%{_datadir}/%{name}/conf.d/abrt.conf
 %{_mandir}/man5/abrt.conf.5*
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
 %dir %{_datadir}/%{name}
-%dir %{_datadir}/%{name}/conf.d
-%dir %{_datadir}/%{name}/conf.d/plugins
 
 # filesystem package should own /usr/share/augeas/lenses directory
 %{_datadir}/augeas/lenses/abrt.aug
@@ -868,7 +854,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %files addon-ccpp
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
-%{_datadir}/%{name}/conf.d/plugins/CCpp.conf
 %{_mandir}/man5/abrt-CCpp.conf.5*
 %{_libexecdir}/abrt-gdb-exploitable
 %{_journalcatalogdir}/abrt_ccpp.catalog
@@ -942,7 +927,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_koops_format.conf
 %{_mandir}/man5/koops_event.conf.5*
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/oops.conf
-%{_datadir}/%{name}/conf.d/plugins/oops.conf
 %{_unitdir}/abrt-oops.service
 
 %dir %{_localstatedir}/lib/abrt
@@ -970,7 +954,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vmcore_event.conf
 %{_mandir}/man5/vmcore_event.conf.5*
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/vmcore.conf
-%{_datadir}/%{name}/conf.d/plugins/vmcore.conf
 %{_datadir}/libreport/events/analyze_VMcore.xml
 %{_unitdir}/abrt-vmcore.service
 %{_sbindir}/abrt-harvest-vmcore
@@ -994,7 +977,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %if %{with python3}
 %files -n python3-abrt-addon
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python3.conf
-%{_datadir}/%{name}/conf.d/plugins/python3.conf
 %{_mandir}/man5/python3-abrt.conf.5*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/python3_event.conf
 %{_journalcatalogdir}/python3_abrt.catalog
@@ -1035,7 +1017,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %files atomic
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp_Atomic.conf
 %{_unitdir}/abrt-coredump-helper.service
-%{_datadir}/%{name}/conf.d/plugins/CCpp_Atomic.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-action-save-package-data.conf
 %{_bindir}/abrt-action-save-package-data
 %{_mandir}/man1/abrt-action-save-package-data.1*

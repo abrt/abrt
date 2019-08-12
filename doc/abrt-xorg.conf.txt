@@ -17,7 +17,7 @@ Currently, two items exist:
 
 *BlacklistedXorgModules = 'list'*::
    Comma-separated list of modules which make Xorg crashes non-reportable when
-   loaded. Names should be without "_drv.so" suffix.
+   loaded. Names should be without the "_drv.so" suffix.
    +
    Default is 'fglrx, nvidia, vboxvideo'.
 
@@ -32,8 +32,8 @@ FILES
 
 SEE ALSO
 --------
-abrt-action-analyze-xorg(1)
-abrt-dump-journal-xorg(1)
+abrt-action-analyze-xorg(1),
+abrt-dump-journal-xorg(1),
 abrt.conf(5)
 
 AUTHORS
