@@ -139,8 +139,6 @@ dist_daemonconf_DATA = \
     abrt.conf \
     abrt-action-save-package-data.conf \
     gpg_keys.conf
-defaultdaemonconfdir = $(DEFAULT_CONF_DIR)
-dist_defaultdaemonconf_DATA = $(dist_daemonconf_DATA)
 
 dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/
 dist_dbusabrtconf_DATA = org.freedesktop.problems.daemon.conf

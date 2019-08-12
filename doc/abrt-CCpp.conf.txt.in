@@ -72,7 +72,7 @@ Ithe following items are recognized:
 *PackageManager = 'yum/dnf'*::
    Specify the package manager used for downloading debuginfo packages.
    +
-   Default is dnf.
+   Default is @DEFAULT_PACKAGE_MANAGER@.
 
 *IgnoredPaths = 'list'*::
    ABRT will ignore crashes in executables whose absolute path matches any
@@ -108,7 +108,7 @@ Ithe following items are recognized:
    Default is 'no'.
 
 *StandaloneHook = 'yes/no'*::
-   Instruct abrt-hook-ccpp to create a dump directory even if abrtd is not running.
+   Instruct 'abrt-hook-ccpp' to create a dump directory even if abrtd is not running.
    +
    Default is 'no'.
 

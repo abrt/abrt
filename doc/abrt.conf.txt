@@ -11,7 +11,7 @@ SYNOPSIS
 
 DESCRIPTION
 -----------
-'ABRT' is a daemon that watches for application crashes. When a crash occurs, it
+ABRT is a daemon that watches for application crashes. When a crash occurs, it
 collects the problem data and takes action according to its configuration. This
 document describes ABRT's configuration file.
 
@@ -26,15 +26,17 @@ A description of each item follows:
 
 *MaxCrashReportsSize = 'number'*::
    The maximum disk space (specified in MiB) that ABRT will use for all the
-   crash dumps. Specify a value here to ensure that the crash dumps will not
-   fill all available storage space.
+   crash dumps. Value of 0 means "unlimited space".
    +
    Default is 5000.
 
 *WatchCrashdumpArchiveDir = 'directory'*::
    The daemon will watch this directory and call 'abrt-handle-upload' on files
    which appear there. This is used to auto-unpack crashdump tarballs uploaded
-   via FTP, SCP, etc. The directory must exist and be writable for 'abrt'.
+   via FTP, SCP, etc.
+   +
+   Note: The directory must exist and be writable for 'abrtd'. It will not
+   be created automatically.
    +
    Example: /var/spool/abrt-upload
    +
@@ -44,6 +46,9 @@ A description of each item follows:
    The daemon will delete an uploaded crashdump archive after an atempt to
    unpack it. An archive will be delete whether unpacking finishes successfully
    or not.
+   +
+   If you decide to enable this, you have to tweak the SELinux policy:
+   `# setsebool -P abrt_anon_write 1`.
    +
    Default value is 'no'.
 
@@ -70,19 +75,26 @@ A description of each item follows:
 
 *ShortenedReporting = 'yes/no'*::
    Enables shortened GUI reporting where the reporting is interrupted after
-   AutoreportingEvent is done.
-   +
-   Default is 'yes' if application is running in a GNOME desktop session;
-   otherwise it's 'no'.
+   'AutoreportingEvent' is done.
+    +
+    Default is 'yes' if application is running in a GNOME desktop session;
+    otherwise it's 'no'.
 
 *ExploreChroots = 'yes/no'*::
    Enables various features exploring process's root directories if they differ
    from the default root directory. The folowing list includes examples of
    enabled features:
-     * query the rpm database in the process's root directory
-     * save files like /etc/os-release from the process's root directory
-   +
-   Default is 'no'.
+     * query the RPM database in the process's root directory,
+     * save files like `/etc/os-release` from the process's root directory.
+
++
+This feature is disabled by default because it might be used by a local
+user to steal your data.
++
+Caution: THIS FEATURE MIGHT BE USED BY A LOCAL USER TO STEAL YOUR DATA
+BY ARRANGING A SPECIAL ROOT DIRECTORY IN USER MOUNT NAMESPACE.
++
+Default is 'no'.
 
 FILES
 -----

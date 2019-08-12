@@ -48,8 +48,6 @@ libexec_SCRIPTS = \
     abrt-action-ureport \
     abrt-gdb-exploitable
 
-#dist_pluginsconf_DATA = Python.conf
-
 eventsdir = $(EVENTS_DIR)
 
 dist_events_DATA = \
@@ -196,8 +194,6 @@ endif
 confdir = $(PLUGINS_CONF_DIR)
 dist_conf_DATA = \
     xorg.conf
-defaultconfdir = $(DEFAULT_PLUGINS_CONF_DIR)
-dist_defaultconf_DATA = $(dist_conf_DATA)
 
 abrt_watch_log_SOURCES = \
     abrt-watch-log.c
