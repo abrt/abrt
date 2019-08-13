@@ -777,11 +777,9 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_bindir}/abrt-action-analyze-python
 %{_bindir}/abrt-action-analyze-xorg
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/org.freedesktop.problems.daemon.conf
+%config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-action-save-package-data.conf
-%config(noreplace) %{_sysconfdir}/%{name}/plugins/xorg.conf
-%{_mandir}/man5/abrt-xorg.conf.5*
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys.conf
-%{_mandir}/man5/gpg_keys.conf.5*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/abrt_event.conf
 %{_mandir}/man5/abrt_event.conf.5*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/smart_event.conf
@@ -800,13 +798,13 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man1/abrt-action-analyze-python.1*
 %{_mandir}/man1/abrt-action-analyze-xorg.1*
 %{_mandir}/man1/abrt-auto-reporting.1*
-%{_mandir}/man8/abrtd.8*
+%{_mandir}/man5/abrt.conf.5*
 %{_mandir}/man5/abrt-action-save-package-data.conf.5*
+%{_mandir}/man5/gpg_keys.conf.5*
+%{_mandir}/man8/abrtd.8*
 
 %files libs
 %{_libdir}/libabrt.so.*
-%config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
-%{_mandir}/man5/abrt.conf.5*
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
 %dir %{_datadir}/%{name}
@@ -943,12 +941,14 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/xorg_event.conf
 %{_journalcatalogdir}/abrt_xorg.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_xorg_format.conf
-%{_mandir}/man5/xorg_event.conf.5*
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/xorg.conf
 %{_unitdir}/abrt-xorg.service
 %{_bindir}/abrt-dump-xorg
 %{_bindir}/abrt-dump-journal-xorg
 %{_mandir}/man1/abrt-dump-xorg.1*
 %{_mandir}/man1/abrt-dump-journal-xorg.1*
+%{_mandir}/man5/abrt-xorg.conf.5*
+%{_mandir}/man5/xorg_event.conf.5*
 
 %files addon-vmcore
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vmcore_event.conf
