@@ -28,7 +28,5 @@ def init():
     except IOError as ex:
         logging.debug("Unsupported locale '{0}': {1}".format(lcl, str(ex)))
 
-    gettext.bind_textdomain_codeset(progname,
-                                    locale.nl_langinfo(locale.CODESET))
     gettext.bindtextdomain(progname, localedir)
     gettext.textdomain(progname)
