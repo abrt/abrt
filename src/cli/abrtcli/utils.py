@@ -10,7 +10,7 @@ except ImportError:
 
 import report
 
-from abrtcli.l18n import _
+from abrtcli.i18n import _
 from abrtcli.config import MEDIUM_FMT
 
 braces_re = re.compile(r'\{([^}]+)\}')

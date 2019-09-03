@@ -1,7 +1,7 @@
 import sys
 import problem
 
-from abrtcli.l18n import _
+from abrtcli.i18n import _
 from abrtcli.utils import get_human_identifier, sort_problems
 
 

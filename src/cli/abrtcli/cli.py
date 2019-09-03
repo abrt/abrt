@@ -10,8 +10,8 @@ import report as libreport
 import reportclient
 from reportclient import ask_yes_no, set_verbosity
 
-from abrtcli import config, l18n
-from abrtcli.l18n import _, N_
+from abrtcli import config, i18n
+from abrtcli.i18n import _, N_
 from abrtcli.match import match_completer, match_get_problem
 
 from abrtcli.filtering import (filter_not_reported,
@@ -357,7 +357,7 @@ status.__doc__ = _('Print count of the recent crashes')
 
 
 def main():
-    l18n.init()
+    i18n.init()
 
     parser = ArghParser()
     parser.add_argument('-a', '--authenticate',
