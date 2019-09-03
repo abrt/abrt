@@ -3,7 +3,7 @@ PYFILES= \
 	cli.py \
 	config.py \
 	filtering.py \
-	l18n.py \
+	i18n.py \
 	match.py \
 	utils.py
 
