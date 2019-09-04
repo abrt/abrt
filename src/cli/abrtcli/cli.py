@@ -349,9 +349,9 @@ def status(args):
 
     if not args.quiet or len(probs) > 0:
         print(N_('ABRT has detected a problem. For more information, run “abrt list{}”',
-                 'ABRT has detected {} problems. For more information, run “abrt list{}”',
+                 'ABRT has detected %d problems. For more information, run “abrt list{}”' % (len(probs)),
                  len(probs))
-              .format(len(probs), since_append))
+              .format(since_append))
 
 status.__doc__ = _('Print count of the recent crashes')
 
