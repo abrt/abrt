@@ -1,10 +1,8 @@
 #!/usr/bin/python3
 # -*- encoding: utf-8 -*-
+import datetime
 import logging
-try:
-    import unittest2 as unittest
-except ImportError:
-    import unittest
+import unittest
 
 import clitests
 
@@ -53,99 +51,30 @@ class MatchTestCase(clitests.TestCase):
         pm = match_completer(None, None)
         self.assertEqual(set(pm), set(self.hashes + self.human + self.combined + self.paths))
 
-    def test_match_lookup_hash(self):
-        '''
-        Test match lookup by hash
-        '''
-
-        for h in self.hashes:
-            m = match_lookup(h)
-            self.assertGreaterEqual(len(m), 1)
-
-    def test_match_lookup_human_id(self):
-        '''
-        Test match lookup by human id
-        '''
-
-        for h in self.human:
-            m = match_lookup(h)
-            self.assertEqual(len(m), 1)
-
-    def test_match_lookup_combined(self):
-        '''
-        Test match lookup by human id combined with short id
-        '''
-
-        for h in self.combined:
-            m = match_lookup(h)
-            self.assertEqual(len(m), 1)
-
-    def test_match_lookup_collisions(self):
-        '''
-        Test match lookup handles collisions
-        '''
-
-        m = match_lookup(self.collision_human)
-        self.assertEqual(len(m), 2)
-
-    def test_match_lookup_nonexistent(self):
-        '''
-        Test match lookup handles empty input
-        '''
-
-        m = match_lookup('')
-        self.assertEqual(len(m), 1)
-        self.assertEqual(m[0].id, 'ffe635cbdd54e3667511e718ceecac16133acc97')
-
-    def test_match_get_problem_simple(self):
-        '''
-        Test that match_get_problem matches unique pattern
-        '''
-
-        p = match_get_problems('polkitd')
-        self.assertEqual(len(p), 1)
-        self.assertEqual(p[0].component, 'polkitd')
-
-    def test_match_get_problem_multiple(self):
-        '''
-        Test that match_get_problem returns all matching problems
-        '''
-
-        p = match_get_problems('pavucontrol')
-        self.assertEqual(len(p), 2)
-        self.assertEqual("%s@%s" % (p[0].component, p[0].short_id), "pavucontrol@bc60a5c")
-        self.assertEqual("%s@%s" % (p[1].component, p[1].short_id), "pavucontrol@acbea5c")
-
-    def test_match_get_problem_empty_database(self):
-        '''
-        Test that match_get_problem handles no problems in database
-        '''
-
-        import problem
-
-        with clitests.monkey_patch(problem, 'list', lambda *args, **kwargs: []):
-            with captured_output() as (cap_stdout, cap_stderr):
-                with self.assertRaises(SystemExit):
-                    match_get_problems('nope')
-
-            stdout = cap_stdout.getvalue()
-            self.assertIn("No matching problems found", stdout)
-
-            # Similar with last
-            with captured_output() as (cap_stdout, cap_stderr):
-                with self.assertRaises(SystemExit):
-                    match_get_problems('last')
-
-            stdout = cap_stdout.getvalue()
-            self.assertIn("No matching problems found", stdout)
-
-    def test_match_get_problem_nonexistent(self):
-        '''
-        Test that match_get_problem exits on non-existent problem
-        '''
-
+    def test_match_get_problems(self):
         with self.assertRaises(SystemExit):
-            match_get_problems('nope')
+            match_get_problems(['adun toridas'])
+
+    def test_match_combo(self):
+        '''
+        Test matching based on combinations of criteria
+        '''
+        since = datetime.datetime(2015, 5, 1)
+        until = datetime.datetime(2015, 7, 1)
+        matches = match_lookup(['bc60a5cbddb4e3667511e718ceecac16133acc97'],
+                               since=since.timestamp(),
+                               until=until.timestamp(),
+                               not_reported=True)
+        self.assertEqual(len(matches), 1)
+        matches = match_lookup(['bc60a5cbddb4e3667511e718ceecac16133acc97'],
+                               since=since.timestamp(),
+                               until=until.timestamp())
+        self.assertEqual(len(matches), 2)
+        matches = match_lookup(['bc60a5cbddb4e3667511e718ceecac16133acc97'],
+                               components=['pavucontrol'],
+                               since=since.timestamp(),
+                               n_latest=1)
+        self.assertEqual(len(matches), 1)
 
 
 if __name__ == '__main__':

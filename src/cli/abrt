@@ -1,17 +1,46 @@
 #!/usr/bin/python3
 
+import argparse
 import sys
-import subprocess
-from abrtcli.cli import main
+
+import argcomplete
+
+from abrtcli import cli, config, i18n
+from abrtcli.i18n import _
 
 if __name__ == '__main__':
-    # call ourselves again in case of no subcommand
-    # and display oneline list
-    if len(sys.argv) == 1:
-        subprocess.call('{0} list --pretty oneline'.format(sys.argv[0]),
-                        shell=True)
-        sys.exit(0)
+    i18n.init()
 
-    main()
+    parser = argparse.ArgumentParser(allow_abbrev=False)
+
+    parser.add_argument('-a', '--authenticate',
+                        action='store_true',
+                        help=_('authenticate and show all problems'
+                               ' on this machine'))
+    parser.add_argument('-v', '--version',
+                        action='version',
+                        version=config.VERSION)
+
+    subparsers = parser.add_subparsers(metavar='COMMAND')
+
+    cli.load_commands(subparsers)
+
+    argcomplete.autocomplete(parser)
+
+    try:
+        arguments = sys.argv[1:]
+        if not arguments:
+            arguments = ['list', '--pretty=oneline']
+        namespace = parser.parse_args(args=arguments)
+
+        if cli.wildcard_assumed(namespace):
+            arguments.extend('*')
+            namespace = parser.parse_args(args=arguments)
+
+        namespace.func(namespace)
+    except KeyboardInterrupt:
+        sys.exit(1)
+
+    sys.exit(0)
 else:
     raise NotImplementedError

@@ -437,6 +437,7 @@ AC_CONFIG_FILES([
 	src/applet/Makefile
 	src/cli/Makefile
 	src/cli/abrtcli/Makefile
+	src/cli/abrtcli/cli/Makefile
 	src/cli/tests/Makefile
 	src/cli/tests/clitests/Makefile
 	src/configuration-gui/Makefile

@@ -1,7 +1,13 @@
-import pathlib
 import sys
 import problem
 
+from abrtcli.filtering import (filter_components,
+                               filter_executables,
+                               filter_ids,
+                               filter_not_reported,
+                               filter_paths,
+                               filter_since_timestamp,
+                               filter_until_timestamp)
 from abrtcli.i18n import _
 from abrtcli.utils import get_human_identifier, sort_problems
 
@@ -57,58 +63,56 @@ def match_completer(_prefix, _parsed_args, **_kwargs):
         yield path
 
 
-def match_lookup(in_arg, authenticate=False):
+def match_lookup(patterns, authenticate=False, executables=None, components=None,
+                 since=None, until=None, n_latest=None, not_reported=False):
     '''
     Return problems that match `in_arg` passed on command line
     '''
 
-    if not in_arg:
-        problems = sort_problems(problem.list(auth=authenticate))
+    problems = problem.list(auth=authenticate)
 
-        return [problems[0]] if problems else []
-    elif in_arg == '*':
-        return problem.list(auth=authenticate)
+    if not patterns:
+        return sort_problems(problems)[:1]
 
-    by_human_id, by_short_id, by_path = get_match_data(authenticate=authenticate)
+    if '*' not in patterns:
+        id_matches = filter_ids(problems, patterns)
+        path_matches = filter_paths(problems, patterns)
 
-    if '@' in in_arg:
-        human_id, short_id = in_arg.split('@', 1)
-        matches = [problem
-                   for component, problems in by_human_id.items()
-                   for problem in problems
-                   if human_id == component]
+        problems = list(set(id_matches) | set(path_matches))
 
-        return list(filter(lambda p: p.short_id == short_id, matches))
-    else:
-        matches = [problem
-                   for component, problems in by_human_id.items()
-                   for problem in problems
-                   if in_arg == component]
-        if matches:
-            return matches
+    problems = filter_executables(problems, executables)
+    problems = filter_components(problems, components)
 
-        matches = [problems[0]
-                   for short_id, problems in by_short_id.items()
-                   if in_arg == short_id]
-        if matches:
-            return matches
+    if since:
+        problems = filter_since_timestamp(problems, since)
+    if until:
+        problems = filter_until_timestamp(problems, until)
 
-    matches = [problem
-               for path, problem in by_path.items()
-               if pathlib.Path(in_arg).resolve().match(path)]
-    if matches:
-        return matches
+    if n_latest:
+        problems = sort_problems(problems)[:n_latest]
 
-    return []
+    if not_reported:
+        problems = filter_not_reported(problems)
+
+    return problems
 
 
-def match_get_problems(problem_match, authenticate=False):
+def match_get_problems(patterns, authenticate=False, executables=None,
+                       components=None, since=None, until=None, n_latest=None,
+                       not_reported=False):
     '''
-    Return problem matching `problem_match` pattern
+    Return problem matching `problem_matches` pattern
     or exit if there are no such problems.
     '''
 
-    probs = match_lookup(problem_match, authenticate=authenticate)
+    probs = match_lookup(patterns,
+                         authenticate=authenticate,
+                         executables=executables,
+                         components=components,
+                         since=since,
+                         until=until,
+                         n_latest=n_latest,
+                         not_reported=not_reported)
     if not probs:
         print(_('No matching problems found'))
         sys.exit(1)

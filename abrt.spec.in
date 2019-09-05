@@ -77,7 +77,6 @@ BuildRequires: libselinux-devel
 BuildRequires: python3-devel
 BuildRequires: python3-systemd
 BuildRequires: python3-argcomplete
-BuildRequires: python3-argh
 %endif # with python3
 
 Requires: libreport >= %{libreport_ver}
@@ -334,7 +333,6 @@ Requires: abrt-dbus
 %if %{with python3}
 Requires: python3-abrt
 Requires: abrt-addon-ccpp
-Requires: python3-argh
 Requires: python3-argcomplete
 
 Provides: %{name}-cli-ng = %{version}-%{release}

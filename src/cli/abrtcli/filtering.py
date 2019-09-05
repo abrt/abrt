@@ -1,4 +1,61 @@
 import datetime
+import pathlib
+
+
+def filter_components(problems, components):
+    '''
+    Return problems with matching components
+    '''
+    if not components:
+        return problems
+
+    def predicate(problem):
+        if not hasattr(problem, 'component'):
+            return False
+        return problem.component in components
+
+    return list(filter(predicate, problems))
+
+
+def filter_executables(problems, executables):
+    '''
+    Return problems with matching executables
+    '''
+    if not executables:
+        return problems
+
+    def predicate(problem):
+        if not hasattr(problem, 'executable'):
+            return False
+        return problem.executable in executables
+
+    return list(filter(predicate, problems))
+
+
+def filter_ids(problems, ids):
+    '''
+    Return problems with matching IDs
+    '''
+    if not ids:
+        return problems
+
+    return list(filter(lambda x: x.short_id in ids or x.id in ids, problems))
+
+
+def filter_paths(problems, paths):
+    '''
+    Return problems with matching paths
+    '''
+    if not paths:
+        return problems
+
+    def predicate(problem):
+        for path in paths:
+            if pathlib.Path(problem.path).match(path):
+                return True
+        return False
+
+    return list(filter(predicate, problems))
 
 
 def filter_since(probs, since):

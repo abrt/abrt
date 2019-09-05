@@ -1,6 +1,7 @@
+SUBDIRS = cli
+
 PYFILES= \
 	__init__.py \
-	cli.py \
 	config.py \
 	filtering.py \
 	i18n.py \
