@@ -40,33 +40,33 @@ def as_table(data, margin=2, separator=' '):
     return ''.join(map(lambda row: fmt.format(*row), data))[:-1]
 
 
-def fmt_problems(probs, fmt=MEDIUM_FMT):
+def format_problems(problems, fmt=MEDIUM_FMT):
     '''
-    Return preformatted problem data of `prob` according to `fmt`
+    Return preformatted problem data of `problems` according to `fmt`
     '''
 
-    if probs is None:
+    if problems is None:
         return ''
 
-    if not isinstance(probs, list):
-        probs = [probs]
+    if not isinstance(problems, list):
+        problems = [problems]
 
     fmt = fmt.replace('|', '\n')
     tabular = '#table' in fmt
     oneline = '\n' not in fmt
 
     out = ''
-    for prob in probs:
-        what_field, what = get_human_identifier(prob)
+    for problem in problems:
+        what_field, what = get_human_identifier(problem)
 
         context_vars = {
             'what': what,
             'what_field': what_field,
         }
 
-        uid = get_problem_field(prob, 'uid')
+        uid = get_problem_field(problem, 'uid')
         if uid is not None:
-            username = get_problem_field(prob, 'username')
+            username = get_problem_field(problem, 'username')
             if username:
                 uid_username = ('{0} ({1})'
                                 .format(uid, username))
@@ -75,18 +75,18 @@ def fmt_problems(probs, fmt=MEDIUM_FMT):
 
             context_vars['uid_username'] = uid_username
 
-        if prob.not_reportable:
+        if problem.not_reportable:
             context_vars['not_reportable'] = _('Not reportable')
-            reason = prob.not_reportable_reason.rstrip()
+            reason = problem.not_reportable_reason.rstrip()
 
             if tabular:
                 reason = reason.replace('\n', '\n,')
 
             context_vars['not_reportable_reason'] = reason
 
-        if hasattr(prob, 'reported_to'):
+        if hasattr(problem, 'reported_to'):
             r_out = ''
-            rtl = prob.reported_to.splitlines()
+            rtl = problem.reported_to.splitlines()
 
             # each reported to line item as separate row
             # except for BTHASH
@@ -105,11 +105,11 @@ def fmt_problems(probs, fmt=MEDIUM_FMT):
             if r_out:
                 context_vars['reported_to'] = r_out
 
-        if hasattr(prob, 'backtrace'):
+        if hasattr(problem, 'backtrace'):
             if not oneline:
-                context_vars['backtrace'] = '\n' + prob.backtrace
+                context_vars['backtrace'] = '\n' + problem.backtrace
 
-        if not hasattr(prob, 'count'):
+        if not hasattr(problem, 'count'):
             context_vars['count'] = 1
 
         sfmt = fmt.splitlines()
@@ -130,7 +130,7 @@ def fmt_problems(probs, fmt=MEDIUM_FMT):
             for var in template_vars:
                 # try looking up missing context var in problem items
                 if var not in context_vars:
-                    val = get_problem_field(prob, var)
+                    val = get_problem_field(problem, var)
                     if val:
                         context_vars[var] = val
                     else:
@@ -160,15 +160,15 @@ def fmt_problems(probs, fmt=MEDIUM_FMT):
     return out.rstrip()
 
 
-def get_problem_field(prob, field):
+def get_problem_field(problem, field):
     '''
     Return problem field `field` or None
     '''
 
-    return getattr(prob, field, None)
+    return getattr(problem, field, None)
 
 
-def get_human_identifier(prob):
+def get_human_identifier(problem):
     '''
     Return first found problem field from list of candidate fields
     that will be used as a problem identifier for humans
@@ -177,7 +177,7 @@ def get_human_identifier(prob):
     candidates = ['component', 'executable', 'type']
 
     for c in candidates:
-        val = get_problem_field(prob, c)
+        val = get_problem_field(problem, c)
         if val:
             return c, val
 
@@ -199,12 +199,12 @@ def upcase_first_letter(s):
     return s[0].upper() + s[1:]
 
 
-def run_event(event_name, prob):
+def run_event(event_name, problem):
     '''
-    Run event with `event_name` on problem `prob`
+    Run event with `event_name` on problem `problem`
     '''
 
-    state, ret = report.run_event_on_problem_dir(prob.path, event_name)
+    state, ret = report.run_event_on_problem_dir(problem.path, event_name)
 
     if ret == 0 and state.children_count == 0:
         sys.stderr.write('No actions were found for event {}'

@@ -8,19 +8,16 @@ except ImportError:
 
 import os
 
-import clitests
-
 import problem
 
 from abrtcli.config import ONELINE_FMT
-
-from abrtcli.utils import (captured_output,
-                           fmt_problems,
+from abrtcli.utils import (format_problems,
                            get_problem_field,
                            get_human_identifier,
                            remember_cwd,
                            sort_problems,
                            upcase_first_letter)
+import clitests
 
 
 class UtilsTestCase(clitests.TestCase):
@@ -28,13 +25,13 @@ class UtilsTestCase(clitests.TestCase):
     Tests for utility functions
     '''
 
-    def test_fmt_problems(self):
+    def test_format_problems(self):
         '''
         Test default problem formatting
         '''
 
         pl = problem.list()
-        res = fmt_problems(pl)
+        res = format_problems(pl)
 
         for prob in pl:
             self.assertIn(prob.short_id, res)
@@ -54,48 +51,48 @@ class UtilsTestCase(clitests.TestCase):
         self.assertIn('Not reportable', res)
         self.assertIn('Not reportable reason', res)
 
-    def test_fmt_problems_oneline(self):
+    def test_format_problems_oneline(self):
         '''
         Test oneline problem formatting
         '''
 
         pl = problem.list()
-        res = fmt_problems(pl, fmt=ONELINE_FMT)
+        res = format_problems(pl, fmt=ONELINE_FMT)
 
         self.assertIn('bc60a5c 15x pavucontrol', res)
         self.assertIn('ffe635c 1x /home/user/bin/user_app', res)
 
-    def test_fmt_problems_custom(self):
+    def test_format_problems_custom(self):
         '''
         Test custom problem formatting
         '''
 
         pl = problem.list()
         fmt = '''#table|id,{short_id}|user id,{uid_username}| '''
-        res = fmt_problems(pl, fmt=fmt)
+        res = format_problems(pl, fmt=fmt)
 
         self.assertIn('User id', res)
         self.assertIn('1234', res)
         self.assertTrue(len(res.splitlines()) > len(pl))
 
-    def test_fmt_problems_custom_oneline(self):
+    def test_format_problems_custom_oneline(self):
         '''
         Test custom problem formatting
         '''
 
         pl = problem.list()
         fmt = '''{short_id} {uid_username}'''
-        res = fmt_problems(pl, fmt=fmt)
+        res = format_problems(pl, fmt=fmt)
 
         self.assertIn('1234', res)
         self.assertTrue(len(res.splitlines()) == len(pl))
 
-    def test_fmt_problems_empty_input(self):
+    def test_format_problems_empty_input(self):
         '''
-        Test that fmt_problems handles None as problem list
+        Test that format_problems handles None as problem list
         '''
 
-        self.assertEqual(fmt_problems(None), '')
+        self.assertEqual(format_problems(None), '')
 
     def test_get_problem_field(self):
         p = problem.list()[0]

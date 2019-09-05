@@ -58,9 +58,20 @@ src/plugins/bodhi.c
 
 src/hooks/abrt-merge-pstoreoops.c
 
-src/cli/abrtcli/cli.py
 src/cli/abrtcli/match.py
 src/cli/abrtcli/utils.py
+
+src/cli/abrtcli/cli/__init__.py
+src/cli/abrtcli/cli/backtrace.py
+src/cli/abrtcli/cli/gdb.py
+src/cli/abrtcli/cli/info.py
+src/cli/abrtcli/cli/install_debuginfo.py
+src/cli/abrtcli/cli/list.py
+src/cli/abrtcli/cli/Makefile.am
+src/cli/abrtcli/cli/remove.py
+src/cli/abrtcli/cli/report.py
+src/cli/abrtcli/cli/retrace.py
+src/cli/abrtcli/cli/status.py
 
 src/plugins/analyze_CCpp.xml.in
 src/plugins/analyze_VMcore.xml.in
