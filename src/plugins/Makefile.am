@@ -218,11 +218,13 @@ abrt_dump_oops_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
+    $(SATYR_CFLAGS) \
     -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
     -D_GNU_SOURCE
 abrt_dump_oops_LDADD = \
     $(GLIB_LIBS) \
     $(LIBREPORT_LIBS) \
+    $(SATYR_LIBS) \
     ../lib/libabrt.la
 
 noinst_LIBRARIES = libabrt-journal.a
@@ -256,6 +258,7 @@ abrt_dump_journal_oops_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
+    $(SATYR_CFLAGS) \
     -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
     -DVAR_STATE=\"$(VAR_STATE)\" \
     -D_GNU_SOURCE
@@ -263,6 +266,7 @@ abrt_dump_journal_oops_LDADD = \
     libabrt-journal.a \
     $(GLIB_LIBS) \
     $(LIBREPORT_LIBS) \
+    $(SATYR_LIBS) \
     $(SYSTEMD_LIBS) \
     ../lib/libabrt.la
 
@@ -323,9 +327,11 @@ abrt_action_analyze_c_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
+    $(SATYR_CFLAGS) \
     -D_GNU_SOURCE
 abrt_action_analyze_c_LDADD = \
     $(LIBREPORT_LIBS) \
+    $(SATYR_LIBS) \
     ../lib/libabrt.la
 
 abrt_action_analyze_python_SOURCES = \
@@ -335,9 +341,11 @@ abrt_action_analyze_python_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
+    $(SATYR_CFLAGS) \
     -D_GNU_SOURCE
 abrt_action_analyze_python_LDADD = \
     $(LIBREPORT_LIBS) \
+    $(SATYR_LIBS) \
     ../lib/libabrt.la
 
 abrt_action_analyze_oops_SOURCES = \
