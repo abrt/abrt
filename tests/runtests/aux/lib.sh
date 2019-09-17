@@ -135,15 +135,12 @@ EOF
 }
 
 function load_abrt_conf() {
-    ABRT_CONF_DUMP_LOCATION=`sed -n '/^DumpLocation[ \t]*=/ s/.*=[ \t]*//p' /etc/abrt/abrt.conf 2>/dev/null`
+    ABRT_CONF_DUMP_LOCATION=`augtool get /files/etc/abrt/abrt.conf/DumpLocation 2>/dev/null | grep =`
 
     if test -z "$ABRT_CONF_DUMP_LOCATION"; then
         ABRT_CONF_DUMP_LOCATION=$( pkg-config abrt --variable=defaultdumplocation )
-    fi
-
-    if test -z "$ABRT_CONF_DUMP_LOCATION"; then
-        # The commented line in abrt.conf should always hold the default value
-        ABRT_CONF_DUMP_LOCATION=`sed -n '/^#[ \t]*DumpLocation[ \t]*=/ s/.*=[ \t]*//p' /etc/abrt/abrt.conf 2>/dev/null`
+    else
+        ABRT_CONF_DUMP_LOCATION=`echo $ABRT_CONF_DUMP_LOCATION | cut -d'=' -f2 | tr -d ' '`
     fi
 
     if test -z "$ABRT_CONF_DUMP_LOCATION" && test -d /var/spool/abrt; then

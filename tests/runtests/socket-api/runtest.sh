@@ -42,7 +42,7 @@ rlPhaseStartSetup
         check_prior_crashes
 
         rlFileBackup $CFG_FILE
-        sed -i 's/ProcessUnpackaged = no/ProcessUnpackaged = yes/g' $CFG_FILE
+        rlRun "augtool set /files${CFG_FILE}/ProcessUnpackaged yes" 0
 
         rlRun "dnf install -y abrt-devel libreport-devel" 0 "installed required devel packages"
 

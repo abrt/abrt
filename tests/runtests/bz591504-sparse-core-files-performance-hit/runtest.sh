@@ -42,8 +42,8 @@ rlJournalStart
         rlRun "ulimit -c unlimited"
 
         rlFileBackup $CFG_FILE $CCPP_CFG_FILE
-        sed -i 's/ProcessUnpackaged = no/ProcessUnpackaged = yes/g' $CFG_FILE
-        sed -i 's/\(MakeCompatCore\) = no/\1 = yes/g' $CCPP_CFG_FILE
+        rlRun "augtool set /files${CFG_FILE}/ProcessUnpackaged yes" 0
+        rlRun "augtool set /files${CCPP_CFG_FILE}/MakeCompatCore yes" 0
     rlPhaseEnd
 
     rlPhaseStartTest

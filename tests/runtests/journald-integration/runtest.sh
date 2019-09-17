@@ -39,7 +39,7 @@ rlJournalStart
         check_prior_crashes
 
         rlFileBackup $CFG_FILE
-        sed -i 's/\(ProcessUnpackaged\) = no/\1 = yes/g' $CFG_FILE
+        rlRun "augtool set /files${CFG_FILE}/ProcessUnpackaged yes" 0
 
         TmpDir=$(mktemp -d)
         chmod a+rwx $TmpDir

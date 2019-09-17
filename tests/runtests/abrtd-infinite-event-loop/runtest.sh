@@ -32,6 +32,7 @@
 TEST="abrtd-infinite-event-loop"
 PACKAGE="abrt"
 
+ABRT_CONF=/etc/abrt/abrt.conf
 LIBREPORT_EVENTS_D="/etc/libreport/events.d"
 CCPP_EVENT_CONF=$LIBREPORT_EVENTS_D/post_create_will_abort_event.conf
 PYTHON3_EVENT_CONF=$LIBREPORT_EVENTS_D/post_create_will_python3_raise_event.conf
@@ -89,7 +90,7 @@ rlJournalStart
 
         systemctl stop abrtd
         rm -rf $ABRT_CONF_DUMP_LOCATION
-        rlRun "augtool set /files/etc/abrt/abrt.conf/DebugLevel 0"
+        rlRun "augtool set /files${ABRT_CONF}/DebugLevel 0"
 
         cat > $CCPP_EVENT_CONF <<EOF
 EVENT=post-create type=CCpp
@@ -125,7 +126,7 @@ EOF
     rlPhaseStartSetup "Set debug"
         systemctl stop abrtd
         rm -rf $ABRT_CONF_DUMP_LOCATION
-        rlRun "augtool set /files/etc/abrt/abrt.conf/DebugLevel 1"
+        rlRun "augtool set /files${ABRT_CONF}/DebugLevel 1"
         systemctl start abrtd
         systemctl start abrt-ccpp
     rlPhaseEnd
@@ -139,7 +140,7 @@ EOF
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "augtool set /files/etc/abrt/abrt.conf/DebugLevel 0"
+        rlRun "augtool set /files${ABRT_CONF}/DebugLevel 0"
         rlBundleLogs abrt $(ls *.log)
         popd # TmpDir
         rm -rf $TmpDir

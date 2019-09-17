@@ -32,6 +32,8 @@ TEST="dbus-elements-handling"
 PACKAGE="abrt"
 STAT="stat --format=%A,%U,%G"
 
+ABRT_CONF=/etc/abrt/abrt.conf
+
 function abrtDBusNewProblem() {
     args=analyzer,libreport,executable,$(which true),uuid,$(date +%s.%N)
 
@@ -149,13 +151,13 @@ rlJournalStart
         export -f abrtDBusDelElement
         export -f abrtDBusGetElement
         # Set limit to 1Midk
-        rlRun "OLDCRASHSIZE=\"$(augtool print /files/etc/abrt/abrt.conf/MaxCrashReportsSize | tr -d '=\"')\"" 0 "Create a backup of abrt configuration"
-        rlRun "augtool set /files/etc/abrt/abrt.conf/MaxCrashReportsSize 1" 0 "Set limit for crash reports to 1MiB"
+        rlRun "OLDCRASHSIZE=\"$(augtool print /files${ABRT_CONF}/MaxCrashReportsSize | tr -d '=\"')\"" 0 "Create a backup of abrt configuration"
+        rlRun "augtool set /files${ABRT_CONF}/MaxCrashReportsSize 1" 0 "Set limit for crash reports to 1MiB"
 
         # set only if option PrivateReports exists
-        grep -q PrivateReports /etc/abrt/abrt.conf && \
-        old_private_reports_value=`augtool get /files/etc/abrt/abrt.conf/PrivateReports | cut -d'=' -f2` && \
-        rlRun "augtool set /files/etc/abrt/abrt.conf/PrivateReports no" 0 "Set PrivateReports to no"
+        grep -q PrivateReports $ABRT_CONF && \
+        old_private_reports_value=`augtool get /files${ABRT_CONF}/PrivateReports | cut -d'=' -f2` && \
+        rlRun "augtool set /files${ABRT_CONF}/PrivateReports no" 0 "Set PrivateReports to no"
 
         rlRun "systemctl restart abrtd.service" 0 "Restart abrt service"
 
@@ -274,13 +276,13 @@ rlJournalStart
         rlRun "userdel -r -f abrtdbustestanother" 0 "Remove the another test user"
 
         # set only if option PrivateReports exists
-        grep -q PrivateReports /etc/abrt/abrt.conf && \
-        rlRun "augtool set /files/etc/abrt/abrt.conf/PrivateReports $old_private_reports_value" 0 "Set PrivateReports to yes"
+        grep -q PrivateReports $ABRT_CONF && \
+        rlRun "augtool set /files${ABRT_CONF}/PrivateReports $old_private_reports_value" 0 "Set PrivateReports to yes"
 
         if [ -n "$OLDCRASHSIZE" ]; then
             rlRun "augtool set $OLDCRASHSIZE" 0
         else
-            rlRun "augtool rm /files/etc/abrt/abrt.conf/MaxCrashReportsSize" 0
+            rlRun "augtool rm /files${ABRT_CONF}/MaxCrashReportsSize" 0
         fi
         rlRun "systemctl restart abrtd.service" 0 "Restart abrtd after configuration changes"
         rlRun "rm -rf -- $ABRT_CONF_DUMP_LOCATION/*"
