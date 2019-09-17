@@ -51,7 +51,7 @@ rlJournalStart
         semodule -i $SelinuxPolicyBuildDir/$SELINUX_POLICY.pp || rlDie "Failed to load SELinux policy"
 
         rlFileBackup $CFG_FILE $CCPP_CFG_FILE
-        sed -i 's/\(MakeCompatCore\) = no/\1 = yes/g' $CCPP_CFG_FILE
+        rlRun "augtool set /files${CCPP_CFG_FILE}/MakeCompatCore yes" 0
 
         old_ulimit=$(ulimit -c)
         rlRun "ulimit -c unlimited" 0
@@ -63,11 +63,11 @@ rlJournalStart
         cp $SOURCE $TmpDir
         pushd $TmpDir
 
-        sed -i 's/\(ProcessUnpackaged\) = no/\1 = yes/g' $CFG_FILE
+        rlRun "augtool set /files${CFG_FILE}/ProcessUnpackaged yes" 0
 
         # Test sigchld AVC
-        sed -i 's/\(JITCoreDumpTracing\) = no/\1 = yes/g' $CCPP_CFG_FILE
-        sed -i 's/\(SaveFullCore\) = yes/\1 = no/g' $CCPP_CFG_FILE
+        rlRun "augtool set /files${CCPP_CFG_FILE}/JITCoreDumpTracing yes" 0
+        rlRun "augtool set /files${CCPP_CFG_FILE}/SaveFullCore no" 0
     rlPhaseEnd
 
     rlPhaseStartTest

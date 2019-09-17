@@ -33,11 +33,10 @@ EVENT=notify-dup
         true
 _EOF_
 
-sed -i 's/MaxCrashReportsSize.*=.*\d*/MaxCrashReportsSize = 1000/' /etc/abrt/abrt.conf
+augtool set /files/etc/abrt/abrt.conf/MaxCrashReportsSize 1000
 
 if [ "${DISABLE_GPGCHECK}" = "1" ]; then
-    sed -i 's/OpenGPGCheck.*=.*yes/OpenGPGCheck = no/' \
-        /etc/abrt/abrt-action-save-package-data.conf
+    augtool set /files/etc/abrt/abrt-action-save-package-data.conf/OpenGPGCheck no
 fi
 
 if [ "${DISABLE_AUTOREPORTING}" = "1" ]; then

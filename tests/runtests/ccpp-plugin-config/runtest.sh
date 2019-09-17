@@ -62,8 +62,7 @@ rlJournalStart
     rlPhaseStartTest "MakeCompatCore"
         rm -rf core.*
 
-        rlLogInfo "MakeCompatCore = yes"
-        sed -i 's/\(MakeCompatCore\) = no/\1 = yes/g' $CFG_FILE
+        rlRun "augtool set /files${CFG_FILE}/MakeCompatCore yes" 0 "Enabling MakeCompatCore"
 
         prepare
         generate_crash
@@ -81,8 +80,7 @@ rlJournalStart
         rlRun "rm -f $core_fname" 0 "Remove local coredump"
         unset core_fname
 
-        rlLogInfo "MakeCompatCore = no"
-        sed -i 's/\(MakeCompatCore\) = yes$/\1 = no/g' $CFG_FILE
+        rlRun "augtool set /files${CFG_FILE}/MakeCompatCore no" 0 "Disabling MakeCompatCore"
 
         prepare
         generate_crash
@@ -99,8 +97,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "SaveBinaryImage"
-        rlLogInfo "SaveBinaryImage = yes"
-        rlRun "echo 'SaveBinaryImage = yes' > $CFG_FILE" 0 "Set SaveBinaryImage = yes"
+        rlRun "augtool set /files${CFG_FILE}/SaveBinaryImage yes" 0 "Enabling SaveBinaryImage"
 
         prepare
         generate_crash
@@ -111,8 +108,7 @@ rlJournalStart
         rlAssertExists "$crash_PATH/binary"
         remove_problem_directory
 
-        rlLogInfo "SaveBinaryImage = no"
-        rlRun "echo 'SaveBinaryImage = no' > $CFG_FILE" 0 "Set SaveBinaryImage = no"
+        rlRun "augtool set /files${CFG_FILE}/SaveBinaryImage no" 0 "Disabling SaveBinaryImage"
 
         prepare
         generate_crash

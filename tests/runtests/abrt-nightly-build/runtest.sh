@@ -105,7 +105,7 @@ rlJournalStart
 
     rlPhaseStartTest "Install"
         rlRun "yum -y install /root/rpmbuild/RPMS/*/*.rpm" 0 "Yum install ABRT & libreport"
-        sed -i 's/OpenGPGCheck.*=.*yes/OpenGPGCheck = no/' /etc/abrt/abrt-action-save-package-data.conf
+        rlRun "augtool set /files/etc/abrt/abrt-action-save-package-data.conf/OpenGPGCheck no" 0
     rlPhaseEnd
 
     rlPhaseStartCleanup

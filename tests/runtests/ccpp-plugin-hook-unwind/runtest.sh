@@ -73,10 +73,8 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "JITCoreDumpTracing enabled"
-        rlLogInfo "VerboseLog = 3"
-        rlLogInfo "JITCoreDumpTracing = yes"
-        rlRun "echo 'VerboseLog = 3' > $CFG_FILE" 0 "Set VerboseLog = 3"
-        rlRun "echo 'JITCoreDumpTracing = yes' >> $CFG_FILE" 0 "Set JITCoreDumpTracing = yes"
+        rlRun "augtool set /files${CFG_FILE}/VerboseLog 3" 0 "Setting VerboseLog to 3"
+        rlRun "augtool set /files${CFG_FILE}/JITCoreDumpTracing yes" 0 "Enabling JITCoreDumpTracing"
 
         prepare
         generate_crash
@@ -112,12 +110,9 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "SaveFullCore disabled"
-        rlLogInfo "VerboseLog = 3"
-        rlLogInfo "JITCoreDumpTracing = yes"
-        rlLogInfo "SaveFullCore = no"
-        rlRun "echo 'VerboseLog = 3' > $CFG_FILE" 0 "Set VerboseLog = 3"
-        rlRun "echo 'JITCoreDumpTracing = yes' >> $CFG_FILE" 0 "Set JITCoreDumpTracing = yes"
-        rlRun "echo 'SaveFullCore = no' >> $CFG_FILE" 0 "Set SaveFullCore = no"
+        rlRun "augtool set /files${CFG_FILE}/VerboseLog 3" 0 "Setting VerboseLog to 3"
+        rlRun "augtool set /files${CFG_FILE}/JITCoreDumpTracing yes" 0 "Enabling JITCoreDumpTracing"
+        rlRun "augtool set /files${CFG_FILE}/SaveFullCore no" 0 "Disabling SaveFullCore"
 
         prepare
         generate_crash

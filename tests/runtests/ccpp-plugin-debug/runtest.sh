@@ -54,9 +54,7 @@ function prepare_test_case
 {
 # $1 -debug level
 
-    rlLog "Set DebugLevel=$1"
-    sed "/DebugLevel/d" -i $ABRT_CONF
-    echo "DebugLevel=$1" >> $ABRT_CONF
+    rlRun "augtool set /files${ABRT_CONF}/DebugLevel $1" 0 "Set debug level to $1"
 
     rlLog "Remove all files from $ABRT_CONF_DUMP_LOCATION"
     rm -rf $ABRT_CONF_DUMP_LOCATION/*

@@ -30,15 +30,16 @@
 
 TEST="upload-handling"
 PACKAGE="abrt"
+ABRT_CONF="/etc/abrt/abrt.conf"
 
 rlJournalStart
     rlPhaseStartSetup
-        rlFileBackup /etc/abrt/abrt.conf
+        rlFileBackup $ABRT_CONF
         TmpDir=$(mktemp -d)
         cp -R problem_dir $TmpDir
         pushd $TmpDir
         mkdir -p /var/spool/abrt-upload/
-        echo "WatchCrashdumpArchiveDir = /var/spool/abrt-upload/" > /etc/abrt/abrt.conf
+        rlRun "augtool set /files${ABRT_CONF}/WatchCrashdumpArchiveDir /var/spool/abrt-upload/" 0
         load_abrt_conf
         rlRun "setsebool -P abrt_anon_write 1"
         rlRun "service abrtd stop" 0 "Killing abrtd"
