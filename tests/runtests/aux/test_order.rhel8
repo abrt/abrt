@@ -24,15 +24,10 @@ abrt-crash-unpackaged
 dumpdir_completedness
 ccpp-plugin
 ccpp-plugin-java
-ccpp-plugin-config
-ccpp-plugin-hook-unwind
-ccpp-plugin-selinux
-ccpp-plugin-debug
-ccpp-plugin-core-size
 python3-addon
 
 # - containers
-#docker-essentials
+docker-essentials
 
 # - tools tests
 cli-sanity
@@ -41,9 +36,6 @@ cli-status
 cli-authentication
 cli-process
 console-notifications
-check-hook-install
-ccpp-plugin-hook
-ccpp-plugin-hook-ignoring
 dumpoops
 dumpxorg
 dbus-api
@@ -107,11 +99,7 @@ blacklisted-script
 dont-blame-interpret
 abrt-should-return-rating-0-on-fail
 
-#bz591504-sparse-core-files-performance-hit
-bz618602-core_pattern-handler-truncates-parameters
 bz636913-abrt-should-ignore-SystemExit-exception
-bz652338-removed-proc-PID
-compat-cores
 
 systemd-init
 journald-integration

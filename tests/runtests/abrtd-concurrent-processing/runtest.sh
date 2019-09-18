@@ -70,7 +70,7 @@ rlJournalStart
 
         rlFileBackup $ABRT_CONF
 
-        systemctl stop abrtd
+        rlServiceStop abrtd
 
         sed 's/MaxCrashReportsSize\s*=.*/MaxCrashReportsSize = 200/' -i $ABRT_CONF
 
@@ -101,8 +101,7 @@ EOF
         rm -f $READY_STAGE2_FILE
 
         SINCE_TOTAL=$(date +"%Y-%m-%d %T")
-        systemctl start abrtd
-        systemctl start abrt-ccpp
+        rlServiceStart abrtd abrt-journal-core
     rlPhaseEnd
 
     rlPhaseStartTest "Delete just detected problem directory"
@@ -319,14 +318,14 @@ EOF
     rlPhaseStartCleanup
         rlFileRestore
 
-        journalctl -t abrtd -t abrt-server -t abrt-hook-ccpp --since="$SINCE_TOTAL" > $ABRT_LOG_FILE
+        journalctl -t abrtd -t abrt-server --since="$SINCE_TOTAL" > $ABRT_LOG_FILE
         rlBundleLogs abr $ABRT_LOG_FILE $ABRT_LOG_FILE_1 $ABRT_LOG_FILE_2 $ABRT_LOG_FILE_3
 
         rm -f $TEST_EVENT_CONF
         rm -f /tmp/abrt_done*
         rm -rf /var/spool/abrt/*
 
-        systemctl restart abrtd
+        rlServiceRestore abrtd
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd

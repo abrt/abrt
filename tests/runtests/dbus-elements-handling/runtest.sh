@@ -211,9 +211,9 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartSetup
-        rlRun "systemctl stop abrtd.service" 0 "Stop abrtd before cleaning of the dump location"
+        rlServiceStop abrtd
         rlRun "rm -rf $ABRT_CONF_DUMP_LOCATION/*" 0 "Clean the dump location"
-        rlRun "systemctl start abrtd.service" 0 "Start abrtd after cleaning of the dump location"
+        rlServiceStart abrtd abrt-journal-core
 
         prepare
         rlLog "Create a problem data as the root user"

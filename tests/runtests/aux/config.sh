@@ -55,7 +55,6 @@ export TEST_TIMEOUT=15m
 # - misc
 export PACKAGES="abrt \
                  abrt-addon-ccpp \
-                 abrt-addon-coredump-helper \
                  abrt-addon-kerneloops \
                  abrt-addon-pstoreoops \
                  python3-abrt-addon \

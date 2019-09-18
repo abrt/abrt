@@ -43,8 +43,7 @@ rlJournalStart
 
         rlAssertRpm --all
 
-        rlServiceStart abrtd
-        rlServiceStart abrt-ccpp
+        rlServiceStart abrtd abrt-journal-core
 
         rlRun "TmpDir=\$(mktemp -d)" 0 "Creating tmp directory"
         rlRun "pushd $TmpDir"

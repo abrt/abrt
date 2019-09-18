@@ -65,10 +65,9 @@ function test_run
 
     rlAssertEquals "Dump directories" _$3 _`find $ABRT_CONF_DUMP_LOCATION -mindepth 1 -maxdepth 1 -type d | wc -l`
 
-    systemctl stop abrtd
+    rlServiceStop abrtd
     rm -rf $ABRT_CONF_DUMP_LOCATION
-    systemctl start abrtd
-    systemctl start abrt-ccpp
+    rlServiceStart abrtd abrt-journal-core
 }
 
 # $1 command
@@ -88,7 +87,7 @@ rlJournalStart
     rlPhaseStartSetup
         load_abrt_conf
 
-        systemctl stop abrtd
+        rlServiceStop abrtd
         rm -rf $ABRT_CONF_DUMP_LOCATION
         rlRun "augtool set /files${ABRT_CONF}/DebugLevel 0"
 
@@ -108,8 +107,7 @@ EVENT=post-create type=Python3
     exit 0
 EOF
 
-        systemctl start abrtd
-        systemctl start abrt-ccpp
+        rlServiceStart abrtd abrt-journal-core
 
         TmpDir=$(mktemp -d)
         pushd $TmpDir
@@ -124,11 +122,10 @@ EOF
     rlPhaseEnd
 
     rlPhaseStartSetup "Set debug"
-        systemctl stop abrtd
+        rlServiceStop abrtd
         rm -rf $ABRT_CONF_DUMP_LOCATION
         rlRun "augtool set /files${ABRT_CONF}/DebugLevel 1"
-        systemctl start abrtd
-        systemctl start abrt-ccpp
+        rlServiceStart abrtd abrt-journal-core
     rlPhaseEnd
 
     rlPhaseStartTest "C/C++ hook - debug"

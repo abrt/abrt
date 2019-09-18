@@ -15,10 +15,6 @@ if [ $1 ]; then
     # cleanup
     echo -n '|/usr/lib/systemd/systemd-coredump %P %u %g %s %t %c %e' > /var/run/abrt/saved_core_pattern
 
-    if [ -x /usr/sbin/abrt-install-ccpp-hook ]; then
-        /usr/sbin/abrt-install-ccpp-hook uninstall
-    fi
-
     if pidof abrtd; then
         killall -9 abrtd
         rm -f /var/run/abrt/abrtd.pid
@@ -67,9 +63,7 @@ if [ $1 ]; then
         rpm -q $PACKAGES
     fi
 
-    systemctl start abrtd
-    systemctl start abrt-ccpp
-    systemctl start abrt-oops
+    rlServiceStart abrtd abrt-journal-core abrt-oops
 
     # test delay
     if [ "${DELAY+set}" = "set" ]; then

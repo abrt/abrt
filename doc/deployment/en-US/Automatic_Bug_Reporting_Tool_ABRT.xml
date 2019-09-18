@@ -79,7 +79,7 @@
           </row>
           <row>
             <entry>
-              <systemitem class="service">abrt-ccpp</systemitem>
+              <systemitem class="service">abrt-journal-core</systemitem>
             </entry>
             <entry>
               <package>abrt-addon-ccpp</package>
@@ -177,18 +177,11 @@ abrtd (pid 1535) is running...</screen>
     <screen>~]#&#160;<command>service abrtd start</command>
 Starting abrt daemon:                                      [  OK  ]</screen>
     <para>
-      Similarly, you can follow the same steps to check and start up the <systemitem class="service">abrt-ccpp</systemitem> service if you want <application>ABRT</application> to catch C/C++ crashes. To set <application>ABRT</application> to detect kernel oopses, use the same steps for the <systemitem class="service">abrt-oops</systemitem> service. Note that this service cannot catch kernel oopses which cause the system to fail, to become unresponsive or to reboot immediately. To be able to detect such kernel oopses with <application>ABRT</application>, you need to install the <systemitem class="service">abrt-vmcore</systemitem> service. If you require this functionality, refer to <xref linkend="sect-abrt-configuration-kernel_panic_detection"/> for more information.
+      Similarly, you can follow the same steps to check and start up the <systemitem class="service">abrt-journal-core</systemitem> service if you want <application>ABRT</application> to catch C/C++ crashes. To set <application>ABRT</application> to detect kernel oopses, use the same steps for the <systemitem class="service">abrt-oops</systemitem> service. Note that this service cannot catch kernel oopses which cause the system to fail, to become unresponsive or to reboot immediately. To be able to detect such kernel oopses with <application>ABRT</application>, you need to install the <systemitem class="service">abrt-vmcore</systemitem> service. If you require this functionality, refer to <xref linkend="sect-abrt-configuration-kernel_panic_detection"/> for more information.
     </para>
     <para>
       When installing <application>ABRT</application> packages, all respective ABRT services are automatically enabled for <literal>runlevels 3 and 5</literal>. You can disable or enable any ABRT service for the desired runlevels using the <command>chkconfig</command> utility. Refer to [xref linkend="s2-services-chkconfig"/] for more information.
     </para>
-    <warning>
-    	<title>Installation of ABRT overwrites <systemitem>core_pattern</systemitem></title>
-    	<para>
-    	  Please note that installing <application>ABRT</application> packages overwrites the <filename>/proc/sys/kernel/core_pattern</filename> file which can contain a template used to name core dump files. The content of this file will be overwritten to:
-    	</para>
-    	<programlisting language="Bash">|/usr/libexec/abrt-hook-ccpp %s %c %p %u %g %t %e %P %I</programlisting>
-    </warning>
     <para>
       Finally, if you run ABRT in a graphical desktop environment, you can verify that the <systemitem class="service">ABRT notification applet</systemitem> is running:
     </para>
@@ -875,7 +868,7 @@ rm '/var/spool/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
         This event would overwrite the contents of the <filename>/tmp/dt</filename> file with the current date and time, and print the hostname of the machine and its kernel version on the standard output.
       </para>
       <para>
-        Here is an example of a yet more complex event which is actually one of the predefined events. It saves relevant lines from the <filename>~/.xsession-errors</filename> file to the problem report for any problem for which the <systemitem>abrt-ccpp</systemitem> services has been used to process that problem, and the crashed application has loaded any X11 libraries at the time of crash:
+        Here is an example of a yet more complex event which is actually one of the predefined events. It saves relevant lines from the <filename>~/.xsession-errors</filename> file to the problem report for any problem for which the <systemitem>abrt-journal-core</systemitem> services has been used to process that problem, and the crashed application has loaded any X11 libraries at the time of crash:
       </para>
       <programlisting language="Bash">EVENT=analyze_xsession_errors analyzer=CCpp dso_list~=.*/libX11.*
         test -f ~/.xsession-errors || { echo "No ~/.xsession-errors"; exit 1; }
@@ -1295,26 +1288,6 @@ rm '/var/spool/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
         The following configuration directives are supported in the <filename>/etc/abrt/plugins/CCpp.conf</filename> file:
       </para>
       <variablelist>
-        <varlistentry>
-          <term>
-            MakeCompatCore = <replaceable>yes/no</replaceable>
-          </term>
-          <listitem>
-            <para>
-              This directive specifies whether <application>ABRT</application>'s core catching hook should create a core file, as it could be done if <application>ABRT</application> would not be installed. The core file is typically created in the current directory of the crashed program but only if the <command>ulimit -c</command> setting allows it. The directive is set to <emphasis>yes</emphasis> by default.
-            </para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>
-            SaveBinaryImage = <replaceable>yes/no</replaceable>
-          </term>
-          <listitem>
-            <para>
-              This directive specifies whether <application>ABRT</application>'s core catching hook should save a binary image to a core dump. It is useful when debugging crashes which occurred in binaries that were deleted. The default setting is <emphasis>no</emphasis>.
-            </para>
-          </listitem>
-        </varlistentry>
       </variablelist>
     </section>
     <section id="sect-abrt-configuration-kernel_panic_detection">

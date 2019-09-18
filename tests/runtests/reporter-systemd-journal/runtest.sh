@@ -339,30 +339,8 @@ EOF
         check "--dump FULL -F abrt_format.conf" "-o json-pretty" "dump_full" "${check_array[@]}"
     rlPhaseEnd
 
-    rlPhaseStartTest "ccpp crash abrt-ccpp"
-        OUTPUT="ccpp_abrt"
-cat > ${OUTPUT}.right << END
-Process #PID# (will_stackoverflow) crashed in f()
--- Subject: ABRT has detected unexpected termination: will_stackoverflow
--- Defined-By: ABRT
--- Support: https://bugzilla.redhat.com/
--- Documentation: man:abrt(1)
--- 
--- will_stackoverflow killed by SIGSEGV
--- 
--- #1 [will_stackoverflow] f
--- #2 [will_stackoverflow] main
--- 
--- Use the abrt command-line tool for further analysis or to report
--- the problem to the appropriate support site.
-END
-
-        check_crash "will_stackoverflow" $OUTPUT
-    rlPhaseEnd
-
     rlPhaseStartTest "ccpp crash systemd-coredump"
-        rlRun "systemctl stop abrt-ccpp"
-        rlRun "systemctl start abrt-journal-core"
+        rlServiceStart abrt-journal-core
         OLD_ULIMIT=$(ulimit -c)
         rlRun "ulimit -c unlimited"
         SELINUX_MODE=$(getenforce -c)
@@ -386,8 +364,7 @@ END
 
         rlRun "setenforce $SELINUX_MODE"
         rlRun "ulimit -c $OLD_ULIMIT"
-        rlRun "systemctl stop abrt-journal-core"
-        rlRun "systemctl start abrt-ccpp"
+        rlServiceStop abrt-journal-core
     rlPhaseEnd
 
     rlPhaseStartTest "python3 crash"

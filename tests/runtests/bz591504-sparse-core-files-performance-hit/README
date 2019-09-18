@@ -1,5 +1,0 @@
-This test first builds tests of GDB which contains bigcore.exp, which is using big sparse coredumps,
-which were affected by running abrtd.
-
-First it computes time to run the GDB test with abrtd stopped, then with abrtd running.
-At the end, the test compares measured run times to see whether abrtd is affecting sparse cores.

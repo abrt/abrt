@@ -5,42 +5,11 @@ dist_pluginsconf_DATA = \
     CCpp.conf \
     oops.conf
 
-if BUILD_ATOMIC
-dist_pluginsconf_DATA += CCpp_Atomic.conf
-endif
-
 sbin_SCRIPTS = \
-    abrt-install-ccpp-hook \
     abrt-harvest-pstoreoops
 
 bin_PROGRAMS = \
     abrt-merge-pstoreoops
-
-libexec_PROGRAMS = abrt-hook-ccpp
-
-# abrt-hook-ccpp
-abrt_hook_ccpp_SOURCES = \
-    abrt-hook-ccpp.c
-abrt_hook_ccpp_CPPFLAGS = \
-    -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
-    -DDEFAULT_DUMP_LOCATION_MODE=$(DEFAULT_DUMP_LOCATION_MODE) \
-    -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
-    $(GLIB_CFLAGS) \
-    $(LIBREPORT_CFLAGS) \
-    $(LIBSELINUX_CFLAGS) \
-    -D_GNU_SOURCE
-if HAVE_SELINUX
-abrt_hook_ccpp_CPPFLAGS += -DHAVE_SELINUX
-endif
-abrt_hook_ccpp_LDADD = \
-    ../lib/libabrt.la \
-    -lcap \
-    $(LIBREPORT_LIBS) \
-    $(LIBSELINUX_LIBS)
 
 # abrt-merge-pstoreoops
 abrt_merge_pstoreoops_SOURCES = \
@@ -61,7 +30,6 @@ abrt_merge_pstoreoops_LDADD = \
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 EXTRA_DIST = \
-    abrt-install-ccpp-hook.in \
     abrt-harvest-pstoreoops.in
 
 ALL_DEPENDENCES =
@@ -113,11 +81,6 @@ if BUILD_PYTHON3
 	    -e s,\@CONF_DIR\@,\"$(CONF_DIR)\",g \
 	    abrt_exception_handler3.py.in >abrt_exception_handler3.py
 endif
-
-abrt-install-ccpp-hook: abrt-install-ccpp-hook.in
-	sed -e s,\@VAR_RUN\@,$(VAR_RUN),g \
-	    -e s,\@libexecdir\@,$(libexecdir),g \
-		$< >$@
 
 abrt-harvest-vmcore: abrt_harvest_vmcore.py.in
 	sed -e s,\@CONF_DIR\@,\$(CONF_DIR)\,g \

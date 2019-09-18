@@ -36,8 +36,7 @@ rlJournalStart
     rlPhaseStartSetup
         check_prior_crashes
 
-        rlRun "systemctl stop abrt-ccpp.service"
-        rlRun "systemctl start abrt-journal-core.service"
+        rlServiceStart abrt-journal-core
 
         TmpDir=$(mktemp -d)
         pushd $TmpDir
@@ -86,8 +85,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "systemctl stop abrt-journal-core.service"
-        rlRun "systemctl start abrt-ccpp.service"
+        rlServiceRestore abrt-journal-core
 
         rlRun "popd"
         rlLog "$TmpDir"
