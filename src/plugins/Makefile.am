@@ -70,7 +70,6 @@ endif
 libreportpluginconfdir = $(LIBREPORT_PLUGINS_CONF_DIR)
 
 dist_libreportpluginconf_DATA = \
-    catalog_ccpp_format.conf \
     catalog_journal_ccpp_format.conf \
     catalog_koops_format.conf \
     catalog_xorg_format.conf
@@ -82,7 +81,6 @@ endif
 journalcatalogdir = $(JOURNAL_CATALOG_DIR)
 
 dist_journalcatalog_DATA = \
-    abrt_ccpp.catalog \
     abrt_koops.catalog \
     abrt_xorg.catalog
 
@@ -152,7 +150,6 @@ EXTRA_DIST = \
     post_report.xml.in \
     abrt-action-analyze-ccpp-local.in \
     abrt-action-analyze-vulnerability.in \
-    abrt_ccpp.catalog.in \
     abrt_koops.catalog.in \
     python3_abrt.catalog.in \
     abrt_xorg.catalog.in

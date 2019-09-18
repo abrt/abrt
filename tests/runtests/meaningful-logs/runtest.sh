@@ -37,8 +37,7 @@ function capture_abrtd_startup_logs
 
     journalctl SYSLOG_IDENTIFIER=abrtd --since="$SINCE" > $1-start
 
-    rlRun "rm -rf /var/run/abrt/abrtd.pid"
-    rlRun "systemctl start abrtd"
+    rlServiceStart abrtd
 
     local TO=500
     local CNT=0
@@ -54,13 +53,12 @@ function capture_abrtd_startup_logs
 
     journalctl SYSLOG_IDENTIFIER=abrtd --since="$SINCE" > $1
 
-    rlRun "systemctl stop abrtd"
-    rlRun "systemctl reset-failed abrtd.service"
-
     if [ $CNT -eq $TO ]; then
         rlLog "Capturing logs timed out"
         return 1
     fi
+
+    rlServiceStop abrtd
 
     return 0
 }
@@ -96,8 +94,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "abrtd - start up"
-
-        rlRun "systemctl stop abrtd"
+        rlServiceStop abrtd
 
         crashPATH="$ABRT_CONF_DUMP_LOCATION/testsuite-sane-logs"
 
@@ -156,6 +153,8 @@ rlJournalStart
         rlBundleLogs abrt-meaningful-logs $(ls *.log)
         popd # TmpDir
         rm -rf $TmpDir
+
+        rlServiceRestore abrtd
     rlPhaseEnd
 
     rlJournalPrintText

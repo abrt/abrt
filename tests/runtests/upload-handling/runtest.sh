@@ -42,8 +42,7 @@ rlJournalStart
         rlRun "augtool set /files${ABRT_CONF}/WatchCrashdumpArchiveDir /var/spool/abrt-upload/" 0
         load_abrt_conf
         rlRun "setsebool -P abrt_anon_write 1"
-        rlRun "service abrtd stop" 0 "Killing abrtd"
-        rlRun "service abrtd start" 0 "Starting abrtd"
+        rlServiceStart abrtd
 
         # install upload watcher if available (not required on rhel6)
         upload_watch_pkg="abrt-addon-upload-watch"
@@ -51,7 +50,6 @@ rlJournalStart
           dnf -y install $upload_watch_pkg
           rlRun "service abrt-upload-watch restart" 0 "Starting abrt-upload-watch"
         fi
-        rlRun "service abrt-ccpp restart" 0 "Start abrt-ccpp"
     rlPhaseEnd
 
     rlPhaseStartTest "handle upload"

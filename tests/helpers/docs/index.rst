@@ -33,13 +33,13 @@ Running single test
 '''''''''''''''''''
 
 To run only one of the tests, you have to run it via *./aux/runner.sh*. This script prepares
-your system by starting *abrtd* and setting correct */proc/sys/kernel/core_pattern*.
+your system by starting *abrtd*.
 
 For example, to run *dbus-api* test, you have to pass the whole path to *runtest.sh* to *runner.sh*::
 
         ./aux/runner.sh dbus-api/runtest.sh
 
-If you don't need to start/stop *abrtd* or reset *core_pattern* for each run 
+If you don't need to start/stop *abrtd* for each run
 (if it's already running in your system) you can also
 run the *runtest.sh* directly.
 

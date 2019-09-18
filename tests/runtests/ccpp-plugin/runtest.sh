@@ -128,8 +128,6 @@ EOF
         wait_for_hooks
         get_crash_path
 
-        rlRun "killall abrt-hook-ccpp" 1 "Kill hung abrt-hook-ccpp process"
-
         rlAssertExists "$crash_PATH/coredump"
         rlAssertExists "$crash_PATH/global_pid"
         rlAssertNotEquals "Global PID is sane" "_1" "_$(cat $crash_PATH/global_pid)"

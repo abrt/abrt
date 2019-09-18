@@ -157,8 +157,7 @@ rlJournalStart
 
         check_prior_crashes
 
-        systemctl start abrtd
-        systemctl start abrt-ccpp
+        rlServiceStart abrtd abrt-journal-core
 
         orig_editor=`echo $EDITOR`
         export EDITOR=cat

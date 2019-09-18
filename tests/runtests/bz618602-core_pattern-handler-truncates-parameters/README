@@ -1,7 +1,0 @@
-This test is checking whether /proc/sys/kernel/core_pattern is truncated
-by the kernel (when passed to the handler)
-when we use pattern which is long enough (but supported according to the documentation).
-
-core_pattern_pipe_test.c is single purpose "handler" which will save its arguments to
-core.info file, so we can check whether all of the parameters in core_pattern were
-passed to our "handler".

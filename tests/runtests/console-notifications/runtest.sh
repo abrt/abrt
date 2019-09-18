@@ -39,7 +39,7 @@ function abrtCreateNewProblem() {
     mkdir $DUMPDIR_PATH
 
     echo -n "CCpp" > $DUMPDIR_PATH/type
-    echo -n "abrt-ccpp" > $DUMPDIR_PATH/analyzer
+    echo -n "abrt-journal-core" > $DUMPDIR_PATH/analyzer
     echo -n "/usr/bin/will_segfault" > $DUMPDIR_PATH/executable
     echo -n $(date +%s.%N) > $DUMPDIR_PATH/uuid
     echo -n "will-crash" > $DUMPDIR_PATH/component
