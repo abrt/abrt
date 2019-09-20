@@ -206,8 +206,8 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "abrt remove $roots_problem_path" 0 "Remove roots crash directory"
-        rlRun "abrt remove $unprivilegeds_problem_path" 0 "Remove users crash directory"
+        rlRun "abrt remove -f $roots_problem_path" 0 "Remove roots crash directory"
+        rlRun "abrt remove -f $unprivilegeds_problem_path" 0 "Remove users crash directory"
     rlPhaseEnd
 
     rlPhaseStartSetup
