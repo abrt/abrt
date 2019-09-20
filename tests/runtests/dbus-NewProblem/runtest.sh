@@ -123,10 +123,10 @@ rlJournalStart
 
     rlPhaseStartCleanup
         rlRun "userdel -r -f abrtdbustest"
-        rlRun "abrt remove $problem_PATH1" 0 "Remove crash directory"
-        rlRun "abrt remove $problem_PATH2" 0 "Remove crash directory"
-        rlRun "abrt remove $problem_PATH3" 0 "Remove crash directory"
-        rlRun "abrt remove $problem_PATH4" 0 "Remove crash directory"
+        rlRun "abrt remove -f $problem_PATH1" 0 "Remove crash directory"
+        rlRun "abrt remove -f $problem_PATH2" 0 "Remove crash directory"
+        rlRun "abrt remove -f $problem_PATH3" 0 "Remove crash directory"
+        rlRun "abrt remove -f $problem_PATH4" 0 "Remove crash directory"
         rlBundleLogs abrt *.log
     rlPhaseEnd
     rlJournalPrintText

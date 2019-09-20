@@ -94,7 +94,7 @@ rlJournalStart
             wait_for_hooks
 
             problem_ID=$(echo $RES | sed -n 's/^.*\s\+string "\(\/var\/.*\/abrt\/libreport-.*\)"\s*$/\1/p')
-            rlRun "abrt remove $problem_ID"
+            rlRun "abrt remove -f $problem_ID"
         done
 
         rlLog "Non-root users is not allowed to create CCpp, Kerneloops, VMCore, Xorg"

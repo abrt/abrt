@@ -59,7 +59,7 @@ rlJournalStart
         rlAssertGrep "retrace.fedoraproject.org/faf/reports" ccpp_reported_to
         rlAssertGrep "bugzilla.redhat.com/show_bug.cgi" ccpp_reported_to
 
-        rlRun "abrt remove $crash_PATH"
+        remove_problem_directory
     rlPhaseEnd
 
     rlPhaseStartTest "python3"

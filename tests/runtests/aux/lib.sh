@@ -186,5 +186,5 @@ function wait_for_server() {
 }
 
 function remove_problem_directory() {
-    rlRun "abrt remove '$crash_PATH'" 0 "Remove problem directory $crash_PATH"
+    rlRun "abrt remove -f '$crash_PATH'" 0 "Remove problem directory $crash_PATH"
 }

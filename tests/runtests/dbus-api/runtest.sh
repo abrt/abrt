@@ -71,7 +71,7 @@ rlJournalStart
         rlAssertGrep "$crash2_PATH" dbus_second_reply.log
 
         remove_problem_directory
-        rlRun "abrt remove $crash2_PATH" 0 "Remove second crash directory"
+        rlRun "abrt remove -f $crash2_PATH" 0 "Remove second crash directory"
     rlPhaseEnd
 
     rlPhaseStartTest "FindProblemByElementInTimeRange"
