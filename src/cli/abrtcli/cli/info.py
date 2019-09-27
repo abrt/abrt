@@ -26,6 +26,8 @@ class Info(Command):
                                       n_latest=arguments.n_latest,
                                       not_reported=arguments.not_reported)
 
-        fmt = getattr(config, '{}_FMT'.format(arguments.pretty.upper()))
+        fmt = arguments.format
+        if not fmt:
+            fmt = getattr(config, '{}_FMT'.format(arguments.pretty.upper()))
 
         print(format_problems(problems, fmt=fmt))

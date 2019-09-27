@@ -26,8 +26,9 @@ class List(Command):
                                 n_latest=arguments.n_latest,
                                 not_reported=arguments.not_reported)
         if problems:
-            if not arguments.format:
-                arguments.format = getattr(config, '%s_FMT' % (arguments.pretty.upper()))
-            print(format_problems(problems, fmt=arguments.format))
+            fmt = arguments.format
+            if not fmt:
+                fmt = getattr(config, '%s_FMT' % (arguments.pretty.upper()))
+            print(format_problems(problems, fmt=fmt))
         else:
             print(_('No problems'))
