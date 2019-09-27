@@ -55,7 +55,7 @@ rlJournalStart
             rlDie "No crash dir generated, this shouldn't happen"
         fi
 
-        rlAssert0 "Problem UID is 0" "$(abrt info --fmt={uid_username} $problem_PATH1 | awk '{ print $1 }')"
+        rlAssert0 "Problem UID is 0" "$(abrt info --format={uid_username} $problem_PATH1 | awk '{ print $1 }')"
 
         prepare
 
@@ -70,12 +70,12 @@ rlJournalStart
 
         rlRun "abrt info $problem_ID2" 0 "Problem data recorded"
 
-        problem_PATH2="$(abrt info --fmt={path} $problem_ID2)"
+        problem_PATH2="$(abrt info --format={path} $problem_ID2)"
         if [ ! -d "$problem_PATH2" ]; then
             rlDie "No crash dir generated, this shouldn't happen"
         fi
 
-        problem_UID2="$(abrt info --fmt={uid_username} $problem_ID2 | awk '{ print $1 }')"
+        problem_UID2="$(abrt info --format={uid_username} $problem_ID2 | awk '{ print $1 }')"
         rlAssertEquals "Problem uid equals to the passed uid" "$TEST_UID" "$problem_UID2"
 
         prepare
@@ -91,12 +91,12 @@ rlJournalStart
 
         rlRun "abrt info $problem_ID3" 0 "Problem data recorded"
 
-        problem_PATH3="$(abrt info --fmt={path} $problem_ID3)"
+        problem_PATH3="$(abrt info --format={path} $problem_ID3)"
         if [ ! -d "$problem_PATH3" ]; then
             rlDie "No crash dir generated, this shouldn't happen"
         fi
 
-        problem_UID3="$(abrt info --fmt={uid_username} $problem_ID3 | awk '{ print $1 }')"
+        problem_UID3="$(abrt info --format={uid_username} $problem_ID3 | awk '{ print $1 }')"
         rlAssertEquals "Problem uid equals to caller's uid" "$TEST_UID" "$problem_UID3"
 
         prepare
@@ -112,12 +112,12 @@ rlJournalStart
 
         rlRun "abrt info $problem_ID4" 0 "Problem data recorded"
 
-        problem_PATH4="$(abrt info --fmt={path} $problem_ID4)"
+        problem_PATH4="$(abrt info --format={path} $problem_ID4)"
         if [ ! -d "$problem_PATH4" ]; then
             rlDie "No crash dir generated, this shouldn't happen"
         fi
 
-        problem_UID4="$(abrt info --fmt={uid_username} $problem_ID4 | awk '{ print $1 }')"
+        problem_UID4="$(abrt info --format={uid_username} $problem_ID4 | awk '{ print $1 }')"
         rlAssertEquals "Passed uid is replaced by caller's uid" "$TEST_UID" "$problem_UID4"
     rlPhaseEnd
 

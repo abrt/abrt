@@ -59,7 +59,7 @@ rlJournalStart
         wait_for_hooks
 
         rlAssertGreater "Second crash recorded" $(abrt status --bare) 0
-        crash2_PATH="$(abrt list --fmt={path} | grep -v "$crash_PATH" | tail -n1)"
+        crash2_PATH="$(abrt list --format={path} | grep -v "$crash_PATH" | tail -n1)"
         if [ ! -d "$crash2_PATH" ]; then
             rlDie "No crash dir generated for second crash, this shouldn't happen"
         fi

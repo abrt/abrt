@@ -68,8 +68,8 @@ rlJournalStart
         wait_for_sosreport
         sleep 2
 
-        rlRun "abrt list --fmt={executable} | grep strace" 1 "No strace in abrt output"
-        rlRun "abrt list --fmt={executable} | grep sleep" 1 "No sleep in abrt output"
+        rlRun "abrt list --format={executable} | grep strace" 1 "No strace in abrt output"
+        rlRun "abrt list --format={executable} | grep sleep" 1 "No sleep in abrt output"
     rlPhaseEnd
 
     rlPhaseStartCleanup

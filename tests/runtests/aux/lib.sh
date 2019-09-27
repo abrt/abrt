@@ -37,7 +37,7 @@ function check_dump_dir_attributes_vmcore_rhel() {
 function get_crash_path() {
     rlLog "Get crash path"
     rlAssertGreater "Crash recorded" $(abrt status --bare) 0
-    crash_PATH="$(abrt info --fmt={path} 2> /dev/null)"
+    crash_PATH="$(abrt info --format={path} 2> /dev/null)"
     if [ ! -d "$crash_PATH" ]; then
         echo "Dump location listing:"
         ls -l $ABRT_CONF_DUMP_LOCATION
