@@ -66,7 +66,7 @@ class Command:
                            help=_('filter problems with matching executable'))
 
     def add_format_arguments(self, default_pretty='full'):
-        group = self._parser.add_argument_group()
+        group = self._parser.add_mutually_exclusive_group()
 
         group.add_argument('--format', type=str, help=_('output format'))
         group.add_argument('--pretty', type=str, choices=config.FORMATS,
