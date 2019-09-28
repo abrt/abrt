@@ -57,7 +57,7 @@ rlJournalStart
         get_crash_path
 
         rlRun "abrt status > status1.log"
-        rlAssertGrep "ABRT has detected '\?1'\? problem(s)." status1.log
+        rlAssertGrep "ABRT has detected a problem." status1.log
 
         sleep 3 #just to make sure that SINCE > time of the previous crash
         SINCE=$(date +%s)
@@ -72,10 +72,10 @@ rlJournalStart
         get_crash_path
 
         rlRun "abrt status > status2.log"
-        rlAssertGrep "ABRT has detected '\?2'\? problem(s)." status2.log
+        rlAssertGrep "ABRT has detected '\?2'\? problems." status2.log
 
         rlRun "abrt status --since=$SINCE > status3.log"
-        rlAssertGrep "ABRT has detected '\?1'\? problem(s)." status3.log
+        rlAssertGrep "ABRT has detected a problem." status3.log
 
     rlPhaseEnd
 
