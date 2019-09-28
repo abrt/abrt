@@ -63,7 +63,9 @@ if [ $1 ]; then
         rpm -q $PACKAGES
     fi
 
-    rlServiceStart abrtd abrt-journal-core abrt-oops
+    systemctl start abrtd
+    systemctl start abrt-journal-core
+    systemctl start abrt-oops
 
     # test delay
     if [ "${DELAY+set}" = "set" ]; then
