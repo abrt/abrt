@@ -87,7 +87,7 @@ EOF
     rlPhaseEnd
 
     rlPhaseStartTest "remove"
-        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt -a -f remove $crash_PATH 2>&1 | tee auth-remove.log"
+        rlRun "sudo -u abrt-unprivileged /tmp/expect abrt -a remove -f $crash_PATH 2>&1 | tee auth-remove.log"
         rlAssertNotExists $crash_PATH
     rlPhaseEnd
 
