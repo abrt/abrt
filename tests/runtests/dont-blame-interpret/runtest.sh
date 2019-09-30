@@ -40,7 +40,7 @@ rlJournalStart
         TmpDir=$(mktemp -d)
         pushd $TmpDir
 
-        generate_python_segfault
+        generate_python3_segfault
         wait_for_hooks
         get_crash_path
 

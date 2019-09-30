@@ -106,14 +106,9 @@ function generate_stack_overflow_crash() {
     su -c will_stackoverflow $1
 }
 
-function generate_python_segfault() {
+function generate_python3_segfault() {
     rlLog "Generate python segfault"
-    su -c will_python_sigsegv $1
-}
-
-function generate_python_exception() {
-    rlLog "Generate unhandled python exception"
-    su -c will_python_raise $1
+    su -c will_python3_sigsegv $1
 }
 
 function generate_python3_exception() {
