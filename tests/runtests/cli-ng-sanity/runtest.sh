@@ -68,7 +68,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "status"
-        rlRun "abrt status | grep 'has detected 1 problem'"
+        rlRun "abrt status | grep 'has detected a problem'"
     rlPhaseEnd
 
     rlPhaseStartTest "report NONEXISTENT"
