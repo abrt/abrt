@@ -1013,6 +1013,38 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Fri Oct 11 2019 Matěj Grabovský <mgrabovs@redhat.com> 2.13.0-1
+- cli: Use format argument in info command
+- cli: Make pretty and format mutually exclusive
+- cli: Set PYTHONPATH for tests
+- cli: Rework commands
+- Remove abrt-hook-ccpp
+- spec: Use macros where appropriate
+- tests: Use Augeas consistently
+- spec: Move config files to corresponding subpackages
+- build,spec: Empty config files in /etc/abrt/
+- doc: Update man pages and comments in config files
+- plugins: Update in-code defaults
+- doc: Correct alignment of heading underlines
+- a-dump-journal-core: Purge commented code
+- dbus: Remove D-Bus configuration service
+- Partly revert removal of default configs
+- cli: Tweak problem matching
+- plugins: Add satyr flags when building
+- cli: Fix warning
+- cli: Fix file name
+- cli: Use decorator for MATCH positional argument
+- cli: match: Iterate dict instead of calling keys()
+- cli: Make pylint happier about imports
+- cli: Drop unused variables
+- cli: utils: Use consistent return
+- cli: Improve i18n
+- cli: Drop humanize import
+- Drop uses of bind_textdomain_codeset()
+- gitignore: Update path to generated file after cli-ng move
+- tests: runner: Use systemctl instead of service
+- autogen.sh: Use autoreconf
+
 * Thu Aug 01 2019 Ernestas Kulik <ekulik@redhat.com> 2.12.2-1
 - Remove old CLI and move cli-ng subpackage files into tui subpackage
 

@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.13.0]
+### Removed
+- abrt-hook-ccpp was removed in favour of systemd-coredump which has been in its place since Fedora 26
+- The abrt-configuration D-Bus configuration service was removed
+
+### Changed
+- Config files in /etc/abrt emptied by default
+- Man pages for config files updated
+- Some config files moved between subpackages
+- CLI improvements
+
 ## [2.12.2]
 ### Changed
 - abrt-cli was removed in favor of abrt-cli-ng
@@ -192,7 +203,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.12.2...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.13.0...HEAD
+[2.13.0]: https://github.com/abrt/abrt/compare/2.12.2...2.13.0
 [2.12.2]: https://github.com/abrt/abrt/compare/2.12.1...2.12.2
 [2.12.1]: https://github.com/abrt/abrt/compare/2.12.0...2.12.1
 [2.12.0]: https://github.com/abrt/abrt/compare/2.11.1...2.12.0
