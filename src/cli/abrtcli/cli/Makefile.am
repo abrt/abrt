@@ -10,4 +10,4 @@ abrtclicommands_PYTHON = \
 	retrace.py \
 	status.py
 
-abrtclicommandsdir = $(pyexecdir)/abrtcli/cli
+abrtclicommandsdir = $(pythondir)/abrtcli/cli
