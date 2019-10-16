@@ -35,7 +35,7 @@ EXTRA_DIST = \
 ALL_DEPENDENCES =
 
 if BUILD_PYTHON3
-py3hookdir = $(pyexecdir)
+py3hookdir = $(pythondir)
 dist_pluginsconf_DATA += python3.conf
 ALL_DEPENDENCES += abrt_exception_handler3.py
 

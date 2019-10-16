@@ -935,14 +935,14 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_journalcatalogdir}/python3_abrt.catalog
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_python3_format.conf
 %{_mandir}/man5/python3_event.conf.5*
-%{python3_sitearch}/abrt3.pth
-%{python3_sitearch}/abrt_exception_handler3.py
-%{python3_sitearch}/__pycache__/abrt_exception_handler3.*
+%{python3_sitelib}/abrt3.pth
+%{python3_sitelib}/abrt_exception_handler3.py
+%{python3_sitelib}/__pycache__/abrt_exception_handler3.*
 
 %files -n python3-abrt-container-addon
-%{python3_sitearch}/abrt3_container.pth
-%{python3_sitearch}/abrt_exception_handler3_container.py
-%{python3_sitearch}/__pycache__/abrt_exception_handler3_container.*
+%{python3_sitelib}/abrt3_container.pth
+%{python3_sitelib}/abrt_exception_handler3_container.py
+%{python3_sitelib}/__pycache__/abrt_exception_handler3_container.*
 %endif # with python3
 
 %files plugin-sosreport
@@ -959,7 +959,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/bash_completion.d/abrt.bash_completion
 %{_bindir}/abrt
 %{_bindir}/abrt-cli
-%{python3_sitearch}/abrtcli/
+%{python3_sitelib}/abrtcli/
 %{_mandir}/man1/abrt.1*
 %{_mandir}/man1/abrt-cli.1*
 %endif # with python3
