@@ -15,7 +15,7 @@ zanata pull || exit 1
 ERR=false
 for pof in `ls -1 po/*.po`
 do
-    msgfmt --check-format $pof || {
+    msgfmt --check-format "$pof" || {
         ERR=true
     }
 done
@@ -26,9 +26,9 @@ fi
 
 for pof in `cd po && ls *.po`;
 do
-    echo $pof | cut -f1 -d.
-    if ! git ls-files po/$pof --error-unmatch >/dev/null 2>&1; then
-        git add po/$pof >/dev/null 2>&1 || {
+    echo "$pof" | cut -f1 -d.
+    if ! git ls-files po/"$pof" --error-unmatch >/dev/null 2>&1; then
+        git add po/"$pof" >/dev/null 2>&1 || {
             echo "Failed to 'git add po/$pof'"
             exit 1
         }
