@@ -1,4 +1,6 @@
 #!/usr/bin/bash
+shopt -s nullglob
+
 if [ ! -d po ]; then
     echo "Run this script in the top source directory"
     exit 1
@@ -12,8 +14,10 @@ fi
 
 zanata pull || exit 1
 
+pushd po || exit 1
+
 ERR=false
-for pof in `ls -1 po/*.po`
+for pof in *.po
 do
     msgfmt --check-format "$pof" || {
         ERR=true
@@ -24,16 +28,18 @@ if $ERR; then
     exit 1
 fi
 
-for pof in `cd po && ls *.po`;
+for pof in *.po;
 do
-    echo "$pof" | cut -f1 -d.
-    if ! git ls-files po/"$pof" --error-unmatch >/dev/null 2>&1; then
-        git add po/"$pof" >/dev/null 2>&1 || {
-            echo "Failed to 'git add po/$pof'"
+    echo "${pof%.*}"
+    if ! git ls-files "$pof" --error-unmatch >/dev/null 2>&1; then
+        git add "$pof" >/dev/null 2>&1 || {
+            echo "Failed to 'git add $pof'"
             exit 1
         }
     fi
-done | sort > po/LINGUAS
+done | sort > LINGUAS
+
+popd || exit 1
 
 NEW_LINGUAS=$(git status -s --porcelain | grep "^A" | awk -F[/.] '{print $2}' | tr "\n" " " | sed 's/\(.*\) /\1/')
 if [ -n "$NEW_LINGUAS" ]; then
