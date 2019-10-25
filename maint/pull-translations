@@ -10,7 +10,7 @@ if [ -n "$(git diff-index --name-only HEAD --)" ]; then
     exit 1
 fi
 
-zanata-cli pull -B || exit 1
+zanata pull || exit 1
 
 ERR=false
 for pof in `ls -1 po/*.po`
