@@ -12,7 +12,14 @@ if [ -n "$(git diff-index --name-only HEAD --)" ]; then
     exit 1
 fi
 
-zanata pull || exit 1
+if command -v zanata; then
+    zanata pull || exit 1
+else
+    echo -e "'zanata' command not found." \
+            "You can install it with:\n" \
+            "dnf install /usr/bin/zanata"
+    exit 1
+fi
 
 pushd po || exit 1
 
