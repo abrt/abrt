@@ -15,8 +15,7 @@ if __name__ == '__main__':
 
     parser.add_argument('-a', '--authenticate',
                         action='store_true',
-                        help=_('authenticate and show all problems'
-                               ' on this machine'))
+                        help=_('authenticate COMMAND for access to all problems'))
     parser.add_argument('-v', '--version',
                         action='version',
                         version=config.VERSION)
