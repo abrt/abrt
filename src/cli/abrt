@@ -37,7 +37,10 @@ if __name__ == '__main__':
             arguments.extend('*')
             namespace = parser.parse_args(args=arguments)
 
-        namespace.func(namespace)
+        if "func" in namespace:
+            namespace.func(namespace)
+        else:
+            parser.print_usage()
     except KeyboardInterrupt:
         sys.exit(1)
 
