@@ -423,8 +423,8 @@ AC_CONFIG_FILES([
 	apidoc/Makefile
 	apidoc/Doxyfile
 	apidoc/html/Makefile
-    data/Makefile
-    data/augeas/Makefile
+	data/Makefile
+	data/augeas/Makefile
 	doc/Makefile
 	doc/problems-service/Makefile
 	src/include/Makefile
