@@ -221,8 +221,6 @@ AC_ARG_WITH([support-url],
 
 AC_SUBST(SUPPORT_URL)
 
-AC_SUBST([AUGEAS_LENS_LIB_DIR], [$with_augeaslenslibdir])
-
 AC_PATH_PROG(AUGPARSE, augparse, no)
 [if test "$AUGPARSE" = "no"]
 [then]
@@ -425,6 +423,8 @@ AC_CONFIG_FILES([
 	apidoc/Makefile
 	apidoc/Doxyfile
 	apidoc/html/Makefile
+    data/Makefile
+    data/augeas/Makefile
 	doc/Makefile
 	doc/problems-service/Makefile
 	src/include/Makefile

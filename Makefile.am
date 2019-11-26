@@ -1,20 +1,13 @@
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = src doc po icons tests apidoc
+SUBDIRS = data src doc po icons tests apidoc
 
 EXTRA_DIST = doc/coding-style abrt.spec.in abrt.pc.in \
-	abrt-version asciidoc.conf init-scripts/* \
-	augeas/test_abrt.aug
+	abrt-version asciidoc.conf init-scripts/*
 
 dist_doc_DATA = README.md
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = abrt.pc
-
-augeasdir = $(AUGEAS_LENS_LIB_DIR)
-dist_augeas_DATA = augeas/abrt.aug
-
-check-local:
-	$(AUGPARSE) -I $(top_builddir)/augeas $(top_builddir)/augeas/test_abrt.aug
 
 systemdsystemunitdir = $(prefix)/lib/systemd/system
 dist_systemdsystemunit_DATA = init-scripts/abrtd.service \
