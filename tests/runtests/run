@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pushd $( cd "$(dirname $0)" && pwd ) > /dev/null
+pushd "$(dirname "$0")" > /dev/null
 
 . 'aux/config.sh'
 if [ -f 'aux/config.sh.local' ]; then
