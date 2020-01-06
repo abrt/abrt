@@ -103,6 +103,7 @@ rlJournalStart
 
         first_crash_PATH="$crash_PATH"
 
+        prepare
         generate_stack_overflow_crash
         wait_for_hooks
         get_crash_path
