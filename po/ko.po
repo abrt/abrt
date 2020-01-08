@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # bardisch <kwb0128@gmail.com>, 2011
 # eukim <eukim@redhat.com>, 2013
@@ -15,14 +15,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2016-07-14 09:45+0200\n"
+"PO-Revision-Date: 2015-07-30 11:38+0000\n"
+"Last-Translator: MinWoo Joh <igtzhsou@naver.com>\n"
+"Language-Team: Korean (http://www.transifex.com/projects/p/fedora-abrt/language/ko/)\n"
+"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-07-30 11:38+0000\n"
-"Last-Translator: MinWoo Joh <igtzhsou@naver.com>\n"
-"Language-Team: Korean (http://www.transifex.com/projects/p/fedora-abrt/"
-"language/ko/)\n"
-"Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Zanata 4.6.2\n"
 
@@ -71,8 +70,8 @@ msgstr "죄송합니다. %s 가 충돌했습니다. 문제는 자동으로 보�
 #: ../src/applet/applet.c:699
 #, c-format
 msgid ""
-"We’re sorry, it looks like %s crashed. The problem will be reported when the "
-"internet is available."
+"We’re sorry, it looks like %s crashed. The problem will be reported when the"
+" internet is available."
 msgstr "죄송합니다. %s 가 충돌했습니다. 인터넷 연결이 활성화되면 문제는 자동으로 보고됩니다."
 
 #: ../src/applet/applet.c:705 ../src/applet/applet.c:719
@@ -104,8 +103,8 @@ msgstr "죄송합니다. 내부 구성에 문제가 발생하였습니다. 인�
 
 #: ../src/applet/applet.c:741
 msgid ""
-"We're sorry, it looks like a problem occurred. If you'd like to help resolve "
-"the issue, please send a report."
+"We're sorry, it looks like a problem occurred. If you'd like to help resolve"
+" the issue, please send a report."
 msgstr "죄송합니다. 문제가 발생했습니다. 문제 보고서를 전송하시면, 문제 해결에 도움이 됩니다."
 
 #: ../src/applet/applet.c:786
@@ -134,14 +133,15 @@ msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
-msgstr "& [-v] [DIR]...\n"
+msgstr ""
+"& [-v] [DIR]...\n"
 "\n"
 "ABRT가 새로운 문제를 감지할 경우 사용자에게 통지하는 애플릿\n"
 
 #: ../src/configuration-gui/abrt-config-widget.c:483
 msgid ""
-"The configuration option above has been moved to GSettings and the switch is "
-"linked to the value of the setting 'report-technical-problems' from the "
+"The configuration option above has been moved to GSettings and the switch is"
+" linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
 
@@ -172,11 +172,11 @@ msgstr "자동 단축형 보고서 "
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
-"space consuming operation. ABRT provides a service which generates the stack "
-"trace from the coredump but you have to upload the coredump to this service. "
-"With option 'Always' ABRT will always upload the coredump without asking. "
-"With option 'Never' the stack trace will be always generated locally. With "
-"option 'Ask' ABRT will always ask the user."
+"space consuming operation. ABRT provides a service which generates the stack"
+" trace from the coredump but you have to upload the coredump to this "
+"service. With option 'Always' ABRT will always upload the coredump without "
+"asking. With option 'Never' the stack trace will be always generated "
+"locally. With option 'Ask' ABRT will always ask the user."
 msgstr ""
 
 # translation auto-copied from project abrt, version rhel7, document abrt
@@ -194,9 +194,9 @@ msgstr ""
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
-"uses uReports  for fast global duplicate detection. In default configuration "
-"uReport is sent at beginning of reporting process. With this option enabled "
-"uReports are sent automatically immediately after problem detection."
+"uses uReports  for fast global duplicate detection. In default configuration"
+" uReport is sent at beginning of reporting process. With this option enabled"
+" uReports are sent automatically immediately after problem detection."
 msgstr ""
 "uReport는 간결하게 익명으로 문제를 설명하는 것입니다. ABRT는 uReport를 사용하여 전체 중복을 신속하게 감지합니다. 기본 "
 "설정에서 uReport는 보고 절차 시작에 전송됩니다. 이 옵션을 사용하면 문제가 감지된 후 바로 uReport가 자동으로 전송됩니다. "
@@ -204,8 +204,8 @@ msgstr ""
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
-"With this option enabled reporting process started by click on Report button "
-"in problem notification bubble will be interrupted after uReport is sent. "
+"With this option enabled reporting process started by click on Report button"
+" in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
 "이 옵션을 사용하면 문제 알림 팝업에 있는 보고서 버튼을 클릭하여 시작된 보고 절차가 uReport 전송 후 중단됩니다. 기본값 문제 "
@@ -322,10 +322,12 @@ msgid "Use this directory as RPM root"
 msgstr "이 디렉토리를 RPM Root로 사용합니다."
 
 #: ../src/daemon/abrt-action-save-container-data.c:254
-msgid "& [-v] -d DIR\n"
+msgid ""
+"& [-v] -d DIR\n"
 "\n"
 "Save container metadata"
-msgstr "& [-v] -d DIR\n"
+msgstr ""
+"& [-v] -d DIR\n"
 "\n"
 "저장소의 메타데이터를 저장합니다."
 
@@ -423,14 +425,14 @@ msgstr "이 프로그램은 root로 실행해야 합니다."
 #: ../src/daemon/abrtd.c:389
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
-"detected while computer is shutting down or user is logging out. In order to "
-"provide valuable problem reports, ABRT will not allow you to submit this "
-"problem. If you have time and want to help the developers in their effort to "
-"sort out this problem, please contact them directly."
+"detected while computer is shutting down or user is logging out. In order to"
+" provide valuable problem reports, ABRT will not allow you to submit this "
+"problem. If you have time and want to help the developers in their effort to"
+" sort out this problem, please contact them directly."
 msgstr ""
 "문제 데이터가 완료되지 않습니다. 이는 일반적으로 컴퓨터가 종료 중이거나 사용자가 로그 아웃 중에 문제가 감지될 때 발생합니다. 보다 "
-"정확하게 문제를 보고하기 위해 ABRT는 이 문제를 전송하는 것을 허용하지 않습니다. 시간이 허락하여 이 문제를 해결하기 위해 개발자에게 "
-"도움을 주려면 개발자에게 직접 연락을 취하십시오."
+"정확하게 문제를 보고하기 위해 ABRT는 이 문제를 전송하는 것을 허용하지 않습니다. 시간이 허락하여 이 문제를 해결하기 위해 개발자에게"
+" 도움을 주려면 개발자에게 직접 연락을 취하십시오."
 
 #: ../src/daemon/abrtd.c:457
 msgid "Do not daemonize"
@@ -763,7 +765,8 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
-msgstr "& [-v] -d DIR\n"
+msgstr ""
+"& [-v] -d DIR\n"
 "\n"
 "문제 디렉토리 DIR에 있는 코어 덤프의 UUID를 계산 및 저장합니다 "
 
@@ -795,7 +798,8 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
-msgstr "& [-v] -d DIR\n"
+msgstr ""
+"& [-v] -d DIR\n"
 "\n"
 "oops 문제 디렉토리 DIR의 UUID와 DUPHASH를 계산 및 저장합니다 "
 
@@ -812,7 +816,8 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
-msgstr "& [-v] -d DIR\n"
+msgstr ""
+"& [-v] -d DIR\n"
 "\n"
 "xorg 문제 디렉토리 DIR의 UUID와 DUPHASH를 계산 및 저장합니다 "
 
@@ -844,9 +849,11 @@ msgstr "코어에서 oops 텍스트를 추출합니다 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
-msgid "Can't process {0}:\n"
+msgid ""
+"Can't process {0}:\n"
 "{1}"
-msgstr "{0}을(를) 처리할 수 없습니다:\n"
+msgstr ""
+"{0}을(를) 처리할 수 없습니다:\n"
 "{1}"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
@@ -864,7 +871,8 @@ msgstr "Oops 텍스트가 성공적으로 추출되었습니다 "
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
-msgstr "커널 로그에 하드웨어 관련 오류가 발견된 것으로 표시됩니다.\n"
+msgstr ""
+"커널 로그에 하드웨어 관련 오류가 발견된 것으로 표시됩니다.\n"
 "이는 소프트웨어 문제는 아닌것 같습니다.\n"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:88
@@ -904,7 +912,8 @@ msgid ""
 "& [options] -d DIR\n"
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
-msgstr "& [options] -d DIR\n"
+msgstr ""
+"& [options] -d DIR\n"
 "\n"
 "문제 디렉토리 DIR에 있는 코어덤프를 분석, 백트레이스를 생성 및 저장합니다 "
 
@@ -930,7 +939,8 @@ msgid ""
 "& [-v] [-r] -d DIR\n"
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
-msgstr "& [-v] [-r] -d DIR\n"
+msgstr ""
+"& [-v] [-r] -d DIR\n"
 "\n"
 "코어 덤프 및 해당 바이너리에서 코어덤프급 백트레이스를 생성합니다"
 
@@ -938,8 +948,8 @@ msgstr "& [-v] [-r] -d DIR\n"
 msgid "Do not hash fingerprints"
 msgstr "지문을 해시하지 않음"
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #. Let user know what's going on
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
 msgid "Generating core_backtrace"
 msgstr "core_backtrace 생성  중"
@@ -963,8 +973,7 @@ msgstr "사용자 명령을 종료합니다 "
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
-"[--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH]...]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
@@ -976,10 +985,8 @@ msgid ""
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
 "    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
-"RANDOM_SUFFIX\n"
-"    --cache     Colon separated list of directories. The first one is used "
-"for\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     Colon separated list of directories. The first one is used for\n"
 "                saving installed debuginfos.\n"
 "                Default: /var/cache/abrt-dir\n"
 "    --size_mb   Default: 4096\n"
@@ -1070,8 +1077,7 @@ msgstr ""
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
-"SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
@@ -1300,7 +1306,8 @@ msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
-msgstr "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
+msgstr ""
+"& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "FILE (또는 표준 입력)에서 oops를 추출합니다"
 
@@ -1519,8 +1526,7 @@ msgid ""
 "\n"
 "The last seen position is saved in %s\n"
 "\n"
-"Journal filter is required parameter and must be specified either by "
-"parameter\n"
+"Journal filter is required parameter and must be specified either by parameter\n"
 "-j or in %s conf file.\n"
 msgstr ""
 
@@ -1538,8 +1544,8 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:265
 msgid ""
-"Journal filter must be specified either by parameter -j or stored in /etc/"
-"abrt/plugins/xorg.conf file"
+"Journal filter must be specified either by parameter -j or stored in "
+"/etc/abrt/plugins/xorg.conf file"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:282
@@ -1551,7 +1557,8 @@ msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
-msgstr "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+msgstr ""
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "FILE (또는 표준 입력)에서 Xorg 크래시를 추출합니다"
 
@@ -1621,10 +1628,10 @@ msgid ""
 "retracing."
 msgstr "크래시가 너무 크기때문에 Retrace 서버를 사용할 수 없습니다. 로컬 Retracing을 시도해 보십시오  "
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
 #. 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-retrace-client.c:103
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
@@ -1653,9 +1660,11 @@ msgstr "%d 길이의 HTTP 헤더 전송 실패: NSS 오류 %d"
 #: ../src/plugins/abrt-retrace-client.c:1011
 #: ../src/plugins/abrt-retrace-client.c:1070
 #, c-format
-msgid "Unexpected HTTP response from server: %d\n"
+msgid ""
+"Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr "서버로 부터 예상치 못한 HTTP 응답: %d\n"
+msgstr ""
+"서버로 부터 예상치 못한 HTTP 응답: %d\n"
 "%s "
 
 #: ../src/plugins/abrt-retrace-client.c:232
@@ -1673,7 +1682,8 @@ msgstr "서버로 부터 잘못된 응답: HTTP 메세지 내용이 없음. "
 msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official '%s' repositories?"
-msgstr "Retrace 서버는 패키지 '%s.%s'를 처리할 수 없습니다.\n"
+msgstr ""
+"Retrace 서버는 패키지 '%s.%s'를 처리할 수 없습니다.\n"
 "이는 공식적인 '%s' 리포지터리입니까?"
 
 #: ../src/plugins/abrt-retrace-client.c:444
@@ -1725,8 +1735,8 @@ msgstr "업로드할 아카이브 준비  "
 #: ../src/plugins/abrt-retrace-client.c:628
 #, c-format
 msgid ""
-"The size of your archive is %s, but the retrace server only accepts archives "
-"smaller or equal to %s."
+"The size of your archive is %s, but the retrace server only accepts archives"
+" smaller or equal to %s."
 msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:640
@@ -1787,9 +1797,11 @@ msgstr "Retrace 작업 시작 "
 
 #: ../src/plugins/abrt-retrace-client.c:808
 #, c-format
-msgid "Task Id: %s\n"
+msgid ""
+"Task Id: %s\n"
 "Task Password: %s\n"
-msgstr "작업 Id: %s\n"
+msgstr ""
+"작업 Id: %s\n"
 "작업 암호: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:866
@@ -1798,9 +1810,11 @@ msgstr "서버로 부터의 잘못된 응답: X-Task-Status가 없음. "
 
 #: ../src/plugins/abrt-retrace-client.c:878
 #, c-format
-msgid "Task Status: %s\n"
+msgid ""
+"Task Status: %s\n"
 "%s\n"
-msgstr "작업 상태: %s\n"
+msgstr ""
+"작업 상태: %s\n"
 "%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:909
@@ -1919,8 +1933,8 @@ msgstr "debuginfo 패키지를 다운로드하고 GDB를 사용하여 로컬 백
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
 "debuginfo 패키지를 다운로드해야 합니다. 이는 많은 시간이 소요되며 많은 디스크 공간을 차지합니다. 하지만 "
 "RetraceServer와 달리 원격 컴퓨터에 코어 덤프를 전송하지 않습니다.   "
@@ -1931,11 +1945,11 @@ msgstr "분석을 위해 코어 덤프를 원격 Retrace 서버로 전송 "
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. Pros:"
-" no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump "
-"you upload contains all the data from the crashed program, including your "
-"private data, if any."
+"Uploads coredump to a server, which generates backtrace and returns it. "
+"Pros: no need for debuginfo downloads. Retrace server's database of "
+"debuginfos is more complete. Retrace server may generate better backtraces. "
+"Cons: coredump you upload contains all the data from the crashed program, "
+"including your private data, if any."
 msgstr ""
 "코어 덤프를 서버에 업로드하려면 백트레이스를 생성하고 이를 반환합니다. 장점: debuginfo를 다운로드할 필요가 없습니다. "
 "Retrace 서버의 debuginfo 데이터베이스는 보다 완벽합니다. Retrace 서버는 보다 나은 백트레이스를 생성합니다. 단점: "
@@ -1959,12 +1973,13 @@ msgstr "비보안 연결을 사용할 지에 대한 여부 "
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
-"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
-"&gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a "
+"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
+" &gt;(warning)&lt;/a&gt;"
 msgstr ""
-"비보안 연결을 허용하기 위해 \"insecure\"라고 씁니다 &lt;a href=\"https://fedorahosted.org/"
-"abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;(warning)&lt;/a&gt;"
+"비보안 연결을 허용하기 위해 \"insecure\"라고 씁니다 &lt;a "
+"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
+" &gt;(warning)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
@@ -2193,8 +2208,8 @@ msgstr "패키지의 로컬 버전은 사용 가능한 업데이트 보다 새�
 #: ../src/plugins/bodhi.c:594
 #, c-format
 msgid ""
-"An update exists which might fix your problem. You can install it by running:"
-" %s. Do you want to continue with reporting the bug?"
+"An update exists which might fix your problem. You can install it by "
+"running: %s. Do you want to continue with reporting the bug?"
 msgstr ""
 "문제를 해결할 수 있는 업데이트가 존재합니다. 다음을 실행하여 이를 설치할 수 있습니다: %s. 버그 보고를 계속 진행하시겠습니까?"
 
@@ -2289,8 +2304,7 @@ msgstr "지정된 타임 스탬프보다 오래된 문제만 나열합니다 "
 #: ../src/cli/list.c:166
 #, c-format
 msgid ""
-"The Autoreporting feature is disabled. Please consider enabling it by "
-"issuing\n"
+"The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
 msgstr ""
 "자동보고 기능은 비활성화되어 있습니다. root 권한을 가진 사용자로\n"
@@ -2374,8 +2388,8 @@ msgstr "동작: 삭제(rm), 보고 (e), 정보(i), 생략(s):"
 msgid "Reporting '%s'"
 msgstr "'%s' 보고 중 "
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #. dummy must be free because the function ask allocate memory
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/process.c:127
 msgid "For next problem press ENTER:"
 msgstr "다음 문제로 이동하려면 ENTER를 누릅니다: "
@@ -2557,8 +2571,8 @@ msgid ""
 "user doesn't want to upload his coredump to anywhere the event performs "
 "local analysis. Local analysis is run event if remote analysis fails. Pros: "
 "no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump "
-"you upload contains all the data from the crashed program, including your "
+"more complete. Retrace server may generate better backtraces. Cons: coredump"
+" you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
 
@@ -2606,8 +2620,8 @@ msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
 msgstr ""
-"/etc에 vimrc 및 gvimrc 파일이 있는지 확인하고 이를 각각 system_vimrc 및 system_gvimrc로 저장합니다. "
-""
+"/etc에 vimrc 및 gvimrc 파일이 있는지 확인하고 이를 각각 system_vimrc 및 system_gvimrc로 저장합니다."
+" "
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid "Collect yours vim configuration files"
@@ -2619,8 +2633,8 @@ msgstr "홈 디렉토리에서 .vimrc 및 .gvimrc를 저장합니다 "
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
-"as user_vimrc and user_gvimrc, respectively."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
+" as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 "홈 디렉토리에 .vimrc 및 .gvimrc가 있는지 확인하고 이를 각각 user_vimrc 및 user_gvimrc로 저장합니다. "
 

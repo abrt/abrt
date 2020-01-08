@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Cheng-Chia Tseng <pswo10680@gmail.com>, 2011-2012
 # Chester Cheng <ccheng@redhat.com>, 2012
@@ -17,14 +17,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2016-07-14 09:45+0200\n"
+"PO-Revision-Date: 2017-09-05 03:02+0000\n"
+"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
+"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/fedora-abrt/language/zh_TW/)\n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-09-05 03:02+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/fedora-"
-"abrt/language/zh_TW/)\n"
-"Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Zanata 4.6.2\n"
 
@@ -73,8 +72,8 @@ msgstr "我們很抱歉，%s 似乎崩潰了。此問題已經自動回報。"
 #: ../src/applet/applet.c:699
 #, c-format
 msgid ""
-"We’re sorry, it looks like %s crashed. The problem will be reported when the "
-"internet is available."
+"We’re sorry, it looks like %s crashed. The problem will be reported when the"
+" internet is available."
 msgstr "我們很抱歉，%s 似乎崩潰了。此問題會在網際網路可用時回報。"
 
 #: ../src/applet/applet.c:705 ../src/applet/applet.c:719
@@ -106,8 +105,8 @@ msgstr "我們很抱歉，似乎有個組件遭遇問題。此問題會在網際
 
 #: ../src/applet/applet.c:741
 msgid ""
-"We're sorry, it looks like a problem occurred. If you'd like to help resolve "
-"the issue, please send a report."
+"We're sorry, it looks like a problem occurred. If you'd like to help resolve"
+" the issue, please send a report."
 msgstr "我們很抱歉，似乎遭遇某個問題。若您想要協助解決這個議題，請傳送回報。"
 
 #: ../src/applet/applet.c:786
@@ -136,14 +135,15 @@ msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
-msgstr "& [-v] [DIR]...\n"
+msgstr ""
+"& [-v] [DIR]...\n"
 "\n"
 "新問題被 ABRT 偵測到時通知使用者的面板程式\n"
 
 #: ../src/configuration-gui/abrt-config-widget.c:483
 msgid ""
-"The configuration option above has been moved to GSettings and the switch is "
-"linked to the value of the setting 'report-technical-problems' from the "
+"The configuration option above has been moved to GSettings and the switch is"
+" linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
 "上述的組態選項已移動到 GSettings，而切換開關與「org.gnome.desktop.privacy」schema 的「report-"
@@ -172,11 +172,11 @@ msgstr "靜默簡短回報"
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
-"space consuming operation. ABRT provides a service which generates the stack "
-"trace from the coredump but you have to upload the coredump to this service. "
-"With option 'Always' ABRT will always upload the coredump without asking. "
-"With option 'Never' the stack trace will be always generated locally. With "
-"option 'Ask' ABRT will always ask the user."
+"space consuming operation. ABRT provides a service which generates the stack"
+" trace from the coredump but you have to upload the coredump to this "
+"service. With option 'Always' ABRT will always upload the coredump without "
+"asking. With option 'Never' the stack trace will be always generated "
+"locally. With option 'Ask' ABRT will always ask the user."
 msgstr ""
 "需要有核心傾印檔案才能生成堆疊追蹤，而堆疊追蹤是相當耗費時間與空間的操作。ABRT "
 "提供從核心傾印生成堆疊追蹤的服務，但您必須將核心傾印上傳至此服務中。選項「總是」，不經詢問就上傳核心傾印。選項「永不」，總是在本機上生成堆疊追蹤。選項「詢問」，總事會詢問使用者。"
@@ -194,17 +194,17 @@ msgstr ""
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
-"uses uReports  for fast global duplicate detection. In default configuration "
-"uReport is sent at beginning of reporting process. With this option enabled "
-"uReports are sent automatically immediately after problem detection."
+"uses uReports  for fast global duplicate detection. In default configuration"
+" uReport is sent at beginning of reporting process. With this option enabled"
+" uReports are sent automatically immediately after problem detection."
 msgstr ""
 "uReport 是簡短且完全匿名的問題描述。ABRT 使用 uReport 以快速偵測全域是否有重複問題。預設組態下，uReport "
 "會在回報過程的開頭送出。啟用此選項後，在偵測到問題當下會立即送出 uReport。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
-"With this option enabled reporting process started by click on Report button "
-"in problem notification bubble will be interrupted after uReport is sent. "
+"With this option enabled reporting process started by click on Report button"
+" in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr "啟用此選向後，在問題通知氣泡中點按「回報」按鈕而展開的回報程序會在 uReport 送出後中斷。您仍可以用預設的問題瀏覽器回報完整報告。"
 
@@ -281,7 +281,8 @@ msgid ""
 "& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
-msgstr "& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
+msgstr ""
+"& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 "\n"
 "查詢軟體包資料庫，並儲存軟體包與組件名稱"
 
@@ -306,10 +307,12 @@ msgid "Use this directory as RPM root"
 msgstr "使用此目錄作為 RPM 根基"
 
 #: ../src/daemon/abrt-action-save-container-data.c:254
-msgid "& [-v] -d DIR\n"
+msgid ""
+"& [-v] -d DIR\n"
 "\n"
 "Save container metadata"
-msgstr "& [-v] -d DIR\n"
+msgstr ""
+"& [-v] -d DIR\n"
 "\n"
 "儲存容器中介資料"
 
@@ -406,10 +409,10 @@ msgstr "此程式必須以 root 身份執行。"
 #: ../src/daemon/abrtd.c:389
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
-"detected while computer is shutting down or user is logging out. In order to "
-"provide valuable problem reports, ABRT will not allow you to submit this "
-"problem. If you have time and want to help the developers in their effort to "
-"sort out this problem, please contact them directly."
+"detected while computer is shutting down or user is logging out. In order to"
+" provide valuable problem reports, ABRT will not allow you to submit this "
+"problem. If you have time and want to help the developers in their effort to"
+" sort out this problem, please contact them directly."
 msgstr ""
 "問題資料並不完整。這通常發生在電腦關機動作之時，或是使用者正在登出之時偵測到問題。為了提供有價值的問題回報，ABRT "
 "不會允許您提交此種問題報告。若您有時間，且也想幫助開發者來處理此問題，請直接聯繫開發者。"
@@ -480,42 +483,50 @@ msgstr "最大快取大小，單位為 MiB。預設為 "
 msgid "& [ "
 msgstr "& [ "
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Chester Cheng
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Chester Cheng
 #: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
 msgstr "關閉身份認證"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Chester Cheng
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Chester Cheng
 #: ../src/daemon/abrt-auto-reporting.c:234
 msgid "Red Hat Support user name"
 msgstr "Red Hat Support 使用者名稱"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Chester Cheng
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Chester Cheng
 #: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
 msgstr "Red Hat Support 密碼；如果未提供密碼，將會發出提示"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Chester Cheng
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Chester Cheng
 #: ../src/daemon/abrt-auto-reporting.c:236
 msgid "uReport SSL certificate paths or certificate type"
 msgstr "uReport SSL 憑證路徑或憑證類型"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Chester Cheng
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Chester Cheng
 #: ../src/daemon/abrt-auto-reporting.c:252
 msgid "You also need to specify --username for --password"
 msgstr "使用 --password 時必須指定 --username"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Chester Cheng
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Chester Cheng
 #: ../src/daemon/abrt-auto-reporting.c:258
 msgid "You can use either --username or --certificate"
 msgstr "您可以使用 --username 或 --certificate"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Chester Cheng
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Chester Cheng
 #: ../src/daemon/abrt-auto-reporting.c:264
 msgid "You can use either --username or --anonymous"
 msgstr "您可以使用 --username 或 --anonymous"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Chester Cheng
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Chester Cheng
 #: ../src/daemon/abrt-auto-reporting.c:270
 msgid "You can use either --anonymous or --certificate"
 msgstr "您可以使用 --anonymous 或 --certificate"
@@ -529,28 +540,33 @@ msgstr "無效的引數數目"
 msgid "Unknown option value: '%s'\n"
 msgstr "未知的選項值：「%s」\n"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Chester Cheng
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Chester Cheng
 #: ../src/daemon/abrt-auto-reporting.c:336
 msgid "Password:"
 msgstr "密碼："
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Chester Cheng
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Chester Cheng
 #: ../src/daemon/abrt-auto-reporting.c:339
 msgid "Cannot continue without password\n"
 msgstr "沒有密碼無法繼續\n"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Chester Cheng
 #. Print only the part before ':' of a string like "username:password"
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Chester Cheng
 #: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
 msgstr "HTTP 身份認證自動回報"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Chester Cheng
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Chester Cheng
 #: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
 msgstr "SSL 用戶端身份憑證自動回報"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Chester Cheng
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Chester Cheng
 #: ../src/daemon/abrt-auto-reporting.c:384
 msgid "anonymous auto reporting"
 msgstr "匿名自動回報"
@@ -724,7 +740,8 @@ msgid ""
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
-msgstr "& [選項] -d DIR\n"
+msgstr ""
+"& [選項] -d DIR\n"
 "\n"
 "在問題目錄 DIR 內分析 C/C++ 回溯資訊、產生複本雜湊、\n"
 "回溯資料評等、辨識當機函式"
@@ -748,7 +765,8 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
-msgstr "& [-v] -d DIR\n"
+msgstr ""
+"& [-v] -d DIR\n"
 "\n"
 "在問題目錄 DIR 內計算並儲存的核心傾印其 UUID"
 
@@ -780,7 +798,8 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
-msgstr "& [-v] -d DIR\n"
+msgstr ""
+"& [-v] -d DIR\n"
 "\n"
 "為 oops 問題目錄 DIR 計算並儲存 UUID 與 DUPHASH"
 
@@ -799,7 +818,8 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
-msgstr "& [-v] -d DIR\n"
+msgstr ""
+"& [-v] -d DIR\n"
 "\n"
 "為 xorg 問題目錄 DIR 計算並儲存 UUID 與 DUPHASH"
 
@@ -813,7 +833,8 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
-msgstr "&  [-v] -d DIR\n"
+msgstr ""
+"&  [-v] -d DIR\n"
 "\n"
 "計算並儲存 python 崩潰傾印的 UUID 與 DUPHASH"
 
@@ -830,9 +851,11 @@ msgid "Extracting the oops text from core"
 msgstr "從核心抽出 oops 內文"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
-msgid "Can't process {0}:\n"
+msgid ""
+"Can't process {0}:\n"
 "{1}"
-msgstr "無法處理 {0}：\n"
+msgstr ""
+"無法處理 {0}：\n"
 "{1}"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:95
@@ -847,7 +870,8 @@ msgstr "Oops 內文已成功抽出"
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
-msgstr "內核記錄指出有偵測到硬體錯誤。\n"
+msgstr ""
+"內核記錄指出有偵測到硬體錯誤。\n"
 "這很可能不是軟體問題。\n"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:88
@@ -887,7 +911,8 @@ msgid ""
 "& [options] -d DIR\n"
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
-msgstr "& [選項] -d DIR\n"
+msgstr ""
+"& [選項] -d DIR\n"
 "\n"
 "分析問題目錄 DIR 內的核心傾印，產生並儲存回溯資訊"
 
@@ -912,7 +937,8 @@ msgid ""
 "& [-v] [-r] -d DIR\n"
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
-msgstr "& [-v] [-r] -d DIR\n"
+msgstr ""
+"& [-v] [-r] -d DIR\n"
 "\n"
 "從核心傾印與相對應的二進位檔建立 coredump-level 回溯資料"
 
@@ -942,8 +968,7 @@ msgstr "正在離開使用者指令"
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
-"[--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH]...]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
@@ -955,10 +980,8 @@ msgid ""
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
 "    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
-"RANDOM_SUFFIX\n"
-"    --cache     Colon separated list of directories. The first one is used "
-"for\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     Colon separated list of directories. The first one is used for\n"
 "                saving installed debuginfos.\n"
 "                Default: /var/cache/abrt-dir\n"
 "    --size_mb   Default: 4096\n"
@@ -968,8 +991,7 @@ msgid ""
 "                Default: *debug*\n"
 msgstr ""
 "用法：%s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
-"[--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH]...]\n"
 "\n"
 "為所有列在 BUILD_IDS_FILE 中的 build-id 安裝 debuginfos\n"
@@ -1071,8 +1093,7 @@ msgstr "您想要在本機上生成堆疊回溯嗎？(這可能需要下載巨�
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
-"SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
@@ -1258,7 +1279,8 @@ msgid ""
 "& [-vs] [-F STR]... FILE PROG [ARGS]\n"
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
-msgstr "& [-vs] [-F STR]... FILE PROG [ARGS]\n"
+msgstr ""
+"& [-vs] [-F STR]... FILE PROG [ARGS]\n"
 "\n"
 "監看記錄檔 FILE，當該檔案變大或被取代時執行 PROG"
 
@@ -1271,7 +1293,8 @@ msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
-msgstr "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
+msgstr ""
+"& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "從 FILE (或標準輸入) 抽出 oops"
 
@@ -1508,8 +1531,7 @@ msgid ""
 "\n"
 "The last seen position is saved in %s\n"
 "\n"
-"Journal filter is required parameter and must be specified either by "
-"parameter\n"
+"Journal filter is required parameter and must be specified either by parameter\n"
 "-j or in %s conf file.\n"
 msgstr ""
 "& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
@@ -1540,8 +1562,8 @@ msgstr "日誌過濾，如「_COMM=gdm-x-session」（可能給予多次）"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:265
 msgid ""
-"Journal filter must be specified either by parameter -j or stored in /etc/"
-"abrt/plugins/xorg.conf file"
+"Journal filter must be specified either by parameter -j or stored in "
+"/etc/abrt/plugins/xorg.conf file"
 msgstr "日誌過濾必須用參數 -j 或以儲存在 /etc/abrt/plugins/xorg.conf 檔中的內容指定"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:282
@@ -1553,7 +1575,8 @@ msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
-msgstr "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+msgstr ""
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "從 FILE (或標準輸出) 抽出 Xorg 崩潰資訊"
 
@@ -1654,9 +1677,11 @@ msgstr "無法傳送長度 %d 的 HTTP 標頭：NSS 錯誤 %d"
 #: ../src/plugins/abrt-retrace-client.c:1011
 #: ../src/plugins/abrt-retrace-client.c:1070
 #, c-format
-msgid "Unexpected HTTP response from server: %d\n"
+msgid ""
+"Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr "來自伺服器的未預期回應：%d\n"
+msgstr ""
+"來自伺服器的未預期回應：%d\n"
 "%s"
 
 #: ../src/plugins/abrt-retrace-client.c:232
@@ -1673,7 +1698,8 @@ msgstr "來自伺服器的回應無效：遺失 HTTP 訊息本文。"
 msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official '%s' repositories?"
-msgstr "追溯伺服器無法處理軟體包「%s.%s」。\n"
+msgstr ""
+"追溯伺服器無法處理軟體包「%s.%s」。\n"
 "該軟體包是否來自官方「%s」軟體庫？"
 
 #: ../src/plugins/abrt-retrace-client.c:444
@@ -1725,8 +1751,8 @@ msgstr "正在準備要上傳的封存檔"
 #: ../src/plugins/abrt-retrace-client.c:628
 #, c-format
 msgid ""
-"The size of your archive is %s, but the retrace server only accepts archives "
-"smaller or equal to %s."
+"The size of your archive is %s, but the retrace server only accepts archives"
+" smaller or equal to %s."
 msgstr "您的封存檔大小為 %s，但是追溯伺服器僅接受小於或等於 %s 的封存檔。"
 
 #: ../src/plugins/abrt-retrace-client.c:640
@@ -1787,9 +1813,11 @@ msgstr "回追工作已開始"
 
 #: ../src/plugins/abrt-retrace-client.c:808
 #, c-format
-msgid "Task Id: %s\n"
+msgid ""
+"Task Id: %s\n"
 "Task Password: %s\n"
-msgstr "工作事項 Id：%s\n"
+msgstr ""
+"工作事項 Id：%s\n"
 "工作事項密碼：%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:866
@@ -1798,9 +1826,11 @@ msgstr "來自伺服器的無效回應：遺失 X-Task-Status。"
 
 #: ../src/plugins/abrt-retrace-client.c:878
 #, c-format
-msgid "Task Status: %s\n"
+msgid ""
+"Task Status: %s\n"
 "%s\n"
-msgstr "作業狀態：%s\n"
+msgstr ""
+"作業狀態：%s\n"
 "%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:909
@@ -1917,8 +1947,8 @@ msgstr "下載 debuginfo 軟體包並透過本地端的 GDB 產生回溯資訊"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
 "需要下載 debuginfo 軟體包，並且可能會花上一段時間以及消耗一些磁碟空間。然而，這不像 "
 "RetraceServer，所以不會傳送核心傾印資料至遠端機器。"
@@ -1929,17 +1959,17 @@ msgstr "傳送核心傾印至遠端追溯伺服器來分析"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. Pros:"
-" no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump "
-"you upload contains all the data from the crashed program, including your "
-"private data, if any."
+"Uploads coredump to a server, which generates backtrace and returns it. "
+"Pros: no need for debuginfo downloads. Retrace server's database of "
+"debuginfos is more complete. Retrace server may generate better backtraces. "
+"Cons: coredump you upload contains all the data from the crashed program, "
+"including your private data, if any."
 msgstr ""
-"Uploads coredump to a server, which generates backtrace and returns it. Pros:"
-" no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump "
-"you upload contains all the data from the crashed program, including your "
-"private data, if any."
+"Uploads coredump to a server, which generates backtrace and returns it. "
+"Pros: no need for debuginfo downloads. Retrace server's database of "
+"debuginfos is more complete. Retrace server may generate better backtraces. "
+"Cons: coredump you upload contains all the data from the crashed program, "
+"including your private data, if any."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Retrace server URL"
@@ -1959,12 +1989,13 @@ msgstr "是否使用不安全的連線"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
-"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
-"&gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a "
+"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
+" &gt;(warning)&lt;/a&gt;"
 msgstr ""
-"寫入「insecure」來允許不安全的連線 &lt;a href=\"https://fedorahosted.org/abrt/wiki/"
-"AbrtRetraceServerInsecureConnection\" &gt;(warning)&lt;/a&gt;"
+"寫入「insecure」來允許不安全的連線 &lt;a "
+"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
+" &gt;(warning)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
@@ -2188,8 +2219,8 @@ msgstr "本地端的軟體包版本比可用更新的版本還新"
 #: ../src/plugins/bodhi.c:594
 #, c-format
 msgid ""
-"An update exists which might fix your problem. You can install it by running:"
-" %s. Do you want to continue with reporting the bug?"
+"An update exists which might fix your problem. You can install it by "
+"running: %s. Do you want to continue with reporting the bug?"
 msgstr "目前有個更新可用，或許它能修正您的問題。您可以藉由執行此動作來安裝它：%s。您想要繼續回報臭蟲嗎？"
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
@@ -2197,7 +2228,8 @@ msgid ""
 "& [-v] [-od] FILE...\n"
 "\n"
 "Scans files for split oops message. Can print and/or delete them."
-msgstr "& [-v] [-od] FILE...\n"
+msgstr ""
+"& [-v] [-od] FILE...\n"
 "\n"
 "為分割的 oops 訊息掃描檔案。可以列印與/或刪除它們。"
 
@@ -2272,10 +2304,10 @@ msgstr "僅列出比指定的時間戳記更之前的問題"
 #: ../src/cli/list.c:166
 #, c-format
 msgid ""
-"The Autoreporting feature is disabled. Please consider enabling it by "
-"issuing\n"
+"The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
-msgstr "已停用自動回報功能。請考慮以取得 root 特權的使用者執行\n"
+msgstr ""
+"已停用自動回報功能。請考慮以取得 root 特權的使用者執行\n"
 "「abrt-auto-reporting enabled」指令啟用此功能\n"
 
 #: ../src/cli/list.c:183
@@ -2350,8 +2382,8 @@ msgstr "可用動作：移除 remove(rm)、回報 report(e)、資訊 info(i)、�
 msgid "Reporting '%s'"
 msgstr "正在回報「%s」"
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #. dummy must be free because the function ask allocate memory
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/process.c:127
 msgid "For next problem press ENTER:"
 msgstr "下個問題請按 ENTER 鍵："
@@ -2394,7 +2426,8 @@ msgstr "{} 問題不屬 C/C++ 類型。無法安裝 debuginfo"
 msgid ""
 "Permission denied: '{}'\n"
 "If this is a system problem try running this command as root"
-msgstr "拒絕許可：「{}」\n"
+msgstr ""
+"拒絕許可：「{}」\n"
 "如果這式系統問題，請試著以 root 身份執行此指令"
 
 #: ../src/cli-ng/abrtcli/cli.py:71
@@ -2535,8 +2568,8 @@ msgid ""
 "user doesn't want to upload his coredump to anywhere the event performs "
 "local analysis. Local analysis is run event if remote analysis fails. Pros: "
 "no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump "
-"you upload contains all the data from the crashed program, including your "
+"more complete. Retrace server may generate better backtraces. Cons: coredump"
+" you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
 "上傳核心傾印資料至伺服器，該伺服器會產生回溯資料並回傳。如果使用者此刻不想上傳核心傾印資料至其他地方，事件會改以本地端分析執行。優點：不需要下載 "
@@ -2597,8 +2630,8 @@ msgstr "從您的家目錄儲存 .vimrc 與 .gvimrc"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
-"as user_vimrc and user_gvimrc, respectively."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
+" as user_vimrc and user_gvimrc, respectively."
 msgstr "檢查您的家目錄是否有 .vimrc 與 .gvimrc，並將它們個別儲存為 user_vimrc 與 user_gvimrc。"
 
 #: ../src/plugins/post_report.xml.in.h:1

@@ -1,49 +1,48 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Arnes  <arnes99@gmail.com>, 2011
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
+# Michal Fabik <mfabik@redhat.com>, 2019. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2016-07-14 09:45+0200\n"
+"PO-Revision-Date: 2019-08-11 01:53+0000\n"
+"Last-Translator: Michal Fabik <mfabik@redhat.com>\n"
+"Language-Team: Bosnian (http://www.transifex.com/projects/p/fedora-abrt/language/bs/)\n"
+"Language: bs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-12-21 11:48+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Bosnian (http://www.transifex.com/projects/p/fedora-abrt/"
-"language/bs/)\n"
-"Language: bs\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Zanata 4.6.2\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
-msgstr ""
+msgstr "Prijava problema"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr ""
+msgstr "Pregledati i prijaviti padove aplikacija"
 
 #: ../src/applet/applet.c:260 ../src/cli/report.c:51
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr ""
+msgstr "Nije moguće preuzeti vlasništvo nad datotekom '%s'"
 
 #: ../src/applet/applet.c:268
 #, c-format
 msgid "Can't open directory for writing '%s'"
-msgstr ""
+msgstr "Nije moguće otvoriti direktorij '%s' za pisanje"
 
 #: ../src/applet/applet.c:546 ../src/applet/applet.c:564
 #, c-format
 msgid "Can't close notification: %s"
-msgstr ""
+msgstr "Nije moguće zatvoriti obavijest: '%s'"
 
 #: ../src/applet/applet.c:598
 msgid "Oops!"
@@ -63,13 +62,17 @@ msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
 "reported."
 msgstr ""
+"Žao nam je, izgleda da je došlo do pada aplikacije %s. Problem je automatski"
+" prijavljen."
 
 #: ../src/applet/applet.c:699
 #, c-format
 msgid ""
-"We’re sorry, it looks like %s crashed. The problem will be reported when the "
-"internet is available."
+"We’re sorry, it looks like %s crashed. The problem will be reported when the"
+" internet is available."
 msgstr ""
+"Žao nam je, izgleda da je došlo do pada aplikacije %s. Problem će biti "
+"prijavljen kada bude dostupna internet konekcija."
 
 #: ../src/applet/applet.c:705 ../src/applet/applet.c:719
 #: ../src/applet/applet.c:747
@@ -78,6 +81,8 @@ msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
 msgstr ""
+"Žao nam je, izgleda da je došlo do pada aplikacije %s. Molimo da "
+"kontaktirate razvojnog inženjera ako želite prijaviti problem."
 
 #: ../src/applet/applet.c:713
 #, c-format
@@ -100,8 +105,8 @@ msgstr ""
 
 #: ../src/applet/applet.c:741
 msgid ""
-"We're sorry, it looks like a problem occurred. If you'd like to help resolve "
-"the issue, please send a report."
+"We're sorry, it looks like a problem occurred. If you'd like to help resolve"
+" the issue, please send a report."
 msgstr ""
 
 #: ../src/applet/applet.c:786
@@ -134,8 +139,8 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.c:483
 msgid ""
-"The configuration option above has been moved to GSettings and the switch is "
-"linked to the value of the setting 'report-technical-problems' from the "
+"The configuration option above has been moved to GSettings and the switch is"
+" linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
 
@@ -162,11 +167,11 @@ msgstr ""
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
-"space consuming operation. ABRT provides a service which generates the stack "
-"trace from the coredump but you have to upload the coredump to this service. "
-"With option 'Always' ABRT will always upload the coredump without asking. "
-"With option 'Never' the stack trace will be always generated locally. With "
-"option 'Ask' ABRT will always ask the user."
+"space consuming operation. ABRT provides a service which generates the stack"
+" trace from the coredump but you have to upload the coredump to this "
+"service. With option 'Always' ABRT will always upload the coredump without "
+"asking. With option 'Never' the stack trace will be always generated "
+"locally. With option 'Ask' ABRT will always ask the user."
 msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
@@ -180,15 +185,15 @@ msgstr ""
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
-"uses uReports  for fast global duplicate detection. In default configuration "
-"uReport is sent at beginning of reporting process. With this option enabled "
-"uReports are sent automatically immediately after problem detection."
+"uses uReports  for fast global duplicate detection. In default configuration"
+" uReport is sent at beginning of reporting process. With this option enabled"
+" uReports are sent automatically immediately after problem detection."
 msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
-"With this option enabled reporting process started by click on Report button "
-"in problem notification bubble will be interrupted after uReport is sent. "
+"With this option enabled reporting process started by click on Report button"
+" in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
 
@@ -288,7 +293,8 @@ msgid "Use this directory as RPM root"
 msgstr ""
 
 #: ../src/daemon/abrt-action-save-container-data.c:254
-msgid "& [-v] -d DIR\n"
+msgid ""
+"& [-v] -d DIR\n"
 "\n"
 "Save container metadata"
 msgstr ""
@@ -386,10 +392,10 @@ msgstr ""
 #: ../src/daemon/abrtd.c:389
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
-"detected while computer is shutting down or user is logging out. In order to "
-"provide valuable problem reports, ABRT will not allow you to submit this "
-"problem. If you have time and want to help the developers in their effort to "
-"sort out this problem, please contact them directly."
+"detected while computer is shutting down or user is logging out. In order to"
+" provide valuable problem reports, ABRT will not allow you to submit this "
+"problem. If you have time and want to help the developers in their effort to"
+" sort out this problem, please contact them directly."
 msgstr ""
 
 #: ../src/daemon/abrtd.c:457
@@ -746,7 +752,8 @@ msgid "Extracting the oops text from core"
 msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
-msgid "Can't process {0}:\n"
+msgid ""
+"Can't process {0}:\n"
 "{1}"
 msgstr ""
 
@@ -852,8 +859,7 @@ msgstr "Izlazim na korisničku naredbu"
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
-"[--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH]...]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
@@ -865,10 +871,8 @@ msgid ""
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
 "    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
-"RANDOM_SUFFIX\n"
-"    --cache     Colon separated list of directories. The first one is used "
-"for\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     Colon separated list of directories. The first one is used for\n"
 "                saving installed debuginfos.\n"
 "                Default: /var/cache/abrt-dir\n"
 "    --size_mb   Default: 4096\n"
@@ -953,8 +957,7 @@ msgstr ""
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
-"SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
 
@@ -1354,8 +1357,7 @@ msgid ""
 "\n"
 "The last seen position is saved in %s\n"
 "\n"
-"Journal filter is required parameter and must be specified either by "
-"parameter\n"
+"Journal filter is required parameter and must be specified either by parameter\n"
 "-j or in %s conf file.\n"
 msgstr ""
 
@@ -1373,8 +1375,8 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:265
 msgid ""
-"Journal filter must be specified either by parameter -j or stored in /etc/"
-"abrt/plugins/xorg.conf file"
+"Journal filter must be specified either by parameter -j or stored in "
+"/etc/abrt/plugins/xorg.conf file"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:282
@@ -1485,7 +1487,8 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:1011
 #: ../src/plugins/abrt-retrace-client.c:1070
 #, c-format
-msgid "Unexpected HTTP response from server: %d\n"
+msgid ""
+"Unexpected HTTP response from server: %d\n"
 "%s"
 msgstr ""
 
@@ -1554,8 +1557,8 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:628
 #, c-format
 msgid ""
-"The size of your archive is %s, but the retrace server only accepts archives "
-"smaller or equal to %s."
+"The size of your archive is %s, but the retrace server only accepts archives"
+" smaller or equal to %s."
 msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:640
@@ -1616,7 +1619,8 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:808
 #, c-format
-msgid "Task Id: %s\n"
+msgid ""
+"Task Id: %s\n"
 "Task Password: %s\n"
 msgstr ""
 
@@ -1626,7 +1630,8 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:878
 #, c-format
-msgid "Task Status: %s\n"
+msgid ""
+"Task Status: %s\n"
 "%s\n"
 msgstr ""
 
@@ -1743,8 +1748,8 @@ msgstr ""
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
 "Treba da preuzme debuginfo pakete koji mogu zahtjevati dosta vremena i "
 "zauzeti prostor na tvrdom disku. Međutim, za razliku od RetraceServer, "
@@ -1756,14 +1761,14 @@ msgstr "Pošalji ispis jezgre na udaljeni retrace server za analizu"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. Pros:"
-" no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump "
-"you upload contains all the data from the crashed program, including your "
-"private data, if any."
+"Uploads coredump to a server, which generates backtrace and returns it. "
+"Pros: no need for debuginfo downloads. Retrace server's database of "
+"debuginfos is more complete. Retrace server may generate better backtraces. "
+"Cons: coredump you upload contains all the data from the crashed program, "
+"including your private data, if any."
 msgstr ""
-"Prebacuje ispis jezgre na server koji stvara funkcijski trag i vraća ga. Za: "
-"nema potrebe za debuginfo preuzimanjima. Retrace serverova baza podataka  "
+"Prebacuje ispis jezgre na server koji stvara funkcijski trag i vraća ga. Za:"
+" nema potrebe za debuginfo preuzimanjima. Retrace serverova baza podataka  "
 "debuginfo-a je potpunija. Retrace server može stvarati bolje funkcijske "
 "tragove. Protiv: ispis jezgre koji prebacite sadrži sve podatke iz srušenog "
 "programa uključujući Vaše privatne podatke (ako postoje)."
@@ -1786,9 +1791,9 @@ msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
-"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
-"&gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a "
+"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
+" &gt;(warning)&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
@@ -2008,8 +2013,8 @@ msgstr ""
 #: ../src/plugins/bodhi.c:594
 #, c-format
 msgid ""
-"An update exists which might fix your problem. You can install it by running:"
-" %s. Do you want to continue with reporting the bug?"
+"An update exists which might fix your problem. You can install it by "
+"running: %s. Do you want to continue with reporting the bug?"
 msgstr ""
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
@@ -2089,8 +2094,7 @@ msgstr ""
 #: ../src/cli/list.c:166
 #, c-format
 msgid ""
-"The Autoreporting feature is disabled. Please consider enabling it by "
-"issuing\n"
+"The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
 msgstr ""
 
@@ -2340,8 +2344,8 @@ msgid ""
 "user doesn't want to upload his coredump to anywhere the event performs "
 "local analysis. Local analysis is run event if remote analysis fails. Pros: "
 "no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump "
-"you upload contains all the data from the crashed program, including your "
+"more complete. Retrace server may generate better backtraces. Cons: coredump"
+" you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
 
@@ -2398,8 +2402,8 @@ msgstr ""
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
-"as user_vimrc and user_gvimrc, respectively."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
+" as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 
 #: ../src/plugins/post_report.xml.in.h:1

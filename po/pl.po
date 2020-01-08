@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
 # Piotr Drąg <piotrdrag@gmail.com>, 2011-2014
@@ -13,16 +13,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2016-07-14 09:45+0200\n"
+"PO-Revision-Date: 2017-03-25 08:11+0000\n"
+"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
+"Language-Team: Polish (http://www.transifex.com/projects/p/fedora-abrt/language/pl/)\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-03-25 08:11+0000\n"
-"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
-"Language-Team: Polish (http://www.transifex.com/projects/p/fedora-abrt/"
-"language/pl/)\n"
-"Language: pl\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Zanata 4.6.2\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -70,8 +68,8 @@ msgstr "Program %s uległ awarii. Problem został automatycznie zgłoszony."
 #: ../src/applet/applet.c:699
 #, c-format
 msgid ""
-"We’re sorry, it looks like %s crashed. The problem will be reported when the "
-"internet is available."
+"We’re sorry, it looks like %s crashed. The problem will be reported when the"
+" internet is available."
 msgstr ""
 "Program %s uległ awarii. Problem zostanie zgłoszony po uzyskaniu dostępu do "
 "Internetu."
@@ -111,8 +109,8 @@ msgstr ""
 
 #: ../src/applet/applet.c:741
 msgid ""
-"We're sorry, it looks like a problem occurred. If you'd like to help resolve "
-"the issue, please send a report."
+"We're sorry, it looks like a problem occurred. If you'd like to help resolve"
+" the issue, please send a report."
 msgstr ""
 "Wystąpił problem. Prosimy o wysłanie zgłoszenia, aby pomóc w jego "
 "naprawieniu."
@@ -146,17 +144,16 @@ msgid ""
 msgstr ""
 "& [-v] [KATALOG]…\n"
 "\n"
-"Aplet powiadamiający użytkownika o nowych problemach wykrytych przez program "
-"ABRT\n"
+"Aplet powiadamiający użytkownika o nowych problemach wykrytych przez program ABRT\n"
 
 #: ../src/configuration-gui/abrt-config-widget.c:483
 msgid ""
-"The configuration option above has been moved to GSettings and the switch is "
-"linked to the value of the setting 'report-technical-problems' from the "
+"The configuration option above has been moved to GSettings and the switch is"
+" linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
-"Powyższa opcja konfiguracji została przeniesiona do GSettings, a przełącznik "
-"jest powiązany z wartością ustawienia „report-technical-problems” ze "
+"Powyższa opcja konfiguracji została przeniesiona do GSettings, a przełącznik"
+" jest powiązany z wartością ustawienia „report-technical-problems” ze "
 "schematu „org.gnome.desktop.privacy”."
 
 #: ../src/configuration-gui/abrt-config-widget.c:501
@@ -182,18 +179,18 @@ msgstr "Ciche skrócone zgłaszanie"
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
-"space consuming operation. ABRT provides a service which generates the stack "
-"trace from the coredump but you have to upload the coredump to this service. "
-"With option 'Always' ABRT will always upload the coredump without asking. "
-"With option 'Never' the stack trace will be always generated locally. With "
-"option 'Ask' ABRT will always ask the user."
+"space consuming operation. ABRT provides a service which generates the stack"
+" trace from the coredump but you have to upload the coredump to this "
+"service. With option 'Always' ABRT will always upload the coredump without "
+"asking. With option 'Never' the stack trace will be always generated "
+"locally. With option 'Ask' ABRT will always ask the user."
 msgstr ""
 "Plik zrzutu core jest niezbędny do utworzenia wyjątku stosu, co jest "
-"działaniem czaso- i pracochłonnym. Program ABRT dostarcza usługę, która może "
-"tworzyć wyjątki stosu z plików zrzutu core, ale trzeba do tego wysłać zrzut "
-"do usługi. Opcja „Zawsze” powoduje wysyłanie zrzutów core bez pytania. Opcja "
-"„Nigdy” powoduje lokalne tworzenie wyjątków stosu. Opcja „Pytanie” powoduje "
-"pytanie użytkownika za każdym razem."
+"działaniem czaso- i pracochłonnym. Program ABRT dostarcza usługę, która może"
+" tworzyć wyjątki stosu z plików zrzutu core, ale trzeba do tego wysłać zrzut"
+" do usługi. Opcja „Zawsze” powoduje wysyłanie zrzutów core bez pytania. "
+"Opcja „Nigdy” powoduje lokalne tworzenie wyjątków stosu. Opcja „Pytanie” "
+"powoduje pytanie użytkownika za każdym razem."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -204,15 +201,15 @@ msgid ""
 msgstr ""
 "Program ABRT przechowuje dane problemu w katalogach. Kiedy program ABRT "
 "potrzebuje zapisywalnego katalogu, to jest on przenoszony z położenia "
-"systemowego do katalogu domowego użytkownika. Jeśli ta opcja jest wyłączona, "
-"to program ABRT będzie przenosił katalogi problemów bez pytania."
+"systemowego do katalogu domowego użytkownika. Jeśli ta opcja jest wyłączona,"
+" to program ABRT będzie przenosił katalogi problemów bez pytania."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
-"uses uReports  for fast global duplicate detection. In default configuration "
-"uReport is sent at beginning of reporting process. With this option enabled "
-"uReports are sent automatically immediately after problem detection."
+"uses uReports  for fast global duplicate detection. In default configuration"
+" uReport is sent at beginning of reporting process. With this option enabled"
+" uReports are sent automatically immediately after problem detection."
 msgstr ""
 "uReport jest krótkim i w pełni anonimowym opisem problemu. Program ABRT "
 "używa uReportów do szybkiego, globalnego wykrywania duplikatów. W domyślnej "
@@ -222,12 +219,12 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
-"With this option enabled reporting process started by click on Report button "
-"in problem notification bubble will be interrupted after uReport is sent. "
+"With this option enabled reporting process started by click on Report button"
+" in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
-"Jeśli ta opcja jest włączona, to proces zgłaszania rozpoczęty po naciśnięciu "
-"przycisku Zgłoś w powiadomieniu o problemie zostanie przerwany po wysłaniu "
+"Jeśli ta opcja jest włączona, to proces zgłaszania rozpoczęty po naciśnięciu"
+" przycisku Zgłoś w powiadomieniu o problemie zostanie przerwany po wysłaniu "
 "uReportu. Zawsze można użyć domyślnej przeglądarki problemów, aby utworzyć "
 "pełne zgłoszenie."
 
@@ -262,8 +259,8 @@ msgid ""
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
 msgstr ""
-"Niepełne problemy są wykrywane, kiedy komputer jest wyłączany lub użytkownik "
-"jest wylogowywany. Aby dostarczać wartościowe zgłoszenia błędów, program "
+"Niepełne problemy są wykrywane, kiedy komputer jest wyłączany lub użytkownik"
+" jest wylogowywany. Aby dostarczać wartościowe zgłoszenia błędów, program "
 "ABRT nie będzie umożliwiał wysłania takich problemów."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
@@ -338,10 +335,12 @@ msgid "Use this directory as RPM root"
 msgstr "Używa tego katalogu jako katalogu głównego pakietu RPM"
 
 #: ../src/daemon/abrt-action-save-container-data.c:254
-msgid "& [-v] -d DIR\n"
+msgid ""
+"& [-v] -d DIR\n"
 "\n"
 "Save container metadata"
-msgstr "& [-v] -d KATALOG\n"
+msgstr ""
+"& [-v] -d KATALOG\n"
 "\n"
 "Zapisuje metadane kontenera"
 
@@ -442,10 +441,10 @@ msgstr "Ten program musi być uruchamiany jako root."
 #: ../src/daemon/abrtd.c:389
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
-"detected while computer is shutting down or user is logging out. In order to "
-"provide valuable problem reports, ABRT will not allow you to submit this "
-"problem. If you have time and want to help the developers in their effort to "
-"sort out this problem, please contact them directly."
+"detected while computer is shutting down or user is logging out. In order to"
+" provide valuable problem reports, ABRT will not allow you to submit this "
+"problem. If you have time and want to help the developers in their effort to"
+" sort out this problem, please contact them directly."
 msgstr ""
 "Dane problemu są niepełne. Zwykle zdarza się to, kiedy wykryty został "
 "problem podczas wyłączania komputera lub wylogowywania użytkownika. Aby "
@@ -497,8 +496,7 @@ msgstr ""
 "& [-vs] [-w LICZBA] [-c MiB] [KATALOG_WYSYŁANIA]\n"
 "\n"
 "\n"
-"Obserwuje KATALOG_WYSYŁANIA i rozpakowuje przychodzące archiwa do "
-"DumpLocation\n"
+"Obserwuje KATALOG_WYSYŁANIA i rozpakowuje przychodzące archiwa do DumpLocation\n"
 "określonego w pliku abrt.conf\n"
 "\n"
 "Jeśli nie podano KATALOGU_WYSYŁANIA, to używa wartości opcji\n"
@@ -521,44 +519,52 @@ msgstr "Maksymalny rozmiar pamięci podręcznej w MiB. Domyślnie wynosi"
 msgid "& [ "
 msgstr "& [ "
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Piotr Drąg
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Piotr Drąg
 #: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
 msgstr "Wyłącza uwierzytelnianie"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Piotr Drąg
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Piotr Drąg
 #: ../src/daemon/abrt-auto-reporting.c:234
 msgid "Red Hat Support user name"
 msgstr "Nazwa użytkownika Red Hat Support"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Piotr Drąg
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Piotr Drąg
 #: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
 msgstr ""
 "Hasło Red Hat Support, jeśli nie podano, to użytkownik zostanie o nie "
 "zapytany"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Piotr Drąg
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Piotr Drąg
 #: ../src/daemon/abrt-auto-reporting.c:236
 msgid "uReport SSL certificate paths or certificate type"
 msgstr "Ścieżki lub typ certyfikatu SSL uReport"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Piotr Drąg
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Piotr Drąg
 #: ../src/daemon/abrt-auto-reporting.c:252
 msgid "You also need to specify --username for --password"
 msgstr "Należy także podać --username dla opcji --password"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Piotr Drąg
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Piotr Drąg
 #: ../src/daemon/abrt-auto-reporting.c:258
 msgid "You can use either --username or --certificate"
 msgstr "Można użyć tylko --username lub --certificate"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Piotr Drąg
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Piotr Drąg
 #: ../src/daemon/abrt-auto-reporting.c:264
 msgid "You can use either --username or --anonymous"
 msgstr "Można użyć tylko --username lub --anonymous"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Piotr Drąg
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Piotr Drąg
 #: ../src/daemon/abrt-auto-reporting.c:270
 msgid "You can use either --anonymous or --certificate"
 msgstr "Można użyć tylko --anonymous lub --certificate"
@@ -572,28 +578,33 @@ msgstr "Nieprawidłowa liczba parametrów"
 msgid "Unknown option value: '%s'\n"
 msgstr "Nieznana wartość opcji: „%s”\n"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Piotr Drąg
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Piotr Drąg
 #: ../src/daemon/abrt-auto-reporting.c:336
 msgid "Password:"
 msgstr "Hasło:"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Piotr Drąg
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Piotr Drąg
 #: ../src/daemon/abrt-auto-reporting.c:339
 msgid "Cannot continue without password\n"
 msgstr "Nie można kontynuować bez hasła\n"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Piotr Drąg
 #. Print only the part before ':' of a string like "username:password"
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Piotr Drąg
 #: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
 msgstr "Automatyczne zgłaszanie uwierzytelnione przez HTTP"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Piotr Drąg
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Piotr Drąg
 #: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
 msgstr "Automatyczne zgłaszanie uwierzytelnione przez klienta SSL"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author Piotr Drąg
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author Piotr Drąg
 #: ../src/daemon/abrt-auto-reporting.c:384
 msgid "anonymous auto reporting"
 msgstr "anonimowe automatyczne zgłaszanie"
@@ -613,8 +624,7 @@ msgstr ""
 "\n"
 "   -v                  — Więcej informacji\n"
 "   -d                  — Usuwa wysłane archiwum\n"
-"   KATALOG_SZPULI_ABRT — Katalog, do którego rozpakowywane są prawidłowo "
-"wysłane archiwa\n"
+"   KATALOG_SZPULI_ABRT — Katalog, do którego rozpakowywane są prawidłowo wysłane archiwa\n"
 "   KATALOG_WYSYŁANIA   — Katalog, w którym przechowywane są wysłane archiwa\n"
 "   NAZWA_PLIKU         — Nazwa pliku wysłanego archiwum\n"
 
@@ -824,8 +834,8 @@ msgstr ""
 "Wyjątek nie zawiera wystarczającej liczby znaczących ramek funkcji, aby go "
 "zgłosić. Może to być irytujące, ale niekoniecznie wskazuje na problem "
 "z komputerem. Program ABRT nie umożliwi utworzenia zgłoszenia w systemie "
-"śledzenia błędów, ale można skontaktować się z opiekunami jądra przez e-mail."
-""
+"śledzenia błędów, ale można skontaktować się z opiekunami jądra przez "
+"e-mail."
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:73
 msgid ""
@@ -865,9 +875,11 @@ msgid "Extracting the oops text from core"
 msgstr "Wypakowywanie tekstu awarii oops z pliku core"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
-msgid "Can't process {0}:\n"
+msgid ""
+"Can't process {0}:\n"
 "{1}"
-msgstr "Nie można przetworzyć {0}:\n"
+msgstr ""
+"Nie można przetworzyć {0}:\n"
 "{1}"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:95
@@ -952,8 +964,7 @@ msgid ""
 msgstr ""
 "& [-v] [-r] -d KATALOG\n"
 "\n"
-"Tworzy wyjątek na poziomie zrzutu core ze zrzutu core i odpowiedniego pliku "
-"binarnego"
+"Tworzy wyjątek na poziomie zrzutu core ze zrzutu core i odpowiedniego pliku binarnego"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
@@ -981,8 +992,7 @@ msgstr "Wyłączanie na polecenie użytkownika"
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
-"[--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH]...]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
@@ -994,10 +1004,8 @@ msgid ""
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
 "    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
-"RANDOM_SUFFIX\n"
-"    --cache     Colon separated list of directories. The first one is used "
-"for\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     Colon separated list of directories. The first one is used for\n"
 "                saving installed debuginfos.\n"
 "                Default: /var/cache/abrt-dir\n"
 "    --size_mb   Default: 4096\n"
@@ -1007,13 +1015,11 @@ msgid ""
 "                Default: *debug*\n"
 msgstr ""
 "Użycie: %s [-vy] [--ids=PLIK_IDENTYFIKATORÓW_BUDOWANIA] [--pkgmgr=(yum|dnf)]\n"
-"       [--tmpdir=KATALOG_TYMCZASOWY] [--cache=KATALOG_PAMIĘCI_PODRĘCZNEJ[:"
-"KATALOG_DEBUGINFO1:KATALOG_DEBUGINFO2…]]  [--size_mb=ROZMIAR]\n"
+"       [--tmpdir=KATALOG_TYMCZASOWY] [--cache=KATALOG_PAMIĘCI_PODRĘCZNEJ[:KATALOG_DEBUGINFO1:KATALOG_DEBUGINFO2…]]  [--size_mb=ROZMIAR]\n"
 "       [-e, --exact=ŚCIEŻKA[:ŚCIEŻKA]…]\n"
 "\n"
 "Instaluje pakiety debuginfo dla wszystkich identyfikatorów budowania\n"
-"wymienionych w PLIKU_IDENTYFIKATORÓW_BUDOWANIA "
-"w KATALOGU_PAMIĘCI_PODRĘCZNEJ,\n"
+"wymienionych w PLIKU_IDENTYFIKATORÓW_BUDOWANIA w KATALOGU_PAMIĘCI_PODRĘCZNEJ,\n"
 "używając KATALOGU_TYMCZASOWEGO jako obszaru tymczasowej przechowalni.\n"
 "Poprzednie pliki w KATALOGU_PAMIĘCI_PODRĘCZNEJ zostaną usunięte, aby jego\n"
 "rozmiar był mniejszy niż ROZMIAR.\n"
@@ -1023,8 +1029,7 @@ msgstr ""
 "    -v          Więcej komunikatów\n"
 "    -y          Nieinteraktywnie, przyjmuje „Tak” na wszystkie pytania\n"
 "    --ids       Domyślnie: identyfikatory_budowania\n"
-"    --tmpdir    Domyślnie: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
-"LOSOWY_PRZYROSTEK\n"
+"    --tmpdir    Domyślnie: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-LOSOWY_PRZYROSTEK\n"
 "    --cache     Lista katalogów rozdzielanych dwukropkiem. Pierwszy jest\n"
 "                używany do zapisywania zainstalowanych pakietów debuginfo.\n"
 "                Domyślnie: /var/cache/abrt-di\n"
@@ -1123,14 +1128,12 @@ msgstr ""
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
-"SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
 "& [-v] [-d ROZMIAR:KATALOG]… [-f ROZMIAR:KATALOG]… [-p KATALOG] [PLIK]…\n"
 "\n"
-"Usuwa katalogi (-d) lub pliki (-f) problemów w KATALOGACH, dopóki nie są "
-"mniejsze niż ROZMIAR.\n"
+"Usuwa katalogi (-d) lub pliki (-f) problemów w KATALOGACH, dopóki nie są mniejsze niż ROZMIAR.\n"
 "PLIKI są zachowywane (nigdy nie są usuwane)."
 
 #: ../src/plugins/abrt-action-trim-files.c:236
@@ -1311,8 +1314,7 @@ msgid ""
 msgstr ""
 "& [-vs] [-F POTOK]… PLIKI PROGRAM [PARAMETRY]\n"
 "\n"
-"Obserwuje PLIK dziennika, wykonuje PROGRAM, kiedy plik się powiększy lub "
-"zostanie zastąpiony"
+"Obserwuje PLIK dziennika, wykonuje PROGRAM, kiedy plik się powiększy lub zostanie zastąpiony"
 
 #: ../src/plugins/abrt-watch-log.c:154
 msgid "Don't run PROG if STRs aren't found"
@@ -1427,13 +1429,10 @@ msgstr ""
 "\n"
 "Wydobywa awarię oops z systemd-journal\n"
 "\n"
-"Opcje -c i -e są sprzeczne, ponieważ obie określają pierwszy odczytany "
-"komunikat.\n"
+"Opcje -c i -e są sprzeczne, ponieważ obie określają pierwszy odczytany komunikat.\n"
 "\n"
-"Opcja -e jest przydatna tylko razem z opcją -f, ponieważ podążanie za "
-"dziennikiem zaczyna\n"
-"się od odczytania całego dziennika, jeśli ostatnio widziane położenie jest "
-"niedostępne.\n"
+"Opcja -e jest przydatna tylko razem z opcją -f, ponieważ podążanie za dziennikiem zaczyna\n"
+"się od odczytania całego dziennika, jeśli ostatnio widziane położenie jest niedostępne.\n"
 "\n"
 "Ostatnio widziane położenie jest zapisywane w "
 
@@ -1520,13 +1519,10 @@ msgstr ""
 "\n"
 "Wydobywa awarię oops z systemd-journal\n"
 "\n"
-"Opcje -c i -e są sprzeczne, ponieważ obie określają pierwszy odczytany "
-"komunikat.\n"
+"Opcje -c i -e są sprzeczne, ponieważ obie określają pierwszy odczytany komunikat.\n"
 "\n"
-"Opcja -e jest przydatna tylko razem z opcją -f, ponieważ podążanie za "
-"dziennikiem zaczyna\n"
-"się od odczytania całego dziennika, jeśli ostatnio widziane położenie jest "
-"niedostępne.\n"
+"Opcja -e jest przydatna tylko razem z opcją -f, ponieważ podążanie za dziennikiem zaczyna\n"
+"się od odczytania całego dziennika, jeśli ostatnio widziane położenie jest niedostępne.\n"
 "\n"
 "Ostatnio widziane położenie jest zapisywane w "
 
@@ -1574,21 +1570,17 @@ msgid ""
 "\n"
 "The last seen position is saved in %s\n"
 "\n"
-"Journal filter is required parameter and must be specified either by "
-"parameter\n"
+"Journal filter is required parameter and must be specified either by parameter\n"
 "-j or in %s conf file.\n"
 msgstr ""
 "& [-vsoxtf] [-e]/[-c KURSOR] [-d KATALOG]/[-D]\n"
 "\n"
 "Wydobywa awarię Xorg z systemd-journal\n"
 "\n"
-"Opcje -c i -e są sprzeczne, ponieważ obie określają pierwszy odczytany "
-"komunikat.\n"
+"Opcje -c i -e są sprzeczne, ponieważ obie określają pierwszy odczytany komunikat.\n"
 "\n"
-"Opcja -e jest przydatna tylko razem z opcją -f, ponieważ podążanie za "
-"dziennikiem zaczyna\n"
-"się od odczytania całego dziennika, jeśli ostatnio widziane położenie jest "
-"niedostępne.\n"
+"Opcja -e jest przydatna tylko razem z opcją -f, ponieważ podążanie za dziennikiem zaczyna\n"
+"się od odczytania całego dziennika, jeśli ostatnio widziane położenie jest niedostępne.\n"
 "\n"
 "Ostatnio widziane położenie jest zapisywane w %s\n"
 "\n"
@@ -1611,8 +1603,8 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:265
 msgid ""
-"Journal filter must be specified either by parameter -j or stored in /etc/"
-"abrt/plugins/xorg.conf file"
+"Journal filter must be specified either by parameter -j or stored in "
+"/etc/abrt/plugins/xorg.conf file"
 msgstr ""
 "Filtr dziennika musi być podawany przez parametr -j lub przechowywany "
 "w pliku /etc/abrt/plugins/xorg.conf"
@@ -1741,9 +1733,11 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:1011
 #: ../src/plugins/abrt-retrace-client.c:1070
 #, c-format
-msgid "Unexpected HTTP response from server: %d\n"
+msgid ""
+"Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr "Nieoczekiwana odpowiedź HTTP od serwera: %d\n"
+msgstr ""
+"Nieoczekiwana odpowiedź HTTP od serwera: %d\n"
 "%s"
 
 #: ../src/plugins/abrt-retrace-client.c:232
@@ -1815,8 +1809,8 @@ msgstr "Przygotowywanie do wysłania archiwum"
 #: ../src/plugins/abrt-retrace-client.c:628
 #, c-format
 msgid ""
-"The size of your archive is %s, but the retrace server only accepts archives "
-"smaller or equal to %s."
+"The size of your archive is %s, but the retrace server only accepts archives"
+" smaller or equal to %s."
 msgstr ""
 "Rozmiar archiwum wynosi %s, a serwer ponownego śledzenia przyjmuje tylko "
 "archiwa mniejsze niż lub równe %s."
@@ -1866,8 +1860,8 @@ msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
 msgstr ""
-"Archiwum zawiera złośliwe pliki (takie jak dowiązania symboliczne), więc nie "
-"może zostać przetworzone."
+"Archiwum zawiera złośliwe pliki (takie jak dowiązania symboliczne), więc nie"
+" może zostać przetworzone."
 
 #: ../src/plugins/abrt-retrace-client.c:782
 msgid "Invalid response from server: missing X-Task-Id."
@@ -1883,9 +1877,11 @@ msgstr "Uruchomiono zadanie ponownego śledzenia"
 
 #: ../src/plugins/abrt-retrace-client.c:808
 #, c-format
-msgid "Task Id: %s\n"
+msgid ""
+"Task Id: %s\n"
 "Task Password: %s\n"
-msgstr "Identyfikator zadania: %s\n"
+msgstr ""
+"Identyfikator zadania: %s\n"
 "Hasło zadania: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:866
@@ -1894,9 +1890,11 @@ msgstr "Nieprawidłowa odpowiedź od serwera: brak X-Task-Status."
 
 #: ../src/plugins/abrt-retrace-client.c:878
 #, c-format
-msgid "Task Status: %s\n"
+msgid ""
+"Task Status: %s\n"
 "%s\n"
-msgstr "Stan zadania: %s\n"
+msgstr ""
+"Stan zadania: %s\n"
 "%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:909
@@ -1964,8 +1962,8 @@ msgstr "Opóźnienie do działań odpytywania"
 #: ../src/plugins/abrt-retrace-client.c:1237
 msgid "(debug) do not delete temporary archive created from dump dir in "
 msgstr ""
-"(debugowanie) nie usuwa tymczasowych archiwów utworzonych z katalogu zrzutów "
-"w"
+"(debugowanie) nie usuwa tymczasowych archiwów utworzonych z katalogu zrzutów"
+" w"
 
 #: ../src/plugins/abrt-retrace-client.c:1239
 msgid "For status, backtrace, and log operations"
@@ -2022,12 +2020,12 @@ msgstr "Pobiera pakiety debuginfo i tworzy wyjątek lokalnie za pomocą GDB"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
-"Należy pobrać pakiety debuginfo, co może zająć dużo czasu i miejsca na dysku."
-" Jednakże, w przeciwieństwie do RetraceServer, nie wysyła zrzutów core do "
-"zdalnych komputerów."
+"Należy pobrać pakiety debuginfo, co może zająć dużo czasu i miejsca na "
+"dysku. Jednakże, w przeciwieństwie do RetraceServer, nie wysyła zrzutów core"
+" do zdalnych komputerów."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
@@ -2035,16 +2033,16 @@ msgstr "Wysyła zrzut core do zdalnego serwera ponownego śledzenia do analizy"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. Pros:"
-" no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump "
-"you upload contains all the data from the crashed program, including your "
-"private data, if any."
+"Uploads coredump to a server, which generates backtrace and returns it. "
+"Pros: no need for debuginfo downloads. Retrace server's database of "
+"debuginfos is more complete. Retrace server may generate better backtraces. "
+"Cons: coredump you upload contains all the data from the crashed program, "
+"including your private data, if any."
 msgstr ""
-"Wysyła zrzuty core do serwera, który tworzy wyjątek i go zwraca. Zalety: nie "
-"trzeba pobierać pakietów debuginfo. Baza danych pakietów debuginfo serwera "
-"ponownego śledzenia jest bardziej kompletna. Może on tworzyć lepsze wyjątki. "
-"Wady: wysyłane zrzuty core zawierają wszystkie dane programu, który uległ "
+"Wysyła zrzuty core do serwera, który tworzy wyjątek i go zwraca. Zalety: nie"
+" trzeba pobierać pakietów debuginfo. Baza danych pakietów debuginfo serwera "
+"ponownego śledzenia jest bardziej kompletna. Może on tworzyć lepsze wyjątki."
+" Wady: wysyłane zrzuty core zawierają wszystkie dane programu, który uległ "
 "awarii, w tym potencjalnie prywatne dane."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
@@ -2065,13 +2063,13 @@ msgstr "Określa, czy używać niezabezpieczonego połączenia"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
-"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
-"&gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a "
+"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
+" &gt;(warning)&lt;/a&gt;"
 msgstr ""
 "Wpisanie „insecure” umożliwia użycie połączenia niezabezpieczonego &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/"
-"AbrtRetraceServerInsecureConnection\" &gt;(ostrzeżenie)&lt;/a&gt;"
+"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
+" &gt;(ostrzeżenie)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
@@ -2086,8 +2084,8 @@ msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
 msgstr ""
-"Skanuje plik ~/.xsession-errors i zapisuje te wiersze, które zawierają nazwę "
-"pliku wykonywalnego. Wynik jest zapisywany jako element „xsession_errors”."
+"Skanuje plik ~/.xsession-errors i zapisuje te wiersze, które zawierają nazwę"
+" pliku wykonywalnego. Wynik jest zapisywany jako element „xsession_errors”."
 
 #: ../src/plugins/https-utils.c:62
 msgid "An error occurred on the server side."
@@ -2284,8 +2282,7 @@ msgid ""
 "\n"
 "Search for updates on bodhi server"
 msgstr ""
-"& [-v] [-r[WYDANIE]] (-b IDENTYFIKATOR1[,IDENTYFIKATOR2,…] | NAZWA-PAKIETU) "
-"[NAZWA-PAKIETU]… \n"
+"& [-v] [-r[WYDANIE]] (-b IDENTYFIKATOR1[,IDENTYFIKATOR2,…] | NAZWA-PAKIETU) [NAZWA-PAKIETU]… \n"
 "\n"
 "Wyszukuje aktualizacje na serwerze Bodhi"
 
@@ -2305,8 +2302,8 @@ msgstr "Lokalna wersja pakietu jest nowsza niż dostępne aktualizacje"
 #: ../src/plugins/bodhi.c:594
 #, c-format
 msgid ""
-"An update exists which might fix your problem. You can install it by running:"
-" %s. Do you want to continue with reporting the bug?"
+"An update exists which might fix your problem. You can install it by "
+"running: %s. Do you want to continue with reporting the bug?"
 msgstr ""
 "Jedna z aktualizacji może naprawić ten problem. Można ją zainstalować "
 "wykonując: %s. Kontynuować zgłaszanie błędu?"
@@ -2319,8 +2316,7 @@ msgid ""
 msgstr ""
 "& [-v] [-od] PLIK…\n"
 "\n"
-"Skanuje pliki w poszukiwaniu rozdzielonych komunikatów awarii. Może je "
-"wyświetlić lub usunąć."
+"Skanuje pliki w poszukiwaniu rozdzielonych komunikatów awarii. Może je wyświetlić lub usunąć."
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:97
 msgid "Print found oopses"
@@ -2392,12 +2388,10 @@ msgstr "Wyświetla tylko problemy starsze niż podany czas"
 #: ../src/cli/list.c:166
 #, c-format
 msgid ""
-"The Autoreporting feature is disabled. Please consider enabling it by "
-"issuing\n"
+"The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
 msgstr ""
-"Funkcja automatycznego zgłaszania jest wyłączona. Proszę rozważyć włączenie "
-"jej przez wydanie polecenia\n"
+"Funkcja automatycznego zgłaszania jest wyłączona. Proszę rozważyć włączenie jej przez wydanie polecenia\n"
 "„abrt-auto-reporting enabled” jako użytkownik z uprawnieniami roota\n"
 
 #: ../src/cli/list.c:183
@@ -2512,8 +2506,7 @@ msgid ""
 "If this is a system problem try running this command as root"
 msgstr ""
 "Brak uprawnień: „{}”\n"
-"Jeśli to problem systemowy, to można spróbować wykonać to polecenie jako "
-"root"
+"Jeśli to problem systemowy, to można spróbować wykonać to polecenie jako root"
 
 #: ../src/cli-ng/abrtcli/cli.py:71
 msgid "Install required debuginfo for given problem"
@@ -2663,16 +2656,16 @@ msgid ""
 "user doesn't want to upload his coredump to anywhere the event performs "
 "local analysis. Local analysis is run event if remote analysis fails. Pros: "
 "no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump "
-"you upload contains all the data from the crashed program, including your "
+"more complete. Retrace server may generate better backtraces. Cons: coredump"
+" you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
 "Wysyła zrzut core do serwera, który tworzy wyjątek i go zwraca. Jeśli "
 "użytkownik nie chce wysyłać swojego zrzutu, to zdarzenie wykonuje analizę "
-"lokalną. Lokalna analiza jest wykonywana także wtedy, gdy zdalna analiza się "
-"nie powiedzie. Zalety: nie trzeba pobierać pakietów debuginfo. Baza danych "
-"pakietów debuginfo serwera ponownego śledzenia jest bardziej kompletna. Może "
-"on tworzyć lepsze wyjątki. Wady: wysyłane zrzuty core zawierają wszystkie "
+"lokalną. Lokalna analiza jest wykonywana także wtedy, gdy zdalna analiza się"
+" nie powiedzie. Zalety: nie trzeba pobierać pakietów debuginfo. Baza danych "
+"pakietów debuginfo serwera ponownego śledzenia jest bardziej kompletna. Może"
+" on tworzyć lepsze wyjątki. Wady: wysyłane zrzuty core zawierają wszystkie "
 "dane programu, który uległ awarii, w tym potencjalnie prywatne dane."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
@@ -2735,8 +2728,8 @@ msgstr "Zapisuje pliki .vimrc i .gvimrc z katalogu domowego użytkownika"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
-"as user_vimrc and user_gvimrc, respectively."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
+" as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 "Sprawdza, czy istnieją pliki .vimrc i .gvimrc w katalogu domowym i zapisuje "
 "je jako user_vimrc i user_gvimrc."

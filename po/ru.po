@@ -5,16 +5,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2016-07-14 09:45+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-09-03 04:42+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 "X-Generator: Zanata 4.6.2\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -66,11 +65,11 @@ msgstr ""
 #: ../src/applet/applet.c:699
 #, c-format
 msgid ""
-"We’re sorry, it looks like %s crashed. The problem will be reported when the "
-"internet is available."
+"We’re sorry, it looks like %s crashed. The problem will be reported when the"
+" internet is available."
 msgstr ""
-"Похоже, произошел сбой %s. Отчет об этой ошибке будет отправлен, когда будет "
-"доступ к Интернету."
+"Похоже, произошел сбой %s. Отчет об этой ошибке будет отправлен, когда будет"
+" доступ к Интернету."
 
 #: ../src/applet/applet.c:705 ../src/applet/applet.c:719
 #: ../src/applet/applet.c:747
@@ -109,8 +108,8 @@ msgstr ""
 
 #: ../src/applet/applet.c:741
 msgid ""
-"We're sorry, it looks like a problem occurred. If you'd like to help resolve "
-"the issue, please send a report."
+"We're sorry, it looks like a problem occurred. If you'd like to help resolve"
+" the issue, please send a report."
 msgstr ""
 "Похоже, произошел сбой. Если вы хотите помочь в решении проблемы, отправьте "
 "отчет."
@@ -121,8 +120,8 @@ msgstr ""
 msgid "Can't show notification: %s"
 msgstr "Не удалось показать уведомление: %s"
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #. TODO: Terminate child's process?
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/applet/applet.c:818 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
@@ -146,14 +145,15 @@ msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
-msgstr "& [-v] [DIR]...\n"
+msgstr ""
+"& [-v] [DIR]...\n"
 "\n"
 "Модуль оповещения о неполадках, обнаруженных ABRT\n"
 
 #: ../src/configuration-gui/abrt-config-widget.c:483
 msgid ""
-"The configuration option above has been moved to GSettings and the switch is "
-"linked to the value of the setting 'report-technical-problems' from the "
+"The configuration option above has been moved to GSettings and the switch is"
+" linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
 "Указанный выше параметр конфигурации был перенесен в GSettings, и "
@@ -187,18 +187,18 @@ msgstr "Краткий отчет без подтверждения"
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
-"space consuming operation. ABRT provides a service which generates the stack "
-"trace from the coredump but you have to upload the coredump to this service. "
-"With option 'Always' ABRT will always upload the coredump without asking. "
-"With option 'Never' the stack trace will be always generated locally. With "
-"option 'Ask' ABRT will always ask the user."
+"space consuming operation. ABRT provides a service which generates the stack"
+" trace from the coredump but you have to upload the coredump to this "
+"service. With option 'Always' ABRT will always upload the coredump without "
+"asking. With option 'Never' the stack trace will be always generated "
+"locally. With option 'Ask' ABRT will always ask the user."
 msgstr ""
 "Файл дампа памяти нужен для генерации трассировки стека. Эта операция "
 "требует значительных затрат времени и места, поэтому ABRT предоставляет "
 "средства для трассировки стека вызовов на основании дампа памяти, "
 "предварительно загруженного на сервер. Если выбрано значение «Всегда», то "
-"ABRT будет отправлять дамп памяти по умолчанию, не запрашивая подтверждения, "
-"и наоборот, «Никогда» означает, что трассировка стека будет генерироваться "
+"ABRT будет отправлять дамп памяти по умолчанию, не запрашивая подтверждения,"
+" и наоборот, «Никогда» означает, что трассировка стека будет генерироваться "
 "локально. Если выбрать «Спрашивать», ABRT будет каждый раз запрашивать "
 "подтверждение у пользователя."
 
@@ -218,26 +218,26 @@ msgstr ""
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
-"uses uReports  for fast global duplicate detection. In default configuration "
-"uReport is sent at beginning of reporting process. With this option enabled "
-"uReports are sent automatically immediately after problem detection."
+"uses uReports  for fast global duplicate detection. In default configuration"
+" uReport is sent at beginning of reporting process. With this option enabled"
+" uReports are sent automatically immediately after problem detection."
 msgstr ""
 "uReport содержит краткое и полностью анонимное описание проблемы. ABRT "
 "использует отчеты uReport для быстрого поиска дубликатов. В стандартной "
-"конфигурации uReport отправляется в начале процесса формирования отчетности. "
-"Если этот параметр включен, отчеты uReport отправляются автоматически сразу "
-"после обнаружения проблемы."
+"конфигурации uReport отправляется в начале процесса формирования отчетности."
+" Если этот параметр включен, отчеты uReport отправляются автоматически сразу"
+" после обнаружения проблемы."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
-"With this option enabled reporting process started by click on Report button "
-"in problem notification bubble will be interrupted after uReport is sent. "
+"With this option enabled reporting process started by click on Report button"
+" in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
 "Если этот параметр включен, процесс создания отчета, запущенный нажатием "
-"кнопки «Отчет» во всплывающем сообщении о сбое, ограничится отправкой отчета "
-"uReport. Полный отчет можно создать в окне просмотра обнаруженных ошибок."
+"кнопки «Отчет» во всплывающем сообщении о сбое, ограничится отправкой отчета"
+" uReport. Полный отчет можно создать в окне просмотра обнаруженных ошибок."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
@@ -245,8 +245,8 @@ msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
-"Если этот параметр включен, ABRT не будет показывать уведомления об отправке "
-"отчетов. Действует, только если включен сокращенный формат."
+"Если этот параметр включен, ABRT не будет показывать уведомления об отправке"
+" отчетов. Действует, только если включен сокращенный формат."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid ""
@@ -274,9 +274,9 @@ msgid ""
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
 msgstr ""
-"Если обнаружены неполные данные об ошибках (вследствие выключения компьютера "
-"или выхода пользователя из системы), то в целях обеспечения информативности "
-"ABRT не позволит отправлять неполные отчеты."
+"Если обнаружены неполные данные об ошибках (вследствие выключения компьютера"
+" или выхода пользователя из системы), то в целях обеспечения информативности"
+" ABRT не позволит отправлять неполные отчеты."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid "Always"
@@ -358,10 +358,12 @@ msgid "Use this directory as RPM root"
 msgstr "Использовать этот каталог в качестве корневого для RPM"
 
 #: ../src/daemon/abrt-action-save-container-data.c:254
-msgid "& [-v] -d DIR\n"
+msgid ""
+"& [-v] -d DIR\n"
 "\n"
 "Save container metadata"
-msgstr "& [-v] -d DIR\n"
+msgstr ""
+"& [-v] -d DIR\n"
 "\n"
 "Сохранить метаданные контейнера"
 
@@ -478,16 +480,16 @@ msgstr ""
 #: ../src/daemon/abrtd.c:389
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
-"detected while computer is shutting down or user is logging out. In order to "
-"provide valuable problem reports, ABRT will not allow you to submit this "
-"problem. If you have time and want to help the developers in their effort to "
-"sort out this problem, please contact them directly."
+"detected while computer is shutting down or user is logging out. In order to"
+" provide valuable problem reports, ABRT will not allow you to submit this "
+"problem. If you have time and want to help the developers in their effort to"
+" sort out this problem, please contact them directly."
 msgstr ""
 "Неполные данные об ошибке. Обычно имеет место, если сбой произошел во время "
 "выключения компьютера или завершения сеанса пользователя. Во избежание "
 "отправки неполных данных, ABRT не позволит вам отправить отчет. Если у вас "
-"есть время, и вы хотите помочь разработчикам устранить эту ошибку, свяжитесь "
-"с ними напрямую."
+"есть время, и вы хотите помочь разработчикам устранить эту ошибку, свяжитесь"
+" с ними напрямую."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrtd.c:457
@@ -566,44 +568,52 @@ msgstr "Максимальный размер кэша в МиБ. По умол�
 msgid "& [ "
 msgstr "& [ "
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
 msgstr "Отключает проверку подлинности"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/daemon/abrt-auto-reporting.c:234
 msgid "Red Hat Support user name"
 msgstr "Имя пользователя в системе поддержки Red Hat"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
 msgstr ""
-"Пароль доступа к системе поддержки Red Hat. Если не указан, будет предложено "
-"его ввести вручную"
+"Пароль доступа к системе поддержки Red Hat. Если не указан, будет предложено"
+" его ввести вручную"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/daemon/abrt-auto-reporting.c:236
 msgid "uReport SSL certificate paths or certificate type"
 msgstr "Путь к SSL-сертификату uReport или тип сертификата"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/daemon/abrt-auto-reporting.c:252
 msgid "You also need to specify --username for --password"
 msgstr "Если задан параметр --password, необходимо определить и --username"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/daemon/abrt-auto-reporting.c:258
 msgid "You can use either --username or --certificate"
 msgstr "Укажите --username или --certificate "
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/daemon/abrt-auto-reporting.c:264
 msgid "You can use either --username or --anonymous"
 msgstr "Укажите --username или --anonymous"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/daemon/abrt-auto-reporting.c:270
 msgid "You can use either --anonymous or --certificate"
 msgstr "Укажите --anonymous или --certificate"
@@ -619,33 +629,39 @@ msgstr "Недопустимое число аргументов"
 msgid "Unknown option value: '%s'\n"
 msgstr "Неизвестное значение параметра: «%s»\n"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/daemon/abrt-auto-reporting.c:336
 msgid "Password:"
 msgstr "Пароль:"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/daemon/abrt-auto-reporting.c:339
 msgid "Cannot continue without password\n"
 msgstr "Для продолжения необходимо ввести пароль\n"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
 #. Print only the part before ':' of a string like "username:password"
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
 msgstr "Автоматический отчет для HTTP-подключений"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
 msgstr "Автоматический отчет для SSL-подключений"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/daemon/abrt-auto-reporting.c:384
 msgid "anonymous auto reporting"
 msgstr "автоматический отчет для анонимных подключений"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/daemon/abrt-handle-upload.in:135
 #, c-format
 msgid ""
@@ -746,8 +762,8 @@ msgstr "Не удалось распаковать «{0}»"
 msgid "'{0}' processed successfully"
 msgstr "'{0}' обработан успешно"
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #. Let user know what's going on
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/lib/hooklib.c:253
 msgid "Generating backtrace"
 msgstr "Формируется обратная трассировка"
@@ -809,11 +825,11 @@ msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
 "problems '%s'"
 msgstr ""
-"Ошибка записи в «%s». Не удалось удалить «%s» из списка игнорируемых проблем "
-"«%s»."
+"Ошибка записи в «%s». Не удалось удалить «%s» из списка игнорируемых проблем"
+" «%s»."
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #. Something nefarious happened
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/lib/ignored_problems.c:264
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
@@ -831,15 +847,14 @@ msgstr ""
 "& [параметры] -d DIR\n"
 "\n"
 "Анализ протокола сбоев C/C++, создание хеша дублирования,\n"
-"рейтинга трассировки и определение сбойной функции в каталоге статистики "
-"сбоя DIR"
+"рейтинга трассировки и определение сбойной функции в каталоге статистики сбоя DIR"
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #. 
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
 #. 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -856,7 +871,8 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
-msgstr "& [-v] -d DIR\n"
+msgstr ""
+"& [-v] -d DIR\n"
 "\n"
 "Расчет и сохранение UUID дампа памяти в каталоге DIR"
 
@@ -952,9 +968,11 @@ msgstr "Извлечение текста ошибки ядра"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-analyze-vmcore.in:87
-msgid "Can't process {0}:\n"
+msgid ""
+"Can't process {0}:\n"
 "{1}"
-msgstr "Не удалось обработать: {0}:\n"
+msgstr ""
+"Не удалось обработать: {0}:\n"
 "{1}"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
@@ -1030,10 +1048,10 @@ msgstr "Дополнительные каталоги debuginfo"
 msgid "Kill gdb if it runs for more than NUM seconds"
 msgstr "Завершить gdb, если он работает больше NUM сек."
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
 #. 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -1048,16 +1066,15 @@ msgid ""
 msgstr ""
 "& [-v] [-r] -d DIR\n"
 "\n"
-"Создает трассировку coredump-level из дампа памяти и соответствующего "
-"двоичного файла"
+"Создает трассировку coredump-level из дампа памяти и соответствующего двоичного файла"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
 msgstr "Не хешировать отпечатки"
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #. Let user know what's going on
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
 msgid "Generating core_backtrace"
 msgstr "Формируется core_backtrace"
@@ -1082,8 +1099,7 @@ msgstr "Выход по команде пользователя"
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
-"[--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH]...]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
@@ -1095,10 +1111,8 @@ msgid ""
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
 "    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
-"RANDOM_SUFFIX\n"
-"    --cache     Colon separated list of directories. The first one is used "
-"for\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     Colon separated list of directories. The first one is used for\n"
 "                saving installed debuginfos.\n"
 "                Default: /var/cache/abrt-dir\n"
 "    --size_mb   Default: 4096\n"
@@ -1108,25 +1122,20 @@ msgid ""
 "                Default: *debug*\n"
 msgstr ""
 "Формат: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
-"[--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH]...]\n"
 "\n"
 "Устанавливает отладочные пакеты для всех build-id,  перечисленных в файле\n"
-"BUILD_IDS_FILE, в каталог CACHEDIR, используя TMPDIR в качестве места для "
-"подготовки временных файлов.\n"
-"Старые файлы в CACHEDIR будут удаляться, пока его размер не станет меньше "
-"SIZE.\n"
+"BUILD_IDS_FILE, в каталог CACHEDIR, используя TMPDIR в качестве места для подготовки временных файлов.\n"
+"Старые файлы в CACHEDIR будут удаляться, пока его размер не станет меньше SIZE.\n"
 "\n"
 "Читает конфигурацию из /etc/abrt/plugins/CCpp.conf\n"
 "\n"
 "    -v          Подробный вывод\n"
 "    -y          Неинтерактивный режим, принимается «Да» на все вопросы\n"
 "    --ids       По умолчанию: build_ids\n"
-"    --tmpdir    По умолчанию: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
-"RANDOM_SUFFIX\n"
-"    --cache     Разделенный двоеточием список каталогов. Первый используется "
-"для\n"
+"    --tmpdir    По умолчанию: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     Разделенный двоеточием список каталогов. Первый используется для\n"
 "               сохранения установленных debuginfos.\n"
 "               По умолчанию: /var/cache/abrt-di\n"
 "    --size_mb   По умолчанию: 4096\n"
@@ -1156,8 +1165,8 @@ msgstr "некоторые файлы debuginfo не установлены ({0}
 #, c-format
 msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
 msgstr ""
-"Неправильная конфигурация расширения CCpp, неподдерживаемый менеджер пакетов:"
-" «%s»"
+"Неправильная конфигурация расширения CCpp, неподдерживаемый менеджер "
+"пакетов: «%s»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-install-debuginfo.in:253
@@ -1233,8 +1242,7 @@ msgstr ""
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
-"SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
@@ -1461,8 +1469,7 @@ msgid ""
 msgstr ""
 "& [-vs] [-F STR]... FILE PROG [ARGS]\n"
 "\n"
-"Следить за журнальным файлом FILE, запускать PROG, когда он увеличится или "
-"будет замещен"
+"Следить за журнальным файлом FILE, запускать PROG, когда он увеличится или будет замещен"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-watch-log.c:154
@@ -1486,10 +1493,10 @@ msgstr ""
 msgid "Print found oopses on standard output"
 msgstr "Вывести найденные ошибки в stdout"
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
 #. 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-dump-oops.c:102
 #: ../src/plugins/abrt-dump-journal-oops.c:224
 msgid "Create new problem directory in DIR for every oops found"
@@ -1581,8 +1588,7 @@ msgstr ""
 "\n"
 "Извлечь дамп памяти из systemd-journal\n"
 "\n"
-"Параметры -c и -e противоречат друг другу, потому что оба указывают первое "
-"прочитанное сообщение.\n"
+"Параметры -c и -e противоречат друг другу, потому что оба указывают первое прочитанное сообщение.\n"
 "\n"
 "-e используется только для -f, потому что отслеживание журнала начинается\n"
 "с чтения всего журнала, если нет последней позиции просмотра.\n"
@@ -1670,8 +1676,7 @@ msgstr ""
 "\n"
 "Извлечь данные сбоя из журнала systemd-journal\n"
 "\n"
-"Параметры -c и -e противоречат друг другу, потому что оба задают первое "
-"прочитанное сообщение.\n"
+"Параметры -c и -e противоречат друг другу, потому что оба задают первое прочитанное сообщение.\n"
 "\n"
 "-e используется только для -f, потому что отслеживание журнала\n"
 "начинается с чтения всего журнала, если нет последней позиции просмотра.\n"
@@ -1722,8 +1727,7 @@ msgid ""
 "\n"
 "The last seen position is saved in %s\n"
 "\n"
-"Journal filter is required parameter and must be specified either by "
-"parameter\n"
+"Journal filter is required parameter and must be specified either by parameter\n"
 "-j or in %s conf file.\n"
 msgstr ""
 "& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
@@ -1757,11 +1761,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:265
 msgid ""
-"Journal filter must be specified either by parameter -j or stored in /etc/"
-"abrt/plugins/xorg.conf file"
+"Journal filter must be specified either by parameter -j or stored in "
+"/etc/abrt/plugins/xorg.conf file"
 msgstr ""
-"Фильтр для выборки данных из журнала может быть задан с помощью параметра -j "
-"или в файле /etc/abrt/plugins/xorg.conf."
+"Фильтр для выборки данных из журнала может быть задан с помощью параметра -j"
+" или в файле /etc/abrt/plugins/xorg.conf."
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:282
 msgid "Cannot filter systemd-journal to Xorg data only"
@@ -1860,10 +1864,10 @@ msgstr ""
 "Не удалось задействовать сервер трассировки, так как сбой слишком обширен. "
 "Попробуйте обработать локально."
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
 #. 
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-retrace-client.c:103
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
@@ -1895,9 +1899,11 @@ msgstr "Не удалось отправить заголовок HTTP длин�
 #: ../src/plugins/abrt-retrace-client.c:1011
 #: ../src/plugins/abrt-retrace-client.c:1070
 #, c-format
-msgid "Unexpected HTTP response from server: %d\n"
+msgid ""
+"Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr "Непредвиденный HTTP-ответ сервера: %d\n"
+msgstr ""
+"Непредвиденный HTTP-ответ сервера: %d\n"
 "%s"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
@@ -1941,8 +1947,8 @@ msgstr "Отказ сервера."
 #, c-format
 msgid "'%s' must be a regular file in order to use Retrace server."
 msgstr ""
-"Чтобы использовать возможности сервера трассировки,  необходимо, чтобы  «%s» "
-"был обычным файлом."
+"Чтобы использовать возможности сервера трассировки,  необходимо, чтобы  «%s»"
+" был обычным файлом."
 
 #: ../src/plugins/abrt-retrace-client.c:520
 #, c-format
@@ -1982,8 +1988,8 @@ msgstr "Подготовка архива к передаче"
 #: ../src/plugins/abrt-retrace-client.c:628
 #, c-format
 msgid ""
-"The size of your archive is %s, but the retrace server only accepts archives "
-"smaller or equal to %s."
+"The size of your archive is %s, but the retrace server only accepts archives"
+" smaller or equal to %s."
 msgstr ""
 "Размер вашего архива %s, но отслеживающий сервер принимает архивы не больше "
 "%s."
@@ -2059,9 +2065,11 @@ msgstr "Задание отслеживания запущено"
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-retrace-client.c:808
 #, c-format
-msgid "Task Id: %s\n"
+msgid ""
+"Task Id: %s\n"
 "Task Password: %s\n"
-msgstr "ID задания: %s\n"
+msgstr ""
+"ID задания: %s\n"
 "Пароль: %s\n"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
@@ -2072,9 +2080,11 @@ msgstr "Неверный ответ сервера: отсутствует X-Tas
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-retrace-client.c:878
 #, c-format
-msgid "Task Status: %s\n"
+msgid ""
+"Task Status: %s\n"
 "%s\n"
-msgstr "Статус задания: %s\n"
+msgstr ""
+"Статус задания: %s\n"
 "%s\n"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
@@ -2220,8 +2230,8 @@ msgstr ""
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
 "Требует загрузки пакетов debuginfo, что может занять некоторое время и "
 "требует наличия свободного места на диске. Отличается от обработки на "
@@ -2235,15 +2245,15 @@ msgstr "Отправка дампа памяти удалённому серве
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. Pros:"
-" no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump "
-"you upload contains all the data from the crashed program, including your "
-"private data, if any."
+"Uploads coredump to a server, which generates backtrace and returns it. "
+"Pros: no need for debuginfo downloads. Retrace server's database of "
+"debuginfos is more complete. Retrace server may generate better backtraces. "
+"Cons: coredump you upload contains all the data from the crashed program, "
+"including your private data, if any."
 msgstr ""
 "Отправляет дамп памяти на сервер для генерации протокола сбоя. Достоинства: "
-"не требуется загружать debuginfo. База данных на отслеживающем сервере более "
-"подробная, поэтому сервер может создавать более точные отчёты. Недостатки: "
+"не требуется загружать debuginfo. База данных на отслеживающем сервере более"
+" подробная, поэтому сервер может создавать более точные отчёты. Недостатки: "
 "отправляемый дамп содержит все данные сбойной программы, в том числе и "
 "личные."
 
@@ -2270,13 +2280,13 @@ msgstr "Использование незащищенного подключен
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
-"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
-"&gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a "
+"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
+" &gt;(warning)&lt;/a&gt;"
 msgstr ""
-"Введите «insecure», чтобы разрешить незащищенное подключение &lt;a href="
-"\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
-"&gt;(предупреждение)&lt;/a&gt;"
+"Введите «insecure», чтобы разрешить незащищенное подключение &lt;a "
+"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
+" &gt;(предупреждение)&lt;/a&gt;"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
@@ -2294,8 +2304,8 @@ msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
 msgstr ""
-"Проверяет ~/.xsession-errors и сохраняет строки, содержащие имя исполняемого "
-"модуля. Результат сохраняется в «xsession_errors»."
+"Проверяет ~/.xsession-errors и сохраняет строки, содержащие имя исполняемого"
+" модуля. Результат сохраняется в «xsession_errors»."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/https-utils.c:62
@@ -2368,8 +2378,8 @@ msgstr "Не удалось получить «PEM Token #0»: %d."
 msgid "Can't resolve host name '%s'. NSS error %d."
 msgstr "Не удалось разрешить имя узла «%s». Ошибка NSS %d."
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #. Host exists, but has neither IPv4 nor IPv6??
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/https-utils.c:203
 #, c-format
 msgid "Can't resolve host name '%s'."
@@ -2541,13 +2551,15 @@ msgstr ""
 msgid "Searching for updates"
 msgstr "Поиск обновлений"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/plugins/bodhi.c:548
 msgid "No updates for this package found"
 msgstr "Нет обновлений этого пакета"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
 #. strbuf_free(q);
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/plugins/bodhi.c:577
 msgid "Local version of the package is newer than available updates"
 msgstr "Локальная версия пакета новее обнаруженных обновлений"
@@ -2556,13 +2568,14 @@ msgstr "Локальная версия пакета новее обнаруже
 #: ../src/plugins/bodhi.c:594
 #, c-format
 msgid ""
-"An update exists which might fix your problem. You can install it by running:"
-" %s. Do you want to continue with reporting the bug?"
+"An update exists which might fix your problem. You can install it by "
+"running: %s. Do you want to continue with reporting the bug?"
 msgstr ""
 "Доступно обновление, которое поможет исправить эту проблему. Команда "
 "установки: %s. Продолжить создание отчета?"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
 msgid ""
 "& [-v] [-od] FILE...\n"
@@ -2573,7 +2586,8 @@ msgstr ""
 "\n"
 "Поиск ошибок ядра в файлах. Может их вывести и удалить."
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/hooks/abrt-merge-pstoreoops.c:97
 msgid "Print found oopses"
 msgstr "Показать найденные сбои"
@@ -2603,7 +2617,8 @@ msgstr "Показать ошибки [в DIR]"
 msgid "Remove problem directory DIR"
 msgstr "Удалить каталог DIR"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/cli/abrt-cli.c:136
 msgid "Analyze and report problem data in DIR"
 msgstr "Анализировать и представить отчет по ошибкам в DIR"
@@ -2613,7 +2628,8 @@ msgstr "Анализировать и представить отчет по о�
 msgid "Print information about DIR"
 msgstr "Вывод информации о DIR"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/cli/abrt-cli.c:138
 msgid "Print the count of the recent crashes"
 msgstr "Вывод числа недавних сбоев"
@@ -2623,7 +2639,8 @@ msgstr "Вывод числа недавних сбоев"
 msgid "Process multiple problems"
 msgstr "Обработка нескольких проблем"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/cli/abrt-cli.c:162
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr ""
@@ -2639,18 +2656,20 @@ msgstr "& list [параметры]"
 msgid "List only not-reported problems"
 msgstr "Показать ошибки, о которых еще не сообщалось"
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #. deprecate -d option with --pretty=full
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/list.c:138 ../src/cli/list.c:191
 msgid "Show detailed report"
 msgstr "Представить подробный отчет"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/cli/list.c:139 ../src/cli-ng/abrtcli/cli.py:113
 msgid "List only the problems more recent than specified timestamp"
 msgstr "Получить список ошибок, обнаруженных после указанного момента времени"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/cli/list.c:140 ../src/cli-ng/abrtcli/cli.py:115
 msgid "List only the problems older than specified timestamp"
 msgstr "Получить список ошибок, обнаруженных до указанного момента времени"
@@ -2659,8 +2678,7 @@ msgstr "Получить список ошибок, обнаруженных д�
 #: ../src/cli/list.c:166
 #, c-format
 msgid ""
-"The Autoreporting feature is disabled. Please consider enabling it by "
-"issuing\n"
+"The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
 msgstr ""
 "Функции автоматического создания отчетов отключены. \n"
@@ -2686,17 +2704,20 @@ msgstr "Нет такого каталога:  «%s»."
 msgid "& status"
 msgstr "& status"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/cli/status.c:74 ../src/cli-ng/abrtcli/cli.py:260
 msgid "Print only the problem count without any message"
 msgstr "Вывод только числа сбоев"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/cli/status.c:75 ../src/cli-ng/abrtcli/cli.py:262
 msgid "Print only the problems more recent than specified timestamp"
 msgstr "Вывод сбоев, обнаруженных после указанного момента времени"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/cli/status.c:91
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
@@ -2746,13 +2767,14 @@ msgstr "Действия: удалить (rm), сообщить (e), инфор�
 msgid "Reporting '%s'"
 msgstr "Отчет по «%s»..."
 
-# translation auto-copied from project abrt, version rhel7, document abrt
 #. dummy must be free because the function ask allocate memory
+# translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/process.c:127
 msgid "For next problem press ENTER:"
 msgstr "Для перехода к следующей проблеме нажмите ENTER:"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/cli/process.c:138
 msgid "Without --since argument, iterates over all detected problems."
 msgstr ""
@@ -2794,8 +2816,7 @@ msgid ""
 "If this is a system problem try running this command as root"
 msgstr ""
 "Отказано в доступе: «{}»\n"
-"Если это вызвано конфликтом в системе, попробуйте выполнить эту команду от "
-"имени root"
+"Если это вызвано конфликтом в системе, попробуйте выполнить эту команду от имени root"
 
 #: ../src/cli-ng/abrtcli/cli.py:71
 msgid "Install required debuginfo for given problem"
@@ -2889,8 +2910,8 @@ msgid ""
 msgstr ""
 "Загрузить дамп на сервер для прохождения трассировки? Он может содержать "
 "конфиденциальные данные. Если вы откажетесь, трассировка стека будет "
-"генерироваться локально, однако это может потребовать загрузки значительного "
-"объема данных."
+"генерироваться локально, однако это может потребовать загрузки значительного"
+" объема данных."
 
 #: ../src/cli-ng/abrtcli/cli.py:248
 msgid "Remote retracing"
@@ -2945,8 +2966,8 @@ msgid ""
 "user doesn't want to upload his coredump to anywhere the event performs "
 "local analysis. Local analysis is run event if remote analysis fails. Pros: "
 "no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump "
-"you upload contains all the data from the crashed program, including your "
+"more complete. Retrace server may generate better backtraces. Cons: coredump"
+" you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
 "Отправляет дамп памяти на сервер для создания протокола сбоя. По желанию "
@@ -3003,19 +3024,21 @@ msgstr ""
 msgid "Collect system-wide vim configuration files"
 msgstr "Сбор системных файлов конфигурации vim"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/plugins/collect_vimrc_system.xml.in.h:2
 msgid "Save /etc/vimrc and /etc/gvimrc"
 msgstr "Сохранить /etc/vimrc и /etc/gvimrc"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/plugins/collect_vimrc_system.xml.in.h:3
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
 msgstr ""
-"Проверка наличия файлов vimrc и gvimrc в /etc и их сохранение в system_vimrc "
-"и system_gvimrc."
+"Проверка наличия файлов vimrc и gvimrc в /etc и их сохранение в system_vimrc"
+" и system_gvimrc."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
@@ -3027,11 +3050,12 @@ msgstr "Сбор пользовательских файлов конфигур�
 msgid "Save .vimrc and .gvimrc from your home directory"
 msgstr "Получение .vimrc и .gvimrc из домашнего каталога пользователя"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
-"as user_vimrc and user_gvimrc, respectively."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
+" as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 "Проверка наличия  .vimrc и .gvimrc  в домашнем каталоге и их сохранение в "
 "user_vimrc и user_gvimrc."
@@ -3041,7 +3065,8 @@ msgstr ""
 msgid "Post report"
 msgstr "Отправить отчет"
 
-# translation auto-copied from project abrt, version rhel7, document abrt, author yuliya
+# translation auto-copied from project abrt, version rhel7, document abrt,
+# author yuliya
 #: ../src/plugins/post_report.xml.in.h:2
 msgid "Executed after the reporting is finished"
 msgstr "Выполнено после создания отчета"
