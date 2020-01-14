@@ -26,6 +26,8 @@
 
 int main(int argc, char **argv)
 {
+    g_autofree char *checksum = NULL;
+
     /* I18n */
     setlocale(LC_ALL, "");
 #if ENABLE_NLS
@@ -91,13 +93,12 @@ int main(int argc, char **argv)
 
     char *bt_end = strchrnul(bt, '\n');
     *bt_end = '\0';
-    char hash_str[SHA1_RESULT_LEN*2 + 1];
-    str_to_sha1str(hash_str, bt);
+    checksum = g_compute_checksum_for_string(G_CHECKSUM_SHA1, bt, -1);
 
     free(bt);
 
-    dd_save_text(dd, FILENAME_UUID, hash_str);
-    dd_save_text(dd, FILENAME_DUPHASH, hash_str);
+    dd_save_text(dd, FILENAME_UUID, checksum);
+    dd_save_text(dd, FILENAME_DUPHASH, checksum);
     dd_close(dd);
 
     return 0;

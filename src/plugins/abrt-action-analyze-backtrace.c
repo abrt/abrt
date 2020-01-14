@@ -82,6 +82,8 @@ int main(int argc, char **argv)
     /* Store backtrace hash */
     if (!backtrace)
     {
+        g_autofree char *checksum = NULL;
+
         /*
          * The parser failed. Compute the duphash from the executable
          * instead of a backtrace.
@@ -98,10 +100,10 @@ int main(int argc, char **argv)
         strbuf_prepend_str(emptybt, component);
 
         log_debug("Generating duphash: %s", emptybt->buf);
-        char hash_str[SHA1_RESULT_LEN*2 + 1];
-        str_to_sha1str(hash_str, emptybt->buf);
 
-        dd_save_text(dd, FILENAME_DUPHASH, hash_str);
+        checksum = g_compute_checksum_for_string(G_CHECKSUM_SHA1, emptybt->buf, -1);
+
+        dd_save_text(dd, FILENAME_DUPHASH, checksum);
         /*
          * Other parts of ABRT assume that if no rating is available,
          * it is ok to allow reporting of the bug. To be sure no bad

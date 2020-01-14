@@ -572,9 +572,11 @@ static AbrtP2Object *session_object_register(AbrtP2Service *service,
 
 static char *session_object_caller_to_path(const char *caller)
 {
-    char hash_str[SHA1_RESULT_LEN*2 + 1];
-    str_to_sha1str(hash_str, caller);
-    return xasprintf(ABRT_P2_PATH"/Session/%s", hash_str);
+    g_autofree char *checksum = NULL;
+
+    checksum = g_compute_checksum_for_string(G_CHECKSUM_SHA1, caller, -1);
+
+    return xasprintf(ABRT_P2_PATH"/Session/%s", checksum);
 }
 
 static AbrtP2Object *abrt_p2_service_get_session_for_caller(
@@ -1323,9 +1325,11 @@ static void entry_object_destructor(AbrtP2Object *obj)
 
 static char *entry_object_dir_name_to_path(const char *dd_dirname)
 {
-    char hash_str[SHA1_RESULT_LEN*2 + 1];
-    str_to_sha1str(hash_str, dd_dirname);
-    return xasprintf(ABRT_P2_PATH"/Entry/%s", hash_str);
+    g_autofree char *checksum = NULL;
+
+    checksum = g_compute_checksum_for_string(G_CHECKSUM_SHA1, dd_dirname, -1);
+
+    return xasprintf(ABRT_P2_PATH"/Entry/%s", checksum);
 }
 
 static AbrtP2Object *entry_object_register_dump_dir(AbrtP2Service *service,
@@ -1480,8 +1484,10 @@ char *abrt_p2_service_save_problem( AbrtP2Service *service,
         else
         {
             /* start hash */
-            sha1_ctx_t sha1ctx;
-            sha1_begin(&sha1ctx);
+            g_autoptr(GChecksum) checksum = NULL;
+            const char *digest;
+
+            checksum = g_checksum_new(G_CHECKSUM_SHA1);
 
             /*
              * To avoid spurious hash differences, sort keys so that elements are
@@ -1500,19 +1506,16 @@ char *abrt_p2_service_save_problem( AbrtP2Service *service,
 
                 gsize size = 0;
                 const char *content = g_variant_get_string(element, &size);
-                sha1_hash(&sha1ctx, content, size);
+
+                g_checksum_update(checksum, (const unsigned char *)content, size);
 
                 g_variant_unref(element);
             }
             g_list_free_full(list, free);
 
-            /* end hash */
-            char hash_bytes[SHA1_RESULT_LEN];
-            sha1_end(&sha1ctx, hash_bytes);
-            char hash_str[SHA1_RESULT_LEN*2 + 1];
-            bin2hex(hash_str, hash_bytes, SHA1_RESULT_LEN)[0] = '\0';
+            digest = g_checksum_get_string(checksum);
 
-            g_variant_dict_insert(&pd, FILENAME_UUID, "s", hash_str);
+            g_variant_dict_insert(&pd, FILENAME_UUID, "s", digest);
         }
     }
 

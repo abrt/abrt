@@ -235,10 +235,11 @@ int main(int argc, char **argv)
 
     log_debug("String to hash: %s", string_to_hash);
 
-    char hash_str[SHA1_RESULT_LEN*2 + 1];
-    str_to_sha1str(hash_str, string_to_hash);
+    g_autofree char *checksum = NULL;
 
-    dd_save_text(dd, FILENAME_UUID, hash_str);
+    checksum = g_compute_checksum_for_string(G_CHECKSUM_SHA1, string_to_hash, -1);
+
+    dd_save_text(dd, FILENAME_UUID, checksum);
 
     /* Create crash_function element from core_backtrace */
     char *core_backtrace_json = dd_load_text_ext(dd, FILENAME_CORE_BACKTRACE,
