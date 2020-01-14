@@ -603,7 +603,6 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %systemd_preun abrtd.service
 
 %preun addon-ccpp
-%systemd_preun abrt-ccpp.service
 %systemd_preun abrt-journal-core.service
 
 %preun addon-kerneloops
@@ -625,7 +624,6 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %systemd_postun_with_restart abrtd.service
 
 %postun addon-ccpp
-%systemd_postun_with_restart abrt-ccpp.service
 %systemd_postun_with_restart abrt-journal-core.service
 
 %postun addon-kerneloops
