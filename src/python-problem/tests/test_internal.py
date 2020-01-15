@@ -8,8 +8,6 @@ sys.path.insert(0, os.path.abspath(".."))
 sys.path.insert(0, os.path.abspath("../problem/.libs"))  # because of _pyabrt
 os.environ["PATH"] = "{0}:{1}".format(os.path.abspath(".."), os.environ["PATH"])
 
-from nose import tools
-
 from base import ProblematicTestCase
 
 import problem
@@ -17,25 +15,25 @@ import problem
 class InternalProblemImplementationTestCase(ProblematicTestCase):
     def test_init(self):
         prob = self.create_problem()
-        tools.eq_(prob._proxy, self.proxy )
+        assert prob._proxy == self.proxy
 
     def test_setattr(self):
         prob = self.create_problem()
 
         prob.test = 0
-        tools.eq_(prob._data['test'], 0)
-        tools.eq_(prob._dirty_data, {})
+        assert prob._data['test'] == 0
+        assert prob._dirty_data == {}
 
         prob._test = 1
-        tools.eq_(prob._test, 1)
-        tools.ok_('_test' not in prob._data)
+        assert prob._test == 1
+        assert '_test' not in prob._data
 
         prob.add_current_process_data()
         prob.save()
 
         prob.persisted_test = 0
-        tools.eq_(prob._data['persisted_test'], 0)
-        tools.eq_(prob._dirty_data['persisted_test'], 0)
+        assert prob._data['persisted_test'] == 0
+        assert prob._dirty_data['persisted_test'] == 0
 
         prob.delete()
 
@@ -43,65 +41,65 @@ class InternalProblemImplementationTestCase(ProblematicTestCase):
         prob = self.create_problem()
 
         prob['test'] = 0
-        tools.eq_(prob._data['test'], 0)
-        tools.eq_(prob._dirty_data, {})
+        assert prob._data['test'] == 0
+        assert prob._dirty_data == {}
 
         prob['_test'] = 1
-        tools.ok_('_test' not in prob._data)
+        assert '_test' not in prob._data
 
         prob.add_current_process_data()
         prob.save()
 
         prob['persisted_test'] = 0
-        tools.eq_(prob._data['persisted_test'], 0)
-        tools.eq_(prob._dirty_data['persisted_test'], 0)
+        assert prob._data['persisted_test'] == 0
+        assert prob._dirty_data['persisted_test'] == 0
 
         prob.delete()
 
     def test_delattr(self):
         prob = self.create_problem()
         del prob.reason
-        tools.ok_('reason' not in prob._data)
+        assert 'reason' not in prob._data
 
         prob.add_current_process_data()
         prob.save()
 
         del prob.type
-        tools.eq_(prob._dirty_data, {'type': None})
+        assert prob._dirty_data == {'type': None}
 
         prob.save()
 
-        tools.eq_(prob._dirty_data, {})
+        assert prob._dirty_data == {}
 
         prob.delete()
 
     def test_delitem(self):
         prob = self.create_problem()
         del prob['reason']
-        tools.ok_('reason' not in prob._data)
+        assert 'reason' not in prob._data
 
         prob.add_current_process_data()
         prob.save()
 
         del prob['type']
-        tools.eq_(prob._dirty_data, {'type': None})
+        assert prob._dirty_data == {'type': None}
 
         prob.save()
 
-        tools.eq_(prob._dirty_data, {})
+        assert prob._dirty_data == {}
 
         prob.delete()
 
     def test_items(self):
         prob = problem.Runtime('Massive error')
-        tools.eq_(prob.items(), prob._data.items())
+        assert prob.items() == prob._data.items()
 
     def test_save(self):
         prob = self.create_problem()
         prob.add_current_process_data()
         ident = prob.save()
 
-        tools.eq_(prob._probdir, ident)
+        assert prob._probdir == ident
 
         prob.delete()
 
@@ -112,9 +110,9 @@ class InternalProblemImplementationTestCase(ProblematicTestCase):
 
         prob.executable = 'nine'
 
-        tools.eq_(prob._dirty_data['executable'], 'nine')
+        assert prob._dirty_data['executable'] == 'nine'
         prob.save()
-        tools.eq_(prob._dirty_data, {})
+        assert prob._dirty_data == {}
 
         prob.delete()
 
@@ -125,9 +123,9 @@ class InternalProblemImplementationTestCase(ProblematicTestCase):
 
         prob.delete()
 
-        tools.eq_(prob._persisted, False)
-        tools.eq_(prob._probdir, None)
-        tools.eq_(prob._dirty_data, {})
+        assert not prob._persisted
+        assert prob._probdir == None
+        assert prob._dirty_data == {}
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)

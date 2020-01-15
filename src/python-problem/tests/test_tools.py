@@ -8,8 +8,6 @@ sys.path.insert(0, os.path.abspath(".."))
 sys.path.insert(0, os.path.abspath("../problem/.libs"))  # because of _pyabrt
 os.environ["PATH"] = "{0}:{1}".format(os.path.abspath(".."), os.environ["PATH"])
 
-from nose import tools
-
 from base import ProblematicTestCase
 
 import problem
@@ -22,11 +20,11 @@ class ProblemifyTestCase(ProblematicTestCase):
 
         prob2 = problem.tools.problemify(ident, self.proxy)
 
-        tools.eq_(type(prob), type(prob2))
-        tools.eq_(prob.type, prob2.type)
-        tools.eq_(prob.analyzer, prob2.analyzer)
-        tools.eq_(prob.reason, prob2.reason)
-        tools.eq_(prob.executable, prob2.executable)
+        assert type(prob) == type(prob2)
+        assert prob.type == prob2.type
+        assert prob.analyzer == prob2.analyzer
+        assert prob.reason == prob2.reason
+        assert prob.executable == prob2.executable
 
         prob.delete()
 
@@ -37,7 +35,7 @@ class ProblemifyTestCase(ProblematicTestCase):
         ident = prob.save()
 
         prob2 = problem.tools.problemify(ident, self.proxy)
-        tools.eq_(type(prob2), problem.Unknown)
+        assert type(prob2) == problem.Unknown
 
         prob.delete()
 
