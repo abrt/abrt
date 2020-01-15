@@ -136,18 +136,18 @@ ABRT_PARSE_WITH([pythontests]))
 
 [if test -z "$NO_PYTHONTESTS"]
 [then]
-    AM_CONDITIONAL(HAVE_PYTHON_NOSE, true)
-    AC_PATH_PROG([PYTHON_NOSE], [nosetests-3], [no])
-    [if test "$PYTHON_NOSE" = "no"]
+    AM_CONDITIONAL(HAVE_PYTEST, true)
+    AC_PATH_PROG([PYTEST], [pytest-3], [no])
+    [if test "$PYTEST" = "no"]
     [then]
-        [echo "The nosetests-3 program was not found in the search path. Please ensure"]
+        [echo "The pytest-3 program was not found in the search path. Please ensure"]
         [echo "that it is installed and its directory is included in the search path or"]
         [echo "pass --without-pythontests to ./configure."]
         [echo "Then run configure again before attempting to build ABRT."]
         [exit 1]
     [fi]
 [else]
-    AM_CONDITIONAL(HAVE_PYTHON_NOSE, false)
+    AM_CONDITIONAL(HAVE_PYTEST, false)
 [fi]
 
 GLIB_VERSION=2.55.1

@@ -10,8 +10,6 @@ sys.path.insert(0, os.path.abspath(".."))
 sys.path.insert(0, os.path.abspath("../problem/.libs"))  # because of _pyabrt
 os.environ["PATH"] = "{0}:{1}".format(os.path.abspath(".."), os.environ["PATH"])
 
-from nose import tools
-
 from base import ProblematicTestCase
 
 import problem
@@ -20,26 +18,26 @@ class ProblemAPITestCase(ProblematicTestCase):
     def test_init(self):
         prob = self.create_problem()
 
-        tools.eq_(prob.type, problem.RUNTIME)
-        tools.eq_(prob.analyzer, problem.RUNTIME)
-        tools.eq_(prob.reason, 'Front fell off')
+        assert prob.type == problem.RUNTIME
+        assert prob.analyzer == problem.RUNTIME
+        assert prob.reason == 'Front fell off'
 
     def test_add_current_process_data(self):
         prob = self.create_problem()
 
         prob.add_current_process_data()
-        tools.eq_(prob.pid, os.getpid())
-        tools.eq_(prob.gid, os.getgid())
-        tools.ok_(
+        assert prob.pid == os.getpid()
+        assert prob.gid == os.getgid()
+        assert (
             '<stdin>'  in prob.executable or
             'tests.py' in prob.executable or
             'test_api.py' in prob.executable or
-            'nosetest' in prob.executable)
+            'pytest' in prob.executable)
 
     def test_getattr(self):
         prob = self.create_problem()
 
-        tools.eq_(prob.reason, 'Front fell off')
+        assert prob.reason == 'Front fell off'
 
         self.assertRaises(AttributeError, lambda: prob.non_existent)
 
@@ -47,7 +45,7 @@ class ProblemAPITestCase(ProblematicTestCase):
         ident = prob.save()
 
         self.proxy.set_item(ident, 'test', 'wat')
-        tools.eq_(prob.test, 'wat')
+        assert prob.test == 'wat'
 
         self.assertRaises(AttributeError, lambda: prob.persisted_non_existent)
 
@@ -72,14 +70,14 @@ class ProblemAPITestCase(ProblematicTestCase):
 
         self.proxy.set_item(ident, 'test', 1)
 
-        tools.eq_(prob.test, 1)
+        assert prob.test == 1
 
         prob.delete()
 
     def test_getitem(self):
         prob = self.create_problem()
 
-        tools.eq_(prob['reason'], 'Front fell off')
+        assert prob['reason'] == 'Front fell off'
 
         self.assertRaises(KeyError, lambda:  prob['non_existent'])
 
@@ -87,7 +85,7 @@ class ProblemAPITestCase(ProblematicTestCase):
         ident = prob.save()
 
         self.proxy.set_item(ident, 'test', 'wat')
-        tools.eq_(prob['test'], 'wat')
+        assert prob['test'] == 'wat'
 
         self.assertRaises(KeyError, lambda: prob['persisted_non_existent'])
 
@@ -97,16 +95,16 @@ class ProblemAPITestCase(ProblematicTestCase):
         prob = self.create_problem()
 
         prob.test = 'x'
-        tools.eq_(prob.test, 'x')
+        assert prob.test == 'x'
 
         prob._test = 'y'
-        tools.eq_(prob._test, 'y')
+        assert prob._test == 'y'
 
         prob.add_current_process_data()
         ident = prob.save()
 
-        tools.eq_(self.proxy.get_item(ident, 'test'), 'x')
-        tools.eq_(self.proxy.get_item(ident, '_test'), None)
+        assert self.proxy.get_item(ident, 'test') == 'x'
+        assert self.proxy.get_item(ident, '_test') == None
 
         prob.delete()
 
@@ -121,7 +119,7 @@ class ProblemAPITestCase(ProblematicTestCase):
         prob.test = '14'
         prob.save()
 
-        tools.eq_(self.proxy.get_item(ident, 'test'), '14')
+        assert self.proxy.get_item(ident, 'test') == '14'
 
         prob.delete()
 
@@ -130,16 +128,16 @@ class ProblemAPITestCase(ProblematicTestCase):
         prob = self.create_problem()
 
         prob['test'] = 'x'
-        tools.eq_(prob.test, 'x')
-        tools.eq_(prob['test'], 'x')
+        assert prob.test == 'x'
+        assert prob['test'] == 'x'
 
         prob['_test'] = 'y'
 
         prob.add_current_process_data()
         ident = prob.save()
 
-        tools.eq_(self.proxy.get_item(ident, 'test'), 'x')
-        tools.eq_(self.proxy.get_item(ident, '_test'), None)
+        assert self.proxy.get_item(ident, 'test') == 'x'
+        assert self.proxy.get_item(ident, '_test') == None
 
         prob.delete()
 
@@ -153,12 +151,12 @@ class ProblemAPITestCase(ProblematicTestCase):
         prob.add_current_process_data()
         ident = prob.save()
 
-        tools.eq_(self.proxy.get_item(ident, 'reason'), None)
+        assert self.proxy.get_item(ident, 'reason') == None
 
         del prob.type
         prob.save()
 
-        tools.eq_(self.proxy.get_item(ident, 'type'), None)
+        assert self.proxy.get_item(ident, 'type') == None
 
         prob.delete()
 
@@ -179,7 +177,7 @@ class ProblemAPITestCase(ProblematicTestCase):
 
         prob.save()
 
-        tools.eq_(self.proxy.get_item(ident, 'test'), None)
+        assert self.proxy.get_item(ident, 'test') == None
 
         prob.delete()
 
@@ -197,12 +195,12 @@ class ProblemAPITestCase(ProblematicTestCase):
         prob.add_current_process_data()
         ident = prob.save()
 
-        tools.eq_(self.proxy.get_item(ident, 'reason'), None)
+        assert self.proxy.get_item(ident, 'reason') == None
 
         del prob['type']
         prob.save()
 
-        tools.eq_(self.proxy.get_item(ident, 'type'), None)
+        assert self.proxy.get_item(ident, 'type') == None
 
         prob.delete()
 
@@ -213,10 +211,10 @@ class ProblemAPITestCase(ProblematicTestCase):
         prob['mynumerical'] = 15
         ident = prob.save()
 
-        tools.eq_(self.proxy.get_item(ident, 'mynumerical'), '15')
+        assert self.proxy.get_item(ident, 'mynumerical') == '15'
         self.proxy.set_item(ident, 'numerical', '123')
 
-        tools.eq_(prob.numerical, 123)
+        assert prob.numerical == 123
 
         prob.delete()
 
@@ -235,16 +233,16 @@ class ProblemAPITestCase(ProblematicTestCase):
         self.proxy.set_item(ident, 'time', str(saved_time))
         cast_time = prob.time
 
-        tools.eq_(cast_time, datetime.datetime.fromtimestamp(int(saved_time)))
-        tools.eq_(type(cast_time), datetime.datetime)
+        assert cast_time == datetime.datetime.fromtimestamp(int(saved_time))
+        assert type(cast_time) == datetime.datetime
 
         prob.time += datetime.timedelta(days=3)
         prob.save()
 
         updated_time = self.proxy.get_item(ident, 'time')
 
-        tools.ok_(type(updated_time), str)
-        tools.ok_(updated_time != saved_time)
+        assert type(updated_time) == str
+        assert updated_time != saved_time
 
         prob.delete()
 
@@ -254,27 +252,27 @@ class ProblemAPITestCase(ProblematicTestCase):
         prob.add_current_environment()
 
         for key, value in os.environ.items():
-            tools.ok_('{0}={1}'.format(key, value) in prob.environ)
+            assert '{0}={1}'.format(key, value) in prob.environ
 
     def test_save_delete(self):
         prob = self.create_problem()
         prob.add_current_process_data()
 
         path = prob.save()
-        tools.ok_('runtime-' in path)
+        assert 'runtime-' in path
 
         prob.delete()
 
     def test_repr(self):
         prob = self.create_problem()
         ret = repr(prob)
-        tools.ok_('problem.Runtime' in ret)
-        tools.ok_('(Front fell off)' in ret)
+        assert 'problem.Runtime' in ret
+        assert '(Front fell off)' in ret
 
     def test_items(self):
         prob = self.create_problem()
         for key, value in prob.items():
-            tools.eq_(prob[key], value)
+            assert prob[key] == value
 
     def test_validate(self):
         prob = self.create_problem()
@@ -299,12 +297,12 @@ class ProblemAPITestCase(ProblematicTestCase):
         prob.add_current_process_data()
         ident = prob.save()
 
-        tools.eq_(self.proxy.get_item(ident, 'type'), problem.RUNTIME)
-        tools.eq_(self.proxy.get_item(ident, 'analyzer'), problem.RUNTIME)
-        tools.eq_(self.proxy.get_item(ident, 'reason'), 'Front fell off')
-        tools.ok_(self.proxy.get_item(ident, 'pid') is not None)
-        tools.ok_(self.proxy.get_item(ident, 'gid') is not None)
-        tools.ok_(self.proxy.get_item(ident, 'executable') is not None)
+        assert self.proxy.get_item(ident, 'type') == problem.RUNTIME
+        assert self.proxy.get_item(ident, 'analyzer') == problem.RUNTIME
+        assert self.proxy.get_item(ident, 'reason') == 'Front fell off'
+        assert self.proxy.get_item(ident, 'pid') is not None
+        assert self.proxy.get_item(ident, 'gid') is not None
+        assert self.proxy.get_item(ident, 'executable') is not None
 
         prob.delete()
 
@@ -316,7 +314,7 @@ class ProblemAPITestCase(ProblematicTestCase):
         prob.executable = 'nine'
         prob.save()
 
-        tools.eq_(self.proxy.get_item(ident, 'executable'), 'nine')
+        assert self.proxy.get_item(ident, 'executable') == 'nine'
 
         prob.delete()
 
@@ -325,11 +323,11 @@ class ProblemAPITestCase(ProblematicTestCase):
         prob.add_current_process_data()
         ident = prob.save()
 
-        tools.ok_(ident in self.proxy.list())
+        assert ident in self.proxy.list()
 
         prob.delete()
 
-        tools.ok_(ident not in self.proxy.list())
+        assert ident not in self.proxy.list()
 
     def test_delete_then_save(self):
         prob = self.create_problem()
@@ -338,7 +336,7 @@ class ProblemAPITestCase(ProblematicTestCase):
         prob.delete()
         ident2 = prob.save()
 
-        tools.ok_(ident != ident2)
+        assert ident != ident2
 
         prob.delete()
 
@@ -346,11 +344,11 @@ class ProblemAPITestCase(ProblematicTestCase):
         for ptype, internal in problem.PROBLEM_TYPES.items():
             class_name = ptype.lower().capitalize()
             prinstance = getattr(problem, class_name)('Front fell off')
-            tools.eq_(prinstance.type, internal)
-            tools.eq_(prinstance.analyzer, internal)
+            assert prinstance.type == internal
+            assert prinstance.analyzer == internal
 
         unpr = problem.Unknown('Front not found')
-        tools.eq_(unpr.type, 'libreport')
+        assert unpr.type == 'libreport'
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
