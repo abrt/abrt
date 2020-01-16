@@ -261,7 +261,7 @@ int main(int argc, char *argv[])
             conf_journal_filters = XORG_DEFAULT_JOURNAL_FILTERS;
         }
 
-        xorg_journal_filter = parse_list(conf_journal_filters);
+        xorg_journal_filter = parse_delimited_list(conf_journal_filters, ",");
         /* list data will be free by g_list_free_full */
         free_filter_list_data = true;
         free_map_string(settings);

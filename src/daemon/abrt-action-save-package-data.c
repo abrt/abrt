@@ -49,20 +49,20 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     value = get_map_string_item_or_NULL(settings, "BlackList");
     if (value)
     {
-        settings_setBlackListedPkgs = parse_list(value);
+        settings_setBlackListedPkgs = parse_delimited_list(value, ",");
         remove_map_string_item(settings, "BlackList");
     }
     else
-        settings_setBlackListedPkgs = parse_list(DEFAULT_BLACKLISTED_PKGS);
+        settings_setBlackListedPkgs = parse_delimited_list(DEFAULT_BLACKLISTED_PKGS, ",");
 
     value = get_map_string_item_or_NULL(settings, "BlackListedPaths");
     if (value)
     {
-        settings_setBlackListedPaths = parse_list(value);
+        settings_setBlackListedPaths = parse_delimited_list(value, ",");
         remove_map_string_item(settings, "BlackListedPaths");
     }
     else
-        settings_setBlackListedPaths = parse_list(DEFAULT_BLACKLISTED_PATHS);
+        settings_setBlackListedPaths = parse_delimited_list(DEFAULT_BLACKLISTED_PATHS, ",");
 
     value = get_map_string_item_or_NULL(settings, "ProcessUnpackaged");
     if (value)
@@ -74,11 +74,11 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     value = get_map_string_item_or_NULL(settings, "Interpreters");
     if (value)
     {
-        settings_Interpreters = parse_list(value);
+        settings_Interpreters = parse_delimited_list(value, ",");
         remove_map_string_item(settings, "Interpreters");
     }
     else
-        settings_Interpreters = parse_list(DEFAULT_INTERPRETERS);
+        settings_Interpreters = parse_delimited_list(DEFAULT_INTERPRETERS, ",");
 
     map_string_iter_t iter;
     const char *name;
