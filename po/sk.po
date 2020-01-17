@@ -1,7 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Translators:
 # Dominik Labuda <dominikla@gmail.com>, 2012
 # Dušan Kazik <prescott66@gmail.com>, 2011-2013
@@ -12,23 +11,23 @@
 # Dusan Kazik <prescott66@gmail.com>, 2015. #zanata
 # feonsu <feonsu@gmail.com>, 2016. #zanata
 # Dusan Kazik <prescott66@gmail.com>, 2017. #zanata
-# Matej Marusak <mmarusak@redhat.com>, 2017. #zanata
-# Matej Marusak <mmarusak@redhat.com>, 2018. #zanata
+# Matej Marusak <mmarusak@redhat.com>, 2017. #zanata, 2020.
+# Matej Marusak <mmarusak@redhat.com>, 2018. #zanata, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-09 10:53+0100\n"
-"PO-Revision-Date: 2018-10-18 12:31+0000\n"
+"PO-Revision-Date: 2020-01-17 02:16+0000\n"
 "Last-Translator: Matej Marusak <mmarusak@redhat.com>\n"
-"Language-Team: Slovak (http://www.transifex.com/projects/p/fedora-abrt/"
-"language/sk/)\n"
+"Language-Team: Slovak <https://translate.stg.fedoraproject.org/projects/abrt/"
+"abrt/sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Zanata 4.6.2\n"
+"X-Generator: Weblate 3.10.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -36,7 +35,7 @@ msgstr "Nahlásenie problému"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr "Zobrazuje a nahlasuje zlyhania aplikácií"
+msgstr "Zobrazenie a nahlasovanie pádov aplikácií"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
@@ -234,7 +233,7 @@ msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
-"Po povolení tejto možnosti ABRT nikdy neukáže notifikáciu reportovaných "
+" Po povolení tejto možnosti ABRT nikdy neukáže notifikáciu reportovaných "
 "problémov. Nadobúda efekt iba ak skrátené reportovanie je povolené."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
@@ -359,7 +358,7 @@ msgstr "Použiť NUM ako identifikátor používateľa pre klienta"
 #: ../src/plugins/abrt-dump-journal-xorg.c:191
 #: ../src/plugins/abrt-dump-xorg.c:52
 msgid "Log to syslog"
-msgstr "Zalogovať do syslog"
+msgstr "Zalogovať do syslog-u"
 
 #: ../src/daemon/abrt-server.c:1113 ../src/daemon/abrtd.c:754
 msgid "Add program names to log"
@@ -604,7 +603,7 @@ msgstr "Nedá sa zmeniť adresár na „{0}“"
 
 #: ../src/daemon/abrt-handle-upload.in:200
 msgid "Unknown file type: '{0}'"
-msgstr "Neznámy typ súboru:  '{0}'"
+msgstr "Neznámy typ súboru: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:205
 msgid "Can't create working directory in '{0}'"
@@ -947,11 +946,11 @@ msgstr "Chýba požadovaný súbor: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:173
 msgid "Missing debuginfo file: {0}"
-msgstr "Chýbajúci debuginfo balíček:  {0}"
+msgstr "Chýbajúci debuginfo balíček: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:176
 msgid "All debuginfo files are available"
-msgstr "Všetky debuginfo balíčky sú dostupné."
+msgstr "Všetky debuginfo balíčky sú dostupné"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:190
 #, c-format
@@ -1213,7 +1212,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-gdb-exploitable:701
 msgid "Likely crash reason: "
-msgstr "Pravdepodobný dôvod predčasného skončenia:"
+msgstr "Pravdepodobný dôvod predčasného skončenia: "
 
 #: ../src/plugins/abrt-gdb-exploitable:702
 msgid "Exploitable rating (0-9 scale): "
@@ -1221,7 +1220,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-gdb-exploitable:704
 msgid "Current instruction: "
-msgstr "Aktuálna inštrukcia:"
+msgstr "Aktuálna inštrukcia: "
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Exploitability analysis came up empty\n"
@@ -1597,7 +1596,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:230
 #: ../src/plugins/abrt-retrace-client.c:234
 msgid "Can't create temporary file in "
-msgstr "Nedá sa vytvoriť dočasný súbor v"
+msgstr "Nedá sa vytvoriť dočasný súbor v "
 
 #: ../src/plugins/abrt-retrace-client.c:322
 #: ../src/plugins/abrt-retrace-client.c:498
@@ -1646,7 +1645,7 @@ msgstr "Server odmietol Vašu požiadavku."
 #: ../src/plugins/abrt-retrace-client.c:612
 #, c-format
 msgid "'%s' must be a regular file in order to use Retrace server."
-msgstr "'%s' musí byť obyčajný súbor pre použitie Retrace serveru. "
+msgstr "'%s' musí byť obyčajný súbor pre použitie Retrace serveru."
 
 #: ../src/plugins/abrt-retrace-client.c:632
 #, c-format
@@ -1992,7 +1991,7 @@ msgstr ""
 #: ../src/plugins/oops-utils.c:254
 #, c-format
 msgid " Tainted modules: %s."
-msgstr "Nefunkčné moduly: %s."
+msgstr " Nefunkčné moduly: %s."
 
 #: ../src/plugins/bodhi.c:498
 msgid "List of bug ids"
