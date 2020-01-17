@@ -1,29 +1,28 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Translators:
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
-# Piotr Drąg <piotrdrag@gmail.com>, 2011-2014
-# Piotr Drąg <piotrdrag@gmail.com>, 2015. #zanata
-# Piotr Drąg <piotrdrag@gmail.com>, 2016. #zanata
-# Piotr Drąg <piotrdrag@gmail.com>, 2017. #zanata
+# Piotr Drąg <piotrdrag@gmail.com>, 2011-2014, 2020.
+# Piotr Drąg <piotrdrag@gmail.com>, 2015. #zanata, 2020.
+# Piotr Drąg <piotrdrag@gmail.com>, 2016. #zanata, 2020.
+# Piotr Drąg <piotrdrag@gmail.com>, 2017. #zanata, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-09 10:53+0100\n"
-"PO-Revision-Date: 2017-03-25 08:11+0000\n"
+"PO-Revision-Date: 2020-01-11 15:01+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
-"Language-Team: Polish (http://www.transifex.com/projects/p/fedora-abrt/"
-"language/pl/)\n"
+"Language-Team: Polish <https://translate.stg.fedoraproject.org/projects/abrt/"
+"abrt/pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 3.10.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -234,7 +233,7 @@ msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
-"Jeśli ta opcja jest włączona, to program ABRT nigdy nie będzie wyświetlał "
+" Jeśli ta opcja jest włączona, to program ABRT nigdy nie będzie wyświetlał "
 "powiadomień o zgłoszonych problemach. Jest brane pod uwagę tylko, jeśli "
 "włączone jest Skrócone zgłaszanie."
 
@@ -243,7 +242,7 @@ msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
 msgstr ""
-"Jeśli ta opcja jest włączona, to program ABRT będzie tworzył zgłoszenie "
+" Jeśli ta opcja jest włączona, to program ABRT będzie tworzył zgłoszenie "
 "błędu z ograniczonym dostępem zawsze, kiedy wykryte zostaną prywatne dane."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
@@ -504,11 +503,11 @@ msgstr "Jako usługa"
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr "Liczba jednocześnie działających wątków. Domyślnie wynosi"
+msgstr "Liczba jednocześnie działających wątków. Domyślnie wynosi "
 
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr "Maksymalny rozmiar pamięci podręcznej w MiB. Domyślnie wynosi"
+msgstr "Maksymalny rozmiar pamięci podręcznej w MiB. Domyślnie wynosi "
 
 #: ../src/daemon/abrt-auto-reporting.c:198
 #: ../src/daemon/abrt-auto-reporting.c:206
@@ -765,8 +764,8 @@ msgid ""
 msgstr ""
 "& [opcje] -d KATALOG\n"
 "\n"
-"Analizuje wyjątek w języku C/C++, tworzy sumę duplikatu, ocenę wyjątku i\n"
-"identyfikuje funkcję awarii w KATALOGU problemu"
+"Analizuje wyjątek w języku C/C++, tworzy sumę duplikatu, ocenę wyjątku\n"
+"i identyfikuje funkcję awarii w KATALOGU problemu"
 
 #.
 #. * The parser failed. Compute the duphash from the executable
@@ -1339,7 +1338,7 @@ msgstr "Nie można uzyskać sygnału i wykonać analizy możliwości wykorzysta
 
 #: ../src/plugins/abrt-gdb-exploitable:701
 msgid "Likely crash reason: "
-msgstr "Prawdopodobna przyczyna awarii:"
+msgstr "Prawdopodobna przyczyna awarii: "
 
 #: ../src/plugins/abrt-gdb-exploitable:702
 msgid "Exploitable rating (0-9 scale): "
@@ -1347,7 +1346,7 @@ msgstr "Ocena możliwości wykorzystania (skala 0-9): "
 
 #: ../src/plugins/abrt-gdb-exploitable:704
 msgid "Current instruction: "
-msgstr "Bieżąca instrukcja:"
+msgstr "Bieżąca instrukcja: "
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Exploitability analysis came up empty\n"
@@ -1789,7 +1788,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:230
 #: ../src/plugins/abrt-retrace-client.c:234
 msgid "Can't create temporary file in "
-msgstr "Nie można utworzyć tymczasowego pliku w"
+msgstr "Nie można utworzyć tymczasowego pliku w "
 
 #: ../src/plugins/abrt-retrace-client.c:322
 #: ../src/plugins/abrt-retrace-client.c:498
@@ -2000,7 +1999,7 @@ msgstr "Opóźnienie do działań odpytywania"
 msgid "(debug) do not delete temporary archive created from dump dir in "
 msgstr ""
 "(debugowanie) nie usuwa tymczasowych archiwów utworzonych z katalogu zrzutów "
-"w"
+"w "
 
 #: ../src/plugins/abrt-retrace-client.c:1274
 msgid "For status, backtrace, and log operations"
@@ -2192,7 +2191,7 @@ msgstr ""
 #: ../src/plugins/oops-utils.c:254
 #, c-format
 msgid " Tainted modules: %s."
-msgstr "Zanieczyszczone moduły: %s."
+msgstr " Zanieczyszczone moduły: %s."
 
 #: ../src/plugins/bodhi.c:498
 msgid "List of bug ids"
