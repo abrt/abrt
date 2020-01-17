@@ -1,7 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Translators:
 # Hasan Alp İNAN <hasanalpinan@gmail.com>, 2011
 # Irmak Bıçakçıgil <red.nihi@gmail.com>, 2013
@@ -15,21 +14,22 @@
 # Bora Can Aslı <boracasli14@aol.com>, 2018. #zanata
 # Muhammet Kara <muhammet.k@gmail.com>, 2018. #zanata
 # Serdar Sağlam <teknomobil@msn.com>, 2019. #zanata
+# Oğuz Ersen <oguzersen@protonmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-09 10:53+0100\n"
-"PO-Revision-Date: 2019-05-10 10:12+0000\n"
-"Last-Translator: Serdar Sağlam <teknomobil@msn.com>\n"
-"Language-Team: Turkish (http://www.transifex.com/projects/p/fedora-abrt/"
-"language/tr/)\n"
+"PO-Revision-Date: 2020-01-17 02:16+0000\n"
+"Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
+"Language-Team: Turkish <https://translate.stg.fedoraproject.org/projects/"
+"abrt/abrt/tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+"X-Generator: Weblate 3.10.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -37,7 +37,7 @@ msgstr "Sorun Bildir"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr "Uygulama çökmelerini görüntüle ve raporla"
+msgstr "Uygulama çökmelerini görüntüle ve bildir"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
@@ -167,7 +167,7 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.c:496
 msgid "The configuration option above can be configured in"
-msgstr "Yukarıdaki yapılandırma seçeneği yapılandırılabilir:"
+msgstr "Yukarıdaki yapılandırma seçeneği yapılandırılabilir"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
@@ -242,8 +242,8 @@ msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
-"Bu özellik etkinleştirildiğinde ABRT asla bildirilmiş sorunlar hakkında "
-"bildirim göstermez. Eğer sadece Kısaltılmış bildirme etkinse etkisini "
+" Bu özellik etkinleştirildiğinde ABRT bildirilmiş sorunlar hakkında asla "
+"bildirim göstermez. Sadece Kısaltılmış bildirme etkinleştirilmişse etkisini "
 "gösterir."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
@@ -251,8 +251,8 @@ msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
 msgstr ""
-"Bu özellik etkinleştirildiğinde, eğer muhtemelen hassas veriler tespit "
-"edilirse ABRT her zaman kısıtlı erişimi olan bir hata bileti oluşturur."
+" Bu özellik etkinleştirildiğinde, muhtemel hassas veriler tespit edilirse "
+"ABRT her zaman kısıtlı erişimi olan bir hata bileti oluşturur."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid "Request private ticket for sensitive information"
@@ -311,7 +311,7 @@ msgstr "Hakkında"
 
 #: ../src/configuration-gui/main.c:106
 msgid "Quit"
-msgstr "Çıkış"
+msgstr "Çık"
 
 #: ../src/daemon/abrt-action-save-package-data.c:456
 msgid ""
@@ -420,7 +420,7 @@ msgstr "Sorun alanı kalmadı"
 #: ../src/dbus/abrt-dbus.c:685
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr "'%s' elemanı '%s' sorun dizininden silinemiyor."
+msgstr "'%s' elemanı '%s' sorun dizininden silinemiyor"
 
 #: ../src/dbus/abrt-dbus.c:938 ../src/daemon/abrtd.c:720
 #, c-format
@@ -502,11 +502,11 @@ msgstr "Daemonize etme"
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr "Eşzamanlı çalışma sayısı. Öntanımlı"
+msgstr "Eşzamanlı çalışan sayısı. Varsayılan: "
 
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr "MiB'de azami önbellek boyutu. Öntanımlı"
+msgstr "MiB'de azami önbellek boyutu. Varsayılan: "
 
 #: ../src/daemon/abrt-auto-reporting.c:198
 #: ../src/daemon/abrt-auto-reporting.c:206
@@ -1602,7 +1602,7 @@ msgstr "Yükleniyor '%d%%\n"
 
 #: ../src/plugins/abrt-retrace-client.c:554
 msgid "Querying server settings"
-msgstr "Sunucu ayarları sorgulanıyor."
+msgstr "Sunucu ayarları sorgulanıyor"
 
 #: ../src/plugins/abrt-retrace-client.c:564
 msgid "The server is fully occupied. Try again later."
@@ -1632,7 +1632,7 @@ msgstr "Sunucu sıkıştırılmış-xz tarball'ları desteklemiyor."
 #: ../src/plugins/abrt-retrace-client.c:689
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
-msgstr "'%s' sürümü geri izleme sunucusu tarafından desteklenmiyor. "
+msgstr "'%s' sürümü Retrace sunucusu tarafından desteklenmiyor."
 
 #: ../src/plugins/abrt-retrace-client.c:693
 msgid "The server is not able to handle your request."
@@ -1686,15 +1686,15 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:848
 msgid "Invalid response from server: missing X-Task-Id."
-msgstr "Sunucudan geçersiz cevap: X-Task-Id kayıp"
+msgstr "Sunucudan geçersiz cevap: X-Task-Id eksik."
 
 #: ../src/plugins/abrt-retrace-client.c:857
 msgid "Invalid response from server: missing X-Task-Password."
-msgstr "Sunucudan geçersiz cevap: X-Task-Password kayıp"
+msgstr "Sunucudan geçersiz cevap: X-Task-Password eksik."
 
 #: ../src/plugins/abrt-retrace-client.c:864
 msgid "Retrace job started"
-msgstr "Geri izleme işi başladı."
+msgstr "Geri izleme işi başladı"
 
 #: ../src/plugins/abrt-retrace-client.c:878
 #, c-format
@@ -1707,7 +1707,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:929
 msgid "Invalid response from server: missing X-Task-Status."
-msgstr "Sunucudan geçersiz cevap: X-Task-Status kayıp"
+msgstr "Sunucudan geçersiz cevap: X-Task-Status eksik."
 
 #: ../src/plugins/abrt-retrace-client.c:942
 #, c-format
@@ -1798,7 +1798,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:1352
 #: ../src/plugins/abrt-retrace-client.c:1360
 msgid "Task id is needed."
-msgstr "Görev ID si gerekli"
+msgstr "Görev kimliği gerekli."
 
 #: ../src/plugins/abrt-retrace-client.c:1338
 #: ../src/plugins/abrt-retrace-client.c:1346
@@ -1810,7 +1810,7 @@ msgstr "Görev şifresi gerekli."
 #: ../src/plugins/abrt-retrace-client.c:1366
 #, c-format
 msgid "Unknown operation: %s."
-msgstr "Bilinmeyen işlem: %s"
+msgstr "Bilinmeyen işlem: %s."
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:1
 msgid "Search for updated packages that fixes the crash."
@@ -1892,8 +1892,8 @@ msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
 msgstr ""
-" ~/.xsession-errors dosyasını tarar ve çalıştırılabilir dosya isimleri "
-"içeren satırları kaydeder. Sonuç 'xsession_errors' element olarak kaydedilir."
+"~/.xsession-errors dosyasını tarar ve çalıştırılabilir dosya isimleri içeren "
+"satırları kaydeder. Sonuç 'xsession_errors' elemanı olarak kaydedilir."
 
 #: ../src/plugins/https-utils.c:53
 msgid "An error occurred on the server side."
@@ -2255,8 +2255,8 @@ msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
 msgstr ""
-" gconftool-2 --recursive-list /apps/executable 'ı çalıştır ve onu "
-"'gconf_subtree' elemanı olarak kaydet."
+"gconftool-2 --recursive-list /apps/executable komutunu çalıştır ve onu "
+"'gconf_subtree' elemanı olarak kaydeder."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
