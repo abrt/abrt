@@ -1,7 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Translators:
 # Fil_Rouge <cyril.francois.87@gmail.com>, 2011
 # dominique bribanick <chepioq@gmail.com>, 2011,2013
@@ -25,21 +24,22 @@
 # Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>, 2016. #zanata
 # Julie Carbone <jcarbone@redhat.com>, 2016. #zanata
 # Jérôme Bivia <jerome.bivia@gmail.com>, 2016. #zanata
+# Julien Humbert <julroy67@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-09 10:53+0100\n"
-"PO-Revision-Date: 2016-12-03 02:05+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
-"Language-Team: French (http://www.transifex.com/projects/p/fedora-abrt/"
-"language/fr/)\n"
+"PO-Revision-Date: 2020-01-17 02:16+0000\n"
+"Last-Translator: Julien Humbert <julroy67@gmail.com>\n"
+"Language-Team: French <https://translate.stg.fedoraproject.org/projects/abrt/"
+"abrt/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 3.10.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -47,7 +47,7 @@ msgstr "Signalement de problèmes"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr "Voir et signaler des incidents d'application"
+msgstr "Visualiser et signaler les incidents de l’application"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
@@ -68,7 +68,7 @@ msgstr ""
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
-msgstr "Oups!"
+msgstr "Oups !"
 
 #: ../src/applet/abrt-applet-application.c:573
 msgid "Report"
@@ -259,7 +259,7 @@ msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
-"Quand cette option est activée, ABRT n'affiche aucune notification des "
+" Quand cette option est activée, ABRT n'affiche aucune notification des "
 "incidents signalés. Elle ne prend effet que si le mode Signalement abrégé "
 "est activé."
 
@@ -268,7 +268,7 @@ msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
 msgstr ""
-"Quand cette option est activée, ABRT crée toujours un ticket d'anomalie à "
+" Quand cette option est activée, ABRT crée toujours un ticket d'anomalie à "
 "accès restreint si des données possiblement sensibles ont été détectées."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
@@ -754,7 +754,7 @@ msgstr "La suppression du répertoire d'incidents a échoué : %s"
 #: ../src/lib/problem_api_dbus.c:131
 #, c-format
 msgid "D-Bus GetInfo method call failed: %s"
-msgstr "D-Bus GetInfo method call failed: %s"
+msgstr "D-Bus GetInfo method call failed : %s"
 
 #: ../src/lib/problem_api_dbus.c:166
 msgid "Can't get problem data from abrt-dbus"
@@ -925,7 +925,7 @@ msgid ""
 "Can't process {0}:\n"
 "{1}"
 msgstr ""
-"Impossible de traiter {0}:\n"
+"Impossible de traiter {0} :\n"
 "{1}"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:90
@@ -963,7 +963,7 @@ msgstr "Utilisation du produit {0}."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:125
 msgid "Using product version {0}."
-msgstr "Utilisation de la version du produit {0}"
+msgstr "Utilisation de la version du produit {0}."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:137
 msgid "Duplicate bugzilla bug '#{0}' was found"
@@ -1033,7 +1033,7 @@ msgstr "Erreur : GDB n'a retourné aucune information"
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:95
 #, c-format
 msgid "Error: %s"
-msgstr "Erreur : %s"
+msgstr "Erreur : %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:61
 msgid "Can't open {0}: {1}"
@@ -1054,7 +1054,7 @@ msgstr "{0} des fichiers debuginfo ne sont pas installés"
 msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
 msgstr ""
 "La configuration de l'addition CCpp est invalide, gestionnaire de paquets "
-"invalide: « %s »"
+"invalide : « %s »"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:168
 msgid "Missing requested file: {0}"
@@ -1519,7 +1519,7 @@ msgstr ""
 #: ../src/plugins/abrt-dump-journal-core.c:470
 #, c-format
 msgid "Not saving repeating crash after %ds (limit is %ds)"
-msgstr "Ne sauvegardera pas un plantage répétitif après %ds (limite: %ds)"
+msgstr "Ne sauvegardera pas un plantage répétitif après %ds (limite : %ds)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:478
 #, fuzzy
@@ -2089,7 +2089,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:1330
 msgid "Either problem directory or coredump is needed."
 msgstr ""
-"Soit le répertoire des incidents, soit le vidage mémoire est nécessaire"
+"Soit le répertoire des incidents, soit le vidage mémoire est nécessaire."
 
 #: ../src/plugins/abrt-retrace-client.c:1336
 #: ../src/plugins/abrt-retrace-client.c:1344
@@ -2144,7 +2144,7 @@ msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
-msgstr "Envoyer la trace mémoire au serveur retrace pour analyse "
+msgstr "Envoyer la trace mémoire au serveur retrace pour analyse"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
@@ -2265,7 +2265,7 @@ msgstr ""
 #: ../src/plugins/oops-utils.c:254
 #, c-format
 msgid " Tainted modules: %s."
-msgstr "Modules teintés : %s."
+msgstr " Modules teintés : %s."
 
 #: ../src/plugins/bodhi.c:498
 msgid "List of bug ids"
@@ -2321,7 +2321,7 @@ msgid ""
 msgstr ""
 "& [-v] [-od] FILE...\n"
 "\n"
-"Rechercher des oops découpés dans les fichiers. Peut les afficher ou  les "
+"Rechercher des oops découpés dans les fichiers. Peut les afficher ou les "
 "supprimer."
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:97
