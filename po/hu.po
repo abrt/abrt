@@ -1,7 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Translators:
 # Gábor Molnár <molesz1986@gmail.com>, 2011
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
@@ -16,21 +15,22 @@
 # Zoltan Hoppar <zoltanh721@fedoraproject.org>, 2016. #zanata
 # Meskó Balázs <meskobalazs@gmail.com>, 2017. #zanata
 # Meskó Balázs <meskobalazs@gmail.com>, 2018. #zanata
+# Balázs Meskó <meskobalazs@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-09 10:53+0100\n"
-"PO-Revision-Date: 2018-01-13 04:16+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Hungarian (http://www.transifex.com/projects/p/fedora-abrt/"
-"language/hu/)\n"
+"PO-Revision-Date: 2020-01-17 02:16+0000\n"
+"Last-Translator: Balázs Meskó <meskobalazs@gmail.com>\n"
+"Language-Team: Hungarian <https://translate.stg.fedoraproject.org/projects/"
+"abrt/abrt/hu/>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.10.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -84,7 +84,7 @@ msgid ""
 "internet is available."
 msgstr ""
 "Elnézést kérünk, úgy néz ki, hogy a(z) %s összeomlott. A probléma "
-"bejelentésre kerül, amint lesz internetkapcsolat. "
+"bejelentésre kerül, amint lesz internetkapcsolat."
 
 #: ../src/applet/abrt-applet-application.c:674
 #: ../src/applet/abrt-applet-application.c:688
@@ -112,7 +112,7 @@ msgid ""
 "has been automatically reported."
 msgstr ""
 "Elnézést kérünk, úgy néz ki, hogy egy probléma lépett fel egy összetevőben. "
-"A probléma automatikusan bejelentésre került. "
+"A probléma automatikusan bejelentésre került."
 
 #: ../src/applet/abrt-applet-application.c:705
 msgid ""
@@ -169,7 +169,7 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.c:496
 msgid "The configuration option above can be configured in"
-msgstr "A fenti konfigurációs beállítás itt állítható be:"
+msgstr "A fenti konfigurációs beállítás itt állítható be"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
@@ -245,7 +245,7 @@ msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
-"Ha ez a beállítás engedélyezett, akkor az ABRT sosem jelenít meg értesítést "
+" Ha ez a beállítás engedélyezett, akkor az ABRT sosem jelenít meg értesítést "
 "a jelentett problémákról. Csak akkor van hatása, ha a „Rövidített jelentés” "
 "beállítás engedélyezett."
 
@@ -254,7 +254,7 @@ msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
 msgstr ""
-"Ha ez a beállítás engedélyezett, akkor az ABRT mindig korlátozott "
+" Ha ez a beállítás engedélyezett, akkor az ABRT mindig korlátozott "
 "hozzáféréssel jelenti a hibát, ha az bizalmas adatot tartalmazhat."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
@@ -333,7 +333,7 @@ msgstr "A csomag adatbázis lekérdezése és a csomag összetevőinek mentése"
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
 msgid "Problem directory"
-msgstr "Problématár"
+msgstr "Probléma könyvtár"
 
 #: ../src/daemon/abrt-action-save-package-data.c:470
 msgid "Configuration file"
@@ -464,19 +464,19 @@ msgstr "Naplózás a rendszernaplóba -d beállítással is"
 
 #: ../src/daemon/abrt-handle-event.c:362
 msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
-msgstr "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
+msgstr "& [-v -i -n NÖVEKMÉNY] -e|--event ESEMÉNY KÖNYVTÁR…"
 
 #: ../src/daemon/abrt-handle-event.c:371
 msgid "Run EVENT on DIR"
-msgstr "EVENT futtatása a DIR könyvtáron"
+msgstr "ESEMÉNY futtatása a KÖNYVTÁRON"
 
 #: ../src/daemon/abrt-handle-event.c:372
 msgid "Communicate directly to the user"
-msgstr "Közvetlen kommunikáció  a felhasználóval"
+msgstr "Közvetlen kommunikáció a felhasználóval"
 
 #: ../src/daemon/abrt-handle-event.c:373
 msgid "Increment the nice value by INCREMENT"
-msgstr "A nice érték növelése INCREMENT értékkel"
+msgstr "A nice érték növelése a NÖVEKMÉNNYEL"
 
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
@@ -516,7 +516,7 @@ msgstr "Egyidejűleg elérhető dolgozók. Az alapértelmezés "
 
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr "A gyorsítótár legnagyobb mérete MiB-ban. Az alapértelmezés"
+msgstr "A gyorsítótár legnagyobb mérete MiB-ban. Az alapértelmezés "
 
 #: ../src/daemon/abrt-auto-reporting.c:198
 #: ../src/daemon/abrt-auto-reporting.c:206
@@ -596,13 +596,13 @@ msgid ""
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
 msgstr ""
-"Használat: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
+"Használat: %s [-vd] ABRT_SPOOL_KÖNYVTÁR FELTÖLTÉSI_KÖNYVTÁR FÁJLNÉV\n"
 "\n"
-"   -v             - Bőbeszédű\n"
-"   -d             - Feltöltött archívum törlése\n"
-"   ABRT_SPOOL_DIR - A könyvtár ahová az érvényes archívum kibontódnak\n"
-"   UPLOAD_DIR     - A könyvtár ahol a feltöltött archívumok tárolódnak\n"
-"   FILENAME       - A feltöltött archívum fájlneve\n"
+"   -v                  - Bőbeszédű\n"
+"   -d                  - Feltöltött archívum törlése\n"
+"   ABRT_SPOOL_KÖNYVTÁR - A könyvtár ahová az érvényes archívum kibontódnak\n"
+"   FELTÖLTÉSI_KÖNYVTÁR - A könyvtár ahol a feltöltött archívumok tárolódnak\n"
+"   FÁJLNÉV             - A feltöltött archívum fájlneve\n"
 
 #: ../src/daemon/abrt-handle-upload.in:166
 #: ../src/daemon/abrt-handle-upload.in:169
@@ -745,8 +745,8 @@ msgid ""
 msgstr ""
 "& [kapcsolók] -d KÖNYVTÁR\n"
 "\n"
-"Elemzi a  C/C++ nyomkövetési adatokat, előállítja a duplikációs hash "
-"fájlokat,\n"
+"Elemzi a C/C++ nyomkövetési adatokat, előállítja a duplikációs hash fájlokat,"
+"\n"
 "nyomkövetési minősítést, és azonosítja az összeomlott függvényt a\n"
 "hibagyűjtő KÖNYVTÁRban"
 
@@ -920,7 +920,7 @@ msgstr ""
 "& [kapcsolók] -d KÖNYVTÁR\n"
 "\n"
 "Elemzi a összeomlási adatokat a hibagyűjtő KÖNYVTÁRban, előállítja és "
-"elmenti a nyomkövetési adatokat "
+"elmenti a nyomkövetési adatokat"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
@@ -928,7 +928,7 @@ msgstr "További debuginfo mappák"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:57
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr "Kill szignál küldése a GDB-nek, ha több mint NUM másodpercig fut"
+msgstr "Kill szignál küldése a GDB-nek, ha több mint SZÁM másodpercig fut"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
@@ -1325,15 +1325,15 @@ msgstr "Nincs szignál és így nem lehet kihasználhatósági elemzést készí
 
 #: ../src/plugins/abrt-gdb-exploitable:701
 msgid "Likely crash reason: "
-msgstr "Összeomlás valószínű oka:"
+msgstr "Összeomlás valószínű oka: "
 
 #: ../src/plugins/abrt-gdb-exploitable:702
 msgid "Exploitable rating (0-9 scale): "
-msgstr "Kihasználhatósági minősítés (0-9 skála):"
+msgstr "Kihasználhatósági minősítés (0-9 skála): "
 
 #: ../src/plugins/abrt-gdb-exploitable:704
 msgid "Current instruction: "
-msgstr "Jelenlegi művelet:"
+msgstr "Jelenlegi művelet: "
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Exploitability analysis came up empty\n"
@@ -1485,7 +1485,7 @@ msgstr ""
 "Az -e csak az -f esetén hasznos, mert a napló követése az egész napló "
 "felolvasásával kezdődik, ha nem érhető el a legutóbbi pozíció.\n"
 "\n"
-"A legutóbbi pozíció itt kerül mentésre:"
+"A legutóbbi pozíció itt kerül mentésre: "
 
 #: ../src/plugins/abrt-dump-journal-core.c:563
 msgid "Create new problem directory in DIR for every coredump"
@@ -1597,7 +1597,7 @@ msgstr ""
 "Az -e csak az -f esetén hasznos, mert a napló követése az egész napló "
 "felolvasásával kezdődik, ha nem érhető el a legutóbbi pozíció.\n"
 "\n"
-"A legutóbbi pozíció itt kerül mentésre:"
+"A legutóbbi pozíció itt kerül mentésre: "
 
 #: ../src/plugins/abrt-dump-journal-oops.c:291
 msgid "Cannot filter systemd-journal to kernel data only"
@@ -1768,7 +1768,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:230
 #: ../src/plugins/abrt-retrace-client.c:234
 msgid "Can't create temporary file in "
-msgstr "Az ideiglenes fájl nem hozható létre"
+msgstr "Nem hozható létre ideiglenes fájl itt: "
 
 #: ../src/plugins/abrt-retrace-client.c:322
 #: ../src/plugins/abrt-retrace-client.c:498
@@ -1979,7 +1979,7 @@ msgstr "Lekérdezési műveletek késleltetése"
 msgid "(debug) do not delete temporary archive created from dump dir in "
 msgstr ""
 "(hibakeresés) nem törli az problémakönyvtárból létrehozott ideiglenes "
-"archívumot"
+"archívumot: "
 
 #: ../src/plugins/abrt-retrace-client.c:1274
 msgid "For status, backtrace, and log operations"
@@ -2120,7 +2120,7 @@ msgid ""
 msgstr ""
 "átnézi a ~/.xsession-errors fájlt, és elmenti azokat a sorokat amelyek "
 "tartalmazzák a végrehajtható fájl nevét. Az eredmény „xsession-errors” "
-"elemként kerül mentésre. "
+"elemként kerül mentésre."
 
 #: ../src/plugins/https-utils.c:53
 msgid "An error occurred on the server side."
@@ -2177,7 +2177,7 @@ msgstr ""
 #: ../src/plugins/oops-utils.c:254
 #, c-format
 msgid " Tainted modules: %s."
-msgstr "Más kóddal kevert modulok: %s."
+msgstr " Más kóddal kevert modulok: %s."
 
 #: ../src/plugins/bodhi.c:498
 msgid "List of bug ids"
@@ -2230,9 +2230,9 @@ msgid ""
 "\n"
 "Scans files for split oops message. Can print and/or delete them."
 msgstr ""
-"& [-v] [-od] FÁJL… \n"
+"& [-v] [-od] FÁJL…\n"
 "\n"
-"Fájlok átvizsgálása osztott  oops üzenetek után. Kiírathatja vagy törölheti "
+"Fájlok átvizsgálása osztott oops üzenetek után. Kiírathatja vagy törölheti "
 "őket."
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:97
@@ -2501,7 +2501,7 @@ msgstr "VM mag elemzése"
 msgid "Install kernel debuginfo packages, generate kernel log and oops message"
 msgstr ""
 "Telepítse a kernel debuginfo csomagjait, állítson elő kernel naplót és oops "
-"üzenetet."
+"üzenetet"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
