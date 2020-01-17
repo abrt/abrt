@@ -1,7 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Translators:
 # Fabian Affolter <fab@fedoraproject.org>, 2011
 # Gerd Koenig <koenig.ulm@googlemail.com>, 2011
@@ -19,21 +18,22 @@
 # Georg Hasibether <georg@hasibether.at>, 2016. #zanata
 # Lisa Stemmler <lstemmle@redhat.com>, 2016. #zanata
 # Tobias Weise <tobias.weise@web.de>, 2016. #zanata
+# Mike FABIAN <mfabian@redhat.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-09 10:53+0100\n"
-"PO-Revision-Date: 2016-11-14 02:35+0000\n"
-"Last-Translator: Tobias Weise <tobias.weise@web.de>\n"
-"Language-Team: German (http://www.transifex.com/projects/p/fedora-abrt/"
-"language/de/)\n"
+"PO-Revision-Date: 2020-01-17 02:15+0000\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
+"Language-Team: German <https://translate.stg.fedoraproject.org/projects/abrt/"
+"abrt/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.10.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -41,7 +41,7 @@ msgstr "Problemberichterstattung"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr "Anwendungsabstürze anzeigen und berichten"
+msgstr "Applikationsabstürze ansehen und berichten"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
@@ -154,7 +154,7 @@ msgstr "Nichtblockier-Modus kann für gio channel nicht gesetzt werden: %s"
 #: ../src/applet/abrt-applet-problem-info.c:259
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr "Eigentumsrechte von »%s« können nicht geändert werden."
+msgstr "Eigentumsrechte von »%s« können nicht geändert werden"
 
 #: ../src/applet/abrt-applet-problem-info.c:269
 #, c-format
@@ -173,7 +173,7 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.c:496
 msgid "The configuration option above can be configured in"
-msgstr "Die Konfigurationsoption oben kann konfiguriert werden in "
+msgstr "Die Konfigurationsoption oben kann konfiguriert werden in"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
@@ -207,7 +207,7 @@ msgstr ""
 "allerdings müssen Sie den Speicherauszug für diesen Service hochladen. Mit "
 "der Option 'Always' wird ABRT immer ohne zu fragen den Speicherauszug "
 "hochladen. Mit der Option 'Never' wird das Stack-Trace immer lokal "
-"generiert. Mit der Option 'Ask' wird ABRT immer vorher den Benutzer fragen. "
+"generiert. Mit der Option 'Ask' wird ABRT immer vorher den Benutzer fragen."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
@@ -255,7 +255,7 @@ msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
-"Ist diese Option aktiviert, zeigt ABRT keine Benachrichtigungen über "
+" Ist diese Option aktiviert, zeigt ABRT keine Benachrichtigungen über "
 "gemeldete Fehler. Dies ist nur wirksam, wenn die verkürzte Berichterstattung "
 "aktiviert ist."
 
@@ -264,7 +264,7 @@ msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
 msgstr ""
-"Falls diese Option aktiviert ist, erstellt ABRT einen Fehlerbericht mit "
+" Falls diese Option aktiviert ist, erstellt ABRT einen Fehlerbericht mit "
 "eingeschränktem Zugriff, falls die Daten allenfalls persönliche Daten "
 "enthalten."
 
@@ -318,7 +318,7 @@ msgstr "Einstellung für die Problemmeldung"
 
 #: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
-msgstr "Über das ABRT Konfigurationssystem "
+msgstr "Über das ABRT Konfigurationssystem"
 
 #: ../src/configuration-gui/main.c:105
 msgid "About"
@@ -475,7 +475,7 @@ msgstr "Nicht als Hintergrunddienst ausführen"
 
 #: ../src/daemon/abrtd.c:752
 msgid "Log to syslog even with -d"
-msgstr "Auch mit -d  im Systemprotokoll speichern"
+msgstr "Auch mit -d im Systemprotokoll speichern"
 
 #: ../src/daemon/abrt-handle-event.c:362
 msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
@@ -517,9 +517,8 @@ msgstr ""
 "in den Ordner DumpLocation\n"
 "welcher in abrt.conf festgelegt wird.\n"
 "\n"
-"Sollte UPLOAD_DIRECTORY nicht spezifiziert worden sein, wird eine Ordner "
-"aus\n"
-"WatchCrashdumpArchiveDir festgelegt in abrt.conf ausgewählt."
+"Sollte UPLOAD_DIRECTORY nicht spezifiziert worden sein, wird ein Ordner aus\n"
+"WatchCrashdumpArchiveDir festgelegt in abrt.conf ausgewählt"
 
 #: ../src/daemon/abrt-upload-watch.c:281
 #, fuzzy
@@ -781,7 +780,7 @@ msgstr ""
 #: ../src/lib/ignored_problems.c:233
 #, c-format
 msgid "Can't create temporary file '%s'"
-msgstr " Temporäre Datei »%s« konnte nicht erstellt werden"
+msgstr "Temporäre Datei »%s« konnte nicht erstellt werden"
 
 #: ../src/lib/ignored_problems.c:250
 #, c-format
@@ -789,16 +788,16 @@ msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
 "problems '%s'"
 msgstr ""
-"Auf  »%s« konnte nicht geschrieben werden.  Fehlerbericht »%s« wird nicht "
-"aus den ignorierten Fehlerberichten »%s« entfernt"
+"Auf »%s« konnte nicht geschrieben werden. Fehlerbericht »%s« wird nicht aus "
+"den ignorierten Fehlerberichten »%s« entfernt"
 
 #. Something nefarious happened
 #: ../src/lib/ignored_problems.c:264
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
 msgstr ""
-"Umbenennen von  »%s« zu  »%s« nicht möglich. Fehlerbericht  »%s« konnte "
-"nicht entfernt werden."
+"Umbenennen von »%s« zu »%s« nicht möglich. Fehlerbericht »%s« konnte nicht "
+"entfernt werden"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:41
 msgid ""
@@ -1398,15 +1397,15 @@ msgstr "Kann Signal Nummer nicht erhalten und Nutzbarkeits-Analyse machen.\n"
 
 #: ../src/plugins/abrt-gdb-exploitable:701
 msgid "Likely crash reason: "
-msgstr "Wahrscheinliche Absturzursache:"
+msgstr "Wahrscheinliche Absturzursache: "
 
 #: ../src/plugins/abrt-gdb-exploitable:702
 msgid "Exploitable rating (0-9 scale): "
-msgstr "Nutzbare Bewertung (0-9 Skala):"
+msgstr "Nutzbare Bewertung (0-9 Skala): "
 
 #: ../src/plugins/abrt-gdb-exploitable:704
 msgid "Current instruction: "
-msgstr "Laufende Anweisung:"
+msgstr "Laufende Anweisung: "
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Exploitability analysis came up empty\n"
@@ -1555,7 +1554,7 @@ msgstr ""
 "-c und -e Optionen stehen in Konflikt, da beide die erste Nachricht "
 "bestimmen.\n"
 "\n"
-"-e ist nur für -f nützlich, weil das folgende Journal mit dem Lesen  \n"
+"-e ist nur für -f nützlich, weil das folgende Journal mit dem Lesen \n"
 "des gesamten Journals beginnt, wenn die zuletzt gesehene Position nicht "
 "verfügbar ist. \n"
 "\n"
@@ -1615,7 +1614,7 @@ msgstr "Entweder -c CURSOR oder -e muss angegeben werden"
 #: ../src/plugins/abrt-dump-journal-xorg.c:281
 #, c-format
 msgid "Cannot initialize systemd-journal in directory '%s'"
-msgstr "Systemd-Journal kann im Verzeichnis »%s«  nicht initialisiert werden"
+msgstr "Systemd-Journal kann im Verzeichnis »%s« nicht initialisiert werden"
 
 #: ../src/plugins/abrt-dump-journal-core.c:632
 #: ../src/plugins/abrt-dump-journal-oops.c:287
@@ -1645,7 +1644,7 @@ msgstr "Cursor '%s' des Systemd-Journals kann nicht festgelegt werden"
 #: ../src/plugins/abrt-dump-journal-oops.c:40
 #: ../src/plugins/abrt-dump-journal-xorg.c:53
 msgid "Cannot read journal data."
-msgstr "Journal-Daten können nicht gelesen werden"
+msgstr "Journal-Daten können nicht gelesen werden."
 
 #: ../src/plugins/abrt-dump-journal-oops.c:189
 msgid ""
@@ -1672,7 +1671,7 @@ msgstr ""
 "gesamten Journals beginnt, wenn die zuletzt gesehene Position nicht "
 "verfügbar ist.\n"
 "\n"
-"Die zuletzt gesehene Position ist gespeichert in"
+"Die zuletzt gesehene Position ist gespeichert in "
 
 #: ../src/plugins/abrt-dump-journal-oops.c:291
 msgid "Cannot filter systemd-journal to kernel data only"
@@ -1714,7 +1713,7 @@ msgstr ""
 "Optionen -c und -e stehen in Konflikt, weil beide die erste Nachricht "
 "bestimmen.\n"
 "\n"
-"-e ist nur für -f nützlich, da das Folgen des Journal mit dem Lesen  \n"
+"-e ist nur für -f nützlich, da das Folgen des Journal mit dem Lesen \n"
 "des gesamten Journals beginnt, wenn die zuletzt gesehene Position nicht "
 "verfügbar ist.\n"
 "\n"
@@ -1845,7 +1844,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:230
 #: ../src/plugins/abrt-retrace-client.c:234
 msgid "Can't create temporary file in "
-msgstr "Es ist nicht möglich temporäre Datei anzulegen in"
+msgstr "Es ist nicht möglich temporäre Datei anzulegen in "
 
 #: ../src/plugins/abrt-retrace-client.c:322
 #: ../src/plugins/abrt-retrace-client.c:498
@@ -1860,7 +1859,7 @@ msgid ""
 "%s"
 msgstr ""
 "Unerwartete HTTP-Antwort vom Server: %d\n"
-"%s "
+"%s"
 
 #: ../src/plugins/abrt-retrace-client.c:510
 #, c-format
@@ -2054,7 +2053,7 @@ msgstr "Verzögerung für Abruf-Operationen"
 
 #: ../src/plugins/abrt-retrace-client.c:1272
 msgid "(debug) do not delete temporary archive created from dump dir in "
-msgstr "(debug) Temporäre Archive nicht löschen aus dem dump Verzeichnis in"
+msgstr "(debug) Temporäre Archive nicht löschen aus dem dump Verzeichnis in "
 
 #: ../src/plugins/abrt-retrace-client.c:1274
 msgid "For status, backtrace, and log operations"
@@ -2200,7 +2199,7 @@ msgstr "Ein Fehler ist auf Server-Seite aufgetreten."
 #: ../src/plugins/https-utils.c:56
 #, c-format
 msgid "A server-side error occurred on '%s'"
-msgstr "Ein Fehler ist auf Server-Seite auf '%s' aufgetreten "
+msgstr "Ein Fehler ist auf Server-Seite auf '%s' aufgetreten"
 
 #: ../src/plugins/https-utils.c:65
 msgid "An error occurred while connecting to the server"
@@ -2248,7 +2247,7 @@ msgstr ""
 #: ../src/plugins/oops-utils.c:254
 #, c-format
 msgid " Tainted modules: %s."
-msgstr "Betroffene Module: %s."
+msgstr " Betroffene Module: %s."
 
 #: ../src/plugins/bodhi.c:498
 msgid "List of bug ids"
