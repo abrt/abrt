@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2016-07-14 09:45+0200\n"
+"Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
+"POT-Creation-Date: 2020-01-09 10:53+0100\n"
 "PO-Revision-Date: 2016-07-16 02:00+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -23,45 +23,47 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../src/applet/abrt-applet.desktop.in.h:1
+#: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
 msgstr "Звітування щодо проблем"
 
-#: ../src/applet/abrt-applet.desktop.in.h:2
+#: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:2
 msgid "View and report application crashes"
 msgstr "Перегляд і звітування щодо аварійних завершень програм"
 
-#: ../src/applet/applet.c:260 ../src/cli/report.c:51
-#, c-format
-msgid "Can't take ownership of '%s'"
-msgstr "Не вдалося визначити права доступу до «%s»"
+#: ../src/applet/abrt-applet-application.c:157
+msgid "Be verbose"
+msgstr ""
 
-#: ../src/applet/applet.c:268
-#, c-format
-msgid "Can't open directory for writing '%s'"
-msgstr "Не вдалося відкрити каталог для запису, «%s»"
+#: ../src/applet/abrt-applet-application.c:167
+#, fuzzy
+#| msgid ""
+#| "& [-v] [DIR]...\n"
+#| "\n"
+#| "Applet which notifies user when new problems are detected by ABRT\n"
+msgid "Applet which notifies user when new problems are detected by ABRT"
+msgstr ""
+"& [-v] [КАТАЛОГ]...\n"
+"\n"
+"Аплет для сповіщення користувача про виявлені ABRT проблеми\n"
 
-#: ../src/applet/applet.c:546 ../src/applet/applet.c:564
-#, c-format
-msgid "Can't close notification: %s"
-msgstr "Не вдалося закрити сповіщення: %s"
-
-#: ../src/applet/applet.c:598
+#: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
 msgstr "Оце тобі!"
 
-#: ../src/applet/applet.c:616
+#: ../src/applet/abrt-applet-application.c:573
 msgid "Report"
 msgstr "Повідомити"
 
-#: ../src/applet/applet.c:625
+#: ../src/applet/abrt-applet-application.c:590
 msgid "Restart"
 msgstr "Перезапустити"
 
-#: ../src/applet/applet.c:694
+#: ../src/applet/abrt-applet-application.c:663
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
@@ -70,18 +72,19 @@ msgstr ""
 "Вибачте, здається, програма %s завершила роботу у аварійному режимі. Звіт "
 "щодо проблеми створено у автоматичному режимі."
 
-#: ../src/applet/applet.c:699
+#: ../src/applet/abrt-applet-application.c:668
 #, c-format
 msgid ""
-"We’re sorry, it looks like %s crashed. The problem will be reported when the"
-" internet is available."
+"We’re sorry, it looks like %s crashed. The problem will be reported when the "
+"internet is available."
 msgstr ""
 "Вибачте, здається, програма %s завершила роботу у аварійному режимі. Звіт "
 "щодо проблеми буде створено у автоматичному режимі, щойно стане доступним "
 "інтернет-з’єднання."
 
-#: ../src/applet/applet.c:705 ../src/applet/applet.c:719
-#: ../src/applet/applet.c:747
+#: ../src/applet/abrt-applet-application.c:674
+#: ../src/applet/abrt-applet-application.c:688
+#: ../src/applet/abrt-applet-application.c:718
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
@@ -90,25 +93,25 @@ msgstr ""
 "Вибачте, здається, програма %s завершила роботу у аварійному режимі. Будь "
 "ласка, зв’яжіться із розробником, якщо ви хочете створити звіт щодо вади."
 
-#: ../src/applet/applet.c:713
+#: ../src/applet/abrt-applet-application.c:682
 #, c-format
 msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
 msgstr ""
-"Вибачте, здається, програма %s завершила роботу у аварійному режимі. Якщо ви"
-" хочете допомогти у розв’язанні цієї проблеми, будь ласка, надішліть звіт "
+"Вибачте, здається, програма %s завершила роботу у аварійному режимі. Якщо ви "
+"хочете допомогти у розв’язанні цієї проблеми, будь ласка, надішліть звіт "
 "щодо вади."
 
-#: ../src/applet/applet.c:732
+#: ../src/applet/abrt-applet-application.c:701
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
 msgstr ""
-"Вибачте, здається, у компоненті сталася помилка. Звіт щодо проблеми створено"
-" у автоматичному режимі."
+"Вибачте, здається, у компоненті сталася помилка. Звіт щодо проблеми створено "
+"у автоматичному режимі."
 
-#: ../src/applet/applet.c:736
+#: ../src/applet/abrt-applet-application.c:705
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
@@ -116,56 +119,52 @@ msgstr ""
 "Вибачте, здається, у компоненті сталася помилка. Звіт щодо проблеми буде "
 "створено, щойно буде отримано доступ до інтернет-з’єднання."
 
-#: ../src/applet/applet.c:741
+#: ../src/applet/abrt-applet-application.c:710
 msgid ""
-"We're sorry, it looks like a problem occurred. If you'd like to help resolve"
-" the issue, please send a report."
+"We're sorry, it looks like a problem occurred. If you'd like to help resolve "
+"the issue, please send a report."
 msgstr ""
 "Вибачте, здається, у компоненті сталася помилка. Якщо ви хочете допомогти у "
 "розв’язанні цієї проблеми, будь ласка, надішліть звіт щодо вади."
 
-#: ../src/applet/applet.c:786
-#, c-format
-msgid "Can't show notification: %s"
-msgstr "Не вдалося показати сповіщення: %s"
-
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:818 ../src/daemon/abrt-upload-watch.c:168
+#: ../src/applet/abrt-applet-application.c:800 ../src/daemon/abrt-server.c:117
+#: ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "Не вдалося виконати читання з каналу gio: «%s»"
 
-#: ../src/applet/applet.c:896
+#: ../src/applet/abrt-applet-application.c:884
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "Не вдалося встановити кодування на каналі gio: %s"
 
-#: ../src/applet/applet.c:900
+#: ../src/applet/abrt-applet-application.c:889
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "Не вдалося увімкнути режим без блокування для каналу gio: %s"
 
-#: ../src/applet/applet.c:1186
-msgid ""
-"& [-v] [DIR]...\n"
-"\n"
-"Applet which notifies user when new problems are detected by ABRT\n"
-msgstr ""
-"& [-v] [КАТАЛОГ]...\n"
-"\n"
-"Аплет для сповіщення користувача про виявлені ABRT проблеми\n"
+#: ../src/applet/abrt-applet-problem-info.c:259
+#, c-format
+msgid "Can't take ownership of '%s'"
+msgstr "Не вдалося визначити права доступу до «%s»"
 
-#: ../src/configuration-gui/abrt-config-widget.c:483
+#: ../src/applet/abrt-applet-problem-info.c:269
+#, c-format
+msgid "Can't open directory for writing '%s'"
+msgstr "Не вдалося відкрити каталог для запису, «%s»"
+
+#: ../src/configuration-gui/abrt-config-widget.c:478
 msgid ""
-"The configuration option above has been moved to GSettings and the switch is"
-" linked to the value of the setting 'report-technical-problems' from the "
+"The configuration option above has been moved to GSettings and the switch is "
+"linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
 "Параметр налаштування, вказаний вище, було перенесено до GSettings, а "
 "перемикач пов’язано зі значенням параметра «report-technical-problems» з "
 "таблиці «org.gnome.desktop.privacy»."
 
-#: ../src/configuration-gui/abrt-config-widget.c:501
+#: ../src/configuration-gui/abrt-config-widget.c:496
 msgid "The configuration option above can be configured in"
 msgstr "Параметр налаштування, вказаний вище, можна визначити у"
 
@@ -188,17 +187,17 @@ msgstr "Скорочене звітування без підтвердженн�
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
 "The coredump file is necessary for generating stack trace which is time and "
-"space consuming operation. ABRT provides a service which generates the stack"
-" trace from the coredump but you have to upload the coredump to this "
-"service. With option 'Always' ABRT will always upload the coredump without "
-"asking. With option 'Never' the stack trace will be always generated "
-"locally. With option 'Ask' ABRT will always ask the user."
+"space consuming operation. ABRT provides a service which generates the stack "
+"trace from the coredump but you have to upload the coredump to this service. "
+"With option 'Always' ABRT will always upload the coredump without asking. "
+"With option 'Never' the stack trace will be always generated locally. With "
+"option 'Ask' ABRT will always ask the user."
 msgstr ""
 "Для створення даних трасування стека потрібен файл coredump. Сама дія "
 "трасування є доволі тривалою і вибагливою до обсягів пам’яті. У ABRT "
 "передбачено службу для створення даних трасування стека на основі coredump, "
-"але для її роботи слід вивантажити файл coredump на сервер служби. Якщо буде"
-" вибрано варіант «Завжди», ABRT завжди вивантажуватиме дані coredump без "
+"але для її роботи слід вивантажити файл coredump на сервер служби. Якщо буде "
+"вибрано варіант «Завжди», ABRT завжди вивантажуватиме дані coredump без "
 "додаткового підтвердження. Якщо буде вибрано варіант «Ніколи», дані "
 "трасування стека завжди створюватимуться локально. Якщо вибрати варіант "
 "«Запитувати», ABRT завжди запитуватиме про дії користувача."
@@ -218,20 +217,19 @@ msgstr ""
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
 "uReport is short and completely anonymous description of a problem. ABRT "
-"uses uReports  for fast global duplicate detection. In default configuration"
-" uReport is sent at beginning of reporting process. With this option enabled"
-" uReports are sent automatically immediately after problem detection."
+"uses uReports  for fast global duplicate detection. In default configuration "
+"uReport is sent at beginning of reporting process. With this option enabled "
+"uReports are sent automatically immediately after problem detection."
 msgstr ""
 "uReport — короткий і повністю анонімний опис проблеми. ABRT використовує "
 "uReports для пришвидшення пошуку дублікатів. За типових налаштувань uReport "
-"надсилається на початку процедури звітування. Якщо буде позначено цей пункт,"
-" звіти uReports надсилатимуться автоматично негайно після виявлення "
-"проблеми."
+"надсилається на початку процедури звітування. Якщо буде позначено цей пункт, "
+"звіти uReports надсилатимуться автоматично негайно після виявлення проблеми."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
-"With this option enabled reporting process started by click on Report button"
-" in problem notification bubble will be interrupted after uReport is sent. "
+"With this option enabled reporting process started by click on Report button "
+"in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
 "Якщо буде позначено цей пункт, процедуру звітування, розпочату натисканням "
@@ -290,15 +288,15 @@ msgstr "Запитувати"
 msgid "Upload coredump for backtrace generation"
 msgstr "Вивантажити coredump для створення даних зворотного трасування"
 
-#: ../src/configuration-gui/system-config-abrt.c:79
+#: ../src/configuration-gui/system-config-abrt.c:66
 msgid "_Close"
 msgstr "З_акрити"
 
-#: ../src/configuration-gui/system-config-abrt.c:88
+#: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Defaults"
 msgstr "_Типові"
 
-#: ../src/configuration-gui/system-config-abrt.c:116
+#: ../src/configuration-gui/system-config-abrt.c:103
 #: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
 msgstr "Налаштування звітування про проблеми"
@@ -315,7 +313,7 @@ msgstr "Відомості"
 msgid "Quit"
 msgstr "Вийти"
 
-#: ../src/daemon/abrt-action-save-package-data.c:440
+#: ../src/daemon/abrt-action-save-package-data.c:456
 msgid ""
 "& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
 "\n"
@@ -325,23 +323,23 @@ msgstr ""
 "\n"
 "Отримати дані з бази даних пакунків і зберегти назву пакунка і компонента"
 
-#: ../src/daemon/abrt-action-save-package-data.c:453
+#: ../src/daemon/abrt-action-save-package-data.c:469
 #: ../src/daemon/abrt-action-save-container-data.c:265
 #: ../src/plugins/abrt-action-analyze-backtrace.c:53
-#: ../src/plugins/abrt-action-analyze-c.c:141
+#: ../src/plugins/abrt-action-analyze-c.c:166
 #: ../src/plugins/abrt-action-analyze-oops.c:48
-#: ../src/plugins/abrt-action-analyze-xorg.c:84
-#: ../src/plugins/abrt-action-analyze-python.c:47
+#: ../src/plugins/abrt-action-analyze-xorg.c:85
+#: ../src/plugins/abrt-action-analyze-python.c:53
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
 msgid "Problem directory"
 msgstr "Проблемний каталог"
 
-#: ../src/daemon/abrt-action-save-package-data.c:454
+#: ../src/daemon/abrt-action-save-package-data.c:470
 msgid "Configuration file"
 msgstr "Файл налаштувань"
 
-#: ../src/daemon/abrt-action-save-package-data.c:455
+#: ../src/daemon/abrt-action-save-package-data.c:471
 msgid "Use this directory as RPM root"
 msgstr "Використовувати цей каталог як кореневий для RPM"
 
@@ -359,79 +357,72 @@ msgstr ""
 msgid "Root directory for running container commands"
 msgstr "Кореневий каталог для запуску команд контейнера"
 
-#: ../src/daemon/abrt-server.c:847 ../src/dbus/abrt-dbus.c:894
-#: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:444
+#: ../src/daemon/abrt-server.c:1100 ../src/dbus/abrt-dbus.c:1014
+#: ../src/daemon/abrtd.c:738
 msgid "& [options]"
 msgstr "& [параметри]"
 
-#: ../src/daemon/abrt-server.c:858
+#: ../src/daemon/abrt-server.c:1111
 msgid "Use NUM as client uid"
 msgstr "Використовувати вказане число як uid клієнта"
 
-#: ../src/daemon/abrt-server.c:859 ../src/daemon/abrt-upload-watch.c:280
-#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:97
-#: ../src/plugins/abrt-dump-journal-core.c:497
-#: ../src/plugins/abrt-dump-journal-oops.c:219
-#: ../src/plugins/abrt-dump-journal-xorg.c:188
+#: ../src/daemon/abrt-server.c:1112 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/plugins/abrt-watch-log.c:176 ../src/plugins/abrt-dump-oops.c:97
+#: ../src/plugins/abrt-dump-journal-core.c:562
+#: ../src/plugins/abrt-dump-journal-oops.c:222
+#: ../src/plugins/abrt-dump-journal-xorg.c:191
 #: ../src/plugins/abrt-dump-xorg.c:52
 msgid "Log to syslog"
 msgstr "Записувати до журналу syslog"
 
-#: ../src/daemon/abrt-server.c:860 ../src/daemon/abrtd.c:460
+#: ../src/daemon/abrt-server.c:1113 ../src/daemon/abrtd.c:754
 msgid "Add program names to log"
 msgstr "Додати назви програм до журналу"
 
-#: ../src/dbus/abrt-dbus.c:132
-msgid "Unknown error"
-msgstr "Невідома помилка"
-
-#: ../src/dbus/abrt-dbus.c:167
+#: ../src/dbus/abrt-dbus.c:135
 #, c-format
 msgid "'%s' is not a valid element name"
 msgstr "«%s» не є коректною назвою елемента"
 
-#: ../src/dbus/abrt-dbus.c:219
+#: ../src/dbus/abrt-dbus.c:187
 #, c-format
 msgid "'%s' is not a valid problem directory"
 msgstr "«%s» не є коректним каталогом проблеми"
 
-#: ../src/dbus/abrt-dbus.c:272 ../src/dbus/abrt-dbus.c:520
-#: ../src/dbus/abrt-configuration.c:618 ../src/dbus/abrt-configuration.c:683
-#, c-format
+#: ../src/dbus/abrt-dbus.c:240 ../src/dbus/abrt-dbus.c:490
 msgid "Not Authorized"
 msgstr "Не уповноважено"
 
-#: ../src/dbus/abrt-dbus.c:285
+#: ../src/dbus/abrt-dbus.c:253
 msgid "Can't open the problem"
 msgstr "Не вдалося відкрити дані проблеми"
 
-#: ../src/dbus/abrt-dbus.c:317
+#: ../src/dbus/abrt-dbus.c:285
 #, c-format
 msgid "'%s' element can't be modified"
 msgstr "Не вдалося змінити елемент «%s»"
 
-#: ../src/dbus/abrt-dbus.c:536
+#: ../src/dbus/abrt-dbus.c:506
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
 "Спроба змінити власника каталогу зазнала невдачі. Докладніші дані можна "
 "знайти у журналах системи."
 
-#: ../src/dbus/abrt-dbus.c:665
+#: ../src/dbus/abrt-dbus.c:635
 #, c-format
 msgid "Can't get size of '%s'"
 msgstr "Не вдалося визначити розмір «%s»"
 
-#: ../src/dbus/abrt-dbus.c:680
+#: ../src/dbus/abrt-dbus.c:650
 msgid "No problem space left"
 msgstr "Не залишилося вільного місця для записів щодо проблем"
 
-#: ../src/dbus/abrt-dbus.c:715
+#: ../src/dbus/abrt-dbus.c:685
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
 msgstr "Не вдалося вилучити елемент «%s» з каталогу проблеми «%s»"
 
-#: ../src/dbus/abrt-dbus.c:876 ../src/dbus/abrt-configuration.c:983
-#: ../src/daemon/abrtd.c:426
+#: ../src/dbus/abrt-dbus.c:938 ../src/daemon/abrtd.c:720
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
@@ -440,51 +431,50 @@ msgstr ""
 "Назву «%s» було втрачено, будь ласка, перевірте, чи не запущено іншу службу "
 "з цією назвою.\n"
 
-#: ../src/dbus/abrt-dbus.c:903 ../src/dbus/abrt-configuration.c:1011
-#: ../src/daemon/abrtd.c:459
+#: ../src/dbus/abrt-dbus.c:1023 ../src/daemon/abrtd.c:753
 msgid "Exit after NUM seconds of inactivity"
 msgstr "Завершувати роботу після вказаної кількості секунд бездіяльності"
 
-#: ../src/dbus/abrt-dbus.c:921 ../src/dbus/abrt-configuration.c:1021
+#: ../src/dbus/abrt-dbus.c:1041
 msgid "This program must be run as root."
 msgstr "Цю програму слід запускати від імені адміністратора (root)."
 
-#: ../src/daemon/abrtd.c:389
+#: ../src/daemon/abrtd.c:683
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
-"detected while computer is shutting down or user is logging out. In order to"
-" provide valuable problem reports, ABRT will not allow you to submit this "
-"problem. If you have time and want to help the developers in their effort to"
-" sort out this problem, please contact them directly."
+"detected while computer is shutting down or user is logging out. In order to "
+"provide valuable problem reports, ABRT will not allow you to submit this "
+"problem. If you have time and want to help the developers in their effort to "
+"sort out this problem, please contact them directly."
 msgstr ""
 "Дані щодо проблеми є неповними. Зазвичай таке трапляється, якщо проблему "
 "було виявлено під час завершення роботи системи або виходу користувача з "
-"системи. З метою забезпечення змістовності звітів щодо вад ABRT не дозволить"
-" вам надіслати повідомлення щодо цієї проблеми. Якщо у вас є вільний час, і "
+"системи. З метою забезпечення змістовності звітів щодо вад ABRT не дозволить "
+"вам надіслати повідомлення щодо цієї проблеми. Якщо у вас є вільний час, і "
 "ви хочете допомогти розробникам усунути цю проблему, будь ласка, зверніться "
 "до них безпосередньо."
 
-#: ../src/daemon/abrtd.c:457
+#: ../src/daemon/abrtd.c:751
 msgid "Do not daemonize"
 msgstr "Не запускати фонової служби"
 
-#: ../src/daemon/abrtd.c:458
+#: ../src/daemon/abrtd.c:752
 msgid "Log to syslog even with -d"
 msgstr "Записувати до журналу syslog навіть з параметром -d"
 
-#: ../src/daemon/abrt-handle-event.c:394
+#: ../src/daemon/abrt-handle-event.c:362
 msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
 msgstr "& [-v -i -n ЧИСЛО] -e|--event ПОДІЯ КАТАЛОГ..."
 
-#: ../src/daemon/abrt-handle-event.c:403
+#: ../src/daemon/abrt-handle-event.c:371
 msgid "Run EVENT on DIR"
 msgstr "Виконати ДІЮ над даними каталогу КАТАЛОГ"
 
-#: ../src/daemon/abrt-handle-event.c:404
+#: ../src/daemon/abrt-handle-event.c:372
 msgid "Communicate directly to the user"
 msgstr "Обмінюватися даними безпосередньо з користувачем"
 
-#: ../src/daemon/abrt-handle-event.c:405
+#: ../src/daemon/abrt-handle-event.c:373
 msgid "Increment the nice value by INCREMENT"
 msgstr "Зменшувати значення пріоритетності (nice) ЧИСЛО"
 
@@ -507,13 +497,16 @@ msgstr ""
 "& [-vs] [-w ЧИСЛО] [-c МіБ] [КАТАЛОГ_ВИВАНТАЖЕННЯ]\n"
 "\n"
 "\n"
-"Спостерігати за каталогом КАТАЛОГ_ВИВАНТАЖЕННЯ розпаковувати вхідні архіви до каталогу DumpLocation, вказаного у abrt.conf\n"
+"Спостерігати за каталогом КАТАЛОГ_ВИВАНТАЖЕННЯ розпаковувати вхідні архіви "
+"до каталогу DumpLocation, вказаного у abrt.conf\n"
 "\n"
 "Якщо не вказано каталогу КАТАЛОГ_ВИВАНТАЖЕННЯ, буде використано значення\n"
 "WatchCrashdumpArchiveDir option from abrt.conf"
 
 #: ../src/daemon/abrt-upload-watch.c:281
-msgid "Daemize"
+#, fuzzy
+#| msgid "Daemize"
+msgid "Daemonize"
 msgstr "Режим фонової служби"
 
 #: ../src/daemon/abrt-upload-watch.c:282
@@ -600,9 +593,9 @@ msgstr "Пароль:"
 msgid "Cannot continue without password\n"
 msgstr "Неможливо продовжувати без пароля\n"
 
-#. Print only the part before ':' of a string like "username:password"
 # translation auto-copied from project abrt, version rhel7, document abrt,
 # author Yuri Chornoivan
+#. Print only the part before ':' of a string like "username:password"
 #: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
 msgstr "Автозвітування з розпізнаванням HTTP"
@@ -619,7 +612,7 @@ msgstr "Автозвітування з розпізнаванням клієн�
 msgid "anonymous auto reporting"
 msgstr "анонімне автозвітування"
 
-#: ../src/daemon/abrt-handle-upload.in:135
+#: ../src/daemon/abrt-handle-upload.in:130
 #, c-format
 msgid ""
 "Usage: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
@@ -634,77 +627,78 @@ msgstr ""
 "\n"
 "   -v             - докладно\n"
 "   -d             - вилучити вивантажений архів\n"
-"   КАТАЛОГ_БУФЕРА_ABRT - каталог, до якого розпаковано коректні вивантажені архіви\n"
+"   КАТАЛОГ_БУФЕРА_ABRT - каталог, до якого розпаковано коректні вивантажені "
+"архіви\n"
 "   КАТАЛОГ_ВИВАНТАЖЕННЯ - каталог, у якому зберігаються вивантажені архіви\n"
 "   НАЗВА_ФАЙЛА    - назва файла вивантаженого архіву\n"
 
-#: ../src/daemon/abrt-handle-upload.in:171
-#: ../src/daemon/abrt-handle-upload.in:174
+#: ../src/daemon/abrt-handle-upload.in:166
+#: ../src/daemon/abrt-handle-upload.in:169
 msgid "Not a directory: '{0}'"
 msgstr "Не є каталогом: «{0}»"
 
-#: ../src/daemon/abrt-handle-upload.in:177
+#: ../src/daemon/abrt-handle-upload.in:172
 msgid "Skipping: '{0}' (starts with slash)"
 msgstr "Пропускаємо: «{0}» (починається з похилої риски)"
 
-#: ../src/daemon/abrt-handle-upload.in:180
+#: ../src/daemon/abrt-handle-upload.in:175
 msgid "Skipping: '{0}' (starts with dot)"
 msgstr "Пропускаємо: «{0}» (починається з крапки)"
 
-#: ../src/daemon/abrt-handle-upload.in:183
+#: ../src/daemon/abrt-handle-upload.in:178
 msgid "Skipping: '{0}' (contains ..)"
 msgstr "Пропускаємо: «{0}» (містить ..)"
 
-#: ../src/daemon/abrt-handle-upload.in:186
+#: ../src/daemon/abrt-handle-upload.in:181
 msgid "Skipping: '{0}' (contains space)"
 msgstr "Пропускаємо: «{0}» (містить пробіл)"
 
-#: ../src/daemon/abrt-handle-upload.in:189
+#: ../src/daemon/abrt-handle-upload.in:184
 msgid "Skipping: '{0}' (contains tab)"
 msgstr "Пропускаємо: «{0}» (містить символ табуляції)"
 
-#: ../src/daemon/abrt-handle-upload.in:194
+#: ../src/daemon/abrt-handle-upload.in:189
 msgid "Can't change directory to '{0}'"
 msgstr "Не вдалося змінити каталог на «{0}»"
 
-#: ../src/daemon/abrt-handle-upload.in:205
+#: ../src/daemon/abrt-handle-upload.in:200
 msgid "Unknown file type: '{0}'"
 msgstr "Невідомий тип файла: «{0}»"
 
-#: ../src/daemon/abrt-handle-upload.in:210
+#: ../src/daemon/abrt-handle-upload.in:205
 msgid "Can't create working directory in '{0}'"
 msgstr "Не вдалося створити робочий каталог у «{0}»"
 
-#: ../src/daemon/abrt-handle-upload.in:221
+#: ../src/daemon/abrt-handle-upload.in:216
 msgid "Can't move '{0}' to '{1}'"
 msgstr "Не вдалося пересунути «{0}» до «{1}»"
 
-#: ../src/daemon/abrt-handle-upload.in:226
+#: ../src/daemon/abrt-handle-upload.in:221
 msgid "Can't copy '{0}' to '{1}'"
 msgstr "Не вдалося скопіювати «{0}» до «{1}»"
 
-#: ../src/daemon/abrt-handle-upload.in:230
+#: ../src/daemon/abrt-handle-upload.in:225
 msgid "Verification error on '{0}'"
 msgstr "Помилка під час перевірки «{0}»"
 
-#: ../src/daemon/abrt-handle-upload.in:232
+#: ../src/daemon/abrt-handle-upload.in:227
 msgid "Unpacking '{0}'"
 msgstr "Розпаковуємо «{0}»"
 
-#: ../src/daemon/abrt-handle-upload.in:236
+#: ../src/daemon/abrt-handle-upload.in:231
 msgid "Can't create '{0}' directory"
 msgstr "Не вдалося створити каталог «{0}»"
 
-#: ../src/daemon/abrt-handle-upload.in:240
+#: ../src/daemon/abrt-handle-upload.in:235
 msgid "Can't unpack '{0}'"
 msgstr "Не вдалося розпакувати «{0}»"
 
-#: ../src/daemon/abrt-handle-upload.in:260
+#: ../src/daemon/abrt-handle-upload.in:255
 msgid "'{0}' processed successfully"
 msgstr "«{0}» успішно оброблено"
 
 #. Let user know what's going on
-#: ../src/lib/hooklib.c:253
+#: ../src/lib/hooklib.c:259
 msgid "Generating backtrace"
 msgstr "Створюється трасування"
 
@@ -782,11 +776,11 @@ msgstr ""
 "зворотного трасування та визначити функцію, під час виконання якої сталося \n"
 "аварійне завершення, у каталозі даних проблем КАТАЛОГ"
 
-#. 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -796,7 +790,7 @@ msgstr "Не вдалося обробити дані зворотного тр�
 msgid "Crash thread not found"
 msgstr "Не знайдено аварійного потоку обробки даних"
 
-#: ../src/plugins/abrt-action-analyze-c.c:130
+#: ../src/plugins/abrt-action-analyze-c.c:155
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
@@ -806,22 +800,22 @@ msgstr ""
 "\n"
 "Обчислює і зберігає UUID дампу ядра у каталозі даних проблеми КАТАЛОГ"
 
-#: ../src/plugins/abrt-action-analyze-core.in:72
+#: ../src/plugins/abrt-action-analyze-core.in:67
 #, c-format
 msgid "Analyzing coredump '%s'"
 msgstr "Аналізуємо дамп ядра «%s»"
 
-#: ../src/plugins/abrt-action-analyze-core.in:110
+#: ../src/plugins/abrt-action-analyze-core.in:105
 #, c-format
 msgid "Missing build id: %s"
 msgstr "Не вистачає ідентифікатора збирання: %s"
 
-#: ../src/plugins/abrt-action-analyze-core.in:142
+#: ../src/plugins/abrt-action-analyze-core.in:137
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
 msgstr "Користування: %s [-v] [-o ФАЙЛ РЕЗУЛЬТАТІВ] -c ДАМП ЯДРА"
 
-#: ../src/plugins/abrt-action-analyze-core.in:164
+#: ../src/plugins/abrt-action-analyze-core.in:159
 msgid "COREFILE is not specified"
 msgstr "Не вказано файла дампу ядра"
 
@@ -844,11 +838,11 @@ msgid ""
 msgstr ""
 "У даних зворотного трасування не міститься достатньо значимих фреймів "
 "функцій для звіту. Це прикро, але не обов’язково свідчить про проблеми з "
-"вашим комп’ютером. ABRT не дозволить вам створити звіт у системі стеження за"
-" вадами, але ви можете зв’язатися із супровідниками пакунків ядра "
+"вашим комп’ютером. ABRT не дозволить вам створити звіт у системі стеження за "
+"вадами, але ви можете зв’язатися із супровідниками пакунків ядра "
 "безпосередньо за допомогою електронної пошти."
 
-#: ../src/plugins/abrt-action-analyze-xorg.c:73
+#: ../src/plugins/abrt-action-analyze-xorg.c:74
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
@@ -858,13 +852,13 @@ msgstr ""
 "\n"
 "Обчислює і зберігає UUID та DUPHASH для каталогу проблеми у xorg КАТАЛОГ"
 
-#: ../src/plugins/abrt-action-analyze-xorg.c:113
+#: ../src/plugins/abrt-action-analyze-xorg.c:143
 #, c-format
 msgid "Module '%s' was loaded - won't report this crash"
 msgstr ""
 "Завантажено модуль «%s», не будемо звітувати про це аварійне завершення"
 
-#: ../src/plugins/abrt-action-analyze-python.c:36
+#: ../src/plugins/abrt-action-analyze-python.c:42
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
@@ -874,19 +868,19 @@ msgstr ""
 "\n"
 "Обчислює і зберігає UUID та DUPHASH аварійних дампів Python"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:52
+#: ../src/plugins/abrt-action-analyze-vmcore.in:47
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
 msgstr "Користування: {0} [-v[v]] [--core=ЯДРО_ВМ]"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:79
+#: ../src/plugins/abrt-action-analyze-vmcore.in:74
 msgid "File {0} doesn't exist"
 msgstr "Файла {0} не існує"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:82
+#: ../src/plugins/abrt-action-analyze-vmcore.in:77
 msgid "Extracting the oops text from core"
 msgstr "Видобуваємо текст опису помилки з ядра"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:87
+#: ../src/plugins/abrt-action-analyze-vmcore.in:82
 msgid ""
 "Can't process {0}:\n"
 "{1}"
@@ -894,51 +888,53 @@ msgstr ""
 "Не вдалося обробити {0}:\n"
 "{1}"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:95
+#: ../src/plugins/abrt-action-analyze-vmcore.in:90
 msgid "Can't extract the oops message: '{0}'"
 msgstr "Не вдалося видобути повідомлення щодо помилки: «{0}»"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:98
+#: ../src/plugins/abrt-action-analyze-vmcore.in:93
 msgid "Oops text extracted successfully"
 msgstr "Текст повідомлення щодо помилки успішно видобуто"
 
-#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:89
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:100
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
 msgstr ""
-"З журналу ядра можна зрозуміти, що було виявлено помилки, пов’язані з обладнанням.\n"
+"З журналу ядра можна зрозуміти, що було виявлено помилки, пов’язані з "
+"обладнанням.\n"
 "Ймовірно, цю проблему не пов’язано з програмним забезпеченням.\n"
 
-#: ../src/plugins/abrt-action-find-bodhi-update:88
-msgid "cannot open problem directory '{0}'"
-msgstr "не вдалося відкрити каталог проблеми «{0}»"
-
-#: ../src/plugins/abrt-action-find-bodhi-update:102
+#: ../src/plugins/abrt-action-find-bodhi-update:73
+#: ../src/plugins/abrt-action-find-bodhi-update:106
 msgid "Problem directory error: {0}"
 msgstr "Помилка у назві каталогу проблеми: {0}"
 
-#: ../src/plugins/abrt-action-find-bodhi-update:117
+#: ../src/plugins/abrt-action-find-bodhi-update:92
+msgid "cannot open problem directory '{0}'"
+msgstr "не вдалося відкрити каталог проблеми «{0}»"
+
+#: ../src/plugins/abrt-action-find-bodhi-update:121
 msgid "Using product '{0}' from /etc/os-release."
 msgstr "З використанням продукту «{0}» з /etc/os-release."
 
-#: ../src/plugins/abrt-action-find-bodhi-update:119
+#: ../src/plugins/abrt-action-find-bodhi-update:123
 msgid "Using product {0}."
 msgstr "З використанням продукту {0}."
 
-#: ../src/plugins/abrt-action-find-bodhi-update:121
+#: ../src/plugins/abrt-action-find-bodhi-update:125
 msgid "Using product version {0}."
 msgstr "З використанням версії продукту {0}."
 
-#: ../src/plugins/abrt-action-find-bodhi-update:133
+#: ../src/plugins/abrt-action-find-bodhi-update:137
 msgid "Duplicate bugzilla bug '#{0}' was found"
 msgstr "Знайдено дублікат вади «#{0}» у bugzilla"
 
-#: ../src/plugins/abrt-action-find-bodhi-update:135
+#: ../src/plugins/abrt-action-find-bodhi-update:139
 msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
 msgstr "У bugzilla немає запису вади з «abrt_hash:{0}»"
 
-#: ../src/plugins/abrt-action-find-bodhi-update:140
+#: ../src/plugins/abrt-action-find-bodhi-update:144
 msgid "Warning: abrt-bodhi do not support Product version 'Rawhide'"
 msgstr "Попередження: у abrt-bodhi не передбачено версії продукту «Rawhide»"
 
@@ -950,7 +946,8 @@ msgid ""
 msgstr ""
 "& [параметри] -d КАТАЛОГ\n"
 "\n"
-"Аналізує дамп ядра у каталозі КАТАЛОГ, створює і зберігає дані зворотного трасування"
+"Аналізує дамп ядра у каталозі КАТАЛОГ, створює і зберігає дані зворотного "
+"трасування"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
@@ -962,7 +959,7 @@ msgstr "Завершити роботу gdb, якщо вона триває по
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
+#.
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -976,7 +973,8 @@ msgid ""
 msgstr ""
 "& [-v] [-r] -d КАТАЛОГ\n"
 "\n"
-"Створює дані зворотного трасування на рівні дампу ядра на основі даних дампу та відповідного виконуваного файла"
+"Створює дані зворотного трасування на рівні дампу ядра на основі даних дампу "
+"та відповідного виконуваного файла"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
@@ -996,16 +994,73 @@ msgstr "Помилка: GDB не повернуто жодних даних"
 msgid "Error: %s"
 msgstr "Помилка: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:52
-msgid "Exiting on user command"
-msgstr "Завершення роботи за бажанням користувача"
+#: ../src/plugins/abrt-action-install-debuginfo.in:61
+msgid "Can't open {0}: {1}"
+msgstr "Не вдалося відкрити {0}: {1}"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:89
+#: ../src/plugins/abrt-action-install-debuginfo.in:101
+msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
+msgstr ""
+"Дамп ядра посилається на {0} файлів діагностичних даних, {1} з яких не "
+"встановлено."
+
+#: ../src/plugins/abrt-action-install-debuginfo.in:104
+msgid "{0} of debuginfo files are not installed"
+msgstr "{0} з файлів debuginfo не встановлено"
+
+#: ../src/plugins/abrt-action-install-debuginfo.in:114
 #, c-format
+msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
+msgstr ""
+"Некоректне налаштування додатка CCpp, непідтримуваний засіб керування "
+"пакунками: «%s»"
+
+#: ../src/plugins/abrt-action-install-debuginfo.in:168
+msgid "Missing requested file: {0}"
+msgstr "Не вистачає такого файла: {0}"
+
+#: ../src/plugins/abrt-action-install-debuginfo.in:173
+msgid "Missing debuginfo file: {0}"
+msgstr "Не вистачає файла діагностичних даних: {0}"
+
+#: ../src/plugins/abrt-action-install-debuginfo.in:176
+msgid "All debuginfo files are available"
+msgstr "Доступні всі файли діагностичних даних"
+
+#: ../src/plugins/abrt-action-install-debuginfo.in:190
+#, fuzzy, c-format
+#| msgid ""
+#| "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
+#| "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:"
+#| "DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+#| "       [-e, --exact=PATH[:PATH]...]\n"
+#| "\n"
+#| "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
+#| "to CACHEDIR, using TMPDIR as temporary staging area.\n"
+#| "Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
+#| "\n"
+#| "Reads configuration from /etc/abrt/plugins/CCpp.conf\n"
+#| "\n"
+#| "    -v          Be verbose\n"
+#| "    -y          Noninteractive, assume 'Yes' to all questions\n"
+#| "    --ids       Default: build_ids\n"
+#| "    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+#| "RANDOM_SUFFIX\n"
+#| "    --cache     Colon separated list of directories. The first one is "
+#| "used for\n"
+#| "                saving installed debuginfos.\n"
+#| "                Default: /var/cache/abrt-dir\n"
+#| "    --size_mb   Default: 4096\n"
+#| "    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
+#| "    -e,--exact  Download only specified files\n"
+#| "    --repo      Pattern to use when searching for repos.\n"
+#| "                Default: *debug*\n"
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
-"       [-e, --exact=PATH[:PATH]...]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH[:PATH...]]\n"
+"       [--releasever=RELEASEVER] [--repo=PATTERN]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -1016,18 +1071,23 @@ msgid ""
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
 "    --ids       Default: build_ids\n"
-"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
-"    --cache     Colon separated list of directories. The first one is used for\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
+"    --cache     Colon separated list of directories. The first one is used "
+"for\n"
 "                saving installed debuginfos.\n"
-"                Default: /var/cache/abrt-dir\n"
+"                Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
-"    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
+"    --pkgmgr    Default: PackageManager from CCpp.conf or 'dnf'\n"
 "    -e,--exact  Download only specified files\n"
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
+"    --releasever RELEASEVER\n"
+"                Pass this OS version to package managers.\n"
 msgstr ""
 "Користування: %s [-vy] [--ids=ФАЙЛ_ІД_ЗБИРАННЯ] [--pkgmgr=(yum|dnf)]\n"
-"       [--tmpdir=ТИМЧ_КАТАЛОГ] [--cache=КАТАЛОГ_КЕШУ[:КАТАЛОГ_ДАНИХ_ДІАГН1:КАТАЛОГ_ДАНИХ_ДІАГН2...]] [--size_mb=РОЗМІР]\n"
+"       [--tmpdir=ТИМЧ_КАТАЛОГ] [--cache=КАТАЛОГ_КЕШУ[:КАТАЛОГ_ДАНИХ_ДІАГН1:"
+"КАТАЛОГ_ДАНИХ_ДІАГН2...]] [--size_mb=РОЗМІР]\n"
 "       [-e, --exact=ШЛЯХ[:ШЛЯХ]...]\n"
 "\n"
 "Встановлює дані для діагностики для усіх ідентифікаторів збирання\n"
@@ -1039,9 +1099,11 @@ msgstr ""
 "Читає налаштування з /etc/abrt/plugins/CCpp.conf\n"
 "\n"
 "    -v          режим докладних повідомлень\n"
-"    -y          неінтерактивний режим, припускати відповідь «так» на усі питання\n"
+"    -y          неінтерактивний режим, припускати відповідь «так» на усі "
+"питання\n"
 "    --ids       типове значення: build_ids\n"
-"    --tmpdir    типове значення: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --tmpdir    типове значення: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
 "    --cache     список каталогів, відокремлених двокрапками. Перший з них\n"
 "                використовується для зберігання встановлених debuginfo.\n"
 "                типове значення: /var/cache/abrt-dir\n"
@@ -1051,38 +1113,9 @@ msgstr ""
 "    --repo      шаблон для пошуку сховищ.\n"
 "                Типове значення: *debug*\n"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:176
-msgid "Can't open {0}: {1}"
-msgstr "Не вдалося відкрити {0}: {1}"
-
-#: ../src/plugins/abrt-action-install-debuginfo.in:213
-msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
-msgstr ""
-"Дамп ядра посилається на {0} файлів діагностичних даних, {1} з яких не "
-"встановлено."
-
-#: ../src/plugins/abrt-action-install-debuginfo.in:216
-msgid "{0} of debuginfo files are not installed"
-msgstr "{0} з файлів debuginfo не встановлено"
-
-#: ../src/plugins/abrt-action-install-debuginfo.in:235
-#, c-format
-msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
-msgstr ""
-"Некоректне налаштування додатка CCpp, непідтримуваний засіб керування "
-"пакунками: «%s»"
-
-#: ../src/plugins/abrt-action-install-debuginfo.in:253
-msgid "Missing requested file: {0}"
-msgstr "Не вистачає такого файла: {0}"
-
-#: ../src/plugins/abrt-action-install-debuginfo.in:258
-msgid "Missing debuginfo file: {0}"
-msgstr "Не вистачає файла діагностичних даних: {0}"
-
-#: ../src/plugins/abrt-action-install-debuginfo.in:261
-msgid "All debuginfo files are available"
-msgstr "Доступні всі файли діагностичних даних"
+#: ../src/plugins/abrt-action-install-debuginfo.in:290
+msgid "Exiting on user command"
+msgstr "Завершення роботи за бажанням користувача"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:43
 msgid ""
@@ -1098,27 +1131,31 @@ msgstr ""
 "Встановлює пакунки debuginfo для усіх ідентифікаторів збирання у\n"
 "ФАЙЛ_ІД_ЗБИРАННЯ до загальносистемного кешу ABRT."
 
-#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:66
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
 msgid "Noninteractive, assume 'Yes' to all questions"
 msgstr "Неінтерактивний режим, відповідь «Так» на усі питання"
 
-#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:67
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
 msgid "- means STDIN, default: build_ids"
 msgstr "- означає STDIN, типове значення: build_ids"
 
-#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
 msgid "Download only specified files"
 msgstr "Отримати лише вказані файли"
 
-#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:71
 msgid "Pattern to use when searching for repos, default: *debug*"
 msgstr "Шаблон для пошуку у сховищах, типовий: *debug*"
 
-#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:72
 msgid "Ignored option"
 msgstr "Ігнорований параметр"
 
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:63
+#: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:73
+msgid "OS release version"
+msgstr ""
+
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
 msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
@@ -1129,7 +1166,7 @@ msgstr ""
 "призвести до значного навантаження не мережу і використання значного об’єму "
 "пам’яті на диску.)"
 
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:72
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
@@ -1142,12 +1179,14 @@ msgstr ""
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
+"SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
 "& [-v] [-d РОЗМІР:КАТАЛОГ]... [-f РОЗМІР:КАТАЛОГ]... [-p КАТАЛОГ] [ФАЙЛ]\n"
 "\n"
-"Вилучити каталоги даних проблеми (-d) або файли (-f) у КАТАЛОГах, якщо їхні розміри більші за РОЗМІР.\n"
+"Вилучити каталоги даних проблеми (-d) або файли (-f) у КАТАЛОГах, якщо їхні "
+"розміри більші за РОЗМІР.\n"
 "файли, вказані за допомогою аргументу ФАЙЛ, вилучено не буде."
 
 #: ../src/plugins/abrt-action-trim-files.c:236
@@ -1162,167 +1201,180 @@ msgstr "Вилучити файли всередині цього каталог
 msgid "Preserve this directory"
 msgstr "Зберегти цей каталог"
 
-#: ../src/plugins/abrt-action-ureport:59
+#: ../src/plugins/abrt-action-ureport:54
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
 msgstr "Не вдалося запустити «%s», повідомлення про помилку: «%s»"
 
-#: ../src/plugins/abrt-action-ureport:70
+#: ../src/plugins/abrt-action-ureport:65
 #, c-format
 msgid "Not a number in file '%s'"
 msgstr "Нечислові дані у файлі «%s»"
 
-#: ../src/plugins/abrt-action-ureport:99
+#: ../src/plugins/abrt-action-ureport:93
 #, c-format
 msgid "Usage: %s [-v]"
 msgstr "Користування: %s [-v]"
 
-#: ../src/plugins/abrt-action-ureport:120
+#: ../src/plugins/abrt-action-ureport:114
 msgid "Unable to get current working directory as it was probably deleted"
 msgstr ""
 "Не вдалося отримати дані щодо поточного робочого каталогу, оскільки його, "
 "ймовірно, вилучено"
 
-#: ../src/plugins/abrt-action-ureport:148
+#: ../src/plugins/abrt-action-ureport:143
 msgid "A bug was already filed about this problem:"
 msgstr "Щодо цієї проблеми вже створено повідомлення про ваду:"
 
-#: ../src/plugins/abrt-action-ureport:158
+#: ../src/plugins/abrt-action-ureport:153
 msgid "uReport was already sent, not sending it again"
 msgstr "uReport вже надіслано, повторне надсилання скасовано"
 
-#: ../src/plugins/abrt-action-ureport:179
+#: ../src/plugins/abrt-action-ureport:174
+msgid "Problem comes from unpackaged executable. Unable to create uReport."
+msgstr ""
+
+#: ../src/plugins/abrt-action-ureport:189
 msgid "Adding you to CC List of the existing bugzilla bug"
 msgstr ""
 "Додавання вашого запису до списку сповіщення вже створеного звіту у системі "
 "стеження за вадами"
 
-#: ../src/plugins/abrt-action-ureport:193
+#: ../src/plugins/abrt-action-ureport:203
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
 msgstr "reporter-ureport аварійно завершила роботу з кодом виходу %d"
 
-#: ../src/plugins/abrt-gdb-exploitable:529
+#: ../src/plugins/abrt-gdb-exploitable:524
 msgid "Signal sent by userspace code"
 msgstr "Сигнал надіслано з коду простору користувача"
 
-#: ../src/plugins/abrt-gdb-exploitable:533
+#: ../src/plugins/abrt-gdb-exploitable:528
 msgid "Signal sent by timer/IO/async event"
 msgstr "Сигнал надіслано подією таймера/введення-виведення/асинхронною подією"
 
-#: ../src/plugins/abrt-gdb-exploitable:541
+#: ../src/plugins/abrt-gdb-exploitable:536
 msgid "Signal has siginfo.si_code = SI_USER"
 msgstr "Сигнал мав значення siginfo.si_code = SI_USER"
 
-#: ../src/plugins/abrt-gdb-exploitable:544
+#: ../src/plugins/abrt-gdb-exploitable:539
 msgid "Signal due to write to closed pipe"
 msgstr "Сигнал через запис до закритого каналу обміну даними"
 
-#: ../src/plugins/abrt-gdb-exploitable:550
-#: ../src/plugins/abrt-gdb-exploitable:575
+#: ../src/plugins/abrt-gdb-exploitable:545
+#: ../src/plugins/abrt-gdb-exploitable:570
 msgid "Signal sent by keyboard"
 msgstr "Сигнал надіслано клавіатурою"
 
-#: ../src/plugins/abrt-gdb-exploitable:554
-#: ../src/plugins/abrt-gdb-exploitable:579
+#: ../src/plugins/abrt-gdb-exploitable:549
+#: ../src/plugins/abrt-gdb-exploitable:574
 msgid "Job control signal sent by kernel"
 msgstr "Сигнал керування завданням надіслано ядром"
 
-#: ../src/plugins/abrt-gdb-exploitable:558
-#: ../src/plugins/abrt-gdb-exploitable:587
+#: ../src/plugins/abrt-gdb-exploitable:553
+#: ../src/plugins/abrt-gdb-exploitable:582
 msgid "Signal sent by window resize"
 msgstr "Сигнал надіслано засобом зміни розмірів вікна"
 
-#: ../src/plugins/abrt-gdb-exploitable:562
-#: ../src/plugins/abrt-gdb-exploitable:591
+#: ../src/plugins/abrt-gdb-exploitable:557
+#: ../src/plugins/abrt-gdb-exploitable:586
 msgid "Signal sent by alarm(N) expiration"
 msgstr "Сигнал надіслано внаслідок завершення відліку alarm(N)"
 
-#: ../src/plugins/abrt-gdb-exploitable:583
+#: ../src/plugins/abrt-gdb-exploitable:578
 msgid "Signal due to write to broken pipe"
 msgstr "Сигнал через запис до помилкового каналу обміну даними"
 
-#: ../src/plugins/abrt-gdb-exploitable:607
+#: ../src/plugins/abrt-gdb-exploitable:602
 msgid "ABRT signal (abort() was called?)"
 msgstr "Сигнал ABRT (викликано abort()?)"
 
-#: ../src/plugins/abrt-gdb-exploitable:616
+#: ../src/plugins/abrt-gdb-exploitable:611
 msgid "XCPU signal (over CPU time limit)"
 msgstr "Сигнал XCPU (перевищено часове обмеження процесора)"
 
-#: ../src/plugins/abrt-gdb-exploitable:620
+#: ../src/plugins/abrt-gdb-exploitable:615
 msgid "XFSZ signal (over file size limit)"
 msgstr "Сигнал XFSZ (перевищено обмеження на розмір файла)"
 
-#: ../src/plugins/abrt-gdb-exploitable:624
+#: ../src/plugins/abrt-gdb-exploitable:619
 msgid "TRAP signal (can be a bug in a debugger/tracer)"
 msgstr "Сигнал TRAP (можливо, вада у засобі діагностики або трасування)"
 
-#: ../src/plugins/abrt-gdb-exploitable:628
+#: ../src/plugins/abrt-gdb-exploitable:623
 msgid "SYS signal (unknown syscall was called?)"
 msgstr "Сигнал SYS (виконано невідомий системний виклик?)"
 
-#: ../src/plugins/abrt-gdb-exploitable:633
+#: ../src/plugins/abrt-gdb-exploitable:628
 msgid "Arithmetic exception"
 msgstr "Виключення під час арифметичної дії"
 
-#: ../src/plugins/abrt-gdb-exploitable:637
+#: ../src/plugins/abrt-gdb-exploitable:632
 msgid "Division by zero"
 msgstr "Ділення на нуль"
 
-#: ../src/plugins/abrt-gdb-exploitable:641
+#: ../src/plugins/abrt-gdb-exploitable:636
 msgid "Illegal instruction (jump to a random address?)"
 msgstr "Некоректна інструкція (перехід за випадковою адресою?)"
 
-#: ../src/plugins/abrt-gdb-exploitable:647
+#: ../src/plugins/abrt-gdb-exploitable:642
 msgid "Non-crash related signal"
 msgstr "Сигнал, який не пов’язано з аварією"
 
-#: ../src/plugins/abrt-gdb-exploitable:652
+#: ../src/plugins/abrt-gdb-exploitable:647
 msgid "Stack overflow"
 msgstr "Переповнення стека"
 
-#: ../src/plugins/abrt-gdb-exploitable:656
+#: ../src/plugins/abrt-gdb-exploitable:651
 msgid "Write to an invalid address"
 msgstr "Запис за некоректною адресою"
 
-#: ../src/plugins/abrt-gdb-exploitable:660
+#: ../src/plugins/abrt-gdb-exploitable:655
 msgid "Subroutine return to an invalid address (corrupted stack?)"
 msgstr "Підпрограмою повернуто некоректну адресу (пошкодження стека?)"
 
-#: ../src/plugins/abrt-gdb-exploitable:666
-#: ../src/plugins/abrt-gdb-exploitable:670
+#: ../src/plugins/abrt-gdb-exploitable:661
+#: ../src/plugins/abrt-gdb-exploitable:665
 msgid "Jump to an invalid address"
 msgstr "Перехід за некоректною адресою"
 
-#: ../src/plugins/abrt-gdb-exploitable:674
+#: ../src/plugins/abrt-gdb-exploitable:669
+#, fuzzy
+#| msgid ""
+#| "Access past the end of mapped file, invalid address, unaligned access, etc"
 msgid ""
-"Access past the end of mapped file, invalid address, unaligned access, etc"
+"Access past the end of mapped file, invalid address, unaligned access, etc."
 msgstr ""
-"Доступ до даних за межами пов’язаного файла, некоректна адреса, невирівняний"
-" доступ тощо"
+"Доступ до даних за межами пов’язаного файла, некоректна адреса, невирівняний "
+"доступ тощо"
 
-#: ../src/plugins/abrt-gdb-exploitable:693
+#: ../src/plugins/abrt-gdb-exploitable:688
 msgid "Can't get signal no and do exploitability analysis\n"
 msgstr "Не вдалося отримати номер сигналу та виконати аналіз вразливості\n"
 
-#: ../src/plugins/abrt-gdb-exploitable:706
+#: ../src/plugins/abrt-gdb-exploitable:701
 msgid "Likely crash reason: "
 msgstr "Ймовірна причина аварії:"
 
-#: ../src/plugins/abrt-gdb-exploitable:707
+#: ../src/plugins/abrt-gdb-exploitable:702
 msgid "Exploitable rating (0-9 scale): "
 msgstr "Оцінка вразливості (за шкалою від 0 до 9):"
 
-#: ../src/plugins/abrt-gdb-exploitable:709
+#: ../src/plugins/abrt-gdb-exploitable:704
 msgid "Current instruction: "
 msgstr "Поточна інструкція:"
 
-#: ../src/plugins/abrt-gdb-exploitable:711
+#: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Exploitability analysis came up empty\n"
 msgstr "Дані аналізу щодо вразливості виявилися порожніми\n"
 
-#: ../src/plugins/abrt-watch-log.c:142
+#: ../src/plugins/abrt-watch-log.c:129 ../src/plugins/abrt-retrace-client.c:159
+#: ../src/plugins/abrt-retrace-client.c:213
+#, c-format
+msgid "Can't execute '%s'"
+msgstr "Не вдалося виконати «%s»"
+
+#: ../src/plugins/abrt-watch-log.c:165
 msgid ""
 "& [-vs] [-F STR]... FILE PROG [ARGS]\n"
 "\n"
@@ -1333,7 +1385,7 @@ msgstr ""
 "Спостерігати за файлом журналу ФАЙЛ, запустити програму ПРОГРАМА,\n"
 "коли до нього додаються дані або виконується його заміна"
 
-#: ../src/plugins/abrt-watch-log.c:154
+#: ../src/plugins/abrt-watch-log.c:177
 msgid "Don't run PROG if STRs aren't found"
 msgstr "Не запускати програму ПРОГРАМА, якщо не знайдено рядка РЯДОК"
 
@@ -1345,28 +1397,29 @@ msgid ""
 msgstr ""
 "& [-vusoxm] [-d КАТАЛОГ]/[-D] [ФАЙЛ]\n"
 "\n"
-"Видобути дані аварії (oops) з файла ФАЙЛ (або стандартного джерела вхідних даних)"
+"Видобути дані аварії (oops) з файла ФАЙЛ (або стандартного джерела вхідних "
+"даних)"
 
 #: ../src/plugins/abrt-dump-oops.c:98
-#: ../src/plugins/abrt-dump-journal-oops.c:220
+#: ../src/plugins/abrt-dump-journal-core.c:572
+#: ../src/plugins/abrt-dump-journal-oops.c:223
 msgid "Print found oopses on standard output"
-msgstr ""
-"Вивести знайдені повідомлення про аварії (oops) до стандартного виводу"
+msgstr "Вивести знайдені повідомлення про аварії (oops) до стандартного виводу"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
+#.
 #: ../src/plugins/abrt-dump-oops.c:102
-#: ../src/plugins/abrt-dump-journal-oops.c:224
+#: ../src/plugins/abrt-dump-journal-oops.c:227
 msgid "Create new problem directory in DIR for every oops found"
 msgstr ""
 "Створювати новий каталог проблеми для кожного знайденого повідомлення про "
 "аварію (oops)"
 
 #: ../src/plugins/abrt-dump-oops.c:103
-#: ../src/plugins/abrt-dump-journal-core.c:499
-#: ../src/plugins/abrt-dump-journal-oops.c:225
-#: ../src/plugins/abrt-dump-journal-xorg.c:191
+#: ../src/plugins/abrt-dump-journal-core.c:564
+#: ../src/plugins/abrt-dump-journal-oops.c:228
+#: ../src/plugins/abrt-dump-journal-xorg.c:194
 #: ../src/plugins/abrt-dump-xorg.c:55
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "Зберегти як -d DumpLocation, DumpLocation вказано у abrt.conf"
@@ -1376,15 +1429,15 @@ msgid "Save the extracted information in PROBLEM"
 msgstr "Зберегти отримані дані у каталозі ПРОБЛЕМА"
 
 #: ../src/plugins/abrt-dump-oops.c:105
-#: ../src/plugins/abrt-dump-journal-oops.c:226
-#: ../src/plugins/abrt-dump-journal-xorg.c:192
+#: ../src/plugins/abrt-dump-journal-oops.c:229
+#: ../src/plugins/abrt-dump-journal-xorg.c:195
 #: ../src/plugins/abrt-dump-xorg.c:56
 msgid "Make the problem directory world readable"
 msgstr "Зробити каталог даних проблеми доступним для всіх користувачів"
 
 #: ../src/plugins/abrt-dump-oops.c:106
-#: ../src/plugins/abrt-dump-journal-oops.c:227
-#: ../src/plugins/abrt-dump-journal-xorg.c:193
+#: ../src/plugins/abrt-dump-journal-oops.c:230
+#: ../src/plugins/abrt-dump-journal-xorg.c:196
 msgid "Throttle problem directory creation to 1 per second"
 msgstr "Встановлення інтервалу створення каталогу проблеми у 1 секунду"
 
@@ -1400,37 +1453,46 @@ msgstr "Не вдалося скомпілювати формальний вир
 #: ../src/plugins/abrt-dump-oops.c:177
 msgid "Can't update the problem: no oops found"
 msgstr ""
-"Не вдалося оновити дані проблеми, оскільки не знайдено записів аварій "
-"(oops)."
+"Не вдалося оновити дані проблеми, оскільки не знайдено записів аварій (oops)."
 
 #: ../src/plugins/abrt-dump-oops.c:183
 msgid "More oopses found: process only the first one"
 msgstr "Знайдено інші записи аварії (oops): обробка лише першого"
 
-#: ../src/plugins/abrt-dump-journal-core.c:361
-#: ../src/plugins/abrt-dump-journal-core.c:397
+#: ../src/plugins/abrt-dump-journal-core.c:378
+#, c-format
+msgid "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-journal-core.c:407
+#: ../src/plugins/abrt-dump-journal-core.c:446
 msgid "Failed to obtain all required information from journald"
 msgstr "Не вдалося отримати усі потрібні дані з journald"
 
 #. We don't want to update the counter here.
-#: ../src/plugins/abrt-dump-journal-core.c:421
+#: ../src/plugins/abrt-dump-journal-core.c:470
 #, c-format
 msgid "Not saving repeating crash after %ds (limit is %ds)"
 msgstr ""
-"Не збережено дані повторного аварійного завершення за %d с (обмеження — %d "
-"с)"
+"Не збережено дані повторного аварійного завершення за %d с (обмеження — %d с)"
 
-#: ../src/plugins/abrt-dump-journal-core.c:427
+#: ../src/plugins/abrt-dump-journal-core.c:478
+#, fuzzy
+#| msgid "Failed to save detect problem data in abrt database"
+msgid "Failed to print detect problem data to stdout"
+msgstr "Не вдалося зберегти дані виявленої проблеми у базі даних abrt"
+
+#: ../src/plugins/abrt-dump-journal-core.c:486
 msgid "Failed to save detect problem data in abrt database"
 msgstr "Не вдалося зберегти дані виявленої проблеми у базі даних abrt"
 
-#: ../src/plugins/abrt-dump-journal-core.c:447
-#: ../src/plugins/abrt-dump-journal-oops.c:165
-#: ../src/plugins/abrt-dump-journal-xorg.c:121
+#: ../src/plugins/abrt-dump-journal-core.c:507
+#: ../src/plugins/abrt-dump-journal-oops.c:168
+#: ../src/plugins/abrt-dump-journal-xorg.c:123
 msgid "Failed to initialize systemd-journal watch"
 msgstr "Не вдалося ініціалізувати спостереження systemd-journal"
 
-#: ../src/plugins/abrt-dump-journal-core.c:467
+#: ../src/plugins/abrt-dump-journal-core.c:527
 msgid ""
 "& [-vsf] [-e]/[-c CURSOR] [-t INT]/[-T] [-d DIR]/[-D]\n"
 "\n"
@@ -1438,7 +1500,8 @@ msgid ""
 "\n"
 "-c and -e options conflicts because both specifies the first read message.\n"
 "\n"
-"-e is useful only for -f because the following of journal starts by reading \n"
+"-e is useful only for -f because the following of journal starts by "
+"reading \n"
 "the entire journal if the last seen possition is not available.\n"
 "\n"
 "The last seen position is saved in "
@@ -1447,82 +1510,102 @@ msgstr ""
 "\n"
 "Видобути записи дампу ядра з systemd-journal\n"
 "\n"
-"Параметри -c і -e конфліктують між собою, оскільки обидва визначають перше повідомлення для читання.\n"
+"Параметри -c і -e конфліктують між собою, оскільки обидва визначають перше "
+"повідомлення для читання.\n"
 "\n"
-"Параметр -e є корисним лише з -f, оскільки стеження за журналом розпочинається з читання усього журналу, \n"
+"Параметр -e є корисним лише з -f, оскільки стеження за журналом "
+"розпочинається з читання усього журналу, \n"
 "якщо остання позиція спостереження недоступна.\n"
 "\n"
 "Остання позиція спостереження зберігається у "
 
-#: ../src/plugins/abrt-dump-journal-core.c:498
+#: ../src/plugins/abrt-dump-journal-core.c:563
 msgid "Create new problem directory in DIR for every coredump"
 msgstr "Створювати новий каталог проблеми для кожного знайденого дампу ядра"
 
-#: ../src/plugins/abrt-dump-journal-core.c:500
-#: ../src/plugins/abrt-dump-journal-oops.c:228
-#: ../src/plugins/abrt-dump-journal-xorg.c:194
+#: ../src/plugins/abrt-dump-journal-core.c:565
+#: ../src/plugins/abrt-dump-journal-oops.c:231
+#: ../src/plugins/abrt-dump-journal-xorg.c:197
 msgid "Start reading systemd-journal from the CURSOR position"
 msgstr "Почати читання systemd-journal з позиції КУРСОР"
 
-#: ../src/plugins/abrt-dump-journal-core.c:501
-#: ../src/plugins/abrt-dump-journal-oops.c:229
-#: ../src/plugins/abrt-dump-journal-xorg.c:195
+#: ../src/plugins/abrt-dump-journal-core.c:566
+#: ../src/plugins/abrt-dump-journal-oops.c:232
+#: ../src/plugins/abrt-dump-journal-xorg.c:198
 msgid "Start reading systemd-journal from the end"
 msgstr "Почати читання systemd-journal з кінця"
 
-#: ../src/plugins/abrt-dump-journal-core.c:502
+#: ../src/plugins/abrt-dump-journal-core.c:567
 msgid "Throttle problem directory creation to 1 per INT second"
 msgstr ""
 "Встановлення інтервалу створення каталогу проблеми у значення від 1 до INT "
 "секунд"
 
-#: ../src/plugins/abrt-dump-journal-core.c:503
+#: ../src/plugins/abrt-dump-journal-core.c:568
 msgid "Same as -t INT, INT is specified in plugins/CCpp.conf"
 msgstr "Те саме, що і -t INT, INT визначається у plugins/CCpp.conf"
 
-#: ../src/plugins/abrt-dump-journal-core.c:504
-#: ../src/plugins/abrt-dump-journal-oops.c:230
-#: ../src/plugins/abrt-dump-journal-xorg.c:196
+#: ../src/plugins/abrt-dump-journal-core.c:569
+#: ../src/plugins/abrt-dump-journal-oops.c:233
+#: ../src/plugins/abrt-dump-journal-xorg.c:199
 msgid "Follow systemd-journal from the last seen position (if available)"
 msgstr ""
 "Стежити за systemd-journal з останньої позиції спостереження (якщо така є)"
 
-#: ../src/plugins/abrt-dump-journal-core.c:515
-#: ../src/plugins/abrt-dump-journal-oops.c:246
-#: ../src/plugins/abrt-dump-journal-xorg.c:213
+#: ../src/plugins/abrt-dump-journal-core.c:570
+#: ../src/plugins/abrt-dump-journal-oops.c:234
+#: ../src/plugins/abrt-dump-journal-xorg.c:200
+msgid "Read journal files from all machines"
+msgstr "Прочитати файли журналу з усіх машин"
+
+#: ../src/plugins/abrt-dump-journal-core.c:571
+#: ../src/plugins/abrt-dump-journal-oops.c:235
+#: ../src/plugins/abrt-dump-journal-xorg.c:201
+msgid "Read all journal files from directory at PATH"
+msgstr "Прочитати усі файли журналу з каталогу у PATH"
+
+#: ../src/plugins/abrt-dump-journal-core.c:583
+#: ../src/plugins/abrt-dump-journal-oops.c:249
+#: ../src/plugins/abrt-dump-journal-xorg.c:216
 msgid "You need to specify either -c CURSOR or -e"
 msgstr "Слід вказати або -c КУРСОР або -e"
 
-#: ../src/plugins/abrt-dump-journal-core.c:561
-#: ../src/plugins/abrt-dump-journal-oops.c:284
-#: ../src/plugins/abrt-dump-journal-xorg.c:278
+#: ../src/plugins/abrt-dump-journal-core.c:627
+#: ../src/plugins/abrt-dump-journal-oops.c:282
+#: ../src/plugins/abrt-dump-journal-xorg.c:281
+#, c-format
+msgid "Cannot initialize systemd-journal in directory '%s'"
+msgstr "Не вдалося ініціалізувати systemd-journal у каталозі «%s»"
+
+#: ../src/plugins/abrt-dump-journal-core.c:632
+#: ../src/plugins/abrt-dump-journal-oops.c:287
+#: ../src/plugins/abrt-dump-journal-xorg.c:286
 msgid "Cannot open systemd-journal"
 msgstr "Не вдалося відкрити systemd-journal"
 
-#: ../src/plugins/abrt-dump-journal-core.c:564
+#: ../src/plugins/abrt-dump-journal-core.c:636
 msgid "Cannot filter systemd-journal to systemd-coredump data only"
-msgstr ""
-"Не вдалося відфільтрувати у systemd-journal лише дані systemd-coredump"
+msgstr "Не вдалося відфільтрувати у systemd-journal лише дані systemd-coredump"
 
-#: ../src/plugins/abrt-dump-journal-core.c:569
-#: ../src/plugins/abrt-dump-journal-oops.c:293
-#: ../src/plugins/abrt-dump-journal-xorg.c:291
+#: ../src/plugins/abrt-dump-journal-core.c:641
+#: ../src/plugins/abrt-dump-journal-oops.c:296
+#: ../src/plugins/abrt-dump-journal-xorg.c:299
 msgid "Cannot seek to the end of journal"
 msgstr "Не вдалося пересунути курсор до кінця журналу"
 
-#: ../src/plugins/abrt-dump-journal-core.c:572
-#: ../src/plugins/abrt-dump-journal-oops.c:309
-#: ../src/plugins/abrt-dump-journal-xorg.c:307
+#: ../src/plugins/abrt-dump-journal-core.c:644
+#: ../src/plugins/abrt-dump-journal-oops.c:312
+#: ../src/plugins/abrt-dump-journal-xorg.c:315
 #, c-format
 msgid "Failed to set systemd-journal cursor '%s'"
 msgstr "Не вдалося встановити позицію курсора systemd-journal «%s»"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:40
-#: ../src/plugins/abrt-dump-journal-xorg.c:52
+#: ../src/plugins/abrt-dump-journal-xorg.c:53
 msgid "Cannot read journal data."
 msgstr "Не вдалося прочитати дані журналу."
 
-#: ../src/plugins/abrt-dump-journal-oops.c:186
+#: ../src/plugins/abrt-dump-journal-oops.c:189
 msgid ""
 "& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
 "\n"
@@ -1530,7 +1613,8 @@ msgid ""
 "\n"
 "-c and -e options conflicts because both specifies the first read message.\n"
 "\n"
-"-e is useful only for -f because the following of journal starts by reading \n"
+"-e is useful only for -f because the following of journal starts by "
+"reading \n"
 "the entire journal if the last seen possition is not available.\n"
 "\n"
 "The last seen position is saved in "
@@ -1539,44 +1623,30 @@ msgstr ""
 "\n"
 "Видобути записи oops з systemd-journal\n"
 "\n"
-"Параметри -c і -e конфліктують між собою, оскільки обидва визначають перше повідомлення для читання.\n"
+"Параметри -c і -e конфліктують між собою, оскільки обидва визначають перше "
+"повідомлення для читання.\n"
 "\n"
-"Параметр -e є корисним лише з -f, оскільки стеження за журналом розпочинається з читання усього журналу, \n"
+"Параметр -e є корисним лише з -f, оскільки стеження за журналом "
+"розпочинається з читання усього журналу, \n"
 "якщо остання позиція спостереження недоступна.\n"
 "\n"
 "Остання позиція спостереження зберігається у "
 
-#: ../src/plugins/abrt-dump-journal-oops.c:231
-#: ../src/plugins/abrt-dump-journal-xorg.c:197
-msgid "Read journal files from all machines"
-msgstr "Прочитати файли журналу з усіх машин"
-
-#: ../src/plugins/abrt-dump-journal-oops.c:232
-#: ../src/plugins/abrt-dump-journal-xorg.c:198
-msgid "Read all journal files from directory at PATH"
-msgstr "Прочитати усі файли журналу з каталогу у PATH"
-
-#: ../src/plugins/abrt-dump-journal-oops.c:279
-#: ../src/plugins/abrt-dump-journal-xorg.c:273
-#, c-format
-msgid "Cannot initialize systemd-journal in directory '%s'"
-msgstr "Не вдалося ініціалізувати systemd-journal у каталозі «%s»"
-
-#: ../src/plugins/abrt-dump-journal-oops.c:288
+#: ../src/plugins/abrt-dump-journal-oops.c:291
 msgid "Cannot filter systemd-journal to kernel data only"
 msgstr "Не вдалося відфільтрувати у systemd-journal лише дані ядра"
 
-#: ../src/plugins/abrt-dump-journal-oops.c:300
-#: ../src/plugins/abrt-dump-journal-xorg.c:298
+#: ../src/plugins/abrt-dump-journal-oops.c:303
+#: ../src/plugins/abrt-dump-journal-xorg.c:306
 #, c-format
 msgid "Failed to start watch from cursor '%s'"
 msgstr "Не вдалося розпочати спостереження з позиції курсора «%s»"
 
-#: ../src/plugins/abrt-dump-journal-xorg.c:61
+#: ../src/plugins/abrt-dump-journal-xorg.c:62
 msgid "Failed to parse Backtrace from journal"
 msgstr "Не вдалося обробити зворотне трасування з журналу"
 
-#: ../src/plugins/abrt-dump-journal-xorg.c:143
+#: ../src/plugins/abrt-dump-journal-xorg.c:145
 #, c-format
 msgid ""
 "& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
@@ -1585,54 +1655,59 @@ msgid ""
 "\n"
 "-c and -e options conflicts because both specifies the first read message.\n"
 "\n"
-"-e is useful only for -f because the following of journal starts by reading \n"
+"-e is useful only for -f because the following of journal starts by "
+"reading \n"
 "the entire journal if the last seen position is not available.\n"
 "\n"
 "The last seen position is saved in %s\n"
 "\n"
-"Journal filter is required parameter and must be specified either by parameter\n"
+"Journal filter is required parameter and must be specified either by "
+"parameter\n"
 "-j or in %s conf file.\n"
 msgstr ""
 "& [-vsoxtf] [-e]/[-c КУРСОР] [-d КАТАЛОГ]/[-D]\n"
 "\n"
 "Видобути дані аварії Xorg з systemd-journal\n"
 "\n"
-"Параметри -c і -e є конфліктними між собою, оскільки обидва визначають перше \n"
+"Параметри -c і -e є конфліктними між собою, оскільки обидва визначають "
+"перше \n"
 "прочитане повідомлення.\n"
 "\n"
 "Параметр -e корисний, лише якщо вказано -f, оскільки стеження за журналом \n"
-"починається з читання усього журналу, якщо недоступна остання прочитана позиція.\n"
+"починається з читання усього журналу, якщо недоступна остання прочитана "
+"позиція.\n"
 "\n"
 "Остання прочитана позиція зберігається у %s\n"
 "\n"
-"Фільтр журналу є обов’язковим параметром, його слід вказати за допомогою параметра\n"
+"Фільтр журналу є обов’язковим параметром, його слід вказати за допомогою "
+"параметра\n"
 "-j або у файлі налаштувань %s.\n"
 
-#: ../src/plugins/abrt-dump-journal-xorg.c:189
+#: ../src/plugins/abrt-dump-journal-xorg.c:192
 msgid "Print found crashes on standard output"
 msgstr "Вивести знайдені повідомлення про аварії до стандартного виводу"
 
-#: ../src/plugins/abrt-dump-journal-xorg.c:190
+#: ../src/plugins/abrt-dump-journal-xorg.c:193
 msgid "Create new problem directory in DIR for every crash found"
 msgstr ""
-"Створювати каталог проблеми для кожного знайденого повідомлення про аварійне"
-" завершення роботи"
+"Створювати каталог проблеми для кожного знайденого повідомлення про аварійне "
+"завершення роботи"
 
-#: ../src/plugins/abrt-dump-journal-xorg.c:199
+#: ../src/plugins/abrt-dump-journal-xorg.c:202
 msgid "Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)"
 msgstr ""
 "Фільтр журналу, наприклад «_COMM=gdm-x-session» (можна вказати декілька "
 "фільтрів)"
 
-#: ../src/plugins/abrt-dump-journal-xorg.c:265
+#: ../src/plugins/abrt-dump-journal-xorg.c:273
 msgid ""
-"Journal filter must be specified either by parameter -j or stored in "
-"/etc/abrt/plugins/xorg.conf file"
+"Journal filter must be specified either by parameter -j or stored in /etc/"
+"abrt/plugins/xorg.conf file"
 msgstr ""
-"Фільтр журналу слід вказати або за допомогою параметра -j або у файлі "
-"/etc/abrt/plugins/xorg.conf"
+"Фільтр журналу слід вказати або за допомогою параметра -j або у файлі /etc/"
+"abrt/plugins/xorg.conf"
 
-#: ../src/plugins/abrt-dump-journal-xorg.c:282
+#: ../src/plugins/abrt-dump-journal-xorg.c:290
 msgid "Cannot filter systemd-journal to Xorg data only"
 msgstr "Не вдалося відфільтрувати у systemd-journal лише дані Xorg"
 
@@ -1644,7 +1719,8 @@ msgid ""
 msgstr ""
 "& [-vsoxm] [-d КАТАЛОГ]/[-D] [ФАЙЛ]\n"
 "\n"
-"Видобути дані аварії Xorg з файла ФАЙЛ (або стандартного джерела вхідних даних)"
+"Видобути дані аварії Xorg з файла ФАЙЛ (або стандартного джерела вхідних "
+"даних)"
 
 #: ../src/plugins/abrt-dump-xorg.c:53
 msgid "Print found crash data on standard output"
@@ -1653,8 +1729,8 @@ msgstr "Вивести знайдені дані щодо аварії до ст
 #: ../src/plugins/abrt-dump-xorg.c:54
 msgid "Create problem directory in DIR for every crash found"
 msgstr ""
-"Створювати каталог проблеми для кожного знайденого повідомлення про аварійне"
-" завершення роботи"
+"Створювати каталог проблеми для кожного знайденого повідомлення про аварійне "
+"завершення роботи"
 
 #: ../src/plugins/abrt-dump-xorg.c:108
 msgid "Failed to parse Backtrace from log file"
@@ -1714,7 +1790,7 @@ msgstr ""
 msgid "Failed to move the journal to a cursor from file '%s'"
 msgstr "Не вдалося пересунути журнал до розташування курсора з файла «%s»"
 
-#: ../src/plugins/abrt-retrace-client.c:70
+#: ../src/plugins/abrt-retrace-client.c:79
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
@@ -1724,34 +1800,20 @@ msgstr ""
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
-#. 
-#: ../src/plugins/abrt-retrace-client.c:103
-#: ../src/plugins/abrt-retrace-client.c:182
-#: ../src/plugins/abrt-retrace-client.c:186
+#.
+#: ../src/plugins/abrt-retrace-client.c:119
+#: ../src/plugins/abrt-retrace-client.c:230
+#: ../src/plugins/abrt-retrace-client.c:234
 msgid "Can't create temporary file in "
 msgstr "Не вдалося створити тимчасовий файл у"
 
-#: ../src/plugins/abrt-retrace-client.c:131
-#: ../src/plugins/abrt-retrace-client.c:168
-#, c-format
-msgid "Can't execute '%s'"
-msgstr "Не вдалося виконати «%s»"
-
-#: ../src/plugins/abrt-retrace-client.c:211
-#: ../src/plugins/abrt-retrace-client.c:398
-#: ../src/plugins/abrt-retrace-client.c:677
-#: ../src/plugins/abrt-retrace-client.c:842
-#, c-format
-msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr "Не вдалося надіслати заголовок HTTP довжини %d: помилка NSS %d"
-
-#: ../src/plugins/abrt-retrace-client.c:223
-#: ../src/plugins/abrt-retrace-client.c:412
-#: ../src/plugins/abrt-retrace-client.c:775
-#: ../src/plugins/abrt-retrace-client.c:859
-#: ../src/plugins/abrt-retrace-client.c:926
-#: ../src/plugins/abrt-retrace-client.c:1011
-#: ../src/plugins/abrt-retrace-client.c:1070
+#: ../src/plugins/abrt-retrace-client.c:322
+#: ../src/plugins/abrt-retrace-client.c:498
+#: ../src/plugins/abrt-retrace-client.c:838
+#: ../src/plugins/abrt-retrace-client.c:921
+#: ../src/plugins/abrt-retrace-client.c:982
+#: ../src/plugins/abrt-retrace-client.c:1056
+#: ../src/plugins/abrt-retrace-client.c:1109
 #, c-format
 msgid ""
 "Unexpected HTTP response from server: %d\n"
@@ -1760,16 +1822,7 @@ msgstr ""
 "Неочікувана відповідь HTTP від сервера: %d\n"
 "%s"
 
-#: ../src/plugins/abrt-retrace-client.c:232
-#: ../src/plugins/abrt-retrace-client.c:755
-#: ../src/plugins/abrt-retrace-client.c:851
-#: ../src/plugins/abrt-retrace-client.c:918
-#: ../src/plugins/abrt-retrace-client.c:992
-#: ../src/plugins/abrt-retrace-client.c:1062
-msgid "Invalid response from server: missing HTTP message body."
-msgstr "Некоректна відповідь від сервера: немає самого повідомлення HTTP."
-
-#: ../src/plugins/abrt-retrace-client.c:424
+#: ../src/plugins/abrt-retrace-client.c:510
 #, c-format
 msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
@@ -1778,29 +1831,34 @@ msgstr ""
 "Сервер повторного трасування не здатен обробити пакунок «%s.%s».\n"
 "Чи є пакунок частиною офіційного сховища пакунків «%s»?"
 
-#: ../src/plugins/abrt-retrace-client.c:444
+#: ../src/plugins/abrt-retrace-client.c:541
+#, c-format
+msgid "Uploading %d%%\n"
+msgstr "Вивантаження, %d%%\n"
+
+#: ../src/plugins/abrt-retrace-client.c:554
 msgid "Querying server settings"
 msgstr "Визначення параметрів сервера"
 
-#: ../src/plugins/abrt-retrace-client.c:452
+#: ../src/plugins/abrt-retrace-client.c:564
 msgid "The server is fully occupied. Try again later."
 msgstr ""
-"Зараз сервер повторного трасування повністю зайнято виконанням завдань. Будь"
-" ласка, повторіть спробу пізніше."
+"Зараз сервер повторного трасування повністю зайнято виконанням завдань. Будь "
+"ласка, повторіть спробу пізніше."
 
-#: ../src/plugins/abrt-retrace-client.c:453
+#: ../src/plugins/abrt-retrace-client.c:565
 msgid "The server denied your request."
 msgstr "Ваш запит відхилено сервером."
 
-#: ../src/plugins/abrt-retrace-client.c:484
-#: ../src/plugins/abrt-retrace-client.c:500
+#: ../src/plugins/abrt-retrace-client.c:596
+#: ../src/plugins/abrt-retrace-client.c:612
 #, c-format
 msgid "'%s' must be a regular file in order to use Retrace server."
 msgstr ""
 "«%s» має бути звичайним файлом, щоб ним міг скористатися сервер повторного "
 "трасування."
 
-#: ../src/plugins/abrt-retrace-client.c:520
+#: ../src/plugins/abrt-retrace-client.c:632
 #, c-format
 msgid ""
 "The size of your crash is %s, but the retrace server only accepts crashes "
@@ -1810,99 +1868,85 @@ msgstr ""
 "повторного трасування здатен обробити лише дані аварійних завершень, об’єм "
 "яких не перевищує %s."
 
-#: ../src/plugins/abrt-retrace-client.c:540
+#: ../src/plugins/abrt-retrace-client.c:652
 msgid "The server does not support xz-compressed tarballs."
 msgstr ""
 "На сервері не передбачено підтримки архівів, створених за допомогою xz."
 
-#: ../src/plugins/abrt-retrace-client.c:577
+#: ../src/plugins/abrt-retrace-client.c:689
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
 msgstr ""
 "На сервері повторного трасування не передбачено підтримки випуску «%s»."
 
-#: ../src/plugins/abrt-retrace-client.c:581
+#: ../src/plugins/abrt-retrace-client.c:693
 msgid "The server is not able to handle your request."
 msgstr "Сервер не в змозі обробити ваш запит."
 
-#: ../src/plugins/abrt-retrace-client.c:600
+#: ../src/plugins/abrt-retrace-client.c:712
 msgid "Unknown package sent to Retrace server."
 msgstr "На сервер повторного трасування надіслано невідомий пакунок."
 
-#: ../src/plugins/abrt-retrace-client.c:609
+#: ../src/plugins/abrt-retrace-client.c:721
 msgid "Preparing an archive to upload"
 msgstr "Приготування архіву до вивантаження"
 
-#: ../src/plugins/abrt-retrace-client.c:628
+#: ../src/plugins/abrt-retrace-client.c:740
 #, c-format
 msgid ""
-"The size of your archive is %s, but the retrace server only accepts archives"
-" smaller or equal to %s."
+"The size of your archive is %s, but the retrace server only accepts archives "
+"smaller or equal to %s."
 msgstr ""
 "Розмір даних щодо архіву ваших даних дорівнює %s, сервер повторного "
 "трасування здатен обробити лише архіви, об’єм яких не перевищує %s."
 
-#: ../src/plugins/abrt-retrace-client.c:640
+#: ../src/plugins/abrt-retrace-client.c:752
 #, c-format
 msgid "You are going to upload %s. Continue?"
 msgstr "Ви маєте намір вивантажити %s даних. Виконати цю дію?"
 
-#: ../src/plugins/abrt-retrace-client.c:649
+#: ../src/plugins/abrt-retrace-client.c:761
 msgid "Cancelled by user"
 msgstr "Скасовано користувачем"
 
-#: ../src/plugins/abrt-retrace-client.c:683
+#: ../src/plugins/abrt-retrace-client.c:789
 #, c-format
 msgid "Uploading %s\n"
 msgstr "Вивантажуємо %s\n"
 
-#: ../src/plugins/abrt-retrace-client.c:709
-#, c-format
-msgid "Uploading %d%%\n"
-msgstr "Вивантаження, %d%%\n"
-
-#: ../src/plugins/abrt-retrace-client.c:721
-msgid "Failed to read from a pipe"
-msgstr "Не вдалося прочитати дані з каналу передавання"
-
-#: ../src/plugins/abrt-retrace-client.c:734
-#, c-format
-msgid "Failed to send data: NSS error %d (%s): %s"
-msgstr "Не вдалося надіслати дані: помилка NSS %d (%s): %s"
-
-#: ../src/plugins/abrt-retrace-client.c:745
+#: ../src/plugins/abrt-retrace-client.c:814
 msgid "Upload successful"
 msgstr "Успішне вивантаження"
 
-#: ../src/plugins/abrt-retrace-client.c:767
+#: ../src/plugins/abrt-retrace-client.c:830
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
 msgstr ""
-"Дані у вашому каталозі даних щодо проблеми пошкоджено, їх неможливо обробити"
-" на сервері повторного трасування."
+"Дані у вашому каталозі даних щодо проблеми пошкоджено, їх неможливо обробити "
+"на сервері повторного трасування."
 
-#: ../src/plugins/abrt-retrace-client.c:769
+#: ../src/plugins/abrt-retrace-client.c:832
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
 msgstr ""
-"У архіві містяться помилкові файли (зокрема символічні посилання), отже його"
-" не можна обробити."
+"У архіві містяться помилкові файли (зокрема символічні посилання), отже його "
+"не можна обробити."
 
-#: ../src/plugins/abrt-retrace-client.c:782
+#: ../src/plugins/abrt-retrace-client.c:848
 msgid "Invalid response from server: missing X-Task-Id."
 msgstr "Некоректна відповідь від сервера: не вказано X-Task-Id."
 
-#: ../src/plugins/abrt-retrace-client.c:788
+#: ../src/plugins/abrt-retrace-client.c:857
 msgid "Invalid response from server: missing X-Task-Password."
 msgstr "Некоректна відповідь від сервера: не вказано X-Task-Password."
 
-#: ../src/plugins/abrt-retrace-client.c:795
+#: ../src/plugins/abrt-retrace-client.c:864
 msgid "Retrace job started"
 msgstr "Розпочато роботу з повторного трасування"
 
-#: ../src/plugins/abrt-retrace-client.c:808
+#: ../src/plugins/abrt-retrace-client.c:878
 #, c-format
 msgid ""
 "Task Id: %s\n"
@@ -1911,11 +1955,11 @@ msgstr ""
 "Ідентифікатор: %s\n"
 "Пароль завдання: %s\n"
 
-#: ../src/plugins/abrt-retrace-client.c:866
+#: ../src/plugins/abrt-retrace-client.c:929
 msgid "Invalid response from server: missing X-Task-Status."
 msgstr "Некоректна відповідь від сервера: не вказано X-Task-Status."
 
-#: ../src/plugins/abrt-retrace-client.c:878
+#: ../src/plugins/abrt-retrace-client.c:942
 #, c-format
 msgid ""
 "Task Status: %s\n"
@@ -1924,14 +1968,7 @@ msgstr ""
 "Стан завдання: %s\n"
 "%s\n"
 
-#: ../src/plugins/abrt-retrace-client.c:909
-#: ../src/plugins/abrt-retrace-client.c:983
-#: ../src/plugins/abrt-retrace-client.c:1053
-#, c-format
-msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr "Не вдалося надіслати заголовок HTTP довжини %d: помилка NSS %d."
-
-#: ../src/plugins/abrt-retrace-client.c:1170
+#: ../src/plugins/abrt-retrace-client.c:1208
 msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
@@ -1939,15 +1976,15 @@ msgstr ""
 "Спроба повторного трасування зазнала невдачі. Повторіть спробу пізніше, і "
 "якщо проблему не вдасться усунути, створіть звіт щодо неї."
 
-#: ../src/plugins/abrt-retrace-client.c:1217
+#: ../src/plugins/abrt-retrace-client.c:1254
 msgid "log to syslog"
 msgstr "записувати до журналу syslog"
 
-#: ../src/plugins/abrt-retrace-client.c:1219
+#: ../src/plugins/abrt-retrace-client.c:1256
 msgid "allow insecure connection to retrace server"
 msgstr "дозволити незахищені з’єднання з сервером повторного трасування"
 
-#: ../src/plugins/abrt-retrace-client.c:1221
+#: ../src/plugins/abrt-retrace-client.c:1258
 msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
@@ -1955,53 +1992,51 @@ msgstr ""
 "не перевіряти, чи здатен сервер повторного трасування обробити вказаний "
 "пакунок до вивантаження архіву"
 
-#: ../src/plugins/abrt-retrace-client.c:1224
-msgid "retrace server URL"
+#: ../src/plugins/abrt-retrace-client.c:1261
+#, fuzzy
+#| msgid "retrace server URL"
+msgid "retrace server URI"
 msgstr "адреса сервера повторного трасування"
 
-#: ../src/plugins/abrt-retrace-client.c:1226
-msgid "retrace server port"
-msgstr "порт сервера повторного трасування"
-
-#: ../src/plugins/abrt-retrace-client.c:1228
+#: ../src/plugins/abrt-retrace-client.c:1263
 msgid "(debug) show received HTTP headers"
 msgstr "(діагностика) показувати отримані заголовки HTTP"
 
-#: ../src/plugins/abrt-retrace-client.c:1229
+#: ../src/plugins/abrt-retrace-client.c:1264
 msgid "For create and batch operations"
 msgstr "Для дій create та batch"
 
-#: ../src/plugins/abrt-retrace-client.c:1231
+#: ../src/plugins/abrt-retrace-client.c:1266
 msgid "read data from ABRT problem directory"
 msgstr "читати дані з каталогу даних проблеми ABRT"
 
-#: ../src/plugins/abrt-retrace-client.c:1233
+#: ../src/plugins/abrt-retrace-client.c:1268
 msgid "read data from coredump"
 msgstr "читати дані з coredump"
 
-#: ../src/plugins/abrt-retrace-client.c:1235
+#: ../src/plugins/abrt-retrace-client.c:1270
 msgid "Delay for polling operations"
 msgstr "Затримка для дій з опитування"
 
-#: ../src/plugins/abrt-retrace-client.c:1237
+#: ../src/plugins/abrt-retrace-client.c:1272
 msgid "(debug) do not delete temporary archive created from dump dir in "
 msgstr ""
 "(діагностика) не вилучати тимчасовий архів, створений на основі каталогу "
 "дампів у"
 
-#: ../src/plugins/abrt-retrace-client.c:1239
+#: ../src/plugins/abrt-retrace-client.c:1274
 msgid "For status, backtrace, and log operations"
 msgstr "Для дій status, backtrace та log"
 
-#: ../src/plugins/abrt-retrace-client.c:1241
+#: ../src/plugins/abrt-retrace-client.c:1276
 msgid "id of your task on server"
 msgstr "ідентифікатор вашого завдання на сервері"
 
-#: ../src/plugins/abrt-retrace-client.c:1243
+#: ../src/plugins/abrt-retrace-client.c:1278
 msgid "password of your task on server"
 msgstr "пароль до вашого завдання на сервері"
 
-#: ../src/plugins/abrt-retrace-client.c:1247
+#: ../src/plugins/abrt-retrace-client.c:1282
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch/exploitable"
@@ -2009,29 +2044,40 @@ msgstr ""
 "abrt-retrace-client <дія> [параметри]\n"
 "Дії: create/status/backtrace/log/batch/exploitable"
 
-#: ../src/plugins/abrt-retrace-client.c:1292
-#: ../src/plugins/abrt-retrace-client.c:1298
+#: ../src/plugins/abrt-retrace-client.c:1324
+#: ../src/plugins/abrt-retrace-client.c:1330
 msgid "Either problem directory or coredump is needed."
 msgstr "Слід вказати або каталог даних проблеми, або файл coredump."
 
-#: ../src/plugins/abrt-retrace-client.c:1304
-#: ../src/plugins/abrt-retrace-client.c:1312
-#: ../src/plugins/abrt-retrace-client.c:1320
-#: ../src/plugins/abrt-retrace-client.c:1328
+#: ../src/plugins/abrt-retrace-client.c:1336
+#: ../src/plugins/abrt-retrace-client.c:1344
+#: ../src/plugins/abrt-retrace-client.c:1352
+#: ../src/plugins/abrt-retrace-client.c:1360
 msgid "Task id is needed."
 msgstr "Слід вказати ідентифікатор завдання."
 
-#: ../src/plugins/abrt-retrace-client.c:1306
-#: ../src/plugins/abrt-retrace-client.c:1314
-#: ../src/plugins/abrt-retrace-client.c:1322
-#: ../src/plugins/abrt-retrace-client.c:1330
+#: ../src/plugins/abrt-retrace-client.c:1338
+#: ../src/plugins/abrt-retrace-client.c:1346
+#: ../src/plugins/abrt-retrace-client.c:1354
+#: ../src/plugins/abrt-retrace-client.c:1362
 msgid "Task password is needed."
 msgstr "Слід вказати пароль завдання."
 
-#: ../src/plugins/abrt-retrace-client.c:1334
+#: ../src/plugins/abrt-retrace-client.c:1366
 #, c-format
 msgid "Unknown operation: %s."
 msgstr "Невідома дія: %s."
+
+#: ../src/plugins/analyze_BodhiUpdates.xml.in.h:1
+msgid "Search for updated packages that fixes the crash."
+msgstr ""
+
+#: ../src/plugins/analyze_BodhiUpdates.xml.in.h:2
+msgid ""
+"Looks for Bugzilla reports with the 'abrt_hash' value in Bugzilla Bug "
+"Whiteboar equal to 'UUID' of the crash. If such a bug found, search for "
+"Bodhi updates shipping fixes for the found Bugzilla bugs."
+msgstr ""
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
@@ -2040,14 +2086,14 @@ msgstr "Локальний зневаджувач GNU"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgstr ""
-"Отримати пакунки debuginfo і створити дані зворотного трасування локально за"
-" допомогою GDB"
+"Отримати пакунки debuginfo і створити дані зворотного трасування локально за "
+"допомогою GDB"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
 msgstr ""
 "Доведеться звантажити пакунки debuginfo. Звантаження може тривати досить "
 "довго, пакунки, які буде встановлено, можуть значно зменшити об’єм вільного "
@@ -2066,15 +2112,17 @@ msgid ""
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
 msgstr ""
-"Вивантажує дамп ядра на сервер. Сервер створить дані зворотного трасування і"
-" поверне їх вам. Переваги: не потрібно встановлювати пакунки debuginfo. База"
-" даних пакунків debuginfo може бути повнішою за вашу. Сервер повторного "
+"Вивантажує дамп ядра на сервер. Сервер створить дані зворотного трасування і "
+"поверне їх вам. Переваги: не потрібно встановлювати пакунки debuginfo. База "
+"даних пакунків debuginfo може бути повнішою за вашу. Сервер повторного "
 "трасування може отримати кращі дані зворотного трасування. Недоліки: дамп "
 "ядра, який буде вивантажено, міститиме всі дані з аварійної програми, "
 "зокрема конфіденційні дані, якщо такі там зберігалися."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-msgid "Retrace server URL"
+#, fuzzy
+#| msgid "Retrace server URL"
+msgid "Retrace server URI"
 msgstr "Адреса сервера повторного трасування"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
@@ -2091,13 +2139,13 @@ msgstr "Визначає, чи можна використовувати нез�
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
+"(warning)&lt;/a&gt;"
 msgstr ""
-"Вкажіть «Незахищене», щоб дозволити незахищене з’єднання &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(попередження)&lt;/a&gt;"
+"Вкажіть «Незахищене», щоб дозволити незахищене з’єднання &lt;a href="
+"\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
+"&gt;(попередження)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
@@ -2116,158 +2164,30 @@ msgstr ""
 "назву виконуваного файла. Результат зберігається у елементі "
 "«xsession_errors»."
 
-#: ../src/plugins/https-utils.c:62
+#: ../src/plugins/https-utils.c:53
 msgid "An error occurred on the server side."
 msgstr "На боці сервера сталася помилка."
 
-#: ../src/plugins/https-utils.c:65
+#: ../src/plugins/https-utils.c:56
 #, c-format
 msgid "A server-side error occurred on '%s'"
 msgstr "Сталася помилка на боці сервера у «%s»"
 
-#: ../src/plugins/https-utils.c:74
+#: ../src/plugins/https-utils.c:65
 msgid "An error occurred while connecting to the server"
 msgstr "Сталася помилка під час спроби встановити з’єднання з сервером"
 
-#: ../src/plugins/https-utils.c:77
+#: ../src/plugins/https-utils.c:68
 #, c-format
 msgid "An error occurred while connecting to '%s'"
 msgstr "Під час спроби встановити з’єднання з «%s» сталася помилка"
 
-#: ../src/plugins/https-utils.c:97
-#, c-format
-msgid "Issuer certificate is invalid: '%s'."
-msgstr "Некоректний видавець сертифіката: «%s»."
-
-#: ../src/plugins/https-utils.c:100
-#, c-format
-msgid "Certificate is signed by an untrusted issuer: '%s'."
-msgstr "Сертифікат підписано ненадійним видавцем: «%s»."
-
-#: ../src/plugins/https-utils.c:103
-#, c-format
-msgid "Certificate subject name '%s' does not match target host name '%s'."
-msgstr ""
-"Назва призначення сертифіката, «%s», не збігається з назвою вузла "
-"призначення «%s»."
-
-#: ../src/plugins/https-utils.c:107
-msgid "Remote certificate has expired."
-msgstr "Строк дії віддаленого сертифіката сплив."
-
-#: ../src/plugins/https-utils.c:110
-#, c-format
-msgid "Certificate issuer is not recognized: '%s'."
-msgstr "Не вдалося розпізнати видавця сертифіката: «%s»."
-
-#: ../src/plugins/https-utils.c:113
-#, c-format
-msgid "Bad certificate received. Subject '%s', issuer '%s'."
-msgstr "Отримано помилковий сертифікат. Призначення «%s», видавець «%s»."
-
-#: ../src/plugins/https-utils.c:149
-#, c-format
-msgid "Failed to get slot 'PEM Token #0': %d."
-msgstr "Не вдалося отримати слот «PEM Token #0»: %d."
-
-#: ../src/plugins/https-utils.c:182
-#, c-format
-msgid "Can't resolve host name '%s'. NSS error %d."
-msgstr "Не вдалося обробити назву вузла «%s». Помилка NSS %d."
-
-#. Host exists, but has neither IPv4 nor IPv6??
-#: ../src/plugins/https-utils.c:203
-#, c-format
-msgid "Can't resolve host name '%s'."
-msgstr "Не вдалося обробити назву вузла «%s»."
-
-#: ../src/plugins/https-utils.c:210
-msgid "Failed to set socket blocking mode."
-msgstr "Не вдалося встановити режим блокування сокета."
-
-#: ../src/plugins/https-utils.c:213
-msgid "Failed to wrap TCP socket by SSL."
-msgstr "Не вдалося використати для шифрування даних сокета TCP SSL."
-
-#: ../src/plugins/https-utils.c:215
-msgid "Failed to enable client handshake to SSL socket."
-msgstr ""
-"Не вдалося увімкнути клієнтську процедуру встановлення зв’язку з сокетом "
-"SSL."
-
-# translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/https-utils.c:220
-msgid "Failed to enable SSL3."
-msgstr "Не вдалося увімкнути SSL3."
-
-# translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/https-utils.c:222
-msgid "Failed to enable TLS."
-msgstr "Не вдалося увімкнути TLS."
-
-#: ../src/plugins/https-utils.c:224
-msgid "Failed to set URL to SSL socket."
-msgstr "Не вдалося встановити адресу для сокета SSL."
-
-#: ../src/plugins/https-utils.c:233
-#, c-format
-msgid "Can't connect to '%s'"
-msgstr "Не вдалося встановити зв’язок з «%s»"
-
-#: ../src/plugins/https-utils.c:241
-msgid "Failed to set certificate hook."
-msgstr "Не вдалося встановити скрипт обробки сертифікатів."
-
-#: ../src/plugins/https-utils.c:247
-msgid "Failed to set handshake callback."
-msgstr "Не вдалося встановити зворотній виклик під час встановлення зв’язку."
-
-#: ../src/plugins/https-utils.c:251
-msgid "Failed to reset handshake."
-msgstr "Не вдалося скинути зворотній виклик."
-
-#: ../src/plugins/https-utils.c:258
-#, c-format
-msgid "Failed to complete SSL handshake: NSS error %d."
-msgstr ""
-"Не вдалося завершити встановлення зв’язку у режимі SSL: помилка NSS %d."
-
-#: ../src/plugins/https-utils.c:267
-msgid "Failed to close SSL socket."
-msgstr "Не вдалося закрити сокет SSL."
-
-#: ../src/plugins/https-utils.c:332
-#, c-format
-msgid "Malformed HTTP response header: '%s'"
-msgstr "Помилкове форматування заголовка відповіді HTTP: «%s»"
-
-#: ../src/plugins/https-utils.c:369
-#, c-format
-msgid "Receiving of data failed: NSS error %d."
-msgstr "Помилка отримання даних: помилка NSS %d."
-
-#: ../src/plugins/https-utils.c:398
-msgid "Malformed chunked response."
-msgstr "Помилкове форматування відповіді."
-
-#: ../src/plugins/https-utils.c:423
-msgid "Failed to initialize NSS."
-msgstr "Не вдалося ініціалізувати NSS."
-
-#: ../src/plugins/https-utils.c:429
-msgid "Failed to initialize security module."
-msgstr "Не вдалося ініціалізувати модуль захисту."
-
-#: ../src/plugins/https-utils.c:444
-msgid "Failed to shutdown NSS."
-msgstr "Не вдалося завершити роботу NSS."
-
-#: ../src/plugins/oops-utils.c:73
+#: ../src/plugins/oops-utils.c:78
 #, c-format
 msgid "Sleeping for %d seconds"
 msgstr "Очікуємо %d секунд"
 
-#: ../src/plugins/oops-utils.c:200
+#: ../src/plugins/oops-utils.c:227
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
@@ -2275,7 +2195,7 @@ msgstr ""
 "Проблеми з ядром виникли через помилки у BIOS. На жаль, супровідники ядра "
 "системи не зможуть усунути такі проблеми."
 
-#: ../src/plugins/oops-utils.c:205
+#: ../src/plugins/oops-utils.c:232
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
@@ -2283,34 +2203,38 @@ msgstr ""
 "Виникли проблеми з ядром, підтримки обладнання у системі не передбачено, "
 "тому супровідники ядра не зможуть усунути цю проблему."
 
-#: ../src/plugins/oops-utils.c:220
-#, c-format
+#: ../src/plugins/oops-utils.c:246
+#, fuzzy, c-format
+#| msgid ""
+#| "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
+#| "Kernel maintainers are unable to diagnose tainted reports."
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
-"Kernel maintainers are unable to diagnose tainted reports."
+"Explanation:\n"
+"%sKernel maintainers are unable to diagnose tainted reports."
 msgstr ""
 "Сталася проблема з ядром, яке було завантажено з небажаними модулями "
 "(прапорці:%s). Супровідники коду ядра не зможуть проаналізувати звіти щодо "
 "ядра з небажаними модулями."
 
-#: ../src/plugins/oops-utils.c:228
+#: ../src/plugins/oops-utils.c:254
 #, c-format
 msgid " Tainted modules: %s."
 msgstr " Модулі сумнівної якості: %s."
 
-#: ../src/plugins/bodhi.c:468
+#: ../src/plugins/bodhi.c:498
 msgid "List of bug ids"
 msgstr "Список ідентифікаторів вад"
 
-#: ../src/plugins/bodhi.c:469
+#: ../src/plugins/bodhi.c:499
 msgid "Specify a bodhi server url"
 msgstr "Вкажіть адресу сервера bodhi"
 
-#: ../src/plugins/bodhi.c:470
+#: ../src/plugins/bodhi.c:500
 msgid "Specify a release"
 msgstr "Вкажіть випуск"
 
-#: ../src/plugins/bodhi.c:475
+#: ../src/plugins/bodhi.c:505
 msgid ""
 "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
 "\n"
@@ -2320,20 +2244,20 @@ msgstr ""
 "\n"
 "Виконати пошук оновлень на сервері bodhi"
 
-#: ../src/plugins/bodhi.c:542
+#: ../src/plugins/bodhi.c:572
 msgid "Searching for updates"
 msgstr "Пошук оновлень"
 
-#: ../src/plugins/bodhi.c:548
+#: ../src/plugins/bodhi.c:578
 msgid "No updates for this package found"
 msgstr "Для цього пакунка оновлень не знайдено"
 
 #. strbuf_free(q);
-#: ../src/plugins/bodhi.c:577
+#: ../src/plugins/bodhi.c:607
 msgid "Local version of the package is newer than available updates"
 msgstr "Локальна версія пакунка є новішою за доступні оновлення"
 
-#: ../src/plugins/bodhi.c:594
+#: ../src/plugins/bodhi.c:635
 #, c-format
 msgid ""
 "An update exists which might fix your problem. You can install it by "
@@ -2351,7 +2275,8 @@ msgid ""
 msgstr ""
 "& [-v] [-od] ФАЙЛ...\n"
 "\n"
-"Шукати у файлах повідомлення про розділену помилку ядра. Може виводити або вилучати такі повідомлення."
+"Шукати у файлах повідомлення про розділену помилку ядра. Може виводити або "
+"вилучати такі повідомлення."
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:97
 msgid "Print found oopses"
@@ -2361,331 +2286,229 @@ msgstr "Вивести знайдені повідомлення про поми
 msgid "Delete files with found oopses"
 msgstr "Вилучити файли зі знайденими даними щодо помилок ядра"
 
-#: ../src/cli/abrt-cli-core.c:100
-#, c-format
-msgid "'%s' identifies more than one problem directory"
-msgstr "«%s» визначає декілька каталогів проблем"
-
-#: ../src/cli/abrt-cli.c:130
-msgid "Usage: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
+#: ../src/cli/abrtcli/match.py:117
+msgid "No matching problems found"
 msgstr ""
-"Користування: abrt-cli [--authenticate] [--version] КОМАНДА [КАТАЛОГ]..."
 
-#: ../src/cli/abrt-cli.c:134
-msgid "List problems [in DIRs]"
-msgstr "Показати список проблем [у вказаних каталогах]"
+#: ../src/cli/abrtcli/utils.py:79
+msgid "Not reportable"
+msgstr "Непридатний для звітування"
 
-#: ../src/cli/abrt-cli.c:135
-msgid "Remove problem directory DIR"
-msgstr "Вилучити каталог даних проблеми КАТАЛОГ"
-
-#: ../src/cli/abrt-cli.c:136
-msgid "Analyze and report problem data in DIR"
-msgstr "Проаналізувати і створити звіт за даними з вказаного каталогу"
-
-#: ../src/cli/abrt-cli.c:137
-msgid "Print information about DIR"
-msgstr "Показати дані щодо каталогу КАТАЛОГ"
-
-#: ../src/cli/abrt-cli.c:138
-msgid "Print the count of the recent crashes"
-msgstr "Вивести кількість нещодавніх аварійних завершень роботи"
-
-#: ../src/cli/abrt-cli.c:139
-msgid "Process multiple problems"
-msgstr "Обробка декількох проблем"
-
-#: ../src/cli/abrt-cli.c:162
-msgid "See 'abrt-cli COMMAND --help' for more information"
+#: ../src/cli/abrtcli/cli/__init__.py:30
+msgid "increase output verbosity"
 msgstr ""
-"Щоб дізнатися більше, скористайтеся командою «abrt-cli КОМАНДА --help»"
 
-#: ../src/cli/list.c:127
-msgid "& list [options]"
-msgstr "& list [параметри]"
+#: ../src/cli/abrtcli/cli/__init__.py:50
+msgid "positive non-zero integer expected"
+msgstr ""
 
-#: ../src/cli/list.c:136 ../src/cli-ng/abrtcli/cli.py:121
-#: ../src/cli-ng/abrtcli/cli.py:264
-msgid "List only not-reported problems"
+#: ../src/cli/abrtcli/cli/__init__.py:54
+#, fuzzy
+#| msgid "List problems"
+msgid "filter last N problems"
+msgstr "Показати список проблем"
+
+#: ../src/cli/abrtcli/cli/__init__.py:57
+msgid "filter problems with matching component"
+msgstr ""
+
+#: ../src/cli/abrtcli/cli/__init__.py:59
+#, fuzzy
+#| msgid "List only not-reported problems"
+msgid "filter unreported problems"
 msgstr "Показати список лише проблем, щодо яких не складено звітів"
 
-#. deprecate -d option with --pretty=full
-#: ../src/cli/list.c:138 ../src/cli/list.c:191
-msgid "Show detailed report"
-msgstr "Показати докладний звіт"
-
-#: ../src/cli/list.c:139 ../src/cli-ng/abrtcli/cli.py:113
-msgid "List only the problems more recent than specified timestamp"
-msgstr ""
-"Вивести список лише тих проблем, які сталися після вказаної часової позначки"
-
-#: ../src/cli/list.c:140 ../src/cli-ng/abrtcli/cli.py:115
-msgid "List only the problems older than specified timestamp"
+#: ../src/cli/abrtcli/cli/__init__.py:61
+#, fuzzy
+#| msgid "List only the problems older than specified timestamp"
+msgid "filter problems older than the specified timestamp"
 msgstr ""
 "Вивести список лише тих проблем, які сталися до вказаної часової позначки"
 
-#: ../src/cli/list.c:166
-#, c-format
-msgid ""
-"The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
-"'abrt-auto-reporting enabled' as a user with root privileges\n"
+#: ../src/cli/abrtcli/cli/__init__.py:63
+#, fuzzy
+#| msgid "List only the problems older than specified timestamp"
+msgid "filter problems newer than the specified timestamp"
 msgstr ""
-"Можливість автоматичного звітування вимкнено. Вам варто увімкнути її за допомогою команди\n"
-"«abrt-auto-reporting enabled», відданої від імені користувача з правами доступу root\n"
+"Вивести список лише тих проблем, які сталися до вказаної часової позначки"
 
-#: ../src/cli/list.c:183
-msgid "& info [options] DIR..."
-msgstr "& info [параметри] КАТАЛОГ..."
-
-#: ../src/cli/list.c:192
-msgid "Text larger than this will be shown abridged"
+#: ../src/cli/abrtcli/cli/__init__.py:66
+msgid "filter problems with matching executable"
 msgstr ""
-"Текст з розмірами, що перевищують вказані, буде обрізано під час показу"
 
-#: ../src/cli/list.c:212
-#, c-format
-msgid "No such problem directory '%s'"
-msgstr "Каталогу проблеми «%s» не існує"
+#: ../src/cli/abrtcli/cli/__init__.py:71
+#, fuzzy
+#| msgid "Output format"
+msgid "output format"
+msgstr "Формат виведення"
 
-#: ../src/cli/status.c:66
-msgid "& status"
-msgstr "& status"
+#: ../src/cli/abrtcli/cli/__init__.py:74
+#, fuzzy
+#| msgid "Built-in output format"
+msgid "built-in output format"
+msgstr "Формат вбудованого виведення"
 
-#: ../src/cli/status.c:74 ../src/cli-ng/abrtcli/cli.py:260
-msgid "Print only the problem count without any message"
-msgstr "Вивести лише кількість проблеми без жодних повідомлень"
+#: ../src/cli/abrtcli/cli/__init__.py:79
+#, fuzzy
+#| msgid "Make the problem directory world readable"
+msgid "path to the problem directory, problem ID or wildcard"
+msgstr "Зробити каталог даних проблеми доступним для всіх користувачів"
 
-#: ../src/cli/status.c:75 ../src/cli-ng/abrtcli/cli.py:262
-msgid "Print only the problems more recent than specified timestamp"
-msgstr ""
-"Вивести дані щодо проблем, які сталися після вказаної часової позначки"
-
-#: ../src/cli/status.c:91
-#, c-format
-msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
-msgstr ""
-"ABRT виявлено записи проблем (%u). Докладніші дані може бути отримано за "
-"допомогою такої команди: abrt-cli list%s\n"
-
-#: ../src/cli/report.c:34
-#, c-format
-msgid "Can't find problem '%s'"
-msgstr "Не вдалося знайти запис проблеми «%s»"
-
-#: ../src/cli/report.c:42
-#, c-format
-msgid "Problem '%s' cannot be reported"
-msgstr "Звітування щодо проблеми «%s» неможливе"
-
-#: ../src/cli/report.c:63 ../src/cli/process.c:70
-#, c-format
-msgid "Deleting '%s'"
-msgstr "Вилучаємо «%s»"
-
-#: ../src/cli/report.c:79
-msgid "& report [options] DIR..."
-msgstr "& report [параметри] КАТАЛОГ..."
-
-#: ../src/cli/report.c:89
-msgid "Remove PROBLEM_DIR after reporting"
-msgstr "Вилучити КАТАЛОГ_ПРОБЛЕМИ після створення звіту"
-
-#: ../src/cli/process.c:64
-msgid "Actions: remove(rm), info(i), skip(s):"
-msgstr "Дії: вилучити(rm), інформація(i), пропустити(s):"
-
-#: ../src/cli/process.c:66
-msgid "Actions: remove(rm), report(e), info(i), skip(s):"
-msgstr "Дії: вилучити(rm), звітувати(e), інформація(i), пропустити(s):"
-
-#: ../src/cli/process.c:78
-#, c-format
-msgid "Reporting '%s'"
-msgstr "Звітуємо щодо «%s»"
-
-#. dummy must be free because the function ask allocate memory
-#: ../src/cli/process.c:127
-msgid "For next problem press ENTER:"
-msgstr "Для переходу до наступної проблеми натисніть ENTER:"
-
-#: ../src/cli/process.c:138
-msgid "Without --since argument, iterates over all detected problems."
-msgstr ""
-"Без аргументу --since, циклічний перехід між усіма виявленими проблемами."
-
-#: ../src/cli/process.c:144
-msgid "Selects only problems detected after timestamp"
-msgstr "Вибирає лише проблеми, виявлені після вказаної часової позначки"
-
-#: ../src/cli-ng/abrtcli/cli.py:33
+#: ../src/cli/abrtcli/cli/backtrace.py:35
 msgid "Problem has no backtrace"
 msgstr "У проблеми немає даних зворотного трасування"
 
-#: ../src/cli-ng/abrtcli/cli.py:35
+#: ../src/cli/abrtcli/cli/backtrace.py:37
 msgid "Start retracing process?"
 msgstr "Запустити процес повторного трасування?"
 
-#: ../src/cli-ng/abrtcli/cli.py:40
-msgid "Show backtrace of a problem"
-msgstr "Показати дані зворотного трасування проблеми"
+#: ../src/cli/abrtcli/cli/gdb.py:25
+#, fuzzy
+#| msgid "Download debuginfo packages and generate backtrace locally using GDB"
+msgid "install debuginfo packages before launching GDB"
+msgstr ""
+"Отримати пакунки debuginfo і створити дані зворотного трасування локально за "
+"допомогою GDB"
 
-#: ../src/cli-ng/abrtcli/cli.py:50
-msgid "This"
-msgstr "Ця"
-
-#: ../src/cli-ng/abrtcli/cli.py:52
-msgid "Last"
-msgstr "Остання"
-
-#: ../src/cli-ng/abrtcli/cli.py:54
-msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
+#: ../src/cli/abrtcli/cli/gdb.py:38
+#, fuzzy
+#| msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
+msgid "The problem is not of a C/C++ type. Can't run GDB"
 msgstr ""
 "Проблема {} не належить до типу C/C++. Встановлення debuginfo неможливе."
 
-#: ../src/cli-ng/abrtcli/cli.py:64 ../src/cli-ng/abrtcli/cli.py:99
+#: ../src/cli/abrtcli/cli/gdb.py:52
+#: ../src/cli/abrtcli/cli/install_debuginfo.py:45
 msgid ""
 "Permission denied: '{}'\n"
 "If this is a system problem try running this command as root"
 msgstr ""
 "Немає доступу: «{}»\n"
-"Якщо ця проблема є загальносистемною, спробуйте виконати цю команду від імені root"
+"Якщо ця проблема є загальносистемною, спробуйте виконати цю команду від "
+"імені root"
 
-#: ../src/cli-ng/abrtcli/cli.py:71
-msgid "Install required debuginfo for given problem"
-msgstr "Встановити потрібні пакунки debuginfo для вказаної проблеми"
+#: ../src/cli/abrtcli/cli/install_debuginfo.py:36
+#, fuzzy
+#| msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
+msgid "The problem is not of a C/C++ type. Can't install debuginfo"
+msgstr ""
+"Проблема {} не належить до типу C/C++. Встановлення debuginfo неможливе."
 
-#: ../src/cli-ng/abrtcli/cli.py:106
-msgid "Run GDB against a problem"
-msgstr "Запустити GDB для даних проблеми"
-
-#: ../src/cli-ng/abrtcli/cli.py:117 ../src/cli-ng/abrtcli/cli.py:153
-msgid "Output format"
-msgstr "Формат виведення"
-
-#: ../src/cli-ng/abrtcli/cli.py:119 ../src/cli-ng/abrtcli/cli.py:155
-msgid "Built-in output format"
-msgstr "Формат вбудованого виведення"
-
-#: ../src/cli-ng/abrtcli/cli.py:145 ../src/cli-ng/abrtcli/match.py:89
+#: ../src/cli/abrtcli/cli/list.py:34
 msgid "No problems"
 msgstr "Немає проблем"
 
-#: ../src/cli-ng/abrtcli/cli.py:147
-msgid "List problems"
-msgstr "Показати список проблем"
-
-#: ../src/cli-ng/abrtcli/cli.py:167
-msgid "Print information about problem"
-msgstr "Вивести дані щодо проблеми"
-
-#: ../src/cli-ng/abrtcli/cli.py:173
-msgid "Prompt before removal"
-msgstr "Запитувати перед вилученням"
-
-#: ../src/cli-ng/abrtcli/cli.py:174
-msgid "Do not prompt before removal"
+#: ../src/cli/abrtcli/cli/remove.py:22
+#, fuzzy
+#| msgid "Do not prompt before removal"
+msgid "do not prompt before removal"
 msgstr "Не запитувати перед вилученням"
 
-#. force prompt for last problem to avoid accidents
-#: ../src/cli-ng/abrtcli/cli.py:182
+#: ../src/cli/abrtcli/cli/remove.py:37
 msgid "Are you sure you want to delete this problem?"
 msgstr "Ви справді хочете вилучити дані цієї проблеми?"
 
-#: ../src/cli-ng/abrtcli/cli.py:186
+#: ../src/cli/abrtcli/cli/remove.py:41
 msgid "Removed"
 msgstr "Вилучено"
 
-#: ../src/cli-ng/abrtcli/cli.py:188
-msgid "Remove problem"
-msgstr "Вилучити дані проблеми"
+#: ../src/cli/abrtcli/cli/report.py:23
+#, fuzzy
+#| msgid "Remove PROBLEM_DIR after reporting"
+msgid "remove after reporting"
+msgstr "Вилучити КАТАЛОГ_ПРОБЛЕМИ після створення звіту"
 
-#: ../src/cli-ng/abrtcli/cli.py:199
-msgid "Report problem"
+#: ../src/cli/abrtcli/cli/report.py:25
+#, fuzzy
+#| msgid "Not reportable"
+msgid "ignore unreportable state"
+msgstr "Непридатний для звітування"
+
+#: ../src/cli/abrtcli/cli/report.py:41
+#, fuzzy, python-brace-format
+#| msgid "Problem '%s' cannot be reported"
+msgid "Problem '{0}' cannot be reported"
+msgstr "Звітування щодо проблеми «%s» неможливе"
+
+#: ../src/cli/abrtcli/cli/report.py:50
+#, fuzzy, python-format
+#| msgid "Report problem"
+msgid "Reporting problem %s\n"
 msgstr "Повідомити про проблему"
 
-#: ../src/cli-ng/abrtcli/cli.py:204
-msgid "Perform local retracing"
+#: ../src/cli/abrtcli/cli/retrace.py:24
+#, fuzzy
+#| msgid "Perform local retracing"
+msgid "perform retracing locally"
 msgstr "Виконати локальне повторне трасування"
 
-#: ../src/cli-ng/abrtcli/cli.py:206
-msgid "Perform remote retracing using retrace server"
-msgstr ""
-"Виконати віддалене повторне трасування за допомогою сервера повторного "
-"трасування"
+#: ../src/cli/abrtcli/cli/retrace.py:26
+#, fuzzy
+#| msgid "Send core dump to remote retrace server for analysis"
+msgid "submit core dump for remote retracing"
+msgstr "Надіслати дамп ядра на сервер повторного трасування для аналізу"
 
-#: ../src/cli-ng/abrtcli/cli.py:208
-msgid "Force retracing even if backtrace already exists"
-msgstr ""
-"Примусове повторне трасування, навіть якщо дані зворотного трасування вже "
-"існують"
+#: ../src/cli/abrtcli/cli/retrace.py:29
+#, fuzzy
+#| msgid "Local retracing"
+msgid "force retracing"
+msgstr "Локальне повторне трасування"
 
-#: ../src/cli-ng/abrtcli/cli.py:223
+#: ../src/cli/abrtcli/cli/retrace.py:47
 msgid "Problem already has a backtrace"
 msgstr "У проблеми вже є зворотне трасування"
 
-#: ../src/cli-ng/abrtcli/cli.py:224
+#: ../src/cli/abrtcli/cli/retrace.py:48
 msgid "Run abrt retrace with -f/--force to retrace again"
 msgstr ""
-"Для повторного трасування віддайте команду abrt retrace із параметром "
-"-f/--force"
+"Для повторного трасування віддайте команду abrt retrace із параметром -f/--"
+"force"
 
-#: ../src/cli-ng/abrtcli/cli.py:225
+#: ../src/cli/abrtcli/cli/retrace.py:49
 msgid "Show backtrace?"
 msgstr "Показати дані зворотного трасування?"
 
-#: ../src/cli-ng/abrtcli/cli.py:229
+#: ../src/cli/abrtcli/cli/retrace.py:52
 msgid "No retracing possible for this problem type"
 msgstr "Для цього типу проблем повторне трасування неможливе"
 
-#: ../src/cli-ng/abrtcli/cli.py:233
+#: ../src/cli/abrtcli/cli/retrace.py:56
 msgid ""
 "Upload core dump and perform remote retracing? (It may contain sensitive "
 "data). If your answer is 'No', a stack trace will be generated locally. "
 "Local retracing requires downloading potentially large amount of debuginfo "
 "data"
 msgstr ""
-"Вивантажити дамп ядра і виконати віддалене повторне трасування? (Вивантажені"
-" дані можуть містити конфіденційну інформацію). Якщо буде дано відповідь "
+"Вивантажити дамп ядра і виконати віддалене повторне трасування? (Вивантажені "
+"дані можуть містити конфіденційну інформацію). Якщо буде дано відповідь "
 "«Ні», трасування стека буде створено локально. Локальне повторне трасування "
 "потребує отримання потенційно доволі об’ємного пакета даних debuginfo."
 
-#: ../src/cli-ng/abrtcli/cli.py:248
+#: ../src/cli/abrtcli/cli/retrace.py:71
 msgid "Remote retracing"
 msgstr "Віддалене повторне трасування"
 
-#: ../src/cli-ng/abrtcli/cli.py:251
+#: ../src/cli/abrtcli/cli/retrace.py:74
 msgid "Local retracing"
 msgstr "Локальне повторне трасування"
 
-#: ../src/cli-ng/abrtcli/cli.py:255
-msgid "Generate backtrace from coredump"
-msgstr "Створити зворотне трасування на основі coredump"
+#: ../src/cli/abrtcli/cli/status.py:17
+#, fuzzy
+#| msgid "List only not-reported problems"
+msgid "show only the number of problems"
+msgstr "Показати список лише проблем, щодо яких не складено звітів"
 
-#: ../src/cli-ng/abrtcli/cli.py:280
-msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
+#: ../src/cli/abrtcli/cli/status.py:19
+msgid "only show output if at least one problem is found"
+msgstr ""
+
+#: ../src/cli/abrtcli/cli/status.py:40
+#, fuzzy
+#| msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
+msgid "ABRT has detected a problem. For more information, run “abrt list{}”"
 msgstr ""
 "ABRT виявлено записи проблем {}. Докладніші дані може бути отримано за "
 "допомогою такої команди: abrt-cli list{}"
-
-#: ../src/cli-ng/abrtcli/cli.py:283
-msgid "Print count of the recent crashes"
-msgstr "Вивести кількість нещодавніх аварійних завершень роботи"
-
-#: ../src/cli-ng/abrtcli/cli.py:292
-msgid "Authenticate and show all problems on this machine"
-msgstr "Пройти розпізнавання і показати усі проблеми на цьому комп’ютері"
-
-#: ../src/cli-ng/abrtcli/match.py:96
-msgid "No problem(s) matched"
-msgstr "Не встановлено відповідності жодній проблемі"
-
-#: ../src/cli-ng/abrtcli/match.py:116
-msgid "Ambiguous match specified resulting in multiple problems:"
-msgstr "Вказана неоднозначна відповідність призвела до декількох проблем:"
-
-#: ../src/cli-ng/abrtcli/utils.py:78
-msgid "Not reportable"
-msgstr "Непридатний для звітування"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
@@ -2701,15 +2524,15 @@ msgid ""
 "user doesn't want to upload his coredump to anywhere the event performs "
 "local analysis. Local analysis is run event if remote analysis fails. Pros: "
 "no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump"
-" you upload contains all the data from the crashed program, including your "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
 "Вивантажує дамп ядра на сервер, який створює дані зворотнього трасування і  "
 "повертає їх на ваш комп’ютер. Якщо користувач не бажає вивантажувати дамп "
 "ядра, буде виконано локальний аналіз події. Локальний аналіз також буде "
-"виконано, якщо не вдасться виконати аналіз на віддаленому сервері. Переваги:"
-" не потрібно отримувати і встановлювати діагностичні пакунки, база "
+"виконано, якщо не вдасться виконати аналіз на віддаленому сервері. Переваги: "
+"не потрібно отримувати і встановлювати діагностичні пакунки, база "
 "діагностичних даних на сервері є повнішою за вашу. Сервер зворотного "
 "трасування може створити кращу картину для зворотного трасування. Недоліки: "
 "вивантажені вами дані дампу ядра можуть містити всі дані з програми, роботу "
@@ -2720,8 +2543,7 @@ msgid "Analyze VM core"
 msgstr "Проаналізувати ядро ВМ"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
-msgid ""
-"Install kernel debuginfo packages, generate kernel log and oops message"
+msgid "Install kernel debuginfo packages, generate kernel log and oops message"
 msgstr ""
 "Встановити пакунки діагностичних даних ядра, створити журнал дій ядра і "
 "повідомлень щодо помилок"
@@ -2747,8 +2569,8 @@ msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
 msgstr ""
-"Запускає gconftool-2 --recursive-list /apps/виконуваний_файл і зберігає дані"
-" як елемент «gconf_subtree»."
+"Запускає gconftool-2 --recursive-list /apps/виконуваний_файл і зберігає дані "
+"як елемент «gconf_subtree»."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
@@ -2776,8 +2598,8 @@ msgstr "Зберегти .vimrc та .gvimrc з вашого домашньог�
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 "Шукає .vimrc і .gvimrc у вашому домашньому каталозі і зберігає їх як "
 "user_vimrc і user_gvimrc, відповідно."
@@ -2793,3 +2615,272 @@ msgstr "Виконується після того, як звітування з
 #: ../src/plugins/post_report.xml.in.h:3
 msgid "Used for updating of the databases"
 msgstr "Використовується для оновлення баз даних"
+
+#~ msgid "Can't close notification: %s"
+#~ msgstr "Не вдалося закрити сповіщення: %s"
+
+#~ msgid "Can't show notification: %s"
+#~ msgstr "Не вдалося показати сповіщення: %s"
+
+#~ msgid "Unknown error"
+#~ msgstr "Невідома помилка"
+
+#~ msgid "Failed to send HTTP header of length %d: NSS error %d"
+#~ msgstr "Не вдалося надіслати заголовок HTTP довжини %d: помилка NSS %d"
+
+#~ msgid "Invalid response from server: missing HTTP message body."
+#~ msgstr "Некоректна відповідь від сервера: немає самого повідомлення HTTP."
+
+#~ msgid "Failed to read from a pipe"
+#~ msgstr "Не вдалося прочитати дані з каналу передавання"
+
+#~ msgid "Failed to send data: NSS error %d (%s): %s"
+#~ msgstr "Не вдалося надіслати дані: помилка NSS %d (%s): %s"
+
+#~ msgid "Failed to send HTTP header of length %d: NSS error %d."
+#~ msgstr "Не вдалося надіслати заголовок HTTP довжини %d: помилка NSS %d."
+
+#~ msgid "retrace server port"
+#~ msgstr "порт сервера повторного трасування"
+
+#~ msgid "Issuer certificate is invalid: '%s'."
+#~ msgstr "Некоректний видавець сертифіката: «%s»."
+
+#~ msgid "Certificate is signed by an untrusted issuer: '%s'."
+#~ msgstr "Сертифікат підписано ненадійним видавцем: «%s»."
+
+#~ msgid "Certificate subject name '%s' does not match target host name '%s'."
+#~ msgstr ""
+#~ "Назва призначення сертифіката, «%s», не збігається з назвою вузла "
+#~ "призначення «%s»."
+
+#~ msgid "Remote certificate has expired."
+#~ msgstr "Строк дії віддаленого сертифіката сплив."
+
+#~ msgid "Certificate issuer is not recognized: '%s'."
+#~ msgstr "Не вдалося розпізнати видавця сертифіката: «%s»."
+
+#~ msgid "Bad certificate received. Subject '%s', issuer '%s'."
+#~ msgstr "Отримано помилковий сертифікат. Призначення «%s», видавець «%s»."
+
+#~ msgid "Failed to get slot 'PEM Token #0': %d."
+#~ msgstr "Не вдалося отримати слот «PEM Token #0»: %d."
+
+#~ msgid "Can't resolve host name '%s'. NSS error %d."
+#~ msgstr "Не вдалося обробити назву вузла «%s». Помилка NSS %d."
+
+#~ msgid "Can't resolve host name '%s'."
+#~ msgstr "Не вдалося обробити назву вузла «%s»."
+
+#~ msgid "Failed to set socket blocking mode."
+#~ msgstr "Не вдалося встановити режим блокування сокета."
+
+#~ msgid "Failed to wrap TCP socket by SSL."
+#~ msgstr "Не вдалося використати для шифрування даних сокета TCP SSL."
+
+#~ msgid "Failed to enable client handshake to SSL socket."
+#~ msgstr ""
+#~ "Не вдалося увімкнути клієнтську процедуру встановлення зв’язку з сокетом "
+#~ "SSL."
+
+# translation auto-copied from project abrt, version rhel7, document abrt
+#~ msgid "Failed to enable SSL3."
+#~ msgstr "Не вдалося увімкнути SSL3."
+
+# translation auto-copied from project abrt, version rhel7, document abrt
+#~ msgid "Failed to enable TLS."
+#~ msgstr "Не вдалося увімкнути TLS."
+
+#~ msgid "Failed to set URL to SSL socket."
+#~ msgstr "Не вдалося встановити адресу для сокета SSL."
+
+#~ msgid "Can't connect to '%s'"
+#~ msgstr "Не вдалося встановити зв’язок з «%s»"
+
+#~ msgid "Failed to set certificate hook."
+#~ msgstr "Не вдалося встановити скрипт обробки сертифікатів."
+
+#~ msgid "Failed to set handshake callback."
+#~ msgstr ""
+#~ "Не вдалося встановити зворотній виклик під час встановлення зв’язку."
+
+#~ msgid "Failed to reset handshake."
+#~ msgstr "Не вдалося скинути зворотній виклик."
+
+#~ msgid "Failed to complete SSL handshake: NSS error %d."
+#~ msgstr ""
+#~ "Не вдалося завершити встановлення зв’язку у режимі SSL: помилка NSS %d."
+
+#~ msgid "Failed to close SSL socket."
+#~ msgstr "Не вдалося закрити сокет SSL."
+
+#~ msgid "Malformed HTTP response header: '%s'"
+#~ msgstr "Помилкове форматування заголовка відповіді HTTP: «%s»"
+
+#~ msgid "Receiving of data failed: NSS error %d."
+#~ msgstr "Помилка отримання даних: помилка NSS %d."
+
+#~ msgid "Malformed chunked response."
+#~ msgstr "Помилкове форматування відповіді."
+
+#~ msgid "Failed to initialize NSS."
+#~ msgstr "Не вдалося ініціалізувати NSS."
+
+#~ msgid "Failed to initialize security module."
+#~ msgstr "Не вдалося ініціалізувати модуль захисту."
+
+#~ msgid "Failed to shutdown NSS."
+#~ msgstr "Не вдалося завершити роботу NSS."
+
+#~ msgid "'%s' identifies more than one problem directory"
+#~ msgstr "«%s» визначає декілька каталогів проблем"
+
+#~ msgid "Usage: abrt-cli [--authenticate] [--version] COMMAND [DIR]..."
+#~ msgstr ""
+#~ "Користування: abrt-cli [--authenticate] [--version] КОМАНДА [КАТАЛОГ]..."
+
+#~ msgid "List problems [in DIRs]"
+#~ msgstr "Показати список проблем [у вказаних каталогах]"
+
+#~ msgid "Remove problem directory DIR"
+#~ msgstr "Вилучити каталог даних проблеми КАТАЛОГ"
+
+#~ msgid "Analyze and report problem data in DIR"
+#~ msgstr "Проаналізувати і створити звіт за даними з вказаного каталогу"
+
+#~ msgid "Print information about DIR"
+#~ msgstr "Показати дані щодо каталогу КАТАЛОГ"
+
+#~ msgid "Print the count of the recent crashes"
+#~ msgstr "Вивести кількість нещодавніх аварійних завершень роботи"
+
+#~ msgid "Process multiple problems"
+#~ msgstr "Обробка декількох проблем"
+
+#~ msgid "See 'abrt-cli COMMAND --help' for more information"
+#~ msgstr ""
+#~ "Щоб дізнатися більше, скористайтеся командою «abrt-cli КОМАНДА --help»"
+
+#~ msgid "& list [options]"
+#~ msgstr "& list [параметри]"
+
+#~ msgid "Show detailed report"
+#~ msgstr "Показати докладний звіт"
+
+#~ msgid "List only the problems more recent than specified timestamp"
+#~ msgstr ""
+#~ "Вивести список лише тих проблем, які сталися після вказаної часової "
+#~ "позначки"
+
+#~ msgid ""
+#~ "The Autoreporting feature is disabled. Please consider enabling it by "
+#~ "issuing\n"
+#~ "'abrt-auto-reporting enabled' as a user with root privileges\n"
+#~ msgstr ""
+#~ "Можливість автоматичного звітування вимкнено. Вам варто увімкнути її за "
+#~ "допомогою команди\n"
+#~ "«abrt-auto-reporting enabled», відданої від імені користувача з правами "
+#~ "доступу root\n"
+
+#~ msgid "& info [options] DIR..."
+#~ msgstr "& info [параметри] КАТАЛОГ..."
+
+#~ msgid "Text larger than this will be shown abridged"
+#~ msgstr ""
+#~ "Текст з розмірами, що перевищують вказані, буде обрізано під час показу"
+
+#~ msgid "No such problem directory '%s'"
+#~ msgstr "Каталогу проблеми «%s» не існує"
+
+#~ msgid "& status"
+#~ msgstr "& status"
+
+#~ msgid "Print only the problem count without any message"
+#~ msgstr "Вивести лише кількість проблеми без жодних повідомлень"
+
+#~ msgid "Print only the problems more recent than specified timestamp"
+#~ msgstr ""
+#~ "Вивести дані щодо проблем, які сталися після вказаної часової позначки"
+
+#~ msgid ""
+#~ "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
+#~ msgstr ""
+#~ "ABRT виявлено записи проблем (%u). Докладніші дані може бути отримано за "
+#~ "допомогою такої команди: abrt-cli list%s\n"
+
+#~ msgid "Can't find problem '%s'"
+#~ msgstr "Не вдалося знайти запис проблеми «%s»"
+
+#~ msgid "Deleting '%s'"
+#~ msgstr "Вилучаємо «%s»"
+
+#~ msgid "& report [options] DIR..."
+#~ msgstr "& report [параметри] КАТАЛОГ..."
+
+#~ msgid "Actions: remove(rm), info(i), skip(s):"
+#~ msgstr "Дії: вилучити(rm), інформація(i), пропустити(s):"
+
+#~ msgid "Actions: remove(rm), report(e), info(i), skip(s):"
+#~ msgstr "Дії: вилучити(rm), звітувати(e), інформація(i), пропустити(s):"
+
+#~ msgid "Reporting '%s'"
+#~ msgstr "Звітуємо щодо «%s»"
+
+#~ msgid "For next problem press ENTER:"
+#~ msgstr "Для переходу до наступної проблеми натисніть ENTER:"
+
+#~ msgid "Without --since argument, iterates over all detected problems."
+#~ msgstr ""
+#~ "Без аргументу --since, циклічний перехід між усіма виявленими проблемами."
+
+#~ msgid "Selects only problems detected after timestamp"
+#~ msgstr "Вибирає лише проблеми, виявлені після вказаної часової позначки"
+
+#~ msgid "Show backtrace of a problem"
+#~ msgstr "Показати дані зворотного трасування проблеми"
+
+#~ msgid "This"
+#~ msgstr "Ця"
+
+#~ msgid "Last"
+#~ msgstr "Остання"
+
+#~ msgid "Install required debuginfo for given problem"
+#~ msgstr "Встановити потрібні пакунки debuginfo для вказаної проблеми"
+
+#~ msgid "Run GDB against a problem"
+#~ msgstr "Запустити GDB для даних проблеми"
+
+#~ msgid "Print information about problem"
+#~ msgstr "Вивести дані щодо проблеми"
+
+#~ msgid "Prompt before removal"
+#~ msgstr "Запитувати перед вилученням"
+
+#~ msgid "Remove problem"
+#~ msgstr "Вилучити дані проблеми"
+
+#~ msgid "Perform remote retracing using retrace server"
+#~ msgstr ""
+#~ "Виконати віддалене повторне трасування за допомогою сервера повторного "
+#~ "трасування"
+
+#~ msgid "Force retracing even if backtrace already exists"
+#~ msgstr ""
+#~ "Примусове повторне трасування, навіть якщо дані зворотного трасування вже "
+#~ "існують"
+
+#~ msgid "Generate backtrace from coredump"
+#~ msgstr "Створити зворотне трасування на основі coredump"
+
+#~ msgid "Print count of the recent crashes"
+#~ msgstr "Вивести кількість нещодавніх аварійних завершень роботи"
+
+#~ msgid "Authenticate and show all problems on this machine"
+#~ msgstr "Пройти розпізнавання і показати усі проблеми на цьому комп’ютері"
+
+#~ msgid "No problem(s) matched"
+#~ msgstr "Не встановлено відповідності жодній проблемі"
+
+#~ msgid "Ambiguous match specified resulting in multiple problems:"
+#~ msgstr "Вказана неоднозначна відповідність призвела до декількох проблем:"
