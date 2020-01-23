@@ -138,9 +138,9 @@ char *kernel_tainted_short(const char *kernel_bt);
 #define kernel_tainted_long abrt_kernel_tainted_long
 char *kernel_tainted_long(const char *tainted_short);
 #define koops_hash_str_ext abrt_koops_hash_str_ext
-int koops_hash_str_ext(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf, int frame_count, int duphas_flags);
+char *koops_hash_str_ext(const char *oops_buf, int frame_count, int duphas_flags);
 #define koops_hash_str abrt_koops_hash_str
-int koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf);
+char *koops_hash_str(const char *oops_buf);
 
 
 #define koops_line_skip_level abrt_koops_line_skip_level

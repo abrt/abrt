@@ -586,18 +586,16 @@ void koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_koops_
     }
 }
 
-int koops_hash_str_ext(char result[SHA1_RESULT_LEN*2 + 1], const char *oops_buf, int frame_count, int duphash_flags)
+char *koops_hash_str_ext(const char *oops_buf, int frame_count, int duphash_flags)
 {
-    char *hash_str = NULL, *error = NULL;
-    int bad = 0;
+    g_autofree char *error = NULL;
+    char *digest = NULL;
 
     struct sr_stacktrace *stacktrace = sr_stacktrace_parse(SR_REPORT_KERNELOOPS,
                                                            oops_buf, &error);
     if (!stacktrace)
     {
         log_debug("Failed to parse koops: %s", error);
-        free(error);
-        bad = 1;
         goto end;
     }
 
@@ -605,43 +603,34 @@ int koops_hash_str_ext(char result[SHA1_RESULT_LEN*2 + 1], const char *oops_buf,
     if (!thread)
     {
         log_debug("Failed to find crash thread");
-        bad = 1;
         goto end;
     }
 
     if (g_verbose >= 3)
     {
-        hash_str = sr_thread_get_duphash(thread, frame_count, NULL,
-                                         duphash_flags|SR_DUPHASH_NOHASH);
-        if (hash_str)
-            log_warning("Generating duphash: '%s'", hash_str);
+        digest = sr_thread_get_duphash(thread, frame_count, NULL,
+                                       duphash_flags|SR_DUPHASH_NOHASH);
+        if (digest)
+        {
+            log_warning("Generating duphash: '%s'", digest);
+            free(digest);
+        }
         else
             log_warning("Nothing useful for duphash");
-
-
-        free(hash_str);
     }
 
-    hash_str = sr_thread_get_duphash(thread, frame_count, NULL, duphash_flags);
-    if (hash_str)
-    {
-        strncpy(result, hash_str, SHA1_RESULT_LEN*2);
-        result[SHA1_RESULT_LEN*2] = '\0';
-        free(hash_str);
-    }
-    else
-        bad = 1;
+    digest = sr_thread_get_duphash(thread, frame_count, NULL, duphash_flags);
 
 end:
     sr_stacktrace_free(stacktrace);
-    return bad;
+    return digest;
 }
 
-int koops_hash_str(char result[SHA1_RESULT_LEN*2 + 1], const char *oops_buf)
+char *koops_hash_str(const char *oops_buf)
 {
     const int frame_count = 6;
     const int duphash_flags = SR_DUPHASH_NONORMALIZE|SR_DUPHASH_KOOPS_COMPAT;
-    return koops_hash_str_ext(result, oops_buf, frame_count, duphash_flags);
+    return koops_hash_str_ext(oops_buf, frame_count, duphash_flags);
 }
 
 char *koops_extract_version(const char *linepointer)

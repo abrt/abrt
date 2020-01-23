@@ -125,16 +125,14 @@ AT_TESTFUN([koops_hash_improve],
 
 int run_test(const struct test_struct *test)
 {
-	char *oops1 = fread_full(test->filename);
-	char *oops2 = fread_full(test->expected_results);
+	g_autofree char *oops1 = fread_full(test->filename);
+	g_autofree char *oops2 = fread_full(test->expected_results);
 
-	char hash_oops1[SHA1_RESULT_LEN*2 + 1];
-	koops_hash_str(hash_oops1, oops1);
-	free(oops1);
+	g_autofree char *hash_oops1 = koops_hash_str(oops1);
+	g_autofree char *hash_oops2 = koops_hash_str(oops2);
 
-	char hash_oops2[SHA1_RESULT_LEN*2 + 1];
-	koops_hash_str(hash_oops2, oops2);
-	free(oops2);
+	if (NULL == hash_oops1 || NULL == hash_oops2)
+	    return 1;
 
 	if (!strcmp(hash_oops1, hash_oops2))
 		return 0;
