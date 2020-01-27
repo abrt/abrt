@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
 # Yuri Chornoivan <yurchor@ukr.net>, 2011-2014, 2020.
@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
-"POT-Creation-Date: 2020-01-09 10:53+0100\n"
+"POT-Creation-Date: 2020-01-23 15:47+0100\n"
 "PO-Revision-Date: 2020-01-18 21:15+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <https://translate.stg.fedoraproject.org/projects/"
@@ -24,8 +24,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
-"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 3.10.3\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
@@ -322,7 +322,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-c.c:166
 #: ../src/plugins/abrt-action-analyze-oops.c:48
 #: ../src/plugins/abrt-action-analyze-xorg.c:85
-#: ../src/plugins/abrt-action-analyze-python.c:53
+#: ../src/plugins/abrt-action-analyze-python.c:55
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
 msgid "Problem directory"
@@ -772,12 +772,12 @@ msgstr ""
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
 #.
-#: ../src/plugins/abrt-action-analyze-backtrace.c:90
+#: ../src/plugins/abrt-action-analyze-backtrace.c:92
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "Не вдалося обробити дані зворотного трасування для %s"
 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:150
+#: ../src/plugins/abrt-action-analyze-backtrace.c:152
 msgid "Crash thread not found"
 msgstr "Не знайдено аварійного потоку обробки даних"
 
@@ -820,7 +820,7 @@ msgstr ""
 "\n"
 "Обчислює і зберігає UUID та DUPHASH для каталогу аварійних даних ядра КАТАЛОГ"
 
-#: ../src/plugins/abrt-action-analyze-oops.c:79
+#: ../src/plugins/abrt-action-analyze-oops.c:78
 msgid ""
 "The backtrace does not contain enough meaningful function frames to be "
 "reported. It is annoying but it does not necessary signalize a problem with "
@@ -849,7 +849,7 @@ msgid "Module '%s' was loaded - won't report this crash"
 msgstr ""
 "Завантажено модуль «%s», не будемо звітувати про це аварійне завершення"
 
-#: ../src/plugins/abrt-action-analyze-python.c:42
+#: ../src/plugins/abrt-action-analyze-python.c:44
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
@@ -1051,9 +1051,8 @@ msgid ""
 "                Pass this OS version to package managers.\n"
 msgstr ""
 "Користування: %s [-vy] [--ids=ФАЙЛ_ІД_ЗБИРАННЯ] [--pkgmgr=(yum|dnf)]\n"
-"       [--tmpdir=ТИМЧ_КАТАЛОГ] "
-"[--cache=КАТАЛОГ_КЕШУ[:КАТАЛОГ_ДАНИХ_ДІАГН1:КАТАЛОГ_ДАНИХ_ДІАГН2...]] "
-"[--size_mb=РОЗМІР]\n"
+"       [--tmpdir=ТИМЧ_КАТАЛОГ] [--cache=КАТАЛОГ_КЕШУ[:КАТАЛОГ_ДАНИХ_ДІАГН1:"
+"КАТАЛОГ_ДАНИХ_ДІАГН2...]] [--size_mb=РОЗМІР]\n"
 "       [-e, --exact=ШЛЯХ[:ШЛЯХ]...]\n"
 "       [--releasever=ВИПУСК] [--repo=ВЗІРЕЦЬ]\n"
 "\n"
@@ -2302,7 +2301,8 @@ msgstr "формат вбудованого виведення"
 
 #: ../src/cli/abrtcli/cli/__init__.py:79
 msgid "path to the problem directory, problem ID or wildcard"
-msgstr "шлях до каталогу проблем, ідентифікатор проблеми або взірець для пошуку"
+msgstr ""
+"шлях до каталогу проблем, ідентифікатор проблеми або взірець для пошуку"
 
 #: ../src/cli/abrtcli/cli/backtrace.py:35
 msgid "Problem has no backtrace"

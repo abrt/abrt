@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
-"POT-Creation-Date: 2020-01-09 10:53+0100\n"
+"POT-Creation-Date: 2020-01-23 15:47+0100\n"
 "PO-Revision-Date: 2020-01-17 02:16+0000\n"
 "Last-Translator: Matej Marusak <mmarusak@redhat.com>\n"
 "Language-Team: Slovak <https://translate.stg.fedoraproject.org/projects/abrt/"
@@ -314,7 +314,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-c.c:166
 #: ../src/plugins/abrt-action-analyze-oops.c:48
 #: ../src/plugins/abrt-action-analyze-xorg.c:85
-#: ../src/plugins/abrt-action-analyze-python.c:53
+#: ../src/plugins/abrt-action-analyze-python.c:55
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
 msgid "Problem directory"
@@ -718,12 +718,12 @@ msgstr ""
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
 #.
-#: ../src/plugins/abrt-action-analyze-backtrace.c:90
+#: ../src/plugins/abrt-action-analyze-backtrace.c:92
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "Parsovanie backtrace zlyhalo pre %s"
 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:150
+#: ../src/plugins/abrt-action-analyze-backtrace.c:152
 msgid "Crash thread not found"
 msgstr "Vlákno s pádom sa nenašlo"
 
@@ -766,7 +766,7 @@ msgstr ""
 "\n"
 "Vypočíta a uloží UUID a DUPHASH pre oops správu v pracovnom adresári DIR"
 
-#: ../src/plugins/abrt-action-analyze-oops.c:79
+#: ../src/plugins/abrt-action-analyze-oops.c:78
 msgid ""
 "The backtrace does not contain enough meaningful function frames to be "
 "reported. It is annoying but it does not necessary signalize a problem with "
@@ -793,7 +793,7 @@ msgstr ""
 msgid "Module '%s' was loaded - won't report this crash"
 msgstr "Modul „%s“ bol načítaný - tento pád sa nenahlási"
 
-#: ../src/plugins/abrt-action-analyze-python.c:42
+#: ../src/plugins/abrt-action-analyze-python.c:44
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
