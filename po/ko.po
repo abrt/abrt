@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
-"POT-Creation-Date: 2020-01-09 10:53+0100\n"
+"POT-Creation-Date: 2020-01-23 15:47+0100\n"
 "PO-Revision-Date: 2015-07-30 11:38+0000\n"
 "Last-Translator: MinWoo Joh <igtzhsou@naver.com>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/fedora-abrt/"
@@ -326,7 +326,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-c.c:166
 #: ../src/plugins/abrt-action-analyze-oops.c:48
 #: ../src/plugins/abrt-action-analyze-xorg.c:85
-#: ../src/plugins/abrt-action-analyze-python.c:53
+#: ../src/plugins/abrt-action-analyze-python.c:55
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
 msgid "Problem directory"
@@ -773,13 +773,13 @@ msgstr ""
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
 #.
-#: ../src/plugins/abrt-action-analyze-backtrace.c:90
+#: ../src/plugins/abrt-action-analyze-backtrace.c:92
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "%s 용 백트레이스 구문 분석 실패 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/abrt-action-analyze-backtrace.c:150
+#: ../src/plugins/abrt-action-analyze-backtrace.c:152
 msgid "Crash thread not found"
 msgstr "충돌 스레드를 찾을 수 없습니다 "
 
@@ -826,7 +826,7 @@ msgstr ""
 "\n"
 "oops 문제 디렉토리 DIR의 UUID와 DUPHASH를 계산 및 저장합니다 "
 
-#: ../src/plugins/abrt-action-analyze-oops.c:79
+#: ../src/plugins/abrt-action-analyze-oops.c:78
 msgid ""
 "The backtrace does not contain enough meaningful function frames to be "
 "reported. It is annoying but it does not necessary signalize a problem with "
@@ -849,7 +849,7 @@ msgstr ""
 msgid "Module '%s' was loaded - won't report this crash"
 msgstr "'%s' 모듈이 로딩되었습니다 - 이 크래시를 보고하지 않습니다 "
 
-#: ../src/plugins/abrt-action-analyze-python.c:42
+#: ../src/plugins/abrt-action-analyze-python.c:44
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
