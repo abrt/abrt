@@ -35,7 +35,7 @@ enum {
     ABRT_XORG_PRINT_STDOUT      = 1 << 2,
 };
 
-int g_abrt_xorg_sleep_woke_up_on_signal;
+extern int g_abrt_xorg_sleep_woke_up_on_signal;
 int abrt_xorg_signaled_sleep(int seconds);
 
 /*

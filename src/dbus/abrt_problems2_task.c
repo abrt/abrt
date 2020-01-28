@@ -21,7 +21,7 @@
 enum {
     SN_STATUS_CHANGED,
     SN_LAST_SIGNAL
-} SignalNumber;
+};
 
 static guint s_signals[SN_LAST_SIGNAL] = { 0 };
 

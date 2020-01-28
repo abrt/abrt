@@ -22,6 +22,8 @@
 #include "oops-utils.h"
 #include "libabrt.h"
 
+int g_abrt_oops_sleep_woke_up_on_signal;
+
 int abrt_oops_process_list(GList *oops_list, const char *dump_location, const char *analyzer, int flags)
 {
     unsigned errors = 0;

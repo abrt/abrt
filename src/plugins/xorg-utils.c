@@ -23,6 +23,8 @@
 
 #define DEFAULT_XORG_CRASH_REASON "Display server crashed"
 
+int g_abrt_xorg_sleep_woke_up_on_signal;
+
 int abrt_xorg_signaled_sleep(int seconds)
 {
     sigset_t set;

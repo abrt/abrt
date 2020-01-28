@@ -97,7 +97,7 @@ struct check_auth_cb_params
 enum {
     SN_AUTHORIZATION_CHANGED,
     SN_LAST_SIGNAL
-} SignalNumber;
+};
 
 static guint s_signals[SN_LAST_SIGNAL] = { 0 };
 

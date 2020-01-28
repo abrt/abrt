@@ -1589,7 +1589,7 @@ AbrtP2Object *abrt_p2_service_get_entry_object(AbrtP2Service *service,
 
 AbrtP2Object *abrt_p2_service_get_entry_for_problem(AbrtP2Service *service,
             const char *problem_id,
-            int flags,
+            AbrtP2ServiceEntryLookupFlags flags,
             GError **error)
 {
     char *entry_path = entry_object_dir_name_to_path(problem_id);
@@ -2062,7 +2062,7 @@ GVariant *abrt_p2_service_callers_session(AbrtP2Service *service,
 
 GVariant *abrt_p2_service_get_problems(AbrtP2Service *service,
                 uid_t caller_uid,
-                gint32 flags,
+                AbrtP2ServiceGetProblemsFlags flags,
                 GVariant *options,
                 GError **error)
 {
