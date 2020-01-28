@@ -340,7 +340,6 @@ EOF
     rlPhaseEnd
 
     rlPhaseStartTest "ccpp crash systemd-coredump"
-        rlServiceStart abrt-journal-core
         OLD_ULIMIT=$(ulimit -c)
         rlRun "ulimit -c unlimited"
         SELINUX_MODE=$(getenforce -c)
@@ -364,7 +363,6 @@ END
 
         rlRun "setenforce $SELINUX_MODE"
         rlRun "ulimit -c $OLD_ULIMIT"
-        rlServiceStop abrt-journal-core
     rlPhaseEnd
 
     rlPhaseStartTest "python3 crash"
