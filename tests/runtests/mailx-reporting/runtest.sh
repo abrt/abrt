@@ -38,6 +38,9 @@ rlJournalStart
     rlPhaseStartSetup
         check_prior_crashes
 
+        rlAssertRpm sendmail
+        rlServiceStart sendmail
+
         TmpDir=$(mktemp -d)
         cp mailx.conf mailx_without_subject.conf $TmpDir
         cp -R problem_dir $TmpDir
