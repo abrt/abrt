@@ -86,14 +86,14 @@ GVariant *abrt_p2_service_entry_problem_data(AbrtP2Service *service,
             GError **error);
 
 
-enum {
+typedef enum {
     ABRT_P2_SERVICE_ENTRY_LOOKUP_NOFLAGS  = 0x0, ///< return with error if not found
     ABRT_P2_SERVICE_ENTRY_LOOKUP_OPTIONAL = 0x1, ///< return NULL if not found
-} AbrtP2ServiceEntryLookupFlag;
+} AbrtP2ServiceEntryLookupFlags;
 
 AbrtP2Object *abrt_p2_service_get_entry_for_problem(AbrtP2Service *service,
             const char *problem_id,
-            int flags,
+            AbrtP2ServiceEntryLookupFlags flags,
             GError **error);
 
 struct _AbrtP2Entry;
@@ -145,7 +145,7 @@ typedef enum
 
 GVariant *abrt_p2_service_get_problems(AbrtP2Service *service,
             uid_t caller_uid,
-            gint32 flags,
+            AbrtP2ServiceGetProblemsFlags flags,
             GVariant *options,
             GError **error);
 

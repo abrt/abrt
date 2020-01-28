@@ -33,7 +33,7 @@ enum {
     ABRT_OOPS_PRINT_STDOUT      = 1 << 2,
 };
 
-int g_abrt_oops_sleep_woke_up_on_signal;
+extern int g_abrt_oops_sleep_woke_up_on_signal;
 
 int abrt_oops_process_list(GList *oops_list, const char *dump_location, const char *analyzer, int flags);
 unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location, const char *analyzer, int flags);

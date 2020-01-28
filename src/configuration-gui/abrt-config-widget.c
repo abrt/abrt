@@ -109,7 +109,7 @@ G_DEFINE_TYPE_WITH_PRIVATE(AbrtConfigWidget, abrt_config_widget, GTK_TYPE_BOX)
 enum {
     SN_CHANGED,
     SN_LAST_SIGNAL
-} SignalNumber;
+};
 
 static guint s_signals[SN_LAST_SIGNAL] = { 0 };
 
