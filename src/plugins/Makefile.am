@@ -81,6 +81,7 @@ endif
 journalcatalogdir = $(JOURNAL_CATALOG_DIR)
 
 dist_journalcatalog_DATA = \
+    abrt_ccpp.catalog \
     abrt_koops.catalog \
     abrt_xorg.catalog
 
