@@ -2066,10 +2066,18 @@ GVariant *abrt_p2_service_get_problems(AbrtP2Service *service,
                 GVariant *options,
                 GError **error)
 {
+    unsigned int size;
     GVariantBuilder builder;
-    g_variant_builder_init(&builder, G_VARIANT_TYPE("ao"));
-
     GHashTableIter iter;
+
+    size = g_hash_table_size(service->pv->p2srv_p2_entry_type.objects);
+    if (size > 100)
+    {
+        log_warning("Large numbers of problems may result in degraded performance, consider cleaning some up (currently %u)",
+                    size);
+    }
+
+    g_variant_builder_init(&builder, G_VARIANT_TYPE("ao"));
     g_hash_table_iter_init(&iter, service->pv->p2srv_p2_entry_type.objects);
 
     log_debug("Going through entries");
