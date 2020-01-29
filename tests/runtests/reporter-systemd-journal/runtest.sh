@@ -356,6 +356,9 @@ Process #PID# (will_stackoverflow) crashed in f()
 -- 
 -- will_stackoverflow killed by SIGSEGV
 -- 
+-- #1 [will_stackoverflow] f
+-- #2 [will_stackoverflow] main
+--
 -- Use the abrt command-line tool for further analysis or to report
 -- the problem to the appropriate support site.
 END
