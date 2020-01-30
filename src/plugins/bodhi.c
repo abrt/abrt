@@ -334,7 +334,8 @@ static GHashTable *bodhi_parse_json(json_object *json, const char *release)
         if (!builds_item) /* broken json */
             continue;
 
-        int karma, unstable_karma;
+        int karma = 0;
+        int unstable_karma = 0;
         bodhi_read_value(updates_item, "karma", &karma, BODHI_READ_INT);
         bodhi_read_value(updates_item, "unstable_karma", &unstable_karma, BODHI_READ_INT);
         if (karma <= unstable_karma)
