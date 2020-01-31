@@ -37,7 +37,7 @@ SCTL="/bin/systemctl"
 
 rlJournalStart
     rlPhaseStartSetup "Prepare"
-        service abrtd stop
+        rlServiceStop abrtd
         rm -rf /var/run/abrt
     rlPhaseEnd
 
@@ -71,5 +71,10 @@ rlJournalStart
     else
         rlLog "systemd not present"
     fi
+
+    rlPhaseStartCleanup
+        rlServiceRestore abrtd
+    rlPhaseEnd
+
     rlJournalPrintText
 rlJournalEnd

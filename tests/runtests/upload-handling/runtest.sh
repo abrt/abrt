@@ -48,7 +48,8 @@ rlJournalStart
         upload_watch_pkg="abrt-addon-upload-watch"
         if dnf info $upload_watch_pkg &> /dev/null; then
           dnf -y install $upload_watch_pkg
-          rlRun "service abrt-upload-watch restart" 0 "Starting abrt-upload-watch"
+          rlServiceStop abrt-upload-watch
+          rlServiceStart abrt-upload-watch
         fi
     rlPhaseEnd
 
@@ -106,8 +107,8 @@ rlJournalStart
         rm -rf $rem_upload_dir
         rm -f "/var/spool/abrt-upload/upload.tar.gz"
         rlFileRestore
-        rlRun "service abrtd stop" 0 "Killing abrtd"
-        rlRun "service abrtd start" 0 "Starting abrtd"
+        rlServiceStop abrtd
+        rlServiceStart abrtd
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd

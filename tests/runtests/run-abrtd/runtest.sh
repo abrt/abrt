@@ -37,7 +37,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
-        service abrtd stop
+        rlServiceStop abrtd
         rlRun "abrtd -s" 0 "Start abrtd"
         rlLogInfo "Zzz for 1 minute..."
         sleep 1m
@@ -45,6 +45,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
+        rlServiceRestore abrtd
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd

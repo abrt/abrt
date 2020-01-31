@@ -29,7 +29,7 @@ PACKAGE="abrt"
 
 rlJournalStart
     rlPhaseStartTest
-        service abrtd stop
+        rlServiceStop abrtd
         rlRun "abrtd -d >abrtd.LOG 2>&1 &" 0 "Start abrtd"
         sleep 1 # give it time to initialize
         # One second of intense inotify notifications:
@@ -48,6 +48,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
+    rlServiceRestore abrtd
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd
