@@ -403,7 +403,7 @@ static void abrt_p2_task_autonomous_cb(AbrtP2Task *task,
 
         case ABRT_P2_TASK_STATUS_FAILED:
             {
-                GVariant *response;
+                GVariant *response = NULL;
                 gint32 code;
                 GError *error = NULL;
                 abrt_p2_task_finish(task, &response, &code, &error);
