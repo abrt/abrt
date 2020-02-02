@@ -46,3 +46,8 @@ and install ABRT can be found in [INSTALL.md](INSTALL.md)
 * [D-Bus](https://www.freedesktop.org/wiki/Software/dbus/)
 * [SELinux](https://github.com/SELinuxProject/selinux/wiki)
 * [systemd](https://www.freedesktop.org/wiki/Software/systemd/)
+
+
+### Translations
+
+[![Translation status](https://translate.fedoraproject.org/widgets/abrt/-/287x66-grey.png)](https://translate.fedoraproject.org/engage/abrt/?utm_source=widget)
