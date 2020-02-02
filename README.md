@@ -1,3 +1,5 @@
+[![Translation status](https://translate.fedoraproject.org/widgets/abrt/-/abrt/svg-badge.svg)](https://translate.fedoraproject.org/engage/abrt/)
+
 # ABRT
 
 **A set of tools to help users detect and report application crashes.**
