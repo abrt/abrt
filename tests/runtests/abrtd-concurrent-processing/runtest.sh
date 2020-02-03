@@ -133,7 +133,7 @@ EOF
         prepare
         touch $STAGE1_FILE
         wait_for_hooks
-        get_crash_path
+        get_last_crash_path
 
         journalctl -t abrtd -t abrt-server --since="$SINCE_1" > $ABRT_LOG_FILE_1
         rlAssertNotGrep "does not exist" $ABRT_LOG_FILE_1
@@ -180,6 +180,8 @@ EOF
             sleep 0.1
             c=$((c+1))
             if [ $c -gt 20 ]; then
+                # MaxCrashReportsSize is 200, the problem directory is supposed
+                # to weigh more.
                 rlFail "abrtd didn't removed ${REMOVED_DD} in 2s"
                 break
             fi
@@ -192,7 +194,8 @@ EOF
         touch $STAGE1_FILE
 
         wait_for_hooks
-        get_crash_path
+        # Removing the will-crash problem.
+        get_first_crash_path
         remove_problem_directory
         sleep 1
 
@@ -201,6 +204,8 @@ EOF
             sleep 0.1
             c=$((c+1))
             if [ $c -gt 2000 ]; then
+                # One of the post-create event handlers is waiting for this file
+                # to appear before continuing.
                 rlFail "stage2 didn't started in 200s"
                 break
             fi
@@ -210,7 +215,7 @@ EOF
         prepare
         touch $STAGE2_FILE
         wait_for_hooks
-        get_crash_path
+        get_last_crash_path
 
         rlLog "`ls -al $ABRT_CONF_DUMP_LOCATION`"
 
@@ -235,7 +240,7 @@ EOF
         prepare
         touch $STAGE1_FILE
         wait_for_hooks
-        get_crash_path
+        get_last_crash_path
         sleep 1
 
         prepare
@@ -257,6 +262,8 @@ EOF
             sleep 0.1
             c=$((c+1))
             if [ $c -gt 2000 ]; then
+                # One of the post-create event handlers is waiting for this file
+                # to appear before continuing.
                 rlFail "stage2 didn't started in 200s"
                 break
             fi
@@ -280,6 +287,8 @@ EOF
             sleep 0.1
             c=$((c+1))
             if [ $c -gt 20 ]; then
+                # MaxCrashReportsSize is 200, the problem directory is supposed
++                # to weigh more.
                 rlFail "abrtd didn't removed $crash_PATH in 2s"
                 break
             fi
@@ -293,14 +302,15 @@ EOF
         prepare
         touch $STAGE2_FILE
         wait_for_hooks
-        get_crash_path
+        # Removing the will-crash problem.
+        get_first_crash_path
         remove_problem_directory
         sleep 1
 
         prepare
         touch $STAGE2_FILE
         wait_for_hooks
-        get_crash_path
+        get_last_crash_path
         remove_problem_directory
 
         rlLog "`ls -al $ABRT_CONF_DUMP_LOCATION`"

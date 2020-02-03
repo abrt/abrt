@@ -34,7 +34,23 @@ function check_dump_dir_attributes_vmcore_rhel() {
     rlAssertEquals "Dump directory group is abrt" "x$(stat --format=%G $1)" "xroot"
 }
 
-function get_crash_path() {
+function get_first_crash_path() {
+    rlLog "Get crash path"
+    rlAssertGreater "Crash recorded" $(abrt status --bare) 0
+    crash_PATH="$(abrt list --format={path} 2> /dev/null | tail --lines=1)"
+    if [ ! -d "$crash_PATH" ]; then
+        echo "Dump location listing:"
+        ls -l $ABRT_CONF_DUMP_LOCATION
+        echo "abrt list:"
+        abrt list
+        echo "Syslog:"
+        print_syslog 10
+        rlFail "No crash dir generated, this shouldn't happen"
+    fi
+    rlLog "PATH = $crash_PATH"
+}
+
+function get_last_crash_path() {
     rlLog "Get crash path"
     rlAssertGreater "Crash recorded" $(abrt status --bare) 0
     crash_PATH="$(abrt info --format={path} 2> /dev/null)"
@@ -48,6 +64,10 @@ function get_crash_path() {
         rlFail "No crash dir generated, this shouldn't happen"
     fi
     rlLog "PATH = $crash_PATH"
+}
+
+function get_crash_path() {
+    get_last_crash_path
 }
 
 function wait_for_process() {
