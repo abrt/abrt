@@ -19,6 +19,8 @@
 #include <satyr/stacktrace.h>
 #include <satyr/thread.h>
 
+#include <errno.h>
+#include <limits.h>
 #include <regex.h>
 #include <string.h>
 
@@ -275,46 +277,37 @@ int koops_line_skip_level(const char **c)
 
 void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
 {
+    char hostname[HOST_NAME_MAX + 1] = { 0 };
+    g_autofree char *long_needle = NULL;
+    char *hostname_dot;
+    g_autofree char *short_needle = NULL;
     char *c;
     int linecount = 0;
     int lines_info_size = 0;
     struct abrt_koops_line_info *lines_info = NULL;
 
-    /* prepare hostname search string (needle) */
-    unsigned hsz = 256;
-    char *hostname = xmalloc(hsz);
-    char *short_needle = xmalloc(hsz+10);
-    char *long_needle = xmalloc(hsz+10);
-
-    if (gethostname(hostname, hsz) != 0)
+    if (gethostname(hostname, sizeof(hostname)) == -1)
     {
-        hostname[0] = '\0';
+        if (ENAMETOOLONG == errno)
+        {
+            /* Pure paranoia, since gethostname() truncates the hostname
+             * if the specified length is not enough to fit the entire thing
+             * and does not guarantee null-termination.
+             *
+             * Would only apply to extremely non-compliant systems, where
+             * HOST_NAME_MAX is just a suggestion.
+             */
+            g_return_if_reached();
+        }
     }
-    else
+
+    long_needle = g_strdup_printf(" %s kernel: ", hostname);
+    hostname_dot = strchr(hostname, '.');
+    if (NULL != hostname_dot)
     {
-        char *dot_str = strchr(hostname, '.');
-
-        unsigned dot_pos;
-        if (dot_str != NULL)
-        {
-            dot_pos = dot_str - hostname;
-        }
-        else
-        {
-            hostname[hsz-1] = '\0';
-            dot_pos = strlen(hostname);
-        }
-
-        short_needle[0] = ' ';
-        short_needle[1] = '\0';
-        strncat(short_needle, hostname, dot_pos);
-        strncat(short_needle, " kernel: ", 10);
-
-        long_needle[0] = ' ';
-        long_needle[1] = '\0';
-        strncat(long_needle, hostname, hsz-1);
-        strncat(long_needle, " kernel: ", 10);
+        *hostname_dot = '\0';
     }
+    short_needle = g_strdup_printf(" %s kernel: ", hostname);
 
     /* Split buffer into lines */
 
@@ -398,9 +391,6 @@ next_line:
 
     koops_extract_oopses_from_lines(oops_list, lines_info, lines_info_size);
     free(lines_info);
-    free(hostname);
-    free(short_needle);
-    free(long_needle);
 }
 
 void koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_koops_line_info *lines_info, int lines_info_size)
