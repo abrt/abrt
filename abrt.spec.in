@@ -1012,6 +1012,60 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Fri Feb 07 2020 Ernestas Kulik <ekulik@redhat.com> 2.14.0-1
+- Makefile.am: Don’t pull translations from Zanata
+- README.md: Add Weblate badge
+- plugins: abrt-action-analyze-oops: Refactor code
+- lib: kernel: Simplify koops_extract_oopses() a bit
+- tests: lib: Add a function that gets the first crash
+- tests: Disable abrt-addon-upload-watch tests
+- tests: Replace old service command with beakers commands
+- dbus: Fix possibly uninitialized variable
+- bodhi: Initialize karma values with default
+- tests: Fix mailx-reporting tests
+- tests: Do not stop abrt-journal-core service
+- tests: Add short backtrace to CCpp crashes example
+- plugins: Add short backtrace to ccpp catalog messages
+- plugins: Bring back abrt_ccpp catalog to life
+- dbus: Warn about large number of problems
+- Fix build failure with gcc -fno-common
+- Update translations
+- Update abrt.pot
+- koops: Avoid explicit dependency on hash size
+- Update (uk) translation
+- Update (de) translation
+- Update (tr) translation
+- Update (sk) translation
+- Update (pt_BR) translation
+- Update (hu) translation
+- Update (fr) translation
+- Update (cs) translation
+- Update (bg) translation
+- Translated using Weblate (Polish)
+- Update translation files
+- Stop using parse_list
+- Move from nose to pytest
+- Use GChecksum to compute checksums
+- Drop scriptlets for abrt-ccpp.service
+- Remove translation skeletons
+- Add pot file
+- tests: skip-sosreport-dir: Add missing prepare
+- Update Makevars
+- tests: runtests: run: Remove redundant shell command
+- configure.ac: Fix indentation
+- Move augeas lenses to new subdirectory
+- Drop ChangeLog
+- Remove development scripts
+- events: Comment examples consistently
+- cli: Disambiguate --authenticate help string
+- cli: Print usage if option passed with no command
+- pull-trans: Suggest zanata install
+- shellcheck: Iterating over ls output is fragile. Use globs.
+- shellcheck: Double quote to prevent globbing and word splitting
+- zanata: Use python3 zanata client to pull translations
+- Bump GLib dependency version to >=2.55.1
+- python: Use correct paths for installed modules
+
 * Fri Oct 11 2019 Matěj Grabovský <mgrabovs@redhat.com> 2.13.0-1
 - cli: Use format argument in info command
 - cli: Make pretty and format mutually exclusive

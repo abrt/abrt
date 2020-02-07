@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.14.0]
+
 ## [2.13.0]
 ### Removed
 - abrt-hook-ccpp was removed in favour of systemd-coredump which has been in its place since Fedora 26
@@ -203,7 +205,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.13.0...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.14.0...HEAD
+[2.14.0]: https://github.com/abrt/abrt/compare/2.13.0...2.14.0
 [2.13.0]: https://github.com/abrt/abrt/compare/2.12.2...2.13.0
 [2.12.2]: https://github.com/abrt/abrt/compare/2.12.1...2.12.2
 [2.12.1]: https://github.com/abrt/abrt/compare/2.12.0...2.12.1
