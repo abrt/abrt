@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ## [2.14.0]
+### Added
+- dbus: Warn the user when GetProblems() is called with a large (>100) number of problems
+- Bring back journal catalog file for C/C++ crashes
+- Add short stack trace to the C/C++ crash journal catalog file
+
+### Changed
+- cli: Disambiguate --authenticate help string
+- cli: Print usage if option passed with no command
+
+### Fixed
+- Fix abrt-dump-oops finishing with the wrong exit code
+- Avoid warnings about abrt-ccpp.service not existing during installation
+
+### Changed
+- Config files in /etc/abrt emptied by default
+- Man pages for config files updated
+- Some config files moved between subpackages
+- CLI improvements
 
 ## [2.13.0]
 ### Removed
