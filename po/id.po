@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Arif Tri Waluyo <arifiauo@fedoraproject.org>, 2012
 # eko ikhyar <ikhyar.com@gmail.com>, 2013
@@ -9,23 +9,23 @@
 # Muhammad Panji <sumodirjo@gmail.com>, 2012
 # Prima Yogi Loviniltra <jurankc0d3@gmail.com>, 2012
 # Ferdi Saptanera <ferdisn@fedoraproject.org>, 2016. #zanata
-# Andika Triwidada <andika@gmail.com>, 2017. #zanata
-# Andika Triwidada <andika@gmail.com>, 2018. #zanata
+# Andika Triwidada <andika@gmail.com>, 2017. #zanata, 2020.
+# Andika Triwidada <andika@gmail.com>, 2018. #zanata, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
-"POT-Creation-Date: 2020-01-09 10:53+0100\n"
-"PO-Revision-Date: 2018-09-11 12:39+0000\n"
+"POT-Creation-Date: 2020-01-23 15:47+0100\n"
+"PO-Revision-Date: 2020-01-29 10:16+0000\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
-"Language-Team: Indonesian (http://www.transifex.com/projects/p/fedora-abrt/"
-"language/id/)\n"
+"Language-Team: Indonesian <https://translate.fedoraproject.org/projects/abrt/"
+"abrt/id/>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Zanata 4.6.2\n"
+"X-Generator: Weblate 3.10.3\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -37,20 +37,13 @@ msgstr "Lihat dan laporkan kerusakan aplikasi"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
-msgstr ""
+msgstr "Lebih cerewet"
 
 #: ../src/applet/abrt-applet-application.c:167
-#, fuzzy
-#| msgid ""
-#| "& [-v] [DIR]...\n"
-#| "\n"
-#| "Applet which notifies user when new problems are detected by ABRT\n"
 msgid "Applet which notifies user when new problems are detected by ABRT"
 msgstr ""
-"& [-v] [DIR]...\n"
-"\n"
 "Applet yang memberitahu pengguna ketika permasalahan baru terdeteksi oleh "
-"ABRT\n"
+"ABRT"
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
@@ -161,7 +154,7 @@ msgid ""
 msgstr ""
 "Pilihan konfigurasi di atas telah dipindahkan ke GSettings dan saklar "
 "tersebut terhubung ke nilai pengaturan 'report-technical-problems' dari "
-"skema 'org.gnome.desktop.privacy'"
+"skema 'org.gnome.desktop.privacy'."
 
 #: ../src/configuration-gui/abrt-config-widget.c:496
 msgid "The configuration option above can be configured in"
@@ -181,7 +174,7 @@ msgstr "Pelaporan yang diperpendek"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
-msgstr ""
+msgstr "Pelaporan senyap diperpendek"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
@@ -297,7 +290,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-c.c:166
 #: ../src/plugins/abrt-action-analyze-oops.c:48
 #: ../src/plugins/abrt-action-analyze-xorg.c:85
-#: ../src/plugins/abrt-action-analyze-python.c:53
+#: ../src/plugins/abrt-action-analyze-python.c:55
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
 msgid "Problem directory"
@@ -686,12 +679,12 @@ msgstr ""
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
 #.
-#: ../src/plugins/abrt-action-analyze-backtrace.c:90
+#: ../src/plugins/abrt-action-analyze-backtrace.c:92
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "Parsing backtrace gagal untuk %s"
 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:150
+#: ../src/plugins/abrt-action-analyze-backtrace.c:152
 msgid "Crash thread not found"
 msgstr ""
 
@@ -728,7 +721,7 @@ msgid ""
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-oops.c:79
+#: ../src/plugins/abrt-action-analyze-oops.c:78
 msgid ""
 "The backtrace does not contain enough meaningful function frames to be "
 "reported. It is annoying but it does not necessary signalize a problem with "
@@ -748,7 +741,7 @@ msgstr ""
 msgid "Module '%s' was loaded - won't report this crash"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-python.c:42
+#: ../src/plugins/abrt-action-analyze-python.c:44
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
@@ -1763,7 +1756,7 @@ msgstr ""
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
-msgstr "GNU Debugger Lokal "
+msgstr "GNU Debugger Lokal"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"

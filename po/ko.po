@@ -1,30 +1,31 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # bardisch <kwb0128@gmail.com>, 2011
 # eukim <eukim@redhat.com>, 2013
 # eukim <eukim@redhat.com>, 2011-2012
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
-#   <raypoatssium@gmail.com>, 2011-2012
-#   <raypoatssium@gmail.com>, 2011-2012, 2013
+# <raypoatssium@gmail.com>, 2011-2012
+# <raypoatssium@gmail.com>, 2011-2012, 2013
 # MinWoo Joh <igtzhsou@naver.com>, 2015. #zanata
+# woosuk park <bjh13579@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
-"POT-Creation-Date: 2020-01-09 10:53+0100\n"
-"PO-Revision-Date: 2015-07-30 11:38+0000\n"
-"Last-Translator: MinWoo Joh <igtzhsou@naver.com>\n"
-"Language-Team: Korean (http://www.transifex.com/projects/p/fedora-abrt/"
-"language/ko/)\n"
+"POT-Creation-Date: 2020-01-23 15:47+0100\n"
+"PO-Revision-Date: 2020-02-05 04:16+0000\n"
+"Last-Translator: woosuk park <bjh13579@gmail.com>\n"
+"Language-Team: Korean <https://translate.fedoraproject.org/projects/abrt/"
+"abrt/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Zanata 4.6.2\n"
+"X-Generator: Weblate 3.10.3\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -265,7 +266,7 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid "Always"
-msgstr ""
+msgstr "항상"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:15
 msgid "Never"
@@ -326,7 +327,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-c.c:166
 #: ../src/plugins/abrt-action-analyze-oops.c:48
 #: ../src/plugins/abrt-action-analyze-xorg.c:85
-#: ../src/plugins/abrt-action-analyze-python.c:53
+#: ../src/plugins/abrt-action-analyze-python.c:55
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
 msgid "Problem directory"
@@ -773,13 +774,13 @@ msgstr ""
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
 #.
-#: ../src/plugins/abrt-action-analyze-backtrace.c:90
+#: ../src/plugins/abrt-action-analyze-backtrace.c:92
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "%s 용 백트레이스 구문 분석 실패 "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
-#: ../src/plugins/abrt-action-analyze-backtrace.c:150
+#: ../src/plugins/abrt-action-analyze-backtrace.c:152
 msgid "Crash thread not found"
 msgstr "충돌 스레드를 찾을 수 없습니다 "
 
@@ -826,7 +827,7 @@ msgstr ""
 "\n"
 "oops 문제 디렉토리 DIR의 UUID와 DUPHASH를 계산 및 저장합니다 "
 
-#: ../src/plugins/abrt-action-analyze-oops.c:79
+#: ../src/plugins/abrt-action-analyze-oops.c:78
 msgid ""
 "The backtrace does not contain enough meaningful function frames to be "
 "reported. It is annoying but it does not necessary signalize a problem with "
@@ -849,7 +850,7 @@ msgstr ""
 msgid "Module '%s' was loaded - won't report this crash"
 msgstr "'%s' 모듈이 로딩되었습니다 - 이 크래시를 보고하지 않습니다 "
 
-#: ../src/plugins/abrt-action-analyze-python.c:42
+#: ../src/plugins/abrt-action-analyze-python.c:44
 msgid ""
 "& [-v] -d DIR\n"
 "\n"

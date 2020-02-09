@@ -19,17 +19,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
-"POT-Creation-Date: 2020-01-09 10:53+0100\n"
-"PO-Revision-Date: 2020-01-17 02:16+0000\n"
+"POT-Creation-Date: 2020-01-23 15:47+0100\n"
+"PO-Revision-Date: 2020-01-29 10:16+0000\n"
 "Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
-"Language-Team: Turkish <https://translate.stg.fedoraproject.org/projects/"
-"abrt/abrt/tr/>\n"
+"Language-Team: Turkish <https://translate.fedoraproject.org/projects/abrt/"
+"abrt/tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
-"X-Generator: Weblate 3.10.1\n"
+"X-Generator: Weblate 3.10.3\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -41,20 +41,13 @@ msgstr "Uygulama çökmelerini görüntüle ve bildir"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
-msgstr ""
+msgstr "Ayrıntılı ol"
 
 #: ../src/applet/abrt-applet-application.c:167
-#, fuzzy
-#| msgid ""
-#| "& [-v] [DIR]...\n"
-#| "\n"
-#| "Applet which notifies user when new problems are detected by ABRT\n"
 msgid "Applet which notifies user when new problems are detected by ABRT"
 msgstr ""
-"& [-v] [DIR]...\n"
-"\n"
 "ABRT tarafından yeni sorunlar tespit edildiğinde kullanıcıyı bilgilendiren "
-"uygulama\n"
+"uygulama"
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
@@ -286,7 +279,7 @@ msgstr "Sor"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
 msgid "Upload coredump for backtrace generation"
-msgstr "Geri izleme üretimi için coredump yükle"
+msgstr "Yığın geri izlemesi oluşturmak için bellek dökümünü karşıya yükle"
 
 #: ../src/configuration-gui/system-config-abrt.c:66
 msgid "_Close"
@@ -329,7 +322,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-c.c:166
 #: ../src/plugins/abrt-action-analyze-oops.c:48
 #: ../src/plugins/abrt-action-analyze-xorg.c:85
-#: ../src/plugins/abrt-action-analyze-python.c:53
+#: ../src/plugins/abrt-action-analyze-python.c:55
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
 msgid "Problem directory"
@@ -463,7 +456,7 @@ msgstr "Syslogları -d parametresi ile kullanın"
 
 #: ../src/daemon/abrt-handle-event.c:362
 msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
-msgstr ""
+msgstr "& [-v -i -n ARTIŞ] -e|--event OLAY DİZİN..."
 
 #: ../src/daemon/abrt-handle-event.c:371
 msgid "Run EVENT on DIR"
@@ -475,7 +468,7 @@ msgstr "Direkt kullanıcıya ilet"
 
 #: ../src/daemon/abrt-handle-event.c:373
 msgid "Increment the nice value by INCREMENT"
-msgstr ""
+msgstr "Öncelik değerini ARTIŞ kadar arttır"
 
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
@@ -495,10 +488,8 @@ msgid ""
 msgstr ""
 
 #: ../src/daemon/abrt-upload-watch.c:281
-#, fuzzy
-#| msgid "Do not daemonize"
 msgid "Daemonize"
-msgstr "Daemonize etme"
+msgstr "Arka planda çalıştır"
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
@@ -655,7 +646,7 @@ msgstr "'{0}' başarıyla işlendi"
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:259
 msgid "Generating backtrace"
-msgstr "Geri izleme üretiliyor"
+msgstr "Yığın geri izlemesi oluşturuluyor"
 
 #: ../src/lib/problem_api_dbus.c:42
 #, c-format
@@ -721,18 +712,23 @@ msgid ""
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
 msgstr ""
+"& [seçenekler] -d DİZİN\n"
+"\n"
+"C/C ++ yığın geri izlemesini analiz eder, yineleme hash'i, yığın geri "
+"izlemesi derecesi\n"
+"oluşturur, ve DİZİN problem dizinindeki çökme fonksiyonunu tanımlar"
 
 #.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
 #.
-#: ../src/plugins/abrt-action-analyze-backtrace.c:90
+#: ../src/plugins/abrt-action-analyze-backtrace.c:92
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr "%s için geri izleme ayrıştırması başarısız oldu"
+msgstr "%s için yığın geri izlemesi ayrıştırması başarısız oldu"
 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:150
+#: ../src/plugins/abrt-action-analyze-backtrace.c:152
 msgid "Crash thread not found"
 msgstr "Kilitlenme iş parçacığı bulunamadı"
 
@@ -769,17 +765,18 @@ msgid ""
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-oops.c:79
+#: ../src/plugins/abrt-action-analyze-oops.c:78
 msgid ""
 "The backtrace does not contain enough meaningful function frames to be "
 "reported. It is annoying but it does not necessary signalize a problem with "
 "your computer. ABRT will not allow you to create a report in a bug tracking "
 "system but you can contact kernel maintainers via e-mail."
 msgstr ""
-"Geri izleme, bildirilecek yeterli anlamlı fonksiyon çerçevesi içermiyor. Can "
-"sıkıcı bir durum ancak bilgisayarınız ile ilgili bir sorunu işaret etmesi "
-"gerekmez. ABRT bir hata izleme sisteminde rapor oluşturmanıza izin vermez, "
-"ancak e-posta yoluyla çekirdek sağlayıcılarla iletişime geçebilirsiniz."
+"Yığın geri izlemesi, bildirilecek yeterli anlamlı fonksiyon çerçevesi "
+"içermemektedir. Bu can sıkıcı bir durum ancak bilgisayarınız ile ilgili bir "
+"sorun olduğu anlamına gelmiyor. ABRT bir hata izleme sisteminde rapor "
+"oluşturmanıza izin vermemektedir, ancak e-posta yoluyla çekirdek "
+"geliştiricileriyle iletişime geçebilirsiniz."
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:74
 msgid ""
@@ -793,7 +790,7 @@ msgstr ""
 msgid "Module '%s' was loaded - won't report this crash"
 msgstr "'%s' modülü yüklendi - bu çöküş raporlanmayacak"
 
-#: ../src/plugins/abrt-action-analyze-python.c:42
+#: ../src/plugins/abrt-action-analyze-python.c:44
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
@@ -873,6 +870,10 @@ msgid ""
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
 msgstr ""
+"& [seçenekler] -d DİZİN\n"
+"\n"
+"Problem dizini DİZİN'de bellek dökümünü analiz eder, yığın geri izlemesi "
+"oluşturur ve kaydeder"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
@@ -888,7 +889,7 @@ msgstr "gdb NUM saniyeden fazla süredir çalışıyorsa sonlandır"
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr "Geri izleme oluşturuldu ve kaydedildi, %u bayt"
+msgstr "Yığın geri izlemesi oluşturuldu ve kaydedildi, %u byte"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:40
 msgid ""
@@ -896,6 +897,10 @@ msgid ""
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
 msgstr ""
+"& [-v] [-r] -d DİZİN\n"
+"\n"
+"Bellek dökümü ve ilgili ikili dosyadan bellek dökümü düzeyinde yığın geri "
+"izlemesi oluşturur"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
@@ -904,7 +909,7 @@ msgstr ""
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
 msgid "Generating core_backtrace"
-msgstr ""
+msgstr "core_backtrace oluşturuluyor"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:81
 msgid "Error: GDB did not return any data"
@@ -1446,7 +1451,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:62
 msgid "Failed to parse Backtrace from journal"
-msgstr ""
+msgstr "Günlükten yığın geri izlemesi ayrıştırılamadı"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:145
 #, c-format
@@ -1470,7 +1475,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:192
 msgid "Print found crashes on standard output"
-msgstr ""
+msgstr "Bulunan çökmeleri standart çıkışa yazdır"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:193
 msgid "Create new problem directory in DIR for every crash found"
@@ -1499,7 +1504,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-xorg.c:53
 msgid "Print found crash data on standard output"
-msgstr ""
+msgstr "Bulunan çökme verilerini standart çıkışa yazdır"
 
 #: ../src/plugins/abrt-dump-xorg.c:54
 msgid "Create problem directory in DIR for every crash found"
@@ -1507,7 +1512,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-xorg.c:108
 msgid "Failed to parse Backtrace from log file"
-msgstr ""
+msgstr "Log dosyasından yığın geri izlemesi ayrıştırılamadı"
 
 #. abrt_journal_set_cursor() prints error message in verbose mode
 #: ../src/plugins/abrt-journal.c:274
@@ -1741,10 +1746,8 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1261
-#, fuzzy
-#| msgid "retrace server URL"
 msgid "retrace server URI"
-msgstr "sunucu URL'sini geri çek"
+msgstr "retrace server URI'si"
 
 #: ../src/plugins/abrt-retrace-client.c:1263
 msgid "(debug) show received HTTP headers"
@@ -1772,7 +1775,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1274
 msgid "For status, backtrace, and log operations"
-msgstr "Durum, geri izleme ve günlük işlemleri için"
+msgstr "Durum, yığın geri izlemesi ve log işlemleri için"
 
 #: ../src/plugins/abrt-retrace-client.c:1276
 msgid "id of your task on server"
@@ -1787,6 +1790,8 @@ msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch/exploitable"
 msgstr ""
+"abrt-retrace-client <işlem> [seçenekler]\n"
+"İşlemler: create/status/backtrace/log/batch/exploitable"
 
 #: ../src/plugins/abrt-retrace-client.c:1324
 #: ../src/plugins/abrt-retrace-client.c:1330
@@ -1829,7 +1834,9 @@ msgstr "Yerel GNU Hata Ayıklayıcısı"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr "debuginfo paketlerini indir ve GDB kullanarak yerelde geri izleme üret"
+msgstr ""
+"debuginfo paketlerini indir ve GDB kullanarak yerel olarak yığın geri "
+"izlemesi oluştur"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
@@ -1850,12 +1857,15 @@ msgid ""
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
 msgstr ""
+"Bellek dökümünü yığın geri izlemesi oluşturan ve geri döndüren bir sunucuya "
+"yükler. Artıları: debuginfo indirmelerine gerek yoktur. Retrace sunucusunun "
+"debuginfo veri tabanı daha eksiksizdir. Retrace sunucusu daha iyi yığın geri "
+"izlemeleri oluşturabilir. Eksileri: Yüklediğiniz bellek dökümü, varsa özel "
+"verileriniz de dahil olmak üzere, çöken programdaki tüm verileri içerir."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-#, fuzzy
-#| msgid "Retrace server URL"
 msgid "Retrace server URI"
-msgstr "Tekrar izlenecek sunucu URL"
+msgstr "Retrace server URI'si"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Address of the retrace server"
@@ -1935,17 +1945,15 @@ msgstr ""
 "çekirdek bakımcıları bu sorunu çözemez."
 
 #: ../src/plugins/oops-utils.c:246
-#, fuzzy, c-format
-#| msgid ""
-#| "A kernel problem occurred, but your hardware is unsupported, therefore "
-#| "kernel maintainers are unable to fix this problem."
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Explanation:\n"
 "%sKernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"Bir çekirdek sorunu oluştu, ama donanımınız desteklenmiyor, bu nedenle "
-"çekirdek bakımcıları bu sorunu çözemez."
+"Çekirdek sorunu oluştu, ancak çekirdeğiniz bozuldu (bayraklar: %s). "
+"Açıklama:\n"
+"%sKernel geliştiricileri bozuk raporları teşhis edememektedir."
 
 #: ../src/plugins/oops-utils.c:254
 #, c-format
@@ -2025,48 +2033,36 @@ msgid "positive non-zero integer expected"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/__init__.py:54
-#, fuzzy
-#| msgid "List problems"
 msgid "filter last N problems"
-msgstr "Sorunları listele"
+msgstr "son N sorunu filtrele"
 
 #: ../src/cli/abrtcli/cli/__init__.py:57
 msgid "filter problems with matching component"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/__init__.py:59
-#, fuzzy
-#| msgid "List only not-reported problems"
 msgid "filter unreported problems"
-msgstr "Yalnızca bildirilmeyen sorunları listele"
+msgstr "bildirilmeyen sorunları filtrele"
 
 #: ../src/cli/abrtcli/cli/__init__.py:61
-#, fuzzy
-#| msgid "List only the problems older than specified timestamp"
 msgid "filter problems older than the specified timestamp"
-msgstr "Yalnızca belirtilen zaman damgasından daha eski sorunları listele"
+msgstr "belirtilen zaman damgasından daha eski sorunları filtrele"
 
 #: ../src/cli/abrtcli/cli/__init__.py:63
-#, fuzzy
-#| msgid "List only the problems older than specified timestamp"
 msgid "filter problems newer than the specified timestamp"
-msgstr "Yalnızca belirtilen zaman damgasından daha eski sorunları listele"
+msgstr "belirtilen zaman damgasından daha yeni sorunları filtrele"
 
 #: ../src/cli/abrtcli/cli/__init__.py:66
 msgid "filter problems with matching executable"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/__init__.py:71
-#, fuzzy
-#| msgid "Output format"
 msgid "output format"
-msgstr "Çıktı biçimi"
+msgstr "çıktı formatı"
 
 #: ../src/cli/abrtcli/cli/__init__.py:74
-#, fuzzy
-#| msgid "Built-in output format"
 msgid "built-in output format"
-msgstr "Gömülü çıktı biçimi"
+msgstr "gömülü çıktı formatı"
 
 #: ../src/cli/abrtcli/cli/__init__.py:79
 msgid "path to the problem directory, problem ID or wildcard"
@@ -2074,17 +2070,15 @@ msgstr ""
 
 #: ../src/cli/abrtcli/cli/backtrace.py:35
 msgid "Problem has no backtrace"
-msgstr ""
+msgstr "Problemin yığın geri izlemesi yok"
 
 #: ../src/cli/abrtcli/cli/backtrace.py:37
 msgid "Start retracing process?"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/gdb.py:25
-#, fuzzy
-#| msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgid "install debuginfo packages before launching GDB"
-msgstr "debuginfo paketlerini indir ve GDB kullanarak yerelde geri izleme üret"
+msgstr "GDB'yi başlatmadan önce debuginfo paketlerini yükleyin"
 
 #: ../src/cli/abrtcli/cli/gdb.py:38
 msgid "The problem is not of a C/C++ type. Can't run GDB"
@@ -2120,16 +2114,12 @@ msgid "Removed"
 msgstr "Kaldırıldı"
 
 #: ../src/cli/abrtcli/cli/report.py:23
-#, fuzzy
-#| msgid "anonymous auto reporting"
 msgid "remove after reporting"
-msgstr "anonim otomatik raporlama"
+msgstr "bildirdikten sonra kaldır"
 
 #: ../src/cli/abrtcli/cli/report.py:25
-#, fuzzy
-#| msgid "Not reportable"
 msgid "ignore unreportable state"
-msgstr "Raporlanabilir değil"
+msgstr "bildirilemez durumu yok say"
 
 #: ../src/cli/abrtcli/cli/report.py:41
 #, python-brace-format
@@ -2137,20 +2127,17 @@ msgid "Problem '{0}' cannot be reported"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/report.py:50
-#, fuzzy, python-format
-#| msgid "Report problem"
+#, python-format
 msgid "Reporting problem %s\n"
-msgstr "Sorunu bildir"
+msgstr "%s sorunu bildiriliyor\n"
 
 #: ../src/cli/abrtcli/cli/retrace.py:24
 msgid "perform retracing locally"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/retrace.py:26
-#, fuzzy
-#| msgid "Send core dump to remote retrace server for analysis"
 msgid "submit core dump for remote retracing"
-msgstr "Çekirdek dökümünü uzak geri besleme sunucusuna analiz için gönder"
+msgstr "uzak retrace yapmak için bellek dökümü gönder"
 
 #: ../src/cli/abrtcli/cli/retrace.py:29
 msgid "force retracing"
@@ -2158,7 +2145,7 @@ msgstr ""
 
 #: ../src/cli/abrtcli/cli/retrace.py:47
 msgid "Problem already has a backtrace"
-msgstr ""
+msgstr "Problemin zaten bir yığın geri izlemesi var"
 
 #: ../src/cli/abrtcli/cli/retrace.py:48
 msgid "Run abrt retrace with -f/--force to retrace again"
@@ -2166,7 +2153,7 @@ msgstr ""
 
 #: ../src/cli/abrtcli/cli/retrace.py:49
 msgid "Show backtrace?"
-msgstr ""
+msgstr "Yığın geri izlemesini göster?"
 
 #: ../src/cli/abrtcli/cli/retrace.py:52
 msgid "No retracing possible for this problem type"
@@ -2189,10 +2176,8 @@ msgid "Local retracing"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/status.py:17
-#, fuzzy
-#| msgid "List only not-reported problems"
 msgid "show only the number of problems"
-msgstr "Yalnızca bildirilmeyen sorunları listele"
+msgstr "sadece sorun sayısını göster"
 
 #: ../src/cli/abrtcli/cli/status.py:19
 msgid "only show output if at least one problem is found"
@@ -2218,13 +2203,14 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
-"Colredump'ı sunucuya yükler, bu da backtrace oluşturur ve onu döndürür. "
-"Kullanıcı, sorunu herhangi bir yere yüklemek istemiyorsa, etkinlik yerel "
-"analiz yapar. Uzaktan analiz başarısız olursa, yerel analiz çalıştırma "
-"olayıdır. Artıları: debuginfo indirme işlemine gerek yok. Retrace "
-"sunucusunun debuginfos veritabanı daha tamamlandı. Retrace sunucusu daha iyi "
-"backtraces üretebilir. Eksileri: yüklediğiniz kayıt, varsa özel verileriniz "
-"de dahil olmak üzere, düşen programdaki tüm verileri içerir."
+"Bellek dökümünü sunucuya yükler, bu da yığın geri izlemesi oluşturur ve onu "
+"döndürür. Kullanıcı, bellek dökümünü herhangi bir yere yüklemek istemiyorsa, "
+"etkinlik yerel analiz yapar. Uzaktan analiz başarısız olursa, yerel analiz "
+"çalıştırma olayıdır. Artıları: debuginfo indirme işlemine gerek yok. Retrace "
+"sunucusunun debuginfo veri tabanı daha eksiksizdir. Retrace sunucusu daha "
+"iyi yığın geri izlemesi oluşturabilir. Eksileri: yüklediğiniz bellek dökümü, "
+"varsa özel verileriniz de dahil olmak üzere, çöken programdaki tüm verileri "
+"içerir."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
