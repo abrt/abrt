@@ -19,14 +19,15 @@
 # Lisa Stemmler <lstemmle@redhat.com>, 2016. #zanata
 # Tobias Weise <tobias.weise@web.de>, 2016. #zanata
 # Mike FABIAN <mfabian@redhat.com>, 2020.
+# Thomas Eichhorn <tomislav@posteo.de>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-01-18 21:15+0000\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
-"Language-Team: German <https://translate.stg.fedoraproject.org/projects/abrt/"
+"PO-Revision-Date: 2020-01-31 11:22+0000\n"
+"Last-Translator: Thomas Eichhorn <tomislav@posteo.de>\n"
+"Language-Team: German <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -45,20 +46,13 @@ msgstr "Applikationsabstürze ansehen und berichten"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
-msgstr ""
+msgstr "Ausführlich protokollieren"
 
 #: ../src/applet/abrt-applet-application.c:167
-#, fuzzy
-#| msgid ""
-#| "& [-v] [DIR]...\n"
-#| "\n"
-#| "Applet which notifies user when new problems are detected by ABRT\n"
 msgid "Applet which notifies user when new problems are detected by ABRT"
 msgstr ""
-"& [-v] [DIR]...\n"
-"\n"
 "Applet zur Benachrichtigung des Benutzers, wenn neue Abstürze durch ABRT "
-"entdeckt werden\n"
+"entdeckt werden"
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
@@ -1382,14 +1376,11 @@ msgid "Jump to an invalid address"
 msgstr "Sprung zu einer ungültigen Adresse"
 
 #: ../src/plugins/abrt-gdb-exploitable:669
-#, fuzzy
-#| msgid ""
-#| "Access past the end of mapped file, invalid address, unaligned access, etc"
 msgid ""
 "Access past the end of mapped file, invalid address, unaligned access, etc."
 msgstr ""
 "Zugriff über das Ende der zugeordneten Datei hinaus, ungültige Adresse, "
-"unausgerichteter Zugriff, etc"
+"unausgerichteter Zugriff, etc."
 
 #: ../src/plugins/abrt-gdb-exploitable:688
 msgid "Can't get signal no and do exploitability analysis\n"
@@ -1504,7 +1495,7 @@ msgstr "Keine Oopse gefunden: nur erstes wird bearbeitet"
 #: ../src/plugins/abrt-dump-journal-core.c:378
 #, c-format
 msgid "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
-msgstr ""
+msgstr "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
 
 #: ../src/plugins/abrt-dump-journal-core.c:407
 #: ../src/plugins/abrt-dump-journal-core.c:446
@@ -1518,10 +1509,8 @@ msgid "Not saving repeating crash after %ds (limit is %ds)"
 msgstr "Sich wiederholender Absturz nicht sichern nach %ds (Limit ist %ds)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:478
-#, fuzzy
-#| msgid "Failed to save detect problem data in abrt database"
 msgid "Failed to print detect problem data to stdout"
-msgstr "Fehlerdaten konnten nicht in ABRT-Datenbank gespeichert werden"
+msgstr "Fehlerdaten konnten nicht an stdout ausgegeben werden"
 
 #: ../src/plugins/abrt-dump-journal-core.c:486
 msgid "Failed to save detect problem data in abrt database"
@@ -2026,10 +2015,8 @@ msgstr ""
 "der Lage ist, das bestimmte Paket zu verarbeiten"
 
 #: ../src/plugins/abrt-retrace-client.c:1261
-#, fuzzy
-#| msgid "retrace server URL"
 msgid "retrace server URI"
-msgstr "Adresse des Retrace-Servers"
+msgstr "URI des Retrace-Servers"
 
 #: ../src/plugins/abrt-retrace-client.c:1263
 msgid "(debug) show received HTTP headers"
@@ -2148,10 +2135,8 @@ msgstr ""
 "eventuell auch vertrauliche Daten."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-#, fuzzy
-#| msgid "Retrace server URL"
 msgid "Retrace server URI"
-msgstr "Adresse des Retrace-Servers"
+msgstr "URI des Retrace-Servers"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Address of the retrace server"
