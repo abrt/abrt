@@ -24,16 +24,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-01-17 02:15+0000\n"
+"PO-Revision-Date: 2020-02-16 15:38+0000\n"
 "Last-Translator: Michal Konečný <michal.konecny@packetseekers.eu>\n"
-"Language-Team: Czech <https://translate.stg.fedoraproject.org/projects/abrt/"
-"abrt/cs/>\n"
+"Language-Team: Czech <https://translate.fedoraproject.org/projects/abrt/abrt/"
+"cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 3.10.1\n"
+"X-Generator: Weblate 3.10.3\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -45,19 +45,11 @@ msgstr "Prohlédněte si a nahlaste chyby aplikací"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
-msgstr ""
+msgstr "Podrobnější zprávy"
 
 #: ../src/applet/abrt-applet-application.c:167
-#, fuzzy
-#| msgid ""
-#| "& [-v] [DIR]...\n"
-#| "\n"
-#| "Applet which notifies user when new problems are detected by ABRT\n"
 msgid "Applet which notifies user when new problems are detected by ABRT"
-msgstr ""
-"& [-v] [DIR]...\n"
-"\n"
-"Applet, který uživatele upozorní, když ABRT detekuje nový problém\n"
+msgstr "Applet, který uživatele upozorní, když ABRT detekuje nový problém"
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
@@ -503,8 +495,6 @@ msgstr ""
 "WatchCrashdumpArchiveDir z abrt.conf"
 
 #: ../src/daemon/abrt-upload-watch.c:281
-#, fuzzy
-#| msgid "Daemize"
 msgid "Daemonize"
 msgstr "Démonizovat"
 
@@ -992,33 +982,7 @@ msgid "All debuginfo files are available"
 msgstr "Všechny soubory debuginfo jsou dostupné"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:190
-#, fuzzy, c-format
-#| msgid ""
-#| "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-#| "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:"
-#| "DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
-#| "       [-e, --exact=PATH[:PATH]...]\n"
-#| "\n"
-#| "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
-#| "to CACHEDIR, using TMPDIR as temporary staging area.\n"
-#| "Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
-#| "\n"
-#| "Reads configuration from /etc/abrt/plugins/CCpp.conf\n"
-#| "\n"
-#| "    -v          Be verbose\n"
-#| "    -y          Noninteractive, assume 'Yes' to all questions\n"
-#| "    --ids       Default: build_ids\n"
-#| "    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
-#| "RANDOM_SUFFIX\n"
-#| "    --cache     Colon separated list of directories. The first one is "
-#| "used for\n"
-#| "                saving installed debuginfos.\n"
-#| "                Default: /var/cache/abrt-dir\n"
-#| "    --size_mb   Default: 4096\n"
-#| "    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
-#| "    -e,--exact  Download only specified files\n"
-#| "    --repo      Pattern to use when searching for repos.\n"
-#| "                Default: *debug*\n"
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -1052,7 +1016,8 @@ msgstr ""
 "Použití: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
 "[--size_mb=SIZE]\n"
-"       [-e, --exact=PATH[:PATH]...]\n"
+"       [-e, --exact=PATH[:PATH...]]\n"
+"       [--releasever=RELEASEVER] [--repo=PATTERN]\n"
 "\n"
 "Instaluje debuginfo pro všechny ID buildů v BUILD_IDS_FILE\n"
 "do CACHEDIR pomocí TMPDIR jako dočasného vyčkávacího prostoru.\n"
@@ -1060,13 +1025,13 @@ msgstr ""
 "\n"
 "Načítá konfiguraci z /etc/abrt/plugins/CCpp.conf\n"
 "\n"
-"    -v          Být upovídanýdebuginfo\n"
-"    -y          Neinterkativní, předpokládá 'Ano' pro všechny otázky\n"
+"    -v          Podrobnější zprávy\n"
+"    -y          Neinteraktivní režim, předpokládá 'Ano' pro všechny otázky\n"
 "    --ids       Výchozí: build_ids\n"
 "    --tmpdir    Výchozí: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
 "RANDOM_SUFFIX\n"
-"    --cache     Čárkami oddělený seznam adresářů. První z nich je použit "
-"pro \n"
+"    --cache     Čárkami oddělený seznam adresářů. První z nich je použit pro "
+"\n"
 "                ukládání nainstalovaných debuginfos.\n"
 "                Výchozí: /var/cache/abrt-di\n"
 "    --size_mb   Výchozí: 4096\n"
@@ -1074,6 +1039,8 @@ msgstr ""
 "    -e,--exact  Stáhnout pouze uvedený soubor\n"
 "    --repo      Vzor, který použít pro hledání repozitářů.\n"
 "                Výchozí: *debug*\n"
+"    --releasever RELEASEVER\n"
+"                Verze OS, která bude předána správcům balíčku.\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:290
 msgid "Exiting on user command"
@@ -1116,7 +1083,7 @@ msgstr "Ignorované volby"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:73
 msgid "OS release version"
-msgstr ""
+msgstr "Verze OS"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
 msgid ""
@@ -1194,6 +1161,8 @@ msgstr "uReport byl již odeslán, znovu se již posílat nebude"
 #: ../src/plugins/abrt-action-ureport:174
 msgid "Problem comes from unpackaged executable. Unable to create uReport."
 msgstr ""
+"Problém se objevuje ve spustitelném souboru, který není součástí balíčku. "
+"Nelze vytvořit uReport."
 
 #: ../src/plugins/abrt-action-ureport:189
 msgid "Adding you to CC List of the existing bugzilla bug"
@@ -1299,14 +1268,11 @@ msgid "Jump to an invalid address"
 msgstr "Skok na neplatnou adresu"
 
 #: ../src/plugins/abrt-gdb-exploitable:669
-#, fuzzy
-#| msgid ""
-#| "Access past the end of mapped file, invalid address, unaligned access, etc"
 msgid ""
 "Access past the end of mapped file, invalid address, unaligned access, etc."
 msgstr ""
-"Přístup za konec namapovaného souboru, neplatné adresy, uspořádaného "
-"přístupu atd."
+"Přístup za konec namapovaného souboru, neplatná adresa, neuspořádaný přístup "
+"atd."
 
 #: ../src/plugins/abrt-gdb-exploitable:688
 msgid "Can't get signal no and do exploitability analysis\n"
@@ -1417,7 +1383,7 @@ msgstr "Nalezeno více oops: zprocesovat pouze první z nich"
 #: ../src/plugins/abrt-dump-journal-core.c:378
 #, c-format
 msgid "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
-msgstr ""
+msgstr "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
 
 #: ../src/plugins/abrt-dump-journal-core.c:407
 #: ../src/plugins/abrt-dump-journal-core.c:446
@@ -1431,10 +1397,9 @@ msgid "Not saving repeating crash after %ds (limit is %ds)"
 msgstr "Neukládat opakující se pád  po %ds (limit je %ds)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:478
-#, fuzzy
-#| msgid "Failed to save detect problem data in abrt database"
 msgid "Failed to print detect problem data to stdout"
-msgstr "Nepodařilo se uložit data detekovaného problému v abrt databazi"
+msgstr ""
+"Nepodařilo se vytisknout data detekovaného problému na standardní výstup"
 
 #: ../src/plugins/abrt-dump-journal-core.c:486
 msgid "Failed to save detect problem data in abrt database"
@@ -1922,10 +1887,8 @@ msgstr ""
 "odesláním archívu."
 
 #: ../src/plugins/abrt-retrace-client.c:1261
-#, fuzzy
-#| msgid "retrace server URL"
 msgid "retrace server URI"
-msgstr "URL stopovacího serveru"
+msgstr "URI stopovacího serveru"
 
 #: ../src/plugins/abrt-retrace-client.c:1263
 msgid "(debug) show received HTTP headers"
@@ -1997,7 +1960,7 @@ msgstr "Neznámá operace: %s."
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:1
 msgid "Search for updated packages that fixes the crash."
-msgstr ""
+msgstr "Vyhledej novější balíčky, které opravují pád aplikace."
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:2
 msgid ""
@@ -2005,6 +1968,9 @@ msgid ""
 "Whiteboar equal to 'UUID' of the crash. If such a bug found, search for "
 "Bodhi updates shipping fixes for the found Bugzilla bugs."
 msgstr ""
+"Hledej hlášení v Bugzille, které mají stejný 'abrt_hash' v Bugzilla Bug "
+"Whiteboardu jako 'UUID' pádu. Pokud je takové hlášení nalezeno, vyhledej "
+"Bodhi updaty, které tyto chyby opravují."
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
@@ -2045,10 +2011,8 @@ msgstr ""
 "přítomny."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-#, fuzzy
-#| msgid "Retrace server URL"
 msgid "Retrace server URI"
-msgstr "URL retrace serveru"
+msgstr "URI stopovacího serveru"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Address of the retrace server"
@@ -2128,17 +2092,15 @@ msgstr ""
 "vývojáři kernelu nejsou schopní tento problém opravit."
 
 #: ../src/plugins/oops-utils.c:246
-#, fuzzy, c-format
-#| msgid ""
-#| "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
-#| "Kernel maintainers are unable to diagnose tainted reports."
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Explanation:\n"
 "%sKernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"Vyskytl se problém s jádrem, ale vaše jádro bylo modifikováno (parametry:"
-"%s). Správci jádra nejsou schopni diagnostikovat modifikované reporty."
+"Vyskytl se problém s jádrem, ale vaše jádro bylo modifikováno (parametry:%s)"
+". Vysvětlení:\n"
+"%sSprávci jádra nejsou schopni diagnostikovat modifikované reporty."
 
 #: ../src/plugins/oops-utils.c:254
 #, c-format
@@ -2209,7 +2171,7 @@ msgstr "Smazat soubory s nalezenými oopsy"
 
 #: ../src/cli/abrtcli/match.py:117
 msgid "No matching problems found"
-msgstr ""
+msgstr "Žádné shodné problémy nebyly nalezeny"
 
 #: ../src/cli/abrtcli/utils.py:79
 msgid "Not reportable"
@@ -2217,61 +2179,47 @@ msgstr "Nelze reportovat"
 
 #: ../src/cli/abrtcli/cli/__init__.py:30
 msgid "increase output verbosity"
-msgstr ""
+msgstr "zvýšit podrobnost výpisů"
 
 #: ../src/cli/abrtcli/cli/__init__.py:50
 msgid "positive non-zero integer expected"
-msgstr ""
+msgstr "předpokládáno kladné nenulové celé číslo"
 
 #: ../src/cli/abrtcli/cli/__init__.py:54
-#, fuzzy
-#| msgid "List problems"
 msgid "filter last N problems"
-msgstr "Vypsat problémy"
+msgstr "vypsat N posledních problémů"
 
 #: ../src/cli/abrtcli/cli/__init__.py:57
 msgid "filter problems with matching component"
-msgstr ""
+msgstr "vypsat problémy se shodnou komponentou"
 
 #: ../src/cli/abrtcli/cli/__init__.py:59
-#, fuzzy
-#| msgid "List only not-reported problems"
 msgid "filter unreported problems"
-msgstr "Vypsat seznam pouze nenahlášených problémů"
+msgstr "vypsat pouze nenahlášené problémy"
 
 #: ../src/cli/abrtcli/cli/__init__.py:61
-#, fuzzy
-#| msgid "List only the problems older than specified timestamp"
 msgid "filter problems older than the specified timestamp"
-msgstr "Vypsat seznam problémů starších než zadaná časová značka"
+msgstr "vypsat problémy starších než zadaná časová značka"
 
 #: ../src/cli/abrtcli/cli/__init__.py:63
-#, fuzzy
-#| msgid "List only the problems older than specified timestamp"
 msgid "filter problems newer than the specified timestamp"
-msgstr "Vypsat seznam problémů starších než zadaná časová značka"
+msgstr "vypsat problémy novější než zadaná časová značka"
 
 #: ../src/cli/abrtcli/cli/__init__.py:66
 msgid "filter problems with matching executable"
-msgstr ""
+msgstr "vypsat problémy se shodným spustitelným souborem"
 
 #: ../src/cli/abrtcli/cli/__init__.py:71
-#, fuzzy
-#| msgid "Output format"
 msgid "output format"
-msgstr "Formát výstupu"
+msgstr "formát výstupu"
 
 #: ../src/cli/abrtcli/cli/__init__.py:74
-#, fuzzy
-#| msgid "Built-in output format"
 msgid "built-in output format"
-msgstr "Vestavěný formát výstupu"
+msgstr "vestavěný formát výstupu"
 
 #: ../src/cli/abrtcli/cli/__init__.py:79
-#, fuzzy
-#| msgid "Make the problem directory world readable"
 msgid "path to the problem directory, problem ID or wildcard"
-msgstr "Učiň adresář problému přístupný pro čtení všem"
+msgstr "cesta k adresáři problému, ID problému nebo náhradní znak"
 
 #: ../src/cli/abrtcli/cli/backtrace.py:35
 msgid "Problem has no backtrace"
@@ -2282,17 +2230,12 @@ msgid "Start retracing process?"
 msgstr "Spustit proces stopování?"
 
 #: ../src/cli/abrtcli/cli/gdb.py:25
-#, fuzzy
-#| msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgid "install debuginfo packages before launching GDB"
-msgstr ""
-"Stahování balíčku debuginfo a lokální generování backtrace za použití GDB"
+msgstr "nainstalovat balíček debuginfo před špuštěním GDB"
 
 #: ../src/cli/abrtcli/cli/gdb.py:38
-#, fuzzy
-#| msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
 msgid "The problem is not of a C/C++ type. Can't run GDB"
-msgstr "{} problém není typu C/C++. Nelze nainstalovat debuginfo"
+msgstr "Problém není typu C/C++. Nelze spustit GDB"
 
 #: ../src/cli/abrtcli/cli/gdb.py:52
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:45
@@ -2304,20 +2247,16 @@ msgstr ""
 "Pokud se jedná o problém systému, zkuste spustit tento příkaz jako root"
 
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:36
-#, fuzzy
-#| msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
 msgid "The problem is not of a C/C++ type. Can't install debuginfo"
-msgstr "{} problém není typu C/C++. Nelze nainstalovat debuginfo"
+msgstr "Problém není typu C/C++. Nelze nainstalovat debuginfo"
 
 #: ../src/cli/abrtcli/cli/list.py:34
 msgid "No problems"
 msgstr "Žádné problémy"
 
 #: ../src/cli/abrtcli/cli/remove.py:22
-#, fuzzy
-#| msgid "Do not prompt before removal"
 msgid "do not prompt before removal"
-msgstr "Neptat se před odstraněním"
+msgstr "neptat se před odstraněním"
 
 #: ../src/cli/abrtcli/cli/remove.py:37
 msgid "Are you sure you want to delete this problem?"
@@ -2328,46 +2267,34 @@ msgid "Removed"
 msgstr "Odstraněno"
 
 #: ../src/cli/abrtcli/cli/report.py:23
-#, fuzzy
-#| msgid "Remove PROBLEM_DIR after reporting"
 msgid "remove after reporting"
-msgstr "Odstranit PROBLEM_DIR po nahlášení"
+msgstr "odstranit po nahlášení"
 
 #: ../src/cli/abrtcli/cli/report.py:25
-#, fuzzy
-#| msgid "Not reportable"
 msgid "ignore unreportable state"
-msgstr "Nelze reportovat"
+msgstr "ignorovat stavy, které není možno nahlásit"
 
 #: ../src/cli/abrtcli/cli/report.py:41
-#, fuzzy, python-brace-format
-#| msgid "Problem '%s' cannot be reported"
+#, python-brace-format
 msgid "Problem '{0}' cannot be reported"
-msgstr "Problém '%s' nelze nareportovat"
+msgstr "Problém '{0}' nelze nareportovat"
 
 #: ../src/cli/abrtcli/cli/report.py:50
-#, fuzzy, python-format
-#| msgid "Report problem"
+#, python-format
 msgid "Reporting problem %s\n"
-msgstr "Reportovat problém"
+msgstr "Nahlašuji problém %s\n"
 
 #: ../src/cli/abrtcli/cli/retrace.py:24
-#, fuzzy
-#| msgid "Perform local retracing"
 msgid "perform retracing locally"
-msgstr "Provést lokální stopování"
+msgstr "provést lokální stopování"
 
 #: ../src/cli/abrtcli/cli/retrace.py:26
-#, fuzzy
-#| msgid "Send core dump to remote retrace server for analysis"
 msgid "submit core dump for remote retracing"
-msgstr "Odešle obraz paměti k analýze na vzdálený retrace server"
+msgstr "odeslat obraz paměti na vzdálenou analýzu"
 
 #: ../src/cli/abrtcli/cli/retrace.py:29
-#, fuzzy
-#| msgid "Local retracing"
 msgid "force retracing"
-msgstr "Lokální stopování"
+msgstr "vynutit stopování"
 
 #: ../src/cli/abrtcli/cli/retrace.py:47
 msgid "Problem already has a backtrace"
@@ -2406,20 +2333,16 @@ msgid "Local retracing"
 msgstr "Lokální stopování"
 
 #: ../src/cli/abrtcli/cli/status.py:17
-#, fuzzy
-#| msgid "List only not-reported problems"
 msgid "show only the number of problems"
-msgstr "Vypsat seznam pouze nenahlášených problémů"
+msgstr "zobraz pouze počet problémů"
 
 #: ../src/cli/abrtcli/cli/status.py:19
 msgid "only show output if at least one problem is found"
-msgstr ""
+msgstr "zobraz výstup pouze, pokud byl nalezen aspoň jeden problém"
 
 #: ../src/cli/abrtcli/cli/status.py:40
-#, fuzzy
-#| msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
 msgid "ABRT has detected a problem. For more information, run “abrt list{}”"
-msgstr "ABRT detekoval {} problém(y). Pro více informací spusťte: abrt list{}"
+msgstr "ABRT detekoval problém. Pro více informací spusťte 'abrt list{}'"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
