@@ -45,14 +45,20 @@
   * PHP:
   *   php
   *   php-cgi
+  *
+  * R:
+  *   R
+  *
+  * tcl:
+  *   tclsh
+  *   tclsh8.6
   **/
 #define DEFAULT_INTERPRETERS_REGEX \
-    "^" \
-    "(perl ([[:digit:]][.][[:digit:]]+[.][[:digit:]])?" \
-    "|" \
-    "php" \
-    "|" \
-    "(platform-)? python ([[:digit:]]([.][[:digit:]])?)?)$"
+    "^(perl ([[:digit:]][.][[:digit:]]+[.][[:digit:]])? |" \
+    "php (-cgi)? |" \
+    "(platform-)? python ([[:digit:]]([.][[:digit:]])?)? |" \
+    "R |" \
+    "tclsh ([[:digit:]][.][[:digit:]])?)$"
 
 static bool   settings_bOpenGPGCheck = true;
 static GList *settings_setOpenGPGPublicKeys = NULL;
