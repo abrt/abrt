@@ -17,6 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <fnmatch.h>
+#include <glib.h>
 #include "libabrt.h"
 #include "rpm.h"
 
@@ -25,8 +26,33 @@
     "/usr/bin/nspluginviewer, /usr/lib*/firefox/plugin-container"
 #define DEFAULT_BLACKLISTED_PKGS "bash, mono-core, nspluginwrapper, strace, valgrind"
 #define DEFAULT_GPG_KEYS_DIR "/etc/pki/rpm-gpg"
-#define DEFAULT_INTERPRETERS "python, python2, python2.7, python3, python3.3, " \
-    "python3.4, python3.5, python3.6, python3.7, perl, perl5.16.2"
+/**
+  * The regexes should cover interpreters with basename:
+  * Python:
+  *   python
+  *   python2
+  *   python3
+  *   python2.7
+  *   python3.8
+  *   platform-python
+  *   platform-python3
+  *   platform-python3.8
+  *
+  * Perl:
+  *   perl
+  *   perl5.30.1
+  *
+  * PHP:
+  *   php
+  *   php-cgi
+  **/
+#define DEFAULT_INTERPRETERS_REGEX \
+    "^" \
+    "(perl ([[:digit:]][.][[:digit:]]+[.][[:digit:]])?" \
+    "|" \
+    "php" \
+    "|" \
+    "(platform-)? python ([[:digit:]]([.][[:digit:]])?)?)$"
 
 static bool   settings_bOpenGPGCheck = true;
 static GList *settings_setOpenGPGPublicKeys = NULL;
@@ -77,8 +103,6 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
         settings_Interpreters = parse_delimited_list(value, ",");
         remove_map_string_item(settings, "Interpreters");
     }
-    else
-        settings_Interpreters = parse_delimited_list(DEFAULT_INTERPRETERS, ",");
 
     map_string_iter_t iter;
     const char *name;
@@ -320,7 +344,8 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
     /* if basename is known interpreter, we want to blame the running script
      * not the interpreter
      */
-    if (g_list_find_custom(settings_Interpreters, basename, (GCompareFunc)g_strcmp0))
+    if (g_regex_match_simple(DEFAULT_INTERPRETERS_REGEX, basename, G_REGEX_EXTENDED, /*MatchFlags*/0) ||
+        g_list_find_custom(settings_Interpreters, basename, (GCompareFunc)g_strcmp0))
     {
         struct pkg_envra *script_pkg = get_script_name(cmdline, &executable, chroot);
         /* executable may have changed, check it again */
