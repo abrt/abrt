@@ -58,9 +58,9 @@ class Command:
         group.add_argument('-n', '--not-reported', action='store_true',
                            help=_('filter unreported problems'))
         group.add_argument('-s', '--since', type=int, metavar='TIMESTAMP',
-                           help=_('filter problems older than the specified timestamp'))
-        group.add_argument('-u', '--until', type=int, metavar='TIMESTAMP',
                            help=_('filter problems newer than the specified timestamp'))
+        group.add_argument('-u', '--until', type=int, metavar='TIMESTAMP',
+                           help=_('filter problems older than the specified timestamp'))
         group.add_argument('-x', '--executable', type=str, dest='executables',
                            metavar='EXECUTABLE',
                            help=_('filter problems with matching executable'))
