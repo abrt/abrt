@@ -746,7 +746,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %dir %attr(@DEFAULT_DUMP_LOCATION_MODE@, root, abrt) %{default_dump_dir}
 %dir %attr(0700, abrt, abrt) %{_localstatedir}/spool/%{name}-upload
 # abrtd runs as root
-%dir %attr(0755, root, root) %{_localstatedir}/run/%{name}
+%ghost %dir %attr(0755, root, root) %{_localstatedir}/run/%{name}
 %ghost %attr(0666, -, -) %{_localstatedir}/run/%{name}/abrt.socket
 %ghost %attr(0644, -, -) %{_localstatedir}/run/%{name}/abrtd.pid
 
