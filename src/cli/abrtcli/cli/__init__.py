@@ -29,11 +29,11 @@ class Command:
                                  required=False,
                                  help=_('increase output verbosity'))
 
-                self._verbosity = 0
             def __call__(self, parser, namespace, values, option_string=None):
-                self._verbosity += 1
+                verbosity = getattr(namespace, self.dest, 0) + 1
 
-                set_verbosity(self._verbosity)
+                setattr(namespace, self.dest, verbosity)
+                set_verbosity(verbosity)
 
         self._parser.add_argument('-v', '--verbose', action=VerbosityAction)
 
