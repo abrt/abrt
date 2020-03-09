@@ -1,4 +1,4 @@
-from argparse import Action, ArgumentTypeError
+from argparse import Action, ArgumentDefaultsHelpFormatter, ArgumentTypeError
 from glob import glob
 from importlib import import_module
 from os.path import basename, dirname
@@ -15,7 +15,8 @@ class Command:
     def __init__(self, subparsers):
         self._parser = subparsers.add_parser(self.name, aliases=self.aliases,
                                              help=self.description,
-                                             description=self.description)
+                                             description=self.description,
+                                             formatter_class=ArgumentDefaultsHelpFormatter)
 
         self._parser.set_defaults(func=self.run)
 
