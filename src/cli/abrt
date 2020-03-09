@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import argparse
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import sys
 
 import argcomplete
@@ -11,7 +11,8 @@ from abrtcli.i18n import _
 if __name__ == '__main__':
     i18n.init()
 
-    parser = argparse.ArgumentParser(allow_abbrev=False)
+    parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter,
+                            allow_abbrev=False)
 
     parser.add_argument('-a', '--authenticate',
                         action='store_true',
