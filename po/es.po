@@ -41,7 +41,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-02-28 11:38+0000\n"
+"PO-Revision-Date: 2020-03-02 13:38+0000\n"
 "Last-Translator: Emilio Herrera <ehespinosa57@gmail.com>\n"
 "Language-Team: Spanish <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/es/>\n"
@@ -521,10 +521,8 @@ msgstr ""
 "WatchCrashdumpArchiveDir del archivo abrt.conf"
 
 #: ../src/daemon/abrt-upload-watch.c:281
-#, fuzzy
-#| msgid "Daemize"
 msgid "Daemonize"
-msgstr "Convertir en demonio"
+msgstr "Demonizar"
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
@@ -1448,7 +1446,7 @@ msgstr "Se encontraron más oops, sólo se procesará el primero"
 #: ../src/plugins/abrt-dump-journal-core.c:378
 #, c-format
 msgid "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
-msgstr ""
+msgstr "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
 
 #: ../src/plugins/abrt-dump-journal-core.c:407
 #: ../src/plugins/abrt-dump-journal-core.c:446
@@ -1965,10 +1963,8 @@ msgstr ""
 "subir el archivo"
 
 #: ../src/plugins/abrt-retrace-client.c:1261
-#, fuzzy
-#| msgid "retrace server URL"
 msgid "retrace server URI"
-msgstr "URL del servidor retrace"
+msgstr "URL del servidor de rastreo"
 
 #: ../src/plugins/abrt-retrace-client.c:1263
 msgid "(debug) show received HTTP headers"
@@ -2051,6 +2047,10 @@ msgid ""
 "Whiteboar equal to 'UUID' of the crash. If such a bug found, search for "
 "Bodhi updates shipping fixes for the found Bugzilla bugs."
 msgstr ""
+"Buscar informes Bugzilla con el valor 'abrt-hash' en Bugzilla Bug Whiteboar "
+"igual a 'UUID' de la caída. Si se encuentra algún gazapo, buscar en las "
+"actualizaciones Bodhi que contengan correcciones para los gazapos "
+"encontrados en Bugzilla."
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
@@ -2091,10 +2091,8 @@ msgstr ""
 "programa que falló, incluidos datos privados si los hubiera."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-#, fuzzy
-#| msgid "Retrace server URL"
 msgid "Retrace server URI"
-msgstr "URL del servidor retrace"
+msgstr "URL del servidor de rastreo"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Address of the retrace server"
@@ -2176,17 +2174,15 @@ msgstr ""
 "tanto los mantenedores de kernel no pueden corregir  este problema."
 
 #: ../src/plugins/oops-utils.c:246
-#, fuzzy, c-format
-#| msgid ""
-#| "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
-#| "Kernel maintainers are unable to diagnose tainted reports."
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Explanation:\n"
 "%sKernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"Ocurrió un problema de núcleo, pero este núcleo se ha corrompido (indic.: "
-"%s). Los mantenedores del núcleo no pueden diagnosticar informes de núcleos "
+"Ocurrió un problema de núcleo, pero este núcleo se ha corrompido (indic.: %s)"
+". Explicación:%.\n"
+" Los mantenedores del núcleo no pueden diagnosticar informes de núcleos "
 "dañados."
 
 #: ../src/plugins/oops-utils.c:254
@@ -2261,7 +2257,7 @@ msgstr "Borrar los archivos con oopses encontrados"
 
 #: ../src/cli/abrtcli/match.py:117
 msgid "No matching problems found"
-msgstr ""
+msgstr "No se han encontrado problemas coincidentes"
 
 #: ../src/cli/abrtcli/utils.py:79
 msgid "Not reportable"

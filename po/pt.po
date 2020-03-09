@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-02-25 23:38+0000\n"
+"PO-Revision-Date: 2020-03-09 08:01+0000\n"
 "Last-Translator: Tiago João Mateus de Almeida <tjamadeira@gmail.com>\n"
 "Language-Team: Portuguese <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/pt/>\n"
@@ -818,6 +818,10 @@ msgid ""
 "your computer. ABRT will not allow you to create a report in a bug tracking "
 "system but you can contact kernel maintainers via e-mail."
 msgstr ""
+"O registo não contém informação significativa suficiente sobre as funções "
+"para ser reportada. É irritante, mas não é necessário sinalizar um problema "
+"no seu computador. A ABRT não permitirá que crie um relatório no sistema de "
+"erros, mas pode entrar em contacto com os programadores do kernel por email."
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:74
 msgid ""
@@ -825,11 +829,14 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Calcula e guarda o UUID e o DUPHASH para problemas xorg na pasta DIR"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:143
 #, c-format
 msgid "Module '%s' was loaded - won't report this crash"
-msgstr ""
+msgstr "O módulo '%s' foi carregado - não reporte esta falha"
 
 #: ../src/plugins/abrt-action-analyze-python.c:44
 msgid ""
@@ -839,7 +846,7 @@ msgid ""
 msgstr ""
 "& [-v] -d DIR\n"
 "\n"
-"Calcula e guarda o UUID e DUPHASH de registos de falhas do python"
+"Calcula e guarda o UUID e o DUPHASH de registos de falhas do python"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:47
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
@@ -851,7 +858,7 @@ msgstr "O ficheiro {0} não existe"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:77
 msgid "Extracting the oops text from core"
-msgstr ""
+msgstr "A extrair o texto das falhas do \"core\""
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:82
 msgid ""
@@ -863,42 +870,44 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:90
 msgid "Can't extract the oops message: '{0}'"
-msgstr ""
+msgstr "Não é possível extrair a mensagem das falhas: '{0}'"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:93
 msgid "Oops text extracted successfully"
-msgstr ""
+msgstr "O texto das falhas foi extraído com sucesso"
 
 #: ../src/plugins/abrt-action-check-oops-for-hw-error.in:100
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
 msgstr ""
+"O registo do kernel indica que erros de hardware foram detetados.\n"
+"Provavelmente, isto não é um problema de software.\n"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:73
 #: ../src/plugins/abrt-action-find-bodhi-update:106
 msgid "Problem directory error: {0}"
-msgstr ""
+msgstr "Erro na pasta de problemas: {0}"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:92
 msgid "cannot open problem directory '{0}'"
-msgstr ""
+msgstr "não é possível abrir a pasta de problemas '{0}'"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:121
 msgid "Using product '{0}' from /etc/os-release."
-msgstr ""
+msgstr "A usar o produto '{0}' a partir /etc/os-release."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:123
 msgid "Using product {0}."
-msgstr ""
+msgstr "A usar o produto {0}."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:125
 msgid "Using product version {0}."
-msgstr ""
+msgstr "A usar a versão {0} do produto."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:137
 msgid "Duplicate bugzilla bug '#{0}' was found"
-msgstr ""
+msgstr "Foi encontrado um erro duplicado no bugzilla '#{0}'"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:139
 msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
