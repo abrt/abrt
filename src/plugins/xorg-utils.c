@@ -186,19 +186,6 @@ struct xorg_crash_info *process_xorg_bt(char *(*get_next_line)(void *), void *da
         if (*p == '\0')
             continue;
 
-        /* xorg-server-1.12.0/os/osinit.c:
-         * if (sip->si_code == SI_USER) {
-         *     ErrorF("Recieved signal %d sent by process %ld, uid %ld\n",
-         *             ^^^^^^^^ yes, typo here! Can't grep for this word! :(
-         *            signo, (long) sip->si_pid, (long) sip->si_uid);
-         * } else {
-         *     switch (signo) {
-         *         case SIGSEGV:
-         *         case SIGBUS:
-         *         case SIGILL:
-         *         case SIGFPE:
-         *             ErrorF("%s at address %p\n", strsignal(signo), sip->si_addr);
-         */
         if (*p < '0' || *p > '9')
         {
             if (strstr(p, " at address ") || strstr(p, " sent by process "))
