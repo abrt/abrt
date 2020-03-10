@@ -192,13 +192,25 @@ struct xorg_crash_info *process_xorg_bt(char *(*get_next_line)(void *), void *da
          */
         if (isalpha(*p))
         {
-            if (strstr(p, " at address ") || strstr(p, " sent by process "))
+            /* Extend as needed. */
+            const char *substrings[] =
             {
-                overlapping_strcpy(line, p);
-                reason = line;
-                line = NULL;
+                /* "Received signal %u sent by process %u, uid %u" */
+                " sent by process ",
+                /* %s at address %p */
+                " at address ",
+            };
+
+            for (size_t i = 0; i < G_N_ELEMENTS (substrings); i++)
+            {
+                if (strstr(p, substrings[i]) != NULL)
+                {
+                    overlapping_strcpy(line, p);
+                    reason = line;
+                    line = NULL;
+                }
             }
-            /* Here you can place other cases of useful reason string */
+
             break;
         }
 
