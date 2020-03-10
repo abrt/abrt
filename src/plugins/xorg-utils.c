@@ -186,7 +186,11 @@ struct xorg_crash_info *process_xorg_bt(char *(*get_next_line)(void *), void *da
         if (*p == '\0')
             continue;
 
-        if (*p < '0' || *p > '9')
+        /* Slight optimization, since we know that the error will necessarily
+         * start with an alphabetic character:
+         * https://gitlab.freedesktop.org/xorg/xserver/-/blob/3d6efc4aaff80301c0b10b7b6ba297eb5e54c1a0/os/osinit.c#L137
+         */
+        if (isalpha(*p))
         {
             if (strstr(p, " at address ") || strstr(p, " sent by process "))
             {
