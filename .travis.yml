@@ -1,0 +1,11 @@
+env:
+  global:
+    - secure: "ITqdC4PW3v/OSd2rC0oKkGx6Zy1OfmkBV9MySPmCTMWjA78SCqYszk3QClAS9W1f8MfBl+rfSLE5kkxuYTKNM8IAn+dqAdkQQ0bMoz9DU93B39FaZIGp3XIucLjUQfFih1HS7OYHq8X5LPzy/9QPqClV5aAl5Pa4CtmOv3h99bg="
+
+addons:
+  coverity_scan:
+    project:
+      name: abrt/abrt
+    build_command_prepend: ./autogen.sh
+    build_command: make
+    branch_pattern: master
