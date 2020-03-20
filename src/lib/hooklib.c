@@ -272,7 +272,7 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
     }
     else
     {
-        strbuf_append_str(set_debug_file_directory, "set debug-file-directory /usr/lib/debug");
+        strbuf_append_str(set_debug_file_directory, "set debug-file-directory /usr/lib/debug:/usr/lib");
 
         struct strbuf *debug_directories = strbuf_new();
         const char *p = debuginfo_dirs;
@@ -283,8 +283,11 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
             if (*p == '\0')
                 break;
             const char *colon_or_nul = strchrnul(p, ':');
-            strbuf_append_strf(debug_directories, "%s%.*s/usr/lib/debug", (debug_directories->len == 0 ? "" : ":"),
-                                                                          (int)(colon_or_nul - p), p);
+            strbuf_append_strf(debug_directories,
+                               "%s%.*s/usr/lib/debug:%.*s/usr/lib",
+                               (debug_directories->len == 0 ? "" : ":"),
+                               (int)(colon_or_nul - p), p,
+                               (int)(colon_or_nul - p), p);
             p = colon_or_nul;
         }
 
