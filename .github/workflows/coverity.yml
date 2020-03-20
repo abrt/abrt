@@ -39,7 +39,7 @@ jobs:
       - name: Upload build artifacts
         run: |
           curl \
-            --form token=$COVERITY_SCAN_TOKEN \
+            --form token=${{ secrets. COVERITY_SCAN_TOKEN }} \
             --form file=@abrt.tar.xz \
             --form version="$GITHUB_SHA" \
             https://scan.coverity.com/builds?project=abrt%2Fabrt
