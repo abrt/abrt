@@ -3,15 +3,15 @@ on:
   schedule:
     - cron: "0 3 * * 0"
 jobs:
-  check:
+  build:
     container: fedora:latest
     runs-on: ubuntu-latest
     steps:
       - name: Check out sources
         uses: actions/checkout@v2
 
-      - name: Install build tools
-        run: sudo dnf --assumeyes install @c-development @development-tools
+      - name: Install build environment
+        run: sudo dnf --assumeyes install @c-development @development-tools gettext-devel
 
       - name: Generate build files
         run: ./autogen.sh
