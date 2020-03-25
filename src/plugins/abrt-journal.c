@@ -131,64 +131,52 @@ int abrt_journal_get_field(abrt_journal_t *journal, const char *field, const voi
     return 0;
 }
 
-static int abrt_journal_get_integer(abrt_journal_t *journal, const char *field, long min, long max, long *value)
+int abrt_journal_get_int_field(abrt_journal_t *journal, const char *field, long *value)
 {
-    char buffer[sizeof(int)*3 + 2];
-    const char *data;
-    size_t data_len;
+    const void *data;
+    size_t data_length;
+    int retval;
+    g_autofree char *data_string = NULL;
+    char *end;
 
-    const int r = abrt_journal_get_field(journal, field, (const void **)&data, &data_len);
-    if (r < 0)
-        return r;
+    g_return_val_if_fail (NULL != value, -EINVAL);
 
-    if (data_len >= sizeof(buffer))
+    retval = abrt_journal_get_field(journal, field, &data, &data_length);
+    if (retval < 0)
     {
-        log_notice("Journald field '%s' is not a number: too long", field);
-        return -EINVAL;
+        return retval;
     }
-
-    strncpy(buffer, data, data_len);
-    buffer[data_len] = '\0';
+    data_string = g_strndup(data, data_length);
 
     errno = 0;
-    char *e = NULL;
-    *value = strtol(buffer, &e, 10);
-    if (errno || buffer == e || *e != '\0' || *value < min || *value > max)
+    *value = strtol(data_string, &end, 10);
+    if (0 == *value && 0 != errno)
     {
-        log_notice("Journald field '%s' is not a number: '%s'", field, buffer);
+        char *error_message;
+
+        error_message = strerror(errno);
+
+        error_msg("Failed to convert journal message field “%s” value “%s” to an integer: %s",
+                  field, data_string, error_message);
+
+        return -EINVAL;
+    }
+    /* No data or garbage after numeric data */
+    if (end == data_string || '\0' != *end)
+    {
+        error_msg("Failed to convert journal message field “%s” value “%s” to an integer: value empty or not a number",
+                  field, data_string);
         return -EINVAL;
     }
 
-    return 0;
-}
-
-int abrt_journal_get_int_field(abrt_journal_t *journal, const char *field, int *value)
-{
-    long v;
-    int r = abrt_journal_get_integer(journal, field, INT_MIN, INT_MAX, &v);
-    if (r != 0)
-        return r;
-
-    *value = (int)v;
-    return 0;
-}
-
-int abrt_journal_get_unsigned_field(abrt_journal_t *journal, const char *field, unsigned *value)
-{
-    long v;
-    int r = abrt_journal_get_integer(journal, field, 0, UINT_MAX, &v);
-    if (r != 0)
-        return r;
-
-    *value = (unsigned)v;
     return 0;
 }
 
 char *abrt_journal_get_string_field(abrt_journal_t *journal, const char *field, char *value)
 {
     size_t data_len;
-    const char *data;
-    const int r = abrt_journal_get_field(journal, field, (const void **)&data, &data_len);
+    const void *data;
+    const int r = abrt_journal_get_field(journal, field, &data, &data_len);
     if (r < 0)
         return NULL;
 
