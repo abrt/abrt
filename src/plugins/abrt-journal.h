@@ -54,7 +54,7 @@ int abrt_journal_get_field(abrt_journal_t *journal,
 
 int abrt_journal_get_int_field(abrt_journal_t *journal,
                                const char *field,
-                               int *value);
+                               long *value);
 
 int abrt_journal_get_unsigned_field(abrt_journal_t *journal,
                                     const char *field,
