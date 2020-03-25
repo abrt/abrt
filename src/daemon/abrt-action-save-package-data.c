@@ -273,6 +273,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
     char *fingerprint = NULL;
     struct pkg_envra *pkg_name = NULL;
     char *component = NULL;
+    char *sub_components = NULL;
     char *kernel = NULL;
     int error = 1;
     /* note: "goto ret" statements below free all the above variables,
@@ -411,6 +412,7 @@ skip_interpreter:
     }
 
     component = rpm_get_component(executable, chroot);
+    sub_components = get_sub_components(component);
 
     dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
@@ -449,6 +451,8 @@ skip_interpreter:
 
     if (component)
         dd_save_text(dd, FILENAME_COMPONENT, component);
+    if (sub_components)
+        dd_save_text(dd, FILENAME_SUBCOMPONENTS, sub_components);
 
  ret0:
     error = 0;

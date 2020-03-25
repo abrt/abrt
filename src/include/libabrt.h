@@ -52,6 +52,8 @@ void ensure_writable_dir_group(const char *dir, mode_t mode, const char *user, c
 char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec);
 #define get_backtrace abrt_get_backtrace
 char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char *debuginfo_dirs);
+#define get_sub_components abrt_get_sub_components
+char *get_sub_components(const char *component);
 
 #define dir_is_in_dump_location abrt_dir_is_in_dump_location
 bool dir_is_in_dump_location(const char *dir_name);

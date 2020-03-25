@@ -415,6 +415,28 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
     return bt;
 }
 
+char *get_sub_components(const char *component)
+{
+    if (!strcmp(component, "binutils"))      return (char *)"system-version";
+    if (!strcmp(component, "Documentation")) return (char *)"default";
+    if (!strcmp(component, "dwz"))           return (char *)"system-version";
+    if (!strcmp(component, "dynist"))        return (char *)"system-version";
+    if (!strcmp(component, "elfutils"))      return (char *)"system-version";
+    if (!strcmp(component, "gcc"))           return (char *)"system-version";
+    if (!strcmp(component, "gdb"))           return (char *)"system-version";
+    if (!strcmp(component, "kernel"))        return (char *)"Other";
+    if (!strcmp(component, "kernel-rt"))     return (char *)"Other";
+    if (!strcmp(component, "kpatch"))        return (char *)"kpatch-utility";
+    if (!strcmp(component, "ltrace"))        return (char *)"system-version";
+    if (!strcmp(component, "lvm2"))          return (char *)"Default / Unclassified";
+    if (!strcmp(component, "make"))          return (char *)"system-version";
+    if (!strcmp(component, "systemtap"))     return (char *)"system-version";
+    if (!strcmp(component, "test"))          return (char *)"sub1";
+    if (!strcmp(component, "valgrind"))      return (char *)"system-version";
+    if (!strcmp(component, "virtio-win"))    return (char *)"distribution";
+    return NULL;
+}
+
 char* problem_data_save(problem_data_t *pd)
 {
     load_abrt_conf();
