@@ -18,13 +18,13 @@
 #include <sys/un.h>
 #include "libabrt.h"
 
-void notify_new_path(const char *path)
+void abrt_notify_new_path(const char *path)
 {
     /* Ignore results and don't wait for response -> NULL */
-    notify_new_path_with_response(path, NULL);
+    abrt_notify_new_path_with_response(path, NULL);
 }
 
-int notify_new_path_with_response(const char *path, char **message)
+int abrt_notify_new_path_with_response(const char *path, char **message)
 {
     int retval;
     int fd = socket(AF_UNIX, SOCK_STREAM, 0);

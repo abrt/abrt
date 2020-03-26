@@ -18,7 +18,7 @@
 #include <sys/statvfs.h>
 #include "internal_libabrt.h"
 
-int low_free_space(unsigned setting_MaxCrashReportsSize, const char *dump_location)
+int abrt_low_free_space(unsigned setting_MaxCrashReportsSize, const char *dump_location)
 {
     struct statvfs vfs;
     if (statvfs(dump_location, &vfs) != 0)
@@ -45,7 +45,7 @@ int low_free_space(unsigned setting_MaxCrashReportsSize, const char *dump_locati
  * Check total size of problem dirs, if it overflows,
  * delete oldest/biggest dirs.
  */
-void trim_problem_dirs(const char *dirname, double cap_size, const char *exclude_path)
+void abrt_trim_problem_dirs(const char *dirname, double cap_size, const char *exclude_path)
 {
     const char *excluded_basename = NULL;
     if (exclude_path)
@@ -172,7 +172,7 @@ static char* exec_vp(char **args, int redirect_stderr, int exec_timeout_sec, int
     return strbuf_free_nobuf(buf_out);
 }
 
-char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
+char *abrt_run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
 {
     int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_SETSID | EXECFLG_QUIET;
     VERB1 flags &= ~EXECFLG_QUIET;
@@ -239,7 +239,7 @@ char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
     return strbuf_free_nobuf(buf_out);
 }
 
-char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char *debuginfo_dirs)
+char *abrt_get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char *debuginfo_dirs)
 {
     INITIALIZE_LIBABRT();
 
@@ -417,9 +417,9 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
 
 char* problem_data_save(problem_data_t *pd)
 {
-    load_abrt_conf();
+    abrt_load_abrt_conf();
 
-    struct dump_dir *dd = create_dump_dir_from_problem_data_ext(pd, g_settings_dump_location, /*fs owner*/0);
+    struct dump_dir *dd = create_dump_dir_from_problem_data_ext(pd, abrt_g_settings_dump_location, /*fs owner*/0);
 
     char *problem_id = NULL;
     if (dd)
@@ -487,7 +487,7 @@ int signal_is_fatal(int signal_no, const char **name)
     return signame != NULL;
 }
 
-void ensure_writable_dir_uid_gid(const char *dir, mode_t mode, uid_t uid, gid_t gid)
+void abrt_ensure_writable_dir_uid_gid(const char *dir, mode_t mode, uid_t uid, gid_t gid)
 {
     struct stat sb;
     int dir_fd;
@@ -511,16 +511,16 @@ void ensure_writable_dir_uid_gid(const char *dir, mode_t mode, uid_t uid, gid_t 
     close(dir_fd);
 }
 
-void ensure_writable_dir(const char *dir, mode_t mode, const char *user)
+void abrt_ensure_writable_dir(const char *dir, mode_t mode, const char *user)
 {
     struct passwd *pw = getpwnam(user);
     if (!pw)
         perror_msg_and_die("Can't find user '%s'", user);
 
-    ensure_writable_dir_uid_gid(dir, mode, pw->pw_uid, pw->pw_gid);
+    abrt_ensure_writable_dir_uid_gid(dir, mode, pw->pw_uid, pw->pw_gid);
 }
 
-void ensure_writable_dir_group(const char *dir, mode_t mode, const char *user, const char *group)
+void abrt_ensure_writable_dir_group(const char *dir, mode_t mode, const char *user, const char *group)
 {
     struct passwd *pw = getpwnam(user);
     if (!pw)
@@ -530,21 +530,21 @@ void ensure_writable_dir_group(const char *dir, mode_t mode, const char *user, c
     if (!gr)
         perror_msg_and_die("Can't find group '%s'", group);
 
-    ensure_writable_dir_uid_gid(dir, mode, pw->pw_uid, gr->gr_gid);
+    abrt_ensure_writable_dir_uid_gid(dir, mode, pw->pw_uid, gr->gr_gid);
 }
 
-bool dir_is_in_dump_location(const char *dir_name)
+bool abrt_dir_is_in_dump_location(const char *dir_name)
 {
-    unsigned len = strlen(g_settings_dump_location);
+    unsigned len = strlen(abrt_g_settings_dump_location);
 
-    /* The path must start with "g_settings_dump_location" */
-    if (strncmp(dir_name, g_settings_dump_location, len) != 0)
+    /* The path must start with "abrt_g_settings_dump_location" */
+    if (strncmp(dir_name, abrt_g_settings_dump_location, len) != 0)
     {
-        log_debug("Bad parent directory: '%s' not in '%s'", g_settings_dump_location, dir_name);
+        log_debug("Bad parent directory: '%s' not in '%s'", abrt_g_settings_dump_location, dir_name);
         return false;
     }
 
-    /* and must be a sub-directory of the g_settings_dump_location dir */
+    /* and must be a sub-directory of the abrt_g_settings_dump_location dir */
     const char *base_name = dir_name + len;
     while (*base_name && *base_name == '/')
         ++base_name;
@@ -566,7 +566,7 @@ bool dir_is_in_dump_location(const char *dir_name)
     return S_ISDIR(sb.st_mode);
 }
 
-bool dir_has_correct_permissions(const char *dir_name, int flags)
+bool abrt_dir_has_correct_permissions(const char *dir_name, int flags)
 {
     struct stat statbuf;
     if (lstat(dir_name, &statbuf) != 0 || !S_ISDIR(statbuf.st_mode))
@@ -624,7 +624,7 @@ bool problem_entry_is_post_create_condition(const char *name)
            || strcmp(name, "basename") == 0;
 }
 
-bool allowed_new_user_problem_entry(uid_t uid, const char *name, const char *value)
+bool abrt_new_user_problem_entry_allowed(uid_t uid, const char *name, const char *value)
 {
     /* Allow root to create everything */
     if (uid == 0)

@@ -48,7 +48,7 @@ void test(struct result **res)
     dup2(errpipe[1], STDERR_FILENO);
     */
 
-    load_abrt_conf();
+    abrt_load_abrt_conf();
 
     /*
     dup2(old_stderr, STDERR_FILENO);
@@ -72,7 +72,7 @@ void test(struct result **res)
         }
     }
 
-    free_abrt_conf_data();
+    abrt_free_abrt_conf_data();
 }
 
 int main(int argc, char *argv[])
@@ -82,13 +82,13 @@ int main(int argc, char *argv[])
     {
         struct result res_dump_location = {
             .line = "DumpLocation = /foo/blah/abrt\n",
-            .global_option = (const char *const *)&g_settings_dump_location,
+            .global_option = (const char *const *)&abrt_g_settings_dump_location,
             .expected = "/foo/blah/abrt",
         };
 
         struct result res_archive_dir = {
             .line = "WatchCrashdumpArchiveDir = /opt/bar/abrt\n",
-            .global_option = (const char *const *)&g_settings_sWatchCrashdumpArchiveDir,
+            .global_option = (const char *const *)&abrt_g_settings_sWatchCrashdumpArchiveDir,
             .expected = "/opt/bar/abrt",
         };
 
@@ -104,13 +104,13 @@ int main(int argc, char *argv[])
     {
         struct result res_dump_location = {
             .line = "DumpLocation = /foo/blah/abrt////\n",
-            .global_option = (const char *const *)&g_settings_dump_location,
+            .global_option = (const char *const *)&abrt_g_settings_dump_location,
             .expected = "/foo/blah/abrt",
         };
 
         struct result res_archive_dir = {
             .line = "WatchCrashdumpArchiveDir = /opt/bar/abrt////\n",
-            .global_option = (const char *const *)&g_settings_sWatchCrashdumpArchiveDir,
+            .global_option = (const char *const *)&abrt_g_settings_sWatchCrashdumpArchiveDir,
             .expected = "/opt/bar/abrt",
         };
 
@@ -126,13 +126,13 @@ int main(int argc, char *argv[])
     {
         struct result res_dump_location = {
             .line = "DumpLocation = /foo//blah///abrt\n",
-            .global_option = (const char *const *)&g_settings_dump_location,
+            .global_option = (const char *const *)&abrt_g_settings_dump_location,
             .expected = "/foo/blah/abrt",
         };
 
         struct result res_archive_dir = {
             .line = "WatchCrashdumpArchiveDir = /opt//bar///abrt\n",
-            .global_option = (const char *const *)&g_settings_sWatchCrashdumpArchiveDir,
+            .global_option = (const char *const *)&abrt_g_settings_sWatchCrashdumpArchiveDir,
             .expected = "/opt/bar/abrt",
         };
 
@@ -148,13 +148,13 @@ int main(int argc, char *argv[])
     {
         struct result res_dump_location = {
             .line = "DumpLocation = /////\n",
-            .global_option = (const char *const *)&g_settings_dump_location,
+            .global_option = (const char *const *)&abrt_g_settings_dump_location,
             .expected = "/",
         };
 
         struct result res_archive_dir = {
             .line = "WatchCrashdumpArchiveDir = /////\n",
-            .global_option = (const char *const *)&g_settings_sWatchCrashdumpArchiveDir,
+            .global_option = (const char *const *)&abrt_g_settings_sWatchCrashdumpArchiveDir,
             .expected = "/",
         };
 

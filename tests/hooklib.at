@@ -2,14 +2,14 @@
 
 AT_BANNER([hooklib])
 
-AT_TESTFUN([dir_is_in_dump_location],
+AT_TESTFUN([abrt_dir_is_in_dump_location],
 [[
 #include "libabrt.h"
 #include <assert.h>
 
 void test(char *name, bool expected)
 {
-    if (dir_is_in_dump_location(name) != expected)
+    if (abrt_dir_is_in_dump_location(name) != expected)
     {
         fprintf(stderr, "Bad: %s", name);
         abort();
@@ -21,63 +21,63 @@ void test(char *name, bool expected)
 int main(void)
 {
     g_verbose = 3;
-    load_abrt_conf();
+    abrt_load_abrt_conf();
 
     g_verbose = 3;
 
     char *name;
 
-    assert(dir_is_in_dump_location("/") == false);
+    assert(abrt_dir_is_in_dump_location("/") == false);
 
-    asprintf(&name, "%s", g_settings_dump_location);
+    asprintf(&name, "%s", abrt_g_settings_dump_location);
     test(name, false);
 
-    asprintf(&name, "%s..evil", g_settings_dump_location);
+    asprintf(&name, "%s..evil", abrt_g_settings_dump_location);
     test(name, false);
 
-    asprintf(&name, "%s/", g_settings_dump_location);
+    asprintf(&name, "%s/", abrt_g_settings_dump_location);
     test(name, false);
 
-    asprintf(&name, "%s///", g_settings_dump_location);
+    asprintf(&name, "%s///", abrt_g_settings_dump_location);
     test(name, false);
 
-    asprintf(&name, "%s/.", g_settings_dump_location);
+    asprintf(&name, "%s/.", abrt_g_settings_dump_location);
     test(name, false);
 
-    asprintf(&name, "%s///.", g_settings_dump_location);
+    asprintf(&name, "%s///.", abrt_g_settings_dump_location);
     test(name, false);
 
-    asprintf(&name, "%s/./", g_settings_dump_location);
+    asprintf(&name, "%s/./", abrt_g_settings_dump_location);
     test(name, false);
 
-    asprintf(&name, "%s/.///", g_settings_dump_location);
+    asprintf(&name, "%s/.///", abrt_g_settings_dump_location);
     test(name, false);
 
-    asprintf(&name, "%s/..", g_settings_dump_location);
+    asprintf(&name, "%s/..", abrt_g_settings_dump_location);
     test(name, false);
 
-    asprintf(&name, "%s///..", g_settings_dump_location);
+    asprintf(&name, "%s///..", abrt_g_settings_dump_location);
     test(name, false);
 
-    asprintf(&name, "%s/../", g_settings_dump_location);
+    asprintf(&name, "%s/../", abrt_g_settings_dump_location);
     test(name, false);
 
-    asprintf(&name, "%s/..///", g_settings_dump_location);
+    asprintf(&name, "%s/..///", abrt_g_settings_dump_location);
     test(name, false);
 
-    asprintf(&name, "%s/good/../../../evil", g_settings_dump_location);
+    asprintf(&name, "%s/good/../../../evil", abrt_g_settings_dump_location);
     test(name, false);
 
-    asprintf(&name, "%s/good..still", g_settings_dump_location);
+    asprintf(&name, "%s/good..still", abrt_g_settings_dump_location);
     test(name, true);
 
-    asprintf(&name, "%s/good.new", g_settings_dump_location);
+    asprintf(&name, "%s/good.new", abrt_g_settings_dump_location);
     test(name, true);
 
-    asprintf(&name, "%s/.meta", g_settings_dump_location);
+    asprintf(&name, "%s/.meta", abrt_g_settings_dump_location);
     test(name, true);
 
-    asprintf(&name, "%s/..data", g_settings_dump_location);
+    asprintf(&name, "%s/..data", abrt_g_settings_dump_location);
     test(name, true);
 
     return 0;
@@ -92,7 +92,7 @@ AT_TESTFUN([abrt_problem_entry_is_post_create_condition],
 int main(void)
 {
     g_verbose = 3;
-    load_abrt_conf();
+    abrt_load_abrt_conf();
 
     assert(problem_entry_is_post_create_condition(FILENAME_TYPE));
     assert(problem_entry_is_post_create_condition(FILENAME_ANALYZER));

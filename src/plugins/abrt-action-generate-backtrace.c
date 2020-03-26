@@ -62,7 +62,7 @@ int main(int argc, char **argv)
     export_abrt_envvars(0);
 
     map_string_t *settings = new_map_string();
-    if (!load_abrt_plugin_conf_file(CCPP_CONF, settings))
+    if (!abrt_load_abrt_plugin_conf_file(CCPP_CONF, settings))
         error_msg("Can't load '%s'", CCPP_CONF);
 
     const char *value = get_map_string_item_or_NULL(settings, "DebuginfoLocation");
@@ -78,16 +78,16 @@ int main(int argc, char **argv)
         debuginfo_dirs = xasprintf("%s:%s", debuginfo_location, i_opt);
 
     /* Create gdb backtrace */
-    char *backtrace = get_backtrace(dump_dir_name, exec_timeout_sec,
+    char *backtrace = abrt_get_backtrace(dump_dir_name, exec_timeout_sec,
             (debuginfo_dirs) ? debuginfo_dirs : debuginfo_location);
     free(debuginfo_location);
     if (!backtrace)
     {
         backtrace = xstrdup("");
-        log_warning("get_backtrace() returns NULL, broken core/gdb?");
+        log_warning("abrt_get_backtrace() returns NULL, broken core/gdb?");
     }
     free(debuginfo_dirs);
-    free_abrt_conf_data();
+    abrt_free_abrt_conf_data();
 
     /* Store gdb backtrace */
 

@@ -219,10 +219,10 @@ int main(int argc, char *argv[])
     {
         if (opts & OPT_d)
             show_usage_and_die(program_usage_string, program_options);
-        load_abrt_conf();
-        dump_location = g_settings_dump_location;
-        g_settings_dump_location = NULL;
-        free_abrt_conf_data();
+        abrt_load_abrt_conf();
+        dump_location = abrt_g_settings_dump_location;
+        abrt_g_settings_dump_location = NULL;
+        abrt_free_abrt_conf_data();
     }
 
     int xorg_utils_flags = 0;
@@ -253,7 +253,7 @@ int main(int argc, char *argv[])
     {
         map_string_t *settings = new_map_string();
         log_notice("Loading settings from '%s'", XORG_CONF);
-        load_abrt_plugin_conf_file(XORG_CONF, settings);
+        abrt_load_abrt_plugin_conf_file(XORG_CONF, settings);
         log_debug("Loaded '%s'", XORG_CONF);
 
         const char *conf_journal_filters = get_map_string_item_or_NULL(settings, "JournalFilters");

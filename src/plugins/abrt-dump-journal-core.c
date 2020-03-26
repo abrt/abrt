@@ -361,7 +361,7 @@ abrt_journal_core_to_abrt_problem(struct crash_info *info, const char *dump_loca
     {
         char *path = xstrdup(dd->dd_dirname);
         dd_close(dd);
-        notify_new_path(path);
+        abrt_notify_new_path(path);
         log_debug("ABRT daemon has been notified about directory: '%s'", path);
         free(path);
     }
@@ -583,7 +583,7 @@ main(int argc, char *argv[])
         error_msg_and_die(_("You need to specify either -c CURSOR or -e"));
 
     /* Initialize ABRT configuration */
-    load_abrt_conf();
+    abrt_load_abrt_conf();
 
     if ((opts & OPT_o))
         run_flags |= ABRT_CORE_PRINT_STDOUT;
@@ -592,12 +592,12 @@ main(int argc, char *argv[])
     {
         if (opts & OPT_d)
             show_usage_and_die(program_usage_string, program_options);
-        dump_location = g_settings_dump_location;
+        dump_location = abrt_g_settings_dump_location;
     }
 
     {   /* Load CCpp.conf */
         map_string_t *settings = new_map_string();
-        load_abrt_plugin_conf_file("CCpp.conf", settings);
+        abrt_load_abrt_plugin_conf_file("CCpp.conf", settings);
         const char *value;
 
         value = get_map_string_item_or_NULL(settings, "VerboseLog");
@@ -667,7 +667,7 @@ main(int argc, char *argv[])
         abrt_journal_dump_core(journal, dump_location, run_flags);
 
     abrt_journal_free(journal);
-    free_abrt_conf_data();
+    abrt_free_abrt_conf_data();
 
     return EXIT_SUCCESS;
 }

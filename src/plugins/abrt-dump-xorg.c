@@ -77,10 +77,10 @@ int main(int argc, char **argv)
     {
         if (opts & OPT_d)
             show_usage_and_die(program_usage_string, program_options);
-        load_abrt_conf();
-        dump_location = g_settings_dump_location;
-        g_settings_dump_location = NULL;
-        free_abrt_conf_data();
+        abrt_load_abrt_conf();
+        dump_location = abrt_g_settings_dump_location;
+        abrt_g_settings_dump_location = NULL;
+        abrt_free_abrt_conf_data();
     }
 
     argv += optind;

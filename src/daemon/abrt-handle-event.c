@@ -237,7 +237,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
     /* dump_dir_name can be relative */
     dump_dir_name = realpath(dump_dir_name, NULL);
 
-    DIR *dir = opendir(g_settings_dump_location);
+    DIR *dir = opendir(abrt_g_settings_dump_location);
     if (dir == NULL)
         goto end;
 
@@ -254,7 +254,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
 
         dd = NULL;
 
-        char *tmp_concat_path = concat_path_file(g_settings_dump_location, dent->d_name);
+        char *tmp_concat_path = concat_path_file(abrt_g_settings_dump_location, dent->d_name);
 
         char *dump_dir_name2 = realpath(tmp_concat_path, NULL);
         if (g_verbose > 1 && !dump_dir_name2)
@@ -379,7 +379,7 @@ int main(int argc, char **argv)
     if (!*argv || !event_name)
         show_usage_and_die(program_usage_string, program_options);
 
-    load_abrt_conf();
+    abrt_load_abrt_conf();
 
     const char *const opt_env_nice = getenv("ABRT_EVENT_NICE");
     if (opt_env_nice != NULL && opt_env_nice[0] != '\0')

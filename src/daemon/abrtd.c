@@ -156,10 +156,10 @@ static void notify_next_post_create_process(struct abrt_server_proc *finished)
  */
 static void queue_post_craete_process(struct abrt_server_proc *proc)
 {
-    load_abrt_conf();
+    abrt_load_abrt_conf();
     struct abrt_server_proc *running = s_dir_queue == NULL ? NULL
                                                            : (struct abrt_server_proc *)s_dir_queue->data;
-    if (g_settings_nMaxCrashReportsSize == 0)
+    if (abrt_g_settings_nMaxCrashReportsSize == 0)
         goto consider_processing;
 
     const char *full_path_ignored = running != NULL ? running->dirname
@@ -173,8 +173,8 @@ static void queue_post_craete_process(struct abrt_server_proc *proc)
         ++ignored;
 
     char *worst_dir = NULL;
-    const double max_size = 1024 * 1024 * g_settings_nMaxCrashReportsSize;
-    while (get_dirsize_find_largest_dir(g_settings_dump_location, &worst_dir, ignored) >= max_size
+    const double max_size = 1024 * 1024 * abrt_g_settings_nMaxCrashReportsSize;
+    while (get_dirsize_find_largest_dir(abrt_g_settings_dump_location, &worst_dir, ignored) >= max_size
            && worst_dir)
     {
         const char *kind = "old";
@@ -195,10 +195,10 @@ static void queue_post_craete_process(struct abrt_server_proc *proc)
         }
 
         log_warning("Size of '%s' >= %u MB (MaxCrashReportsSize), deleting %s directory '%s'",
-                g_settings_dump_location, g_settings_nMaxCrashReportsSize,
+                abrt_g_settings_dump_location, abrt_g_settings_nMaxCrashReportsSize,
                 kind, worst_dir);
 
-        char *deleted = concat_path_file(g_settings_dump_location, worst_dir);
+        char *deleted = concat_path_file(abrt_g_settings_dump_location, worst_dir);
         free(worst_dir);
         worst_dir = NULL;
 
@@ -376,7 +376,7 @@ static void remove_abrt_server_proc(pid_t pid, int status)
 static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpointer ptr_unused)
 {
     kill_idle_timeout();
-    load_abrt_conf();
+    abrt_load_abrt_conf();
 
     int socket = accept(g_io_channel_unix_get_fd(source), NULL, NULL);
     if (socket == -1)
@@ -489,9 +489,9 @@ static void sanitize_dump_dir_rights(void)
      * us with thousands of bogus or malicious dumps */
     /* 07000 bits are setuid, setgit, and sticky, and they must be unset */
     /* 00777 bits are usual "rwxrwxrwx" access rights */
-    ensure_writable_dir_group(g_settings_dump_location, DEFAULT_DUMP_LOCATION_MODE, "root", "abrt");
+    abrt_ensure_writable_dir_group(abrt_g_settings_dump_location, DEFAULT_DUMP_LOCATION_MODE, "root", "abrt");
     /* temp dir */
-    ensure_writable_dir(VAR_RUN"/abrt", 0755, "root");
+    abrt_ensure_writable_dir(VAR_RUN"/abrt", 0755, "root");
 }
 
 /* Inotify handler */
@@ -502,12 +502,12 @@ static void handle_inotify_cb(struct abrt_inotify_watch *watch, struct inotify_e
 
     if (event->mask & IN_DELETE_SELF || event->mask & IN_MOVE_SELF)
     {
-        log_warning("Recreating deleted dump location '%s'", g_settings_dump_location);
+        log_warning("Recreating deleted dump location '%s'", abrt_g_settings_dump_location);
 
-        load_abrt_conf();
+        abrt_load_abrt_conf();
 
         sanitize_dump_dir_rights();
-        abrt_inotify_watch_reset(watch, g_settings_dump_location, IN_DUMP_LOCATION_FLAGS);
+        abrt_inotify_watch_reset(watch, abrt_g_settings_dump_location, IN_DUMP_LOCATION_FLAGS);
     }
 
     start_idle_timeout();
@@ -794,7 +794,7 @@ int main(int argc, char** argv)
 
     /* Initialization */
     log_notice("Loading settings");
-    if (load_abrt_conf() != 0)
+    if (abrt_load_abrt_conf() != 0)
         goto init_error;
 
     /* Moved before daemonization because parent waits for signal from daemon
@@ -802,7 +802,7 @@ int main(int argc, char** argv)
      * mark_unprocessed_dump_dirs_not_reportable() is slightly unpredictable.
      */
     sanitize_dump_dir_rights();
-    mark_unprocessed_dump_dirs_not_reportable(g_settings_dump_location);
+    mark_unprocessed_dump_dirs_not_reportable(abrt_g_settings_dump_location);
 
     /* Daemonize unless -d */
     if (!(opts & OPT_d))
@@ -843,10 +843,10 @@ int main(int argc, char** argv)
     log_notice("Creating glib main loop");
     s_main_loop = g_main_loop_new(NULL, FALSE);
 
-    /* Watching 'g_settings_dump_location' for delete self
+    /* Watching 'abrt_g_settings_dump_location' for delete self
      * because hooks expects that the dump location exists if abrtd is running
      */
-    aiw = abrt_inotify_watch_init(g_settings_dump_location,
+    aiw = abrt_inotify_watch_init(abrt_g_settings_dump_location,
             IN_DUMP_LOCATION_FLAGS, handle_inotify_cb, /*user data*/NULL);
 
     /* Add an event source which waits for INT/TERM signal */
@@ -928,7 +928,7 @@ int main(int argc, char** argv)
     if (s_main_loop)
         g_main_loop_unref(s_main_loop);
 
-    free_abrt_conf_data();
+    abrt_free_abrt_conf_data();
 
     if (s_sig_caught && s_sig_caught != SIGCHLD)
     {

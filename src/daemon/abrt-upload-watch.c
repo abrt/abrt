@@ -90,12 +90,12 @@ run_abrt_handle_upload(struct process *proc, const char *name)
     {
         /* child */
         xchdir(proc->upload_directory);
-        if (g_settings_delete_uploaded)
+        if (abrt_g_settings_delete_uploaded)
             execlp("abrt-handle-upload", "abrt-handle-upload", "-d",
-                           g_settings_dump_location, proc->upload_directory, name, (char*)NULL);
+                           abrt_g_settings_dump_location, proc->upload_directory, name, (char*)NULL);
         else
             execlp("abrt-handle-upload", "abrt-handle-upload",
-                           g_settings_dump_location, proc->upload_directory, name, (char*)NULL);
+                           abrt_g_settings_dump_location, proc->upload_directory, name, (char*)NULL);
         perror_msg_and_die("Can't execute '%s'", "abrt-handle-upload");
     }
 }
@@ -312,11 +312,11 @@ main(int argc, char **argv)
 
     /* Initialization */
     log_info("Loading settings");
-    if (load_abrt_conf() != 0)
+    if (abrt_load_abrt_conf() != 0)
         return 1;
 
     if (!proc.upload_directory)
-        proc.upload_directory = g_settings_sWatchCrashdumpArchiveDir;
+        proc.upload_directory = abrt_g_settings_sWatchCrashdumpArchiveDir;
 
     if (!proc.upload_directory)
         error_msg_and_die("Neither UPLOAD_DIRECTORY nor WatchCrashdumpArchiveDir was specified");
@@ -379,7 +379,7 @@ main(int argc, char **argv)
     if (proc.main_loop)
         g_main_loop_unref(proc.main_loop);
 
-    free_abrt_conf_data();
+    abrt_free_abrt_conf_data();
 
     return 0;
 }

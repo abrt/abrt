@@ -111,13 +111,13 @@ static void run_timeout(void)
 
 bool allowed_problem_dir(const char *dir_name)
 {
-    if (!dir_is_in_dump_location(dir_name))
+    if (!abrt_dir_is_in_dump_location(dir_name))
     {
-        error_msg("Bad problem directory name '%s', should start with: '%s'", dir_name, g_settings_dump_location);
+        error_msg("Bad problem directory name '%s', should start with: '%s'", dir_name, abrt_g_settings_dump_location);
         return false;
     }
 
-    if (!dir_has_correct_permissions(dir_name, DD_PERM_DAEMONS))
+    if (!abrt_dir_has_correct_permissions(dir_name, DD_PERM_DAEMONS))
     {
         error_msg("Problem directory '%s' has invalid owner, groop or mode", dir_name);
         return false;
@@ -151,7 +151,7 @@ static char *handle_new_problem(GVariant *problem_info, uid_t caller_uid, char *
     gchar *key, *value;
     while (g_variant_iter_loop(iter, "{ss}", &key, &value))
     {
-        if (allowed_new_user_problem_entry(caller_uid, key, value) == false)
+        if (abrt_new_user_problem_entry_allowed(caller_uid, key, value) == false)
         {
             *error = xasprintf("You are not allowed to create element '%s' containing '%s'", key, value);
             goto finito;
@@ -173,7 +173,7 @@ static char *handle_new_problem(GVariant *problem_info, uid_t caller_uid, char *
 
     problem_id = problem_data_save(pd);
     if (problem_id)
-        notify_new_path(problem_id);
+        abrt_notify_new_path(problem_id);
     else if (error)
         *error = xasprintf("Cannot create a new problem");
 
@@ -345,7 +345,7 @@ static GList *get_problem_dirs_for_element_in_time(uid_t uid,
         .timestamp_to = timestamp_to,
     };
 
-    for_each_problem_in_dir(g_settings_dump_location, uid, add_dirname_to_GList_if_matches, &me);
+    for_each_problem_in_dir(abrt_g_settings_dump_location, uid, add_dirname_to_GList_if_matches, &me);
 
     return g_list_reverse(me.list);
 }
@@ -396,7 +396,7 @@ static void handle_method_call(GDBusConnection *connection,
 
     if (g_strcmp0(method_name, "GetProblems") == 0)
     {
-        GList *dirs = get_problem_dirs_for_uid(caller_uid, g_settings_dump_location);
+        GList *dirs = get_problem_dirs_for_uid(caller_uid, abrt_g_settings_dump_location);
         response = variant_from_string_list(dirs);
         list_free_with_free(dirs);
 
@@ -419,7 +419,7 @@ static void handle_method_call(GDBusConnection *connection,
                 caller_uid = 0;
         }
 
-        GList * dirs = get_problem_dirs_for_uid(caller_uid, g_settings_dump_location);
+        GList * dirs = get_problem_dirs_for_uid(caller_uid, abrt_g_settings_dump_location);
         response = variant_from_string_list(dirs);
 
         list_free_with_free(dirs);
@@ -430,7 +430,7 @@ static void handle_method_call(GDBusConnection *connection,
 
     if (g_strcmp0(method_name, "GetForeignProblems") == 0)
     {
-        GList * dirs = get_problem_dirs_not_accessible_by_uid(caller_uid, g_settings_dump_location);
+        GList * dirs = get_problem_dirs_not_accessible_by_uid(caller_uid, abrt_g_settings_dump_location);
         response = variant_from_string_list(dirs);
         list_free_with_free(dirs);
 
@@ -627,7 +627,7 @@ static void handle_method_call(GDBusConnection *connection,
             return;
 
         /* Is it good idea to make it static? Is it possible to change the max size while a single run? */
-        const double max_dir_size = g_settings_nMaxCrashReportsSize * (1024 * 1024);
+        const double max_dir_size = abrt_g_settings_nMaxCrashReportsSize * (1024 * 1024);
         const long item_size = dd_get_item_size(dd, element);
         if (item_size < 0)
         {
@@ -642,7 +642,7 @@ static void handle_method_call(GDBusConnection *connection,
         const double requested_size = (double)strlen(value) - item_size;
         /* Don't want to check the size limit in case of reducing of size */
         if (requested_size > 0
-            && requested_size > (max_dir_size - get_dirsize(g_settings_dump_location)))
+            && requested_size > (max_dir_size - get_dirsize(abrt_g_settings_dump_location)))
         {
             log_notice("No problem space left in '%s' (requested Bytes %f)", problem_id, requested_size);
             g_dbus_method_invocation_return_dbus_error(invocation,
@@ -1087,8 +1087,8 @@ int main(int argc, char *argv[])
                              p2_service,
                              g_object_unref);
 
-    /* initialize the g_settings_dump_location */
-    load_abrt_conf();
+    /* initialize the abrt_g_settings_dump_location */
+    abrt_load_abrt_conf();
 
     loop = g_main_loop_new(NULL, FALSE);
     g_main_loop_run(loop);
@@ -1099,7 +1099,7 @@ int main(int argc, char *argv[])
 
     g_dbus_node_info_unref(introspection_data);
 
-    free_abrt_conf_data();
+    abrt_free_abrt_conf_data();
 
     return 0;
 }

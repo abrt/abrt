@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 
     map_string_t *settings = new_map_string();
     log_notice("Loading settings from '%s'", XORG_CONF);
-    load_abrt_plugin_conf_file(XORG_CONF, settings);
+    abrt_load_abrt_plugin_conf_file(XORG_CONF, settings);
     log_debug("Loaded '%s'", XORG_CONF);
 
     const char *value = get_map_string_item_or_NULL(settings, "BlacklistedXorgModules");

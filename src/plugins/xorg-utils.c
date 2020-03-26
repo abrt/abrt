@@ -134,7 +134,7 @@ void xorg_crash_info_create_dump_dir(struct xorg_crash_info *crash_info, const c
 
     char *path = xstrdup(dd->dd_dirname);
     dd_close(dd);
-    notify_new_path(path);
+    abrt_notify_new_path(path);
     free(path);
 }
 

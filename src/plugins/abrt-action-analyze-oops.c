@@ -78,10 +78,10 @@ int main(int argc, char **argv)
     }
     settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
 
-    load_abrt_plugin_conf_file("oops.conf", settings);
+    abrt_load_abrt_plugin_conf_file("oops.conf", settings);
 
     oops = dd_load_text(dd, FILENAME_BACKTRACE);
-    hash_str = koops_hash_str(oops);
+    hash_str = abrt_koops_hash_str(oops);
     if (NULL == hash_str)
     {
         error_msg("Can't find a meaningful backtrace for hashing in '%s'", dump_directory);
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
             /* We need UUID file for the local duplicates look-up and DUPHASH */
             /* file is also useful because user can force ABRT to report */
             /* the oops into a bug tracking system (Bugzilla). */
-            hash_str = koops_hash_str_ext(oops,
+            hash_str = abrt_koops_hash_str_ext(oops,
                     /* use no frame count limit */-1,
                     /* use every frame in stacktrace */0);
 

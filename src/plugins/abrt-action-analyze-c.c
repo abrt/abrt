@@ -173,7 +173,7 @@ int main(int argc, char **argv)
     char *unstrip_n_output = NULL;
     char *coredump_path = xasprintf("%s/"FILENAME_COREDUMP, dump_dir_name);
     if (access(coredump_path, R_OK) == 0)
-        unstrip_n_output = run_unstrip_n(dump_dir_name, /*timeout_sec:*/ 30);
+        unstrip_n_output = abrt_run_unstrip_n(dump_dir_name, /*timeout_sec:*/ 30);
 
     free(coredump_path);
 
