@@ -622,7 +622,7 @@ int main(int argc, char **argv)
      */
 
     map_string_t *settings = new_map_string();
-    load_abrt_plugin_conf_file("CCpp.conf", settings);
+    abrt_load_abrt_plugin_conf_file("CCpp.conf", settings);
 
     const char *value;
     strbuf_prepend_str(q, " update --enablerepo=fedora --enablerepo=updates --enablerepo=updates-testing");

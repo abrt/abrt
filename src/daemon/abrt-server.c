@@ -148,14 +148,14 @@ handle_signal_pipe_cb(GIOChannel *gio, GIOCondition condition, gpointer user_dat
 /* Remove dump dir */
 static int delete_path(const char *dump_dir_name)
 {
-    /* If doesn't start with "g_settings_dump_location/"... */
-    if (!dir_is_in_dump_location(dump_dir_name))
+    /* If doesn't start with "abrt_g_settings_dump_location/"... */
+    if (!abrt_dir_is_in_dump_location(dump_dir_name))
     {
         /* Then refuse to operate on it (someone is attacking us??) */
-        error_msg("Bad problem directory name '%s', should start with: '%s'", dump_dir_name, g_settings_dump_location);
+        error_msg("Bad problem directory name '%s', should start with: '%s'", dump_dir_name, abrt_g_settings_dump_location);
         return 400; /* Bad Request */
     }
-    if (!dir_has_correct_permissions(dump_dir_name, DD_PERM_DAEMONS))
+    if (!abrt_dir_has_correct_permissions(dump_dir_name, DD_PERM_DAEMONS))
     {
         error_msg("Problem directory '%s' has wrong owner or group", dump_dir_name);
         return 400; /*  */
@@ -277,14 +277,14 @@ struct response
 
 static int run_post_create(const char *dirname, struct response *resp)
 {
-    /* If doesn't start with "g_settings_dump_location/"... */
-    if (!dir_is_in_dump_location(dirname))
+    /* If doesn't start with "abrt_g_settings_dump_location/"... */
+    if (!abrt_dir_is_in_dump_location(dirname))
     {
         /* Then refuse to operate on it (someone is attacking us??) */
-        error_msg("Bad problem directory name '%s', should start with: '%s'", dirname, g_settings_dump_location);
+        error_msg("Bad problem directory name '%s', should start with: '%s'", dirname, abrt_g_settings_dump_location);
         RESPONSE_RETURN(resp, 400, NULL);
     }
-    if (!dir_has_correct_permissions(dirname, DD_PERM_EVENTS))
+    if (!abrt_dir_has_correct_permissions(dirname, DD_PERM_EVENTS))
     {
         error_msg("Problem directory '%s' has wrong owner or group", dirname);
         RESPONSE_RETURN(resp, 400, NULL);
@@ -297,7 +297,7 @@ static int run_post_create(const char *dirname, struct response *resp)
         const bool event_dir = dd && problem_dump_dir_was_provoked_by_abrt_event(dd, &provoker);
         if (event_dir)
         {
-            if (g_settings_debug_level == 0)
+            if (abrt_g_settings_debug_level == 0)
             {
                 error_msg("Removing problem provoked by ABRT(pid:%s): '%s'", provoker, dirname);
                 dd_delete(dd);
@@ -570,9 +570,9 @@ static int run_post_create(const char *dirname, struct response *resp)
 static int create_problem_dir(GHashTable *problem_info, unsigned pid)
 {
     /* Exit if free space is less than 1/4 of MaxCrashReportsSize */
-    if (g_settings_nMaxCrashReportsSize > 0)
+    if (abrt_g_settings_nMaxCrashReportsSize > 0)
     {
-        if (low_free_space(g_settings_nMaxCrashReportsSize, g_settings_dump_location))
+        if (abrt_low_free_space(abrt_g_settings_nMaxCrashReportsSize, abrt_g_settings_dump_location))
             exit(1);
     }
 
@@ -586,7 +586,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
         dir_basename = g_hash_table_lookup(problem_info, FILENAME_TYPE);
 
     char *path = xasprintf("%s/%s-%s-%u.new",
-                           g_settings_dump_location,
+                           abrt_g_settings_dump_location,
                            dir_basename,
                            iso_date_string(NULL),
                            pid);
@@ -619,7 +619,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     }
 
     /* Reading data from an arbitrary root directory is not secure. */
-    if (proc_dir_fd >= 0 && g_settings_explorechroots)
+    if (proc_dir_fd >= 0 && abrt_g_settings_explorechroots)
     {
         char proc_pid_root[sizeof("/proc/[pid]/root") + sizeof(pid_t) * 3];
         const size_t w = snprintf(proc_pid_root, sizeof(proc_pid_root), "/proc/%d/root", pid);
@@ -749,9 +749,9 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     xdup2(STDERR_FILENO, STDOUT_FILENO); /* paranoia: don't leave stdout fd closed */
 
     /* Trim old problem directories if necessary */
-    if (g_settings_nMaxCrashReportsSize > 0)
+    if (abrt_g_settings_nMaxCrashReportsSize > 0)
     {
-        trim_problem_dirs(g_settings_dump_location, g_settings_nMaxCrashReportsSize * (double)(1024*1024), path);
+        abrt_trim_problem_dirs(abrt_g_settings_dump_location, abrt_g_settings_nMaxCrashReportsSize * (double)(1024*1024), path);
     }
 
     run_post_create(path, NULL);
@@ -786,7 +786,7 @@ static gboolean key_value_ok(gchar *key, gchar *value)
         }
     }
 
-    return allowed_new_user_problem_entry(client_uid, key, value);
+    return abrt_new_user_problem_entry_allowed(client_uid, key, value);
 }
 
 /* Handles a message received from client over socket. */
@@ -1047,7 +1047,7 @@ static int perform_http_xact(struct response *rsp)
     char *executable = g_hash_table_lookup(problem_info, FILENAME_EXECUTABLE);
     if (executable)
     {
-        char *last_file = concat_path_file(g_settings_dump_location, "last-via-server");
+        char *last_file = concat_path_file(abrt_g_settings_dump_location, "last-via-server");
         int repeating_crash = check_recent_crash_file(last_file, executable);
         free(last_file);
         if (repeating_crash) /* Only pretend that we saved it */
@@ -1152,7 +1152,7 @@ int main(int argc, char **argv)
     if (get_ns_ids(getpid(), &g_ns_ids) < 0)
         error_msg_and_die("Cannot get own Namespaces from /proc/%d/ns", pid);
 
-    load_abrt_conf();
+    abrt_load_abrt_conf();
 
     struct response rsp = { 0 };
     int r = perform_http_xact(&rsp);
@@ -1162,7 +1162,7 @@ int main(int argc, char **argv)
     if (rsp.code == 0)
         rsp.code = r;
 
-    free_abrt_conf_data();
+    abrt_free_abrt_conf_data();
 
     printf("HTTP/1.1 %u \r\n\r\n", rsp.code);
     if (rsp.message != NULL)

@@ -162,7 +162,7 @@ static void delete_dirs(gpointer data, gpointer exclude_path)
     double cap_size;
     const char *dir = parse_size_pfx(&cap_size, data);
 
-    trim_problem_dirs(dir, cap_size, exclude_path);
+    abrt_trim_problem_dirs(dir, cap_size, exclude_path);
 }
 
 static void delete_files(gpointer data, gpointer void_preserve_list)

@@ -1547,7 +1547,7 @@ char *abrt_p2_service_save_problem( AbrtP2Service *service,
                         abrt_p2_service_elements_limit(service, caller_uid),
                         abrt_p2_service_data_size_limit(service, caller_uid));
 
-    struct dump_dir *dd = create_dump_dir(g_settings_dump_location,
+    struct dump_dir *dd = create_dump_dir(abrt_g_settings_dump_location,
                                           type_str,
                                           /*fs owner*/0,
                                           (save_data_call_back)entry_object_wrapped_abrt_p2_entry_save_elements,
@@ -2610,7 +2610,7 @@ int abrt_p2_service_register_objects(AbrtP2Service *service, GDBusConnection *co
     args.service = service;
     args.error = error;
 
-    for_each_problem_in_dir(g_settings_dump_location, (uid_t)-1, bridge_register_dump_dir_entry_node, &args);
+    for_each_problem_in_dir(abrt_g_settings_dump_location, (uid_t)-1, bridge_register_dump_dir_entry_node, &args);
 
     if (*args.error != NULL)
     {

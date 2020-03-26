@@ -57,7 +57,7 @@ set_abrt_reporting(map_string_t *conf, const char *opt_value)
        || (cur_value != NULL && strcmp(cur_value, opt_value) != 0))
     {
         replace_map_string_item(conf, xstrdup(OPTION_NAME), xstrdup(opt_value));
-        return save_abrt_conf_file(CONF_NAME, conf);
+        return abrt_save_abrt_conf_file(CONF_NAME, conf);
     }
 
     /* No changes needed -> success */
@@ -308,7 +308,7 @@ int main(int argc, char *argv[])
     map_string_t *ureport_conf = new_map_string();
     map_string_t *ureport_conf_bck = NULL;
 
-    if (!load_abrt_conf_file(CONF_NAME, conf))
+    if (!abrt_load_abrt_conf_file(CONF_NAME, conf))
         goto finito;
 
 #if AUTHENTICATED_AUTOREPORTING != 0

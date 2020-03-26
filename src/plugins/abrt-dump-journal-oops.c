@@ -46,8 +46,8 @@ static GList* abrt_journal_extract_kernel_oops(abrt_journal_t *journal)
         }
 
         char *orig_line = line;
-        lines_info[lines_info_count].level = koops_line_skip_level((const char **)&line);
-        koops_line_skip_jiffies((const char **)&line);
+        lines_info[lines_info_count].level = abrt_koops_line_skip_level((const char **)&line);
+        abrt_koops_line_skip_jiffies((const char **)&line);
 
         memmove(orig_line, line, strlen(line) + 1);
 
@@ -59,7 +59,7 @@ static GList* abrt_journal_extract_kernel_oops(abrt_journal_t *journal)
             && abrt_journal_next(journal) > 0);
 
     GList *oops_list = NULL;
-    koops_extract_oopses_from_lines(&oops_list, lines_info, lines_info_count);
+    abrt_koops_extract_oopses_from_lines(&oops_list, lines_info, lines_info_count);
 
     log_debug("Extracted: %d oopses", g_list_length(oops_list));
 
@@ -118,7 +118,7 @@ static void abrt_journal_watch_extract_kernel_oops(abrt_journal_watch_t *watch, 
 
 static void watch_journald(abrt_journal_t *journal, const char *dump_location, int flags)
 {
-    GList *koops_strings = koops_suspicious_strings_list();
+    GList *koops_strings = abrt_koops_suspicious_strings_list();
 
     char *oops_string_filter_regex = abrt_oops_string_filter_regex();
     if (oops_string_filter_regex)
@@ -149,7 +149,7 @@ static void watch_journald(abrt_journal_t *journal, const char *dump_location, i
         free(oops_string_filter_regex);
     }
 
-    GList *koops_strings_blacklist = koops_suspicious_strings_blacklist();
+    GList *koops_strings_blacklist = abrt_koops_suspicious_strings_blacklist();
 
     struct watch_journald_settings watch_conf = {
         .dump_location = dump_location,
@@ -252,10 +252,10 @@ int main(int argc, char *argv[])
     {
         if (opts & OPT_d)
             show_usage_and_die(program_usage_string, program_options);
-        load_abrt_conf();
-        dump_location = g_settings_dump_location;
-        g_settings_dump_location = NULL;
-        free_abrt_conf_data();
+        abrt_load_abrt_conf();
+        dump_location = abrt_g_settings_dump_location;
+        abrt_g_settings_dump_location = NULL;
+        abrt_free_abrt_conf_data();
     }
 
     int oops_utils_flags = 0;

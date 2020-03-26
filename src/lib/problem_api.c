@@ -88,7 +88,7 @@ int for_each_problem_in_dir(const char *path,
 
 static int add_dirname_to_GList(struct dump_dir *dd, void *arg)
 {
-    if (!dir_has_correct_permissions(dd->dd_dirname, DD_PERM_DAEMONS))
+    if (!abrt_dir_has_correct_permissions(dd->dd_dirname, DD_PERM_DAEMONS))
     {
         log_warning("Ignoring '%s': invalid owner, group or mode", dd->dd_dirname);
         /*Do not break*/
@@ -145,9 +145,9 @@ GList *get_problem_dirs_not_accessible_by_uid(uid_t uid, const char *dump_locati
 GList *get_problem_storages(void)
 {
     GList *paths = NULL;
-    load_abrt_conf();
-    paths = g_list_append(paths, xstrdup(g_settings_dump_location));
-    free_abrt_conf_data();
+    abrt_load_abrt_conf();
+    paths = g_list_append(paths, xstrdup(abrt_g_settings_dump_location));
+    abrt_free_abrt_conf_data();
 
     return paths;
 }

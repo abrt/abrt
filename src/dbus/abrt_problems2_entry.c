@@ -655,7 +655,7 @@ int abrt_p2_entry_save_elements_in_dump_dir(struct dump_dir *dd,
                 data_size = (off_t)size;
             }
 
-            if (allowed_new_user_problem_entry(caller_uid, name, data) == false)
+            if (abrt_new_user_problem_entry_allowed(caller_uid, name, data) == false)
             {
                 error_msg("Not allowed for user %lu: %s = %s",
                           (long unsigned)caller_uid,

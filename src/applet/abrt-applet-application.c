@@ -253,7 +253,7 @@ get_autoreport_event_name (void)
         return configured;
     }
 
-    return g_settings_autoreporting_event;
+    return abrt_g_settings_autoreporting_event;
 }
 
 static bool
@@ -1184,7 +1184,7 @@ abrt_applet_application_startup (GApplication *application)
     export_abrt_envvars (0);
     msg_prefix = g_progname;
 
-    load_abrt_conf ();
+    abrt_load_abrt_conf ();
     load_event_config_data ();
     load_user_settings (APP_NAME);
 

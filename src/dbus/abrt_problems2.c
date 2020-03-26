@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 
     glib_init();
     abrt_init(argv);
-    load_abrt_conf();
+    abrt_load_abrt_conf();
 
     const char *program_usage_string = "& [options]";
 
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
     if (owner_id > 0)
         g_bus_unown_name(owner_id);
 
-    free_abrt_conf_data();
+    abrt_free_abrt_conf_data();
 
     return 0;
 }

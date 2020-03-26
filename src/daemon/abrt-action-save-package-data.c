@@ -123,7 +123,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
 static void load_gpg_keys(void)
 {
     map_string_t *settings = new_map_string();
-    if (!load_abrt_conf_file(GPG_CONF, settings))
+    if (!abrt_load_abrt_conf_file(GPG_CONF, settings))
     {
         error_msg("Can't load '%s'", GPG_CONF);
         return;
@@ -167,7 +167,7 @@ static int load_conf(const char *conf_filename)
     else
     {
         conf_filename = "abrt-action-save-package-data.conf";
-        if (!load_abrt_conf_file(conf_filename, settings))
+        if (!abrt_load_abrt_conf_file(conf_filename, settings))
             error_msg("Can't load '%s'", conf_filename);
     }
 
@@ -302,7 +302,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
 
     /* Do not implicitly query rpm database in process's root dir, if
      * ExploreChroots is disabled. */
-    if (g_settings_explorechroots && chroot == NULL)
+    if (abrt_g_settings_explorechroots && chroot == NULL)
         chroot = rootdir = dd_load_text_ext(dd, FILENAME_ROOTDIR,
                                DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
 

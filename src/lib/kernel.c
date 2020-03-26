@@ -51,7 +51,7 @@ static void record_oops(GList **oops_list, const struct abrt_koops_line_info* li
         for (q = oopsstart; q <= oopsend; q++)
         {
             if (!version)
-                version = koops_extract_version(lines_info[q].ptr);
+                version = abrt_koops_extract_version(lines_info[q].ptr);
             if (lines_info[q].ptr[0])
             {
                 dst = stpcpy(dst, lines_info[q].ptr);
@@ -179,12 +179,12 @@ static bool suspicious_line(const char *line)
     return !*str;
 }
 
-void koops_print_suspicious_strings(void)
+void abrt_koops_print_suspicious_strings(void)
 {
-    koops_print_suspicious_strings_filtered(NULL);
+    abrt_koops_print_suspicious_strings_filtered(NULL);
 }
 
-GList *koops_suspicious_strings_list(void)
+GList *abrt_koops_suspicious_strings_list(void)
 {
     GList *strings = NULL;
     for (const char *const *str = s_koops_suspicious_strings; *str; ++str)
@@ -193,7 +193,7 @@ GList *koops_suspicious_strings_list(void)
     return strings;
 }
 
-GList *koops_suspicious_strings_blacklist(void)
+GList *abrt_koops_suspicious_strings_blacklist(void)
 {
     GList *strings = NULL;
     for (const char *const *str = s_koops_suspicious_strings_blacklist; *str; ++str)
@@ -221,7 +221,7 @@ static bool match_any(const regex_t **res, const char *str)
     return false;
 }
 
-void koops_print_suspicious_strings_filtered(const regex_t **filterout)
+void abrt_koops_print_suspicious_strings_filtered(const regex_t **filterout)
 {
     for (const char *const *str = s_koops_suspicious_strings; *str; ++str)
     {
@@ -231,7 +231,7 @@ void koops_print_suspicious_strings_filtered(const regex_t **filterout)
 }
 
 
-void koops_line_skip_jiffies(const char **c)
+void abrt_koops_line_skip_jiffies(const char **c)
 {
     /* remove jiffies time stamp counter if present
      * jiffies are unsigned long, so it can be 2^64 long, which is
@@ -250,7 +250,7 @@ void koops_line_skip_jiffies(const char **c)
     }
 }
 
-int koops_line_skip_level(const char **c)
+int abrt_koops_line_skip_level(const char **c)
 {
     int linelevel = 0;
     if (**c == '<')
@@ -275,7 +275,7 @@ int koops_line_skip_level(const char **c)
     return linelevel;
 }
 
-void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
+void abrt_koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
 {
     char hostname[HOST_NAME_MAX + 1] = { 0 };
     g_autofree char *long_needle = NULL;
@@ -375,8 +375,8 @@ void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
         }
 
         /* store and remove kernel log level */
-        linelevel = koops_line_skip_level((const char **)&c);
-        koops_line_skip_jiffies((const char **)&c);
+        linelevel = abrt_koops_line_skip_level((const char **)&c);
+        abrt_koops_line_skip_jiffies((const char **)&c);
 
         if ((lines_info_size & 0xfff) == 0)
         {
@@ -389,11 +389,11 @@ next_line:
         c = c9 + 1;
     }
 
-    koops_extract_oopses_from_lines(oops_list, lines_info, lines_info_size);
+    abrt_koops_extract_oopses_from_lines(oops_list, lines_info, lines_info_size);
     free(lines_info);
 }
 
-void koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_koops_line_info *lines_info, int lines_info_size)
+void abrt_koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_koops_line_info *lines_info, int lines_info_size)
 {
     /* Analyze lines */
 
@@ -576,7 +576,7 @@ void koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_koops_
     }
 }
 
-char *koops_hash_str_ext(const char *oops_buf, int frame_count, int duphash_flags)
+char *abrt_koops_hash_str_ext(const char *oops_buf, int frame_count, int duphash_flags)
 {
     g_autofree char *error = NULL;
     char *digest = NULL;
@@ -616,14 +616,14 @@ end:
     return digest;
 }
 
-char *koops_hash_str(const char *oops_buf)
+char *abrt_koops_hash_str(const char *oops_buf)
 {
     const int frame_count = 6;
     const int duphash_flags = SR_DUPHASH_NONORMALIZE|SR_DUPHASH_KOOPS_COMPAT;
-    return koops_hash_str_ext(oops_buf, frame_count, duphash_flags);
+    return abrt_koops_hash_str_ext(oops_buf, frame_count, duphash_flags);
 }
 
-char *koops_extract_version(const char *linepointer)
+char *abrt_koops_extract_version(const char *linepointer)
 {
     if (strstr(linepointer, "Pid")
      || strstr(linepointer, "comm")
@@ -723,7 +723,7 @@ static char *turn_off_flag(char *flags, char flag)
 }
 #endif
 
-char *kernel_tainted_short(const char *kernel_bt)
+char *abrt_kernel_tainted_short(const char *kernel_bt)
 {
     /* example of flags: 'Tainted: G    B       ' */
     char *tainted = strstr(kernel_bt, "Tainted: ");
@@ -799,7 +799,7 @@ static const char *const tnts_long[] = {
     /* Z */ NULL,
 };
 
-char *kernel_tainted_long(const char *tainted_short)
+char *abrt_kernel_tainted_long(const char *tainted_short)
 {
     struct strbuf *tnt_long = strbuf_new();
     while (tainted_short[0] != '\0')

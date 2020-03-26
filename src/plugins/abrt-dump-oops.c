@@ -54,7 +54,7 @@ static void scan_syslog_file(GList **oops_list, int fd)
         if (r <= 0)
             break;
         log_debug("Read %u bytes", r);
-        koops_extract_oopses(oops_list, buffer, r);
+        abrt_koops_extract_oopses(oops_list, buffer, r);
 //TODO: rewind to last newline?
     }
 
@@ -128,13 +128,13 @@ int main(int argc, char **argv)
 
             const regex_t *filter[] = { &filter_re, NULL };
 
-            koops_print_suspicious_strings_filtered(filter);
+            abrt_koops_print_suspicious_strings_filtered(filter);
 
             regfree(&filter_re);
             free(oops_string_filter_regex);
         }
         else
-            koops_print_suspicious_strings();
+            abrt_koops_print_suspicious_strings();
 
         return 1;
     }
@@ -143,10 +143,10 @@ int main(int argc, char **argv)
     {
         if (opts & OPT_d)
             show_usage_and_die(program_usage_string, program_options);
-        load_abrt_conf();
-        dump_location = g_settings_dump_location;
-        g_settings_dump_location = NULL;
-        free_abrt_conf_data();
+        abrt_load_abrt_conf();
+        dump_location = abrt_g_settings_dump_location;
+        abrt_g_settings_dump_location = NULL;
+        abrt_free_abrt_conf_data();
     }
 
     int oops_utils_flags = 0;

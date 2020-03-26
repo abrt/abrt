@@ -2,7 +2,7 @@
 
 AT_BANNER([kernel oops parser])
 
-AT_TESTFUN([koops_extract_version],
+AT_TESTFUN([abrt_koops_extract_version],
 [[
 #include "libabrt.h"
 #include "koops-test.h"
@@ -15,7 +15,7 @@ int run_test(const struct test_struct *test)
 	char *version;
 	while ((line = xmalloc_fgetline(fp)) != NULL)
 	{
-		version = koops_extract_version(line);
+		version = abrt_koops_extract_version(line);
 		free(line);
 		if (version && !strcmp(version, test->expected_results))
 			break;
@@ -62,7 +62,7 @@ int run_test(const struct test_struct *test, int flags)
 {
 	char *koops_bt = fread_full(test->filename);
 
-	char *tnt = kernel_tainted_short(koops_bt);
+	char *tnt = abrt_kernel_tainted_short(koops_bt);
 	free(koops_bt);
 	int ret = 0;
 	switch (flags) {
@@ -128,8 +128,8 @@ int run_test(const struct test_struct *test)
 	g_autofree char *oops1 = fread_full(test->filename);
 	g_autofree char *oops2 = fread_full(test->expected_results);
 
-	g_autofree char *hash_oops1 = koops_hash_str(oops1);
-	g_autofree char *hash_oops2 = koops_hash_str(oops2);
+	g_autofree char *hash_oops1 = abrt_koops_hash_str(oops1);
+	g_autofree char *hash_oops2 = abrt_koops_hash_str(oops2);
 
 	if (NULL == hash_oops1 || NULL == hash_oops2)
 	    return 1;
@@ -188,7 +188,7 @@ int run_test(const struct test_struct *test)
 
 	/* for testing purpose, I will record only one koops */
 	GList *oops_list = NULL;
-	koops_extract_oopses(&oops_list, oops_test, strlen(oops_test));
+	abrt_koops_extract_oopses(&oops_list, oops_test, strlen(oops_test));
 
 	int result = !(oops_list && !strcmp((char *)oops_list->data, oops_expected));
 	if (result)

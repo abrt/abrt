@@ -38,7 +38,7 @@ int abrt_oops_process_list(GList *oops_list, const char *dump_location, const ch
             while (i < oops_cnt)
             {
                 char *kernel_bt = (char*)g_list_nth_data(oops_list, i++);
-                char *tainted_short = kernel_tainted_short(kernel_bt);
+                char *tainted_short = abrt_kernel_tainted_short(kernel_bt);
                 if (tainted_short)
                     log_warning("Kernel is tainted '%s'", tainted_short);
 
@@ -128,7 +128,7 @@ unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location,
             if ((flags & ABRT_OOPS_WORLD_READABLE))
                 dd_set_no_owner(dd);
             dd_close(dd);
-            notify_new_path(path);
+            abrt_notify_new_path(path);
         }
         else
             errors++;
@@ -235,13 +235,13 @@ void abrt_oops_save_data_in_dump_dir(struct dump_dir *dd, char *oops, const char
                   "therefore kernel maintainers are unable to fix this problem."));
     else
     {
-        char *tainted_short = kernel_tainted_short(second_line);
+        char *tainted_short = abrt_kernel_tainted_short(second_line);
         if (tainted_short)
         {
             log_notice("Kernel is tainted '%s'", tainted_short);
             dd_save_text(dd, FILENAME_TAINTED_SHORT, tainted_short);
 
-            char *tnt_long = kernel_tainted_long(tainted_short);
+            char *tnt_long = abrt_kernel_tainted_long(tainted_short);
             dd_save_text(dd, FILENAME_TAINTED_LONG, tnt_long);
 
             struct strbuf *reason = strbuf_new();
@@ -305,7 +305,7 @@ char *abrt_oops_string_filter_regex(void)
 {
     map_string_t *settings = new_map_string();
 
-    load_abrt_plugin_conf_file("oops.conf", settings);
+    abrt_load_abrt_plugin_conf_file("oops.conf", settings);
 
     int only_fatal_mce = 0;
     try_get_map_string_item_as_bool(settings, "OnlyFatalMCE", &only_fatal_mce);

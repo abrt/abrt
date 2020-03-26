@@ -21,7 +21,7 @@
 #include "problem_data.h"
 #include "common.h"
 
-/* C: void notify_new_path(const char *path); */
+/* C: void abrt_notify_new_path(const char *path); */
 PyObject *p_notify_new_path(PyObject *pself, PyObject *args)
 {
     const char *path;
@@ -29,7 +29,7 @@ PyObject *p_notify_new_path(PyObject *pself, PyObject *args)
     {
         return NULL;
     }
-    notify_new_path(path);
+    abrt_notify_new_path(path);
     Py_RETURN_NONE;
 }
 
@@ -70,7 +70,7 @@ lacf_error:
     return NULL;
 }
 
-/* C: void load_abrt_conf_file(const char *file, map_string_t *settings); */
+/* C: void abrt_load_abrt_conf_file(const char *file, map_string_t *settings); */
 PyObject *p_load_conf_file(PyObject *pself, PyObject *args)
 {
     const char *file;
@@ -78,10 +78,10 @@ PyObject *p_load_conf_file(PyObject *pself, PyObject *args)
     {
         return NULL;
     }
-    return load_settings_to_dict(file, load_abrt_conf_file);
+    return load_settings_to_dict(file, abrt_load_abrt_conf_file);
 }
 
-/* C: void load_abrt_plugin_conf_file(const char *file, map_string_t *settings); */
+/* C: void abrt_load_abrt_plugin_conf_file(const char *file, map_string_t *settings); */
 PyObject *p_load_plugin_conf_file(PyObject *pself, PyObject *args)
 {
     const char *file;
@@ -89,5 +89,5 @@ PyObject *p_load_plugin_conf_file(PyObject *pself, PyObject *args)
     {
         return NULL;
     }
-    return load_settings_to_dict(file, load_abrt_plugin_conf_file);
+    return load_settings_to_dict(file, abrt_load_abrt_plugin_conf_file);
 }

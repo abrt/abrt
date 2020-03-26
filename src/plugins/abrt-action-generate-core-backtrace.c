@@ -75,7 +75,7 @@ int main(int argc, char **argv)
     /* The value 240 was taken from abrt-action-generate-backtrace.c. */
     int exec_timeout_sec = 240;
 
-    char *gdb_output = get_backtrace(dump_dir_name, exec_timeout_sec, NULL);
+    char *gdb_output = abrt_get_backtrace(dump_dir_name, exec_timeout_sec, NULL);
     if (!gdb_output)
     {
         log_warning(_("Error: GDB did not return any data"));

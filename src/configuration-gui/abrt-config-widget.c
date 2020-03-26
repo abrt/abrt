@@ -427,7 +427,7 @@ abrt_config_widget_init(AbrtConfigWidget *self)
     }
 
     /* Load configuration */
-    load_abrt_conf();
+    abrt_load_abrt_conf();
 
     self->priv->report_gtk_conf = abrt_app_configuration_new("report-gtk");
     self->priv->abrt_applet_conf = abrt_app_configuration_new("abrt-applet");
@@ -536,7 +536,7 @@ abrt_config_widget_init(AbrtConfigWidget *self)
     }
 
     self->priv->options[ABRT_OPT_SHORTENED_REPORTING].name = "ShortenedReporting";
-    self->priv->options[ABRT_OPT_SHORTENED_REPORTING].default_value = g_settings_shortenedreporting;
+    self->priv->options[ABRT_OPT_SHORTENED_REPORTING].default_value = abrt_g_settings_shortenedreporting;
     self->priv->options[ABRT_OPT_SHORTENED_REPORTING].config = self->priv->abrt_applet_conf;
 
     self->priv->options[ABRT_OPT_SILENT_SHORTENED_REPORTING].name = "SilentShortenedReporting";

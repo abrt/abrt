@@ -17,7 +17,7 @@
 */
 #include "libabrt.h"
 
-int daemon_is_ok()
+int abrt_daemon_is_ok()
 {
     int fd = open(VAR_RUN"/abrt/abrtd.pid", O_RDONLY);
     if (fd < 0)
