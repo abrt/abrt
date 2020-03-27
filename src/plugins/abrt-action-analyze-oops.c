@@ -28,7 +28,7 @@ int main(int argc, char **argv)
             "verbose",
             'v',
             G_OPTION_FLAG_NONE,
-            G_OPTION_ARG_NONE, &g_verbose,
+            G_OPTION_ARG_NONE, &libreport_g_verbose,
             "Be verbose",
             NULL,
         },
@@ -69,7 +69,7 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
     dd = dd_opendir(dump_directory, /*flags:*/ 0);
     if (NULL == dd)
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 
         /* Do not drop such oopses by default. */
         int drop_notreportable_oopses = 0;
-        const int res = try_get_map_string_item_as_bool(settings,
+        const int res = libreport_try_get_map_string_item_as_bool(settings,
                 "DropNotReportableOopses", &drop_notreportable_oopses);
         if (!res || !drop_notreportable_oopses)
         {

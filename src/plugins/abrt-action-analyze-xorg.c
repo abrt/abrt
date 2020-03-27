@@ -44,11 +44,11 @@ char* is_in_comma_separated_list_with_fmt(const char *value, const char *fmt, co
     while (*list)
     {
         const char *comma = strchrnul(list, ',');
-        char *pattern = xasprintf(fmt, (int)(comma - list), list);
+        char *pattern = libreport_xasprintf(fmt, (int)(comma - list), list);
         char *match = strstr(value, pattern);
         free(pattern);
         if (match)
-            return xstrndup(list, comma - list);
+            return libreport_xstrndup(list, comma - list);
         if (!*comma)
             break;
         list = comma + 1;
@@ -81,25 +81,25 @@ int main(int argc, char **argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR", _("Problem directory")),
         OPT_END()
     };
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+    /*unsigned opts =*/ libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
-    map_string_t *settings = new_map_string();
+    map_string_t *settings = libreport_new_map_string();
     log_notice("Loading settings from '%s'", XORG_CONF);
     abrt_load_abrt_plugin_conf_file(XORG_CONF, settings);
     log_debug("Loaded '%s'", XORG_CONF);
 
-    const char *value = get_map_string_item_or_NULL(settings, "BlacklistedXorgModules");
+    const char *value = libreport_get_map_string_item_or_NULL(settings, "BlacklistedXorgModules");
     if (!value)
         value = XORG_DEFAULT_BLACKLISTED_MODULES;
 
-    char *BlacklistedXorgModules = xstrdup(value);
-    free_map_string(settings);
+    char *BlacklistedXorgModules = libreport_xstrdup(value);
+    libreport_free_map_string(settings);
 
     trim_spaces(BlacklistedXorgModules);
 
@@ -140,7 +140,7 @@ int main(int argc, char **argv)
 
     if (blacklisted)
     {
-        char *foobared = xasprintf(_("Module '%s' was loaded - won't report this crash"), blacklisted);
+        char *foobared = libreport_xasprintf(_("Module '%s' was loaded - won't report this crash"), blacklisted);
         free(blacklisted);
         dd_save_text(dd, FILENAME_NOT_REPORTABLE, foobared);
         free(foobared);
@@ -150,7 +150,7 @@ int main(int argc, char **argv)
 
     dd_close(dd);
 
-    xchdir(dump_dir_name);
+    libreport_xchdir(dump_dir_name);
 
     /* Get ready for extremely ugly sight.
      *

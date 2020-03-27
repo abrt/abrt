@@ -31,14 +31,14 @@ void get_language(struct language *lang)
     char *locale = setlocale(LC_ALL, NULL);
     if (!locale)
     {
-        lang->charset = xzalloc(1);
+        lang->charset = libreport_xzalloc(1);
         return;
     }
 
     char *encoding = strchr(locale, '.');
     if (!encoding)
     {
-        lang->charset = xzalloc(1);
+        lang->charset = libreport_xzalloc(1);
         return;
     }
 
@@ -50,11 +50,11 @@ void get_language(struct language *lang)
 void alert_server_error(const char *peer_name)
 {
     if (!peer_name)
-        alert(_("An error occurred on the server side."));
+        libreport_alert(_("An error occurred on the server side."));
     else
     {
-        char *msg = xasprintf(_("A server-side error occurred on '%s'"), peer_name);
-        alert(msg);
+        char *msg = libreport_xasprintf(_("A server-side error occurred on '%s'"), peer_name);
+        libreport_alert(msg);
         free(msg);
     }
 }
@@ -62,11 +62,11 @@ void alert_server_error(const char *peer_name)
 void alert_connection_error(const char *peer_name)
 {
     if (!peer_name)
-        alert(_("An error occurred while connecting to the server"));
+        libreport_alert(_("An error occurred while connecting to the server"));
     else
     {
-        char *msg = xasprintf(_("An error occurred while connecting to '%s'"), peer_name);
-        alert(msg);
+        char *msg = libreport_xasprintf(_("An error occurred while connecting to '%s'"), peer_name);
+        libreport_alert(msg);
         free(msg);
     }
 }

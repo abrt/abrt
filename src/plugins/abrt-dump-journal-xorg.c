@@ -187,7 +187,7 @@ int main(int argc, char *argv[])
 
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_BOOL(  's', NULL, NULL, _("Log to syslog")),
         OPT_BOOL(  'o', NULL, NULL, _("Print found crashes on standard output")),
         OPT_STRING('d', NULL, &dump_location, "DIR", _("Create new problem directory in DIR for every crash found")),
@@ -202,14 +202,14 @@ int main(int argc, char *argv[])
         OPT_LIST(  'j', NULL, &journal_filters,  "FILTER", _("Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
-    msg_prefix = g_progname;
+    libreport_msg_prefix = libreport_g_progname;
     if ((opts & OPT_s) || getenv("ABRT_SYSLOG"))
     {
-        logmode = LOGMODE_JOURNAL;
+        libreport_logmode = LOGMODE_JOURNAL;
     }
 
     if ((opts & OPT_c) && (opts & OPT_e))
@@ -218,7 +218,7 @@ int main(int argc, char *argv[])
     if (opts & OPT_D)
     {
         if (opts & OPT_d)
-            show_usage_and_die(program_usage_string, program_options);
+            libreport_show_usage_and_die(program_usage_string, program_options);
         abrt_load_abrt_conf();
         dump_location = abrt_g_settings_dump_location;
         abrt_g_settings_dump_location = NULL;
@@ -251,20 +251,20 @@ int main(int argc, char *argv[])
     }
     else
     {
-        map_string_t *settings = new_map_string();
+        map_string_t *settings = libreport_new_map_string();
         log_notice("Loading settings from '%s'", XORG_CONF);
         abrt_load_abrt_plugin_conf_file(XORG_CONF, settings);
         log_debug("Loaded '%s'", XORG_CONF);
 
-        const char *conf_journal_filters = get_map_string_item_or_NULL(settings, "JournalFilters");
+        const char *conf_journal_filters = libreport_get_map_string_item_or_NULL(settings, "JournalFilters");
         if (!conf_journal_filters) {
             conf_journal_filters = XORG_DEFAULT_JOURNAL_FILTERS;
         }
 
-        xorg_journal_filter = parse_delimited_list(conf_journal_filters, ",");
+        xorg_journal_filter = libreport_parse_delimited_list(conf_journal_filters, ",");
         /* list data will be free by g_list_free_full */
         free_filter_list_data = true;
-        free_map_string(settings);
+        libreport_free_map_string(settings);
         if (xorg_journal_filter)
             log_debug("Using journal filter from conf file %s", XORG_CONF);
     }

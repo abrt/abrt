@@ -13,7 +13,7 @@ int run_test(const struct test_struct *test)
 	fprintf(stderr, "%s\t", test->filename);
 	char *line;
 	char *version;
-	while ((line = xmalloc_fgetline(fp)) != NULL)
+	while ((line = libreport_xmalloc_fgetline(fp)) != NULL)
 	{
 		version = abrt_koops_extract_version(line);
 		free(line);
@@ -151,7 +151,7 @@ int main(void)
 		{ EXAMPLE_PFX"/nmi_oops_hash.test", EXAMPLE_PFX"/nmi_oops_hash.right" },
 	};
 
-    g_verbose = 4;
+    libreport_g_verbose = 4;
 
 	int ret = 0;
 	for (int i = 0; i < ARRAY_SIZE(all_same_hashes); ++i)

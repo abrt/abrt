@@ -129,7 +129,7 @@ struct user_info
 
 static struct user_info *user_info_new(void)
 {
-    struct user_info *user = xzalloc(sizeof(*user));
+    struct user_info *user = libreport_xzalloc(sizeof(*user));
     return user;
 }
 
@@ -270,7 +270,7 @@ static void abrt_p2_object_emit_signal_with_destination(AbrtP2Object *object,
     g_dbus_message_set_sender(message, ABRT_P2_BUS);
     g_dbus_message_set_body(message, parameters);
 
-    if (g_verbose > 2)
+    if (libreport_g_verbose > 2)
     {
         gchar *pstr = g_variant_print(parameters, TRUE);
         log_debug("Emitting signal '%s' : (%s)", member, pstr);
@@ -299,7 +299,7 @@ static AbrtP2Object *abrt_p2_object_new(AbrtP2Service *service,
             GError **error)
 {
     AbrtP2Object *obj = NULL;
-    obj = xzalloc(sizeof(*obj));
+    obj = libreport_xzalloc(sizeof(*obj));
     obj->p2o_path = path;
     obj->node = node;
     obj->destructor = destructor;
@@ -539,7 +539,7 @@ static AbrtP2Object *session_object_register(AbrtP2Service *service,
         return NULL;
     }
 
-    char *dup_caller = xstrdup(caller);
+    char *dup_caller = libreport_xstrdup(caller);
 
     AbrtP2Session *session = abrt_p2_session_new(dup_caller, caller_uid);
 
@@ -576,7 +576,7 @@ static char *session_object_caller_to_path(const char *caller)
 
     checksum = g_compute_checksum_for_string(G_CHECKSUM_SHA1, caller, -1);
 
-    return xasprintf(ABRT_P2_PATH"/Session/%s", checksum);
+    return libreport_xasprintf(ABRT_P2_PATH"/Session/%s", checksum);
 }
 
 static AbrtP2Object *abrt_p2_service_get_session_for_caller(
@@ -833,7 +833,7 @@ static void entry_object_dbus_method_call(GDBusConnection *connection,
     }
     else if (strcmp(method_name, "ReadElements") == 0)
     {
-        struct entry_object_read_elements_context *context = xmalloc(sizeof(*context));
+        struct entry_object_read_elements_context *context = libreport_xmalloc(sizeof(*context));
         context->invocation = g_object_ref(invocation);
         context->elements = g_variant_get_child_value(parameters, 0);
         context->out_fd_list = g_unix_fd_list_new();
@@ -861,7 +861,7 @@ static void entry_object_dbus_method_call(GDBusConnection *connection,
         GDBusMessage *msg = g_dbus_method_invocation_get_message(invocation);
         GUnixFDList *fd_list = g_dbus_message_get_unix_fd_list(msg);
 
-        struct entry_object_save_elements_context *context = xmalloc(sizeof(*context));
+        struct entry_object_save_elements_context *context = libreport_xmalloc(sizeof(*context));
 
         context->invocation = g_object_ref(invocation);
         context->elements = g_variant_get_child_value(parameters, 0);
@@ -1038,7 +1038,7 @@ static GVariant *entry_object_dbus_get_property(GDBusConnection *connection,
         GVariantBuilder top_builder;
         g_variant_builder_init(&top_builder, G_VARIANT_TYPE("a(sa{sv})"));
 
-        GList *reports = read_entire_reported_to(dd);
+        GList *reports = libreport_read_entire_reported_to(dd);
         for (GList *iter = reports; iter != NULL; iter = g_list_next(iter))
         {
             GVariantBuilder value_builder;
@@ -1329,14 +1329,14 @@ static char *entry_object_dir_name_to_path(const char *dd_dirname)
 
     checksum = g_compute_checksum_for_string(G_CHECKSUM_SHA1, dd_dirname, -1);
 
-    return xasprintf(ABRT_P2_PATH"/Entry/%s", checksum);
+    return libreport_xasprintf(ABRT_P2_PATH"/Entry/%s", checksum);
 }
 
 static AbrtP2Object *entry_object_register_dump_dir(AbrtP2Service *service,
                 const char *dd_dirname,
                 GError **error)
 {
-    char *const dup_dirname = xstrdup(dd_dirname);
+    char *const dup_dirname = libreport_xstrdup(dd_dirname);
     AbrtP2Entry *entry = abrt_p2_entry_new(dup_dirname);
 
     return abrt_p2_service_register_entry(service, entry, error);
@@ -1416,7 +1416,7 @@ static GList *abrt_g_variant_get_dict_keys(GVariant *dict)
     GList *retval = NULL;
     /* No need to free 'name' and 'container' unless breaking out of the loop */
     while (g_variant_iter_loop(&iter, "{sv}", &name, &value))
-        retval = g_list_prepend(retval, xstrdup(name));
+        retval = g_list_prepend(retval, libreport_xstrdup(name));
 
     return retval;
 }
@@ -1441,12 +1441,12 @@ char *abrt_p2_service_save_problem( AbrtP2Service *service,
                                                              G_VARIANT_TYPE_STRING);
     if (analyzer_element == NULL)
     {
-        analyzer_str = xstrdup("libreport");
+        analyzer_str = libreport_xstrdup("libreport");
         g_variant_dict_insert(&pd, FILENAME_ANALYZER, "s", analyzer_str);
     }
     else
     {
-        analyzer_str = xstrdup(g_variant_get_string(analyzer_element, NULL));
+        analyzer_str = libreport_xstrdup(g_variant_get_string(analyzer_element, NULL));
         g_variant_unref(analyzer_element);
     }
 
@@ -1456,11 +1456,11 @@ char *abrt_p2_service_save_problem( AbrtP2Service *service,
                                                          G_VARIANT_TYPE_STRING);
     if (type_element == NULL)
     {
-         type_str = xstrdup(analyzer_str);
+         type_str = libreport_xstrdup(analyzer_str);
     }
     else
     {
-         type_str = xstrdup(g_variant_get_string(type_element, NULL));
+         type_str = libreport_xstrdup(g_variant_get_string(type_element, NULL));
          g_variant_unref(type_element);
     }
 
@@ -1528,7 +1528,7 @@ char *abrt_p2_service_save_problem( AbrtP2Service *service,
     {   /* set uid field to caller's uid
            if caller is not root or root doesn't pass own uid */
         log_info("Adding UID %lu to the problem info", (long unsigned)caller_uid);
-        char *uid_str = xasprintf("%lu", (long unsigned)caller_uid);
+        char *uid_str = libreport_xasprintf("%lu", (long unsigned)caller_uid);
         g_variant_dict_insert(&pd, FILENAME_UID, "s", uid_str);
         free(uid_str);
     }
@@ -1563,7 +1563,7 @@ char *abrt_p2_service_save_problem( AbrtP2Service *service,
         return NULL;
     }
 
-    char *retval = xstrdup(dd->dd_dirname);
+    char *retval = libreport_xstrdup(dd->dd_dirname);
     dd_close(dd);
 
     return retval;
@@ -1748,7 +1748,7 @@ static void task_object_on_status_changed(AbrtP2Task *task,
 
     g_dbus_message_set_body(message, parameters);
 
-    if (g_verbose > 2)
+    if (libreport_g_verbose > 2)
     {
         gchar *pstr = g_variant_print(parameters, TRUE);
         log_debug("Emitting signal '%s' : (%s)",
@@ -1784,7 +1784,7 @@ static AbrtP2Object *task_object_register(AbrtP2Service* service,
         return NULL;
 
     const char *session_path = abrt_p2_object_path(session_obj);
-    char *path = xasprintf("%s/Task/%u", session_path, regid);
+    char *path = libreport_xasprintf("%s/Task/%u", session_path, regid);
 
     AbrtP2Object *obj = abrt_p2_object_new(service,
                                            &(service->pv->p2srv_p2_task_type),
@@ -1868,7 +1868,7 @@ static void task_object_dbus_method_call(GDBusConnection *connection,
     }
     else if (strcmp("Cancel", method_name) == 0)
     {
-        struct task_cancel_args *tca = xmalloc(sizeof(*tca));
+        struct task_cancel_args *tca = libreport_xmalloc(sizeof(*tca));
         tca->tca_object = user_data;
         tca->tca_session = g_object_ref(session);
 

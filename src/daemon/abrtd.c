@@ -174,7 +174,7 @@ static void queue_post_craete_process(struct abrt_server_proc *proc)
 
     char *worst_dir = NULL;
     const double max_size = 1024 * 1024 * abrt_g_settings_nMaxCrashReportsSize;
-    while (get_dirsize_find_largest_dir(abrt_g_settings_dump_location, &worst_dir, ignored) >= max_size
+    while (libreport_get_dirsize_find_largest_dir(abrt_g_settings_dump_location, &worst_dir, ignored) >= max_size
            && worst_dir)
     {
         const char *kind = "old";
@@ -198,7 +198,7 @@ static void queue_post_craete_process(struct abrt_server_proc *proc)
                 abrt_g_settings_dump_location, abrt_g_settings_nMaxCrashReportsSize,
                 kind, worst_dir);
 
-        char *deleted = concat_path_file(abrt_g_settings_dump_location, worst_dir);
+        char *deleted = libreport_concat_path_file(abrt_g_settings_dump_location, worst_dir);
         free(worst_dir);
         worst_dir = NULL;
 
@@ -276,7 +276,7 @@ static gboolean abrt_server_output_cb(GIOChannel *channel, GIOCondition conditio
                 s_dir_queue = g_list_remove(s_dir_queue, proc);
             }
 
-            proc->dirname = xstrdup(line + strlen("NEW_PROBLEM_DETECTED: "));
+            proc->dirname = libreport_xstrdup(line + strlen("NEW_PROBLEM_DETECTED: "));
             log_notice("abrt-server(%d): handling new problem: %s", proc->pid, proc->dirname);
             queue_post_craete_process(proc);
         }
@@ -291,7 +291,7 @@ static gboolean abrt_server_output_cb(GIOChannel *channel, GIOCondition conditio
 
 static void add_abrt_server_proc(const pid_t pid, int fdout)
 {
-    struct abrt_server_proc *proc = xmalloc(sizeof(*proc));
+    struct abrt_server_proc *proc = libreport_xmalloc(sizeof(*proc));
     proc->pid = pid;
     proc->fdout = fdout;
     proc->dirname = NULL;
@@ -389,7 +389,7 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
     fflush(NULL); /* paranoia */
 
     int pipefd[2];
-    xpipe(pipefd);
+    libreport_xpipe(pipefd);
 
     pid_t pid = fork();
     if (pid < 0)
@@ -402,17 +402,17 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
     }
     if (pid == 0) /* child */
     {
-        xdup2(socket, STDIN_FILENO);
-        xdup2(socket, STDOUT_FILENO);
+        libreport_xdup2(socket, STDIN_FILENO);
+        libreport_xdup2(socket, STDOUT_FILENO);
         close(socket);
 
         close(pipefd[0]);
-        xmove_fd(pipefd[1], STDERR_FILENO);
+        libreport_xmove_fd(pipefd[1], STDERR_FILENO);
 
         char *argv[3];  /* abrt-server [-s] NULL */
         char **pp = argv;
         *pp++ = (char*)"abrt-server";
-        if (logmode & LOGMODE_JOURNAL)
+        if (libreport_logmode & LOGMODE_JOURNAL)
             *pp++ = (char*)"-s";
         *pp = NULL;
 
@@ -463,7 +463,7 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
         {
             pid_t cpid;
             int status;
-            while ((cpid = safe_waitpid(-1, &status, WNOHANG)) > 0)
+            while ((cpid = libreport_safe_waitpid(-1, &status, WNOHANG)) > 0)
             {
                 if (WIFSIGNALED(status))
                     log_debug("abrt-server(%d) signaled with %d", cpid, WTERMSIG(status));
@@ -520,15 +520,15 @@ static void dumpsocket_init(void)
 {
     unlink(SOCKET_FILE); /* not caring about the result */
 
-    int socketfd = xsocket(AF_UNIX, SOCK_STREAM, 0);
-    close_on_exec_on(socketfd);
+    int socketfd = libreport_xsocket(AF_UNIX, SOCK_STREAM, 0);
+    libreport_close_on_exec_on(socketfd);
 
     struct sockaddr_un local;
     memset(&local, 0, sizeof(local));
     local.sun_family = AF_UNIX;
     strcpy(local.sun_path, SOCKET_FILE);
-    xbind(socketfd, (struct sockaddr*)&local, sizeof(local));
-    xlisten(socketfd, MAX_CLIENT_COUNT);
+    libreport_xbind(socketfd, (struct sockaddr*)&local, sizeof(local));
+    libreport_xlisten(socketfd, MAX_CLIENT_COUNT);
 
     if (chmod(SOCKET_FILE, SOCKET_PERMISSION) != 0)
         perror_msg_and_die("chmod '%s'", SOCKET_FILE);
@@ -569,7 +569,7 @@ static int create_pidfile(void)
             perror_msg("Can't lock file '%s'", VAR_RUN_PIDFILE);
             /* should help with problems like rhbz#859724 */
             char pid_str[sizeof(long)*3 + 4];
-            int r = full_read(fd, pid_str, sizeof(pid_str));
+            int r = libreport_full_read(fd, pid_str, sizeof(pid_str));
             close(fd);
 
             /* File can contain garbage. Be careful interpreting it as PID */
@@ -580,7 +580,7 @@ static int create_pidfile(void)
                 long locking_pid = strtol(pid_str, NULL, 10);
                 if (!errno && locking_pid > 0 && locking_pid <= INT_MAX)
                 {
-                    char *cmdline = get_cmdline(locking_pid);
+                    char *cmdline = libreport_get_cmdline(locking_pid);
                     if (cmdline)
                     {
                         error_msg("Process %lu '%s' is holding the lock", locking_pid, cmdline);
@@ -591,7 +591,7 @@ static int create_pidfile(void)
 
             return -1;
         }
-        close_on_exec_on(fd);
+        libreport_close_on_exec_on(fd);
         /* write our pid to it */
         char buf[sizeof(long)*3 + 2];
         int len = sprintf(buf, "%lu\n", (long)getpid());
@@ -626,12 +626,12 @@ static void handle_signal(int signo)
 static void start_logging(void)
 {
     /* Open stdin to /dev/null */
-    xmove_fd(xopen("/dev/null", O_RDWR), STDIN_FILENO);
+    libreport_xmove_fd(libreport_xopen("/dev/null", O_RDWR), STDIN_FILENO);
     /* We must not leave fds 0,1,2 closed.
      * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
-    xdup2(STDIN_FILENO, STDOUT_FILENO);
-    xdup2(STDIN_FILENO, STDERR_FILENO);
-    logmode = LOGMODE_JOURNAL;
+    libreport_xdup2(STDIN_FILENO, STDOUT_FILENO);
+    libreport_xdup2(STDIN_FILENO, STDERR_FILENO);
+    libreport_logmode = LOGMODE_JOURNAL;
     putenv((char*)"ABRT_SYSLOG=1");
 }
 
@@ -657,10 +657,10 @@ static void mark_unprocessed_dump_dirs_not_reportable(const char *path)
     struct dirent *dent;
     while ((dent = readdir(dp)) != NULL)
     {
-        if (dot_or_dotdot(dent->d_name))
+        if (libreport_dot_or_dotdot(dent->d_name))
             continue; /* skip "." and ".." */
 
-        char *full_name = concat_path_file(path, dent->d_name);
+        char *full_name = libreport_concat_path_file(path, dent->d_name);
 
         struct stat stat_buf;
         if (stat(full_name, &stat_buf) != 0)
@@ -747,16 +747,16 @@ int main(int argc, char** argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_BOOL(   'd', NULL, NULL      , _("Do not daemonize")),
         OPT_BOOL(   's', NULL, NULL      , _("Log to syslog even with -d")),
         OPT_INTEGER('t', NULL, &s_timeout, _("Exit after NUM seconds of inactivity")),
         OPT_BOOL(   'p', NULL, NULL      , _("Add program names to log")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(opts & OPT_p);
+    libreport_export_abrt_envvars(opts & OPT_p);
 
 #if 0 /* We no longer use dbus */
     /* When dbus daemon starts us, it doesn't set PATH
@@ -769,7 +769,7 @@ int main(int argc, char** argv)
 #endif
 
     unsetenv("ABRT_SYSLOG");
-    msg_prefix = g_progname; /* for log_warning(), error_msg() and such */
+    libreport_msg_prefix = libreport_g_progname; /* for log_warning(), error_msg() and such */
 
     if (getuid() != 0)
         error_msg_and_die("Must be run as root");
@@ -777,11 +777,11 @@ int main(int argc, char** argv)
     if (opts & OPT_s)
         start_logging();
 
-    xpipe(s_signal_pipe);
-    close_on_exec_on(s_signal_pipe[0]);
-    close_on_exec_on(s_signal_pipe[1]);
-    ndelay_on(s_signal_pipe[0]); /* I/O should not block - */
-    ndelay_on(s_signal_pipe[1]); /* especially writes! they happen in signal handler! */
+    libreport_xpipe(s_signal_pipe);
+    libreport_close_on_exec_on(s_signal_pipe[0]);
+    libreport_close_on_exec_on(s_signal_pipe[1]);
+    libreport_ndelay_on(s_signal_pipe[0]); /* I/O should not block - */
+    libreport_ndelay_on(s_signal_pipe[1]); /* especially writes! they happen in signal handler! */
     signal(SIGTERM, handle_signal);
     signal(SIGINT,  handle_signal);
     signal(SIGCHLD, handle_signal);
@@ -836,7 +836,7 @@ int main(int argc, char** argv)
         /* Child (daemon) continues */
         if (setsid() < 0)
             perror_msg_and_die("setsid");
-        if (g_verbose == 0 && logmode != LOGMODE_JOURNAL)
+        if (libreport_g_verbose == 0 && libreport_logmode != LOGMODE_JOURNAL)
             start_logging();
     }
 
@@ -872,7 +872,7 @@ int main(int argc, char** argv)
     {
         log_notice("Signalling parent");
         kill(parent_pid, SIGTERM);
-        if (logmode != LOGMODE_JOURNAL)
+        if (libreport_logmode != LOGMODE_JOURNAL)
             start_logging();
     }
 

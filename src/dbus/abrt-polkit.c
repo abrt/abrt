@@ -103,7 +103,7 @@ out:
 PolkitResult polkit_check_authorization_dname(const char *dbus_name, const char *action_id)
 {
 #ifdef HAVE_POLKIT
-    glib_init();
+    libreport_glib_init();
 
     PolkitSubject *subject = polkit_system_bus_name_new(dbus_name);
     return do_check(subject, action_id);
@@ -116,7 +116,7 @@ PolkitResult polkit_check_authorization_dname(const char *dbus_name, const char 
 PolkitResult polkit_check_authorization_pid(pid_t pid, const char *action_id)
 {
 #ifdef HAVE_POLKIT
-    glib_init();
+    libreport_glib_init();
 
     PolkitSubject *subject = polkit_unix_process_new_for_owner(pid,
             /*use start_time from /proc*/0,

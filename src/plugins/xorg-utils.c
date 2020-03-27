@@ -73,15 +73,15 @@ char *skip_pfx(char *str)
 
 static char *list2lines(GList *list)
 {
-    struct strbuf *s = strbuf_new();
+    struct strbuf *s = libreport_strbuf_new();
     while (list)
     {
-        strbuf_append_str(s, (char*)list->data);
-        strbuf_append_char(s, '\n');
+        libreport_strbuf_append_str(s, (char*)list->data);
+        libreport_strbuf_append_char(s, '\n');
         free(list->data);
         list = g_list_delete_link(list, list);
     }
-    return strbuf_free_nobuf(s);
+    return libreport_strbuf_free_nobuf(s);
 }
 
 void xorg_crash_info_print_crash(struct xorg_crash_info *crash_info)
@@ -106,9 +106,9 @@ int xorg_crash_info_save_in_dump_dir(struct xorg_crash_info *crash_info, struct 
     if (!crash_info->exe)
     {
         if (access("/usr/bin/Xorg", X_OK) == 0)
-            crash_info->exe = xstrdup("/usr/bin/Xorg");
+            crash_info->exe = libreport_xstrdup("/usr/bin/Xorg");
         else
-            crash_info->exe = xstrdup("/usr/bin/X");
+            crash_info->exe = libreport_xstrdup("/usr/bin/X");
     }
     dd_save_text(dd, FILENAME_EXECUTABLE, crash_info->exe);
 
@@ -132,7 +132,7 @@ void xorg_crash_info_create_dump_dir(struct xorg_crash_info *crash_info, const c
     if (world_readable)
         dd_set_no_owner(dd);
 
-    char *path = xstrdup(dd->dd_dirname);
+    char *path = libreport_xstrdup(dd->dd_dirname);
     dd_close(dd);
     abrt_notify_new_path(path);
     free(path);
@@ -141,7 +141,7 @@ void xorg_crash_info_create_dump_dir(struct xorg_crash_info *crash_info, const c
 char *xorg_get_next_line_from_fd(void *fd)
 {
     FILE *f = (FILE *)fd;
-    return xmalloc_fgetline(f);
+    return libreport_xmalloc_fgetline(f);
 }
 
 
@@ -205,7 +205,7 @@ struct xorg_crash_info *process_xorg_bt(char *(*get_next_line)(void *), void *da
             {
                 if (strstr(p, substrings[i]) != NULL)
                 {
-                    overlapping_strcpy(line, p);
+                    libreport_overlapping_strcpy(line, p);
                     reason = line;
                     line = NULL;
                 }
@@ -225,18 +225,18 @@ struct xorg_crash_info *process_xorg_bt(char *(*get_next_line)(void *), void *da
         /* Guess Xorg server's executable name from it */
         if (!exe)
         {
-            char *filename = skip_whitespace(end + 1);
-            char *filename_end = skip_non_whitespace(filename);
+            char *filename = libreport_skip_whitespace(end + 1);
+            char *filename_end = libreport_skip_non_whitespace(filename);
             char sv = *filename_end;
             *filename_end = '\0';
             /* Does it look like "[/usr]/[s]bin/Xfoo" or [/usr]/libexec/Xfoo"? */
             if (strstr(filename, "bin/X") || strstr(filename, "libexec/X"))
-                exe = xstrdup(filename);
+                exe = libreport_xstrdup(filename);
             *filename_end = sv;
         }
 
         /* Save it to list */
-        overlapping_strcpy(line, p);
+        libreport_overlapping_strcpy(line, p);
         list = g_list_prepend(list, line);
         line = NULL;
         if (++cnt > 255) /* prevent ridiculously large bts */
@@ -246,11 +246,11 @@ struct xorg_crash_info *process_xorg_bt(char *(*get_next_line)(void *), void *da
 
     if (list)
     {
-        struct xorg_crash_info *crash_info = xmalloc(sizeof(struct xorg_crash_info));
+        struct xorg_crash_info *crash_info = libreport_xmalloc(sizeof(struct xorg_crash_info));
 
         list = g_list_reverse(list);
         crash_info->backtrace = list2lines(list); /* frees list */
-        crash_info->reason = (reason ? reason : xstrdup(DEFAULT_XORG_CRASH_REASON));
+        crash_info->reason = (reason ? reason : libreport_xstrdup(DEFAULT_XORG_CRASH_REASON));
         crash_info->exe = exe;
 
         return crash_info;

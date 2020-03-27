@@ -213,11 +213,11 @@ static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *ev
 
     char *env_vec[3];
     /* Intercept ASK_* messages in Client API -> don't wait for user response */
-    env_vec[0] = xstrdup("REPORT_CLIENT_NONINTERACTIVE=1");
-    env_vec[1] = xasprintf("%s=%d", ABRT_SERVER_EVENT_ENV, getpid());
+    env_vec[0] = libreport_xstrdup("REPORT_CLIENT_NONINTERACTIVE=1");
+    env_vec[1] = libreport_xasprintf("%s=%d", ABRT_SERVER_EVENT_ENV, getpid());
     env_vec[2] = NULL;
 
-    pid_t child = fork_execv_on_steroids(flags, args, pipeout,
+    pid_t child = libreport_fork_execv_on_steroids(flags, args, pipeout,
                                          env_vec, /*dir:*/ NULL,
                                          /*uid(unused):*/ 0);
     if (fdp)
@@ -347,11 +347,11 @@ static int run_post_create(const char *dirname, struct response *resp)
 
     log_debug("Setting up a signal handler");
     /* Set up signal pipe */
-    xpipe(g_signal_pipe);
-    close_on_exec_on(g_signal_pipe[0]);
-    close_on_exec_on(g_signal_pipe[1]);
-    ndelay_on(g_signal_pipe[0]);
-    ndelay_on(g_signal_pipe[1]);
+    libreport_xpipe(g_signal_pipe);
+    libreport_close_on_exec_on(g_signal_pipe[0]);
+    libreport_close_on_exec_on(g_signal_pipe[1]);
+    libreport_ndelay_on(g_signal_pipe[0]);
+    libreport_ndelay_on(g_signal_pipe[1]);
     signal(SIGUSR1, handle_signal);
     signal(SIGINT, handle_signal);
     GIOChannel *channel_signal = abrt_gio_channel_unix_new(g_signal_pipe[0]);
@@ -381,7 +381,7 @@ static int run_post_create(const char *dirname, struct response *resp)
     int child_pid = spawn_event_handler_child(dirname, "post-create", &child_stdout_fd);
 
     char *dup_of_dir = NULL;
-    struct strbuf *cmd_output = strbuf_new();
+    struct strbuf *cmd_output = libreport_strbuf_new();
 
     bool child_is_post_create = 1; /* else it is a notify child */
 
@@ -393,7 +393,7 @@ static int run_post_create(const char *dirname, struct response *resp)
     {
         char buf[250]; /* usually we get one line, no need to have big buf */
         errno = 0;
-        int r = safe_read(child_stdout_fd, buf, sizeof(buf) - 1);
+        int r = libreport_safe_read(child_stdout_fd, buf, sizeof(buf) - 1);
         if (r <= 0)
             break;
         buf[r] = '\0';
@@ -404,32 +404,32 @@ static int run_post_create(const char *dirname, struct response *resp)
         while ((newline = strchr(raw, '\n')) != NULL)
         {
             *newline = '\0';
-            strbuf_append_str(cmd_output, raw);
+            libreport_strbuf_append_str(cmd_output, raw);
             char *msg = cmd_output->buf;
 
             if (child_is_post_create
-             && prefixcmp(msg, "DUP_OF_DIR: ") == 0
+             && libreport_prefixcmp(msg, "DUP_OF_DIR: ") == 0
             ) {
                 free(dup_of_dir);
-                dup_of_dir = xstrdup(msg + strlen("DUP_OF_DIR: "));
+                dup_of_dir = libreport_xstrdup(msg + strlen("DUP_OF_DIR: "));
             }
             else
                 log_warning("%s", msg);
 
-            strbuf_clear(cmd_output);
+            libreport_strbuf_clear(cmd_output);
             /* jump to next line */
             raw = newline + 1;
         }
 
         /* beginning of next line. the line continues by next read */
-        strbuf_append_str(cmd_output, raw);
+        libreport_strbuf_append_str(cmd_output, raw);
     }
 
     /* EOF/error */
 
     /* Wait for child to actually exit, collect status */
     int status = 0;
-    if (safe_waitpid(child_pid, &status, 0) <= 0)
+    if (libreport_safe_waitpid(child_pid, &status, 0) <= 0)
     /* should not happen */
         perror_msg("waitpid(%d)", child_pid);
 
@@ -505,7 +505,7 @@ static int run_post_create(const char *dirname, struct response *resp)
             {   /* the new dump directory may lie in the dump location for some time */
                 log_warning("Using current time for the last occurrence file which may be incorrect.");
                 time_t t = time(NULL);
-                last_ocr = xasprintf("%lu", (long)t);
+                last_ocr = libreport_xasprintf("%lu", (long)t);
             }
 
             dd_save_text(dd, FILENAME_LAST_OCCURRENCE, last_ocr);
@@ -537,7 +537,7 @@ static int run_post_create(const char *dirname, struct response *resp)
                 &fd
     );
     //log_warning("Started notify, fd %d -> %d", fd, child_stdout_fd);
-    xmove_fd(fd, child_stdout_fd);
+    libreport_xmove_fd(fd, child_stdout_fd);
     child_is_post_create = 0;
     if (dup_of_dir)
         RESPONSE_SETTER(resp, 303, dup_of_dir);
@@ -547,7 +547,7 @@ static int run_post_create(const char *dirname, struct response *resp)
         free(dup_of_dir);
     }
     dup_of_dir = NULL;
-    strbuf_clear(cmd_output);
+    libreport_strbuf_clear(cmd_output);
     goto read_child_output;
 
  delete_bad_dir:
@@ -557,7 +557,7 @@ static int run_post_create(const char *dirname, struct response *resp)
     RESPONSE_SETTER(resp, 403, NULL);
 
  ret:
-    strbuf_free(cmd_output);
+    libreport_strbuf_free(cmd_output);
     free(dup_of_dir);
     close(child_stdout_fd);
     return 0;
@@ -585,10 +585,10 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     if (!dir_basename)
         dir_basename = g_hash_table_lookup(problem_info, FILENAME_TYPE);
 
-    char *path = xasprintf("%s/%s-%s-%u.new",
+    char *path = libreport_xasprintf("%s/%s-%s-%u.new",
                            abrt_g_settings_dump_location,
                            dir_basename,
-                           iso_date_string(NULL),
+                           libreport_iso_date_string(NULL),
                            pid);
 
     /* This item is useless, don't save it */
@@ -603,19 +603,19 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
         error_msg_and_die("Error creating problem directory '%s'", path);
     }
 
-    const int proc_dir_fd = open_proc_pid_dir(pid);
+    const int proc_dir_fd = libreport_open_proc_pid_dir(pid);
     char *rootdir = NULL;
 
     if (proc_dir_fd < 0)
     {
         pwarn_msg("Cannot open /proc/%d:", pid);
     }
-    else if (process_has_own_root_at(proc_dir_fd))
+    else if (libreport_process_has_own_root_at(proc_dir_fd))
     {
         /* Obtain the root directory path only if process' root directory is
          * not the same as the init's root directory
          */
-        rootdir = get_rootdir_at(proc_dir_fd);
+        rootdir = libreport_get_rootdir_at(proc_dir_fd);
     }
 
     /* Reading data from an arbitrary root directory is not secure. */
@@ -637,7 +637,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     if (proc_dir_fd >= 0)
     {
         /* Obtain and save the command line. */
-        char *cmdline = get_cmdline_at(proc_dir_fd);
+        char *cmdline = libreport_get_cmdline_at(proc_dir_fd);
         if (cmdline)
         {
             dd_save_text(dd, FILENAME_CMDLINE, cmdline);
@@ -645,7 +645,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
         }
 
         /* Obtain and save the environment variables. */
-        char *environ = get_environ_at(proc_dir_fd);
+        char *environ = libreport_get_environ_at(proc_dir_fd);
         if (environ)
         {
             dd_save_text(dd, FILENAME_ENVIRON, environ);
@@ -658,16 +658,16 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
         FILE *open_fds = dd_open_item_file(dd, FILENAME_OPEN_FDS, O_RDWR);
         if (open_fds)
         {
-            if (dump_fd_info_at(proc_dir_fd, open_fds) < 0)
+            if (libreport_dump_fd_info_at(proc_dir_fd, open_fds) < 0)
                 dd_delete_item(dd, FILENAME_OPEN_FDS);
             fclose(open_fds);
         }
 
-        const int init_proc_dir_fd = open_proc_pid_dir(1);
+        const int init_proc_dir_fd = libreport_open_proc_pid_dir(1);
         FILE *namespaces = dd_open_item_file(dd, FILENAME_NAMESPACES, O_RDWR);
         if (namespaces && init_proc_dir_fd >= 0)
         {
-            if (dump_namespace_diff_at(init_proc_dir_fd, proc_dir_fd, namespaces) < 0)
+            if (libreport_dump_namespace_diff_at(init_proc_dir_fd, proc_dir_fd, namespaces) < 0)
                 dd_delete_item(dd, FILENAME_NAMESPACES);
         }
         if (init_proc_dir_fd >= 0)
@@ -688,9 +688,9 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
                  */
                 log_debug("Process %d is considered to be containerized", pid);
                 pid_t container_pid;
-                if (get_pid_of_container_at(proc_dir_fd, &container_pid) == 0)
+                if (libreport_get_pid_of_container_at(proc_dir_fd, &container_pid) == 0)
                 {
-                    char *container_cmdline = get_cmdline(container_pid);
+                    char *container_cmdline = libreport_get_cmdline(container_pid);
                     dd_save_text(dd, FILENAME_CONTAINER_CMDLINE, container_cmdline);
                     free(container_cmdline);
                 }
@@ -728,7 +728,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     /* Move the completely created problem directory
      * to final directory.
      */
-    char *newpath = xstrndup(path, strlen(path) - strlen(".new"));
+    char *newpath = libreport_xstrndup(path, strlen(path) - strlen(".new"));
     if (rename(path, newpath) == 0)
         strcpy(path, newpath);
     free(newpath);
@@ -746,7 +746,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
      * from invalid stdin - to catch bugs. */
     close(STDIN_FILENO);
     close(STDOUT_FILENO);
-    xdup2(STDERR_FILENO, STDOUT_FILENO); /* paranoia: don't leave stdout fd closed */
+    libreport_xdup2(STDERR_FILENO, STDOUT_FILENO); /* paranoia: don't leave stdout fd closed */
 
     /* Trim old problem directories if necessary */
     if (abrt_g_settings_nMaxCrashReportsSize > 0)
@@ -778,7 +778,7 @@ static gboolean key_value_ok(gchar *key, gchar *value)
      || strcmp(key, FILENAME_TYPE) == 0
     )
     {
-        if (!str_is_correct_filename(value))
+        if (!libreport_str_is_correct_filename(value))
         {
             error_msg("Value of '%s' ('%s') is not a valid directory name",
                       key, value);
@@ -810,7 +810,7 @@ static void process_message(GHashTable *problem_info, char *message)
             }
             else
             {
-                g_hash_table_insert(problem_info, key, xstrdup(value));
+                g_hash_table_insert(problem_info, key, libreport_xstrdup(value));
                 /* Prevent freeing key later: */
                 key = NULL;
             }
@@ -890,7 +890,7 @@ static int perform_http_xact(struct response *rsp)
     /* Loop until EOF/error/timeout/end_of_header */
     while (1)
     {
-        messagebuf_data = xrealloc(messagebuf_data, messagebuf_len + INPUT_BUFFER_SIZE);
+        messagebuf_data = libreport_xrealloc(messagebuf_data, messagebuf_len + INPUT_BUFFER_SIZE);
         char *p = messagebuf_data + messagebuf_len;
         int rd = read(STDIN_FILENO, p, INPUT_BUFFER_SIZE);
         if (rd < 0)
@@ -942,11 +942,11 @@ static int perform_http_xact(struct response *rsp)
     /* First line must be "op<space>[http://host]/path<space>HTTP/n.n".
      * <space> is exactly one space char.
      */
-    if (prefixcmp(messagebuf_data, "DELETE ") == 0)
+    if (libreport_prefixcmp(messagebuf_data, "DELETE ") == 0)
     {
         messagebuf_data += strlen("DELETE ");
         char *space = strchr(messagebuf_data, ' ');
-        if (!space || prefixcmp(space+1, "HTTP/") != 0)
+        if (!space || libreport_prefixcmp(space+1, "HTTP/") != 0)
             return 400; /* Bad Request */
         *space = '\0';
         //decode_url(messagebuf_data); %20 => ' '
@@ -959,8 +959,8 @@ static int perform_http_xact(struct response *rsp)
      * "PUT /" implies creation or replace of resource named "/"!
      * Delete PUT in 2014.
      */
-    if (prefixcmp(messagebuf_data, "PUT ") != 0
-     && prefixcmp(messagebuf_data, "POST ") != 0
+    if (libreport_prefixcmp(messagebuf_data, "PUT ") != 0
+     && libreport_prefixcmp(messagebuf_data, "POST ") != 0
     ) {
         return 400; /* Bad Request */
     }
@@ -970,10 +970,10 @@ static int perform_http_xact(struct response *rsp)
         CREATION_REQUEST,
     };
     int url_type;
-    char *url = skip_non_whitespace(messagebuf_data) + 1; /* skip "POST " */
-    if (prefixcmp(url, "/creation_notification ") == 0)
+    char *url = libreport_skip_non_whitespace(messagebuf_data) + 1; /* skip "POST " */
+    if (libreport_prefixcmp(url, "/creation_notification ") == 0)
         url_type = CREATION_NOTIFICATION;
-    else if (prefixcmp(url, "/ ") == 0)
+    else if (libreport_prefixcmp(url, "/ ") == 0)
         url_type = CREATION_REQUEST;
     else
         return 400; /* Bad Request */
@@ -1006,7 +1006,7 @@ static int perform_http_xact(struct response *rsp)
             }
         }
 
-        messagebuf_data = xrealloc(messagebuf_data, messagebuf_len + INPUT_BUFFER_SIZE + 1);
+        messagebuf_data = libreport_xrealloc(messagebuf_data, messagebuf_len + INPUT_BUFFER_SIZE + 1);
         int rd = read(STDIN_FILENO, messagebuf_data + messagebuf_len, INPUT_BUFFER_SIZE);
         if (rd < 0)
         {
@@ -1047,7 +1047,7 @@ static int perform_http_xact(struct response *rsp)
     char *executable = g_hash_table_lookup(problem_info, FILENAME_EXECUTABLE);
     if (executable)
     {
-        char *last_file = concat_path_file(abrt_g_settings_dump_location, "last-via-server");
+        char *last_file = libreport_concat_path_file(abrt_g_settings_dump_location, "last-via-server");
         int repeating_crash = check_recent_crash_file(last_file, executable);
         free(last_file);
         if (repeating_crash) /* Only pretend that we saved it */
@@ -1065,7 +1065,7 @@ static int perform_http_xact(struct response *rsp)
 #endif
     unsigned pid = convert_pid(problem_info);
     struct ns_ids client_ids;
-    if (get_ns_ids(client_pid, &client_ids) < 0)
+    if (libreport_get_ns_ids(client_pid, &client_ids) < 0)
         error_msg_and_die("Cannot get peer's Namespaces from /proc/%d/ns", client_pid);
 
     if (client_ids.nsi_ids[PROC_NS_ID_PID] != g_ns_ids.nsi_ids[PROC_NS_ID_PID])
@@ -1107,20 +1107,20 @@ int main(int argc, char **argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_INTEGER('u', NULL, &client_uid, _("Use NUM as client uid")),
         OPT_BOOL(   's', NULL, NULL       , _("Log to syslog")),
         OPT_BOOL(   'p', NULL, NULL       , _("Add program names to log")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(opts & OPT_p);
+    libreport_export_abrt_envvars(opts & OPT_p);
 
-    msg_prefix = xasprintf("%s[%u]", g_progname, getpid());
+    libreport_msg_prefix = libreport_xasprintf("%s[%u]", libreport_g_progname, getpid());
     if (opts & OPT_s)
     {
-        logmode = LOGMODE_JOURNAL;
+        libreport_logmode = LOGMODE_JOURNAL;
     }
 
     /* Set up timeout handling */
@@ -1149,7 +1149,7 @@ int main(int argc, char **argv)
     client_pid = cr.pid;
 
     pid_t pid = getpid();
-    if (get_ns_ids(getpid(), &g_ns_ids) < 0)
+    if (libreport_get_ns_ids(getpid(), &g_ns_ids) < 0)
         error_msg_and_die("Cannot get own Namespaces from /proc/%d/ns", pid);
 
     abrt_load_abrt_conf();

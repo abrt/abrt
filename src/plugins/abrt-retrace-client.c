@@ -76,7 +76,7 @@ static void print_header(const char *name,
 
 static void alert_crash_too_large()
 {
-    alert(_("Retrace server can not be used, because the crash "
+    libreport_alert(_("Retrace server can not be used, because the crash "
             "is too large. Try local retracing."));
 }
 
@@ -113,12 +113,12 @@ static int create_archive(bool unlink_temp)
         return -1;
 
     /* Open a temporary file. */
-    char *filename = xstrdup(LARGE_DATA_TMP_DIR"/abrt-retrace-client-archive-XXXXXX.tar.xz");
+    char *filename = libreport_xstrdup(LARGE_DATA_TMP_DIR"/abrt-retrace-client-archive-XXXXXX.tar.xz");
     int tempfd = mkstemps(filename, /*suffixlen:*/7);
     if (tempfd == -1)
         perror_msg_and_die(_("Can't create temporary file in "LARGE_DATA_TMP_DIR));
     if (unlink_temp)
-        xunlink(filename);
+        libreport_xunlink(filename);
     free(filename);
 
     /* Run xz:
@@ -132,7 +132,7 @@ static int create_archive(bool unlink_temp)
     xz_args[3] = NULL;
 
     int tar_xz_pipe[2];
-    xpipe(tar_xz_pipe);
+    libreport_xpipe(tar_xz_pipe);
 
     fflush(NULL); /* paranoia */
 
@@ -170,7 +170,7 @@ static int create_archive(bool unlink_temp)
     const char *tar_args[10];
     tar_args[0] = "tar";
     tar_args[1] = "cO";
-    tar_args[2] = xasprintf("--directory=%s", dump_dir_name);
+    tar_args[2] = libreport_xasprintf("--directory=%s", dump_dir_name);
 
     const char **required_files = task_type == TASK_VMCORE ? required_vmcore : required_retrace;
     int index = 3;
@@ -222,19 +222,19 @@ static int create_archive(bool unlink_temp)
     /* Wait for tar and xz to finish successfully */
     int status;
     log_notice("Waiting for tar...");
-    safe_waitpid(tar_child, &status, 0);
+    libreport_safe_waitpid(tar_child, &status, 0);
     if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
         /* Hopefully, by this time child emitted more meaningful
          * error message. But just in case it didn't:
          */
         error_msg_and_die(_("Can't create temporary file in "LARGE_DATA_TMP_DIR));
     log_notice("Waiting for xz...");
-    safe_waitpid(xz_child, &status, 0);
+    libreport_safe_waitpid(xz_child, &status, 0);
     if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
         error_msg_and_die(_("Can't create temporary file in "LARGE_DATA_TMP_DIR));
     log_notice("Done...");
 
-    xlseek(tempfd, 0, SEEK_SET);
+    libreport_xlseek(tempfd, 0, SEEK_SET);
     return tempfd;
 }
 
@@ -295,7 +295,7 @@ struct retrace_settings *get_settings(SoupSession *session)
     char *value;
     const char *row;
 
-    settings = xzalloc(sizeof(*settings));
+    settings = libreport_xzalloc(sizeof(*settings));
     uri = build_uri_from_config(&cfg, "settings", NULL);
     message = soup_message_new_from_uri("GET", uri);
 
@@ -358,12 +358,12 @@ struct retrace_settings *get_settings(SoupSession *session)
             for (i = 0; i < MAX_FORMATS - 1 && (space = strchr(value, ' ')); ++i)
             {
                 *space = '\0';
-                settings->supported_formats[i] = xstrdup(value);
+                settings->supported_formats[i] = libreport_xstrdup(value);
                 value = space + 1;
             }
 
             /* last element */
-            settings->supported_formats[i] = xstrdup(value);
+            settings->supported_formats[i] = libreport_xstrdup(value);
         }
         else if (0 == strcasecmp("supported_releases", row))
         {
@@ -372,12 +372,12 @@ struct retrace_settings *get_settings(SoupSession *session)
             for (i = 0; i < MAX_RELEASES - 1 && (space = strchr(value, ' ')); ++i)
             {
                 *space = '\0';
-                settings->supported_releases[i] = xstrdup(value);
+                settings->supported_releases[i] = libreport_xstrdup(value);
                 value = space + 1;
             }
 
             /* last element */
-            settings->supported_releases[i] = xstrdup(value);
+            settings->supported_releases[i] = libreport_xstrdup(value);
         }
 
         /* the beginning of the next row */
@@ -406,18 +406,18 @@ static void free_settings(struct retrace_settings *settings)
 /* or NULL if unknown */
 static char *get_release_id(map_string_t *osinfo, const char *architecture)
 {
-    char *arch = xstrdup(architecture);
+    char *arch = libreport_xstrdup(architecture);
 
     if (strcmp("i686", arch) == 0 || strcmp("i586", arch) == 0)
     {
         free(arch);
-        arch = xstrdup("i386");
+        arch = libreport_xstrdup("i386");
     }
 
     char *result = NULL;
     char *release = NULL;
     char *version = NULL;
-    parse_osinfo_for_rhts(osinfo, (char **)&release, (char **)&version);
+    libreport_parse_osinfo_for_rhts(osinfo, (char **)&release, (char **)&version);
 
     if (release == NULL || version == NULL)
         error_msg_and_die("Can't parse OS release name or version");
@@ -448,7 +448,7 @@ static char *get_release_id(map_string_t *osinfo, const char *architecture)
     else if (strcmp("Red Hat Enterprise Linux", release) == 0)
         strcpy(release, "rhel");
 
-    result = xasprintf("%s-%s-%s", release, version, arch);
+    result = libreport_xasprintf("%s-%s-%s", release, version, arch);
 
     free(release);
     free(version);
@@ -503,11 +503,11 @@ static int check_package(SoupSession   *session,
     {
         if (response_code == 404)
         {
-            const char *os = get_map_string_item_or_empty(osinfo, OSINFO_PRETTY_NAME);
+            const char *os = libreport_get_map_string_item_or_empty(osinfo, OSINFO_PRETTY_NAME);
             if (!os)
-                os = get_map_string_item_or_empty(osinfo, OSINFO_NAME);
+                os = libreport_get_map_string_item_or_empty(osinfo, OSINFO_NAME);
 
-            *msg = xasprintf(_("Retrace server is unable to process package "
+            *msg = libreport_xasprintf(_("Retrace server is unable to process package "
                                "'%s.%s'.\nIs it a part of official '%s' repositories?"),
                                nvr, arch, os);
         }
@@ -561,7 +561,7 @@ static int create(SoupSession  *session,
 
     if (settings->running_tasks >= settings->max_running_tasks)
     {
-        alert(_("The server is fully occupied. Try again later."));
+        libreport_alert(_("The server is fully occupied. Try again later."));
         error_msg_and_die(_("The server denied your request."));
     }
 
@@ -571,14 +571,14 @@ static int create(SoupSession  *session,
     /* get raw size */
     if (coredump)
     {
-        xstat(coredump, &file_stat);
+        libreport_xstat(coredump, &file_stat);
         unpacked_size = (long long)file_stat.st_size;
     }
     else if (dump_dir_name != NULL)
     {
         struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags*/ 0);
         if (!dd)
-            xfunc_die(); /* dd_opendir already emitted error message */
+            libreport_xfunc_die(); /* dd_opendir already emitted error message */
         if (dd_exist(dd, FILENAME_VMCORE))
             task_type = TASK_VMCORE;
         dd_close(dd);
@@ -588,8 +588,8 @@ static int create(SoupSession  *session,
         const char **required_files = task_type == TASK_VMCORE ? required_vmcore : required_retrace;
         while (required_files[i])
         {
-            path = concat_path_file(dump_dir_name, required_files[i]);
-            xstat(path, &file_stat);
+            path = libreport_concat_path_file(dump_dir_name, required_files[i]);
+            libreport_xstat(path, &file_stat);
             free(path);
 
             if (!S_ISREG(file_stat.st_mode))
@@ -605,7 +605,7 @@ static int create(SoupSession  *session,
         {
             for (i = 0; optional_retrace[i]; ++i)
             {
-                path = concat_path_file(dump_dir_name, optional_retrace[i]);
+                path = libreport_concat_path_file(dump_dir_name, optional_retrace[i]);
                 if (stat(path, &file_stat) != -1)
                 {
                     if (!S_ISREG(file_stat.st_mode))
@@ -659,13 +659,13 @@ static int create(SoupSession  *session,
     {
         struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
         if (!dd)
-            xfunc_die();
+            libreport_xfunc_die();
         problem_data_t *pd = create_problem_data_from_dump_dir(dd);
         dd_close(dd);
 
         char *package = problem_data_get_content_or_NULL(pd, FILENAME_PACKAGE);
         char *arch = problem_data_get_content_or_NULL(pd, FILENAME_ARCHITECTURE);
-        map_string_t *osinfo = new_map_string();
+        map_string_t *osinfo = libreport_new_map_string();
         problem_data_get_osinfo(pd, osinfo);
 
         /* not needed for TASK_VMCORE - the information is kept in the vmcore itself */
@@ -686,9 +686,9 @@ static int create(SoupSession  *session,
 
             if (!supported)
             {
-                char *msg = xasprintf(_("The release '%s' is not supported by the"
+                char *msg = libreport_xasprintf(_("The release '%s' is not supported by the"
                                         " Retrace server."), releaseid);
-                alert(msg);
+                libreport_alert(msg);
                 free(msg);
                 error_msg_and_die(_("The server is not able to"
                                     " handle your request."));
@@ -704,7 +704,7 @@ static int create(SoupSession  *session,
             int known = check_package(session, package, arch, osinfo, &msg);
             if (msg)
             {
-                alert(msg);
+                libreport_alert(msg);
                 free(msg);
             }
 
@@ -712,7 +712,7 @@ static int create(SoupSession  *session,
                 error_msg_and_die(_("Unknown package sent to Retrace server."));
         }
 
-        free_map_string(osinfo);
+        libreport_free_map_string(osinfo);
         problem_data_free(pd);
     }
 
@@ -749,15 +749,15 @@ static int create(SoupSession  *session,
 
     if (size_mb > 8) /* 8 MB - should be configurable */
     {
-        char *question = xasprintf(_("You are going to upload %s. "
+        char *question = libreport_xasprintf(_("You are going to upload %s. "
                                      "Continue?"), human_size);
 
-        int response = ask_yes_no(question);
+        int response = libreport_ask_yes_no(question);
         free(question);
 
         if (!response)
         {
-            set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
+            libreport_set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
             error_msg_and_die(_("Cancelled by user"));
         }
     }
@@ -827,7 +827,7 @@ static int create(SoupSession  *session,
     }
     else if (response_code == 403)
     {
-        alert(_("Your problem directory is corrupted and can not "
+        libreport_alert(_("Your problem directory is corrupted and can not "
                 "be processed by the Retrace server."));
         error_msg_and_die(_("The archive contains malicious files (such as symlinks) "
                             "and thus can not be processed."));
@@ -1120,8 +1120,8 @@ static int run_batch(SoupSession *session,
     int retcode = create(session, delete_temp_archive, &task_id, &task_password);
     if (0 != retcode)
         return retcode;
-    char *task_status = xstrdup("");
-    char *status_message = xstrdup("");
+    char *task_status = libreport_xstrdup("");
+    char *status_message = libreport_xstrdup("");
     int status_delay = delay ? delay : 10;
     int dots = 0;
     while (0 != strncmp(task_status, "FINISHED", strlen("finished")))
@@ -1130,7 +1130,7 @@ static int run_batch(SoupSession *session,
         free(task_status);
         sleep(status_delay);
         status(session, task_id, task_password, &task_status, &status_message);
-        if (g_verbose > 0 || 0 != strcmp(previous_status_message, status_message))
+        if (libreport_g_verbose > 0 || 0 != strcmp(previous_status_message, status_message))
         {
             if (dots)
             {   /* A same message was received and a period was printed instead
@@ -1151,7 +1151,7 @@ static int run_batch(SoupSession *session,
                 putchar('\n');
             }
             ++dots;
-            client_log(".");
+            libreport_client_log(".");
             fflush(stdout);
         }
         free(previous_status_message);
@@ -1175,7 +1175,7 @@ static int run_batch(SoupSession *session,
             if (!dd)
             {
                 free(backtrace_text);
-                xfunc_die();
+                libreport_xfunc_die();
             }
 
             /* the result of TASK_VMCORE is not backtrace, but kernel log */
@@ -1205,7 +1205,7 @@ static int run_batch(SoupSession *session,
     }
     else
     {
-        alert(_("Retrace failed. Try again later and if the problem persists "
+        libreport_alert(_("Retrace failed. Try again later and if the problem persists "
                 "report this issue please."));
         run_log(session, task_id, task_password);
         retcode = 1;
@@ -1250,7 +1250,7 @@ int main(int argc, char **argv)
 
     /* Keep enum above and order of options below in sync! */
     struct options options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_BOOL('s', "syslog", NULL, _("log to syslog")),
         OPT_BOOL('k', "insecure", NULL,
                  _("allow insecure connection to retrace server")),
@@ -1288,22 +1288,22 @@ int main(int argc, char **argv)
 
     char *env_delay = getenv("ABRT_STATUS_DELAY");
     if (env_delay)
-        delay = xatou(env_delay);
+        delay = libreport_xatou(env_delay);
 
     char *env_insecure = getenv("RETRACE_SERVER_INSECURE");
     if (env_insecure)
         cfg.ssl_allow_insecure = strncmp(env_insecure, "insecure", strlen("insecure")) == 0;
 
-    unsigned opts = parse_opts(argc, argv, options, usage);
+    unsigned opts = libreport_parse_opts(argc, argv, options, usage);
     if (opts & OPT_syslog)
     {
-        logmode = LOGMODE_JOURNAL;
+        libreport_logmode = LOGMODE_JOURNAL;
     }
     const char *operation = NULL;
     if (optind < argc)
         operation = argv[optind];
     else
-        show_usage_and_die(usage, options);
+        libreport_show_usage_and_die(usage, options);
 
     if (!cfg.ssl_allow_insecure)
         cfg.ssl_allow_insecure = opts & OPT_insecure;

@@ -64,7 +64,7 @@ int main(int argc, char **argv)
     const char *releasever = NULL;
 
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_BOOL  ('y', "yes",         NULL,                   _("Noninteractive, assume 'Yes' to all questions")),
         OPT_STRING('i', "ids",   &build_ids, "BUILD_IDS_FILE", _("- means STDIN, default: build_ids")),
         OPT_STRING('e', "exact",     &exact, "EXACT",          _("Download only specified files")),
@@ -73,7 +73,7 @@ int main(int argc, char **argv)
         OPT_STRING('R', "releasever", &releasever, "RELEASEVER", _("OS release version")),
         OPT_END()
     };
-    const unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    const unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
     const gid_t egid = getegid();
     const gid_t rgid = getgid();
@@ -108,7 +108,7 @@ int main(int argc, char **argv)
             perror_msg_and_die("Failed to open file '%s'", build_ids);
 
         /* We are not going to free this memory. There is no place to do so. */
-        build_ids_self_fd = xasprintf("/proc/self/fd/%d", build_ids_fd);
+        build_ids_self_fd = libreport_xasprintf("/proc/self/fd/%d", build_ids_fd);
     }
 
     char tmp_directory[] = LARGE_DATA_TMP_DIR"/abrt-tmp-debuginfo.XXXXXX";
@@ -125,8 +125,8 @@ int main(int argc, char **argv)
         args[i++] = EXECUTABLE;
         args[i++] = "--ids";
         args[i++] = (build_ids_self_fd != NULL) ? build_ids_self_fd : "-";
-        if (g_verbose > 0)
-            args[i++] = verbs[g_verbose <= 3 ? g_verbose : 3];
+        if (libreport_g_verbose > 0)
+            args[i++] = verbs[libreport_g_verbose <= 3 ? libreport_g_verbose : 3];
         if ((opts & OPT_y))
             args[i++] = "-y";
         if ((opts & OPT_e))
@@ -177,7 +177,7 @@ int main(int argc, char **argv)
         char *p = NULL;
         for (size_t i = 0; i < wlsize; i++)
             if ((p = getenv(whitelist[i])) != NULL)
-                setlist[i] = xstrdup(p);
+                setlist[i] = libreport_xstrdup(p);
 
         // Now we can clear the environment
         clearenv();
@@ -186,7 +186,7 @@ int main(int argc, char **argv)
         for (size_t i = 0; i < wlsize; i++)
             if (setlist[i] != NULL)
             {
-                xsetenv(whitelist[i], setlist[i]);
+                libreport_xsetenv(whitelist[i], setlist[i]);
                 free(setlist[i]);
             }
 #else
@@ -231,7 +231,7 @@ int main(int argc, char **argv)
     }
 
     int status;
-    if (safe_waitpid(pid, &status, 0) < 0)
+    if (libreport_safe_waitpid(pid, &status, 0) < 0)
         perror_msg_and_die("waitpid");
 
     if (rmdir(tmp_directory) >= 0)

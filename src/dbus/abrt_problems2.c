@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 #endif
     guint owner_id;
 
-    glib_init();
+    libreport_glib_init();
     abrt_init(argv);
     abrt_load_abrt_conf();
 
@@ -83,15 +83,15 @@ int main(int argc, char *argv[])
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_INTEGER('t', NULL, &g_timeout_value, "Exit after NUM seconds of inactivity"),
         OPT_END()
     };
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+    /*unsigned opts =*/ libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
-    msg_prefix = "abrt-problems2"; /* for log_warning(), error_msg() and such */
+    libreport_msg_prefix = "abrt-problems2"; /* for log_warning(), error_msg() and such */
 
     if (getuid() != 0)
         error_msg_and_die("This program must be run as root.");

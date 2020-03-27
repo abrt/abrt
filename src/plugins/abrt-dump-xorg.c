@@ -48,7 +48,7 @@ int main(int argc, char **argv)
     char *dump_location = NULL;
     /* Keep OPT_z enums and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_BOOL(  's', NULL, NULL, _("Log to syslog")),
         OPT_BOOL(  'o', NULL, NULL, _("Print found crash data on standard output")),
         OPT_STRING('d', NULL, &dump_location, "DIR", _("Create problem directory in DIR for every crash found")),
@@ -57,14 +57,14 @@ int main(int argc, char **argv)
         OPT_BOOL(  'm', NULL, NULL, _("Print search string(s) to stdout and exit")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
-    msg_prefix = g_progname;
+    libreport_msg_prefix = libreport_g_progname;
     if ((opts & OPT_s) || getenv("ABRT_SYSLOG"))
     {
-        logmode = LOGMODE_JOURNAL;
+        libreport_logmode = LOGMODE_JOURNAL;
     }
 
     if (opts & OPT_m)
@@ -76,7 +76,7 @@ int main(int argc, char **argv)
     if (opts & OPT_D)
     {
         if (opts & OPT_d)
-            show_usage_and_die(program_usage_string, program_options);
+            libreport_show_usage_and_die(program_usage_string, program_options);
         abrt_load_abrt_conf();
         dump_location = abrt_g_settings_dump_location;
         abrt_g_settings_dump_location = NULL;
@@ -85,11 +85,11 @@ int main(int argc, char **argv)
 
     argv += optind;
     if (argv[0])
-        xmove_fd(xopen(argv[0], O_RDONLY), STDIN_FILENO);
+        libreport_xmove_fd(libreport_xopen(argv[0], O_RDONLY), STDIN_FILENO);
 
     int bt_count = 0;
     char *line = NULL;
-    while ((line = xmalloc_fgetline(stdin)) != NULL)
+    while ((line = libreport_xmalloc_fgetline(stdin)) != NULL)
     {
         char *p = skip_pfx(line);
         if (strcmp(p, "Backtrace:") == 0)

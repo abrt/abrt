@@ -282,7 +282,7 @@ if __name__ == "__main__":
     if not config.cachedirs:
         config.cachedirs = ["/var/cache/abrt-di"]
         try:
-            conf = problem.load_plugin_conf_file("CCpp.conf")
+            conf = problem.libreport_load_plugin_conf_file("CCpp.conf")
         except OSError as ex:
             print(ex)
         else:

@@ -120,13 +120,13 @@ static void abrt_config_widget_finalize(GObject *object);
 static AbrtAppConfiguration *
 abrt_app_configuration_new(const char *app_name)
 {
-    AbrtAppConfiguration *conf = xmalloc(sizeof(*conf));
+    AbrtAppConfiguration *conf = libreport_xmalloc(sizeof(*conf));
 
-    conf->app_name = xstrdup(app_name);
-    conf->settings = new_map_string();
+    conf->app_name = libreport_xstrdup(app_name);
+    conf->settings = libreport_new_map_string();
     conf->glib_settings = NULL;
 
-    if(!load_app_conf_file(conf->app_name, conf->settings)) {
+    if(!libreport_load_app_conf_file(conf->app_name, conf->settings)) {
         g_warning("Failed to load config for '%s'", conf->app_name);
     }
 
@@ -138,9 +138,9 @@ abrt_app_configuration_new(const char *app_name)
 static AbrtAppConfiguration *
 abrt_app_configuration_new_glib(const char *schema)
 {
-    AbrtAppConfiguration *conf = xmalloc(sizeof(*conf));
+    AbrtAppConfiguration *conf = libreport_xmalloc(sizeof(*conf));
 
-    conf->app_name = xstrdup(schema);
+    conf->app_name = libreport_xstrdup(schema);
     conf->settings = NULL;
     conf->glib_settings = g_settings_new(conf->app_name);
 
@@ -151,9 +151,9 @@ static void
 abrt_app_configuration_set_value(AbrtAppConfiguration *conf, const char *name, const char *value)
 {
     if (conf->settings)
-        set_app_user_setting(conf->settings, name, value);
+        libreport_set_app_user_setting(conf->settings, name, value);
     else if (conf->glib_settings)
-        g_settings_set_boolean(conf->glib_settings, name, string_to_bool(value));
+        g_settings_set_boolean(conf->glib_settings, name, libreport_string_to_bool(value));
     else
         assert(!"BUG: not properly initialized AbrtAppConfiguration");
 }
@@ -163,7 +163,7 @@ abrt_app_configuration_get_value(AbrtAppConfiguration *conf, const char *name)
 {
     if (conf->settings)
     {
-        const char *val = get_app_user_setting(conf->settings, name);
+        const char *val = libreport_get_app_user_setting(conf->settings, name);
         return (val == NULL || strcmp(val, "") == 0) ? NULL : val;
     }
 
@@ -177,7 +177,7 @@ static void
 abrt_app_configuration_save(AbrtAppConfiguration *conf)
 {
     if (conf->settings)
-        save_app_conf_file(conf->app_name, conf->settings);
+        libreport_save_app_conf_file(conf->app_name, conf->settings);
 
     /* No need to save GSettings because changes are applied instantly */
 }
@@ -193,7 +193,7 @@ abrt_app_configuration_free(AbrtAppConfiguration *conf)
 
     if (conf->settings)
     {
-        free_map_string(conf->settings);
+        libreport_free_map_string(conf->settings);
         conf->settings = (void *)0xDEADBEAF;
     }
 
@@ -300,7 +300,7 @@ update_option_switch_current_value(AbrtConfigWidget *self, enum AbrtOptions opid
     if (option->config != NULL)
         val = abrt_app_configuration_get_value(option->config, option->name);
 
-    option->current_value = val ? string_to_bool(val) : option->default_value;
+    option->current_value = val ? libreport_string_to_bool(val) : option->default_value;
 }
 
 static void
@@ -316,7 +316,7 @@ update_option_radio_button_current_value(AbrtConfigWidget *self, enum AbrtOption
 
     if (val == NULL)
         option->current_value = option->default_value;
-    else if (string_to_bool(val))
+    else if (libreport_string_to_bool(val))
         option->current_value = ABRT_RADIOBUTTON_OPT_ALWAYS;
     else
         option->current_value = ABRT_RADIOBUTTON_OPT_NEVER;
@@ -449,7 +449,7 @@ abrt_config_widget_init(AbrtConfigWidget *self)
     /* abrt-applet */
     self->priv->options[ABRT_OPT_SEND_UREPORT].name = "report-technical-problems";
     self->priv->options[ABRT_OPT_SEND_UREPORT].default_value =
-            string_to_bool(abrt_app_configuration_get_value(self->priv->privacy_gsettings,
+            libreport_string_to_bool(abrt_app_configuration_get_value(self->priv->privacy_gsettings,
                                                             "report-technical-problems"));
     {
         /* Get the container widget for the lauch button and warnings */
@@ -469,21 +469,21 @@ abrt_config_widget_init(AbrtConfigWidget *self)
             /* Make the switch editable */
             self->priv->options[ABRT_OPT_SEND_UREPORT].config = self->priv->privacy_gsettings;
 
-            char *os_release = xmalloc_open_read_close("/etc/os-release", /*no size limit*/NULL);
+            char *os_release = libreport_xmalloc_open_read_close("/etc/os-release", /*no size limit*/NULL);
             char *privacy_policy = NULL;
 
             /* Try to get the value of PRIVACY_POLICY from /etc/os-release */
             sr_parse_os_release(os_release, os_release_callback, (void *)&privacy_policy);
 
-            message = xasprintf(_("The configuration option above has been moved to GSettings and "
+            message = libreport_xasprintf(_("The configuration option above has been moved to GSettings and "
                                   "the switch is linked to the value of the setting 'report-technical-problems' "
                                   "from the schema 'org.gnome.desktop.privacy'."));
 
             /* Do not add Privacy Policy link if /etc/os-release does not contain PRIVACY_POLICY */
             if (privacy_policy != NULL)
-                markup = xasprintf("<i>%s</i>\n\n<a href=\"%s\">Privacy Policy</a>", message, privacy_policy);
+                markup = libreport_xasprintf("<i>%s</i>\n\n<a href=\"%s\">Privacy Policy</a>", message, privacy_policy);
             else
-                markup = xasprintf("<i>%s</i>", message);
+                markup = libreport_xasprintf("<i>%s</i>", message);
 
             free(privacy_policy);
             free(os_release);
@@ -493,8 +493,8 @@ abrt_config_widget_init(AbrtConfigWidget *self)
             /* Make the switch read-only */
             self->priv->options[ABRT_OPT_SEND_UREPORT].config = NULL;
 
-            message = xasprintf(_("The configuration option above can be configured in"));
-            markup = xasprintf("<i>%s</i>", message);
+            message = libreport_xasprintf(_("The configuration option above can be configured in"));
+            markup = libreport_xasprintf("<i>%s</i>", message);
 
             GtkWidget *launcher = gtk_button_new_with_label(g_app_info_get_display_name(G_APP_INFO(app)));
 

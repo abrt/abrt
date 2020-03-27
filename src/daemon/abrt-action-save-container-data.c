@@ -25,7 +25,7 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
         dd_save_text(dd, FILENAME_CONTAINER, "docker");
 
     json_object *json = NULL;
-    char *mntnf_path = concat_path_file(dd->dd_dirname, FILENAME_MOUNTINFO);
+    char *mntnf_path = libreport_concat_path_file(dd->dd_dirname, FILENAME_MOUNTINFO);
     FILE *mntnf_file = fopen(mntnf_path, "r");
     free(mntnf_path);
 
@@ -43,7 +43,7 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
     char *container_id = NULL;
     char *output = NULL;
 
-    /* initialized to 0 because we call mountinfo_destroy below */
+    /* initialized to 0 because we call libreport_mountinfo_destroy below */
     struct mountinfo mntnf = {0};
 
     for (size_t i = 0; i < ARRAY_SIZE(mount_points); ++i)
@@ -52,9 +52,9 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
 
         rewind(mntnf_file);
 
-        /* get_mountinfo_for_mount_point() re-initializes &mntnf */
-        mountinfo_destroy(&mntnf);
-        int r = get_mountinfo_for_mount_point(mntnf_file, &mntnf, mount_points[i].name);
+        /* libreport_get_mountinfo_for_mount_point() re-initializes &mntnf */
+        libreport_mountinfo_destroy(&mntnf);
+        int r = libreport_get_mountinfo_for_mount_point(mntnf_file, &mntnf, mount_points[i].name);
 
         if (r != 0)
         {
@@ -94,7 +94,7 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
         /* Why we copy only 12 bytes here?
          * Because only the first 12 characters are used by docker as ID of the
          * container. */
-        container_id = xstrndup(last, 12);
+        container_id = libreport_xstrndup(last, 12);
         if (strlen(container_id) != 12)
         {
             log_debug("Failed to get container ID");
@@ -103,12 +103,12 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
 
         char *docker_inspect_cmdline = NULL;
         if (root_dir != NULL)
-            docker_inspect_cmdline = xasprintf("chroot %s /bin/sh -c \"docker inspect %s\"", root_dir, container_id);
+            docker_inspect_cmdline = libreport_xasprintf("chroot %s /bin/sh -c \"docker inspect %s\"", root_dir, container_id);
         else
-            docker_inspect_cmdline = xasprintf("docker inspect %s", container_id);
+            docker_inspect_cmdline = libreport_xasprintf("docker inspect %s", container_id);
 
         log_debug("Executing: '%s'", docker_inspect_cmdline);
-        output = run_in_shell_and_save_output(0, docker_inspect_cmdline, "/", NULL);
+        output = libreport_run_in_shell_and_save_output(0, docker_inspect_cmdline, "/", NULL);
 
         free(docker_inspect_cmdline);
 
@@ -168,7 +168,7 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
         goto dump_docker_info_cleanup;
     }
 
-    char *name = strtrimch(xstrdup(json_object_to_json_string(image)), '"');
+    char *name = libreport_strtrimch(libreport_xstrdup(json_object_to_json_string(image)), '"');
     dd_save_text(dd, FILENAME_CONTAINER_IMAGE, name);
     free(name);
 
@@ -176,7 +176,7 @@ dump_docker_info_cleanup:
     if (json != NULL)
         json_object_put(json);
 
-    mountinfo_destroy(&mntnf);
+    libreport_mountinfo_destroy(&mntnf);
 
     return;
 }
@@ -186,12 +186,12 @@ void dump_lxc_info(struct dump_dir *dd, const char *lxc_cmd)
     if (!dd_exist(dd, FILENAME_CONTAINER))
         dd_save_text(dd, FILENAME_CONTAINER, "lxc");
 
-    char *mntnf_path = concat_path_file(dd->dd_dirname, FILENAME_MOUNTINFO);
+    char *mntnf_path = libreport_concat_path_file(dd->dd_dirname, FILENAME_MOUNTINFO);
     FILE *mntnf_file = fopen(mntnf_path, "r");
     free(mntnf_path);
 
     struct mountinfo mntnf;
-    int r = get_mountinfo_for_mount_point(mntnf_file, &mntnf, "/");
+    int r = libreport_get_mountinfo_for_mount_point(mntnf_file, &mntnf, "/");
     fclose(mntnf_file);
 
     if (r != 0)
@@ -221,7 +221,7 @@ void dump_lxc_info(struct dump_dir *dd, const char *lxc_cmd)
         goto dump_lxc_info_cleanup;
     }
 
-    char *container_id = xstrndup(tmp + 1, (last_slash - tmp) - 1);
+    char *container_id = libreport_xstrndup(tmp + 1, (last_slash - tmp) - 1);
 
     dd_save_text(dd, FILENAME_CONTAINER_ID, container_id);
     dd_save_text(dd, FILENAME_CONTAINER_UUID, container_id);
@@ -232,7 +232,7 @@ void dump_lxc_info(struct dump_dir *dd, const char *lxc_cmd)
     /* get mount point for MOUNTINFO_MOUNT_SOURCE(mntnf) + MOUNTINFO_ROOT(mntnf) */
 
 dump_lxc_info_cleanup:
-    mountinfo_destroy(&mntnf);
+    libreport_mountinfo_destroy(&mntnf);
 }
 
 int main(int argc, char **argv)
@@ -261,24 +261,24 @@ int main(int argc, char **argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR"     , _("Problem directory")),
         OPT_STRING('r', NULL, &root_dir,      "ROOTDIR" , _("Root directory for running container commands")),
         OPT_END()
     };
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+    /*unsigned opts =*/ libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /* for writing */0);
     if (dd == NULL)
-        xfunc_die();
+        libreport_xfunc_die();
 
     char *container_cmdline = dd_load_text_ext(dd, FILENAME_CONTAINER_CMDLINE, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (container_cmdline == NULL)
         error_msg_and_die("The crash didn't occur in container");
 
-    if (strstr(container_cmdline, "/docker ") != 0 || prefixcmp(container_cmdline, "/usr/libexec/docker") == 0)
+    if (strstr(container_cmdline, "/docker ") != 0 || libreport_prefixcmp(container_cmdline, "/usr/libexec/docker") == 0)
         dump_docker_info(dd, root_dir);
     else if (strstr(container_cmdline, "/lxc-") != 0)
         dump_lxc_info(dd, container_cmdline);

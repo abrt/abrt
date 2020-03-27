@@ -45,7 +45,7 @@ static void record_oops(GList **oops_list, const struct abrt_koops_line_info* li
     /* too short oopses are invalid */
     if (len > SANE_MIN_OOPS_LEN)
     {
-        char *oops = (char*)xzalloc(len);
+        char *oops = (char*)libreport_xzalloc(len);
         char *dst = oops;
         char *version = NULL;
         for (q = oopsstart; q <= oopsend; q++)
@@ -62,7 +62,7 @@ static void record_oops(GList **oops_list, const struct abrt_koops_line_info* li
         {
             *oops_list = g_list_append(
                         *oops_list,
-                        xasprintf("%s\n%s", (version ? version : ""), oops)
+                        libreport_xasprintf("%s\n%s", (version ? version : ""), oops)
             );
         }
         else
@@ -359,7 +359,7 @@ void abrt_koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
                     free(lines_info);
                     lines_info = NULL;
                     lines_info_size = 0;
-                    list_free_with_free(*oops_list);
+                    libreport_list_free_with_free(*oops_list);
                     *oops_list = NULL;
                 }
                 goto next_line;
@@ -380,7 +380,7 @@ void abrt_koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
 
         if ((lines_info_size & 0xfff) == 0)
         {
-            lines_info = xrealloc(lines_info, (lines_info_size + 0x1000) * sizeof(lines_info[0]));
+            lines_info = libreport_xrealloc(lines_info, (lines_info_size + 0x1000) * sizeof(lines_info[0]));
         }
         lines_info[lines_info_size].ptr = c;
         lines_info[lines_info_size].level = linelevel;
@@ -596,7 +596,7 @@ char *abrt_koops_hash_str_ext(const char *oops_buf, int frame_count, int duphash
         goto end;
     }
 
-    if (g_verbose >= 3)
+    if (libreport_g_verbose >= 3)
     {
         digest = sr_thread_get_duphash(thread, frame_count, NULL,
                                        duphash_flags|SR_DUPHASH_NOHASH);
@@ -669,7 +669,7 @@ char *abrt_koops_extract_version(const char *linepointer)
         /* 1: version prefix */
         /* 2: version string */
         const regmatch_t *const ver = matchptr + 2;
-        char *ret = xstrndup(linepointer + ver->rm_so, ver->rm_eo - ver->rm_so);
+        char *ret = libreport_xstrndup(linepointer + ver->rm_so, ver->rm_eo - ver->rm_so);
 
         regfree(&re);
         return ret;
@@ -736,7 +736,7 @@ char *abrt_kernel_tainted_short(const char *kernel_bt)
     /* 26 the maximal sane count of flags because of alphabet limits */
     unsigned sz = 26 + 1;
     unsigned cnt = 0;
-    char *tnt = xmalloc(sz);
+    char *tnt = libreport_xmalloc(sz);
 
     for (;;)
     {
@@ -746,7 +746,7 @@ char *abrt_kernel_tainted_short(const char *kernel_bt)
             {   /* this should not happen but */
                 /* I guess, it's a bit better approach than simple failure */
                 sz <<= 1;
-                tnt = xrealloc(tnt, sizeof(char) * sz);
+                tnt = libreport_xrealloc(tnt, sizeof(char) * sz);
             }
 
             tnt[cnt] = tainted[0];
@@ -801,7 +801,7 @@ static const char *const tnts_long[] = {
 
 char *abrt_kernel_tainted_long(const char *tainted_short)
 {
-    struct strbuf *tnt_long = strbuf_new();
+    struct strbuf *tnt_long = libreport_strbuf_new();
     while (tainted_short[0] != '\0')
     {
         const int tnt_index = tainted_short[0] - 'A';
@@ -809,12 +809,12 @@ char *abrt_kernel_tainted_long(const char *tainted_short)
         {
             const char *const txt = tnts_long[tnt_index];
             if (txt)
-                strbuf_append_strf(tnt_long, "%c - %s\n", tainted_short[0], txt);
+                libreport_strbuf_append_strf(tnt_long, "%c - %s\n", tainted_short[0], txt);
         }
 
         ++tainted_short;
     }
 
-    return strbuf_free_nobuf(tnt_long);
+    return libreport_strbuf_free_nobuf(tnt_long);
 }
 

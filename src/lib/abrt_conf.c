@@ -48,7 +48,7 @@ void abrt_free_abrt_conf_data()
 static char *xstrdup_normalized_path(const char *path)
 {
     const size_t len = strlen(path);
-    char *const res = xzalloc(len + 1);
+    char *const res = libreport_xzalloc(len + 1);
 
     res[0] = path[0];
 
@@ -69,14 +69,14 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
 {
     const char *value;
 
-    value = get_map_string_item_or_NULL(settings, "WatchCrashdumpArchiveDir");
+    value = libreport_get_map_string_item_or_NULL(settings, "WatchCrashdumpArchiveDir");
     if (value)
     {
         abrt_g_settings_sWatchCrashdumpArchiveDir = xstrdup_normalized_path(value);
-        remove_map_string_item(settings, "WatchCrashdumpArchiveDir");
+        libreport_remove_map_string_item(settings, "WatchCrashdumpArchiveDir");
     }
 
-    value = get_map_string_item_or_NULL(settings, "MaxCrashReportsSize");
+    value = libreport_get_map_string_item_or_NULL(settings, "MaxCrashReportsSize");
     if (value)
     {
         char *end;
@@ -86,46 +86,46 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
             error_msg("Error parsing %s setting: '%s'", "MaxCrashReportsSize", value);
         else
             abrt_g_settings_nMaxCrashReportsSize = ul;
-        remove_map_string_item(settings, "MaxCrashReportsSize");
+        libreport_remove_map_string_item(settings, "MaxCrashReportsSize");
     }
 
-    value = get_map_string_item_or_NULL(settings, "DumpLocation");
+    value = libreport_get_map_string_item_or_NULL(settings, "DumpLocation");
     if (value)
     {
         abrt_g_settings_dump_location = xstrdup_normalized_path(value);
-        remove_map_string_item(settings, "DumpLocation");
+        libreport_remove_map_string_item(settings, "DumpLocation");
     }
     else
-        abrt_g_settings_dump_location = xstrdup(DEFAULT_DUMP_LOCATION);
+        abrt_g_settings_dump_location = libreport_xstrdup(DEFAULT_DUMP_LOCATION);
 
-    value = get_map_string_item_or_NULL(settings, "DeleteUploaded");
+    value = libreport_get_map_string_item_or_NULL(settings, "DeleteUploaded");
     if (value)
     {
-        abrt_g_settings_delete_uploaded = string_to_bool(value);
-        remove_map_string_item(settings, "DeleteUploaded");
+        abrt_g_settings_delete_uploaded = libreport_string_to_bool(value);
+        libreport_remove_map_string_item(settings, "DeleteUploaded");
     }
 
-    value = get_map_string_item_or_NULL(settings, "AutoreportingEnabled");
+    value = libreport_get_map_string_item_or_NULL(settings, "AutoreportingEnabled");
     if (value)
     {
-        abrt_g_settings_autoreporting = string_to_bool(value);
-        remove_map_string_item(settings, "AutoreportingEnabled");
+        abrt_g_settings_autoreporting = libreport_string_to_bool(value);
+        libreport_remove_map_string_item(settings, "AutoreportingEnabled");
     }
 
-    value = get_map_string_item_or_NULL(settings, "AutoreportingEvent");
+    value = libreport_get_map_string_item_or_NULL(settings, "AutoreportingEvent");
     if (value)
     {
-        abrt_g_settings_autoreporting_event = xstrdup(value);
-        remove_map_string_item(settings, "AutoreportingEvent");
+        abrt_g_settings_autoreporting_event = libreport_xstrdup(value);
+        libreport_remove_map_string_item(settings, "AutoreportingEvent");
     }
     else
-        abrt_g_settings_autoreporting_event = xstrdup("report_uReport");
+        abrt_g_settings_autoreporting_event = libreport_xstrdup("report_uReport");
 
-    value = get_map_string_item_or_NULL(settings, "ShortenedReporting");
+    value = libreport_get_map_string_item_or_NULL(settings, "ShortenedReporting");
     if (value)
     {
-        abrt_g_settings_shortenedreporting = string_to_bool(value);
-        remove_map_string_item(settings, "ShortenedReporting");
+        abrt_g_settings_shortenedreporting = libreport_string_to_bool(value);
+        libreport_remove_map_string_item(settings, "ShortenedReporting");
     }
     else
     {
@@ -134,16 +134,16 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
         abrt_g_settings_shortenedreporting = (desktop_env && strcasestr(desktop_env, "gnome") != NULL);
     }
 
-    value = get_map_string_item_or_NULL(settings, "ExploreChroots");
+    value = libreport_get_map_string_item_or_NULL(settings, "ExploreChroots");
     if (value)
     {
-        abrt_g_settings_explorechroots = string_to_bool(value);
-        remove_map_string_item(settings, "ExploreChroots");
+        abrt_g_settings_explorechroots = libreport_string_to_bool(value);
+        libreport_remove_map_string_item(settings, "ExploreChroots");
     }
     else
         abrt_g_settings_explorechroots = false;
 
-    value = get_map_string_item_or_NULL(settings, "DebugLevel");
+    value = libreport_get_map_string_item_or_NULL(settings, "DebugLevel");
     if (value)
     {
         char *end;
@@ -153,14 +153,14 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
             error_msg("Error parsing %s setting: '%s'", "DebugLevel", value);
         else
             abrt_g_settings_debug_level = ul;
-        remove_map_string_item(settings, "DebugLevel");
+        libreport_remove_map_string_item(settings, "DebugLevel");
     }
 
     GHashTableIter iter;
     const char *name;
     /*char *value; - already declared */
-    init_map_string_iter(&iter, settings);
-    while (next_map_string_iter(&iter, &name, &value))
+    libreport_init_map_string_iter(&iter, settings);
+    while (libreport_next_map_string_iter(&iter, &name, &value))
     {
         error_msg("Unrecognized variable '%s' in '%s'", name, conf_filename);
     }
@@ -177,12 +177,12 @@ int abrt_load_abrt_conf()
     abrt_free_abrt_conf_data();
 
     const char *const abrt_conf = get_abrt_conf_file_name();
-    map_string_t *settings = new_map_string();
+    map_string_t *settings = libreport_new_map_string();
     if (!abrt_load_abrt_conf_file(abrt_conf, settings))
         perror_msg("Can't load '%s'", abrt_conf);
 
     ParseCommon(settings, abrt_conf);
-    free_map_string(settings);
+    libreport_free_map_string(settings);
 
     return 0;
 }
@@ -195,28 +195,28 @@ int abrt_load_abrt_conf_file(const char *file, map_string_t *settings)
         NULL
     };
 
-    return load_conf_file_from_dirs(file, conf_directories, settings, /*skip key w/o values:*/ false);
+    return libreport_load_conf_file_from_dirs(file, conf_directories, settings, /*skip key w/o values:*/ false);
 }
 
 int abrt_load_abrt_plugin_conf_file(const char *file, map_string_t *settings)
 {
     static const char *const conf_directories[] = { PLUGINS_CONF_DIR, NULL };
 
-    return load_conf_file_from_dirs(file, conf_directories, settings, /*skip key w/o values:*/ false);
+    return libreport_load_conf_file_from_dirs(file, conf_directories, settings, /*skip key w/o values:*/ false);
 }
 
 int abrt_save_abrt_conf_file(const char *file, map_string_t *settings)
 {
-    char *path = concat_path_file(CONF_DIR, file);
-    int retval = save_conf_file(path, settings);
+    char *path = libreport_concat_path_file(CONF_DIR, file);
+    int retval = libreport_save_conf_file(path, settings);
     free(path);
     return retval;
 }
 
 int abrt_save_abrt_plugin_conf_file(const char *file, map_string_t *settings)
 {
-    char *path = concat_path_file(PLUGINS_CONF_DIR, file);
-    int retval = save_conf_file(path, settings);
+    char *path = libreport_concat_path_file(PLUGINS_CONF_DIR, file);
+    int retval = libreport_save_conf_file(path, settings);
     free(path);
     return retval;
 }

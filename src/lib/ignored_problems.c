@@ -30,7 +30,7 @@ struct ignored_problems
 
 ignored_problems_t *ignored_problems_new(char *set_file_path)
 {
-    ignored_problems_t *set = xmalloc(sizeof(*set));
+    ignored_problems_t *set = libreport_xmalloc(sizeof(*set));
     set->ign_set_file_path = set_file_path;
     return set;
 }
@@ -105,7 +105,7 @@ static bool ignored_problems_file_contains(ignored_problems_t *set,
     unsigned line_num = 0;
     while (!found)
     {
-        char *line = xmalloc_fgetline(fp);
+        char *line = libreport_xmalloc_fgetline(fp);
         if (!line)
             break;
         ++line_num;
@@ -226,7 +226,7 @@ void ignored_problems_remove_row(ignored_problems_t *set, const char *problem_id
      */
     rewind(orig_fp);
 
-    char *new_tempfile_name = xasprintf("%s.XXXXXX", set->ign_set_file_path);
+    char *new_tempfile_name = libreport_xasprintf("%s.XXXXXX", set->ign_set_file_path);
     int new_tempfile_fd = mkstemp(new_tempfile_name);
     if (new_tempfile_fd < 0)
     {
@@ -236,14 +236,14 @@ void ignored_problems_remove_row(ignored_problems_t *set, const char *problem_id
 
     unsigned line_num = 0;
     char *line;
-    while ((line = xmalloc_fgetline(orig_fp)) != NULL)
+    while ((line = libreport_xmalloc_fgetline(orig_fp)) != NULL)
     {
         ++line_num;
         if (!ignored_problems_eq(set, problem_id, uuid, duphash, line, line_num))
         {
             ssize_t len = strlen(line);
             line[len] = '\n';
-            if (full_write(new_tempfile_fd, line, len + 1) < 0)
+            if (libreport_full_write(new_tempfile_fd, line, len + 1) < 0)
             {
                 /* Probably out of space */
                 line[len] = '\0';

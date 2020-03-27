@@ -166,7 +166,7 @@ abrt_journal_update_occurrence(const char *executable, unsigned ts)
 
     s_queue.oq_occurrences[s_queue.oq_head].oqlc_stamp = ts;
     free(s_queue.oq_occurrences[s_queue.oq_head].oqlc_executable);
-    s_queue.oq_occurrences[s_queue.oq_head].oqlc_executable = xstrdup(executable);
+    s_queue.oq_occurrences[s_queue.oq_head].oqlc_executable = libreport_xstrdup(executable);
 
     if (++s_queue.oq_head >= s_queue.oq_size)
         s_queue.oq_head = 0;
@@ -240,7 +240,7 @@ abrt_journal_core_retrieve_information(abrt_journal_t *journal, struct crash_inf
         return -ENOENT;
     }
 
-    uid_t tmp_fsuid = get_fsuid(proc_status);
+    uid_t tmp_fsuid = libreport_get_fsuid(proc_status);
     if (tmp_fsuid < 0)
         return -EINVAL;
 
@@ -303,9 +303,9 @@ save_systemd_coredump_in_dump_directory(struct dump_dir *dd, struct crash_info *
 
     char *reason;
     if (info->ci_signal_name == NULL)
-        reason = xasprintf("%s killed by signal %d", info->ci_executable_name, info->ci_signal_no);
+        reason = libreport_xasprintf("%s killed by signal %d", info->ci_executable_name, info->ci_signal_no);
     else
-        reason = xasprintf("%s killed by SIG%s", info->ci_executable_name, info->ci_signal_name);
+        reason = libreport_xasprintf("%s killed by SIG%s", info->ci_executable_name, info->ci_signal_name);
 
     dd_save_text(dd, FILENAME_REASON, reason);
     free(reason);
@@ -359,7 +359,7 @@ abrt_journal_core_to_abrt_problem(struct crash_info *info, const char *dump_loca
 
     if (dd != NULL)
     {
-        char *path = xstrdup(dd->dd_dirname);
+        char *path = libreport_xstrdup(dd->dd_dirname);
         dd_close(dd);
         abrt_notify_new_path(path);
         log_debug("ABRT daemon has been notified about directory: '%s'", path);
@@ -457,7 +457,7 @@ abrt_journal_watch_cores(abrt_journal_watch_t *watch, void *user_data)
     {
         error_msg("BUG: current time stamp lower than an old one");
 
-        if (g_verbose > 2)
+        if (libreport_g_verbose > 2)
             abort();
 
         goto watch_cleanup;
@@ -558,7 +558,7 @@ main(int argc, char *argv[])
 
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_BOOL(  's', NULL, NULL, _("Log to syslog")),
         OPT_STRING('d', NULL, &dump_location, "DIR", _("Create new problem directory in DIR for every coredump")),
         OPT_BOOL(  'D', NULL, NULL, _("Same as -d DumpLocation, DumpLocation is specified in abrt.conf")),
@@ -572,12 +572,12 @@ main(int argc, char *argv[])
         OPT_BOOL(  'o', NULL, NULL, _("Print found oopses on standard output")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
     if ((opts & OPT_s) || getenv("ABRT_SYSLOG"))
-        logmode = LOGMODE_JOURNAL;
+        libreport_logmode = LOGMODE_JOURNAL;
 
     if ((opts & OPT_c) && (opts & OPT_e))
         error_msg_and_die(_("You need to specify either -c CURSOR or -e"));
@@ -591,20 +591,20 @@ main(int argc, char *argv[])
     if (opts & OPT_D)
     {
         if (opts & OPT_d)
-            show_usage_and_die(program_usage_string, program_options);
+            libreport_show_usage_and_die(program_usage_string, program_options);
         dump_location = abrt_g_settings_dump_location;
     }
 
     {   /* Load CCpp.conf */
-        map_string_t *settings = new_map_string();
+        map_string_t *settings = libreport_new_map_string();
         abrt_load_abrt_plugin_conf_file("CCpp.conf", settings);
         const char *value;
 
-        value = get_map_string_item_or_NULL(settings, "VerboseLog");
+        value = libreport_get_map_string_item_or_NULL(settings, "VerboseLog");
         if (value)
-            g_verbose = xatoi_positive(value);
+            libreport_g_verbose = libreport_xatoi_positive(value);
 
-        free_map_string(settings);
+        libreport_free_map_string(settings);
     }
 
     /* systemd-coredump creates journal messages with SYSLOG_IDENTIFIER equals

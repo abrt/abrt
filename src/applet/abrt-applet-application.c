@@ -50,7 +50,7 @@ event_processing_state_new (void)
 
     state->child_pid = -1;
     state->child_stdout_fd = -1;
-    state->cmd_output = strbuf_new ();
+    state->cmd_output = libreport_strbuf_new ();
 
     return state;
 }
@@ -58,7 +58,7 @@ event_processing_state_new (void)
 static void
 event_processing_state_free (EventProcessingState *state)
 {
-    strbuf_free (state->cmd_output);
+    libreport_strbuf_free (state->cmd_output);
 
     g_free (state);
 }
@@ -153,7 +153,7 @@ abrt_applet_application_init (AbrtAppletApplication *self)
     GApplication *application;
     const GOptionEntry option_entries[] =
     {
-        { "verbose", 'v', G_OPTION_FLAG_NONE, G_OPTION_ARG_NONE, &g_verbose,
+        { "verbose", 'v', G_OPTION_FLAG_NONE, G_OPTION_ARG_NONE, &libreport_g_verbose,
           _("Be verbose"), NULL },
         { NULL },
     };
@@ -191,22 +191,22 @@ migrate_auto_reporting_to_gsettings (void)
     int auto_reporting;
     int configured;
 
-    settings_map = new_map_string ();
+    settings_map = libreport_new_map_string ();
 
-    if (!load_app_conf_file (APP_NAME, settings_map))
+    if (!libreport_load_app_conf_file (APP_NAME, settings_map))
     {
         goto finito;
     }
 
     /* Silently ignore not configured options */
-    sv_logmode = logmode;
+    sv_logmode = libreport_logmode;
     /* but only if we run in silent mode (no -v on command line) */
-    logmode = g_verbose == 0 ? 0 : sv_logmode;
+    libreport_logmode = libreport_g_verbose == 0 ? 0 : sv_logmode;
 
     auto_reporting = 0;
-    configured = try_get_map_string_item_as_bool (settings_map, OPT_NAME, &auto_reporting);
+    configured = libreport_try_get_map_string_item_as_bool (settings_map, OPT_NAME, &auto_reporting);
 
-    logmode = sv_logmode;
+    libreport_logmode = sv_logmode;
 
     if (configured == 0)
     {
@@ -229,14 +229,14 @@ migrate_auto_reporting_to_gsettings (void)
         g_settings_set_boolean (settings, GS_PRIVACY_OPT_AUTO_REPORTING, TRUE);
     }
 
-    remove_map_string_item (settings_map, OPT_NAME);
-    save_app_conf_file (APP_NAME, settings_map);
+    libreport_remove_map_string_item (settings_map, OPT_NAME);
+    libreport_save_app_conf_file (APP_NAME, settings_map);
 
     log_warning ("Successfully migrated "APP_NAME":"OPT_NAME" to "GS_SCHEMA_ID_PRIVACY":"GS_PRIVACY_OPT_AUTO_REPORTING);
 
 #undef OPT_NAME
 finito:
-    free_map_string (settings_map);
+    libreport_free_map_string (settings_map);
 }
 
 static const char *
@@ -244,9 +244,9 @@ get_autoreport_event_name (void)
 {
     const char *configured;
 
-    load_user_settings (APP_NAME);
+    libreport_load_user_settings (APP_NAME);
 
-    configured = get_user_setting ("AutoreportingEvent");
+    configured = libreport_get_user_setting ("AutoreportingEvent");
 
     if (configured != NULL)
     {
@@ -294,13 +294,13 @@ new_dir_exists (GList **new_dirs)
     }
 
     cachedir = g_get_user_cache_dir ();
-    dirlist_name = concat_path_file (cachedir, "abrt");
+    dirlist_name = libreport_concat_path_file (cachedir, "abrt");
 
     g_mkdir_with_parents (dirlist_name, 0777);
 
     g_free (dirlist_name);
 
-    dirlist_name = concat_path_file (cachedir, "abrt/applet_dirlist");
+    dirlist_name = libreport_concat_path_file (cachedir, "abrt/applet_dirlist");
     fp = fopen (dirlist_name, "r+");
     if (fp == NULL)
     {
@@ -317,7 +317,7 @@ new_dir_exists (GList **new_dirs)
         GList *l2;
         int different;
 
-        while ((line = xmalloc_fgetline (fp)) != NULL)
+        while ((line = libreport_xmalloc_fgetline (fp)) != NULL)
         {
             old_dirlist = g_list_prepend (old_dirlist, line);
         }
@@ -347,7 +347,7 @@ new_dir_exists (GList **new_dirs)
             {
                 if (new_dirs != NULL)
                 {
-                    *new_dirs = g_list_prepend (*new_dirs, xstrdup (l1->data));
+                    *new_dirs = g_list_prepend (*new_dirs, libreport_xstrdup (l1->data));
 
                     log_notice ("New dir detected: %s", (char *) l1->data);
                 }
@@ -370,7 +370,7 @@ new_dir_exists (GList **new_dirs)
         {
             while (l1 != NULL)
             {
-                *new_dirs = g_list_prepend (*new_dirs, xstrdup (l1->data));
+                *new_dirs = g_list_prepend (*new_dirs, libreport_xstrdup (l1->data));
 
                 log_notice ("New dir detected: %s", (char *) l1->data);
 
@@ -400,10 +400,10 @@ new_dir_exists (GList **new_dirs)
         }
 
         fclose (fp);
-        list_free_with_free (old_dirlist);
+        libreport_list_free_with_free (old_dirlist);
     }
 
-    list_free_with_free (dirlist);
+    libreport_list_free_with_free (dirlist);
 }
 
 static gboolean
@@ -470,7 +470,7 @@ spawn_event_handler_child (const char *dump_dir_name,
     env_vec[0] = g_strdup ("REPORT_CLIENT_NONINTERACTIVE=1");
     env_vec[1] = NULL;
 
-    child = fork_execv_on_steroids (flags, args, fdp ? pipeout : NULL,
+    child = libreport_fork_execv_on_steroids (flags, args, fdp ? pipeout : NULL,
                                     env_vec, /*dir:*/ NULL, /*uid(unused):*/ 0);
 
     if (fdp != NULL)
@@ -818,24 +818,24 @@ handle_event_output_cb (GIOChannel   *gio,
         {
             *newline = '\0';
 
-            strbuf_append_str (state->cmd_output, raw);
+            libreport_strbuf_append_str (state->cmd_output, raw);
 
             log_debug ("%s", state->cmd_output->buf);
 
-            strbuf_clear(state->cmd_output);
+            libreport_strbuf_clear(state->cmd_output);
             /* jump to next line */
             raw = newline + 1;
         }
 
         /* beginning of next line. the line continues by next read */
-        strbuf_append_str (state->cmd_output, raw);
+        libreport_strbuf_append_str (state->cmd_output, raw);
     }
 
     /* EOF/error */
 
     /* Wait for child to actually exit, collect status */
     status = 1;
-    if (safe_waitpid (state->child_pid, &status, 0) <= 0)
+    if (libreport_safe_waitpid (state->child_pid, &status, 0) <= 0)
     {
         perror_msg ("waitpid(%d)", (int) state->child_pid);
     }
@@ -911,7 +911,7 @@ export_event_configuration (const char *event_name)
     /* load event config data only for the event */
     if (event_config != NULL)
     {
-        load_single_event_config_data_from_user_storage(event_config);
+        libreport_load_single_event_config_data_from_user_storage(event_config);
     }
     ex_env = export_event_config (event_name);
 }
@@ -1151,7 +1151,7 @@ process_new_dirs (void)
         show_problem_list_notification (notify_list);
     }
 
-    list_free_with_free (new_dirs);
+    libreport_list_free_with_free (new_dirs);
 }
 
 static void
@@ -1181,12 +1181,12 @@ abrt_applet_application_startup (GApplication *application)
     migrate_to_xdg_dirs ();
     migrate_auto_reporting_to_gsettings ();
 
-    export_abrt_envvars (0);
-    msg_prefix = g_progname;
+    libreport_export_abrt_envvars (0);
+    libreport_msg_prefix = libreport_g_progname;
 
     abrt_load_abrt_conf ();
     load_event_config_data ();
-    load_user_settings (APP_NAME);
+    libreport_load_user_settings (APP_NAME);
 
     self->connection = g_bus_get_sync (G_BUS_TYPE_SYSTEM, NULL, &error);
     if (self->connection == NULL)

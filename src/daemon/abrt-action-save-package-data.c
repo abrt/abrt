@@ -71,50 +71,50 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
 {
     const char *value;
 
-    value = get_map_string_item_or_NULL(settings, "OpenGPGCheck");
+    value = libreport_get_map_string_item_or_NULL(settings, "OpenGPGCheck");
     if (value)
     {
-        settings_bOpenGPGCheck = string_to_bool(value);
-        remove_map_string_item(settings, "OpenGPGCheck");
+        settings_bOpenGPGCheck = libreport_string_to_bool(value);
+        libreport_remove_map_string_item(settings, "OpenGPGCheck");
     }
 
-    value = get_map_string_item_or_NULL(settings, "BlackList");
+    value = libreport_get_map_string_item_or_NULL(settings, "BlackList");
     if (value)
     {
-        settings_setBlackListedPkgs = parse_delimited_list(value, ",");
-        remove_map_string_item(settings, "BlackList");
-    }
-    else
-        settings_setBlackListedPkgs = parse_delimited_list(DEFAULT_BLACKLISTED_PKGS, ",");
-
-    value = get_map_string_item_or_NULL(settings, "BlackListedPaths");
-    if (value)
-    {
-        settings_setBlackListedPaths = parse_delimited_list(value, ",");
-        remove_map_string_item(settings, "BlackListedPaths");
+        settings_setBlackListedPkgs = libreport_parse_delimited_list(value, ",");
+        libreport_remove_map_string_item(settings, "BlackList");
     }
     else
-        settings_setBlackListedPaths = parse_delimited_list(DEFAULT_BLACKLISTED_PATHS, ",");
+        settings_setBlackListedPkgs = libreport_parse_delimited_list(DEFAULT_BLACKLISTED_PKGS, ",");
 
-    value = get_map_string_item_or_NULL(settings, "ProcessUnpackaged");
+    value = libreport_get_map_string_item_or_NULL(settings, "BlackListedPaths");
     if (value)
     {
-        settings_bProcessUnpackaged = string_to_bool(value);
-        remove_map_string_item(settings, "ProcessUnpackaged");
+        settings_setBlackListedPaths = libreport_parse_delimited_list(value, ",");
+        libreport_remove_map_string_item(settings, "BlackListedPaths");
+    }
+    else
+        settings_setBlackListedPaths = libreport_parse_delimited_list(DEFAULT_BLACKLISTED_PATHS, ",");
+
+    value = libreport_get_map_string_item_or_NULL(settings, "ProcessUnpackaged");
+    if (value)
+    {
+        settings_bProcessUnpackaged = libreport_string_to_bool(value);
+        libreport_remove_map_string_item(settings, "ProcessUnpackaged");
     }
 
-    value = get_map_string_item_or_NULL(settings, "Interpreters");
+    value = libreport_get_map_string_item_or_NULL(settings, "Interpreters");
     if (value)
     {
-        settings_Interpreters = parse_delimited_list(value, ",");
-        remove_map_string_item(settings, "Interpreters");
+        settings_Interpreters = libreport_parse_delimited_list(value, ",");
+        libreport_remove_map_string_item(settings, "Interpreters");
     }
 
     map_string_iter_t iter;
     const char *name;
     /*char *value; - already declared */
-    init_map_string_iter(&iter, settings);
-    while (next_map_string_iter(&iter, &name, &value))
+    libreport_init_map_string_iter(&iter, settings);
+    while (libreport_next_map_string_iter(&iter, &name, &value))
     {
         error_msg("Unrecognized variable '%s' in '%s'", name, conf_filename);
     }
@@ -122,14 +122,14 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
 
 static void load_gpg_keys(void)
 {
-    map_string_t *settings = new_map_string();
+    map_string_t *settings = libreport_new_map_string();
     if (!abrt_load_abrt_conf_file(GPG_CONF, settings))
     {
         error_msg("Can't load '%s'", GPG_CONF);
         return;
     }
 
-    const char *gpg_keys_dir = get_map_string_item_or_NULL(settings, "GPGKeysDir");
+    const char *gpg_keys_dir = libreport_get_map_string_item_or_NULL(settings, "GPGKeysDir");
     if (gpg_keys_dir == NULL)
     {
         gpg_keys_dir = DEFAULT_GPG_KEYS_DIR;
@@ -138,7 +138,7 @@ static void load_gpg_keys(void)
     {
         log_debug("Reading gpg keys from '%s'", gpg_keys_dir);
         GHashTable *done_set = g_hash_table_new(g_str_hash, g_str_equal);
-        GList *gpg_files = get_file_list(gpg_keys_dir, NULL /* we don't care about the file ext */);
+        GList *gpg_files = libreport_get_file_list(gpg_keys_dir, NULL /* we don't care about the file ext */);
         for (GList *iter = gpg_files; iter; iter = g_list_next(iter))
         {
             const char *key_path = fo_get_fullpath((file_obj_t *)iter->data);
@@ -148,20 +148,20 @@ static void load_gpg_keys(void)
 
             g_hash_table_insert(done_set, (gpointer)key_path, NULL);
             log_debug("Loading gpg key '%s'", key_path);
-            settings_setOpenGPGPublicKeys = g_list_append(settings_setOpenGPGPublicKeys, xstrdup(key_path));
+            settings_setOpenGPGPublicKeys = g_list_append(settings_setOpenGPGPublicKeys, libreport_xstrdup(key_path));
         }
 
-        g_list_free_full(gpg_files, (GDestroyNotify)free_file_obj);
+        g_list_free_full(gpg_files, (GDestroyNotify)libreport_free_file_obj);
         g_hash_table_destroy(done_set);
     }
 }
 
 static int load_conf(const char *conf_filename)
 {
-    map_string_t *settings = new_map_string();
+    map_string_t *settings = libreport_new_map_string();
     if (conf_filename != NULL)
     {
-        if (!load_conf_file(conf_filename, settings, false))
+        if (!libreport_load_conf_file(conf_filename, settings, false))
             error_msg("Can't open '%s'", conf_filename);
     }
     else
@@ -172,7 +172,7 @@ static int load_conf(const char *conf_filename)
     }
 
     ParseCommon(settings, conf_filename);
-    free_map_string(settings);
+    libreport_free_map_string(settings);
 
     load_gpg_keys();
 
@@ -212,7 +212,7 @@ static char *get_argv1_if_full_path(const char* cmdline)
 
     /* good, it has "/foo/bar" form, return it */
     int len = strchrnul(argv1, ' ') - argv1;
-    return xstrndup(argv1, len);
+    return libreport_xstrndup(argv1, len);
 }
 
 static bool is_path_blacklisted(const char *path)
@@ -291,7 +291,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
         strchrnul(kernel, ' ')[0] = '\0';
 
         log_info("Looking for kernel package");
-        executable = xasprintf("/boot/vmlinuz-%s", kernel);
+        executable = libreport_xasprintf("/boot/vmlinuz-%s", kernel);
     }
     else
     {
@@ -384,7 +384,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
     }
 
 skip_interpreter:
-    package_short_name = xasprintf("%s", pkg_name->p_name);
+    package_short_name = libreport_xasprintf("%s", pkg_name->p_name);
     log_info("Package:'%s' short:'%s'", pkg_name->p_nvr, package_short_name);
 
     /* The check for kernel_oops is there because it could be an unexpected
@@ -496,15 +496,15 @@ int main(int argc, char **argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR"     , _("Problem directory")),
         OPT_STRING('c', NULL, &conf_filename, "CONFFILE", _("Configuration file")),
         OPT_STRING('r', "chroot", &chroot,    "CHROOT"  , _("Use this directory as RPM root")),
         OPT_END()
     };
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+    /*unsigned opts =*/ libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
     log_notice("Loading settings");
     if (load_conf(conf_filename) != 0)

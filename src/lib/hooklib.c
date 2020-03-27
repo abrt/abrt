@@ -68,7 +68,7 @@ void abrt_trim_problem_dirs(const char *dirname, double cap_size, const char *ex
     {
         /* We exclude our own dir from candidates for deletion (3rd param): */
         char *worst_basename = NULL;
-        double cur_size = get_dirsize_find_largest_dir(dirname, &worst_basename, excluded_basename);
+        double cur_size = libreport_get_dirsize_find_largest_dir(dirname, &worst_basename, excluded_basename);
         if (cur_size <= cap_size || !worst_basename)
         {
             log_info("cur_size:%.0f cap_size:%.0f, no (more) trimming", cur_size, cap_size);
@@ -77,7 +77,7 @@ void abrt_trim_problem_dirs(const char *dirname, double cap_size, const char *ex
         }
         log_warning("%s is %.0f bytes (more than %.0fMiB), deleting '%s'",
                 dirname, cur_size, cap_size / (1024*1024), worst_basename);
-        char *d = concat_path_file(dirname, worst_basename);
+        char *d = libreport_concat_path_file(dirname, worst_basename);
         free(worst_basename);
         delete_dump_dir(d);
         free(d);
@@ -117,23 +117,23 @@ static char* exec_vp(char **args, int redirect_stderr, int exec_timeout_sec, int
     VERB1 flags &= ~EXECFLG_QUIET;
 
     int pipeout[2];
-    pid_t child = fork_execv_on_steroids(flags, args, pipeout, (char**)env_vec, /*dir:*/ NULL, /*uid(unused):*/ 0);
+    pid_t child = libreport_fork_execv_on_steroids(flags, args, pipeout, (char**)env_vec, /*dir:*/ NULL, /*uid(unused):*/ 0);
 
     /* We use this function to run gdb and unstrip. Bugs in gdb or corrupted
      * coredumps were observed to cause gdb to enter infinite loop.
      * Therefore we have a (largish) timeout, after which we kill the child.
      */
-    ndelay_on(pipeout[0]);
+    libreport_ndelay_on(pipeout[0]);
     int t = time(NULL); /* int is enough, no need to use time_t */
     int endtime = t + exec_timeout_sec;
-    struct strbuf *buf_out = strbuf_new();
+    struct strbuf *buf_out = libreport_strbuf_new();
     while (1)
     {
         int timeout = endtime - t;
         if (timeout < 0)
         {
             kill(child, SIGKILL);
-            strbuf_append_strf(buf_out, "\n"
+            libreport_strbuf_append_strf(buf_out, "\n"
                         "Timeout exceeded: %u seconds, killing %s.\n"
                         "Looks like gdb hung while generating backtrace.\n"
                         "This may be a bug in gdb. Consider submitting a bug report to gdb developers.\n"
@@ -159,7 +159,7 @@ static char* exec_vp(char **args, int redirect_stderr, int exec_timeout_sec, int
             break;
         }
         buff[r] = '\0';
-        strbuf_append_str(buf_out, buff);
+        libreport_strbuf_append_str(buf_out, buff);
  next:
         t = time(NULL);
     }
@@ -167,9 +167,9 @@ static char* exec_vp(char **args, int redirect_stderr, int exec_timeout_sec, int
 
     /* Prevent having zombie child process, and maybe collect status
      * (note that status == NULL is ok too) */
-    safe_waitpid(child, status, 0);
+    libreport_safe_waitpid(child, status, 0);
 
-    return strbuf_free_nobuf(buf_out);
+    return libreport_strbuf_free_nobuf(buf_out);
 }
 
 char *abrt_run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
@@ -179,26 +179,26 @@ char *abrt_run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
     int pipeout[2];
     char* args[4];
     args[0] = (char*)"eu-unstrip";
-    args[1] = xasprintf("--core=%s/"FILENAME_COREDUMP, dump_dir_name);
+    args[1] = libreport_xasprintf("--core=%s/"FILENAME_COREDUMP, dump_dir_name);
     args[2] = (char*)"-n";
     args[3] = NULL;
-    pid_t child = fork_execv_on_steroids(flags, args, pipeout, /*env_vec:*/ NULL, /*dir:*/ NULL, /*uid(unused):*/ 0);
+    pid_t child = libreport_fork_execv_on_steroids(flags, args, pipeout, /*env_vec:*/ NULL, /*dir:*/ NULL, /*uid(unused):*/ 0);
     free(args[1]);
 
     /* Bugs in unstrip or corrupted coredumps can cause it to enter infinite loop.
      * Therefore we have a (largish) timeout, after which we kill the child.
      */
-    ndelay_on(pipeout[0]);
+    libreport_ndelay_on(pipeout[0]);
     int t = time(NULL); /* int is enough, no need to use time_t */
     int endtime = t + timeout_sec;
-    struct strbuf *buf_out = strbuf_new();
+    struct strbuf *buf_out = libreport_strbuf_new();
     while (1)
     {
         int timeout = endtime - t;
         if (timeout < 0)
         {
             kill(child, SIGKILL);
-            strbuf_free(buf_out);
+            libreport_strbuf_free(buf_out);
             buf_out = NULL;
             break;
         }
@@ -219,7 +219,7 @@ char *abrt_run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
             break;
         }
         buff[r] = '\0';
-        strbuf_append_str(buf_out, buff);
+        libreport_strbuf_append_str(buf_out, buff);
  next:
         t = time(NULL);
     }
@@ -227,16 +227,16 @@ char *abrt_run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
 
     /* Prevent having zombie child process */
     int status;
-    safe_waitpid(child, &status, 0);
+    libreport_safe_waitpid(child, &status, 0);
 
     if (status != 0 || buf_out == NULL)
     {
         /* unstrip didnt exit with exit code 0, or we timed out */
-        strbuf_free(buf_out);
+        libreport_strbuf_free(buf_out);
         return NULL;
     }
 
-    return strbuf_free_nobuf(buf_out);
+    return libreport_strbuf_free_nobuf(buf_out);
 }
 
 char *abrt_get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char *debuginfo_dirs)
@@ -249,7 +249,7 @@ char *abrt_get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const 
 
     char *executable = NULL;
     if (dd_exist(dd, FILENAME_BINARY))
-        executable = concat_path_file(dd->dd_dirname, FILENAME_BINARY);
+        executable = libreport_concat_path_file(dd->dd_dirname, FILENAME_BINARY);
     else
         executable = dd_load_text(dd, FILENAME_EXECUTABLE);
 
@@ -262,19 +262,19 @@ char *abrt_get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const 
     char *args[25];
     args[i++] = (char*)GDB;
     args[i++] = (char*)"-batch";
-    struct strbuf *set_debug_file_directory = strbuf_new();
+    struct strbuf *set_debug_file_directory = libreport_strbuf_new();
     unsigned auto_load_base_index = 0;
     if(debuginfo_dirs == NULL)
     {
         // set non-existent debug file directory to prevent resolving
         // function names - we need offsets for core backtrace.
-        strbuf_append_str(set_debug_file_directory, "set debug-file-directory /");
+        libreport_strbuf_append_str(set_debug_file_directory, "set debug-file-directory /");
     }
     else
     {
-        strbuf_append_str(set_debug_file_directory, "set debug-file-directory /usr/lib/debug:/usr/lib");
+        libreport_strbuf_append_str(set_debug_file_directory, "set debug-file-directory /usr/lib/debug:/usr/lib");
 
-        struct strbuf *debug_directories = strbuf_new();
+        struct strbuf *debug_directories = libreport_strbuf_new();
         const char *p = debuginfo_dirs;
         while (1)
         {
@@ -283,7 +283,7 @@ char *abrt_get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const 
             if (*p == '\0')
                 break;
             const char *colon_or_nul = strchrnul(p, ':');
-            strbuf_append_strf(debug_directories,
+            libreport_strbuf_append_strf(debug_directories,
                                "%s%.*s/usr/lib/debug:%.*s/usr/lib",
                                (debug_directories->len == 0 ? "" : ":"),
                                (int)(colon_or_nul - p), p,
@@ -291,20 +291,20 @@ char *abrt_get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const 
             p = colon_or_nul;
         }
 
-        strbuf_append_strf(set_debug_file_directory, ":%s", debug_directories->buf);
+        libreport_strbuf_append_strf(set_debug_file_directory, ":%s", debug_directories->buf);
 
         args[i++] = (char*)"-iex";
         auto_load_base_index = i;
-        args[i++] = xasprintf("add-auto-load-safe-path %s", debug_directories->buf);
+        args[i++] = libreport_xasprintf("add-auto-load-safe-path %s", debug_directories->buf);
         args[i++] = (char*)"-iex";
-        args[i++] = xasprintf("add-auto-load-scripts-directory %s", debug_directories->buf);
+        args[i++] = libreport_xasprintf("add-auto-load-scripts-directory %s", debug_directories->buf);
 
-        strbuf_free(debug_directories);
+        libreport_strbuf_free(debug_directories);
     }
 
     args[i++] = (char*)"-ex";
     const unsigned debug_dir_cmd_index = i++;
-    args[debug_dir_cmd_index] = strbuf_free_nobuf(set_debug_file_directory);
+    args[debug_dir_cmd_index] = libreport_strbuf_free_nobuf(set_debug_file_directory);
 
     /* "file BINARY_FILE" is needed, without it gdb cannot properly
      * unwind the stack. Currently the unwind information is located
@@ -328,12 +328,12 @@ char *abrt_get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const 
      */
     args[i++] = (char*)"-ex";
     const unsigned file_cmd_index = i++;
-    args[file_cmd_index] = xasprintf("file %s", executable);
+    args[file_cmd_index] = libreport_xasprintf("file %s", executable);
     free(executable);
 
     args[i++] = (char*)"-ex";
     const unsigned core_cmd_index = i++;
-    args[core_cmd_index] = xasprintf("core-file %s/"FILENAME_COREDUMP, dump_dir_name);
+    args[core_cmd_index] = libreport_xasprintf("core-file %s/"FILENAME_COREDUMP, dump_dir_name);
 
     args[i++] = (char*)"-ex";
     const unsigned bt_cmd_index = i++;
@@ -360,7 +360,7 @@ char *abrt_get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const 
     char *bt = NULL;
     while (1)
     {
-        args[bt_cmd_index] = xasprintf("%s backtrace %s%u", thread_apply_all, full, bt_depth);
+        args[bt_cmd_index] = libreport_xasprintf("%s backtrace %s%u", thread_apply_all, full, bt_depth);
         bt = exec_vp(args, /*redirect_stderr:*/ 1, timeout_sec, NULL);
         free(args[bt_cmd_index]);
         if ((bt && strnlen(bt, 256*1024) < 256*1024) || bt_depth <= 32)
@@ -424,7 +424,7 @@ char* problem_data_save(problem_data_t *pd)
     char *problem_id = NULL;
     if (dd)
     {
-        problem_id = xstrdup(dd->dd_dirname);
+        problem_id = libreport_xstrdup(dd->dd_dirname);
         dd_close(dd);
     }
 
@@ -549,7 +549,7 @@ bool abrt_dir_is_in_dump_location(const char *dir_name)
     while (*base_name && *base_name == '/')
         ++base_name;
 
-    if (*(base_name - 1) != '/' || !str_is_correct_filename(base_name))
+    if (*(base_name - 1) != '/' || !libreport_str_is_correct_filename(base_name))
     {
         log_debug("Invalid dump directory name: '%s'", base_name);
         return false;

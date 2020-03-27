@@ -132,7 +132,7 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
          || ((attr_set == 1) && ((err = posix_spawnattr_destroy(&attr)) != 0)))
          perror_msg_and_die("posix_spawn destroy");
 
-    safe_waitpid(pid, NULL, 0);
+    libreport_safe_waitpid(pid, NULL, 0);
 
     /* Check fd's position, and move to end if it wasn't advanced.
      * This means that child failed to read its stdin.
@@ -172,24 +172,24 @@ int main(int argc, char **argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_BOOL('s', NULL, NULL              , _("Log to syslog")),
         OPT_LIST('F', NULL, &match_list, "STR", _("Don't run PROG if STRs aren't found")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
-    msg_prefix = g_progname;
+    libreport_msg_prefix = libreport_g_progname;
     if ((opts & OPT_s) || getenv("ABRT_SYSLOG"))
     {
-        logmode = LOGMODE_JOURNAL;
+        libreport_logmode = LOGMODE_JOURNAL;
     }
 
     argv += optind;
     if (!argv[0] || !argv[1])
-        show_usage_and_die(program_usage_string, program_options);
+        libreport_show_usage_and_die(program_usage_string, program_options);
 
     /* We want to support -F "`echo foo; echo bar`" -
      * need to split strings by newline, and be careful about
@@ -212,7 +212,7 @@ int main(int argc, char **argv)
     int inotify_fd = inotify_init();
     if (inotify_fd == -1)
         perror_msg_and_die("inotify_init failed");
-    close_on_exec_on(inotify_fd);
+    libreport_close_on_exec_on(inotify_fd);
 
     struct stat statbuf;
     int file_fd = -1;

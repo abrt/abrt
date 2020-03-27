@@ -260,7 +260,7 @@ GVariant *abrt_p2_entry_read_elements(AbrtP2Entry *entry,
     while (g_variant_iter_loop(&iter, "s", &name))
     {
         log_debug("Reading element: %s", name);
-        /* Do ask me why -> see libreport xmalloc_read() */
+        /* Do ask me why -> see libreport libreport_xmalloc_read() */
         size_t data_size = (INT_MAX - 4095);
 
         int elem_type = 0;
@@ -343,7 +343,7 @@ GVariant *abrt_p2_entry_read_elements(AbrtP2Entry *entry,
 
         if (!(elem_type & CD_FLAG_TXT))
         {
-            data = xmalloc_read(fd, &data_size);
+            data = libreport_xmalloc_read(fd, &data_size);
 
             log_debug("Re-loaded entire element: %zu Bytes", data_size);
         }
@@ -429,7 +429,7 @@ typedef struct
 } AbrtP2EntryReadElementsData;
 
 #define abrt_p2_entry_read_elements_data_new() \
-    xmalloc(sizeof(AbrtP2EntryReadElementsData))
+    libreport_xmalloc(sizeof(AbrtP2EntryReadElementsData))
 
 static inline void abrt_p2_entry_read_elements_data_free(AbrtP2EntryReadElementsData *data)
 {
@@ -855,7 +855,7 @@ typedef struct {
 } AbrtP2EntrySaveElementsData;
 
 #define abrt_p2_entry_save_elements_data_new() \
-    xmalloc(sizeof(AbrtP2EntrySaveElementsData))
+    libreport_xmalloc(sizeof(AbrtP2EntrySaveElementsData))
 
 static inline void abrt_p2_entry_save_elements_data_free(AbrtP2EntrySaveElementsData *data)
 {

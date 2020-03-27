@@ -48,8 +48,8 @@ int abrt_notify_new_path_with_response(const char *path, char **message)
         return retval;
     }
 
-    full_write_str(fd, "POST /creation_notification HTTP/1.1\r\n\r\n");
-    full_write_str(fd, path);
+    libreport_full_write_str(fd, "POST /creation_notification HTTP/1.1\r\n\r\n");
+    libreport_full_write_str(fd, path);
 
     /*
      * This sends FIN packet. Without it, close() may result in RST instead.
@@ -63,7 +63,7 @@ int abrt_notify_new_path_with_response(const char *path, char **message)
         return 0;
     }
 
-    *message = xmalloc_read(fd, NULL);
+    *message = libreport_xmalloc_read(fd, NULL);
     if (*message == NULL)
     {
         log_info("abrtd response could not be received");

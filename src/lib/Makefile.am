@@ -1,4 +1,4 @@
-# libreport - the stuff shared among most of abrt (like xmalloc, logging)
+# libreport - the stuff shared among most of abrt (like libreport_xmalloc, logging)
 # libabrt_dbus - daemon, cli and applet use this
 # libabrt_web - for abrt-action-foo where foo deals with network/web/ftp/...
 lib_LTLIBRARIES = \
