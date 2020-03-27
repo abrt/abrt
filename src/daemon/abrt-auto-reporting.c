@@ -51,12 +51,12 @@ static int
 set_abrt_reporting(map_string_t *conf, const char *opt_value)
 {
     const char *const def_value = REPORTING_STATES[0][1];
-    const char *const cur_value = get_map_string_item_or_NULL(conf, OPTION_NAME);
+    const char *const cur_value = libreport_get_map_string_item_or_NULL(conf, OPTION_NAME);
 
     if (  (cur_value == NULL && strcmp(def_value, opt_value) != 0)
        || (cur_value != NULL && strcmp(cur_value, opt_value) != 0))
     {
-        replace_map_string_item(conf, xstrdup(OPTION_NAME), xstrdup(opt_value));
+        libreport_replace_map_string_item(conf, libreport_xstrdup(OPTION_NAME), libreport_xstrdup(opt_value));
         return abrt_save_abrt_conf_file(CONF_NAME, conf);
     }
 
@@ -68,14 +68,14 @@ set_abrt_reporting(map_string_t *conf, const char *opt_value)
 static int
 set_ureport_http_auth(map_string_t *conf, const char *opt_value)
 {
-    const char *const cur_value = get_map_string_item_or_NULL(conf, UREPORT_HTTP_AUTH_OPTION);
+    const char *const cur_value = libreport_get_map_string_item_or_NULL(conf, UREPORT_HTTP_AUTH_OPTION);
 
     if (cur_value == NULL || strcmp(cur_value, opt_value) != 0)
     {
-        replace_map_string_item(conf, xstrdup(UREPORT_HTTP_AUTH_OPTION), xstrdup(opt_value));
-        remove_map_string_item(conf, UREPORT_CLIENT_AUTH_OPTION);
+        libreport_replace_map_string_item(conf, libreport_xstrdup(UREPORT_HTTP_AUTH_OPTION), libreport_xstrdup(opt_value));
+        libreport_remove_map_string_item(conf, UREPORT_CLIENT_AUTH_OPTION);
 
-        return save_plugin_conf_file(UREPORT_NAME, conf);
+        return libreport_save_plugin_conf_file(UREPORT_NAME, conf);
     }
 
     /* No changes needed -> success */
@@ -85,14 +85,14 @@ set_ureport_http_auth(map_string_t *conf, const char *opt_value)
 static int
 set_ureport_client_auth(map_string_t *conf, const char *opt_value)
 {
-    const char *const cur_value = get_map_string_item_or_NULL(conf, UREPORT_CLIENT_AUTH_OPTION);
+    const char *const cur_value = libreport_get_map_string_item_or_NULL(conf, UREPORT_CLIENT_AUTH_OPTION);
 
     if (cur_value == NULL || strcmp(cur_value, opt_value) != 0)
     {
-        replace_map_string_item(conf, xstrdup(UREPORT_CLIENT_AUTH_OPTION), xstrdup(opt_value));
-        remove_map_string_item(conf, UREPORT_HTTP_AUTH_OPTION);
+        libreport_replace_map_string_item(conf, libreport_xstrdup(UREPORT_CLIENT_AUTH_OPTION), libreport_xstrdup(opt_value));
+        libreport_remove_map_string_item(conf, UREPORT_HTTP_AUTH_OPTION);
 
-        return save_plugin_conf_file(UREPORT_NAME, conf);
+        return libreport_save_plugin_conf_file(UREPORT_NAME, conf);
     }
 
     /* No changes needed -> success */
@@ -102,15 +102,15 @@ set_ureport_client_auth(map_string_t *conf, const char *opt_value)
 static int
 clear_ureport_auth(map_string_t *conf)
 {
-    const char *const http_cur_value = get_map_string_item_or_NULL(conf, UREPORT_HTTP_AUTH_OPTION);
-    const char *const ssl_cur_value = get_map_string_item_or_NULL(conf, UREPORT_CLIENT_AUTH_OPTION);
+    const char *const http_cur_value = libreport_get_map_string_item_or_NULL(conf, UREPORT_HTTP_AUTH_OPTION);
+    const char *const ssl_cur_value = libreport_get_map_string_item_or_NULL(conf, UREPORT_CLIENT_AUTH_OPTION);
 
     if (http_cur_value != NULL || ssl_cur_value != NULL)
     {
-        remove_map_string_item(conf, UREPORT_HTTP_AUTH_OPTION);
-        remove_map_string_item(conf, UREPORT_CLIENT_AUTH_OPTION);
+        libreport_remove_map_string_item(conf, UREPORT_HTTP_AUTH_OPTION);
+        libreport_remove_map_string_item(conf, UREPORT_CLIENT_AUTH_OPTION);
 
-        return save_plugin_conf_file(UREPORT_NAME, conf);
+        return libreport_save_plugin_conf_file(UREPORT_NAME, conf);
     }
 
     /* No changes needed -> success */
@@ -120,16 +120,16 @@ clear_ureport_auth(map_string_t *conf)
 static int
 set_rhts_credentials(map_string_t *conf, const char *username, const char *password)
 {
-    const char *const username_cur_value = get_map_string_item_or_NULL(conf, RHTS_USERNAME_OPTION);
-    const char *const password_cur_value = get_map_string_item_or_NULL(conf, RHTS_PASSWORD_OPTION);
+    const char *const username_cur_value = libreport_get_map_string_item_or_NULL(conf, RHTS_USERNAME_OPTION);
+    const char *const password_cur_value = libreport_get_map_string_item_or_NULL(conf, RHTS_PASSWORD_OPTION);
 
     if (  (username_cur_value == NULL || strcmp(username_cur_value, username) != 0)
        || (password_cur_value == NULL || strcmp(password_cur_value, password) != 0))
     {
-        replace_map_string_item(conf, xstrdup(RHTS_USERNAME_OPTION), xstrdup(username));
-        replace_map_string_item(conf, xstrdup(RHTS_PASSWORD_OPTION), xstrdup(password));
+        libreport_replace_map_string_item(conf, libreport_xstrdup(RHTS_USERNAME_OPTION), libreport_xstrdup(username));
+        libreport_replace_map_string_item(conf, libreport_xstrdup(RHTS_PASSWORD_OPTION), libreport_xstrdup(password));
 
-        return save_plugin_conf_file(RHTS_NAME, conf);
+        return libreport_save_plugin_conf_file(RHTS_NAME, conf);
     }
 
     /* No changes needed -> success */
@@ -140,8 +140,8 @@ set_rhts_credentials(map_string_t *conf, const char *username, const char *passw
 static const char *
 get_abrt_reporting(map_string_t *conf)
 {
-    const char *const cur_value = get_map_string_item_or_empty(conf, OPTION_NAME);
-    const int index = !!string_to_bool(cur_value);
+    const char *const cur_value = libreport_get_map_string_item_or_empty(conf, OPTION_NAME);
+    const int index = !!libreport_string_to_bool(cur_value);
     return REPORTING_STATES[index][0];
 }
 
@@ -149,13 +149,13 @@ get_abrt_reporting(map_string_t *conf)
 static const char *
 get_ureport_http_auth(map_string_t *conf)
 {
-    return get_map_string_item_or_NULL(conf, UREPORT_HTTP_AUTH_OPTION);
+    return libreport_get_map_string_item_or_NULL(conf, UREPORT_HTTP_AUTH_OPTION);
 }
 
 static const char *
 get_ureport_client_auth(map_string_t *conf)
 {
-    return get_map_string_item_or_NULL(conf, UREPORT_CLIENT_AUTH_OPTION);
+    return libreport_get_map_string_item_or_NULL(conf, UREPORT_CLIENT_AUTH_OPTION);
 }
 #endif
 
@@ -228,7 +228,7 @@ int main(int argc, char *argv[])
 
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
 #if AUTHENTICATED_AUTOREPORTING != 0
         OPT_BOOL  (  'a', "anonymous",   &anonymous,               _("Turns the authentication off")),
         OPT_STRING(  'u', "username",    &username,    "USERNAME", _("Red Hat Support user name")),
@@ -241,7 +241,7 @@ int main(int argc, char *argv[])
 #if AUTHENTICATED_AUTOREPORTING != 0
     const unsigned opts =
 #endif
-    parse_opts(argc, argv, program_options, program_usage_string);
+    libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
     argv += optind;
     argc -= optind;
@@ -250,32 +250,32 @@ int main(int argc, char *argv[])
     if ((opts & OPT_p) && !(opts & OPT_u))
     {
         error_msg(_("You also need to specify --username for --password"));
-        show_usage_and_die(program_usage_string, program_options);
+        libreport_show_usage_and_die(program_usage_string, program_options);
     }
 
     if ((opts & OPT_u) && (opts & OPT_c))
     {
         error_msg(_("You can use either --username or --certificate"));
-        show_usage_and_die(program_usage_string, program_options);
+        libreport_show_usage_and_die(program_usage_string, program_options);
     }
 
     if ((opts & OPT_u) && (opts & OPT_a))
     {
         error_msg(_("You can use either --username or --anonymous"));
-        show_usage_and_die(program_usage_string, program_options);
+        libreport_show_usage_and_die(program_usage_string, program_options);
     }
 
     if ((opts & OPT_a) && (opts & OPT_c))
     {
         error_msg(_("You can use either --anonymous or --certificate"));
-        show_usage_and_die(program_usage_string, program_options);
+        libreport_show_usage_and_die(program_usage_string, program_options);
     }
 
 #endif
     if (argc > 1)
     {
         error_msg(_("Invalid number of arguments"));
-        show_usage_and_die(program_usage_string, program_options);
+        libreport_show_usage_and_die(program_usage_string, program_options);
     }
 
     const char *opt_value = NULL;
@@ -294,29 +294,29 @@ int main(int argc, char *argv[])
         if (opt_value == NULL)
         {
             error_msg(_("Unknown option value: '%s'\n"), new_value);
-            show_usage_and_die(program_usage_string, program_options);
+            libreport_show_usage_and_die(program_usage_string, program_options);
         }
     }
 
     int exit_code = EXIT_FAILURE;
 
-    map_string_t *conf = new_map_string();
+    map_string_t *conf = libreport_new_map_string();
 #if AUTHENTICATED_AUTOREPORTING != 0
-    map_string_t *rhts_conf = new_map_string();
+    map_string_t *rhts_conf = libreport_new_map_string();
     map_string_t *rhts_conf_bck = NULL;
 #endif
-    map_string_t *ureport_conf = new_map_string();
+    map_string_t *ureport_conf = libreport_new_map_string();
     map_string_t *ureport_conf_bck = NULL;
 
     if (!abrt_load_abrt_conf_file(CONF_NAME, conf))
         goto finito;
 
 #if AUTHENTICATED_AUTOREPORTING != 0
-    if (!load_plugin_conf_file(RHTS_NAME, rhts_conf, false))
+    if (!libreport_load_plugin_conf_file(RHTS_NAME, rhts_conf, false))
         goto finito;
 #endif
 
-    if (!load_plugin_conf_file(UREPORT_NAME, ureport_conf, false))
+    if (!libreport_load_plugin_conf_file(UREPORT_NAME, ureport_conf, false))
         goto finito;
 
 #if AUTHENTICATED_AUTOREPORTING != 0
@@ -350,7 +350,7 @@ int main(int argc, char *argv[])
 
         if (!set_rhts_credentials(rhts_conf, username, password))
         {
-            save_plugin_conf_file(UREPORT_NAME, ureport_conf_bck);
+            libreport_save_plugin_conf_file(UREPORT_NAME, ureport_conf_bck);
             goto finito;
         }
 
@@ -372,7 +372,7 @@ int main(int argc, char *argv[])
         exit_code = EXIT_SUCCESS;
 
 #if AUTHENTICATED_AUTOREPORTING != 0
-        if (g_verbose >= 1)
+        if (libreport_g_verbose >= 1)
         {
             const char *tmp = get_ureport_http_auth(ureport_conf);
             if (tmp != NULL)
@@ -394,22 +394,22 @@ int main(int argc, char *argv[])
     if (exit_code == EXIT_FAILURE)
     {
         if (ureport_conf_bck != NULL)
-            save_plugin_conf_file(UREPORT_NAME, ureport_conf_bck);
+            libreport_save_plugin_conf_file(UREPORT_NAME, ureport_conf_bck);
 
 #if AUTHENTICATED_AUTOREPORTING != 0
         if (rhts_conf_bck != NULL)
-            save_plugin_conf_file(RHTS_NAME, rhts_conf_bck);
+            libreport_save_plugin_conf_file(RHTS_NAME, rhts_conf_bck);
 #endif
     }
 
 
 finito:
-    free_map_string(ureport_conf);
-    free_map_string(ureport_conf_bck);
+    libreport_free_map_string(ureport_conf);
+    libreport_free_map_string(ureport_conf_bck);
 #if AUTHENTICATED_AUTOREPORTING != 0
-    free_map_string(rhts_conf);
-    free_map_string(rhts_conf_bck);
+    libreport_free_map_string(rhts_conf);
+    libreport_free_map_string(rhts_conf_bck);
 #endif
-    free_map_string(conf);
+    libreport_free_map_string(conf);
     return exit_code;
 }

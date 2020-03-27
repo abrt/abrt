@@ -246,7 +246,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
     struct dirent *dent;
     while ((dent = readdir(dir)) != NULL && crash_dump_dup_name == NULL)
     {
-        if (dot_or_dotdot(dent->d_name))
+        if (libreport_dot_or_dotdot(dent->d_name))
             continue; /* skip "." and ".." */
         const char *ext = strrchr(dent->d_name, '.');
         if (ext && strcmp(ext, ".new") == 0)
@@ -254,10 +254,10 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
 
         dd = NULL;
 
-        char *tmp_concat_path = concat_path_file(abrt_g_settings_dump_location, dent->d_name);
+        char *tmp_concat_path = libreport_concat_path_file(abrt_g_settings_dump_location, dent->d_name);
 
         char *dump_dir_name2 = realpath(tmp_concat_path, NULL);
-        if (g_verbose > 1 && !dump_dir_name2)
+        if (libreport_g_verbose > 1 && !dump_dir_name2)
             perror_msg("realpath(%s)", tmp_concat_path);
 
         free(tmp_concat_path);
@@ -271,11 +271,11 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
         if (strcmp(dump_dir_name, dump_dir_name2) == 0)
             goto next; /* we are never a dup of ourself */
 
-        int sv_logmode = logmode;
+        int sv_logmode = libreport_logmode;
         /* Silently ignore any error in the silent log level. */
-        logmode = g_verbose == 0 ? 0 : sv_logmode;
+        libreport_logmode = libreport_g_verbose == 0 ? 0 : sv_logmode;
         dd = dd_opendir(dump_dir_name2, /*flags:*/ DD_FAIL_QUIETLY_ENOENT | DD_OPEN_READONLY);
-        logmode = sv_logmode;
+        libreport_logmode = sv_logmode;
         if (!dd)
             goto next;
 
@@ -367,17 +367,17 @@ int main(int argc, char **argv)
     int nice_incr = 0;
 
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING('e', "event" , &event_name, "EVENT",  _("Run EVENT on DIR")),
         OPT_BOOL('i', "interactive" , &interactive, _("Communicate directly to the user")),
         OPT_INTEGER('n',     "nice" , &nice_incr,   _("Increment the nice value by INCREMENT")),
         OPT_END()
     };
 
-    parse_opts(argc, argv, program_options, program_usage_string);
+    libreport_parse_opts(argc, argv, program_options, program_usage_string);
     argv += optind;
     if (!*argv || !event_name)
-        show_usage_and_die(program_usage_string, program_options);
+        libreport_show_usage_and_die(program_usage_string, program_options);
 
     abrt_load_abrt_conf();
 
@@ -385,7 +385,7 @@ int main(int argc, char **argv)
     if (opt_env_nice != NULL && opt_env_nice[0] != '\0')
     {
         log_debug("Using ABRT_EVENT_NICE=%s to increment the nice value", opt_env_nice);
-        nice_incr = xatoi(opt_env_nice);
+        nice_incr = libreport_xatoi(opt_env_nice);
     }
 
     if (nice_incr != 0)
@@ -400,7 +400,7 @@ int main(int argc, char **argv)
     char *dump_dir_name = NULL;
     while (*argv)
     {
-        dump_dir_name = xstrdup(*argv++);
+        dump_dir_name = libreport_xstrdup(*argv++);
         int i = strlen(dump_dir_name);
         while (--i >= 0)
             if (dump_dir_name[i] != '/')

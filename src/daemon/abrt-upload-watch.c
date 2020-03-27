@@ -89,7 +89,7 @@ run_abrt_handle_upload(struct process *proc, const char *name)
     if (pid == 0)
     {
         /* child */
-        xchdir(proc->upload_directory);
+        libreport_xchdir(proc->upload_directory);
         if (abrt_g_settings_delete_uploaded)
             execlp("abrt-handle-upload", "abrt-handle-upload", "-d",
                            abrt_g_settings_dump_location, proc->upload_directory, name, (char*)NULL);
@@ -190,7 +190,7 @@ handle_signal_pipe_cb(GIOChannel *gio, GIOCondition condition, gpointer user_dat
             }
             else
             {
-                while (safe_waitpid(-1, NULL, WNOHANG) > 0)
+                while (libreport_safe_waitpid(-1, NULL, WNOHANG) > 0)
                 {
                     --proc->children;
                     process_next_in_queue(proc);
@@ -214,7 +214,7 @@ handle_inotify_cb(struct abrt_inotify_watch *watch, struct inotify_event *event,
         if (ext && strcmp(ext + 1, "working") == 0)
             return;
 
-        handle_new_path((struct process *)user_data, xstrdup(event->name));
+        handle_new_path((struct process *)user_data, libreport_xstrdup(event->name));
     }
 }
 
@@ -234,12 +234,12 @@ daemonize()
         perror_msg_and_die("setsid");
 
     /* Change the current working directory */
-    xchdir("/");
+    libreport_xchdir("/");
 
     /* Reopen the standard file descriptors to "/dev/null" */
-    xmove_fd(xopen("/dev/null", O_RDWR), STDIN_FILENO);
-    xdup2(STDIN_FILENO, STDOUT_FILENO);
-    xdup2(STDIN_FILENO, STDERR_FILENO);
+    libreport_xmove_fd(libreport_xopen("/dev/null", O_RDWR), STDIN_FILENO);
+    libreport_xdup2(STDIN_FILENO, STDOUT_FILENO);
+    libreport_xdup2(STDIN_FILENO, STDERR_FILENO);
 }
 
 int
@@ -276,14 +276,14 @@ main(int argc, char **argv)
 
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_BOOL('s', NULL, NULL              , _("Log to syslog")),
         OPT_BOOL('d', NULL, NULL              , _("Daemonize")),
         OPT_INTEGER('w', NULL, &concurrent_workers, _("Number of concurrent workers. Default is "STRINGIZE(DEFAULT_COUNT_OF_WORKERS))),
         OPT_INTEGER('c', NULL, &cache_size_mib, _("Maximal cache size in MiB. Default is "STRINGIZE(DEFAULT_CACHE_MIB_SIZE))),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
     if (concurrent_workers <= 0)
         error_msg_and_die("Invalid number of workers: %d", concurrent_workers);
@@ -307,7 +307,7 @@ main(int argc, char **argv)
         proc.upload_directory = argv[0];
 
         if (argv[1])
-            show_usage_and_die(program_usage_string, program_options);
+            libreport_show_usage_and_die(program_usage_string, program_options);
     }
 
     /* Initialization */
@@ -324,10 +324,10 @@ main(int argc, char **argv)
     if (opts & OPT_d)
         daemonize();
 
-    msg_prefix = g_progname;
+    libreport_msg_prefix = libreport_g_progname;
     if ((opts & OPT_d) || (opts & OPT_s) || getenv("ABRT_SYSLOG"))
     {
-        logmode = LOGMODE_JOURNAL;
+        libreport_logmode = LOGMODE_JOURNAL;
     }
 
     log_info("Creating glib main loop");
@@ -341,11 +341,11 @@ main(int argc, char **argv)
 
     log_notice("Setting up a signal handler");
     /* Set up signal pipe */
-    xpipe(g_signal_pipe);
-    close_on_exec_on(g_signal_pipe[0]);
-    close_on_exec_on(g_signal_pipe[1]);
-    ndelay_on(g_signal_pipe[0]);
-    ndelay_on(g_signal_pipe[1]);
+    libreport_xpipe(g_signal_pipe);
+    libreport_close_on_exec_on(g_signal_pipe[0]);
+    libreport_close_on_exec_on(g_signal_pipe[1]);
+    libreport_ndelay_on(g_signal_pipe[0]);
+    libreport_ndelay_on(g_signal_pipe[1]);
     signal(SIGUSR1, handle_signal);
     signal(SIGTERM, handle_signal);
     signal(SIGINT, handle_signal);

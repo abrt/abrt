@@ -215,7 +215,7 @@ static int abrt_p2_task_new_problem_notify_directory_task(AbrtP2TaskNewProblem *
             return ABRT_P2_TASK_CODE_ERROR;
         }
 
-        *new_path = xstrdup(abrt_p2_object_path(obj));
+        *new_path = libreport_xstrdup(abrt_p2_object_path(obj));
         code = ABRT_P2_TASK_NEW_PROBLEM_DUPLICATE;
 
         log_debug("Task '%p': New occurrence of '%s'",
@@ -240,7 +240,7 @@ static int abrt_p2_task_new_problem_notify_directory_task(AbrtP2TaskNewProblem *
     else if (r == 200)
     {
         /* 200 - the problem was accepted */
-        *new_path = xstrdup(abrt_p2_object_path(task->pv->p2tnp_obj));
+        *new_path = libreport_xstrdup(abrt_p2_object_path(task->pv->p2tnp_obj));
 
         code = ABRT_P2_TASK_NEW_PROBLEM_ACCEPTED;
 

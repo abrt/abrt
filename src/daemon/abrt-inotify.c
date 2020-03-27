@@ -62,7 +62,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
      * and we were going out of sync wrt struct inotify_event's layout.
      */
     inotify_bytes += 2 * (sizeof(struct inotify_event) + FILENAME_MAX);
-    char *buf = xmalloc(inotify_bytes);
+    char *buf = libreport_xmalloc(inotify_bytes);
     errno = 0;
     gsize len;
     GError *gerror = NULL;
@@ -103,7 +103,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 struct abrt_inotify_watch *
 abrt_inotify_watch_init(const char *path, int inotify_flags, abrt_inotify_watch_handler handler, void *user_data)
 {
-    struct abrt_inotify_watch *aiw = xmalloc(sizeof(*aiw));
+    struct abrt_inotify_watch *aiw = libreport_xmalloc(sizeof(*aiw));
     aiw->handler = handler;
     aiw->user_data = user_data;
 
@@ -112,7 +112,7 @@ abrt_inotify_watch_init(const char *path, int inotify_flags, abrt_inotify_watch_
     aiw->inotify_fd = inotify_init();
     if (aiw->inotify_fd == -1)
         perror_msg_and_die("inotify_init failed");
-    close_on_exec_on(aiw->inotify_fd);
+    libreport_close_on_exec_on(aiw->inotify_fd);
 
     aiw->inotify_wd = inotify_add_watch(aiw->inotify_fd, path, inotify_flags);
     if (aiw->inotify_wd < 0)
@@ -122,7 +122,7 @@ abrt_inotify_watch_init(const char *path, int inotify_flags, abrt_inotify_watch_
     /* Without nonblocking mode, users observed abrtd blocking
      * on inotify read forever. Must set fd to non-blocking:
      */
-    ndelay_on(aiw->inotify_fd);
+    libreport_ndelay_on(aiw->inotify_fd);
     aiw->channel_inotify = abrt_gio_channel_unix_new(aiw->inotify_fd);
 
     /*

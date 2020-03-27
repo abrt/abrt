@@ -49,13 +49,13 @@ int main(int argc, char **argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR", _("Problem directory")),
         OPT_END()
     };
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+    /*unsigned opts =*/ libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
@@ -91,13 +91,13 @@ int main(int argc, char **argv)
          */
         log_warning(_("Backtrace parsing failed for %s"), dump_dir_name);
         log_warning("%d:%d: %s", location.line, location.column, location.message);
-        struct strbuf *emptybt = strbuf_new();
+        struct strbuf *emptybt = libreport_strbuf_new();
 
         char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
-        strbuf_prepend_str(emptybt, executable);
+        libreport_strbuf_prepend_str(emptybt, executable);
         free(executable);
 
-        strbuf_prepend_str(emptybt, component);
+        libreport_strbuf_prepend_str(emptybt, component);
 
         log_debug("Generating duphash: %s", emptybt->buf);
 
@@ -112,7 +112,7 @@ int main(int argc, char **argv)
          */
         dd_save_text(dd, FILENAME_RATING, "0");
 
-        strbuf_free(emptybt);
+        libreport_strbuf_free(emptybt);
         free(component);
         dd_close(dd);
 
@@ -135,7 +135,7 @@ int main(int argc, char **argv)
     {
         char *hash_str;
 
-        if (g_verbose >= 3)
+        if (libreport_g_verbose >= 3)
         {
             hash_str = sr_thread_get_duphash(crash_thread, 3, component,
                                              SR_DUPHASH_NOHASH);

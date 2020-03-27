@@ -31,8 +31,8 @@ static void try_to_move(const char *old, const char *new)
 
 void migrate_to_xdg_dirs(void)
 {
-    char *old = concat_path_file(g_get_home_dir(), ".abrt/applet_dirlist");
-    char *new = concat_path_file(g_get_user_cache_dir(), "abrt/applet_dirlist");
+    char *old = libreport_concat_path_file(g_get_home_dir(), ".abrt/applet_dirlist");
+    char *new = libreport_concat_path_file(g_get_user_cache_dir(), "abrt/applet_dirlist");
     char *oslash = strrchr(old, '/');
     char *nslash = strrchr(new, '/');
 
@@ -49,7 +49,7 @@ void migrate_to_xdg_dirs(void)
 
     strcpy(oslash + 1, "settings");
     free(new);
-    new = concat_path_file(g_get_user_config_dir(), "abrt/settings");
+    new = libreport_concat_path_file(g_get_user_config_dir(), "abrt/settings");
     nslash = strrchr(new, '/');
     *nslash = '\0';
     g_mkdir_with_parents(new, 0777);

@@ -263,7 +263,7 @@ abrt_applet_problem_info_ensure_writable (AbrtAppletProblemInfo *self)
 
     abrt_applet_problem_info_set_foreign (self, false);
 
-    dump_directory = open_directory_for_writing (directory, /* don't ask */ NULL);
+    dump_directory = libreport_open_directory_for_writing (directory, /* don't ask */ NULL);
     if (dump_directory == NULL)
     {
         error_msg (_("Can't open directory for writing '%s'"), directory);

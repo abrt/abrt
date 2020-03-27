@@ -37,7 +37,7 @@ static PyObject *
 load_settings_to_dict(const char *file, int (*loader)(const char *, map_string_t *))
 {
     PyObject *dict = NULL;
-    map_string_t *settings = new_map_string();
+    map_string_t *settings = libreport_new_map_string();
     if (!loader(file, settings))
     {
         PyErr_SetString(PyExc_OSError, "Failed to load configuration file.");
@@ -53,20 +53,20 @@ load_settings_to_dict(const char *file, int (*loader)(const char *, map_string_t
     map_string_iter_t iter;
     const char *key = NULL;
     const char *value = NULL;
-    init_map_string_iter(&iter, settings);
-    while(next_map_string_iter(&iter, &key, &value))
+    libreport_init_map_string_iter(&iter, settings);
+    while(libreport_next_map_string_iter(&iter, &key, &value))
     {
         if (0 != PyDict_SetItemString(dict, key, PyUnicode_FromString(value)))
         {
             goto lacf_error;
         }
     }
-    free_map_string(settings);
+    libreport_free_map_string(settings);
     return dict;
 
 lacf_error:
     Py_XDECREF(dict);
-    free_map_string(settings);
+    libreport_free_map_string(settings);
     return NULL;
 }
 

@@ -51,31 +51,31 @@ int main(int argc, char **argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING( 'd', NULL, &dump_dir_name   , "DIR"           , _("Problem directory")),
         OPT_STRING( 'i', NULL, &i_opt           , "DIR1[:DIR2]...", _("Additional debuginfo directories")),
         OPT_INTEGER('t', NULL, &exec_timeout_sec,                   _("Kill gdb if it runs for more than NUM seconds")),
         OPT_END()
     };
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+    /*unsigned opts =*/ libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
-    map_string_t *settings = new_map_string();
+    map_string_t *settings = libreport_new_map_string();
     if (!abrt_load_abrt_plugin_conf_file(CCPP_CONF, settings))
         error_msg("Can't load '%s'", CCPP_CONF);
 
-    const char *value = get_map_string_item_or_NULL(settings, "DebuginfoLocation");
+    const char *value = libreport_get_map_string_item_or_NULL(settings, "DebuginfoLocation");
     char *debuginfo_location;
     if (value)
-        debuginfo_location = xstrdup(value);
+        debuginfo_location = libreport_xstrdup(value);
     else
-        debuginfo_location = xstrdup(LOCALSTATEDIR"/cache/abrt-di");
+        debuginfo_location = libreport_xstrdup(LOCALSTATEDIR"/cache/abrt-di");
 
-    free_map_string(settings);
+    libreport_free_map_string(settings);
     char *debuginfo_dirs = NULL;
     if (i_opt)
-        debuginfo_dirs = xasprintf("%s:%s", debuginfo_location, i_opt);
+        debuginfo_dirs = libreport_xasprintf("%s:%s", debuginfo_location, i_opt);
 
     /* Create gdb backtrace */
     char *backtrace = abrt_get_backtrace(dump_dir_name, exec_timeout_sec,
@@ -83,7 +83,7 @@ int main(int argc, char **argv)
     free(debuginfo_location);
     if (!backtrace)
     {
-        backtrace = xstrdup("");
+        backtrace = libreport_xstrdup("");
         log_warning("abrt_get_backtrace() returns NULL, broken core/gdb?");
     }
     free(debuginfo_dirs);

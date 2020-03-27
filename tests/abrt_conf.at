@@ -30,7 +30,7 @@ void test(struct result **res)
         if ((*iter)->line != NULL)
         {
             printf("---- %s", (*iter)->line);
-            full_write_str(conf_fd, (*iter)->line);
+            libreport_full_write_str(conf_fd, (*iter)->line);
         }
     }
     puts("----");
@@ -52,7 +52,7 @@ void test(struct result **res)
 
     /*
     dup2(old_stderr, STDERR_FILENO);
-    char *error_output = xmalloc_read(errpipe[0], NULL);
+    char *error_output = libreport_xmalloc_read(errpipe[0], NULL);
     close(errpipe[0]);
     */
 
@@ -77,7 +77,7 @@ void test(struct result **res)
 
 int main(int argc, char *argv[])
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     {
         struct result res_dump_location = {

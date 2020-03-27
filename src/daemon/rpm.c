@@ -41,7 +41,7 @@ char* get_package_name_from_NVR_or_NULL(const char* packageNVR)
     if (packageNVR != NULL)
     {
         log_notice("packageNVR %s", packageNVR);
-        package_name = xstrdup(packageNVR);
+        package_name = libreport_xstrdup(packageNVR);
         char *pos = strrchr(package_name, '-');
         if (pos != NULL)
         {
@@ -63,7 +63,7 @@ void rpm_init()
         error_msg("Can't read RPM rc files");
 #endif
 
-    list_free_with_free(list_fingerprints); /* paranoia */
+    libreport_list_free_with_free(list_fingerprints); /* paranoia */
     /* Huh? Why do we start the list with an element with NULL string? */
     list_fingerprints = g_list_alloc();
 }
@@ -86,7 +86,7 @@ void rpm_destroy()
 #endif
 #endif
 
-    list_free_with_free(list_fingerprints);
+    libreport_list_free_with_free(list_fingerprints);
     list_fingerprints = NULL;
 }
 
@@ -157,7 +157,7 @@ char *rpm_get_fingerprint(const char *pkg)
 
     char *pgpsig_tmp = strstr(pgpsig, " Key ID ");
     if (pgpsig_tmp)
-        fingerprint = xstrdup(pgpsig_tmp + sizeof(" Key ID ") - 1);
+        fingerprint = libreport_xstrdup(pgpsig_tmp + sizeof(" Key ID ") - 1);
 
 error:
     free(pgpsig);
@@ -318,7 +318,7 @@ struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_
     if (!header)
         goto error;
 
-    p = xzalloc(sizeof(*p));
+    p = libreport_xzalloc(sizeof(*p));
     int r;
     r = pkg_add_epoch(header, p);
     if (r)
@@ -330,7 +330,7 @@ struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_
     if (!strncmp(p->p_epoch, "(none)", strlen("(none)")))
     {
         free(p->p_epoch);
-        p->p_epoch = xstrdup("0");
+        p->p_epoch = libreport_xstrdup("0");
     }
 
     r = pkg_add_name(header, p);
@@ -354,9 +354,9 @@ struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_
         goto error;
 
     if (strcmp(p->p_epoch, "0") == 0)
-        p->p_nvr = xasprintf("%s-%s-%s", p->p_name, p->p_version, p->p_release);
+        p->p_nvr = libreport_xasprintf("%s-%s-%s", p->p_name, p->p_version, p->p_release);
     else
-        p->p_nvr = xasprintf("%s:%s-%s-%s", p->p_epoch, p->p_name, p->p_version, p->p_release);
+        p->p_nvr = libreport_xasprintf("%s:%s-%s-%s", p->p_epoch, p->p_name, p->p_version, p->p_release);
 
     rpmdbFreeIterator(iter);
     rpmtsFree(ts);

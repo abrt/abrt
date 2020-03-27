@@ -20,10 +20,10 @@ void test(char *name, bool expected)
 
 int main(void)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
     abrt_load_abrt_conf();
 
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     char *name;
 
@@ -91,7 +91,7 @@ AT_TESTFUN([abrt_problem_entry_is_post_create_condition],
 
 int main(void)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
     abrt_load_abrt_conf();
 
     assert(problem_entry_is_post_create_condition(FILENAME_TYPE));

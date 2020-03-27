@@ -42,7 +42,7 @@ struct oops_text *parse_file(const char *filename)
     if (n != 2)
         goto ret;
 
-    ot = xzalloc(sizeof(*ot));
+    ot = libreport_xzalloc(sizeof(*ot));
     ot->filename = filename;
     ot->panic_no = n1;
     ot->part_no = n2;
@@ -93,16 +93,16 @@ int main(int argc, char **argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_BOOL('o', NULL, NULL, _("Print found oopses")),
         OPT_BOOL('d', NULL, NULL, _("Delete files with found oopses")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
-    struct oops_text **v = xzalloc(sizeof(v[0]));
+    struct oops_text **v = libreport_xzalloc(sizeof(v[0]));
     int i = 0;
 
     while (*argv)
@@ -110,7 +110,7 @@ int main(int argc, char **argv)
         v[i] = parse_file(*argv);
         if (v[i])
         {
-            v = xrealloc(v, (++i + 1) * sizeof(v[0]));
+            v = libreport_xrealloc(v, (++i + 1) * sizeof(v[0]));
             v[i] = NULL;
         }
         argv++;

@@ -47,7 +47,7 @@ static int abrt_journal_new_flags(abrt_journal_t **journal, int flags)
         return r;
     }
 
-    *journal = xzalloc(sizeof(**journal));
+    *journal = libreport_xzalloc(sizeof(**journal));
     (*journal)->j = j;
 
     return 0;
@@ -73,7 +73,7 @@ static int abrt_journal_open_directory_flags(abrt_journal_t **journal, const cha
         return r;
     }
 
-    *journal = xzalloc(sizeof(**journal));
+    *journal = libreport_xzalloc(sizeof(**journal));
     (*journal)->j = j;
 
     return 0;
@@ -181,7 +181,7 @@ char *abrt_journal_get_string_field(abrt_journal_t *journal, const char *field, 
         return NULL;
 
     if (value == NULL)
-        return xstrndup(data, data_len);
+        return libreport_xstrndup(data, data_len);
     /*else*/
 
     strncpy(value, data, data_len);
@@ -273,7 +273,7 @@ int abrt_journal_save_current_position(abrt_journal_t *journal, const char *file
         return -1;
     }
 
-    full_write_str(state_fd, crsr);
+    libreport_full_write_str(state_fd, crsr);
     close(state_fd);
 
     free(crsr);
@@ -314,9 +314,9 @@ int abrt_journal_restore_position(abrt_journal_t *journal, const char *file_name
         return -errno;
     }
 
-    char *crsr = xmalloc(buf.st_size + 1);
+    char *crsr = libreport_xmalloc(buf.st_size + 1);
 
-    const int sz = full_read(state_fd, crsr, buf.st_size);
+    const int sz = libreport_full_read(state_fd, crsr, buf.st_size);
     if (sz != buf.st_size)
     {
         error_msg(_("Cannot restore journal watch's position: cannot read entire file '%s'"), file_name);
@@ -369,7 +369,7 @@ int abrt_journal_watch_new(abrt_journal_watch_t **watch, abrt_journal_t *journal
 {
     assert(callback != NULL || !"ABRT watch needs valid callback ptr");
 
-    *watch = xzalloc(sizeof(**watch));
+    *watch = libreport_xzalloc(sizeof(**watch));
     (*watch)->j = journal;
     (*watch)->callback = callback;
     (*watch)->callback_data = callback_data;

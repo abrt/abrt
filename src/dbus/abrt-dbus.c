@@ -128,11 +128,11 @@ bool allowed_problem_dir(const char *dir_name)
 
 bool allowed_problem_element(GDBusMethodInvocation *invocation, const char *element)
 {
-    if (str_is_correct_filename(element))
+    if (libreport_str_is_correct_filename(element))
         return true;
 
     log_notice("'%s' is not a valid element name", element);
-    char *error = xasprintf(_("'%s' is not a valid element name"), element);
+    char *error = libreport_xasprintf(_("'%s' is not a valid element name"), element);
     g_dbus_method_invocation_return_dbus_error(invocation,
             "org.freedesktop.problems.InvalidElement",
             error);
@@ -153,7 +153,7 @@ static char *handle_new_problem(GVariant *problem_info, uid_t caller_uid, char *
     {
         if (abrt_new_user_problem_entry_allowed(caller_uid, key, value) == false)
         {
-            *error = xasprintf("You are not allowed to create element '%s' containing '%s'", key, value);
+            *error = libreport_xasprintf("You are not allowed to create element '%s' containing '%s'", key, value);
             goto finito;
         }
 
@@ -175,7 +175,7 @@ static char *handle_new_problem(GVariant *problem_info, uid_t caller_uid, char *
     if (problem_id)
         abrt_notify_new_path(problem_id);
     else if (error)
-        *error = xasprintf("Cannot create a new problem");
+        *error = libreport_xasprintf("Cannot create a new problem");
 
 finito:
     problem_data_free(pd);
@@ -184,7 +184,7 @@ finito:
 
 static void return_InvalidProblemDir_error(GDBusMethodInvocation *invocation, const char *dir_name)
 {
-    char *msg = xasprintf(_("'%s' is not a valid problem directory"), dir_name);
+    char *msg = libreport_xasprintf(_("'%s' is not a valid problem directory"), dir_name);
     g_dbus_method_invocation_return_dbus_error(invocation,
                                       "org.freedesktop.problems.InvalidProblemDir",
                                       msg);
@@ -282,7 +282,7 @@ static struct dump_dir *open_directory_for_modification_of_element(
         if (strcmp(*protected, element) == 0)
         {
             log_notice("'%s' element of '%s' can't be modified", element, problem_id);
-            char *error = xasprintf(_("'%s' element can't be modified"), element);
+            char *error = libreport_xasprintf(_("'%s' element can't be modified"), element);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                         "org.freedesktop.problems.ProtectedElement",
                                         error);
@@ -324,7 +324,7 @@ static int add_dirname_to_GList_if_matches(struct dump_dir *dd, void *arg)
     if (val < me->timestamp_from || val > me->timestamp_to)
         return 0;
 
-    me->list = g_list_prepend(me->list, xstrdup(dd->dd_dirname));
+    me->list = g_list_prepend(me->list, libreport_xstrdup(dd->dd_dirname));
     return 0;
 }
 
@@ -398,7 +398,7 @@ static void handle_method_call(GDBusConnection *connection,
     {
         GList *dirs = get_problem_dirs_for_uid(caller_uid, abrt_g_settings_dump_location);
         response = variant_from_string_list(dirs);
-        list_free_with_free(dirs);
+        libreport_list_free_with_free(dirs);
 
         g_dbus_method_invocation_return_value(invocation, response);
         //I was told that g_dbus_method frees the response
@@ -422,7 +422,7 @@ static void handle_method_call(GDBusConnection *connection,
         GList * dirs = get_problem_dirs_for_uid(caller_uid, abrt_g_settings_dump_location);
         response = variant_from_string_list(dirs);
 
-        list_free_with_free(dirs);
+        libreport_list_free_with_free(dirs);
 
         g_dbus_method_invocation_return_value(invocation, response);
         return;
@@ -432,7 +432,7 @@ static void handle_method_call(GDBusConnection *connection,
     {
         GList * dirs = get_problem_dirs_not_accessible_by_uid(caller_uid, abrt_g_settings_dump_location);
         response = variant_from_string_list(dirs);
-        list_free_with_free(dirs);
+        libreport_list_free_with_free(dirs);
 
         g_dbus_method_invocation_return_value(invocation, response);
         return;
@@ -544,12 +544,12 @@ static void handle_method_call(GDBusConnection *connection,
                 if (!builder)
                     builder = g_variant_builder_new(G_VARIANT_TYPE_ARRAY);
 
-                /* g_variant_builder_add makes a copy. No need to xstrdup here */
+                /* g_variant_builder_add makes a copy. No need to libreport_xstrdup here */
                 g_variant_builder_add(builder, "{ss}", element_name, value);
                 free(value);
             }
         }
-        list_free_with_free(elements);
+        libreport_list_free_with_free(elements);
         dd_close(dd);
         /* It is OK to call g_variant_new("(a{ss})", NULL) because */
         /* G_VARIANT_TYPE_TUPLE allows NULL value */
@@ -632,7 +632,7 @@ static void handle_method_call(GDBusConnection *connection,
         if (item_size < 0)
         {
             log_notice("Can't get size of '%s/%s'", problem_id, element);
-            char *error = xasprintf(_("Can't get size of '%s'"), element);
+            char *error = libreport_xasprintf(_("Can't get size of '%s'"), element);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                                       "org.freedesktop.problems.Failure",
                                                       error);
@@ -642,7 +642,7 @@ static void handle_method_call(GDBusConnection *connection,
         const double requested_size = (double)strlen(value) - item_size;
         /* Don't want to check the size limit in case of reducing of size */
         if (requested_size > 0
-            && requested_size > (max_dir_size - get_dirsize(abrt_g_settings_dump_location)))
+            && requested_size > (max_dir_size - libreport_get_dirsize(abrt_g_settings_dump_location)))
         {
             log_notice("No problem space left in '%s' (requested Bytes %f)", problem_id, requested_size);
             g_dbus_method_invocation_return_dbus_error(invocation,
@@ -682,7 +682,7 @@ static void handle_method_call(GDBusConnection *connection,
         if (res != 0)
         {
             log_notice("Can't delete the element '%s' from the problem directory '%s'", element, problem_id);
-            char *error = xasprintf(_("Can't delete the element '%s' from the problem directory '%s'"), element, problem_id);
+            char *error = libreport_xasprintf(_("Can't delete the element '%s' from the problem directory '%s'"), element, problem_id);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                           "org.freedesktop.problems.Failure",
                                           error);
@@ -759,7 +759,7 @@ static void handle_method_call(GDBusConnection *connection,
 
         g_dbus_method_invocation_return_value(invocation, NULL);
  ret:
-        list_free_with_free(problem_dirs);
+        libreport_list_free_with_free(problem_dirs);
         return;
     }
 
@@ -786,7 +786,7 @@ static void handle_method_call(GDBusConnection *connection,
         GList *dirs = get_problem_dirs_for_element_in_time(caller_uid, element, value, timestamp_from,
                                                         timestamp_to);
         response = variant_from_string_list(dirs);
-        list_free_with_free(dirs);
+        libreport_list_free_with_free(dirs);
 
         g_dbus_method_invocation_return_value(invocation, response);
         return;
@@ -828,7 +828,7 @@ static void handle_abrtd_problem_signals(GDBusConnection *connection,
 
     if (obj == NULL)
     {
-        AbrtP2Entry *entry = abrt_p2_entry_new_with_state(xstrdup(dir), ABRT_P2_ENTRY_STATE_COMPLETE);
+        AbrtP2Entry *entry = abrt_p2_entry_new_with_state(libreport_xstrdup(dir), ABRT_P2_ENTRY_STATE_COMPLETE);
         if (entry == NULL)
         {
             log_warning("Cannot notify '%s': failed to access data", dir);
@@ -1019,13 +1019,13 @@ int main(int argc, char *argv[])
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_INTEGER('t', NULL, &g_timeout_value, _("Exit after NUM seconds of inactivity")),
         OPT_END()
     };
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+    /*unsigned opts =*/ libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
     /* When dbus daemon starts us, it doesn't set PATH
      * (I saw it set only DBUS_STARTER_ADDRESS and DBUS_STARTER_BUS_TYPE).
@@ -1035,12 +1035,12 @@ int main(int argc, char *argv[])
     if (!env_path || !env_path[0])
         putenv((char*)"PATH=/usr/sbin:/usr/bin:/sbin:/bin");
 
-    msg_prefix = "abrt-dbus"; /* for log_warning(), error_msg() and such */
+    libreport_msg_prefix = "abrt-dbus"; /* for log_warning(), error_msg() and such */
 
     if (getuid() != 0)
         error_msg_and_die(_("This program must be run as root."));
 
-    glib_init();
+    libreport_glib_init();
 
     /* We are lazy here - we don't want to manually provide
     * the introspection data structures - so we just build

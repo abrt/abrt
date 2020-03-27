@@ -92,13 +92,13 @@ unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location,
 
     log_notice("Saving %u oopses as problem dirs", oops_cnt >= countdown ? countdown : oops_cnt);
 
-    char *cmdline_str = xmalloc_fopen_fgetline_fclose("/proc/cmdline");
-    char *fips_enabled = xmalloc_fopen_fgetline_fclose("/proc/sys/crypto/fips_enabled");
-    char *proc_modules = xmalloc_open_read_close("/proc/modules", /*maxsize:*/ NULL);
-    char *suspend_stats = xmalloc_open_read_close("/sys/kernel/debug/suspend_stats", /*maxsize:*/ NULL);
+    char *cmdline_str = libreport_xmalloc_fopen_fgetline_fclose("/proc/cmdline");
+    char *fips_enabled = libreport_xmalloc_fopen_fgetline_fclose("/proc/sys/crypto/fips_enabled");
+    char *proc_modules = libreport_xmalloc_open_read_close("/proc/modules", /*maxsize:*/ NULL);
+    char *suspend_stats = libreport_xmalloc_open_read_close("/sys/kernel/debug/suspend_stats", /*maxsize:*/ NULL);
 
     time_t t = time(NULL);
-    const char *iso_date = iso_date_string(&t);
+    const char *iso_date = libreport_iso_date_string(&t);
 
     pid_t my_pid = getpid();
     unsigned idx = 0;
@@ -107,7 +107,7 @@ unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location,
     {
         char base[sizeof("oops-YYYY-MM-DD-hh:mm:ss-%lu-%lu") + 2 * sizeof(long)*3];
         sprintf(base, "oops-%s-%lu-%lu", iso_date, (long)my_pid, (long)idx);
-        char *path = concat_path_file(dump_location, base);
+        char *path = libreport_concat_path_file(dump_location, base);
 
         struct dump_dir *dd = dd_create(path, /*fs owner*/0, DEFAULT_DUMP_DIR_MODE);
         if (dd)
@@ -153,7 +153,7 @@ unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location,
 
 static char *abrt_oops_list_of_tainted_modules(const char *proc_modules)
 {
-    struct strbuf *result = strbuf_new();
+    struct strbuf *result = libreport_strbuf_new();
 
     const char *p = proc_modules;
     for (;;)
@@ -169,7 +169,7 @@ static char *abrt_oops_list_of_tainted_modules(const char *proc_modules)
         {
             if ((unsigned)(toupper(*paren) - 'A') <= 'Z'-'A')
             {
-                strbuf_append_strf(result, result->len == 0 ? "%.*s" : ",%.*s",
+                libreport_strbuf_append_strf(result, result->len == 0 ? "%.*s" : ",%.*s",
                         (int)(strchrnul(p,' ') - p), p
                 );
                 break;
@@ -185,10 +185,10 @@ static char *abrt_oops_list_of_tainted_modules(const char *proc_modules)
 
     if (result->len == 0)
     {
-        strbuf_free(result);
+        libreport_strbuf_free(result);
         return NULL;
     }
-    return strbuf_free_nobuf(result);
+    return libreport_strbuf_free_nobuf(result);
 }
 
 void abrt_oops_save_data_in_dump_dir(struct dump_dir *dd, char *oops, const char *proc_modules)
@@ -244,21 +244,21 @@ void abrt_oops_save_data_in_dump_dir(struct dump_dir *dd, char *oops, const char
             char *tnt_long = abrt_kernel_tainted_long(tainted_short);
             dd_save_text(dd, FILENAME_TAINTED_LONG, tnt_long);
 
-            struct strbuf *reason = strbuf_new();
+            struct strbuf *reason = libreport_strbuf_new();
             const char *fmt = _("A kernel problem occurred, but your kernel has been "
                     "tainted (flags:%s). Explanation:\n%s"
                     "Kernel maintainers are unable to diagnose tainted reports.");
-            strbuf_append_strf(reason, fmt, tainted_short, tnt_long);
+            libreport_strbuf_append_strf(reason, fmt, tainted_short, tnt_long);
 
             char *modlist = !proc_modules ? NULL : abrt_oops_list_of_tainted_modules(proc_modules);
             if (modlist)
             {
-                strbuf_append_strf(reason, _(" Tainted modules: %s."), modlist);
+                libreport_strbuf_append_strf(reason, _(" Tainted modules: %s."), modlist);
                 free(modlist);
             }
 
             dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason->buf);
-            strbuf_free(reason);
+            libreport_strbuf_free(reason);
             free(tainted_short);
             free(tnt_long);
         }
@@ -303,17 +303,17 @@ int abrt_oops_signaled_sleep(int seconds)
 
 char *abrt_oops_string_filter_regex(void)
 {
-    map_string_t *settings = new_map_string();
+    map_string_t *settings = libreport_new_map_string();
 
     abrt_load_abrt_plugin_conf_file("oops.conf", settings);
 
     int only_fatal_mce = 0;
-    try_get_map_string_item_as_bool(settings, "OnlyFatalMCE", &only_fatal_mce);
+    libreport_try_get_map_string_item_as_bool(settings, "OnlyFatalMCE", &only_fatal_mce);
 
-    free_map_string(settings);
+    libreport_free_map_string(settings);
 
     if (only_fatal_mce)
-        return xstrdup("^Machine .*$");
+        return libreport_xstrdup("^Machine .*$");
 
     return NULL;
 }

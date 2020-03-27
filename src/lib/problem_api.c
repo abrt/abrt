@@ -42,10 +42,10 @@ int for_each_problem_in_dir(const char *path,
     struct dirent *dent;
     while ((dent = readdir(dp)) != NULL)
     {
-        if (dot_or_dotdot(dent->d_name))
+        if (libreport_dot_or_dotdot(dent->d_name))
             continue; /* skip "." and ".." */
 
-        char *full_name = concat_path_file(path, dent->d_name);
+        char *full_name = libreport_concat_path_file(path, dent->d_name);
 
         struct dump_dir *dd = dd_opendir(full_name,   DD_OPEN_FD_ONLY
                                                     | DD_FAIL_QUIETLY_ENOENT
@@ -63,11 +63,11 @@ int for_each_problem_in_dir(const char *path,
              * We saw "lock file is locked by process PID" error
              * when we raced with wizard.
              */
-            int sv_logmode = logmode;
+            int sv_logmode = libreport_logmode;
             /* Silently ignore errors only in the silent log level. */
-            logmode = g_verbose == 0 ? 0: sv_logmode;
+            libreport_logmode = libreport_g_verbose == 0 ? 0: sv_logmode;
             dd = dd_fdopendir(dd, DD_OPEN_READONLY | DD_DONT_WAIT_FOR_LOCK);
-            logmode = sv_logmode;
+            libreport_logmode = sv_logmode;
             if (dd)
                 brk = callback ? callback(dd, arg) : 0;
         }
@@ -96,7 +96,7 @@ static int add_dirname_to_GList(struct dump_dir *dd, void *arg)
     }
 
     GList **list = arg;
-    *list = g_list_prepend(*list, xstrdup(dd->dd_dirname));
+    *list = g_list_prepend(*list, libreport_xstrdup(dd->dd_dirname));
     return 0;
 }
 
@@ -123,7 +123,7 @@ static int add_dirname_to_GList_if_not_accessible(struct dump_dir *dd, void *arg
     struct add_dirname_to_GList_if_not_accessible_args *param = (struct add_dirname_to_GList_if_not_accessible_args *)args;
     /* Append if not accessible */
     if (!dump_dir_accessible_by_uid(dd->dd_dirname, param->uid))
-        param->list = g_list_prepend(param->list, xstrdup(dd->dd_dirname));
+        param->list = g_list_prepend(param->list, libreport_xstrdup(dd->dd_dirname));
 
     return 0;
 }
@@ -146,7 +146,7 @@ GList *get_problem_storages(void)
 {
     GList *paths = NULL;
     abrt_load_abrt_conf();
-    paths = g_list_append(paths, xstrdup(abrt_g_settings_dump_location));
+    paths = g_list_append(paths, libreport_xstrdup(abrt_g_settings_dump_location));
     abrt_free_abrt_conf_data();
 
     return paths;

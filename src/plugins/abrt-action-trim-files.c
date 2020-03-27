@@ -51,7 +51,7 @@ static GList *insert_name_and_sizes(GList *list, const char *name, double wsa, o
 
     if (cur != list || list_len < MAX_VICTIM_LIST_SIZE)
     {
-        ns = xmalloc(sizeof(*ns) + strlen(name));
+        ns = libreport_xmalloc(sizeof(*ns) + strlen(name));
         ns->weighted_size_and_age = wsa;
         ns->size = sz;
         strcpy(ns->name, name);
@@ -81,10 +81,10 @@ static double get_dir_size(const char *dirname,
     double size = 0;
     while ((dent = readdir(dp)) != NULL)
     {
-        if (dot_or_dotdot(dent->d_name))
+        if (libreport_dot_or_dotdot(dent->d_name))
             continue;
 
-        char *fullname = concat_path_file(dirname, dent->d_name);
+        char *fullname = libreport_concat_path_file(dirname, dent->d_name);
         struct stat stats;
         if (lstat(fullname, &stats) != 0)
             goto next;
@@ -179,7 +179,7 @@ static void delete_files(gpointer data, gpointer void_preserve_list)
 
         if (cur_size <= cap_size || !worst_file_list)
         {
-            list_free_with_free(worst_file_list);
+            libreport_list_free_with_free(worst_file_list);
             log_info("cur_size:%.0f cap_size:%.0f, no (more) trimming", cur_size, cap_size);
             break;
         }
@@ -232,22 +232,22 @@ int main(int argc, char **argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_LIST('d'  , NULL, &dir_list , "SIZE:DIR", _("Delete whole problem directories")),
         OPT_LIST('f'  , NULL, &file_list, "SIZE:DIR", _("Delete files inside this directory")),
         OPT_STRING('p', NULL, &preserve,  "DIR"     , _("Preserve this directory")),
         OPT_END()
     };
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+    /*unsigned opts =*/ libreport_parse_opts(argc, argv, program_options, program_usage_string);
     argv += optind;
     if ((argv[0] && !file_list)
      || !(dir_list || file_list)
     ) {
-        show_usage_and_die(program_usage_string, program_options);
+        libreport_show_usage_and_die(program_usage_string, program_options);
     }
 
     /* We don't have children, so this is not needed: */
-    //export_abrt_envvars(/*set_pfx:*/ 0);
+    //libreport_export_abrt_envvars(/*set_pfx:*/ 0);
 
     /* Preserve not only files specified on command line, but,
      * if they are symlinks, preserve also the real files they point to:
@@ -257,7 +257,7 @@ int main(int argc, char **argv)
     {
         char *name = *argv++;
         /* Since we don't bother freeing preserve_files_list on exit,
-         * we take a shortcut and insert name instead of xstrdup(name)
+         * we take a shortcut and insert name instead of libreport_xstrdup(name)
          * in the next line:
          */
         preserve_files_list = g_list_prepend(preserve_files_list, name);

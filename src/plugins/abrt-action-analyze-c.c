@@ -90,8 +90,8 @@ core_stacktrace_from_core_json(char *core_backtrace)
 
 static char *build_ids_from_core_backtrace(const char *dump_dir_name)
 {
-    char *core_backtrace_path = xasprintf("%s/"FILENAME_CORE_BACKTRACE, dump_dir_name);
-    char *json = xmalloc_open_read_close(core_backtrace_path, /*maxsize:*/ NULL);
+    char *core_backtrace_path = libreport_xasprintf("%s/"FILENAME_CORE_BACKTRACE, dump_dir_name);
+    char *json = libreport_xmalloc_open_read_close(core_backtrace_path, /*maxsize:*/ NULL);
     free(core_backtrace_path);
 
     if (!json)
@@ -113,7 +113,7 @@ static char *build_ids_from_core_backtrace(const char *dump_dir_name)
 
     void *build_id_list = NULL;
 
-    struct strbuf *strbuf = strbuf_new();
+    struct strbuf *strbuf = libreport_strbuf_new();
     for (struct sr_core_frame *frame = thread->frames;
          frame;
          frame = frame->next)
@@ -128,13 +128,13 @@ static char *build_ids_from_core_backtrace(const char *dump_dir_name)
         GList *next = g_list_next(iter);
         if (next == NULL || 0 != strcmp(iter->data, next->data))
         {
-            strbuf = strbuf_append_strf(strbuf, "%s\n", (char *)iter->data);
+            strbuf = libreport_strbuf_append_strf(strbuf, "%s\n", (char *)iter->data);
         }
     }
     g_list_free(build_id_list);
     sr_core_stacktrace_free(stacktrace);
 
-    return strbuf_free_nobuf(strbuf);
+    return libreport_strbuf_free_nobuf(strbuf);
 }
 
 int main(int argc, char **argv)
@@ -162,16 +162,16 @@ int main(int argc, char **argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR", _("Problem directory")),
         OPT_END()
     };
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+    /*unsigned opts =*/ libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
     char *unstrip_n_output = NULL;
-    char *coredump_path = xasprintf("%s/"FILENAME_COREDUMP, dump_dir_name);
+    char *coredump_path = libreport_xasprintf("%s/"FILENAME_COREDUMP, dump_dir_name);
     if (access(coredump_path, R_OK) == 0)
         unstrip_n_output = abrt_run_unstrip_n(dump_dir_name, /*timeout_sec:*/ 30);
 
@@ -228,7 +228,7 @@ int main(int argc, char **argv)
         }
     }
 
-    char *string_to_hash = xasprintf("%s%s%s", package, executable, unstrip_n_output);
+    char *string_to_hash = libreport_xasprintf("%s%s%s", package, executable, unstrip_n_output);
     /*free(package);*/
     /*free(executable);*/
     /*free(unstrip_n_output);*/
