@@ -14,10 +14,13 @@ jobs:
         run: sudo dnf --assumeyes install @c-development @development-tools gettext-devel
 
       - name: Generate build files
-        run: ./autogen.sh
+        run: NOCONFIGURE=1 ./autogen.sh
 
       - name: Install build dependencies
         run: sudo dnf builddep --assumeyes --spec abrt.spec
+
+      - name: Configure build
+        run: ./configure
 
       - name: Download Coverity build tool
         run: |
