@@ -42,7 +42,7 @@ case "$1" in
             DEPS_LIST=$(list_build_dependencies)
             if [ "$2" == "--install" ]; then
                 set -x verbose
-                eval sudo dnf install --setopt=strict=0 $DEPS_LIST
+                eval sudo dnf --assumeyes install --setopt=strict=0 $DEPS_LIST
                 set +x verbose
             else
                 echo $DEPS_LIST
