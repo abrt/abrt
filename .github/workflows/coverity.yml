@@ -14,7 +14,7 @@ jobs:
         run: sudo dnf --assumeyes install @c-development @development-tools
 
       - name: Install build dependencies
-        run: ./autogen.sh sysdeps --install | yes
+        run: ./autogen.sh sysdeps --install
 
       - name: Configure build
         run: ./autogen.sh
