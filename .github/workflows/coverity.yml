@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install build environment
-        run: sudo dnf --assumeyes install @c-development @development-tools gettext-devel
+        run: sudo dnf --assumeyes install @c-development @development-tools intltool
 
       - name: Generate build files
         run: NOCONFIGURE=1 ./autogen.sh
