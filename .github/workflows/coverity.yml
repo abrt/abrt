@@ -11,16 +11,13 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install build environment
-        run: sudo dnf --assumeyes install @c-development @development-tools intltool
-
-      - name: Generate build files
-        run: NOCONFIGURE=1 ./autogen.sh
+        run: sudo dnf --assumeyes install @c-development @development-tools
 
       - name: Install build dependencies
-        run: sudo dnf builddep --assumeyes --spec abrt.spec
+        run: ./autogen.sh sysdeps --install | yes
 
       - name: Configure build
-        run: ./configure
+        run: ./autogen.sh
 
       - name: Download Coverity build tool
         run: |
