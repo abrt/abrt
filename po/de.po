@@ -20,13 +20,14 @@
 # Tobias Weise <tobias.weise@web.de>, 2016. #zanata
 # Mike FABIAN <mfabian@redhat.com>, 2020.
 # Thomas Eichhorn <tomislav@posteo.de>, 2020.
+# Thomas Spura <thomas.spura@googlemail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-01-31 11:22+0000\n"
-"Last-Translator: Thomas Eichhorn <tomislav@posteo.de>\n"
+"PO-Revision-Date: 2020-04-01 11:38+0000\n"
+"Last-Translator: Thomas Spura <thomas.spura@googlemail.com>\n"
 "Language-Team: German <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/de/>\n"
 "Language: de\n"
@@ -34,7 +35,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.10.3\n"
+"X-Generator: Weblate 3.11.3\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -2217,17 +2218,15 @@ msgstr ""
 "unterstützt, weshalb Kernel-Maintainer dieses Problem nicht beheben können."
 
 #: ../src/plugins/oops-utils.c:246
-#, fuzzy, c-format
-#| msgid ""
-#| "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
-#| "Kernel maintainers are unable to diagnose tainted reports."
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Explanation:\n"
 "%sKernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"Es ist ein Kernel-Problem aufgetreten, aber Ihr Kernel ist defekt (flags:"
-"%s). Kernel-Maintainer können keine Berichte beschädigter Kernel analysieren."
+"Es ist ein Kernel-Problem aufgetreten, aber Ihr Kernel ist defekt (flags:%s)"
+". Erklärung:\n"
+"%s Kernel-Maintainer können keine Berichte beschädigter Kernel analysieren."
 
 #: ../src/plugins/oops-utils.c:254
 #, c-format
@@ -2315,10 +2314,8 @@ msgid "positive non-zero integer expected"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/__init__.py:54
-#, fuzzy
-#| msgid "List problems"
 msgid "filter last N problems"
-msgstr "Probleme auflisten"
+msgstr "Letzte N Probleme auflisten"
 
 #: ../src/cli/abrtcli/cli/__init__.py:57
 msgid "filter problems with matching component"
