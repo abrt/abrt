@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-01-29 10:16+0000\n"
+"PO-Revision-Date: 2020-04-01 11:38+0000\n"
 "Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
 "Language-Team: Turkish <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/tr/>\n"
@@ -29,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
-"X-Generator: Weblate 3.10.3\n"
+"X-Generator: Weblate 3.11.3\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -375,7 +375,7 @@ msgstr "Program adlarını günlüğe ekle"
 #: ../src/dbus/abrt-dbus.c:135
 #, c-format
 msgid "'%s' is not a valid element name"
-msgstr "'%s' geçerli bir öge adı değil"
+msgstr "'%s' geçerli bir eleman adı değil"
 
 #: ../src/dbus/abrt-dbus.c:187
 #, c-format
@@ -473,7 +473,7 @@ msgstr "Öncelik değerini ARTIŞ kadar arttır"
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
-msgstr ""
+msgstr "Boşta işçi yok ve arabellek dolu. '%s' dosyası atlanıyor"
 
 #: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
@@ -486,6 +486,15 @@ msgid ""
 "If UPLOAD_DIRECTORY is not provided, uses a value of\n"
 "WatchCrashdumpArchiveDir option from abrt.conf"
 msgstr ""
+"& [-vs] [-w SAYI] [-c MiB] [YÜKLEME_DİZİNİ]\n"
+"\n"
+"\n"
+"YÜKLEME_DİZİNİ'ni izler ve gelen arşivleri abrt.conf dosyasında belirtilen\n"
+"DumpLocation konumuna çıkarır\n"
+"\n"
+"YÜKLEME_DİZİNİ sağlanmamışsa, abrt.conf dosyasından "
+"WatchCrashdumpArchiveDir\n"
+"seçeneğinin değerini kullanır"
 
 #: ../src/daemon/abrt-upload-watch.c:281
 msgid "Daemonize"
@@ -493,11 +502,11 @@ msgstr "Arka planda çalıştır"
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr "Eşzamanlı çalışan sayısı. Varsayılan: "
+msgstr "Eş zamanlı çalışan işçi sayısı. Varsayılan: "
 
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr "MiB'de azami önbellek boyutu. Varsayılan: "
+msgstr "MiB olarak azami önbellek boyutu. Varsayılan: "
 
 #: ../src/daemon/abrt-auto-reporting.c:198
 #: ../src/daemon/abrt-auto-reporting.c:206
@@ -518,23 +527,27 @@ msgstr "Red Hat destek parolası, verilmezse, bunun için bir istem verilecek"
 
 #: ../src/daemon/abrt-auto-reporting.c:236
 msgid "uReport SSL certificate paths or certificate type"
-msgstr ""
+msgstr "uReport SSL sertifika yolları veya sertifika türü"
 
 #: ../src/daemon/abrt-auto-reporting.c:252
 msgid "You also need to specify --username for --password"
-msgstr ""
+msgstr "Ayrıca --password için --username belirtmeniz gerekmektedir"
 
 #: ../src/daemon/abrt-auto-reporting.c:258
 msgid "You can use either --username or --certificate"
 msgstr ""
+"--username veya --certificate seçeneklerinden sadece birini kullanabilirsiniz"
 
 #: ../src/daemon/abrt-auto-reporting.c:264
 msgid "You can use either --username or --anonymous"
 msgstr ""
+"--username veya --anonymous seçeneklerinden sadece birini kullanabilirsiniz"
 
 #: ../src/daemon/abrt-auto-reporting.c:270
 msgid "You can use either --anonymous or --certificate"
 msgstr ""
+"--anonymous veya --certificate seçeneklerinden sadece birini "
+"kullanabilirsiniz"
 
 #: ../src/daemon/abrt-auto-reporting.c:277
 msgid "Invalid number of arguments"
@@ -577,6 +590,13 @@ msgid ""
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
 msgstr ""
+"Kullanım: %s [-vd] ABRT_BİRİKTİRME_DİZİNİ YÜKLEME_DİZİNİ DOSYA_ADI\n"
+"\n"
+"   -v             - Ayrıntılı\n"
+"   -d             - Yüklenen arşivi sil\n"
+"   ABRT_BİRİKTİRME_DİZİNİ - Yüklenen geçerli arşivlerin çıkarıldığı dizin\n"
+"   YÜKLEME_DİZİNİ - Yüklenen arşivlerin depolandığı dizin\n"
+"   DOSYA_ADI      - Yüklenen arşiv dosyasının adı\n"
 
 #: ../src/daemon/abrt-handle-upload.in:166
 #: ../src/daemon/abrt-handle-upload.in:169
@@ -629,7 +649,7 @@ msgstr "'{0}' üzerinde doğrulama hatası"
 
 #: ../src/daemon/abrt-handle-upload.in:227
 msgid "Unpacking '{0}'"
-msgstr "'{0}' açılıyor"
+msgstr "'{0}' çıkarılıyor"
 
 #: ../src/daemon/abrt-handle-upload.in:231
 msgid "Can't create '{0}' directory"
@@ -637,7 +657,7 @@ msgstr "'{0}' dizini oluşturulamıyor"
 
 #: ../src/daemon/abrt-handle-upload.in:235
 msgid "Can't unpack '{0}'"
-msgstr "'{0}' açılamadı"
+msgstr "'{0}' çıkarılamıyor"
 
 #: ../src/daemon/abrt-handle-upload.in:255
 msgid "'{0}' processed successfully"
@@ -656,7 +676,7 @@ msgstr "DBus sistemine bağlanılamıyor: %s"
 #: ../src/lib/problem_api_dbus.c:68
 #, c-format
 msgid "Can't chown '%s': %s"
-msgstr ""
+msgstr "'%s' sahibi değiştirilemiyor: %s"
 
 #: ../src/lib/problem_api_dbus.c:97
 #, c-format
@@ -666,31 +686,31 @@ msgstr "Sorunlu dizini silme başarısız oldu: %s"
 #: ../src/lib/problem_api_dbus.c:131
 #, c-format
 msgid "D-Bus GetInfo method call failed: %s"
-msgstr ""
+msgstr "D-Bus GetInfo yöntemi çağrısı başarısız oldu: %s"
 
 #: ../src/lib/problem_api_dbus.c:166
 msgid "Can't get problem data from abrt-dbus"
-msgstr ""
+msgstr "abrt-dbus'tan sorun verisi alınamıyor"
 
 #: ../src/lib/problem_api_dbus.c:193
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
-msgstr ""
+msgstr "abrt-dbus'tan sorun listesi alınamıyor: %s"
 
 #: ../src/lib/problem_api_dbus.c:230 ../src/lib/problem_api_dbus.c:315
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
-msgstr ""
+msgstr "abrt-dbus'tan sorun verisi alınamıyor: %s"
 
 #: ../src/lib/problem_api_dbus.c:274
 #, c-format
 msgid "Can't test whether the element exists over abrt-dbus: %s"
-msgstr ""
+msgstr "Elemanın var olup olmadığı abrt-dbus üzerinden test edilemiyor: %s"
 
 #: ../src/lib/ignored_problems.c:233
 #, c-format
 msgid "Can't create temporary file '%s'"
-msgstr ""
+msgstr "'%s' geçici dosyası oluşturulamıyor"
 
 #: ../src/lib/ignored_problems.c:250
 #, c-format
@@ -698,12 +718,14 @@ msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
 "problems '%s'"
 msgstr ""
+"'%s' dosyasına yazılamıyor. '%s' sorunu, yok sayılan '%s' sorunlarından "
+"kaldırılmayacak"
 
 #. Something nefarious happened
 #: ../src/lib/ignored_problems.c:264
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
-msgstr ""
+msgstr "'%s', '%s' olarak yeniden adlandırılamıyor. '%s' sorunu kaldırılamadı"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:41
 msgid ""
@@ -738,11 +760,14 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
 msgstr ""
+"& [-v] -d DİZİN\n"
+"\n"
+"Bellek dökümü UUID'sini hesaplar ve DİZİN sorun dizinine kaydeder"
 
 #: ../src/plugins/abrt-action-analyze-core.in:67
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "'%s' bellek dökümü analiz ediliyor"
 
 #: ../src/plugins/abrt-action-analyze-core.in:105
 #, c-format
@@ -752,11 +777,11 @@ msgstr "Eksik inşa kimliği: %s"
 #: ../src/plugins/abrt-action-analyze-core.in:137
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr ""
+msgstr "Kullanım: %s [-v] [-o ÇIKTI_DOSYASI] -c BELLEK_DÖKÜMÜ_DOSYASI"
 
 #: ../src/plugins/abrt-action-analyze-core.in:159
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "BELLEK_DÖKÜMÜ_DOSYASI belirtilmedi"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
@@ -764,6 +789,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
 msgstr ""
+"& [-v] -d DİZİN\n"
+"\n"
+"DİZİN oops sorun dizini için UUID ve DUPHASH değerlerini hesaplar ve kaydeder"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:78
 msgid ""
@@ -784,6 +812,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
 msgstr ""
+"& [-v] -d DİZİN\n"
+"\n"
+"DİZİN xorg sorun dizini için UUID ve DUPHASH değerlerini hesaplar ve kaydeder"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:143
 #, c-format
@@ -796,10 +827,13 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
+"& [-v] -d DİZİN\n"
+"\n"
+"Python çökme dökümlerinin UUID ve DUPHASH değerlerini hesaplar ve kaydeder"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:47
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
-msgstr ""
+msgstr "Kullanım: {0} [-v[v]] [--core=VMCORE]"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:74
 msgid "File {0} doesn't exist"
@@ -807,7 +841,7 @@ msgstr "{0} dosyası mevcut değil"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:77
 msgid "Extracting the oops text from core"
-msgstr ""
+msgstr "Bellek dökümünden oops metni çıkarılıyor"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:82
 msgid ""
@@ -819,17 +853,19 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:90
 msgid "Can't extract the oops message: '{0}'"
-msgstr ""
+msgstr "Oops mesajı çıkarılamıyor: '{0}'"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:93
 msgid "Oops text extracted successfully"
-msgstr ""
+msgstr "Oops metni başarıyla çıkarıldı"
 
 #: ../src/plugins/abrt-action-check-oops-for-hw-error.in:100
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
 msgstr ""
+"Çekirdek günlük kaydı, donanım hatalarının tespit edildiğini gösterir.\n"
+"Bu büyük olasılıkla bir yazılım sorunu değil.\n"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:73
 #: ../src/plugins/abrt-action-find-bodhi-update:106
@@ -838,31 +874,31 @@ msgstr "Sorun dizini hatası: {0}"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:92
 msgid "cannot open problem directory '{0}'"
-msgstr ""
+msgstr "'{0}' sorun dizini açılamıyor"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:121
 msgid "Using product '{0}' from /etc/os-release."
-msgstr ""
+msgstr "/etc/os-release dosyasından '{0}' ürünü kullanılıyor."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:123
 msgid "Using product {0}."
-msgstr ""
+msgstr "{0} ürünü kullanılıyor."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:125
 msgid "Using product version {0}."
-msgstr ""
+msgstr "{0} ürün sürümü kullanılıyor."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:137
 msgid "Duplicate bugzilla bug '#{0}' was found"
-msgstr ""
+msgstr "Yinelenen bugzilla hatası '#{0}' bulundu"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:139
 msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
-msgstr ""
+msgstr "'abrt_hash:{0}' ile bir bugzilla hatası yok"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:144
 msgid "Warning: abrt-bodhi do not support Product version 'Rawhide'"
-msgstr ""
+msgstr "Uyarı: abrt-bodhi, 'Rawhide' ürün sürümünü desteklememektedir"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
@@ -899,12 +935,12 @@ msgid ""
 msgstr ""
 "& [-v] [-r] -d DİZİN\n"
 "\n"
-"Bellek dökümü ve ilgili ikili dosyadan bellek dökümü düzeyinde yığın geri "
+"Bellek dökümü ve ilgili ikili dosyadan bellek dökümü seviyesinde yığın geri "
 "izlemesi oluşturur"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
-msgstr ""
+msgstr "Parmak izlerinin sağlama (hash) kodunu hesaplama"
 
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
@@ -927,27 +963,30 @@ msgstr "{0}: {1} açılmıyor"
 #: ../src/plugins/abrt-action-install-debuginfo.in:101
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr ""
+"Bellek dökümü {0} debuginfo dosyasına referans gösteriyor, bunların {1} "
+"tanesi yüklü değil"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:104
 msgid "{0} of debuginfo files are not installed"
-msgstr ""
+msgstr "debuginfo dosyalarının {0} tanesi yüklü değil"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:114
 #, c-format
 msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
 msgstr ""
+"Geçersiz CCpp eklentisi yapılandırması, desteklenmeyen paket yöneticisi: '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:168
 msgid "Missing requested file: {0}"
-msgstr ""
+msgstr "İstenen dosya eksik: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:173
 msgid "Missing debuginfo file: {0}"
-msgstr ""
+msgstr "debuginfo dosyası eksik: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:176
 msgid "All debuginfo files are available"
-msgstr ""
+msgstr "Tüm debuginfo dosyaları mevcut"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:190
 #, c-format
@@ -981,10 +1020,43 @@ msgid ""
 "    --releasever RELEASEVER\n"
 "                Pass this OS version to package managers.\n"
 msgstr ""
+"Kullanım: %s [-vy] [--ids=OLUŞTURMA_KİMLİK_DOSYASI] [--pkgmgr=(yum|dnf)]\n"
+"       [--tmpdir=GEÇİCİ_DİZİN] "
+"[--cache=ÖNBELLEK_DİZİNİ[:DEBUGINFO_DİZİNİ_1:DEBUGINFO_DİZİNİ_2...]] "
+"[--size_mb=BOYUT]\n"
+"       [-e, --exact=YOL[:YOL...]]\n"
+"       [--releasever=DAĞITIM_SÜRÜMÜ] [--repo=KALIP]\n"
+"\n"
+"Geçici hazırlama alanı olarak GEÇİCİ_DİZİN kullanarak "
+"OLUŞTURMA_KİMLİK_DOSYASI\n"
+"içinde listelenen tüm oluşturma kimlikleri için debuginfo'ları yükler. "
+"ÖNBELLEK_DİZİNİ\n"
+"içindeki eski dosyalar BOYUT boyutundan daha küçük olana kadar silinir.\n"
+"\n"
+"Yapılandırma /etc/abrt/plugins/CCpp.conf dosyasından okunur\n"
+"\n"
+"    -v          Ayrıntılı ol\n"
+"    -y          Etkileşimsiz, tüm soruların 'Evet' olarak cevaplandığını "
+"varsay\n"
+"    --ids       Varsayılan: build_ids\n"
+"    --tmpdir    Varsayılan: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RASTGELE_SON_EK\n"
+"    --cache     İki nokta üst üste ile ayrılmış dizin listesi. İlki yüklenen "
+"debuginfo'ları\n"
+"                kaydetmek için kullanılır.\n"
+"                Varsayılan: /var/cache/abrt-di\n"
+"    --size_mb   Varsayılan: 4096\n"
+"    --pkgmgr    Varsayılan: CCpp.conf dosyasındaki paket yöneticisi veya "
+"'dnf'\n"
+"    -e,--exact  Sadece belirtilen dosyaları indir\n"
+"    --repo      Depolar aranırken kullanılacak kalıp.\n"
+"                Varsayılan: *debug*\n"
+"    --releasever DAĞITIM_SÜRÜMÜ\n"
+"                Paket yöneticilerine bu işletim sistemi sürümünü aktar.\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:290
 msgid "Exiting on user command"
-msgstr "Kullanıcı komutuyla çıkılıyor"
+msgstr "Kullanıcının isteği üzerine çıkılıyor"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:43
 msgid ""
@@ -994,14 +1066,19 @@ msgid ""
 "Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
 "ABRT system cache."
 msgstr ""
+"& [-y] [-i OLUŞTURMA_KİMLİK_DOSYASI|-i -] [-e YOL[:YOL]...]\n"
+"\t[-r DEPO]\n"
+"\n"
+"OLUŞTURMA_KİMLİK_DOSYASI'nda listelenen tüm oluşturma kimlikleri\n"
+"için debuginfo paketlerini ABRT sistem önbelleğine yükler."
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
 msgid "Noninteractive, assume 'Yes' to all questions"
-msgstr ""
+msgstr "Etkileşimsiz, tüm soruların 'Evet' olarak cevaplandığını varsay"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
 msgid "- means STDIN, default: build_ids"
-msgstr ""
+msgstr "- STDIN anlamına gelir, varsayılan: build_ids"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
 msgid "Download only specified files"
@@ -1009,7 +1086,7 @@ msgstr "Sadece belirtilen dosyaları indir"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:71
 msgid "Pattern to use when searching for repos, default: *debug*"
-msgstr ""
+msgstr "Depolar aranırken kullanılacak kalıp, varsayılan: *debug*"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:72
 msgid "Ignored option"
@@ -1017,7 +1094,7 @@ msgstr "Yoksayılan seçenek"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:73
 msgid "OS release version"
-msgstr ""
+msgstr "İşletim sistemi sürümü"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
 msgid ""
@@ -1045,6 +1122,11 @@ msgid ""
 "SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
+"& [-v] [-d BOYUT:DİZİN]... [-f BOYUT:DİZİN]... [-p DİZİN] [DOSYA]...\n"
+"\n"
+"BOYUT'tan daha küçük olana kadar DİZİN'lerdeki sorun dizinlerini (-d) veya "
+"dosyalarını (-f) siler.\n"
+"DOSYA'lar korunur (asla silinmez)."
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
@@ -1061,12 +1143,12 @@ msgstr "Bu dizini koru"
 #: ../src/plugins/abrt-action-ureport:54
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr "'%s' başlatılamıyor, hata mesajı: '%s'"
 
 #: ../src/plugins/abrt-action-ureport:65
 #, c-format
 msgid "Not a number in file '%s'"
-msgstr ""
+msgstr "'%s' dosyasında sayı yok"
 
 #: ../src/plugins/abrt-action-ureport:93
 #, c-format
@@ -1075,7 +1157,7 @@ msgstr "Kullanım: %s [-v]"
 
 #: ../src/plugins/abrt-action-ureport:114
 msgid "Unable to get current working directory as it was probably deleted"
-msgstr "Mevcut çalışma dizini muhtemelen silindiği için alınamadı"
+msgstr "Muhtemelen silinmiş olduğundan geçerli çalışma dizini alınamıyor"
 
 #: ../src/plugins/abrt-action-ureport:143
 msgid "A bug was already filed about this problem:"
@@ -1088,133 +1170,138 @@ msgstr "uReport zaten gönderildi, tekrar yollamadı"
 #: ../src/plugins/abrt-action-ureport:174
 msgid "Problem comes from unpackaged executable. Unable to create uReport."
 msgstr ""
+"Sorun, paketlenmemiş bir yürütülebilir dosyadan gelmektedir. uReport "
+"oluşturulamıyor."
 
 #: ../src/plugins/abrt-action-ureport:189
 msgid "Adding you to CC List of the existing bugzilla bug"
-msgstr ""
+msgstr "Mevcut bugzilla hatasının CC listesine ekleniyorsunuz"
 
 #: ../src/plugins/abrt-action-ureport:203
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
-msgstr ""
+msgstr "reporter-ureport, %d çıkış koduyla başarısız oldu"
 
 #: ../src/plugins/abrt-gdb-exploitable:524
 msgid "Signal sent by userspace code"
-msgstr ""
+msgstr "Kullanıcı alanı kodu tarafından gönderilen sinyal"
 
 #: ../src/plugins/abrt-gdb-exploitable:528
 msgid "Signal sent by timer/IO/async event"
-msgstr ""
+msgstr "Zamanlayıcı/IO/eşzamansız (async) olay tarafından gönderilen sinyal"
 
 #: ../src/plugins/abrt-gdb-exploitable:536
 msgid "Signal has siginfo.si_code = SI_USER"
-msgstr ""
+msgstr "Sinyal siginfo.si_code = SI_USER değerine sahip"
 
 #: ../src/plugins/abrt-gdb-exploitable:539
 msgid "Signal due to write to closed pipe"
-msgstr ""
+msgstr "Kapalı veri kanalına (pipe) yazma nedeniyle alınan sinyal"
 
 #: ../src/plugins/abrt-gdb-exploitable:545
 #: ../src/plugins/abrt-gdb-exploitable:570
 msgid "Signal sent by keyboard"
-msgstr ""
+msgstr "Klavye ile gönderilen sinyal"
 
 #: ../src/plugins/abrt-gdb-exploitable:549
 #: ../src/plugins/abrt-gdb-exploitable:574
 msgid "Job control signal sent by kernel"
-msgstr ""
+msgstr "Çekirdek (kernel) tarafından gönderilen iş kontrol sinyali"
 
 #: ../src/plugins/abrt-gdb-exploitable:553
 #: ../src/plugins/abrt-gdb-exploitable:582
 msgid "Signal sent by window resize"
-msgstr ""
+msgstr "Pencere yeniden boyutlandırıldığında gönderilen sinyal"
 
 #: ../src/plugins/abrt-gdb-exploitable:557
 #: ../src/plugins/abrt-gdb-exploitable:586
 msgid "Signal sent by alarm(N) expiration"
-msgstr ""
+msgstr "Alarm(N) süresinin dolmasıyla gönderilen sinyal"
 
 #: ../src/plugins/abrt-gdb-exploitable:578
 msgid "Signal due to write to broken pipe"
-msgstr ""
+msgstr "Bozuk veri kanalına (pipe) yazma nedeniyle alınan sinyal"
 
 #: ../src/plugins/abrt-gdb-exploitable:602
 msgid "ABRT signal (abort() was called?)"
-msgstr ""
+msgstr "ABRT sinyali (abort() mu çağrıldı?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:611
 msgid "XCPU signal (over CPU time limit)"
-msgstr ""
+msgstr "XCPU sinyali (CPU zaman sınırı aşıldı)"
 
 #: ../src/plugins/abrt-gdb-exploitable:615
 msgid "XFSZ signal (over file size limit)"
-msgstr ""
+msgstr "XFSZ sinyali (dosya boyutu sınırı aşıldı)"
 
 #: ../src/plugins/abrt-gdb-exploitable:619
 msgid "TRAP signal (can be a bug in a debugger/tracer)"
-msgstr ""
+msgstr "TRAP sinyali (hata ayıklayıcı/izleyicideki bir hata olabilir)"
 
 #: ../src/plugins/abrt-gdb-exploitable:623
 msgid "SYS signal (unknown syscall was called?)"
-msgstr ""
+msgstr "SYS sinyali (bilinmeyen sistem çağrısı kullanıldı?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:628
 msgid "Arithmetic exception"
-msgstr ""
+msgstr "Aritmetik istisna"
 
 #: ../src/plugins/abrt-gdb-exploitable:632
 msgid "Division by zero"
-msgstr ""
+msgstr "Sıfıra bölme"
 
 #: ../src/plugins/abrt-gdb-exploitable:636
 msgid "Illegal instruction (jump to a random address?)"
-msgstr ""
+msgstr "Yasak komut (rastgele bir adrese gitme girişimi?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:642
 msgid "Non-crash related signal"
-msgstr ""
+msgstr "Çökme ile ilgili olmayan sinyal"
 
 #: ../src/plugins/abrt-gdb-exploitable:647
 msgid "Stack overflow"
-msgstr ""
+msgstr "Yığın taşması"
 
 #: ../src/plugins/abrt-gdb-exploitable:651
 msgid "Write to an invalid address"
-msgstr ""
+msgstr "Geçersiz bir adrese yazma"
 
 #: ../src/plugins/abrt-gdb-exploitable:655
 msgid "Subroutine return to an invalid address (corrupted stack?)"
-msgstr ""
+msgstr "Alt programın geçersiz bir adrese geri dönmesi (bozuk yığın?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:661
 #: ../src/plugins/abrt-gdb-exploitable:665
 msgid "Jump to an invalid address"
-msgstr ""
+msgstr "Geçersiz bir adrese gitme"
 
 #: ../src/plugins/abrt-gdb-exploitable:669
 msgid ""
 "Access past the end of mapped file, invalid address, unaligned access, etc."
 msgstr ""
+"Eşlenen dosyanın bitiminden sonra erişim, geçersiz adres, hizalanmamış "
+"erişim vb."
 
 #: ../src/plugins/abrt-gdb-exploitable:688
 msgid "Can't get signal no and do exploitability analysis\n"
 msgstr ""
+"Sinyal numarası alınamıyor ve güvenlik açığı analizi gerçekleştirilemiyor\n"
 
 #: ../src/plugins/abrt-gdb-exploitable:701
 msgid "Likely crash reason: "
-msgstr ""
+msgstr "Olası çökme nedeni: "
 
 #: ../src/plugins/abrt-gdb-exploitable:702
 msgid "Exploitable rating (0-9 scale): "
-msgstr ""
+msgstr "Güvenlik açığı derecesi (0-9 ölçeğinde): "
 
 #: ../src/plugins/abrt-gdb-exploitable:704
 msgid "Current instruction: "
-msgstr ""
+msgstr "Mevcut komut: "
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Exploitability analysis came up empty\n"
-msgstr ""
+msgstr "Güvenlik açığı analizi boş çıktı\n"
 
 #: ../src/plugins/abrt-watch-log.c:129 ../src/plugins/abrt-retrace-client.c:159
 #: ../src/plugins/abrt-retrace-client.c:213
@@ -1228,10 +1315,14 @@ msgid ""
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
 msgstr ""
+"& [-vs] [-F DİZE]... DOSYA PROGRAM [ARGÜMANLAR]\n"
+"\n"
+"DOSYA günlük dosyasını izle, veri eklendiğinde veya değiştirildiğinde "
+"PROGRAM'ı çalıştır"
 
 #: ../src/plugins/abrt-watch-log.c:177
 msgid "Don't run PROG if STRs aren't found"
-msgstr ""
+msgstr "DİZE bulunamazsa PROGRAM'ı çalıştırma"
 
 #: ../src/plugins/abrt-dump-oops.c:77
 msgid ""
@@ -1239,6 +1330,9 @@ msgid ""
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr ""
+"& [-vusoxm] [-d DİZİN]/[-D] [DOSYA]\n"
+"\n"
+"DOSYA'dan (veya standart girdiden) oops verilerini çıkar"
 
 #: ../src/plugins/abrt-dump-oops.c:98
 #: ../src/plugins/abrt-dump-journal-core.c:572
@@ -1252,7 +1346,7 @@ msgstr "Standart çıktı üzerinde bulunan oops ları yazdır"
 #: ../src/plugins/abrt-dump-oops.c:102
 #: ../src/plugins/abrt-dump-journal-oops.c:227
 msgid "Create new problem directory in DIR for every oops found"
-msgstr ""
+msgstr "Bulunan her oops için DİZİN'de yeni sorun dizini oluştur"
 
 #: ../src/plugins/abrt-dump-oops.c:103
 #: ../src/plugins/abrt-dump-journal-core.c:564
@@ -1261,70 +1355,71 @@ msgstr ""
 #: ../src/plugins/abrt-dump-xorg.c:55
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
+"'-d DumpLocation' ile aynı, DumpLocation abrt.conf dosyasında belirtilir"
 
 #: ../src/plugins/abrt-dump-oops.c:104
 msgid "Save the extracted information in PROBLEM"
-msgstr ""
+msgstr "Çıkarılan bilgileri SORUN'a kaydet"
 
 #: ../src/plugins/abrt-dump-oops.c:105
 #: ../src/plugins/abrt-dump-journal-oops.c:229
 #: ../src/plugins/abrt-dump-journal-xorg.c:195
 #: ../src/plugins/abrt-dump-xorg.c:56
 msgid "Make the problem directory world readable"
-msgstr ""
+msgstr "Sorun dizinini tüm kullanıcılar tarafından okunabilir yap"
 
 #: ../src/plugins/abrt-dump-oops.c:106
 #: ../src/plugins/abrt-dump-journal-oops.c:230
 #: ../src/plugins/abrt-dump-journal-xorg.c:196
 msgid "Throttle problem directory creation to 1 per second"
-msgstr ""
+msgstr "Sorun dizini oluşturma sayısını saniyede 1 taneyle sınırla"
 
 #: ../src/plugins/abrt-dump-oops.c:107 ../src/plugins/abrt-dump-xorg.c:57
 msgid "Print search string(s) to stdout and exit"
-msgstr ""
+msgstr "Arama dize(ler)ini standart çıktıya yazdır ve çık"
 
 #: ../src/plugins/abrt-dump-oops.c:127
 #: ../src/plugins/abrt-dump-journal-oops.c:128
 msgid "Failed to compile regex"
-msgstr ""
+msgstr "Düzenli ifade (regex) derlenemedi"
 
 #: ../src/plugins/abrt-dump-oops.c:177
 msgid "Can't update the problem: no oops found"
-msgstr ""
+msgstr "Sorun güncellenemiyor: oops bulunamadı"
 
 #: ../src/plugins/abrt-dump-oops.c:183
 msgid "More oopses found: process only the first one"
-msgstr ""
+msgstr "Birkaç tane oops bulundu: sadece ilkini işle"
 
 #: ../src/plugins/abrt-dump-journal-core.c:378
 #, c-format
 msgid "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
-msgstr ""
+msgstr "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
 
 #: ../src/plugins/abrt-dump-journal-core.c:407
 #: ../src/plugins/abrt-dump-journal-core.c:446
 msgid "Failed to obtain all required information from journald"
-msgstr ""
+msgstr "Günlük servisinden (journald) gerekli tüm bilgiler alınamadı"
 
 #. We don't want to update the counter here.
 #: ../src/plugins/abrt-dump-journal-core.c:470
 #, c-format
 msgid "Not saving repeating crash after %ds (limit is %ds)"
-msgstr ""
+msgstr "%ds sonra tekrarlanan çökme kaydedilmiyor (sınır %ds)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:478
 msgid "Failed to print detect problem data to stdout"
-msgstr ""
+msgstr "Tespit edilen sorun verileri standart çıktıya yazdırılamadı"
 
 #: ../src/plugins/abrt-dump-journal-core.c:486
 msgid "Failed to save detect problem data in abrt database"
-msgstr ""
+msgstr "Tespit edilen sorun verileri abrt veri tabanına kaydedilemedi"
 
 #: ../src/plugins/abrt-dump-journal-core.c:507
 #: ../src/plugins/abrt-dump-journal-oops.c:168
 #: ../src/plugins/abrt-dump-journal-xorg.c:123
 msgid "Failed to initialize systemd-journal watch"
-msgstr ""
+msgstr "systemd-journal izleme başlatılamadı"
 
 #: ../src/plugins/abrt-dump-journal-core.c:527
 msgid ""
@@ -1340,89 +1435,103 @@ msgid ""
 "\n"
 "The last seen position is saved in "
 msgstr ""
+"& [-vsf] [-e]/[-c İMLEÇ] [-t TAM_SAYI]/[-T] [-d DİZİN]/[-D]\n"
+"\n"
+"systemd-journal'dan bellek dökümlerini çıkar\n"
+"\n"
+"her ikisi de ilk okunan mesajı belirttiği için -c ve -e seçenekleri "
+"çakışmaktadır.\n"
+"\n"
+"-e sadece -f için faydalıdır, çünkü son görülen konum mevcut değilse "
+"günlüğü\n"
+"takip etme tüm günlüğü okuyarak başlar.\n"
+"\n"
+"En son görülen konum şuraya kaydedilir: "
 
 #: ../src/plugins/abrt-dump-journal-core.c:563
 msgid "Create new problem directory in DIR for every coredump"
-msgstr ""
+msgstr "Her bellek dökümü için DİZİN'de yeni sorun dizini oluştur"
 
 #: ../src/plugins/abrt-dump-journal-core.c:565
 #: ../src/plugins/abrt-dump-journal-oops.c:231
 #: ../src/plugins/abrt-dump-journal-xorg.c:197
 msgid "Start reading systemd-journal from the CURSOR position"
-msgstr ""
+msgstr "systemd-journal'ı okumaya İMLEÇ konumundan başla"
 
 #: ../src/plugins/abrt-dump-journal-core.c:566
 #: ../src/plugins/abrt-dump-journal-oops.c:232
 #: ../src/plugins/abrt-dump-journal-xorg.c:198
 msgid "Start reading systemd-journal from the end"
-msgstr ""
+msgstr "systemd-journal'ı okumaya sondan başla"
 
 #: ../src/plugins/abrt-dump-journal-core.c:567
 msgid "Throttle problem directory creation to 1 per INT second"
-msgstr ""
+msgstr "Sorun dizini oluşturmayı her TAM_SAYI saniyede 1 tane ile sınırla"
 
 #: ../src/plugins/abrt-dump-journal-core.c:568
 msgid "Same as -t INT, INT is specified in plugins/CCpp.conf"
 msgstr ""
+"'-t TAM_SAYI' ile aynı, TAM_SAYI plugins/CCpp.conf dosyasında belirtilir"
 
 #: ../src/plugins/abrt-dump-journal-core.c:569
 #: ../src/plugins/abrt-dump-journal-oops.c:233
 #: ../src/plugins/abrt-dump-journal-xorg.c:199
 msgid "Follow systemd-journal from the last seen position (if available)"
 msgstr ""
+"systemd-journal'ı (eğer mevcutsa) en son görülen konumdan itibaren takip et"
 
 #: ../src/plugins/abrt-dump-journal-core.c:570
 #: ../src/plugins/abrt-dump-journal-oops.c:234
 #: ../src/plugins/abrt-dump-journal-xorg.c:200
 msgid "Read journal files from all machines"
-msgstr ""
+msgstr "Tüm makinelerin günlük dosyalarını oku"
 
 #: ../src/plugins/abrt-dump-journal-core.c:571
 #: ../src/plugins/abrt-dump-journal-oops.c:235
 #: ../src/plugins/abrt-dump-journal-xorg.c:201
 msgid "Read all journal files from directory at PATH"
-msgstr ""
+msgstr "PATH dizinindeki tüm günlük dosyalarını oku"
 
 #: ../src/plugins/abrt-dump-journal-core.c:583
 #: ../src/plugins/abrt-dump-journal-oops.c:249
 #: ../src/plugins/abrt-dump-journal-xorg.c:216
 msgid "You need to specify either -c CURSOR or -e"
-msgstr ""
+msgstr "-c İMLEÇ veya -e seçeneklerinden sadece birisini belirtmelisiniz"
 
 #: ../src/plugins/abrt-dump-journal-core.c:627
 #: ../src/plugins/abrt-dump-journal-oops.c:282
 #: ../src/plugins/abrt-dump-journal-xorg.c:281
 #, c-format
 msgid "Cannot initialize systemd-journal in directory '%s'"
-msgstr ""
+msgstr "'%s' dizininde systemd-journal başlatılamıyor"
 
 #: ../src/plugins/abrt-dump-journal-core.c:632
 #: ../src/plugins/abrt-dump-journal-oops.c:287
 #: ../src/plugins/abrt-dump-journal-xorg.c:286
 msgid "Cannot open systemd-journal"
-msgstr ""
+msgstr "systemd-journal açılamıyor"
 
 #: ../src/plugins/abrt-dump-journal-core.c:636
 msgid "Cannot filter systemd-journal to systemd-coredump data only"
-msgstr ""
+msgstr "systemd-journal, sadece systemd-coredump verileri için filtrelenemiyor"
 
 #: ../src/plugins/abrt-dump-journal-core.c:641
 #: ../src/plugins/abrt-dump-journal-oops.c:296
 #: ../src/plugins/abrt-dump-journal-xorg.c:299
 msgid "Cannot seek to the end of journal"
-msgstr ""
+msgstr "İmleç günlüğün sonuna taşınamıyor"
 
 #: ../src/plugins/abrt-dump-journal-core.c:644
 #: ../src/plugins/abrt-dump-journal-oops.c:312
 #: ../src/plugins/abrt-dump-journal-xorg.c:315
 #, c-format
 msgid "Failed to set systemd-journal cursor '%s'"
-msgstr ""
+msgstr "'%s' systemd-journal imleci ayarlanamadı"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:40
 #: ../src/plugins/abrt-dump-journal-xorg.c:53
 msgid "Cannot read journal data."
-msgstr ""
+msgstr "Günlük verileri okunamıyor."
 
 #: ../src/plugins/abrt-dump-journal-oops.c:189
 msgid ""
@@ -1438,16 +1547,28 @@ msgid ""
 "\n"
 "The last seen position is saved in "
 msgstr ""
+"& [-vsoxtf] [-e]/[-c İMLEÇ] [-d DİZİN]/[-D]\n"
+"\n"
+"systemd-journal oops verilerini çıkar\n"
+"\n"
+"her ikisi de ilk okunan mesajı belirttiği için -c ve -e seçenekleri "
+"çakışmaktadır.\n"
+"\n"
+"-e sadece -f için faydalıdır, çünkü son görülen konum mevcut değilse "
+"günlüğü\n"
+"takip etme tüm günlüğü okuyarak başlar.\n"
+"\n"
+"En son görülen konum şuraya kaydedilir: "
 
 #: ../src/plugins/abrt-dump-journal-oops.c:291
 msgid "Cannot filter systemd-journal to kernel data only"
-msgstr ""
+msgstr "systemd-journal, sadece çekirdek (kernel) verileri için filtrelenemiyor"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:303
 #: ../src/plugins/abrt-dump-journal-xorg.c:306
 #, c-format
 msgid "Failed to start watch from cursor '%s'"
-msgstr ""
+msgstr "'%s' imleç konumundan izleme başlatılamadı"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:62
 msgid "Failed to parse Backtrace from journal"
@@ -1472,6 +1593,20 @@ msgid ""
 "parameter\n"
 "-j or in %s conf file.\n"
 msgstr ""
+"& [-vsoxtf] [-e]/[-c İMLEÇ] [-d DİZİN]/[-D]\n"
+"\n"
+"systemd-journal'dan Xorg çökmelerini çıkar\n"
+"\n"
+"her ikisi de ilk okunan mesajı belirttiği için -c ve -e seçenekleri "
+"çakışmaktadır.\n"
+"\n"
+"e sadece -f için faydalıdır, çünkü son görülen konum mevcut değilse günlüğü\n"
+"takip etme tüm günlüğü okuyarak başlar.\n"
+"\n"
+"En son görülen konum %s dosyasına kaydedilir\n"
+"\n"
+"Günlük filtresi gerekli bir parametredir ve -j parametresi ile ya da %s\n"
+"yapılandırma dosyasında belirtilmelidir.\n"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:192
 msgid "Print found crashes on standard output"
@@ -1479,21 +1614,24 @@ msgstr "Bulunan çökmeleri standart çıkışa yazdır"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:193
 msgid "Create new problem directory in DIR for every crash found"
-msgstr ""
+msgstr "Bulunan her çökme için DİZİN'de yeni sorun dizini oluştur"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:202
 msgid "Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)"
 msgstr ""
+"Günlük filtresi, örneğin '_COMM=gdm-x-session' (birden çok kez verilebilir)"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:273
 msgid ""
 "Journal filter must be specified either by parameter -j or stored in /etc/"
 "abrt/plugins/xorg.conf file"
 msgstr ""
+"Günlük filtresi -j parametresi ile veya /etc/abrt/plugins/xorg.conf "
+"dosyasında belirtilmelidir"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:290
 msgid "Cannot filter systemd-journal to Xorg data only"
-msgstr ""
+msgstr "systemd-journal, sadece Xorg verileri için filtrelenemiyor"
 
 #: ../src/plugins/abrt-dump-xorg.c:35
 msgid ""
@@ -1501,6 +1639,9 @@ msgid ""
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
 msgstr ""
+"& [-vsoxm] [-d DİZİN]/[-D] [DOSYA]\n"
+"\n"
+"DOSYA'dan (veya standart girdiden) Xorg çökmelerini çıkar"
 
 #: ../src/plugins/abrt-dump-xorg.c:53
 msgid "Print found crash data on standard output"
@@ -1508,7 +1649,7 @@ msgstr "Bulunan çökme verilerini standart çıkışa yazdır"
 
 #: ../src/plugins/abrt-dump-xorg.c:54
 msgid "Create problem directory in DIR for every crash found"
-msgstr ""
+msgstr "Bulunan her çökme için DİZİN'de yeni sorun dizini oluştur"
 
 #: ../src/plugins/abrt-dump-xorg.c:108
 msgid "Failed to parse Backtrace from log file"
@@ -1517,56 +1658,62 @@ msgstr "Log dosyasından yığın geri izlemesi ayrıştırılamadı"
 #. abrt_journal_set_cursor() prints error message in verbose mode
 #: ../src/plugins/abrt-journal.c:274
 msgid "Cannot save journal watch's position"
-msgstr ""
+msgstr "Günlük izleme konumu kaydedilemiyor"
 
 #: ../src/plugins/abrt-journal.c:284
 #, c-format
 msgid "Cannot save journal watch's position: open('%s')"
-msgstr ""
+msgstr "Günlük izleme konumu kaydedilemiyor: open('%s')"
 
 #. Only notice because this is expected
 #: ../src/plugins/abrt-journal.c:302
 #, c-format
 msgid "Not restoring journal watch's position: file '%s' does not exist"
-msgstr ""
+msgstr "Günlük izleme konumu geri yüklenmiyor: '%s' diye bir dosya yok"
 
 #: ../src/plugins/abrt-journal.c:304
 #, c-format
 msgid "Cannot restore journal watch's position form file '%s'"
-msgstr ""
+msgstr "Günlük izleme konumu '%s' dosyasından geri yüklenemiyor"
 
 #: ../src/plugins/abrt-journal.c:311
 #, c-format
 msgid "Cannot restore journal watch's position: path '%s' is not regular file"
 msgstr ""
+"Günlük izleme konumu geri yüklenemiyor: '%s' yolu normal bir dosya değil"
 
 #: ../src/plugins/abrt-journal.c:317
 #, c-format
 msgid ""
 "Cannot restore journal watch's position: file '%s' exceeds %dB size limit"
 msgstr ""
+"Günlük izleme konumu geri yüklenemiyor: '%s' dosyası %dB boyut sınırını "
+"aşıyor"
 
 #: ../src/plugins/abrt-journal.c:325
 #, c-format
 msgid "Cannot restore journal watch's position: open('%s')"
-msgstr ""
+msgstr "Günlük izleme konumu geri yüklenemiyor: open('%s')"
 
 #: ../src/plugins/abrt-journal.c:334
 #, c-format
 msgid "Cannot restore journal watch's position: cannot read entire file '%s'"
 msgstr ""
+"Günlük izleme konumu geri yüklenemiyor: '%s' dosyasının tamamı okunamıyor"
 
 #. abrt_journal_set_cursor() prints error message in verbose mode
 #: ../src/plugins/abrt-journal.c:346
 #, c-format
 msgid "Failed to move the journal to a cursor from file '%s'"
-msgstr ""
+msgstr "Günlük, '%s' dosyasından bir imleç konumuna taşınamadı"
 
 #: ../src/plugins/abrt-retrace-client.c:79
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
 msgstr ""
+"Çökme boyutu çok büyük olduğu için retrace sunucusu kullanılamıyor. Yerel "
+"olarak geri izlemeyi deneyin."
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
@@ -1575,7 +1722,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:230
 #: ../src/plugins/abrt-retrace-client.c:234
 msgid "Can't create temporary file in "
-msgstr ""
+msgstr "Şurada geçici dosya oluşturulamıyor: "
 
 #: ../src/plugins/abrt-retrace-client.c:322
 #: ../src/plugins/abrt-retrace-client.c:498
@@ -1599,6 +1746,8 @@ msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official '%s' repositories?"
 msgstr ""
+"Retrace sunucusu '%s.%s' paketini işleyemiyor.\n"
+"Paket, resmi '%s' depolarına mı ait?"
 
 #: ../src/plugins/abrt-retrace-client.c:541
 #, c-format
@@ -1621,7 +1770,7 @@ msgstr "Sunucu isteğinizi reddetti."
 #: ../src/plugins/abrt-retrace-client.c:612
 #, c-format
 msgid "'%s' must be a regular file in order to use Retrace server."
-msgstr ""
+msgstr "Retrace sunucusunu kullanabilmek için '%s' normal bir dosya olmalıdır."
 
 #: ../src/plugins/abrt-retrace-client.c:632
 #, c-format
@@ -1629,6 +1778,8 @@ msgid ""
 "The size of your crash is %s, but the retrace server only accepts crashes "
 "smaller or equal to %s."
 msgstr ""
+"Çökmenizin boyutu %s, ancak retrace sunucusu sadece %s veya daha küçük "
+"çökmeleri kabul etmektedir."
 
 #: ../src/plugins/abrt-retrace-client.c:652
 msgid "The server does not support xz-compressed tarballs."
@@ -1657,6 +1808,8 @@ msgid ""
 "The size of your archive is %s, but the retrace server only accepts archives "
 "smaller or equal to %s."
 msgstr ""
+"Arşivinizin boyutu %s, ancak retrace sunucusu sadece %s veya daha küçük "
+"arşivleri kabul etmektedir."
 
 #: ../src/plugins/abrt-retrace-client.c:752
 #, c-format
@@ -1737,13 +1890,15 @@ msgstr "syslog günlüğüne"
 
 #: ../src/plugins/abrt-retrace-client.c:1256
 msgid "allow insecure connection to retrace server"
-msgstr "sunucuyu geri çekmek için güvenli olmayan bağlantıya izin ver"
+msgstr "retrace sunucusuna güvenli olmayan bağlantıya izin ver"
 
 #: ../src/plugins/abrt-retrace-client.c:1258
 msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
 msgstr ""
+"arşivi karşıya yüklemeden önce retrace sunucusu verilen paketi işleyebilir "
+"mi diye kontrol etme"
 
 #: ../src/plugins/abrt-retrace-client.c:1261
 msgid "retrace server URI"
@@ -1759,7 +1914,7 @@ msgstr "Yaratma ve toplu işlemler için"
 
 #: ../src/plugins/abrt-retrace-client.c:1266
 msgid "read data from ABRT problem directory"
-msgstr ""
+msgstr "ABRT sorun dizininden veri oku"
 
 #: ../src/plugins/abrt-retrace-client.c:1268
 msgid "read data from coredump"
@@ -1771,7 +1926,7 @@ msgstr "Sıradaki işlemleri erteleme"
 
 #: ../src/plugins/abrt-retrace-client.c:1272
 msgid "(debug) do not delete temporary archive created from dump dir in "
-msgstr ""
+msgstr "(debug) döküm dizininden oluşturulan, şuradaki geçici arşivi silme: "
 
 #: ../src/plugins/abrt-retrace-client.c:1274
 msgid "For status, backtrace, and log operations"
@@ -1796,7 +1951,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:1324
 #: ../src/plugins/abrt-retrace-client.c:1330
 msgid "Either problem directory or coredump is needed."
-msgstr ""
+msgstr "Sorun dizini ya da bellek dökümü gereklidir."
 
 #: ../src/plugins/abrt-retrace-client.c:1336
 #: ../src/plugins/abrt-retrace-client.c:1344
@@ -1819,7 +1974,7 @@ msgstr "Bilinmeyen işlem: %s."
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:1
 msgid "Search for updated packages that fixes the crash."
-msgstr ""
+msgstr "Çökme sorununu gideren güncellenmiş paketleri arayın."
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:2
 msgid ""
@@ -1827,6 +1982,9 @@ msgid ""
 "Whiteboar equal to 'UUID' of the crash. If such a bug found, search for "
 "Bodhi updates shipping fixes for the found Bugzilla bugs."
 msgstr ""
+"Bugzilla Bug Whiteboard'da, çökmenin 'UUID' değerine eşit 'abrt_hash' "
+"değerine sahip Bugzilla raporlarını arar. Böyle bir hata bulunursa, bulunan "
+"Bugzilla hataları için düzeltmeler içeren Bodhi güncellemelerini arar."
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
@@ -1844,10 +2002,13 @@ msgid ""
 "and take up disk space. However, unlike RetraceServer, doesn't send coredump "
 "to remote machines."
 msgstr ""
+"Önemli zaman alan ve disk alanı kaplayan debuginfo paketlerinin indirilmesi "
+"gerekir. Ancak, RetraceServer'ın aksine, bellek dökümünü uzak makinelere "
+"göndermez."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
-msgstr "Çekirdek dökümünü uzak geri besleme sunucusuna analiz için gönder"
+msgstr "Bellek dökümünü analiz için uzak retrace sunucusuna gönder"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
@@ -1869,7 +2030,7 @@ msgstr "Retrace server URI'si"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Address of the retrace server"
-msgstr "Tekrar izlenecek sunucunun adresi"
+msgstr "Retrace sunucusunun adresi"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:5
 msgid "Insecure"
@@ -1891,7 +2052,7 @@ msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
-msgstr ""
+msgstr ".xsession-errors verilerini topla"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1907,26 +2068,26 @@ msgstr ""
 
 #: ../src/plugins/https-utils.c:53
 msgid "An error occurred on the server side."
-msgstr ""
+msgstr "Sunucu tarafında bir hata oluştu."
 
 #: ../src/plugins/https-utils.c:56
 #, c-format
 msgid "A server-side error occurred on '%s'"
-msgstr ""
+msgstr "'%s' üzerinde bir sunucu tarafı hatası oluştu"
 
 #: ../src/plugins/https-utils.c:65
 msgid "An error occurred while connecting to the server"
-msgstr ""
+msgstr "Sunucuya bağlanırken bir hata oluştu"
 
 #: ../src/plugins/https-utils.c:68
 #, c-format
 msgid "An error occurred while connecting to '%s'"
-msgstr ""
+msgstr "'%s' sunucusuna bağlanırken bir hata oluştu"
 
 #: ../src/plugins/oops-utils.c:78
 #, c-format
 msgid "Sleeping for %d seconds"
-msgstr ""
+msgstr "%d saniye uykuda bekleniyor"
 
 #: ../src/plugins/oops-utils.c:227
 msgid ""
@@ -1934,15 +2095,15 @@ msgid ""
 "problems are not fixable by kernel maintainers."
 msgstr ""
 "Bozuk BIOS nedeniyle bir çekirdek sorunu oluştu. Ne yazık ki, bu tür "
-"sorunlar çekirdek bakım uzmanları tarafından çözülemez."
+"sorunlar çekirdek geliştiricileri tarafından çözülemez."
 
 #: ../src/plugins/oops-utils.c:232
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
 msgstr ""
-"Bir çekirdek sorunu oluştu, ama donanımınız desteklenmiyor, bu nedenle "
-"çekirdek bakımcıları bu sorunu çözemez."
+"Bir çekirdek sorunu oluştu, ancak donanımınız desteklenmediği için çekirdek "
+"geliştiricileri bu sorunu çözemiyor."
 
 #: ../src/plugins/oops-utils.c:246
 #, c-format
@@ -1951,26 +2112,26 @@ msgid ""
 "Explanation:\n"
 "%sKernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"Çekirdek sorunu oluştu, ancak çekirdeğiniz bozuldu (bayraklar: %s). "
+"Bir çekirdek sorunu oluştu, ancak çekirdeğiniz lekelendi (bayraklar: %s). "
 "Açıklama:\n"
-"%sKernel geliştiricileri bozuk raporları teşhis edememektedir."
+"%sKernel geliştiricileri lekeli (tainted) raporları teşhis edememektedir."
 
 #: ../src/plugins/oops-utils.c:254
 #, c-format
 msgid " Tainted modules: %s."
-msgstr ""
+msgstr " Lekeli (tainted) modüller: %s."
 
 #: ../src/plugins/bodhi.c:498
 msgid "List of bug ids"
-msgstr ""
+msgstr "Hata kimliklerinin listesi"
 
 #: ../src/plugins/bodhi.c:499
 msgid "Specify a bodhi server url"
-msgstr ""
+msgstr "Bodhi sunucusu URL'si"
 
 #: ../src/plugins/bodhi.c:500
 msgid "Specify a release"
-msgstr ""
+msgstr "Dağıtım sürümü"
 
 #: ../src/plugins/bodhi.c:505
 msgid ""
@@ -1978,6 +2139,10 @@ msgid ""
 "\n"
 "Search for updates on bodhi server"
 msgstr ""
+"& [-v] [-r[DAĞITIM_SÜRÜMÜ]] (-b KİMLİK1[,KİMLİK2,...] | PAKET_ADI) "
+"[PAKET_ADI]... \n"
+"\n"
+"Bodhi sunucusunda güncellemeleri ara"
 
 #: ../src/plugins/bodhi.c:572
 msgid "Searching for updates"
@@ -2007,18 +2172,22 @@ msgid ""
 "\n"
 "Scans files for split oops message. Can print and/or delete them."
 msgstr ""
+"& [-v] [-od] DOSYA...\n"
+"\n"
+"Bölünmüş oops mesajı için dosyaları tarar. Bunları yazdırabilir ve/veya "
+"silebilir."
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:97
 msgid "Print found oopses"
-msgstr ""
+msgstr "Bulunan oops mesajlarını yazdır"
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:98
 msgid "Delete files with found oopses"
-msgstr ""
+msgstr "Oops mesajı bulunan dosyaları sil"
 
 #: ../src/cli/abrtcli/match.py:117
 msgid "No matching problems found"
-msgstr ""
+msgstr "Eşleşen sorun bulunamadı"
 
 #: ../src/cli/abrtcli/utils.py:79
 msgid "Not reportable"
@@ -2026,11 +2195,11 @@ msgstr "Raporlanabilir değil"
 
 #: ../src/cli/abrtcli/cli/__init__.py:30
 msgid "increase output verbosity"
-msgstr ""
+msgstr "çıktı ayrıntı düzeyini arttır"
 
 #: ../src/cli/abrtcli/cli/__init__.py:50
 msgid "positive non-zero integer expected"
-msgstr ""
+msgstr "pozitif sıfır olmayan tam sayı bekleniyor"
 
 #: ../src/cli/abrtcli/cli/__init__.py:54
 msgid "filter last N problems"
@@ -2038,7 +2207,7 @@ msgstr "son N sorunu filtrele"
 
 #: ../src/cli/abrtcli/cli/__init__.py:57
 msgid "filter problems with matching component"
-msgstr ""
+msgstr "sadece eşleşen bileşenle ilgili sorunları göster"
 
 #: ../src/cli/abrtcli/cli/__init__.py:59
 msgid "filter unreported problems"
@@ -2054,7 +2223,7 @@ msgstr "belirtilen zaman damgasından daha yeni sorunları filtrele"
 
 #: ../src/cli/abrtcli/cli/__init__.py:66
 msgid "filter problems with matching executable"
-msgstr ""
+msgstr "sadece eşleşen yürütülebilir dosyayla ilgili sorunları göster"
 
 #: ../src/cli/abrtcli/cli/__init__.py:71
 msgid "output format"
@@ -2066,7 +2235,7 @@ msgstr "gömülü çıktı formatı"
 
 #: ../src/cli/abrtcli/cli/__init__.py:79
 msgid "path to the problem directory, problem ID or wildcard"
-msgstr ""
+msgstr "sorun dizininin yolu, sorun kimliği veya joker karakter"
 
 #: ../src/cli/abrtcli/cli/backtrace.py:35
 msgid "Problem has no backtrace"
@@ -2074,7 +2243,7 @@ msgstr "Problemin yığın geri izlemesi yok"
 
 #: ../src/cli/abrtcli/cli/backtrace.py:37
 msgid "Start retracing process?"
-msgstr ""
+msgstr "Geri izleme işlemi başlatılsın mı?"
 
 #: ../src/cli/abrtcli/cli/gdb.py:25
 msgid "install debuginfo packages before launching GDB"
@@ -2082,7 +2251,7 @@ msgstr "GDB'yi başlatmadan önce debuginfo paketlerini yükleyin"
 
 #: ../src/cli/abrtcli/cli/gdb.py:38
 msgid "The problem is not of a C/C++ type. Can't run GDB"
-msgstr ""
+msgstr "Sorun C/C++ türünde değil. GDB çalıştırılamıyor"
 
 #: ../src/cli/abrtcli/cli/gdb.py:52
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:45
@@ -2095,7 +2264,7 @@ msgstr ""
 
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:36
 msgid "The problem is not of a C/C++ type. Can't install debuginfo"
-msgstr ""
+msgstr "Sorun C/C++ türünde değil. debuginfo yüklenemiyor"
 
 #: ../src/cli/abrtcli/cli/list.py:34
 msgid "No problems"
@@ -2103,7 +2272,7 @@ msgstr "Sorun yok"
 
 #: ../src/cli/abrtcli/cli/remove.py:22
 msgid "do not prompt before removal"
-msgstr ""
+msgstr "kaldırmadan önce sorma"
 
 #: ../src/cli/abrtcli/cli/remove.py:37
 msgid "Are you sure you want to delete this problem?"
@@ -2124,7 +2293,7 @@ msgstr "bildirilemez durumu yok say"
 #: ../src/cli/abrtcli/cli/report.py:41
 #, python-brace-format
 msgid "Problem '{0}' cannot be reported"
-msgstr ""
+msgstr "'{0}' sorunu bildirilemiyor"
 
 #: ../src/cli/abrtcli/cli/report.py:50
 #, python-format
@@ -2133,7 +2302,7 @@ msgstr "%s sorunu bildiriliyor\n"
 
 #: ../src/cli/abrtcli/cli/retrace.py:24
 msgid "perform retracing locally"
-msgstr ""
+msgstr "geri izlemeyi yerel olarak gerçekleştir"
 
 #: ../src/cli/abrtcli/cli/retrace.py:26
 msgid "submit core dump for remote retracing"
@@ -2141,7 +2310,7 @@ msgstr "uzak retrace yapmak için bellek dökümü gönder"
 
 #: ../src/cli/abrtcli/cli/retrace.py:29
 msgid "force retracing"
-msgstr ""
+msgstr "geri izlemeyi zorla"
 
 #: ../src/cli/abrtcli/cli/retrace.py:47
 msgid "Problem already has a backtrace"
@@ -2150,6 +2319,8 @@ msgstr "Problemin zaten bir yığın geri izlemesi var"
 #: ../src/cli/abrtcli/cli/retrace.py:48
 msgid "Run abrt retrace with -f/--force to retrace again"
 msgstr ""
+"Tekrar geri izlemek için abrt retrace komutunu -f/--force seçeneğiyle "
+"birlikte çalıştırın"
 
 #: ../src/cli/abrtcli/cli/retrace.py:49
 msgid "Show backtrace?"
@@ -2157,7 +2328,7 @@ msgstr "Yığın geri izlemesini göster?"
 
 #: ../src/cli/abrtcli/cli/retrace.py:52
 msgid "No retracing possible for this problem type"
-msgstr ""
+msgstr "Bu sorun türü için geri izleme mümkün değil"
 
 #: ../src/cli/abrtcli/cli/retrace.py:56
 msgid ""
@@ -2166,14 +2337,18 @@ msgid ""
 "Local retracing requires downloading potentially large amount of debuginfo "
 "data"
 msgstr ""
+"Bellek dökümü karşıya yüklenip uzaktan geri izleme gerçekleştirilsin mi? ("
+"Hassas veriler içerebilir). Cevabınız 'Hayır' ise, yerel olarak bir yığın "
+"izlemesi oluşturulacaktır. Yerel geri izleme işlemi, potansiyel olarak büyük "
+"miktarda debuginfo verilerinin indirilmesini gerektirir"
 
 #: ../src/cli/abrtcli/cli/retrace.py:71
 msgid "Remote retracing"
-msgstr ""
+msgstr "Uzak geri izleme"
 
 #: ../src/cli/abrtcli/cli/retrace.py:74
 msgid "Local retracing"
-msgstr ""
+msgstr "Yerel geri izleme"
 
 #: ../src/cli/abrtcli/cli/status.py:17
 msgid "show only the number of problems"
@@ -2181,17 +2356,21 @@ msgstr "sadece sorun sayısını göster"
 
 #: ../src/cli/abrtcli/cli/status.py:19
 msgid "only show output if at least one problem is found"
-msgstr ""
+msgstr "sadece en az bir sorun bulunduğunda çıktı göster"
 
 #: ../src/cli/abrtcli/cli/status.py:40
 msgid "ABRT has detected a problem. For more information, run “abrt list{}”"
 msgstr ""
+"ABRT bir sorun tespit etti. Daha fazla bilgi için “abrt list{}” komutunu "
+"çalıştırın"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
 msgstr ""
+"Analiz için uzak retrace sunucusuna bellek dökümü gönderin veya uzaktan "
+"analiz başarısız olursa yerel analiz gerçekleştirin"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
 msgid ""
@@ -2205,8 +2384,8 @@ msgid ""
 msgstr ""
 "Bellek dökümünü sunucuya yükler, bu da yığın geri izlemesi oluşturur ve onu "
 "döndürür. Kullanıcı, bellek dökümünü herhangi bir yere yüklemek istemiyorsa, "
-"etkinlik yerel analiz yapar. Uzaktan analiz başarısız olursa, yerel analiz "
-"çalıştırma olayıdır. Artıları: debuginfo indirme işlemine gerek yok. Retrace "
+"olay yerel analiz gerçekleştirir. Uzaktan analiz başarısız olsa bile yerel "
+"analiz çalıştırılır. Artıları: debuginfo indirme işlemine gerek yok. Retrace "
 "sunucusunun debuginfo veri tabanı daha eksiksizdir. Retrace sunucusu daha "
 "iyi yığın geri izlemesi oluşturabilir. Eksileri: yüklediğiniz bellek dökümü, "
 "varsa özel verileriniz de dahil olmak üzere, çöken programdaki tüm verileri "
@@ -2246,7 +2425,7 @@ msgstr ""
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
-msgstr ""
+msgstr "Sistem genelindeki vim yapılandırma dosyalarını toplayın"
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:2
 msgid "Save /etc/vimrc and /etc/gvimrc"

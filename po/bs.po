@@ -1,27 +1,27 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Arnes  <arnes99@gmail.com>, 2011
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
-# Michal Fabik <mfabik@redhat.com>, 2019. #zanata
+# Michal Fabik <mfabik@redhat.com>, 2019. #zanata, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2019-08-11 01:53+0000\n"
+"PO-Revision-Date: 2020-04-01 11:38+0000\n"
 "Last-Translator: Michal Fabik <mfabik@redhat.com>\n"
-"Language-Team: Bosnian (http://www.transifex.com/projects/p/fedora-abrt/"
-"language/bs/)\n"
+"Language-Team: Bosnian <https://translate.fedoraproject.org/projects/abrt/"
+"abrt/bs/>\n"
 "Language: bs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 3.11.3\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -33,11 +33,11 @@ msgstr "Pregledati i prijaviti padove aplikacija"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
-msgstr ""
+msgstr "Detaljnije informacije"
 
 #: ../src/applet/abrt-applet-application.c:167
 msgid "Applet which notifies user when new problems are detected by ABRT"
-msgstr ""
+msgstr "Aplet koji upozorava korisnika da je ABRT zabilježio novi problem"
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
@@ -45,11 +45,11 @@ msgstr ""
 
 #: ../src/applet/abrt-applet-application.c:573
 msgid "Report"
-msgstr "Izvještaj"
+msgstr "Prijaviti"
 
 #: ../src/applet/abrt-applet-application.c:590
 msgid "Restart"
-msgstr ""
+msgstr "Restartovati"
 
 #: ../src/applet/abrt-applet-application.c:663
 #, c-format
@@ -67,7 +67,7 @@ msgid ""
 "internet is available."
 msgstr ""
 "Žao nam je, izgleda da je došlo do pada aplikacije %s. Problem će biti "
-"prijavljen kada bude dostupna internet konekcija."
+"prijavljen čim bude dostupna internet konekcija."
 
 #: ../src/applet/abrt-applet-application.c:674
 #: ../src/applet/abrt-applet-application.c:688
@@ -86,41 +86,49 @@ msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
 msgstr ""
+"Žao nam je, izgleda da je došlo do pada aplikacije %s. Ako želite pomoći u "
+"rješavanju problema, molimo da pošaljete izvještaj."
 
 #: ../src/applet/abrt-applet-application.c:701
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
 msgstr ""
+"Žao nam je, izgleda da je došlo do problema u komponenti. Problem je "
+"automatski prijavljen."
 
 #: ../src/applet/abrt-applet-application.c:705
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
 msgstr ""
+"Žao nam je, izgleda da je došlo do problema u komponenti. Problem će biti "
+"prijavljen čim bude dostupan internet."
 
 #: ../src/applet/abrt-applet-application.c:710
 msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
 msgstr ""
+"Žao nam je, izgleda da je došlo do problema u komponenti. Ako želite pomoći "
+"sa rješavanjem ovog problema, molim da nam pošaljete izvještaj."
 
 #. TODO: Terminate child's process?
 #: ../src/applet/abrt-applet-application.c:800 ../src/daemon/abrt-server.c:117
 #: ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr ""
+msgstr "Ne mogu da čitam sa gio kanala: '%s'"
 
 #: ../src/applet/abrt-applet-application.c:884
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr ""
+msgstr "Ne mogu postaviti kodiranje na gio kanalu: %s"
 
 #: ../src/applet/abrt-applet-application.c:889
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr ""
+msgstr "Ne mogu uključiti neblokirajući režim za gio kanal: %s"
 
 #: ../src/applet/abrt-applet-problem-info.c:259
 #, c-format
@@ -138,10 +146,12 @@ msgid ""
 "linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
+"Postavka gore je premještena u Postavke GNOME (GSettings) i povezana je sa "
+"postavkom 'report-technical-problems' u šemi 'org.gnome.desktop.privacy'."
 
 #: ../src/configuration-gui/abrt-config-widget.c:496
 msgid "The configuration option above can be configured in"
-msgstr ""
+msgstr "Postavka gore se može podesiti u"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
@@ -149,15 +159,15 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
-msgstr ""
+msgstr "Automatski pošalji uReport (mikro-report)"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
-msgstr ""
+msgstr "Skraćena prijava"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
-msgstr ""
+msgstr "Tiha skraćena prijava"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
@@ -168,6 +178,13 @@ msgid ""
 "With option 'Never' the stack trace will be always generated locally. With "
 "option 'Ask' ABRT will always ask the user."
 msgstr ""
+"Datoteka sa snimkom stanja memorije (coredump) je potrebna za generisanje "
+"steka poziva, što zahtijeva mnogo vremena i prostora na disku. ABRT pruža "
+"uslugu udaljenog generisanja steka poziva iz coredump datoteke, ali je onda "
+"potrebno uploadovati coredump. Opcija ”Uvijek” uključuje automatsko "
+"uploadovanje coredump datoteke bez pitanja, s opcijom ”Nikada” stek poziva "
+"će se uvijek generisati lokalno. Sa opcijom ”Pitaj” ABRT će svaki put pitati "
+"korisnika."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -176,6 +193,10 @@ msgid ""
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
 msgstr ""
+"ABRT čuva podatke o problemima u direktorijima. Kad god je ABRT-u potreban "
+"direktorij sa pravom pisanja, direktorij je premješten sa sistemske lokacije "
+"u vaš korisnički direktorij. Ako je ova postavka isključena, ABRT će "
+"premjestiti direktorij s problemom bez pitanja."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
@@ -184,6 +205,11 @@ msgid ""
 "uReport is sent at beginning of reporting process. With this option enabled "
 "uReports are sent automatically immediately after problem detection."
 msgstr ""
+"uReport (mikro-report) je sasvim anoniman opis problema. ABRT koristi "
+"uReport-ove za brzo globalno otkrivanje duplikata. U početnoj konfiguraciji "
+"uReport se šalje na početku procesa prijave problema. Ako je ova postavka "
+"uključena, uReport se šalje automatski svaki put nakon što je otkriven "
+"problem."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
@@ -191,26 +217,34 @@ msgid ""
 "in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
+"Ako je ova postavka uključena, proces prijave problema započet klikom na "
+"dugme Prijavi u balonu obavještenja biće prekinut nakon što je poslan "
+"uReport. Uvijek možete upotrijebiti preglednik problema ako želite poslati "
+"kompletnu prijavu."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
+" Ako je ova postavka uključena, ABRT nikad neće prikazivati obavještenja o "
+"prijavljenim problemima. Ima efekta samo ako je omogućena Skraćena prijava."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
 msgstr ""
+" Ako je ova opcija uključena, ABRT će uvijek stvoriti kartu greške s "
+"ograničenim pristupom ako su detektovani potencijalno osjetljivi podaci."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid "Request private ticket for sensitive information"
-msgstr ""
+msgstr "Zatražiti privatnu kartu greške u slučaju osjetljivih podataka"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Notify incomplete problems"
-msgstr ""
+msgstr "Obavijestiti o nepotpunim problemima"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid ""
@@ -218,47 +252,50 @@ msgid ""
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
 msgstr ""
+"Nepotpuni problemi su detektovani kada se računar isključuje ili kada se "
+"korisnik odjavljuje. Kako bi se obezbijedili samo korisni podaci o "
+"problemima, ABRT neće omogućiti prijavu ovih problema."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid "Always"
-msgstr ""
+msgstr "Uvijek"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:15
 msgid "Never"
-msgstr ""
+msgstr "Nikada"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:16
 msgid "Ask"
-msgstr ""
+msgstr "Pitaj"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
 msgid "Upload coredump for backtrace generation"
-msgstr ""
+msgstr "Uploadovati snimak stanja memorije za generisanje steka poziva"
 
 #: ../src/configuration-gui/system-config-abrt.c:66
 msgid "_Close"
-msgstr ""
+msgstr "_Zatvori"
 
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Defaults"
-msgstr ""
+msgstr "_Početne postavke"
 
 #: ../src/configuration-gui/system-config-abrt.c:103
 #: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
-msgstr ""
+msgstr "Postavke za prijavu problema"
 
 #: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
-msgstr ""
+msgstr "O sistemskim postavkama ABRT"
 
 #: ../src/configuration-gui/main.c:105
 msgid "About"
-msgstr ""
+msgstr "O programu"
 
 #: ../src/configuration-gui/main.c:106
 msgid "Quit"
-msgstr ""
+msgstr "Izlaz"
 
 #: ../src/daemon/abrt-action-save-package-data.c:456
 msgid ""
@@ -266,6 +303,9 @@ msgid ""
 "\n"
 "Query package database and save package and component name"
 msgstr ""
+"& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
+"\n"
+"Pošalji upit bazi podataka paketa te sačuvaj ime paketa i komponente"
 
 #: ../src/daemon/abrt-action-save-package-data.c:469
 #: ../src/daemon/abrt-action-save-container-data.c:265
@@ -277,7 +317,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
 msgid "Problem directory"
-msgstr ""
+msgstr "Direktorij problema"
 
 #: ../src/daemon/abrt-action-save-package-data.c:470
 msgid "Configuration file"
@@ -285,7 +325,7 @@ msgstr "Konfiguracijska datoteka"
 
 #: ../src/daemon/abrt-action-save-package-data.c:471
 msgid "Use this directory as RPM root"
-msgstr ""
+msgstr "Koristi ovaj direktorij kao RPM korijen"
 
 #: ../src/daemon/abrt-action-save-container-data.c:254
 msgid ""
@@ -293,19 +333,22 @@ msgid ""
 "\n"
 "Save container metadata"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Sačuvaj metapodatke kontejnera"
 
 #: ../src/daemon/abrt-action-save-container-data.c:266
 msgid "Root directory for running container commands"
-msgstr ""
+msgstr "Korijenski direktorij za pokretanje komandi kontejnera"
 
 #: ../src/daemon/abrt-server.c:1100 ../src/dbus/abrt-dbus.c:1014
 #: ../src/daemon/abrtd.c:738
 msgid "& [options]"
-msgstr ""
+msgstr "& [postavke]"
 
 #: ../src/daemon/abrt-server.c:1111
 msgid "Use NUM as client uid"
-msgstr ""
+msgstr "Koristi NUM kao uid klijenta"
 
 #: ../src/daemon/abrt-server.c:1112 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:176 ../src/plugins/abrt-dump-oops.c:97
@@ -323,12 +366,12 @@ msgstr "Dodaj nazive programa u zapis"
 #: ../src/dbus/abrt-dbus.c:135
 #, c-format
 msgid "'%s' is not a valid element name"
-msgstr ""
+msgstr "'%s' nije validno ime elementa"
 
 #: ../src/dbus/abrt-dbus.c:187
 #, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr ""
+msgstr "'%s' nije validan direktorij problema"
 
 #: ../src/dbus/abrt-dbus.c:240 ../src/dbus/abrt-dbus.c:490
 msgid "Not Authorized"
@@ -336,30 +379,32 @@ msgstr ""
 
 #: ../src/dbus/abrt-dbus.c:253
 msgid "Can't open the problem"
-msgstr ""
+msgstr "Nije moguće otvoriti problem"
 
 #: ../src/dbus/abrt-dbus.c:285
 #, c-format
 msgid "'%s' element can't be modified"
-msgstr ""
+msgstr "element '%s' se ne može izmijeniti"
 
 #: ../src/dbus/abrt-dbus.c:506
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
+"Promjena vlasništva direktorija neuspješna. Provjerite sistemske zapise za "
+"više detalja."
 
 #: ../src/dbus/abrt-dbus.c:635
 #, c-format
 msgid "Can't get size of '%s'"
-msgstr ""
+msgstr "Nije moguće utvrditi veličinu '%s'"
 
 #: ../src/dbus/abrt-dbus.c:650
 msgid "No problem space left"
-msgstr ""
+msgstr "Nedostaje mjesta za probleme"
 
 #: ../src/dbus/abrt-dbus.c:685
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr ""
+msgstr "Nije moguće izbrisati element '%s' iz direktorija problema '%s'"
 
 #: ../src/dbus/abrt-dbus.c:938 ../src/daemon/abrtd.c:720
 #, c-format
@@ -367,14 +412,16 @@ msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr ""
+"Ime '%s' je izgubljeno. Molimo provjerite da li nije aktivna druga usluga "
+"pod ovim imenom.\n"
 
 #: ../src/dbus/abrt-dbus.c:1023 ../src/daemon/abrtd.c:753
 msgid "Exit after NUM seconds of inactivity"
-msgstr ""
+msgstr "Izaći nakon NUM sekundi neaktivnosti"
 
 #: ../src/dbus/abrt-dbus.c:1041
 msgid "This program must be run as root."
-msgstr ""
+msgstr "Ovaj program mora biti pokrenut pod korisnikom 'root'."
 
 #: ../src/daemon/abrtd.c:683
 msgid ""
@@ -384,10 +431,15 @@ msgid ""
 "problem. If you have time and want to help the developers in their effort to "
 "sort out this problem, please contact them directly."
 msgstr ""
+"Podaci o problemu su nepotpuni. Ovo se obično dešava kada je problem "
+"detektovan dok se računar isključuje ili dok se korisnik odjavljuje. Kako bi "
+"se obezbijedili samo korisni podaci o problemima, ABRT neće omogućiti slanje "
+"ovakvih podataka. Ukoliko imate vremena i želite pomoći autorima programa sa "
+"rješavanjem ovog problema, molimo da im se obratite direktno."
 
 #: ../src/daemon/abrtd.c:751
 msgid "Do not daemonize"
-msgstr "Nemoj deamonizirati"
+msgstr "Nemoj daemonizirati"
 
 #: ../src/daemon/abrtd.c:752
 msgid "Log to syslog even with -d"
@@ -395,24 +447,24 @@ msgstr "Zapiši u syslog čak i sa -d"
 
 #: ../src/daemon/abrt-handle-event.c:362
 msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
-msgstr ""
+msgstr "& [-v -i -n INKREMENT] -e|--event AKCIJA DIREKTORIJ..."
 
 #: ../src/daemon/abrt-handle-event.c:371
 msgid "Run EVENT on DIR"
-msgstr ""
+msgstr "Pokreni AKCIJU nad DIREKTORIJOM"
 
 #: ../src/daemon/abrt-handle-event.c:372
 msgid "Communicate directly to the user"
-msgstr ""
+msgstr "Komunicirati direktno sa korisnikom"
 
 #: ../src/daemon/abrt-handle-event.c:373
 msgid "Increment the nice value by INCREMENT"
-msgstr ""
+msgstr "Povećati vrijednost za INKREMENT"
 
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
-msgstr ""
+msgstr "Nema slobodnih radnika i buffer je pun. Preskačem arhivu '%s'"
 
 #: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
@@ -425,87 +477,95 @@ msgid ""
 "If UPLOAD_DIRECTORY is not provided, uses a value of\n"
 "WatchCrashdumpArchiveDir option from abrt.conf"
 msgstr ""
+"& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
+"\n"
+"\n"
+"Prati UPLOAD_DIRECTORY i raspakuje arhive koje pristužu u lokaciju "
+"DumpLocation\n"
+"koja je specificirana u datoteci abrt.conf\n"
+"\n"
+"Ako UPLOAD_DIRECTORY nije zadat, koristi se vrijednost \n"
+"WatchCrashdumpArchiveDir iz datoteke abrt.conf"
 
 #: ../src/daemon/abrt-upload-watch.c:281
-#, fuzzy
-#| msgid "Do not daemonize"
 msgid "Daemonize"
-msgstr "Nemoj deamonizirati"
+msgstr "Daemonizirati"
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr ""
+msgstr "Broj naporednih radnika. Početna vrijednost je "
 
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr ""
+msgstr "Maksimalna veličina keša u MiB. Početna vrijednost je "
 
 #: ../src/daemon/abrt-auto-reporting.c:198
 #: ../src/daemon/abrt-auto-reporting.c:206
+#, fuzzy
 msgid "& [ "
-msgstr ""
+msgstr "& [ "
 
 #: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
-msgstr ""
+msgstr "Isključiti autentizaciju"
 
 #: ../src/daemon/abrt-auto-reporting.c:234
 msgid "Red Hat Support user name"
-msgstr ""
+msgstr "Korisničko ime podrške Red Hat"
 
 #: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
-msgstr ""
+msgstr "Šifra za podršku Red Hat. Ako nije zadata, biće izdat upit za nju."
 
 #: ../src/daemon/abrt-auto-reporting.c:236
 msgid "uReport SSL certificate paths or certificate type"
-msgstr ""
+msgstr "Putanja ili vrsta SSL certifikata za uReport"
 
 #: ../src/daemon/abrt-auto-reporting.c:252
 msgid "You also need to specify --username for --password"
-msgstr ""
+msgstr "Uz --password treba koristiti i --username"
 
 #: ../src/daemon/abrt-auto-reporting.c:258
 msgid "You can use either --username or --certificate"
-msgstr ""
+msgstr "Možete koristiti ili --username ili --certificate"
 
 #: ../src/daemon/abrt-auto-reporting.c:264
 msgid "You can use either --username or --anonymous"
-msgstr ""
+msgstr "Možete koristiti ili --username ili --anonymous"
 
 #: ../src/daemon/abrt-auto-reporting.c:270
 msgid "You can use either --anonymous or --certificate"
-msgstr ""
+msgstr "Možete koristiti ili --anonymous ili -- certificate"
 
 #: ../src/daemon/abrt-auto-reporting.c:277
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "Neispravan broj argumenata"
 
 #: ../src/daemon/abrt-auto-reporting.c:296
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "Nepoznata vrijednost postavke: '%s'\n"
 
 #: ../src/daemon/abrt-auto-reporting.c:336
 msgid "Password:"
-msgstr ""
+msgstr "Šifra:"
 
 #: ../src/daemon/abrt-auto-reporting.c:339
 msgid "Cannot continue without password\n"
-msgstr ""
+msgstr "Nije moguće nastaviti bez šifre\n"
 
 #. Print only the part before ':' of a string like "username:password"
 #: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
-msgstr ""
+msgstr "Automatska prijava grešaka sa HTTP autentifikacijom"
 
 #: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
-msgstr ""
+msgstr "Automatska prijava grešaka sa SSL Client autentifikacijom"
 
 #: ../src/daemon/abrt-auto-reporting.c:384
 msgid "anonymous auto reporting"
-msgstr ""
+msgstr "Anonimna automatska prijava grešaka"
 
 #: ../src/daemon/abrt-handle-upload.in:130
 #, c-format
@@ -522,63 +582,63 @@ msgstr ""
 #: ../src/daemon/abrt-handle-upload.in:166
 #: ../src/daemon/abrt-handle-upload.in:169
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "Nije direktorij: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:172
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
+msgstr "Preskačem: '{0}' (počinje kosom crtom)"
 
 #: ../src/daemon/abrt-handle-upload.in:175
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
+msgstr "Preskačem: '{0}' (počinje tačkom)"
 
 #: ../src/daemon/abrt-handle-upload.in:178
 msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
+msgstr "Preskačem: '{0}' (sadrži ..)"
 
 #: ../src/daemon/abrt-handle-upload.in:181
 msgid "Skipping: '{0}' (contains space)"
-msgstr ""
+msgstr "Preskačem: '{0}' (sadrži razmak)"
 
 #: ../src/daemon/abrt-handle-upload.in:184
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "Preskačem: '{0}' (sadrži tab)"
 
 #: ../src/daemon/abrt-handle-upload.in:189
 msgid "Can't change directory to '{0}'"
-msgstr ""
+msgstr "Ne mogu preći u direktorij '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:200
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "Nepoznata vrsta datoteke: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:205
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "Ne mogu stvoriti radni direktorij '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:216
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "Ne mogu premjestiti '{0}' u '{1}'"
 
 #: ../src/daemon/abrt-handle-upload.in:221
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "Ne mogu kopirati '{0}' u '{1}'"
 
 #: ../src/daemon/abrt-handle-upload.in:225
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "Greška prilikom provjere '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:227
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "Raspakiranje '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:231
 msgid "Can't create '{0}' directory"
-msgstr ""
+msgstr "Ne mogu stvoriti direktorij '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:235
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "Ne mogu raspakirati '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:255
 msgid "'{0}' processed successfully"
@@ -587,51 +647,51 @@ msgstr ""
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:259
 msgid "Generating backtrace"
-msgstr ""
+msgstr "Generiše se stek poziva"
 
 #: ../src/lib/problem_api_dbus.c:42
 #, c-format
 msgid "Can't connect to system DBus: %s"
-msgstr ""
+msgstr "Ne mogu se povezati sa sistemskim DBusom: %s"
 
 #: ../src/lib/problem_api_dbus.c:68
 #, c-format
 msgid "Can't chown '%s': %s"
-msgstr ""
+msgstr "Ne mogu izvršiti chown '%s': %s"
 
 #: ../src/lib/problem_api_dbus.c:97
 #, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr ""
+msgstr "Brisanje direktorija sa problemom neuspješno: %s"
 
 #: ../src/lib/problem_api_dbus.c:131
 #, c-format
 msgid "D-Bus GetInfo method call failed: %s"
-msgstr ""
+msgstr "Poziv metode D-Bus Getinfo neuspješan: %s"
 
 #: ../src/lib/problem_api_dbus.c:166
 msgid "Can't get problem data from abrt-dbus"
-msgstr ""
+msgstr "Ne mogu dobiti podatke o problemu od abrt-dbus"
 
 #: ../src/lib/problem_api_dbus.c:193
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
-msgstr ""
+msgstr "Ne mogu dobiti spisak problema od abrt-dbus: %s"
 
 #: ../src/lib/problem_api_dbus.c:230 ../src/lib/problem_api_dbus.c:315
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
-msgstr ""
+msgstr "Ne mogu dobiti podatke o problemu od abrt-dbus: %s"
 
 #: ../src/lib/problem_api_dbus.c:274
 #, c-format
 msgid "Can't test whether the element exists over abrt-dbus: %s"
-msgstr ""
+msgstr "Ne mogu provjeriti da li element postoji putem abrt-dbus: %s"
 
 #: ../src/lib/ignored_problems.c:233
 #, c-format
 msgid "Can't create temporary file '%s'"
-msgstr ""
+msgstr "Ne mogu stvoriti privremenu datoteku '%s'"
 
 #: ../src/lib/ignored_problems.c:250
 #, c-format
@@ -639,12 +699,14 @@ msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
 "problems '%s'"
 msgstr ""
+"Ne mogu upisivati u '%s'. Problem '%s' neće biti uklonjen iz ignorisanih "
+"problema '%s'"
 
 #. Something nefarious happened
 #: ../src/lib/ignored_problems.c:264
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
-msgstr ""
+msgstr "Ne mogu preimenovati '%s' na '%s'. Uklanjanje problema '%s' neuspješno"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:41
 msgid ""
@@ -653,6 +715,11 @@ msgid ""
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
 msgstr ""
+"& [opcije] -d DIR\n"
+"\n"
+"Analizira stek poziva C/C++, generiše hash za otkrivanje duplikata i ocjenu "
+"steka poziva,\n"
+"te identifikuje funkciju sa greškom u direktoriju problema DIR"
 
 #.
 #. * The parser failed. Compute the duphash from the executable

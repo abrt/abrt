@@ -18,13 +18,14 @@
 # Ricardo Pinto <ricardo.bigote@gmail.com>, 2018. #zanata
 # Manuela Silva <mmsrs@sky.com>, 2019. #zanata
 # Tiago João Mateus de Almeida <tjamadeira@gmail.com>, 2020.
+# Diego Lima Novaes <diegonovaes@hotmail.com.br>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-03-09 08:01+0000\n"
-"Last-Translator: Tiago João Mateus de Almeida <tjamadeira@gmail.com>\n"
+"PO-Revision-Date: 2020-03-24 19:38+0000\n"
+"Last-Translator: Diego Lima Novaes <diegonovaes@hotmail.com.br>\n"
 "Language-Team: Portuguese <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/pt/>\n"
 "Language: pt\n"
@@ -32,7 +33,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 3.11.2\n"
+"X-Generator: Weblate 3.11.3\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -235,13 +236,12 @@ msgstr ""
 "relatório completo."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
-#, fuzzy
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
-" Com esta opção ativa, a ABRT nunca mostrará notificações dos problemas "
-"reportados. Tem efeito só se a opção Shortened reporting estiver ativa."
+" Com essa opção habilitada, o ABRT nunca mostra notificações de problemas "
+"relatados. Só entra em vigor se o relatório encurtado estiver ativado."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid ""
@@ -513,9 +513,8 @@ msgid "Daemonize"
 msgstr "Segundo plano"
 
 #: ../src/daemon/abrt-upload-watch.c:282
-#, fuzzy
 msgid "Number of concurrent workers. Default is "
-msgstr "Number of concurrent workers. Default is "
+msgstr "Número de trabalhos simultâneos. Padrão é "
 
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
@@ -547,14 +546,12 @@ msgid "uReport SSL certificate paths or certificate type"
 msgstr "uReport reporta o caminho do certificado SSL ou o tipo do certificado"
 
 #: ../src/daemon/abrt-auto-reporting.c:252
-#, fuzzy
 msgid "You also need to specify --username for --password"
-msgstr "É necessário que defina também o --username para a --password"
+msgstr "Você também precisa especificar --nome de usuário para --senha"
 
 #: ../src/daemon/abrt-auto-reporting.c:258
-#, fuzzy
 msgid "You can use either --username or --certificate"
-msgstr "Pode usar o --username ou o --certificate"
+msgstr "Você pode usar o --nome de usuário ou --certificado"
 
 #: ../src/daemon/abrt-auto-reporting.c:264
 #, fuzzy
@@ -562,9 +559,8 @@ msgid "You can use either --username or --anonymous"
 msgstr "Pode usar o --username ou --anonymous"
 
 #: ../src/daemon/abrt-auto-reporting.c:270
-#, fuzzy
 msgid "You can use either --anonymous or --certificate"
-msgstr "Pode usar --anonymous ou o --certificate"
+msgstr "Você pode usar um certificado ou anônimo"
 
 #: ../src/daemon/abrt-auto-reporting.c:277
 msgid "Invalid number of arguments"
@@ -911,11 +907,11 @@ msgstr "Foi encontrado um erro duplicado no bugzilla '#{0}'"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:139
 msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
-msgstr ""
+msgstr "Não existe erro no bugzilla com 'abrt_hash:{0}'"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:144
 msgid "Warning: abrt-bodhi do not support Product version 'Rawhide'"
-msgstr ""
+msgstr "Atenção: o abrt-bodhi não suporta a versão 'Rawhide' do Produto"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
@@ -925,12 +921,12 @@ msgid ""
 msgstr ""
 "& [opções] -d DIR\n"
 "\n"
-"Analisa o \"coredump\" na diretoria DIR de problemas, cria e guarda o \""
+"Analisa o \"coredump\" na pasta DIR de problemas, cria e guarda o \""
 "backtrace\""
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
-msgstr "Diretorias adicionais da informação de depuração"
+msgstr "Pastas adicionais da informação de depuração"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:57
 msgid "Kill gdb if it runs for more than NUM seconds"
@@ -950,6 +946,9 @@ msgid ""
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
 msgstr ""
+"& [-v] [-r] -d DIR\n"
+"\n"
+"Cria o registo coredump-level do \"coredump\" e da biblioteca correspondente"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
@@ -958,11 +957,11 @@ msgstr "Não fazer hash das impressões digitais"
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
 msgid "Generating core_backtrace"
-msgstr ""
+msgstr "A gerar o \"core_backtrace\""
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:81
 msgid "Error: GDB did not return any data"
-msgstr ""
+msgstr "Erro: o GDB não retornou nenhum dado"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:95
 #, c-format
@@ -976,32 +975,33 @@ msgstr "Não é possível abrir {0}: {1}"
 #: ../src/plugins/abrt-action-install-debuginfo.in:101
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr ""
-"O coredump referencia {0} ficheiros debuginfo, {1} dos quais não estão "
-"instalados"
+"O \"coredump\" referencia {0} ficheiros de depuração, {1} dos quais não "
+"estão instalados"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:104
 msgid "{0} of debuginfo files are not installed"
-msgstr ""
+msgstr "{0} ficheiros de depuração não estão instalados"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:114
 #, c-format
 msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
 msgstr ""
+"Configuração inválida do addon CCpp, gerenciador de pacotes sem suporte: '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:168
 msgid "Missing requested file: {0}"
-msgstr ""
+msgstr "Ficheiro pedido em falta: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:173
 msgid "Missing debuginfo file: {0}"
-msgstr "Ficheiro da informação de depuração em falta: {0}"
+msgstr "Ficheiro de depuração em falta: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:176
 msgid "All debuginfo files are available"
-msgstr "Estão disponíveis todos os ficheiros da informação de depuração"
+msgstr "Estão disponíveis todos os ficheiros de depuração"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:190
-#, c-format
+#, c-format, fuzzy
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -1032,6 +1032,34 @@ msgid ""
 "    --releasever RELEASEVER\n"
 "                Pass this OS version to package managers.\n"
 msgstr ""
+"Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH[:PATH...]]\n"
+"       [--releasever=RELEASEVER] [--repo=PATTERN]\n"
+"\n"
+"Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
+"to CACHEDIR, using TMPDIR as temporary staging area.\n"
+"Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
+"\n"
+"Reads configuration from /etc/abrt/plugins/CCpp.conf\n"
+"\n"
+"    -v          Be verbose\n"
+"    -y          Noninteractive, assume 'Yes' to all questions\n"
+"    --ids       Default: build_ids\n"
+"    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"RANDOM_SUFFIX\n"
+"    --cache     Colon separated list of directories. The first one is used "
+"for\n"
+"                saving installed debuginfos.\n"
+"                Default: /var/cache/abrt-di\n"
+"    --size_mb   Default: 4096\n"
+"    --pkgmgr    Default: PackageManager from CCpp.conf or 'dnf'\n"
+"    -e,--exact  Download only specified files\n"
+"    --repo      Pattern to use when searching for repos.\n"
+"                Default: *debug*\n"
+"    --releasever RELEASEVER\n"
+"                Pass this OS version to package managers.\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:290
 msgid "Exiting on user command"
@@ -1045,30 +1073,36 @@ msgid ""
 "Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
 "ABRT system cache."
 msgstr ""
+"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+"\t[-r REPO]\n"
+"\n"
+"Instala pacotes de depuração de informações para todos os ids de compilação "
+"listados em BUILD_IDS_FILE para\n"
+"Cache do sistema ABRT."
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
 msgid "Noninteractive, assume 'Yes' to all questions"
-msgstr ""
+msgstr "Não-interactivo, assume 'Sim' a todas as questões"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
 msgid "- means STDIN, default: build_ids"
-msgstr ""
+msgstr "- significa STDIN, padrão: build_ids"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
 msgid "Download only specified files"
-msgstr ""
+msgstr "Descarrega apenas os ficheiros especificados"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:71
 msgid "Pattern to use when searching for repos, default: *debug*"
-msgstr ""
+msgstr "Expressão usada na procura pelos repositórios, padrão: *debug*"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:72
 msgid "Ignored option"
-msgstr ""
+msgstr "Opção ignorada"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:73
 msgid "OS release version"
-msgstr ""
+msgstr "Versão de lançamento do SO"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
 msgid ""
@@ -1093,21 +1127,21 @@ msgid ""
 msgstr ""
 "& [-v] [-d TAMANHO:DIR]... [-f TAMANHO:DIR]... [-p DIR] [FICHEIRO]...\n"
 "\n"
-"Elimina diretorias de problemas (-d) ou ficheiros (-f) em DIRs até que estes "
+"Elimina pastas de problemas (-d) ou ficheiros (-f) em DIRs até que estes "
 "sejam menores que TAMANHO.\n"
 "Os FICHEIROS são preservados (nunca eliminados)."
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
-msgstr "Eliminar todos as diretorias de problemas"
+msgstr "Eliminar todos as pastas de problemas"
 
 #: ../src/plugins/abrt-action-trim-files.c:237
 msgid "Delete files inside this directory"
-msgstr "Eliminar os ficheiros dentro desta diretoria"
+msgstr "Eliminar os ficheiros dentro desta pasta"
 
 #: ../src/plugins/abrt-action-trim-files.c:238
 msgid "Preserve this directory"
-msgstr "Preservar esta diretoria"
+msgstr "Preservar esta pasta"
 
 #: ../src/plugins/abrt-action-ureport:54
 #, c-format
@@ -1122,7 +1156,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-ureport:93
 #, c-format
 msgid "Usage: %s [-v]"
-msgstr ""
+msgstr "Uso: %s [-v]"
 
 #: ../src/plugins/abrt-action-ureport:114
 msgid "Unable to get current working directory as it was probably deleted"
