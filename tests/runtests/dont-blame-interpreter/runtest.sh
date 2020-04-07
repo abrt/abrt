@@ -35,7 +35,7 @@ PACKAGE="abrt"
 
 ABRT_SAVE_ACTION="abrt-action-save-package-data -c abrt-action-save-package-data.conf"
 
-INIT_DD_PATH="dump_dirs/ccpp-2020-02-24-11:38:50.153744"
+DUMP_DIRECTORY="dump_dirs/ccpp-2020-02-24-11:38:50.153744"
 
 OLD_DUMP_DIR="00001"
 PERL_DUMP_DIR="11111"
@@ -46,20 +46,19 @@ TCL_DUMP_DIR="55555"
 
 function check_assigned_component()
 {
-    D_D=$INIT_DD_PATH-$1
+    interpreter=$1
 
-    rlAssertGrep "will-crash" "$D_D/component"
-    rlLog "content of $D_D/component file: \"$(cat $D_D/component)\""
-    rlLog "content of $D_D/cmdline file: \"$(cat $D_D/cmdline)\""
+    rlAssertGrep "will-crash" "${DUMP_DIRECTORY}-${interpreter}/component"
+    rlLog "component: \"$(cat ${DUMP_DIRECTORY}-${interpreter}/component)\""
+    rlLog "cmdline: \"$(cat ${DUMP_DIRECTORY}-${interpreter}/cmdline)\""
 }
 
 function prepare_dump_dir()
 {
-    INTP=$1
-    D_D=$2
+    interpreter=$1
 
-    cp -ra "$INIT_DD_PATH-$OLD_DUMP_DIR" "$INIT_DD_PATH-$D_D"
-    grep -rl '##INTERPRET##' "$INIT_DD_PATH-$D_D" | xargs sed -i "s/##INTERPRET##/$INTP/g"
+    cp -ra "$DUMP_DIRECTORY" "${DUMP_DIRECTORY}-${interpreter}"
+    grep -rl '@interpreter@' "${DUMP_DIRECTORY}-${interpreter}" | xargs sed -i "s|@interpreter@|${interpreter}|g"
 }
 
 rlJournalStart
@@ -76,7 +75,7 @@ rlJournalStart
         pushd "$TmpDir" || exit
     rlPhaseEnd
 
-    rlPhaseStartTest "Dont blame Python3 interpret"
+    rlPhaseStartTest "Don’t blame Python interpreter"
         generate_python3_segfault
         wait_for_hooks
         get_crash_path
@@ -88,40 +87,38 @@ rlJournalStart
         remove_problem_directory
     rlPhaseEnd
 
-    rlPhaseStartTest "Dont blame perl interpret"
+    rlPhaseStartTest "Don’t blame Perl interpreter"
         PERL_VERSION="$(rpm --queryformat="%{VERSION}" -q perl-interpreter)"
-        prepare_dump_dir "perl$PERL_VERSION" "$PERL_DUMP_DIR"
+        prepare_dump_dir "perl$PERL_VERSION"
 
-        rlRun "$ABRT_SAVE_ACTION -d $INIT_DD_PATH-$PERL_DUMP_DIR" 0
-        check_assigned_component "$PERL_DUMP_DIR"
+        rlRun "$ABRT_SAVE_ACTION -d '${DUMP_DIRECTORY}-perl${PERL_VERSION}'" 0
+        check_assigned_component "perl$PERL_VERSION"
     rlPhaseEnd
 
-    rlPhaseStartTest "Dont blame php interpret"
-        prepare_dump_dir "php" "$PHP_DUMP_DIR"
+    rlPhaseStartTest "Don’t blame PHP interpreter"
+        prepare_dump_dir 'php'
 
-        rlRun "$ABRT_SAVE_ACTION -d $INIT_DD_PATH-$PHP_DUMP_DIR" 0
-        check_assigned_component "$PHP_DUMP_DIR"
+        rlRun "$ABRT_SAVE_ACTION -d '${DUMP_DIRECTORY}-php'" 0
+        check_assigned_component 'php'
+
+        prepare_dump_dir 'php-cgi'
+
+        rlRun "$ABRT_SAVE_ACTION -d '${DUMP_DIRECTORY}-php-cgi'" 0
+        check_assigned_component 'php-cgi'
     rlPhaseEnd
 
-    rlPhaseStartTest "Dont blame php-cgi interpret"
-        prepare_dump_dir "php-cgi" "$PHP_CGI_DUMP_DIR"
+    rlPhaseStartTest "Don’t blame R interpreter"
+        prepare_dump_dir 'R'
 
-        rlRun "$ABRT_SAVE_ACTION -d $INIT_DD_PATH-$PHP_CGI_DUMP_DIR" 0
-        check_assigned_component "$PHP_CGI_DUMP_DIR"
+        rlRun "$ABRT_SAVE_ACTION -d '${DUMP_DIRECTORY}-R'" 0
+        check_assigned_component 'R'
     rlPhaseEnd
 
-    rlPhaseStartTest "Dont blame R interpret"
-        prepare_dump_dir "R" "$R_DUMP_DIR"
+    rlPhaseStartTest "Don’t blame Tcl interpreter"
+        prepare_dump_dir "tclsh"
 
-        rlRun "$ABRT_SAVE_ACTION -d $INIT_DD_PATH-$R_DUMP_DIR" 0
-        check_assigned_component "$R_DUMP_DIR"
-    rlPhaseEnd
-
-    rlPhaseStartTest "Dont blame tcl interpret"
-        prepare_dump_dir "tclsh" "$TCL_DUMP_DIR"
-
-        rlRun "$ABRT_SAVE_ACTION -d $INIT_DD_PATH-$TCL_DUMP_DIR" 0
-        check_assigned_component "$TCL_DUMP_DIR"
+        rlRun "$ABRT_SAVE_ACTION -d '${DUMP_DIRECTORY}-tclsh'" 0
+        check_assigned_component 'tclsh'
     rlPhaseEnd
 
     rlPhaseStartCleanup
