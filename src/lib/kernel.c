@@ -380,7 +380,7 @@ void abrt_koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
 
         if ((lines_info_size & 0xfff) == 0)
         {
-            lines_info = libreport_xrealloc(lines_info, (lines_info_size + 0x1000) * sizeof(lines_info[0]));
+            lines_info = g_realloc(lines_info, (lines_info_size + 0x1000) * sizeof(lines_info[0]));
         }
         lines_info[lines_info_size].ptr = c;
         lines_info[lines_info_size].level = linelevel;
@@ -746,7 +746,7 @@ char *abrt_kernel_tainted_short(const char *kernel_bt)
             {   /* this should not happen but */
                 /* I guess, it's a bit better approach than simple failure */
                 sz <<= 1;
-                tnt = libreport_xrealloc(tnt, sizeof(char) * sz);
+                tnt = g_realloc(tnt, sizeof(char) * sz);
             }
 
             tnt[cnt] = tainted[0];

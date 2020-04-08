@@ -110,7 +110,7 @@ int main(int argc, char **argv)
         v[i] = parse_file(*argv);
         if (v[i])
         {
-            v = libreport_xrealloc(v, (++i + 1) * sizeof(v[0]));
+            v = g_realloc(v, (++i + 1) * sizeof(v[0]));
             v[i] = NULL;
         }
         argv++;
