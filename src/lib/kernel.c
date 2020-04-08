@@ -669,7 +669,7 @@ char *abrt_koops_extract_version(const char *linepointer)
         /* 1: version prefix */
         /* 2: version string */
         const regmatch_t *const ver = matchptr + 2;
-        char *ret = libreport_xstrndup(linepointer + ver->rm_so, ver->rm_eo - ver->rm_so);
+        char *ret = g_strndup(linepointer + ver->rm_so, ver->rm_eo - ver->rm_so);
 
         regfree(&re);
         return ret;

@@ -48,7 +48,7 @@ char* is_in_comma_separated_list_with_fmt(const char *value, const char *fmt, co
         char *match = strstr(value, pattern);
         free(pattern);
         if (match)
-            return libreport_xstrndup(list, comma - list);
+            return g_strndup(list, comma - list);
         if (!*comma)
             break;
         list = comma + 1;
