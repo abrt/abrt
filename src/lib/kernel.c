@@ -736,7 +736,7 @@ char *abrt_kernel_tainted_short(const char *kernel_bt)
     /* 26 the maximal sane count of flags because of alphabet limits */
     unsigned sz = 26 + 1;
     unsigned cnt = 0;
-    char *tnt = libreport_xmalloc(sz);
+    char *tnt = g_malloc(sz);
 
     for (;;)
     {

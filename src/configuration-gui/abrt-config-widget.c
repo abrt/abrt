@@ -120,7 +120,7 @@ static void abrt_config_widget_finalize(GObject *object);
 static AbrtAppConfiguration *
 abrt_app_configuration_new(const char *app_name)
 {
-    AbrtAppConfiguration *conf = libreport_xmalloc(sizeof(*conf));
+    AbrtAppConfiguration *conf = g_malloc(sizeof(*conf));
 
     conf->app_name = g_strdup(app_name);
     conf->settings = libreport_new_map_string();
@@ -138,7 +138,7 @@ abrt_app_configuration_new(const char *app_name)
 static AbrtAppConfiguration *
 abrt_app_configuration_new_glib(const char *schema)
 {
-    AbrtAppConfiguration *conf = libreport_xmalloc(sizeof(*conf));
+    AbrtAppConfiguration *conf = g_malloc(sizeof(*conf));
 
     conf->app_name = g_strdup(schema);
     conf->settings = NULL;

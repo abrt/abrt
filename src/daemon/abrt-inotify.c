@@ -62,7 +62,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
      * and we were going out of sync wrt struct inotify_event's layout.
      */
     inotify_bytes += 2 * (sizeof(struct inotify_event) + FILENAME_MAX);
-    char *buf = libreport_xmalloc(inotify_bytes);
+    char *buf = g_malloc(inotify_bytes);
     errno = 0;
     gsize len;
     GError *gerror = NULL;
@@ -103,7 +103,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 struct abrt_inotify_watch *
 abrt_inotify_watch_init(const char *path, int inotify_flags, abrt_inotify_watch_handler handler, void *user_data)
 {
-    struct abrt_inotify_watch *aiw = libreport_xmalloc(sizeof(*aiw));
+    struct abrt_inotify_watch *aiw = g_malloc(sizeof(*aiw));
     aiw->handler = handler;
     aiw->user_data = user_data;
 

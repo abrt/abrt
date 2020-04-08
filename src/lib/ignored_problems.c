@@ -30,7 +30,7 @@ struct ignored_problems
 
 ignored_problems_t *ignored_problems_new(char *set_file_path)
 {
-    ignored_problems_t *set = libreport_xmalloc(sizeof(*set));
+    ignored_problems_t *set = g_malloc(sizeof(*set));
     set->ign_set_file_path = set_file_path;
     return set;
 }

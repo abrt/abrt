@@ -381,7 +381,7 @@ static GHashTable *bodhi_parse_json(json_object *json, const char *release)
         {
             for (int j = 0; j < json_object_array_length(bugs); ++j)
             {
-                int *bz_id = libreport_xmalloc(sizeof(int));
+                int *bz_id = g_malloc(sizeof(int));
                 json_object *bug_item = json_object_array_get_idx(bugs, j);
                 bodhi_read_value(bug_item, "bz_id", bz_id, BODHI_READ_INT);
                 b->bz_ids = g_list_append(b->bz_ids, bz_id);
