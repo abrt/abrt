@@ -41,7 +41,7 @@ static inline char *fread_full(const char *filenamep)
         fseek(fp, 0, SEEK_END);
         off_t size = ftell(fp);
         fseek(fp, 0, SEEK_SET);
-        char *koops_bt = libreport_xzalloc(size + 1);
+        char *koops_bt = g_malloc0(size + 1);
         int r = fread(koops_bt, sizeof(char), size, fp);
         fclose(fp);
         if (r < 0)

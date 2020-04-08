@@ -295,7 +295,7 @@ struct retrace_settings *get_settings(SoupSession *session)
     char *value;
     const char *row;
 
-    settings = libreport_xzalloc(sizeof(*settings));
+    settings = g_malloc0(sizeof(*settings));
     uri = build_uri_from_config(&cfg, "settings", NULL);
     message = soup_message_new_from_uri("GET", uri);
 

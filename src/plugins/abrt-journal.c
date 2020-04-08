@@ -47,7 +47,7 @@ static int abrt_journal_new_flags(abrt_journal_t **journal, int flags)
         return r;
     }
 
-    *journal = libreport_xzalloc(sizeof(**journal));
+    *journal = g_malloc0(sizeof(**journal));
     (*journal)->j = j;
 
     return 0;
@@ -73,7 +73,7 @@ static int abrt_journal_open_directory_flags(abrt_journal_t **journal, const cha
         return r;
     }
 
-    *journal = libreport_xzalloc(sizeof(**journal));
+    *journal = g_malloc0(sizeof(**journal));
     (*journal)->j = j;
 
     return 0;
@@ -416,7 +416,7 @@ int abrt_journal_watch_new(abrt_journal_watch_t **watch, abrt_journal_t *journal
 {
     assert(callback != NULL || !"ABRT watch needs valid callback ptr");
 
-    *watch = libreport_xzalloc(sizeof(**watch));
+    *watch = g_malloc0(sizeof(**watch));
     (*watch)->j = journal;
     (*watch)->callback = callback;
     (*watch)->callback_data = callback_data;

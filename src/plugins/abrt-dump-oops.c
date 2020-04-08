@@ -46,7 +46,7 @@ static void scan_syslog_file(GList **oops_list, int fd)
      * We try to deal with it by reading READ_AHEAD extra.
      */
     sz += READ_AHEAD;
-    char *buffer = libreport_xzalloc(sz);
+    char *buffer = g_malloc0(sz);
 
     for (;;)
     {

@@ -48,7 +48,7 @@ void abrt_free_abrt_conf_data()
 static char *xstrdup_normalized_path(const char *path)
 {
     const size_t len = strlen(path);
-    char *const res = libreport_xzalloc(len + 1);
+    char *const res = g_malloc0(len + 1);
 
     res[0] = path[0];
 
