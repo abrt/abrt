@@ -31,7 +31,7 @@ static GList* abrt_journal_extract_kernel_oops(abrt_journal_t *journal)
 {
     size_t lines_info_count = 0;
     size_t lines_info_size = 32;
-    struct abrt_koops_line_info *lines_info = libreport_xmalloc(lines_info_size * sizeof(lines_info[0]));
+    struct abrt_koops_line_info *lines_info = g_malloc(lines_info_size * sizeof(lines_info[0]));
 
     do
     {

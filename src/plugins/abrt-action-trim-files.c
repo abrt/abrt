@@ -51,7 +51,7 @@ static GList *insert_name_and_sizes(GList *list, const char *name, double wsa, o
 
     if (cur != list || list_len < MAX_VICTIM_LIST_SIZE)
     {
-        ns = libreport_xmalloc(sizeof(*ns) + strlen(name));
+        ns = g_malloc(sizeof(*ns) + strlen(name));
         ns->weighted_size_and_age = wsa;
         ns->size = sz;
         strcpy(ns->name, name);

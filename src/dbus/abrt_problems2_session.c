@@ -245,7 +245,7 @@ static void check_authorization_callback(GObject *source,
 static void authorization_request_initialize(AbrtP2Session *session, GVariant *parameters)
 {
 #ifdef HAVE_POLKIT
-    struct check_auth_cb_params *auth_rq = libreport_xmalloc(sizeof(*auth_rq));
+    struct check_auth_cb_params *auth_rq = g_malloc(sizeof(*auth_rq));
     auth_rq->session = session;
     auth_rq->cancellable = g_cancellable_new();
 
@@ -357,7 +357,7 @@ const char *abrt_p2_session_generate_token(AbrtP2Session *session,
         return NULL;
     }
 
-    char *token = libreport_xmalloc((SESSION_TOKEN_LENGTH + 1) * sizeof(char));
+    char *token = g_malloc((SESSION_TOKEN_LENGTH + 1) * sizeof(char));
     for (char *iter = token; iter < token + SESSION_TOKEN_LENGTH; ++iter)
         *iter = alphabet[(int)(strlen(alphabet) * (rand_r(&seed) / (double)RAND_MAX))];
 

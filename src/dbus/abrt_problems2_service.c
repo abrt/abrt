@@ -836,7 +836,7 @@ static void entry_object_dbus_method_call(GDBusConnection *connection,
     }
     else if (strcmp(method_name, "ReadElements") == 0)
     {
-        struct entry_object_read_elements_context *context = libreport_xmalloc(sizeof(*context));
+        struct entry_object_read_elements_context *context = g_malloc(sizeof(*context));
         context->invocation = g_object_ref(invocation);
         context->elements = g_variant_get_child_value(parameters, 0);
         context->out_fd_list = g_unix_fd_list_new();
@@ -864,7 +864,7 @@ static void entry_object_dbus_method_call(GDBusConnection *connection,
         GDBusMessage *msg = g_dbus_method_invocation_get_message(invocation);
         GUnixFDList *fd_list = g_dbus_message_get_unix_fd_list(msg);
 
-        struct entry_object_save_elements_context *context = libreport_xmalloc(sizeof(*context));
+        struct entry_object_save_elements_context *context = g_malloc(sizeof(*context));
 
         context->invocation = g_object_ref(invocation);
         context->elements = g_variant_get_child_value(parameters, 0);
@@ -1876,7 +1876,7 @@ static void task_object_dbus_method_call(GDBusConnection *connection,
     }
     else if (strcmp("Cancel", method_name) == 0)
     {
-        struct task_cancel_args *tca = libreport_xmalloc(sizeof(*tca));
+        struct task_cancel_args *tca = g_malloc(sizeof(*tca));
         tca->tca_object = user_data;
         tca->tca_session = g_object_ref(session);
 

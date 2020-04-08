@@ -361,7 +361,7 @@ int abrt_journal_restore_position(abrt_journal_t *journal, const char *file_name
         return -errno;
     }
 
-    char *crsr = libreport_xmalloc(buf.st_size + 1);
+    char *crsr = g_malloc(buf.st_size + 1);
 
     const int sz = libreport_full_read(state_fd, crsr, buf.st_size);
     if (sz != buf.st_size)

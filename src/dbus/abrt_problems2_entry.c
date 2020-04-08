@@ -429,7 +429,7 @@ typedef struct
 } AbrtP2EntryReadElementsData;
 
 #define abrt_p2_entry_read_elements_data_new() \
-    libreport_xmalloc(sizeof(AbrtP2EntryReadElementsData))
+    g_malloc(sizeof(AbrtP2EntryReadElementsData))
 
 static inline void abrt_p2_entry_read_elements_data_free(AbrtP2EntryReadElementsData *data)
 {
@@ -855,7 +855,7 @@ typedef struct {
 } AbrtP2EntrySaveElementsData;
 
 #define abrt_p2_entry_save_elements_data_new() \
-    libreport_xmalloc(sizeof(AbrtP2EntrySaveElementsData))
+    g_malloc(sizeof(AbrtP2EntrySaveElementsData))
 
 static inline void abrt_p2_entry_save_elements_data_free(AbrtP2EntrySaveElementsData *data)
 {
