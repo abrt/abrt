@@ -17,6 +17,8 @@
 */
 #include "https-utils.h"
 #include <spawn.h>
+#include <glib-unix.h>
+#include <glib/gstdio.h>
 
 #define MAX_FORMATS 16
 #define MAX_RELEASES 32
@@ -118,7 +120,7 @@ static int create_archive(bool unlink_temp)
     if (tempfd == -1)
         perror_msg_and_die(_("Can't create temporary file in "LARGE_DATA_TMP_DIR));
     if (unlink_temp)
-        libreport_xunlink(filename);
+        g_unlink(filename);
     free(filename);
 
     /* Run xz:
