@@ -602,7 +602,15 @@ main(int argc, char *argv[])
 
         value = libreport_get_map_string_item_or_NULL(settings, "VerboseLog");
         if (value)
-            libreport_g_verbose = libreport_xatoi_positive(value);
+        {
+            char *endptr;
+
+            long verbose = g_ascii_strtoull(value, &endptr, 10);
+            if (verbose >= 0 && verbose <= UINT_MAX && value != endptr)
+                libreport_g_verbose = (unsigned)verbose;
+            else
+                error_msg_and_die("expected number in range <%d, %d>: '%s'", 0, UINT_MAX, value);
+        }
 
         libreport_free_map_string(settings);
     }
