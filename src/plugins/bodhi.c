@@ -345,7 +345,7 @@ static GHashTable *bodhi_parse_json(json_object *json, const char *release)
         int builds_len = json_object_array_length(builds_item);
         for (int k = 0; k < builds_len; ++k)
         {
-            b = libreport_xzalloc(sizeof(struct bodhi));
+            b = g_malloc0(sizeof(struct bodhi));
 
             char *name = NULL;
             json_object *build = json_object_array_get_idx(builds_item, k);

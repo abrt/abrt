@@ -42,7 +42,7 @@ struct oops_text *parse_file(const char *filename)
     if (n != 2)
         goto ret;
 
-    ot = libreport_xzalloc(sizeof(*ot));
+    ot = g_malloc0(sizeof(*ot));
     ot->filename = filename;
     ot->panic_no = n1;
     ot->part_no = n2;
@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 
     libreport_export_abrt_envvars(0);
 
-    struct oops_text **v = libreport_xzalloc(sizeof(v[0]));
+    struct oops_text **v = g_malloc0(sizeof(v[0]));
     int i = 0;
 
     while (*argv)

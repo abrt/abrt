@@ -31,14 +31,14 @@ void get_language(struct language *lang)
     char *locale = setlocale(LC_ALL, NULL);
     if (!locale)
     {
-        lang->charset = libreport_xzalloc(1);
+        lang->charset = g_malloc0(1);
         return;
     }
 
     char *encoding = strchr(locale, '.');
     if (!encoding)
     {
-        lang->charset = libreport_xzalloc(1);
+        lang->charset = g_malloc0(1);
         return;
     }
 

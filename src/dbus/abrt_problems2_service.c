@@ -129,7 +129,7 @@ struct user_info
 
 static struct user_info *user_info_new(void)
 {
-    struct user_info *user = libreport_xzalloc(sizeof(*user));
+    struct user_info *user = g_malloc0(sizeof(*user));
     return user;
 }
 
@@ -299,7 +299,7 @@ static AbrtP2Object *abrt_p2_object_new(AbrtP2Service *service,
             GError **error)
 {
     AbrtP2Object *obj = NULL;
-    obj = libreport_xzalloc(sizeof(*obj));
+    obj = g_malloc0(sizeof(*obj));
     obj->p2o_path = path;
     obj->node = node;
     obj->destructor = destructor;

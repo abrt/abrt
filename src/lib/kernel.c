@@ -45,7 +45,7 @@ static void record_oops(GList **oops_list, const struct abrt_koops_line_info* li
     /* too short oopses are invalid */
     if (len > SANE_MIN_OOPS_LEN)
     {
-        char *oops = (char*)libreport_xzalloc(len);
+        char *oops = (char*)g_malloc0(len);
         char *dst = oops;
         char *version = NULL;
         for (q = oopsstart; q <= oopsend; q++)

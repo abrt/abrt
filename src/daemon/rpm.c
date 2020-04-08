@@ -318,7 +318,7 @@ struct pkg_nevra *rpm_get_package_nvr(const char *filename, const char *rootdir_
     if (!header)
         goto error;
 
-    p = libreport_xzalloc(sizeof(*p));
+    p = g_malloc0(sizeof(*p));
     int r;
 
     r = pkg_add_name(header, p);
