@@ -385,7 +385,12 @@ int main(int argc, char **argv)
     if (opt_env_nice != NULL && opt_env_nice[0] != '\0')
     {
         log_debug("Using ABRT_EVENT_NICE=%s to increment the nice value", opt_env_nice);
-        nice_incr = libreport_xatoi(opt_env_nice);
+        char *endptr = NULL;
+        long nice_incr_intermediate = g_ascii_strtoll(opt_env_nice, &endptr, 10);
+        if (nice_incr_intermediate >= INT_MIN && nice_incr_intermediate <= INT_MAX && opt_env_nice != endptr)
+            nice_incr = (int)nice_incr_intermediate;
+        else
+            error_msg_and_die("expected number in range <%d, %d>: '%s'", INT_MIN, INT_MAX, opt_env_nice);
     }
 
     if (nice_incr != 0)
