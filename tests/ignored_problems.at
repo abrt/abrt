@@ -26,7 +26,7 @@ int main(void)
 {
     {
         unlink(SET_PATH);
-        ignored_problems_t *set = ignored_problems_new(libreport_xstrdup(SET_PATH));
+        ignored_problems_t *set = ignored_problems_new(g_strdup(SET_PATH));
 
         ignored_problems_add(set, "foo_blah");
         assert(0 == ignored_problems_contains(set, "foo_blah") || "The set contains invalid problem");
@@ -52,7 +52,7 @@ int main(void)
 
     {
         unlink(SET_PATH);
-        ignored_problems_t *set = ignored_problems_new(libreport_xstrdup(SET_PATH));
+        ignored_problems_t *set = ignored_problems_new(g_strdup(SET_PATH));
 
         struct dump_dir *dd = dd_opendir(FIRST_DD_ID, DD_OPEN_READONLY | DD_DONT_WAIT_FOR_LOCK);
         assert(NULL != dd || !"Failed to load testing directory");
@@ -82,7 +82,7 @@ int main(void)
 
 
     {
-        ignored_problems_t *set = ignored_problems_new(libreport_xstrdup("/foo/blah"));
+        ignored_problems_t *set = ignored_problems_new(g_strdup("/foo/blah"));
 
         ignored_problems_add(set, FIRST_DD_ID);
         ignored_problems_remove(set, FIRST_DD_ID);
@@ -92,20 +92,20 @@ int main(void)
     }
 
     {
-        ignored_problems_t *set = ignored_problems_new(libreport_xstrdup(SET_PATH));
+        ignored_problems_t *set = ignored_problems_new(g_strdup(SET_PATH));
 
         ignored_problems_add(set, FIRST_DD_ID);
 
         ignored_problems_free(set);
 
-        set = ignored_problems_new(libreport_xstrdup(SET_PATH));
+        set = ignored_problems_new(g_strdup(SET_PATH));
         assert(0 != ignored_problems_contains(set, FIRST_DD_ID) || !"Thes set doesn't contain saved problem");
 
         ignored_problems_free(set);
     }
 
     {
-        ignored_problems_t *set = ignored_problems_new(libreport_xstrdup(SET_PATH));
+        ignored_problems_t *set = ignored_problems_new(g_strdup(SET_PATH));
 
         ignored_problems_add(set, FIRST_DD_ID);
         ignored_problems_add(set, SECOND_DD_ID);
@@ -116,7 +116,7 @@ int main(void)
         assert(0 != ignored_problems_contains(set, THIRD_DD_ID) || !"Thes set doesn't contain added problem");
 
         ignored_problems_free(set);
-        set = ignored_problems_new(libreport_xstrdup(SET_PATH));
+        set = ignored_problems_new(g_strdup(SET_PATH));
 
         assert(0 != ignored_problems_contains(set, FIRST_DD_ID) || !"Thes set doesn't contain saved problem");
         assert(0 != ignored_problems_contains(set, SECOND_DD_ID) || !"Thes set doesn't contain saved problem");
@@ -129,7 +129,7 @@ int main(void)
         assert(0 != ignored_problems_contains(set, THIRD_DD_ID) || !"Thes set doesn't contain saved problem");
 
         ignored_problems_free(set);
-        set = ignored_problems_new(libreport_xstrdup(SET_PATH));
+        set = ignored_problems_new(g_strdup(SET_PATH));
 
         assert(0 != ignored_problems_contains(set, FIRST_DD_ID) || !"Thes set doesn't contain saved problem");
         assert(0 == ignored_problems_contains(set, SECOND_DD_ID) || !"Thes set contains removed problem");
@@ -164,19 +164,19 @@ int main(void)
     }
 
     {
-        ignored_problems_t *set = ignored_problems_new(libreport_xstrdup(ALL_CORRECT_SET));
+        ignored_problems_t *set = ignored_problems_new(g_strdup(ALL_CORRECT_SET));
         assert(0 != ignored_problems_contains(set, FIRST_DD_ID) || !"Thes set doesn't contain added problem");
         assert(0 != ignored_problems_contains(set, SECOND_DD_ID) || !"Thes set doesn't contain added problem");
         assert(0 != ignored_problems_contains(set, THIRD_DD_ID) || !"Thes set doesn't contain added problem");
         ignored_problems_free(set);
 
-        set = ignored_problems_new(libreport_xstrdup(MISSING_DUPHAS_SET));
+        set = ignored_problems_new(g_strdup(MISSING_DUPHAS_SET));
         assert(0 != ignored_problems_contains(set, FIRST_DD_ID) || !"Thes set doesn't contain added problem");
         assert(0 != ignored_problems_contains(set, SECOND_DD_ID) || !"Thes set doesn't contain added problem");
         assert(0 != ignored_problems_contains(set, THIRD_DD_ID) || !"Thes set doesn't contain added problem");
         ignored_problems_free(set);
 
-        set = ignored_problems_new(libreport_xstrdup(MISSING_UUID_AND_DUPHASH_SET));
+        set = ignored_problems_new(g_strdup(MISSING_UUID_AND_DUPHASH_SET));
         assert(0 != ignored_problems_contains(set, FIRST_DD_ID) || !"Thes set doesn't contain added problem");
         assert(0 != ignored_problems_contains(set, SECOND_DD_ID) || !"Thes set doesn't contain added problem");
         assert(0 != ignored_problems_contains(set, THIRD_DD_ID) || !"Thes set doesn't contain added problem");

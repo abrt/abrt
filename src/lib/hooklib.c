@@ -418,7 +418,7 @@ char* problem_data_save(problem_data_t *pd)
     char *problem_id = NULL;
     if (dd)
     {
-        problem_id = libreport_xstrdup(dd->dd_dirname);
+        problem_id = g_strdup(dd->dd_dirname);
         dd_close(dd);
     }
 

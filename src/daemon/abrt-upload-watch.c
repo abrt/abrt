@@ -214,7 +214,7 @@ handle_inotify_cb(struct abrt_inotify_watch *watch, struct inotify_event *event,
         if (ext && strcmp(ext + 1, "working") == 0)
             return;
 
-        handle_new_path((struct process *)user_data, libreport_xstrdup(event->name));
+        handle_new_path((struct process *)user_data, g_strdup(event->name));
     }
 }
 

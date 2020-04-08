@@ -62,9 +62,9 @@ void test(const char *backtrace, const char *exp_backtrace,
     dd_create_basic_files(dd, (uid_t)-1, NULL);
 
     struct xorg_crash_info *crash_info = libreport_xmalloc(sizeof(struct xorg_crash_info));
-    crash_info->backtrace = libreport_xstrdup(backtrace);
-    crash_info->reason = libreport_xstrdup(reason);
-    crash_info->exe = libreport_xstrdup(exe);
+    crash_info->backtrace = g_strdup(backtrace);
+    crash_info->reason = g_strdup(reason);
+    crash_info->exe = g_strdup(exe);
 
     xorg_crash_info_save_in_dump_dir(crash_info, dd);
 

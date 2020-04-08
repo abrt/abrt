@@ -539,7 +539,7 @@ static AbrtP2Object *session_object_register(AbrtP2Service *service,
         return NULL;
     }
 
-    char *dup_caller = libreport_xstrdup(caller);
+    char *dup_caller = g_strdup(caller);
 
     AbrtP2Session *session = abrt_p2_session_new(dup_caller, caller_uid);
 
@@ -1339,7 +1339,7 @@ static AbrtP2Object *entry_object_register_dump_dir(AbrtP2Service *service,
                 const char *dd_dirname,
                 GError **error)
 {
-    char *const dup_dirname = libreport_xstrdup(dd_dirname);
+    char *const dup_dirname = g_strdup(dd_dirname);
     AbrtP2Entry *entry = abrt_p2_entry_new(dup_dirname);
 
     return abrt_p2_service_register_entry(service, entry, error);
@@ -1424,7 +1424,7 @@ static GList *abrt_g_variant_get_dict_keys(GVariant *dict)
     GList *retval = NULL;
     /* No need to free 'name' and 'container' unless breaking out of the loop */
     while (g_variant_iter_loop(&iter, "{sv}", &name, &value))
-        retval = g_list_prepend(retval, libreport_xstrdup(name));
+        retval = g_list_prepend(retval, g_strdup(name));
 
     return retval;
 }
@@ -1449,12 +1449,12 @@ char *abrt_p2_service_save_problem( AbrtP2Service *service,
                                                              G_VARIANT_TYPE_STRING);
     if (analyzer_element == NULL)
     {
-        analyzer_str = libreport_xstrdup("libreport");
+        analyzer_str = g_strdup("libreport");
         g_variant_dict_insert(&pd, FILENAME_ANALYZER, "s", analyzer_str);
     }
     else
     {
-        analyzer_str = libreport_xstrdup(g_variant_get_string(analyzer_element, NULL));
+        analyzer_str = g_strdup(g_variant_get_string(analyzer_element, NULL));
         g_variant_unref(analyzer_element);
     }
 
@@ -1464,11 +1464,11 @@ char *abrt_p2_service_save_problem( AbrtP2Service *service,
                                                          G_VARIANT_TYPE_STRING);
     if (type_element == NULL)
     {
-         type_str = libreport_xstrdup(analyzer_str);
+         type_str = g_strdup(analyzer_str);
     }
     else
     {
-         type_str = libreport_xstrdup(g_variant_get_string(type_element, NULL));
+         type_str = g_strdup(g_variant_get_string(type_element, NULL));
          g_variant_unref(type_element);
     }
 
@@ -1571,7 +1571,7 @@ char *abrt_p2_service_save_problem( AbrtP2Service *service,
         return NULL;
     }
 
-    char *retval = libreport_xstrdup(dd->dd_dirname);
+    char *retval = g_strdup(dd->dd_dirname);
     dd_close(dd);
 
     return retval;

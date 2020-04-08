@@ -113,7 +113,7 @@ static int create_archive(bool unlink_temp)
         return -1;
 
     /* Open a temporary file. */
-    char *filename = libreport_xstrdup(LARGE_DATA_TMP_DIR"/abrt-retrace-client-archive-XXXXXX.tar.xz");
+    char *filename = g_strdup(LARGE_DATA_TMP_DIR"/abrt-retrace-client-archive-XXXXXX.tar.xz");
     int tempfd = mkstemps(filename, /*suffixlen:*/7);
     if (tempfd == -1)
         perror_msg_and_die(_("Can't create temporary file in "LARGE_DATA_TMP_DIR));
@@ -358,12 +358,12 @@ struct retrace_settings *get_settings(SoupSession *session)
             for (i = 0; i < MAX_FORMATS - 1 && (space = strchr(value, ' ')); ++i)
             {
                 *space = '\0';
-                settings->supported_formats[i] = libreport_xstrdup(value);
+                settings->supported_formats[i] = g_strdup(value);
                 value = space + 1;
             }
 
             /* last element */
-            settings->supported_formats[i] = libreport_xstrdup(value);
+            settings->supported_formats[i] = g_strdup(value);
         }
         else if (0 == strcasecmp("supported_releases", row))
         {
@@ -372,12 +372,12 @@ struct retrace_settings *get_settings(SoupSession *session)
             for (i = 0; i < MAX_RELEASES - 1 && (space = strchr(value, ' ')); ++i)
             {
                 *space = '\0';
-                settings->supported_releases[i] = libreport_xstrdup(value);
+                settings->supported_releases[i] = g_strdup(value);
                 value = space + 1;
             }
 
             /* last element */
-            settings->supported_releases[i] = libreport_xstrdup(value);
+            settings->supported_releases[i] = g_strdup(value);
         }
 
         /* the beginning of the next row */
@@ -406,12 +406,12 @@ static void free_settings(struct retrace_settings *settings)
 /* or NULL if unknown */
 static char *get_release_id(map_string_t *osinfo, const char *architecture)
 {
-    char *arch = libreport_xstrdup(architecture);
+    char *arch = g_strdup(architecture);
 
     if (strcmp("i686", arch) == 0 || strcmp("i586", arch) == 0)
     {
         free(arch);
-        arch = libreport_xstrdup("i386");
+        arch = g_strdup("i386");
     }
 
     char *result = NULL;
@@ -1120,8 +1120,8 @@ static int run_batch(SoupSession *session,
     int retcode = create(session, delete_temp_archive, &task_id, &task_password);
     if (0 != retcode)
         return retcode;
-    char *task_status = libreport_xstrdup("");
-    char *status_message = libreport_xstrdup("");
+    char *task_status = g_strdup("");
+    char *status_message = g_strdup("");
     int status_delay = delay ? delay : 10;
     int dots = 0;
     while (0 != strncmp(task_status, "FINISHED", strlen("finished")))

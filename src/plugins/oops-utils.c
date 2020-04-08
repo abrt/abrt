@@ -313,7 +313,7 @@ char *abrt_oops_string_filter_regex(void)
     libreport_free_map_string(settings);
 
     if (only_fatal_mce)
-        return libreport_xstrdup("^Machine .*$");
+        return g_strdup("^Machine .*$");
 
     return NULL;
 }

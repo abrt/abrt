@@ -257,7 +257,7 @@ int main(int argc, char **argv)
     {
         char *name = *argv++;
         /* Since we don't bother freeing preserve_files_list on exit,
-         * we take a shortcut and insert name instead of libreport_xstrdup(name)
+         * we take a shortcut and insert name instead of g_strdup(name)
          * in the next line:
          */
         preserve_files_list = g_list_prepend(preserve_files_list, name);

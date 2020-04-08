@@ -168,7 +168,7 @@ int main(int argc, char **argv)
         char *p = NULL;
         for (size_t i = 0; i < wlsize; i++)
             if ((p = getenv(whitelist[i])) != NULL)
-                setlist[i] = libreport_xstrdup(p);
+                setlist[i] = g_strdup(p);
 
         // Now we can clear the environment
         clearenv();
