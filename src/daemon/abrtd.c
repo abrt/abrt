@@ -21,6 +21,7 @@
 #endif
 #include <sys/un.h>
 #include <glib-unix.h>
+#include <glib/gstdio.h>
 
 #include "abrt_glib.h"
 #include "abrt-inotify.h"
@@ -619,7 +620,7 @@ static void handle_signal(int signo)
 static void start_logging(void)
 {
     /* Open stdin to /dev/null */
-    libreport_xmove_fd(libreport_xopen("/dev/null", O_RDWR), STDIN_FILENO);
+    libreport_xmove_fd(g_open("/dev/null", O_RDWR), STDIN_FILENO);
     /* We must not leave fds 0,1,2 closed.
      * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
     libreport_xdup2(STDIN_FILENO, STDOUT_FILENO);

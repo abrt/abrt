@@ -17,6 +17,7 @@
        Arjan van de Ven <arjan@linux.intel.com>
  */
 #include <syslog.h>
+#include <glib/gstdio.h>
 #include "libabrt.h"
 #include "oops-utils.h"
 
@@ -161,7 +162,7 @@ int main(int argc, char **argv)
 
     argv += optind;
     if (argv[0])
-        libreport_xmove_fd(libreport_xopen(argv[0], O_RDONLY), STDIN_FILENO);
+        libreport_xmove_fd(g_open(argv[0], O_RDONLY), STDIN_FILENO);
 
     GList *oops_list = NULL;
     scan_syslog_file(&oops_list, STDIN_FILENO);
