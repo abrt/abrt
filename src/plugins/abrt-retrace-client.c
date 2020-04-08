@@ -1288,7 +1288,14 @@ int main(int argc, char **argv)
 
     char *env_delay = getenv("ABRT_STATUS_DELAY");
     if (env_delay)
-        delay = libreport_xatou(env_delay);
+    {
+        char *endptr;
+        long dly = g_ascii_strtoull(env_delay, &endptr, 10);
+        if (dly >= 0 && dly <= UINT_MAX && env_delay != endptr)
+            delay = (unsigned)dly;
+        else
+            error_msg_and_die("expected number in range <%d, %d>: '%s'", 0, UINT_MAX, env_delay);
+    }
 
     char *env_insecure = getenv("RETRACE_SERVER_INSECURE");
     if (env_insecure)
