@@ -16,6 +16,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
+#include <glib-2.0/glib/gstdio.h>
 #include "abrt-inotify.h"
 #include "abrt_glib.h"
 #include "libabrt.h"
@@ -237,7 +238,7 @@ daemonize()
     libreport_xchdir("/");
 
     /* Reopen the standard file descriptors to "/dev/null" */
-    libreport_xmove_fd(libreport_xopen("/dev/null", O_RDWR), STDIN_FILENO);
+    libreport_xmove_fd(g_open("/dev/null", O_RDWR), STDIN_FILENO);
     libreport_xdup2(STDIN_FILENO, STDOUT_FILENO);
     libreport_xdup2(STDIN_FILENO, STDERR_FILENO);
 }

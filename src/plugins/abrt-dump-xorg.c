@@ -16,6 +16,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
+#include <glib/gstdio.h>
 #include "libabrt.h"
 #include "xorg-utils.h"
 
@@ -85,7 +86,7 @@ int main(int argc, char **argv)
 
     argv += optind;
     if (argv[0])
-        libreport_xmove_fd(libreport_xopen(argv[0], O_RDONLY), STDIN_FILENO);
+        libreport_xmove_fd(g_open(argv[0], O_RDONLY), STDIN_FILENO);
 
     int bt_count = 0;
     char *line = NULL;
