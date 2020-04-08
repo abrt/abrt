@@ -212,7 +212,7 @@ static char *get_argv1_if_full_path(const char* cmdline)
 
     /* good, it has "/foo/bar" form, return it */
     int len = strchrnul(argv1, ' ') - argv1;
-    return libreport_xstrndup(argv1, len);
+    return g_strndup(argv1, len);
 }
 
 static bool is_path_blacklisted(const char *path)

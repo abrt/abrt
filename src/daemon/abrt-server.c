@@ -728,7 +728,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     /* Move the completely created problem directory
      * to final directory.
      */
-    char *newpath = libreport_xstrndup(path, strlen(path) - strlen(".new"));
+    char *newpath = g_strndup(path, strlen(path) - strlen(".new"));
     if (rename(path, newpath) == 0)
         strcpy(path, newpath);
     free(newpath);

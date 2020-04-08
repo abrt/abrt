@@ -299,7 +299,7 @@ static int parse_nvr_name(const char *nvr, char **name)
     if (c <= nvr)
         return EINVAL;
 
-    *name = libreport_xstrndup(nvr, (c - nvr));
+    *name = g_strndup(nvr, (c - nvr));
 
     return 0;
 }

@@ -228,7 +228,7 @@ char *abrt_journal_get_string_field(abrt_journal_t *journal, const char *field, 
         return NULL;
 
     if (value == NULL)
-        return libreport_xstrndup(data, data_len);
+        return g_strndup(data, data_len);
     /*else*/
 
     strncpy(value, data, data_len);

@@ -94,7 +94,7 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
         /* Why we copy only 12 bytes here?
          * Because only the first 12 characters are used by docker as ID of the
          * container. */
-        container_id = libreport_xstrndup(last, 12);
+        container_id = g_strndup(last, 12);
         if (strlen(container_id) != 12)
         {
             log_debug("Failed to get container ID");
@@ -221,7 +221,7 @@ void dump_lxc_info(struct dump_dir *dd, const char *lxc_cmd)
         goto dump_lxc_info_cleanup;
     }
 
-    char *container_id = libreport_xstrndup(tmp + 1, (last_slash - tmp) - 1);
+    char *container_id = g_strndup(tmp + 1, (last_slash - tmp) - 1);
 
     dd_save_text(dd, FILENAME_CONTAINER_ID, container_id);
     dd_save_text(dd, FILENAME_CONTAINER_UUID, container_id);
