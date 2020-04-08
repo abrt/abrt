@@ -90,7 +90,7 @@ core_stacktrace_from_core_json(char *core_backtrace)
 
 static char *build_ids_from_core_backtrace(const char *dump_dir_name)
 {
-    char *core_backtrace_path = libreport_xasprintf("%s/"FILENAME_CORE_BACKTRACE, dump_dir_name);
+    char *core_backtrace_path = g_strdup_printf("%s/"FILENAME_CORE_BACKTRACE, dump_dir_name);
     char *json = libreport_xmalloc_open_read_close(core_backtrace_path, /*maxsize:*/ NULL);
     free(core_backtrace_path);
 
@@ -171,7 +171,7 @@ int main(int argc, char **argv)
     libreport_export_abrt_envvars(0);
 
     char *unstrip_n_output = NULL;
-    char *coredump_path = libreport_xasprintf("%s/"FILENAME_COREDUMP, dump_dir_name);
+    char *coredump_path = g_strdup_printf("%s/"FILENAME_COREDUMP, dump_dir_name);
     if (access(coredump_path, R_OK) == 0)
         unstrip_n_output = abrt_run_unstrip_n(dump_dir_name, /*timeout_sec:*/ 30);
 
@@ -228,7 +228,7 @@ int main(int argc, char **argv)
         }
     }
 
-    char *string_to_hash = libreport_xasprintf("%s%s%s", package, executable, unstrip_n_output);
+    char *string_to_hash = g_strdup_printf("%s%s%s", package, executable, unstrip_n_output);
     /*free(package);*/
     /*free(executable);*/
     /*free(unstrip_n_output);*/

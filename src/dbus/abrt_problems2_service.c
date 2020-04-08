@@ -576,7 +576,7 @@ static char *session_object_caller_to_path(const char *caller)
 
     checksum = g_compute_checksum_for_string(G_CHECKSUM_SHA1, caller, -1);
 
-    return libreport_xasprintf(ABRT_P2_PATH"/Session/%s", checksum);
+    return g_strdup_printf(ABRT_P2_PATH"/Session/%s", checksum);
 }
 
 static AbrtP2Object *abrt_p2_service_get_session_for_caller(
@@ -1332,7 +1332,7 @@ static char *entry_object_dir_name_to_path(const char *dd_dirname)
 
     checksum = g_compute_checksum_for_string(G_CHECKSUM_SHA1, dd_dirname, -1);
 
-    return libreport_xasprintf(ABRT_P2_PATH"/Entry/%s", checksum);
+    return g_strdup_printf(ABRT_P2_PATH"/Entry/%s", checksum);
 }
 
 static AbrtP2Object *entry_object_register_dump_dir(AbrtP2Service *service,
@@ -1536,7 +1536,7 @@ char *abrt_p2_service_save_problem( AbrtP2Service *service,
     {   /* set uid field to caller's uid
            if caller is not root or root doesn't pass own uid */
         log_info("Adding UID %lu to the problem info", (long unsigned)caller_uid);
-        char *uid_str = libreport_xasprintf("%lu", (long unsigned)caller_uid);
+        char *uid_str = g_strdup_printf("%lu", (long unsigned)caller_uid);
         g_variant_dict_insert(&pd, FILENAME_UID, "s", uid_str);
         free(uid_str);
     }
@@ -1792,7 +1792,7 @@ static AbrtP2Object *task_object_register(AbrtP2Service* service,
         return NULL;
 
     const char *session_path = abrt_p2_object_path(session_obj);
-    char *path = libreport_xasprintf("%s/Task/%u", session_path, regid);
+    char *path = g_strdup_printf("%s/Task/%u", session_path, regid);
 
     AbrtP2Object *obj = abrt_p2_object_new(service,
                                            &(service->pv->p2srv_p2_task_type),

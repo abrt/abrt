@@ -53,7 +53,7 @@ void alert_server_error(const char *peer_name)
         libreport_alert(_("An error occurred on the server side."));
     else
     {
-        char *msg = libreport_xasprintf(_("A server-side error occurred on '%s'"), peer_name);
+        char *msg = g_strdup_printf(_("A server-side error occurred on '%s'"), peer_name);
         libreport_alert(msg);
         free(msg);
     }
@@ -65,7 +65,7 @@ void alert_connection_error(const char *peer_name)
         libreport_alert(_("An error occurred while connecting to the server"));
     else
     {
-        char *msg = libreport_xasprintf(_("An error occurred while connecting to '%s'"), peer_name);
+        char *msg = g_strdup_printf(_("An error occurred while connecting to '%s'"), peer_name);
         libreport_alert(msg);
         free(msg);
     }

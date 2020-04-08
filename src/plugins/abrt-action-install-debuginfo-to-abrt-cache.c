@@ -101,7 +101,7 @@ int main(int argc, char **argv)
             perror_msg_and_die("Failed to open file '%s'", build_ids);
 
         /* We are not going to free this memory. There is no place to do so. */
-        build_ids_self_fd = libreport_xasprintf("/proc/self/fd/%d", build_ids_fd);
+        build_ids_self_fd = g_strdup_printf("/proc/self/fd/%d", build_ids_fd);
     }
 
     char tmp_directory[] = LARGE_DATA_TMP_DIR"/abrt-tmp-debuginfo.XXXXXX";

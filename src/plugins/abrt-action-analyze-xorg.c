@@ -44,7 +44,7 @@ char* is_in_comma_separated_list_with_fmt(const char *value, const char *fmt, co
     while (*list)
     {
         const char *comma = strchrnul(list, ',');
-        char *pattern = libreport_xasprintf(fmt, (int)(comma - list), list);
+        char *pattern = g_strdup_printf(fmt, (int)(comma - list), list);
         char *match = strstr(value, pattern);
         free(pattern);
         if (match)
@@ -140,7 +140,7 @@ int main(int argc, char **argv)
 
     if (blacklisted)
     {
-        char *foobared = libreport_xasprintf(_("Module '%s' was loaded - won't report this crash"), blacklisted);
+        char *foobared = g_strdup_printf(_("Module '%s' was loaded - won't report this crash"), blacklisted);
         free(blacklisted);
         dd_save_text(dd, FILENAME_NOT_REPORTABLE, foobared);
         free(foobared);

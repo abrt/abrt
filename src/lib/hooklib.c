@@ -179,7 +179,7 @@ char *abrt_run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
     int pipeout[2];
     char* args[4];
     args[0] = (char*)"eu-unstrip";
-    args[1] = libreport_xasprintf("--core=%s/"FILENAME_COREDUMP, dump_dir_name);
+    args[1] = g_strdup_printf("--core=%s/"FILENAME_COREDUMP, dump_dir_name);
     args[2] = (char*)"-n";
     args[3] = NULL;
     pid_t child = libreport_fork_execv_on_steroids(flags, args, pipeout, /*env_vec:*/ NULL, /*dir:*/ NULL, /*uid(unused):*/ 0);
@@ -289,9 +289,9 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
 
         args[i++] = (char*)"-iex";
         auto_load_base_index = i;
-        args[i++] = libreport_xasprintf("add-auto-load-safe-path %s", debug_directories->buf);
+        args[i++] = g_strdup_printf("add-auto-load-safe-path %s", debug_directories->buf);
         args[i++] = (char*)"-iex";
-        args[i++] = libreport_xasprintf("add-auto-load-scripts-directory %s", debug_directories->buf);
+        args[i++] = g_strdup_printf("add-auto-load-scripts-directory %s", debug_directories->buf);
 
         libreport_strbuf_free(debug_directories);
     }
@@ -322,12 +322,12 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
      */
     args[i++] = (char*)"-ex";
     const unsigned file_cmd_index = i++;
-    args[file_cmd_index] = libreport_xasprintf("file %s", executable);
+    args[file_cmd_index] = g_strdup_printf("file %s", executable);
     free(executable);
 
     args[i++] = (char*)"-ex";
     const unsigned core_cmd_index = i++;
-    args[core_cmd_index] = libreport_xasprintf("core-file %s/"FILENAME_COREDUMP, dd->dd_dirname);
+    args[core_cmd_index] = g_strdup_printf("core-file %s/"FILENAME_COREDUMP, dd->dd_dirname);
 
     args[i++] = (char*)"-ex";
     const unsigned bt_cmd_index = i++;
@@ -354,7 +354,7 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
     char *bt = NULL;
     while (1)
     {
-        args[bt_cmd_index] = libreport_xasprintf("%s backtrace %s%u", thread_apply_all, full, bt_depth);
+        args[bt_cmd_index] = g_strdup_printf("%s backtrace %s%u", thread_apply_all, full, bt_depth);
         bt = exec_vp(args, /*redirect_stderr:*/ 1, timeout_sec, NULL);
         free(args[bt_cmd_index]);
         if ((bt && strnlen(bt, 256*1024) < 256*1024) || bt_depth <= 32)

@@ -75,7 +75,7 @@ int main(int argc, char **argv)
     libreport_free_map_string(settings);
     char *debuginfo_dirs = NULL;
     if (i_opt)
-        debuginfo_dirs = libreport_xasprintf("%s:%s", debuginfo_location, i_opt);
+        debuginfo_dirs = g_strdup_printf("%s:%s", debuginfo_location, i_opt);
 
     /* Create gdb backtrace */
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);

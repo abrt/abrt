@@ -395,7 +395,7 @@ static GHashTable *bodhi_parse_json(json_object *json, const char *release)
 
 static GHashTable *bodhi_query_list(const char *query, const char *release)
 {
-    char *bodhi_url_bugs = libreport_xasprintf("%s/?%s", bodhi_url, query);
+    char *bodhi_url_bugs = g_strdup_printf("%s/?%s", bodhi_url, query);
 
     post_state_t *post_state = new_post_state(POST_WANT_BODY
                                               | POST_WANT_SSL_VERIFY
@@ -633,10 +633,10 @@ int main(int argc, char **argv)
         libreport_strbuf_prepend_str(q, DEFAULT_PACKAGE_MANAGER);
     libreport_free_map_string(settings);
 
-    char *msg = libreport_xasprintf(_("An update exists which might fix your problem. "
-                "You can install it by running: %s. "
-                "Do you want to continue with reporting the bug?"),
-                q->buf
+    char *msg = g_strdup_printf(_("An update exists which might fix your problem. "
+                                  "You can install it by running: %s. "
+                                  "Do you want to continue with reporting the bug?"),
+                                q->buf
     );
     /*libreport_strbuf_free(q);*/
 

@@ -475,15 +475,15 @@ abrt_config_widget_init(AbrtConfigWidget *self)
             /* Try to get the value of PRIVACY_POLICY from /etc/os-release */
             sr_parse_os_release(os_release, os_release_callback, (void *)&privacy_policy);
 
-            message = libreport_xasprintf(_("The configuration option above has been moved to GSettings and "
-                                  "the switch is linked to the value of the setting 'report-technical-problems' "
-                                  "from the schema 'org.gnome.desktop.privacy'."));
+            message = g_strdup_printf(_("The configuration option above has been moved to GSettings and "
+                                        "the switch is linked to the value of the setting 'report-technical-problems' "
+                                        "from the schema 'org.gnome.desktop.privacy'."));
 
             /* Do not add Privacy Policy link if /etc/os-release does not contain PRIVACY_POLICY */
             if (privacy_policy != NULL)
-                markup = libreport_xasprintf("<i>%s</i>\n\n<a href=\"%s\">Privacy Policy</a>", message, privacy_policy);
+                markup = g_strdup_printf("<i>%s</i>\n\n<a href=\"%s\">Privacy Policy</a>", message, privacy_policy);
             else
-                markup = libreport_xasprintf("<i>%s</i>", message);
+                markup = g_strdup_printf("<i>%s</i>", message);
 
             free(privacy_policy);
             free(os_release);
@@ -493,8 +493,8 @@ abrt_config_widget_init(AbrtConfigWidget *self)
             /* Make the switch read-only */
             self->priv->options[ABRT_OPT_SEND_UREPORT].config = NULL;
 
-            message = libreport_xasprintf(_("The configuration option above can be configured in"));
-            markup = libreport_xasprintf("<i>%s</i>", message);
+            message = g_strdup_printf(_("The configuration option above can be configured in"));
+            markup = g_strdup_printf("<i>%s</i>", message);
 
             GtkWidget *launcher = gtk_button_new_with_label(g_app_info_get_display_name(G_APP_INFO(app)));
 

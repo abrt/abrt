@@ -103,9 +103,9 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
 
         char *docker_inspect_cmdline = NULL;
         if (root_dir != NULL)
-            docker_inspect_cmdline = libreport_xasprintf("chroot %s /bin/sh -c \"docker inspect %s\"", root_dir, container_id);
+            docker_inspect_cmdline = g_strdup_printf("chroot %s /bin/sh -c \"docker inspect %s\"", root_dir, container_id);
         else
-            docker_inspect_cmdline = libreport_xasprintf("docker inspect %s", container_id);
+            docker_inspect_cmdline = g_strdup_printf("docker inspect %s", container_id);
 
         log_debug("Executing: '%s'", docker_inspect_cmdline);
         output = libreport_run_in_shell_and_save_output(0, docker_inspect_cmdline, "/", NULL);
