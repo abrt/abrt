@@ -400,7 +400,7 @@ int main(int argc, char **argv)
     char *dump_dir_name = NULL;
     while (*argv)
     {
-        dump_dir_name = libreport_xstrdup(*argv++);
+        dump_dir_name = g_strdup(*argv++);
         int i = strlen(dump_dir_name);
         while (--i >= 0)
             if (dump_dir_name[i] != '/')

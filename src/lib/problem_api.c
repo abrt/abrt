@@ -96,7 +96,7 @@ static int add_dirname_to_GList(struct dump_dir *dd, void *arg)
     }
 
     GList **list = arg;
-    *list = g_list_prepend(*list, libreport_xstrdup(dd->dd_dirname));
+    *list = g_list_prepend(*list, g_strdup(dd->dd_dirname));
     return 0;
 }
 
@@ -123,7 +123,7 @@ static int add_dirname_to_GList_if_not_accessible(struct dump_dir *dd, void *arg
     struct add_dirname_to_GList_if_not_accessible_args *param = (struct add_dirname_to_GList_if_not_accessible_args *)args;
     /* Append if not accessible */
     if (!dump_dir_accessible_by_uid(dd->dd_dirname, param->uid))
-        param->list = g_list_prepend(param->list, libreport_xstrdup(dd->dd_dirname));
+        param->list = g_list_prepend(param->list, g_strdup(dd->dd_dirname));
 
     return 0;
 }
@@ -146,7 +146,7 @@ GList *get_problem_storages(void)
 {
     GList *paths = NULL;
     abrt_load_abrt_conf();
-    paths = g_list_append(paths, libreport_xstrdup(abrt_g_settings_dump_location));
+    paths = g_list_append(paths, g_strdup(abrt_g_settings_dump_location));
     abrt_free_abrt_conf_data();
 
     return paths;

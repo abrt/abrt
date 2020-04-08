@@ -148,7 +148,7 @@ static void load_gpg_keys(void)
 
             g_hash_table_insert(done_set, (gpointer)key_path, NULL);
             log_debug("Loading gpg key '%s'", key_path);
-            settings_setOpenGPGPublicKeys = g_list_append(settings_setOpenGPGPublicKeys, libreport_xstrdup(key_path));
+            settings_setOpenGPGPublicKeys = g_list_append(settings_setOpenGPGPublicKeys, g_strdup(key_path));
         }
 
         g_list_free_full(gpg_files, (GDestroyNotify)libreport_free_file_obj);

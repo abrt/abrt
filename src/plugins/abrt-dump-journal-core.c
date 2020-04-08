@@ -166,7 +166,7 @@ abrt_journal_update_occurrence(const char *executable, unsigned ts)
 
     s_queue.oq_occurrences[s_queue.oq_head].oqlc_stamp = ts;
     free(s_queue.oq_occurrences[s_queue.oq_head].oqlc_executable);
-    s_queue.oq_occurrences[s_queue.oq_head].oqlc_executable = libreport_xstrdup(executable);
+    s_queue.oq_occurrences[s_queue.oq_head].oqlc_executable = g_strdup(executable);
 
     if (++s_queue.oq_head >= s_queue.oq_size)
         s_queue.oq_head = 0;
@@ -359,7 +359,7 @@ abrt_journal_core_to_abrt_problem(struct crash_info *info, const char *dump_loca
 
     if (dd != NULL)
     {
-        char *path = libreport_xstrdup(dd->dd_dirname);
+        char *path = g_strdup(dd->dd_dirname);
         dd_close(dd);
         abrt_notify_new_path(path);
         log_debug("ABRT daemon has been notified about directory: '%s'", path);

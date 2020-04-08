@@ -269,7 +269,7 @@ static gboolean abrt_server_output_cb(GIOChannel *channel, GIOCondition conditio
                 s_dir_queue = g_list_remove(s_dir_queue, proc);
             }
 
-            proc->dirname = libreport_xstrdup(line + strlen("NEW_PROBLEM_DETECTED: "));
+            proc->dirname = g_strdup(line + strlen("NEW_PROBLEM_DETECTED: "));
             log_notice("abrt-server(%d): handling new problem: %s", proc->pid, proc->dirname);
             queue_post_create_process(proc);
         }

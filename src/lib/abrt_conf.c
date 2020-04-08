@@ -96,7 +96,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
         libreport_remove_map_string_item(settings, "DumpLocation");
     }
     else
-        abrt_g_settings_dump_location = libreport_xstrdup(DEFAULT_DUMP_LOCATION);
+        abrt_g_settings_dump_location = g_strdup(DEFAULT_DUMP_LOCATION);
 
     value = libreport_get_map_string_item_or_NULL(settings, "DeleteUploaded");
     if (value)
@@ -115,11 +115,11 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     value = libreport_get_map_string_item_or_NULL(settings, "AutoreportingEvent");
     if (value)
     {
-        abrt_g_settings_autoreporting_event = libreport_xstrdup(value);
+        abrt_g_settings_autoreporting_event = g_strdup(value);
         libreport_remove_map_string_item(settings, "AutoreportingEvent");
     }
     else
-        abrt_g_settings_autoreporting_event = libreport_xstrdup("report_uReport");
+        abrt_g_settings_autoreporting_event = g_strdup("report_uReport");
 
     value = libreport_get_map_string_item_or_NULL(settings, "ShortenedReporting");
     if (value)

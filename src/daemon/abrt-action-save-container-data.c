@@ -168,7 +168,7 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
         goto dump_docker_info_cleanup;
     }
 
-    char *name = libreport_strtrimch(libreport_xstrdup(json_object_to_json_string(image)), '"');
+    char *name = libreport_strtrimch(g_strdup(json_object_to_json_string(image)), '"');
     dd_save_text(dd, FILENAME_CONTAINER_IMAGE, name);
     free(name);
 

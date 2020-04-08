@@ -122,7 +122,7 @@ abrt_app_configuration_new(const char *app_name)
 {
     AbrtAppConfiguration *conf = libreport_xmalloc(sizeof(*conf));
 
-    conf->app_name = libreport_xstrdup(app_name);
+    conf->app_name = g_strdup(app_name);
     conf->settings = libreport_new_map_string();
     conf->glib_settings = NULL;
 
@@ -140,7 +140,7 @@ abrt_app_configuration_new_glib(const char *schema)
 {
     AbrtAppConfiguration *conf = libreport_xmalloc(sizeof(*conf));
 
-    conf->app_name = libreport_xstrdup(schema);
+    conf->app_name = g_strdup(schema);
     conf->settings = NULL;
     conf->glib_settings = g_settings_new(conf->app_name);
 

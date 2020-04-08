@@ -28,7 +28,7 @@ GList *string_list_from_variant(GVariant *variant)
     while (g_variant_iter_loop(iter, "s", &str))
     {
         log_debug("adding: %s", str);
-        list = g_list_prepend(list, libreport_xstrdup(str));
+        list = g_list_prepend(list, g_strdup(str));
     }
     g_variant_unref(variant);
 

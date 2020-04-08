@@ -106,9 +106,9 @@ int xorg_crash_info_save_in_dump_dir(struct xorg_crash_info *crash_info, struct 
     if (!crash_info->exe)
     {
         if (access("/usr/bin/Xorg", X_OK) == 0)
-            crash_info->exe = libreport_xstrdup("/usr/bin/Xorg");
+            crash_info->exe = g_strdup("/usr/bin/Xorg");
         else
-            crash_info->exe = libreport_xstrdup("/usr/bin/X");
+            crash_info->exe = g_strdup("/usr/bin/X");
     }
     dd_save_text(dd, FILENAME_EXECUTABLE, crash_info->exe);
 
@@ -132,7 +132,7 @@ void xorg_crash_info_create_dump_dir(struct xorg_crash_info *crash_info, const c
     if (world_readable)
         dd_set_no_owner(dd);
 
-    char *path = libreport_xstrdup(dd->dd_dirname);
+    char *path = g_strdup(dd->dd_dirname);
     dd_close(dd);
     abrt_notify_new_path(path);
     free(path);
@@ -231,7 +231,7 @@ struct xorg_crash_info *process_xorg_bt(char *(*get_next_line)(void *), void *da
             *filename_end = '\0';
             /* Does it look like "[/usr]/[s]bin/Xfoo" or [/usr]/libexec/Xfoo"? */
             if (strstr(filename, "bin/X") || strstr(filename, "libexec/X"))
-                exe = libreport_xstrdup(filename);
+                exe = g_strdup(filename);
             *filename_end = sv;
         }
 
@@ -250,7 +250,7 @@ struct xorg_crash_info *process_xorg_bt(char *(*get_next_line)(void *), void *da
 
         list = g_list_reverse(list);
         crash_info->backtrace = list2lines(list); /* frees list */
-        crash_info->reason = (reason ? reason : libreport_xstrdup(DEFAULT_XORG_CRASH_REASON));
+        crash_info->reason = (reason ? reason : g_strdup(DEFAULT_XORG_CRASH_REASON));
         crash_info->exe = exe;
 
         return crash_info;

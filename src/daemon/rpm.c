@@ -41,7 +41,7 @@ char* get_package_name_from_NVR_or_NULL(const char* packageNVR)
     if (packageNVR != NULL)
     {
         log_notice("packageNVR %s", packageNVR);
-        package_name = libreport_xstrdup(packageNVR);
+        package_name = g_strdup(packageNVR);
         char *pos = strrchr(package_name, '-');
         if (pos != NULL)
         {
@@ -157,7 +157,7 @@ char *rpm_get_fingerprint(const char *pkg)
 
     char *pgpsig_tmp = strstr(pgpsig, " Key ID ");
     if (pgpsig_tmp)
-        fingerprint = libreport_xstrdup(pgpsig_tmp + sizeof(" Key ID ") - 1);
+        fingerprint = g_strdup(pgpsig_tmp + sizeof(" Key ID ") - 1);
 
 error:
     free(pgpsig);
@@ -335,7 +335,7 @@ struct pkg_nevra *rpm_get_package_nvr(const char *filename, const char *rootdir_
     if (!strncmp(p->p_epoch, "(none)", strlen("(none)")))
     {
         free(p->p_epoch);
-        p->p_epoch = libreport_xstrdup("0");
+        p->p_epoch = g_strdup("0");
     }
 
     r = pkg_add_version(header, p);

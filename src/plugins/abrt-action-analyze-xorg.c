@@ -98,7 +98,7 @@ int main(int argc, char **argv)
     if (!value)
         value = XORG_DEFAULT_BLACKLISTED_MODULES;
 
-    char *BlacklistedXorgModules = libreport_xstrdup(value);
+    char *BlacklistedXorgModules = g_strdup(value);
     libreport_free_map_string(settings);
 
     trim_spaces(BlacklistedXorgModules);

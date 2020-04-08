@@ -351,7 +351,7 @@ new_dir_exists (GList **new_dirs)
             {
                 if (new_dirs != NULL)
                 {
-                    *new_dirs = g_list_prepend (*new_dirs, libreport_xstrdup (l1->data));
+                    *new_dirs = g_list_prepend (*new_dirs, g_strdup (l1->data));
 
                     log_notice ("New dir detected: %s", (char *) l1->data);
                 }
@@ -374,7 +374,7 @@ new_dir_exists (GList **new_dirs)
         {
             while (l1 != NULL)
             {
-                *new_dirs = g_list_prepend (*new_dirs, libreport_xstrdup (l1->data));
+                *new_dirs = g_list_prepend (*new_dirs, g_strdup (l1->data));
 
                 log_notice ("New dir detected: %s", (char *) l1->data);
 

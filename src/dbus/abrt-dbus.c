@@ -324,7 +324,7 @@ static int add_dirname_to_GList_if_matches(struct dump_dir *dd, void *arg)
     if (val < me->timestamp_from || val > me->timestamp_to)
         return 0;
 
-    me->list = g_list_prepend(me->list, libreport_xstrdup(dd->dd_dirname));
+    me->list = g_list_prepend(me->list, g_strdup(dd->dd_dirname));
     return 0;
 }
 
@@ -544,7 +544,7 @@ static void handle_method_call(GDBusConnection *connection,
                 if (!builder)
                     builder = g_variant_builder_new(G_VARIANT_TYPE_ARRAY);
 
-                /* g_variant_builder_add makes a copy. No need to libreport_xstrdup here */
+                /* g_variant_builder_add makes a copy. No need to g_strdup here */
                 g_variant_builder_add(builder, "{ss}", element_name, value);
                 free(value);
             }
@@ -828,7 +828,7 @@ static void handle_abrtd_problem_signals(GDBusConnection *connection,
 
     if (obj == NULL)
     {
-        AbrtP2Entry *entry = abrt_p2_entry_new_with_state(libreport_xstrdup(dir), ABRT_P2_ENTRY_STATE_COMPLETE);
+        AbrtP2Entry *entry = abrt_p2_entry_new_with_state(g_strdup(dir), ABRT_P2_ENTRY_STATE_COMPLETE);
         if (entry == NULL)
         {
             log_warning("Cannot notify '%s': failed to access data", dir);

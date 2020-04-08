@@ -213,7 +213,7 @@ static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *ev
 
     char *env_vec[3];
     /* Intercept ASK_* messages in Client API -> don't wait for user response */
-    env_vec[0] = libreport_xstrdup("REPORT_CLIENT_NONINTERACTIVE=1");
+    env_vec[0] = g_strdup("REPORT_CLIENT_NONINTERACTIVE=1");
     env_vec[1] = g_strdup_printf("%s=%d", ABRT_SERVER_EVENT_ENV, getpid());
     env_vec[2] = NULL;
 
@@ -411,7 +411,7 @@ static int run_post_create(const char *dirname, struct response *resp)
              && libreport_prefixcmp(msg, "DUP_OF_DIR: ") == 0
             ) {
                 free(dup_of_dir);
-                dup_of_dir = libreport_xstrdup(msg + strlen("DUP_OF_DIR: "));
+                dup_of_dir = g_strdup(msg + strlen("DUP_OF_DIR: "));
             }
             else
                 log_warning("%s", msg);
@@ -810,7 +810,7 @@ static void process_message(GHashTable *problem_info, char *message)
             }
             else
             {
-                g_hash_table_insert(problem_info, key, libreport_xstrdup(value));
+                g_hash_table_insert(problem_info, key, g_strdup(value));
                 /* Prevent freeing key later: */
                 key = NULL;
             }

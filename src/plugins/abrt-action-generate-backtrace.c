@@ -68,9 +68,9 @@ int main(int argc, char **argv)
     const char *value = libreport_get_map_string_item_or_NULL(settings, "DebuginfoLocation");
     char *debuginfo_location;
     if (value)
-        debuginfo_location = libreport_xstrdup(value);
+        debuginfo_location = g_strdup(value);
     else
-        debuginfo_location = libreport_xstrdup(LOCALSTATEDIR"/cache/abrt-di");
+        debuginfo_location = g_strdup(LOCALSTATEDIR"/cache/abrt-di");
 
     libreport_free_map_string(settings);
     char *debuginfo_dirs = NULL;
@@ -86,7 +86,7 @@ int main(int argc, char **argv)
     free(debuginfo_location);
     if (!backtrace)
     {
-        backtrace = libreport_xstrdup("");
+        backtrace = g_strdup("");
         log_warning("abrt_get_backtrace() returns NULL, broken core/gdb?");
     }
     free(debuginfo_dirs);
