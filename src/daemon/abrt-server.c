@@ -890,7 +890,7 @@ static int perform_http_xact(struct response *rsp)
     /* Loop until EOF/error/timeout/end_of_header */
     while (1)
     {
-        messagebuf_data = libreport_xrealloc(messagebuf_data, messagebuf_len + INPUT_BUFFER_SIZE);
+        messagebuf_data = g_realloc(messagebuf_data, messagebuf_len + INPUT_BUFFER_SIZE);
         char *p = messagebuf_data + messagebuf_len;
         int rd = read(STDIN_FILENO, p, INPUT_BUFFER_SIZE);
         if (rd < 0)
@@ -1006,7 +1006,7 @@ static int perform_http_xact(struct response *rsp)
             }
         }
 
-        messagebuf_data = libreport_xrealloc(messagebuf_data, messagebuf_len + INPUT_BUFFER_SIZE + 1);
+        messagebuf_data = g_realloc(messagebuf_data, messagebuf_len + INPUT_BUFFER_SIZE + 1);
         int rd = read(STDIN_FILENO, messagebuf_data + messagebuf_len, INPUT_BUFFER_SIZE);
         if (rd < 0)
         {

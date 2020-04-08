@@ -42,7 +42,7 @@ static GList* abrt_journal_extract_kernel_oops(abrt_journal_t *journal)
         if (lines_info_count == lines_info_size)
         {
             lines_info_size *= 2;
-            lines_info = libreport_xrealloc(lines_info, lines_info_size * sizeof(lines_info[0]));
+            lines_info = g_realloc(lines_info, lines_info_size * sizeof(lines_info[0]));
         }
 
         char *orig_line = line;
