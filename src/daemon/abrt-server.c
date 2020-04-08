@@ -214,7 +214,7 @@ static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *ev
     char *env_vec[3];
     /* Intercept ASK_* messages in Client API -> don't wait for user response */
     env_vec[0] = libreport_xstrdup("REPORT_CLIENT_NONINTERACTIVE=1");
-    env_vec[1] = libreport_xasprintf("%s=%d", ABRT_SERVER_EVENT_ENV, getpid());
+    env_vec[1] = g_strdup_printf("%s=%d", ABRT_SERVER_EVENT_ENV, getpid());
     env_vec[2] = NULL;
 
     pid_t child = libreport_fork_execv_on_steroids(flags, args, pipeout,
@@ -505,7 +505,7 @@ static int run_post_create(const char *dirname, struct response *resp)
             {   /* the new dump directory may lie in the dump location for some time */
                 log_warning("Using current time for the last occurrence file which may be incorrect.");
                 time_t t = time(NULL);
-                last_ocr = libreport_xasprintf("%lu", (long)t);
+                last_ocr = g_strdup_printf("%lu", (long)t);
             }
 
             dd_save_text(dd, FILENAME_LAST_OCCURRENCE, last_ocr);
@@ -585,11 +585,11 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     if (!dir_basename)
         dir_basename = g_hash_table_lookup(problem_info, FILENAME_TYPE);
 
-    char *path = libreport_xasprintf("%s/%s-%s-%u.new",
-                           abrt_g_settings_dump_location,
-                           dir_basename,
-                           libreport_iso_date_string(NULL),
-                           pid);
+    char *path = g_strdup_printf("%s/%s-%s-%u.new",
+                                 abrt_g_settings_dump_location,
+                                 dir_basename,
+                                 libreport_iso_date_string(NULL),
+                                 pid);
 
     /* This item is useless, don't save it */
     g_hash_table_remove(problem_info, "basename");
@@ -1117,7 +1117,7 @@ int main(int argc, char **argv)
 
     libreport_export_abrt_envvars(opts & OPT_p);
 
-    libreport_msg_prefix = libreport_xasprintf("%s[%u]", libreport_g_progname, getpid());
+    libreport_msg_prefix = g_strdup_printf("%s[%u]", libreport_g_progname, getpid());
     if (opts & OPT_s)
     {
         libreport_logmode = LOGMODE_JOURNAL;

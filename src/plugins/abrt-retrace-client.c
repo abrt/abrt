@@ -170,7 +170,7 @@ static int create_archive(bool unlink_temp)
     const char *tar_args[10];
     tar_args[0] = "tar";
     tar_args[1] = "cO";
-    tar_args[2] = libreport_xasprintf("--directory=%s", dump_dir_name);
+    tar_args[2] = g_strdup_printf("--directory=%s", dump_dir_name);
 
     const char **required_files = task_type == TASK_VMCORE ? required_vmcore : required_retrace;
     int index = 3;
@@ -448,7 +448,7 @@ static char *get_release_id(map_string_t *osinfo, const char *architecture)
     else if (strcmp("Red Hat Enterprise Linux", release) == 0)
         strcpy(release, "rhel");
 
-    result = libreport_xasprintf("%s-%s-%s", release, version, arch);
+    result = g_strdup_printf("%s-%s-%s", release, version, arch);
 
     free(release);
     free(version);
@@ -507,9 +507,9 @@ static int check_package(SoupSession   *session,
             if (!os)
                 os = libreport_get_map_string_item_or_empty(osinfo, OSINFO_NAME);
 
-            *msg = libreport_xasprintf(_("Retrace server is unable to process package "
-                               "'%s.%s'.\nIs it a part of official '%s' repositories?"),
-                               nvr, arch, os);
+            *msg = g_strdup_printf(_("Retrace server is unable to process package "
+                                     "'%s.%s'.\nIs it a part of official '%s' repositories?"),
+                                   nvr, arch, os);
         }
         else
             *msg = NULL;
@@ -686,8 +686,8 @@ static int create(SoupSession  *session,
 
             if (!supported)
             {
-                char *msg = libreport_xasprintf(_("The release '%s' is not supported by the"
-                                        " Retrace server."), releaseid);
+                char *msg = g_strdup_printf(_("The release '%s' is not supported by the"
+                                              " Retrace server."), releaseid);
                 libreport_alert(msg);
                 free(msg);
                 error_msg_and_die(_("The server is not able to"
@@ -749,8 +749,8 @@ static int create(SoupSession  *session,
 
     if (size_mb > 8) /* 8 MB - should be configurable */
     {
-        char *question = libreport_xasprintf(_("You are going to upload %s. "
-                                     "Continue?"), human_size);
+        char *question = g_strdup_printf(_("You are going to upload %s. "
+                                           "Continue?"), human_size);
 
         int response = libreport_ask_yes_no(question);
         free(question);

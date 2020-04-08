@@ -291,7 +291,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
         strchrnul(kernel, ' ')[0] = '\0';
 
         log_info("Looking for kernel package");
-        executable = libreport_xasprintf("/boot/vmlinuz-%s", kernel);
+        executable = g_strdup_printf("/boot/vmlinuz-%s", kernel);
     }
     else
     {
@@ -384,7 +384,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
     }
 
 skip_interpreter:
-    package_short_name = libreport_xasprintf("%s", pkg_name->p_name);
+    package_short_name = g_strdup_printf("%s", pkg_name->p_name);
     log_info("Package:'%s' short:'%s'", pkg_name->p_nvr, package_short_name);
 
     /* The check for kernel_oops is there because it could be an unexpected

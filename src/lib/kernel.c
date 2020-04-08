@@ -62,7 +62,7 @@ static void record_oops(GList **oops_list, const struct abrt_koops_line_info* li
         {
             *oops_list = g_list_append(
                         *oops_list,
-                        libreport_xasprintf("%s\n%s", (version ? version : ""), oops)
+                        g_strdup_printf("%s\n%s", (version ? version : ""), oops)
             );
         }
         else

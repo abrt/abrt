@@ -303,9 +303,9 @@ save_systemd_coredump_in_dump_directory(struct dump_dir *dd, struct crash_info *
 
     char *reason;
     if (info->ci_signal_name == NULL)
-        reason = libreport_xasprintf("%s killed by signal %d", info->ci_executable_name, info->ci_signal_no);
+        reason = g_strdup_printf("%s killed by signal %d", info->ci_executable_name, info->ci_signal_no);
     else
-        reason = libreport_xasprintf("%s killed by SIG%s", info->ci_executable_name, info->ci_signal_name);
+        reason = g_strdup_printf("%s killed by SIG%s", info->ci_executable_name, info->ci_signal_name);
 
     dd_save_text(dd, FILENAME_REASON, reason);
     free(reason);

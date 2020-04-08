@@ -226,7 +226,7 @@ void ignored_problems_remove_row(ignored_problems_t *set, const char *problem_id
      */
     rewind(orig_fp);
 
-    char *new_tempfile_name = libreport_xasprintf("%s.XXXXXX", set->ign_set_file_path);
+    char *new_tempfile_name = g_strdup_printf("%s.XXXXXX", set->ign_set_file_path);
     int new_tempfile_fd = mkstemp(new_tempfile_name);
     if (new_tempfile_fd < 0)
     {

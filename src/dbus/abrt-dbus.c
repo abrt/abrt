@@ -132,7 +132,7 @@ bool allowed_problem_element(GDBusMethodInvocation *invocation, const char *elem
         return true;
 
     log_notice("'%s' is not a valid element name", element);
-    char *error = libreport_xasprintf(_("'%s' is not a valid element name"), element);
+    char *error = g_strdup_printf(_("'%s' is not a valid element name"), element);
     g_dbus_method_invocation_return_dbus_error(invocation,
             "org.freedesktop.problems.InvalidElement",
             error);
@@ -153,7 +153,7 @@ static char *handle_new_problem(GVariant *problem_info, uid_t caller_uid, char *
     {
         if (abrt_new_user_problem_entry_allowed(caller_uid, key, value) == false)
         {
-            *error = libreport_xasprintf("You are not allowed to create element '%s' containing '%s'", key, value);
+            *error = g_strdup_printf("You are not allowed to create element '%s' containing '%s'", key, value);
             goto finito;
         }
 
@@ -175,7 +175,7 @@ static char *handle_new_problem(GVariant *problem_info, uid_t caller_uid, char *
     if (problem_id)
         abrt_notify_new_path(problem_id);
     else if (error)
-        *error = libreport_xasprintf("Cannot create a new problem");
+        *error = g_strdup_printf("Cannot create a new problem");
 
 finito:
     problem_data_free(pd);
@@ -184,7 +184,7 @@ finito:
 
 static void return_InvalidProblemDir_error(GDBusMethodInvocation *invocation, const char *dir_name)
 {
-    char *msg = libreport_xasprintf(_("'%s' is not a valid problem directory"), dir_name);
+    char *msg = g_strdup_printf(_("'%s' is not a valid problem directory"), dir_name);
     g_dbus_method_invocation_return_dbus_error(invocation,
                                       "org.freedesktop.problems.InvalidProblemDir",
                                       msg);
@@ -282,7 +282,7 @@ static struct dump_dir *open_directory_for_modification_of_element(
         if (strcmp(*protected, element) == 0)
         {
             log_notice("'%s' element of '%s' can't be modified", element, problem_id);
-            char *error = libreport_xasprintf(_("'%s' element can't be modified"), element);
+            char *error = g_strdup_printf(_("'%s' element can't be modified"), element);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                         "org.freedesktop.problems.ProtectedElement",
                                         error);
@@ -632,7 +632,7 @@ static void handle_method_call(GDBusConnection *connection,
         if (item_size < 0)
         {
             log_notice("Can't get size of '%s/%s'", problem_id, element);
-            char *error = libreport_xasprintf(_("Can't get size of '%s'"), element);
+            char *error = g_strdup_printf(_("Can't get size of '%s'"), element);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                                       "org.freedesktop.problems.Failure",
                                                       error);
@@ -682,7 +682,7 @@ static void handle_method_call(GDBusConnection *connection,
         if (res != 0)
         {
             log_notice("Can't delete the element '%s' from the problem directory '%s'", element, problem_id);
-            char *error = libreport_xasprintf(_("Can't delete the element '%s' from the problem directory '%s'"), element, problem_id);
+            char *error = g_strdup_printf(_("Can't delete the element '%s' from the problem directory '%s'"), element, problem_id);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                           "org.freedesktop.problems.Failure",
                                           error);
