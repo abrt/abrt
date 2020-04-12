@@ -30,6 +30,7 @@ jobs:
             --output-document=/tmp/coverity_tool.tar.gz \
             https://scan.coverity.com/download/linux64
           tar --extract --file=/tmp/coverity_tool.tar.gz --directory=/tmp/coverity --strip-components=1
+          find /tmp/coverity
 
       - name: Build
         run: cov-build --dir cov-int make
