@@ -32,7 +32,9 @@ jobs:
           tar --extract --file=/tmp/coverity_tool.tar.gz --directory=/tmp/coverity --strip-components=1
 
       - name: Build
-        run: cov-build --dir cov-int make
+        run: \
+          find /tmp
+          cov-build --dir cov-int make
         env:
           PATH: /tmp/coverity/bin:$PATH
 
