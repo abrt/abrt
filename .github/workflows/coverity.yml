@@ -41,7 +41,7 @@ jobs:
         run: cov-build --dir cov-int make
 
       - name: Compress build artifacts
-        run: tar --create --auto-compress --file abrt.tar.xz
+        run: tar --create --auto-compress --file abrt.tar.xz cov-int
 
       - name: Upload build artifacts
         env:
