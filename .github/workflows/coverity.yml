@@ -48,6 +48,7 @@ jobs:
           COVERITY_SCAN_TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
         run: |
           curl \
+            --form email=abrt-devel-list@redhat.com \
             --form token="$COVERITY_SCAN_TOKEN" \
             --form file=@abrt.tar.xz \
             --form version="$GITHUB_SHA" \
