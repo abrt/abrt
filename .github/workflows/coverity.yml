@@ -34,7 +34,7 @@ jobs:
       - name: Build
         run: cov-build --dir cov-int make
         env:
-          PATH: /tmp/bin:$PATH
+          PATH: /tmp/coverity/bin:$PATH
 
       - name: Compress build artifacts
         run: tar --create --auto-compress --file abrt.tar.xz
