@@ -32,9 +32,9 @@ jobs:
           tar --extract --file=/tmp/coverity_tool.tar.gz --directory=/tmp/coverity --strip-components=1
 
       - name: Build
-        run: cov-build --dir cov-int make
-        env:
-          PATH: /tmp/coverity/bin:$PATH
+        run: |
+          echo '::add-path::/tmp/coverity/bin'
+          cov-build --dir cov-int make
 
       - name: Compress build artifacts
         run: tar --create --auto-compress --file abrt.tar.xz
