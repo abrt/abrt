@@ -25,6 +25,7 @@ jobs:
         run: |
           mkdir -p /tmp/coverity
           wget \
+            --no-verbose \
             --post-data "token=${COVERITY_SCAN_TOKEN}&project=abrt%2Fabrt" \
             --output-document=/tmp/coverity_tool.tar.gz \
             https://scan.coverity.com/download/linux64
