@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-04-01 11:38+0000\n"
+"PO-Revision-Date: 2020-04-11 16:40+0000\n"
 "Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
 "Language-Team: Turkish <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/tr/>\n"
@@ -964,11 +964,11 @@ msgstr "{0}: {1} açılmıyor"
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr ""
 "Bellek dökümü {0} debuginfo dosyasına referans gösteriyor, bunların {1} "
-"tanesi yüklü değil"
+"tanesi kurulu değil"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:104
 msgid "{0} of debuginfo files are not installed"
-msgstr "debuginfo dosyalarının {0} tanesi yüklü değil"
+msgstr "debuginfo dosyalarının {0} tanesi kurulu değil"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:114
 #, c-format
@@ -1029,7 +1029,7 @@ msgstr ""
 "\n"
 "Geçici hazırlama alanı olarak GEÇİCİ_DİZİN kullanarak "
 "OLUŞTURMA_KİMLİK_DOSYASI\n"
-"içinde listelenen tüm oluşturma kimlikleri için debuginfo'ları yükler. "
+"içinde listelenen tüm oluşturma kimlikleri için debuginfo'ları kurar. "
 "ÖNBELLEK_DİZİNİ\n"
 "içindeki eski dosyalar BOYUT boyutundan daha küçük olana kadar silinir.\n"
 "\n"
@@ -1041,7 +1041,7 @@ msgstr ""
 "    --ids       Varsayılan: build_ids\n"
 "    --tmpdir    Varsayılan: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
 "RASTGELE_SON_EK\n"
-"    --cache     İki nokta üst üste ile ayrılmış dizin listesi. İlki yüklenen "
+"    --cache     İki nokta üst üste ile ayrılmış dizin listesi. İlki kurulan "
 "debuginfo'ları\n"
 "                kaydetmek için kullanılır.\n"
 "                Varsayılan: /var/cache/abrt-di\n"
@@ -1070,7 +1070,7 @@ msgstr ""
 "\t[-r DEPO]\n"
 "\n"
 "OLUŞTURMA_KİMLİK_DOSYASI'nda listelenen tüm oluşturma kimlikleri\n"
-"için debuginfo paketlerini ABRT sistem önbelleğine yükler."
+"için debuginfo paketlerini ABRT sistem önbelleğine kurar."
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
 msgid "Noninteractive, assume 'Yes' to all questions"
@@ -1376,7 +1376,7 @@ msgstr "Sorun dizini oluşturma sayısını saniyede 1 taneyle sınırla"
 
 #: ../src/plugins/abrt-dump-oops.c:107 ../src/plugins/abrt-dump-xorg.c:57
 msgid "Print search string(s) to stdout and exit"
-msgstr "Arama dize(ler)ini standart çıktıya yazdır ve çık"
+msgstr "Arama dizgi(ler)ini standart çıktıya yazdır ve çık"
 
 #: ../src/plugins/abrt-dump-oops.c:127
 #: ../src/plugins/abrt-dump-journal-oops.c:128
@@ -2247,7 +2247,7 @@ msgstr "Geri izleme işlemi başlatılsın mı?"
 
 #: ../src/cli/abrtcli/cli/gdb.py:25
 msgid "install debuginfo packages before launching GDB"
-msgstr "GDB'yi başlatmadan önce debuginfo paketlerini yükleyin"
+msgstr "GDB'yi başlatmadan önce debuginfo paketlerini kurun"
 
 #: ../src/cli/abrtcli/cli/gdb.py:38
 msgid "The problem is not of a C/C++ type. Can't run GDB"
@@ -2264,7 +2264,7 @@ msgstr ""
 
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:36
 msgid "The problem is not of a C/C++ type. Can't install debuginfo"
-msgstr "Sorun C/C++ türünde değil. debuginfo yüklenemiyor"
+msgstr "Sorun C/C++ türünde değil. debuginfo kurulamıyor"
 
 #: ../src/cli/abrtcli/cli/list.py:34
 msgid "No problems"

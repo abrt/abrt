@@ -1,27 +1,28 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Daniyal Yousefi <da.yousefi@gmail.com>, 2011
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
 # Noori <nanopqr@gmail.com>, 2011
 # Pooria Teimoory <poorya.teimoory@gmail.com>, 2018. #zanata
+# Alireza Baloochi <alirezab806@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2018-05-18 05:53+0000\n"
-"Last-Translator: Pooria Teimoory <poorya.teimoory@gmail.com>\n"
-"Language-Team: Persian (http://www.transifex.com/projects/p/fedora-abrt/"
-"language/fa/)\n"
+"PO-Revision-Date: 2020-04-08 12:40+0000\n"
+"Last-Translator: Alireza Baloochi <alirezab806@gmail.com>\n"
+"Language-Team: Persian <https://translate.fedoraproject.org/projects/abrt/"
+"abrt/fa/>\n"
 "Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Zanata 4.6.2\n"
+"X-Generator: Weblate 3.11.3\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -29,15 +30,16 @@ msgstr "گزارش دادن مشکل"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr "مشاهده و گزارش کرش برنامه"
+msgstr "دیدن و گزارش کرش های برنامه"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
-msgstr ""
+msgstr "پر حرف باشید"
 
 #: ../src/applet/abrt-applet-application.c:167
 msgid "Applet which notifies user when new problems are detected by ABRT"
 msgstr ""
+"اپلیکیشن کوچکی که اگر ABRT مشکلات جدیدی را پیدا کرد به کاربر اطلاع می دهد"
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
@@ -57,6 +59,7 @@ msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
 "reported."
 msgstr ""
+"ما متاسفیم, به نظر می رسد %s کرش کرده است. مشکل به صورت خودکار گزارش داده شد."
 
 #: ../src/applet/abrt-applet-application.c:668
 #, c-format
@@ -64,6 +67,8 @@ msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
 "internet is available."
 msgstr ""
+"ما متاسفیم, به نظر می رسد %s کرش کرده است , این مشکل وقتی اینترنت قابل دسترس "
+"بود گزارش می شود."
 
 #: ../src/applet/abrt-applet-application.c:674
 #: ../src/applet/abrt-applet-application.c:688
@@ -73,6 +78,8 @@ msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
 msgstr ""
+"ما متاسفیم, به نظر می رسد %s کرش کرده است . برای گزارش مشکل با توسعه دهنده "
+"تماس بگیرید."
 
 #: ../src/applet/abrt-applet-application.c:682
 #, c-format
@@ -80,46 +87,54 @@ msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
 msgstr ""
+"ما متاسفیم, به نظر می رسد %s کرش کرده است. اگر می خواهید مشکل را رفع کنید, "
+"لطفا یک گزارش ارسال کنید."
 
 #: ../src/applet/abrt-applet-application.c:701
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
 msgstr ""
+"ما متاسفیم, به نظر می رسد که یک مشکلی در کامپوننت به وجود آمده. مشکل به صورت "
+"خودکار گزارش شد."
 
 #: ../src/applet/abrt-applet-application.c:705
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
 msgstr ""
+"ما متاسفیم, به نظر می رسد که یک مشکلی در کامپوننت به وجود آمده است. گزارش "
+"این مشکل هنگامی که دسترسی اینترنت برقرار شد ارسال می شود."
 
 #: ../src/applet/abrt-applet-application.c:710
 msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
 msgstr ""
+"ما متاسفیم, به نظر می رسد یک مشکلی به وجود آمده است. اگر می خواهید برای رفع "
+"مشکل کمک کنید, یک گزارش ارسال کنید."
 
 #. TODO: Terminate child's process?
 #: ../src/applet/abrt-applet-application.c:800 ../src/daemon/abrt-server.c:117
 #: ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr ""
+msgstr "از کانال gio نمی توان خواند:‌ '%s'"
 
 #: ../src/applet/abrt-applet-application.c:884
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr ""
+msgstr "انکودینگ را نمی توان در کانال gio گذاشت: %s"
 
 #: ../src/applet/abrt-applet-application.c:889
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr ""
+msgstr "برای کانال gio نمی توان حالت بدون بلاک را روشن کرد: %s"
 
 #: ../src/applet/abrt-applet-problem-info.c:259
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr " مالکیت را از '%s' نمی‌تواند بگیرد"
+msgstr "مالکیت را از '%s' نمی‌تواند بگیرد"
 
 #: ../src/applet/abrt-applet-problem-info.c:269
 #, c-format
@@ -132,6 +147,9 @@ msgid ""
 "linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
+"تنظیمات کانفیگ بالا به Gsettings انتقال داده شد و این دکمه به مقدار تنظیمات "
+"'report-technical-problems' از شماتیک 'org.gnome.desktop.privacy' وصل شده "
+"است."
 
 #: ../src/configuration-gui/abrt-config-widget.c:496
 msgid "The configuration option above can be configured in"
