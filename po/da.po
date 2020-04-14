@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-04-06 07:40+0000\n"
+"PO-Revision-Date: 2020-04-11 16:40+0000\n"
 "Last-Translator: scootergrisen <scootergrisen@gmail.com>\n"
 "Language-Team: Danish <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/da/>\n"
@@ -579,7 +579,7 @@ msgid ""
 msgstr ""
 "Anvendelse: %s [-vd] ABRT_SPOOL_MAPPE UPLOADMAPPE FILNAVN\n"
 "\n"
-"   -v             - Uddybet\n"
+"   -v             - Uddybende\n"
 "   -d             - Slet uploadede arkiv\n"
 "   ABRT_SPOOL_MAPPE - Mappe hvor gyldige uploadede arkiver skal udpakkes i\n"
 "   UPLOADMAPPE   - Mappe hvor uploadede arkiver skal lagres\n"
@@ -974,33 +974,7 @@ msgid "All debuginfo files are available"
 msgstr "Alle fejlsøgningsinfo-filer er tilgængelige"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:190
-#, fuzzy, c-format
-#| msgid ""
-#| "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-#| "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:"
-#| "DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
-#| "       [-e, --exact=PATH[:PATH]...]\n"
-#| "\n"
-#| "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
-#| "to CACHEDIR, using TMPDIR as temporary staging area.\n"
-#| "Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
-#| "\n"
-#| "Reads configuration from /etc/abrt/plugins/CCpp.conf\n"
-#| "\n"
-#| "    -v          Be verbose\n"
-#| "    -y          Noninteractive, assume 'Yes' to all questions\n"
-#| "    --ids       Default: build_ids\n"
-#| "    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
-#| "RANDOM_SUFFIX\n"
-#| "    --cache     Colon separated list of directories. The first one is "
-#| "used for\n"
-#| "                saving installed debuginfos.\n"
-#| "                Default: /var/cache/abrt-dir\n"
-#| "    --size_mb   Default: 4096\n"
-#| "    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
-#| "    -e,--exact  Download only specified files\n"
-#| "    --repo      Pattern to use when searching for repos.\n"
-#| "                Default: *debug*\n"
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -1032,9 +1006,11 @@ msgid ""
 "                Pass this OS version to package managers.\n"
 msgstr ""
 "Anvendelse: %s [-vy] [--ids=BYGGE_IDER_FIL] [--pkgmgr=(yum|dnf)]\n"
-"       [--tmpdir=MIDLERTIDIG_MAPPE] [--cache=CACHE_MAPPE[:"
-"FEJLSØGNINGSINFOMAPPE1:FEJLSØGNINGSINFOMAPPE2...]] [--size_mb=STØRRELSE]\n"
-"       [-e, --exact=STI[:STI]...]\n"
+"       [--tmpdir=MIDLERTIDIG_MAPPE] "
+"[--cache=CACHE_MAPPE[:FEJLSØGNINGSINFOMAPPE1:FEJLSØGNINGSINFOMAPPE2...]] "
+"[--size_mb=STØRRELSE]\n"
+"       [-e, --exact=STI[:STI...]]\n"
+"       [--releasever=UDGIVELSESVER] [--repo=MØNSTER]\n"
 "\n"
 "Installerer fejlsøgningsinfo'er for alle bygge-id'er som er listet i "
 "BYGGE_IDER_FIL\n"
@@ -1044,19 +1020,21 @@ msgstr ""
 "\n"
 "Læser konfiguration fra /etc/abrt/plugins/CCpp.conf\n"
 "\n"
-"    -v          Vær uddybet\n"
+"    -v          Vær uddybende\n"
 "    -y          Ikke-interaktiv, antager \"Ja\" til alle spørgsmål\n"
 "    --ids       Standard: build_ids\n"
 "    --tmpdir    Standard: @STOR_DATA_MIDLERTIDIG_MAPPE@/abrt-tmp-debuginfo-"
 "TILFÆLDIGT_SUFFIKS\n"
 "    --cache     Kolonsepareret liste af mapper. Den første bruges til at\n"
 "                gemme installerede fejlsøgningsinfo'er.\n"
-"                Standard: /var/cache/abrt-dir\n"
+"                Standard: /var/cache/abrt-di\n"
 "    --size_mb   Standard: 4096\n"
 "    --pkgmgr    Standard: PackageManager fra CCpp.conf eller \"dnf\"\n"
 "    -e,--exact  Download kun angive filer\n"
 "    --repo      Mønster som skal bruges når der søges efter arkiver.\n"
 "                Standard: *debug*\n"
+"    --releasever UDGIVELSESVER\n"
+"                Videregiv denne OS-version til pakkehåndteringer.\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:290
 msgid "Exiting on user command"
@@ -1099,7 +1077,7 @@ msgstr "Ignoreret tilvalg"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:73
 msgid "OS release version"
-msgstr ""
+msgstr "OS-udgivelsesversion"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
 msgid ""
@@ -1175,7 +1153,7 @@ msgstr "uReport er allerede sendt. Sender den ikke igen"
 
 #: ../src/plugins/abrt-action-ureport:174
 msgid "Problem comes from unpackaged executable. Unable to create uReport."
-msgstr ""
+msgstr "Problemet kommer fra upakket eksekverbar. Kan ikke oprette uReport."
 
 #: ../src/plugins/abrt-action-ureport:189
 msgid "Adding you to CC List of the existing bugzilla bug"
@@ -1280,9 +1258,6 @@ msgid "Jump to an invalid address"
 msgstr "Hop til en ugyldig adresse"
 
 #: ../src/plugins/abrt-gdb-exploitable:669
-#, fuzzy
-#| msgid ""
-#| "Access past the end of mapped file, invalid address, unaligned access, etc"
 msgid ""
 "Access past the end of mapped file, invalid address, unaligned access, etc."
 msgstr ""
@@ -1398,7 +1373,7 @@ msgstr "Flere ups'er fundet: behandl kun den første"
 #: ../src/plugins/abrt-dump-journal-core.c:378
 #, c-format
 msgid "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
-msgstr ""
+msgstr "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
 
 #: ../src/plugins/abrt-dump-journal-core.c:407
 #: ../src/plugins/abrt-dump-journal-core.c:446
@@ -1412,10 +1387,8 @@ msgid "Not saving repeating crash after %ds (limit is %ds)"
 msgstr "Gemmer ikke gentagende nedbrud efter %ds (grænse er %ds)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:478
-#, fuzzy
-#| msgid "Failed to save detect problem data in abrt database"
 msgid "Failed to print detect problem data to stdout"
-msgstr "Kunne ikke gemme registreringsproblemdata i abrt-database"
+msgstr "Kunne ikke udskrive registreringsproblemdata til stdout"
 
 #: ../src/plugins/abrt-dump-journal-core.c:486
 msgid "Failed to save detect problem data in abrt database"
@@ -1978,7 +1951,7 @@ msgstr "Ukendt handling: %s."
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:1
 msgid "Search for updated packages that fixes the crash."
-msgstr ""
+msgstr "Søg efter opdateringspakker som retter nedbruddet."
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:2
 msgid ""
@@ -1986,6 +1959,10 @@ msgid ""
 "Whiteboar equal to 'UUID' of the crash. If such a bug found, search for "
 "Bodhi updates shipping fixes for the found Bugzilla bugs."
 msgstr ""
+"Leder efter Bugzilla-rapporter med værdien 'abrt_hash' i Bugzilla Bug "
+"Whiteboar som er magen til 'UUID' i nedbruddet. Hvis der findes sådan en "
+"fejl, så søg efter Bodhi-opdateringer med rettelser til de fundne Bugzilla-"
+"fejl."
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
@@ -2187,7 +2164,7 @@ msgstr "Slet filer med fundne ups'er"
 
 #: ../src/cli/abrtcli/match.py:117
 msgid "No matching problems found"
-msgstr ""
+msgstr "Ingen matchende problemer fundet"
 
 #: ../src/cli/abrtcli/utils.py:79
 msgid "Not reportable"
@@ -2195,61 +2172,47 @@ msgstr "Kan ikke rapporteres"
 
 #: ../src/cli/abrtcli/cli/__init__.py:30
 msgid "increase output verbosity"
-msgstr ""
+msgstr "mere uddybende output"
 
 #: ../src/cli/abrtcli/cli/__init__.py:50
 msgid "positive non-zero integer expected"
-msgstr ""
+msgstr "forventede positivt ikke-nul heltal"
 
 #: ../src/cli/abrtcli/cli/__init__.py:54
-#, fuzzy
-#| msgid "List problems"
 msgid "filter last N problems"
-msgstr "List problemer"
+msgstr "filtrér sidste N problemer"
 
 #: ../src/cli/abrtcli/cli/__init__.py:57
 msgid "filter problems with matching component"
-msgstr ""
+msgstr "filtrér problemer med matchende komponent"
 
 #: ../src/cli/abrtcli/cli/__init__.py:59
-#, fuzzy
-#| msgid "List only not-reported problems"
 msgid "filter unreported problems"
-msgstr "List kun ikke-rapporterede problemer"
+msgstr "filtrér ikke-rapporterede problemer"
 
 #: ../src/cli/abrtcli/cli/__init__.py:61
-#, fuzzy
-#| msgid "List only the problems older than specified timestamp"
 msgid "filter problems older than the specified timestamp"
-msgstr "List kun problemerne som er nyere end angivne tidsstempel"
+msgstr "filtrér problemer som er ældre end det angivne tidsstempel"
 
 #: ../src/cli/abrtcli/cli/__init__.py:63
-#, fuzzy
-#| msgid "List only the problems older than specified timestamp"
 msgid "filter problems newer than the specified timestamp"
-msgstr "List kun problemerne som er nyere end angivne tidsstempel"
+msgstr "Filtrér problemer som er nyere end det angivne tidsstempel"
 
 #: ../src/cli/abrtcli/cli/__init__.py:66
 msgid "filter problems with matching executable"
-msgstr ""
+msgstr "Filtrér problemer med matchende eksekverbar"
 
 #: ../src/cli/abrtcli/cli/__init__.py:71
-#, fuzzy
-#| msgid "Output format"
 msgid "output format"
-msgstr "Outputformat"
+msgstr "outputformat"
 
 #: ../src/cli/abrtcli/cli/__init__.py:74
-#, fuzzy
-#| msgid "Built-in output format"
 msgid "built-in output format"
-msgstr "Indbygget outputformat"
+msgstr "indbygget outputformat"
 
 #: ../src/cli/abrtcli/cli/__init__.py:79
-#, fuzzy
-#| msgid "Make the problem directory world readable"
 msgid "path to the problem directory, problem ID or wildcard"
-msgstr "Gør programmappen verden-læsbar"
+msgstr "sti til problemmappen, problem-id'et eller jokertegn"
 
 #: ../src/cli/abrtcli/cli/backtrace.py:35
 msgid "Problem has no backtrace"
@@ -2260,18 +2223,12 @@ msgid "Start retracing process?"
 msgstr "Start sporingsproces?"
 
 #: ../src/cli/abrtcli/cli/gdb.py:25
-#, fuzzy
-#| msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgid "install debuginfo packages before launching GDB"
-msgstr ""
-"Download fejlsøgningsinfo-pakker og generér backtrace lokalt ved brug af GDB"
+msgstr "installer fejlsøgningsinfo-pakker inden GDB startes"
 
 #: ../src/cli/abrtcli/cli/gdb.py:38
-#, fuzzy
-#| msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
 msgid "The problem is not of a C/C++ type. Can't run GDB"
-msgstr ""
-"{} problem er ikke af en C/C++-type. Kan ikke installere fejlsøgningsinfo"
+msgstr "Problemet er ikke af en C/C++-type. Kan ikke køre GDB"
 
 #: ../src/cli/abrtcli/cli/gdb.py:52
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:45
@@ -2283,21 +2240,17 @@ msgstr ""
 "Hvis dette er et systemproblem, så prøv at køre denne kommando som root"
 
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:36
-#, fuzzy
-#| msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
 msgid "The problem is not of a C/C++ type. Can't install debuginfo"
 msgstr ""
-"{} problem er ikke af en C/C++-type. Kan ikke installere fejlsøgningsinfo"
+"Problemet er ikke af en C/C++-type. Kan ikke installere fejlsøgningsinfo"
 
 #: ../src/cli/abrtcli/cli/list.py:34
 msgid "No problems"
 msgstr "Ingen problemer"
 
 #: ../src/cli/abrtcli/cli/remove.py:22
-#, fuzzy
-#| msgid "Do not prompt before removal"
 msgid "do not prompt before removal"
-msgstr "Spørg ikke inden fjernelse"
+msgstr "spørg ikke inden fjernelse"
 
 #: ../src/cli/abrtcli/cli/remove.py:37
 msgid "Are you sure you want to delete this problem?"
@@ -2308,46 +2261,34 @@ msgid "Removed"
 msgstr "Fjernet"
 
 #: ../src/cli/abrtcli/cli/report.py:23
-#, fuzzy
-#| msgid "Remove PROBLEM_DIR after reporting"
 msgid "remove after reporting"
-msgstr "Fjern PROBLEMMAPPE efter rapportering"
+msgstr "fjern efter rapportering"
 
 #: ../src/cli/abrtcli/cli/report.py:25
-#, fuzzy
-#| msgid "Not reportable"
 msgid "ignore unreportable state"
-msgstr "Kan ikke rapporteres"
+msgstr "ignorer ikke-rapporteret tilstand"
 
 #: ../src/cli/abrtcli/cli/report.py:41
-#, fuzzy, python-brace-format
-#| msgid "Problem '%s' cannot be reported"
+#, python-brace-format
 msgid "Problem '{0}' cannot be reported"
-msgstr "Problemet \"%s\" kan ikke rapporteres"
+msgstr "Problemet '{0}' kan ikke rapporteres"
 
 #: ../src/cli/abrtcli/cli/report.py:50
-#, fuzzy, python-format
-#| msgid "Report problem"
+#, python-format
 msgid "Reporting problem %s\n"
-msgstr "Rapportér problem"
+msgstr "Rapporterer problemet %s\n"
 
 #: ../src/cli/abrtcli/cli/retrace.py:24
-#, fuzzy
-#| msgid "Perform local retracing"
 msgid "perform retracing locally"
-msgstr "Udfør lokal sporing"
+msgstr "udfør sporing lokalt"
 
 #: ../src/cli/abrtcli/cli/retrace.py:26
-#, fuzzy
-#| msgid "Send core dump to remote retrace server for analysis"
 msgid "submit core dump for remote retracing"
-msgstr "Send kernedump til fjern-retraceserver for analysering"
+msgstr "indsend kernedump for fjernsporing"
 
 #: ../src/cli/abrtcli/cli/retrace.py:29
-#, fuzzy
-#| msgid "Local retracing"
 msgid "force retracing"
-msgstr "Lokal sporing"
+msgstr "tving sporing"
 
 #: ../src/cli/abrtcli/cli/retrace.py:47
 msgid "Problem already has a backtrace"
@@ -2385,20 +2326,16 @@ msgid "Local retracing"
 msgstr "Lokal sporing"
 
 #: ../src/cli/abrtcli/cli/status.py:17
-#, fuzzy
-#| msgid "List only not-reported problems"
 msgid "show only the number of problems"
-msgstr "List kun ikke-rapporterede problemer"
+msgstr "vis kun antallet af problemer"
 
 #: ../src/cli/abrtcli/cli/status.py:19
 msgid "only show output if at least one problem is found"
-msgstr ""
+msgstr "vis kun output hvis mindst ét problem findes"
 
 #: ../src/cli/abrtcli/cli/status.py:40
-#, fuzzy
-#| msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
 msgid "ABRT has detected a problem. For more information, run “abrt list{}”"
-msgstr "ABRT har registreret {} problem(er). For mere info kør: abrt list{}"
+msgstr "ABRT har registreret et problem. For mere information kør “abrt list{}”"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
