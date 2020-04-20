@@ -1,9 +1,6 @@
 sbin_PROGRAMS = \
     abrt-dbus
 
-noinst_PROGRAMS = \
-    abrt-problems2
-
 noinst_LIBRARIES = \
     libabrt-problems2-service.a
 
@@ -56,26 +53,6 @@ libabrt_problems2_service_a_CPPFLAGS = \
     $(LIBREPORT_CFLAGS) \
     $(POLKIT_CFLAGS) \
     -D_GNU_SOURCE
-
-abrt_problems2_SOURCES = \
-    abrt_problems2.c
-
-abrt_problems2_CPPFLAGS = \
-    -I$(srcdir)/../include \
-    $(GIO_CFLAGS) \
-    $(GIO_UNIX_CFLAGS) \
-    $(DBUS_CFLAGS) \
-    $(LIBREPORT_CFLAGS) \
-    $(POLKIT_CFLAGS) \
-    -D_GNU_SOURCE
-abrt_problems2_LDADD = \
-    libabrt-problems2-service.a \
-    $(GIO_LIBS) \
-    $(GIO_UNIX_LIBS) \
-    ../lib/libabrt.la \
-    $(LIBREPORT_LIBS) \
-    $(POLKIT_LIBS) \
-    -labrt_dbus
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
