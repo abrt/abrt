@@ -16,6 +16,7 @@
 #define _ABRT_JOURNAL_H_
 
 #include <glib.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -51,14 +52,15 @@ int abrt_journal_get_field(abrt_journal_t *journal,
                            const char *field,
                            const void **value,
                            size_t *value_len);
-
-int abrt_journal_get_int_field(abrt_journal_t *journal,
-                               const char *field,
-                               long *value);
-
-int abrt_journal_get_unsigned_field(abrt_journal_t *journal,
-                                    const char *field,
-                                    unsigned *value);
+bool abrt_journal_get_int(abrt_journal_t *journal,
+                          const char *key,
+                          int *value);
+bool abrt_journal_get_pid(abrt_journal_t *journal,
+                          const char *key,
+                          pid_t *value);
+bool abrt_journal_get_uid(abrt_journal_t *journal,
+                          const char *key,
+                          uid_t *value);
 
 /* Returns allocated memory if value is NULL; otherwise makes copy of journald
  * field to memory pointed by value arg. */

@@ -190,7 +190,7 @@ abrt_journal_update_occurrence(const char *executable, unsigned ts)
 static int
 abrt_journal_core_retrieve_information(abrt_journal_t *journal, struct crash_info *info)
 {
-    if (abrt_journal_get_int_field(journal, "COREDUMP_SIGNAL", (long *)&(info->ci_signal_no)) != 0)
+    if (!abrt_journal_get_int(journal, "COREDUMP_SIGNAL", &info->ci_signal_no) != 0)
     {
         log_info("Failed to get signal number from journal message");
         return -EINVAL;
@@ -220,14 +220,14 @@ abrt_journal_core_retrieve_information(abrt_journal_t *journal, struct crash_inf
         return 1;
     }
 
-    if (abrt_journal_get_int_field(journal, "COREDUMP_UID", (long *)&(info->ci_uid)))
+    if (!abrt_journal_get_uid(journal, "COREDUMP_UID", &info->ci_uid))
     {
         log_info("Failed to get UID from journal message");
         return -EINVAL;
     }
 
     /* This is not fatal, the pid is used only in dumpdir name */
-    if (abrt_journal_get_int_field(journal, "COREDUMP_PID", (long *)&(info->ci_pid)))
+    if (!abrt_journal_get_pid(journal, "COREDUMP_PID", &info->ci_pid))
     {
         log_notice("Failed to get PID from journal message.");
         info->ci_pid = getpid();

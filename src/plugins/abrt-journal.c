@@ -131,7 +131,9 @@ int abrt_journal_get_field(abrt_journal_t *journal, const char *field, const voi
     return 0;
 }
 
-int abrt_journal_get_int_field(abrt_journal_t *journal, const char *field, long *value)
+static long int abrt_journal_get_long(abrt_journal_t *journal,
+                                      const char     *key,
+                                      long int       *value)
 {
     const void *data;
     size_t data_length;
@@ -139,37 +141,82 @@ int abrt_journal_get_int_field(abrt_journal_t *journal, const char *field, long 
     g_autofree char *data_string = NULL;
     char *end;
 
-    g_return_val_if_fail (NULL != value, -EINVAL);
-
-    retval = abrt_journal_get_field(journal, field, &data, &data_length);
+    retval = abrt_journal_get_field(journal, key, &data, &data_length);
     if (retval < 0)
     {
-        return retval;
+        return false;
     }
     data_string = g_strndup(data, data_length);
 
     errno = 0;
+
     *value = strtol(data_string, &end, 10);
-    if (0 == *value && 0 != errno)
+
+    if (0 != errno)
     {
         char *error_message;
 
         error_message = strerror(errno);
 
-        error_msg("Failed to convert journal message field “%s” value “%s” to an integer: %s",
-                  field, data_string, error_message);
+        error_msg("Converting field “%s” value “%s” to integer failed: %s",
+                  key, data_string, error_message);
 
-        return -EINVAL;
+        return false;
     }
     /* No data or garbage after numeric data */
     if (end == data_string || '\0' != *end)
     {
-        error_msg("Failed to convert journal message field “%s” value “%s” to an integer: value empty or not a number",
-                  field, data_string);
-        return -EINVAL;
+        error_msg("Journal message field “%s” value “%s” is empty or not a number",
+                  key, data_string);
+        return false;
     }
 
-    return 0;
+    return true;
+}
+
+#define GET_TYPED_FIELD_FROM_LONG(journal, key, type, value_out)       \
+    G_STMT_START                                                       \
+    {                                                                  \
+        long int _value;                                               \
+                                                                       \
+        if (!abrt_journal_get_long(journal, key, &_value))             \
+        {                                                              \
+            return false;                                              \
+        }                                                              \
+                                                                       \
+        g_return_val_if_fail((long int)(type)_value == _value, false); \
+                                                                       \
+        *(value_out) = (type)_value;                                   \
+                                                                       \
+        return true;                                                   \
+    }                                                                  \
+    G_STMT_END
+
+bool abrt_journal_get_int(abrt_journal_t *journal,
+                          const char     *key,
+                          int            *value)
+{
+    g_return_val_if_fail(NULL != value, false);
+
+    GET_TYPED_FIELD_FROM_LONG(journal, key, int, value);
+}
+
+bool abrt_journal_get_pid(abrt_journal_t *journal,
+                          const char     *key,
+                          pid_t          *value)
+{
+    g_return_val_if_fail(NULL != value, false);
+
+    GET_TYPED_FIELD_FROM_LONG(journal, key, pid_t, value);
+}
+
+bool abrt_journal_get_uid(abrt_journal_t *journal,
+                          const char     *key,
+                          uid_t          *value)
+{
+    g_return_val_if_fail(NULL != value, false);
+
+    GET_TYPED_FIELD_FROM_LONG(journal, key, uid_t, value);
 }
 
 char *abrt_journal_get_string_field(abrt_journal_t *journal, const char *field, char *value)
