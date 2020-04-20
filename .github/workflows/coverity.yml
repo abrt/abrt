@@ -40,6 +40,12 @@ jobs:
       - name: Build
         run: cov-build --dir cov-int make
 
+      - name: Upload build log
+        uses: actions/upload-artifact@v1
+        with:
+          name: log
+          path: cov-int/build-log.txt
+
       - name: Compress build artifacts
         run: tar --create --auto-compress --file abrt.tar.xz cov-int
 
