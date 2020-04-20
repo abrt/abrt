@@ -27,8 +27,7 @@ abrt_dbus_LDADD = \
     $(DBUS_LIBS) \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS) \
-    $(POLKIT_LIBS) \
-    -labrt_dbus
+    $(POLKIT_LIBS)
 
 libabrt_problems2_service_a_SOURCES = \
     abrt_problems2_service.c \
