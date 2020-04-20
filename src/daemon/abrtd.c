@@ -154,7 +154,7 @@ static void notify_next_post_create_process(struct abrt_server_proc *finished)
 
 /* Queueing the process will also lead to cleaning up the dump location.
  */
-static void queue_post_craete_process(struct abrt_server_proc *proc)
+static void queue_post_create_process(struct abrt_server_proc *proc)
 {
     abrt_load_abrt_conf();
     struct abrt_server_proc *running = s_dir_queue == NULL ? NULL
@@ -278,7 +278,7 @@ static gboolean abrt_server_output_cb(GIOChannel *channel, GIOCondition conditio
 
             proc->dirname = libreport_xstrdup(line + strlen("NEW_PROBLEM_DETECTED: "));
             log_notice("abrt-server(%d): handling new problem: %s", proc->pid, proc->dirname);
-            queue_post_craete_process(proc);
+            queue_post_create_process(proc);
         }
         else
             log_warning("abrt-server(%d): not recognized message: '%s'", proc->pid, line);
