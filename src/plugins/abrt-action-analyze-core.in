@@ -35,7 +35,7 @@ def error_msg_and_die(s):
     sys.stderr.write("%s\n" % s)
     sys.exit(1)
 
-def libreport_xopen(name, mode):
+def xopen(name, mode):
     try:
         r = open(name, mode)
     except IOError as ex:
@@ -145,7 +145,7 @@ if __name__ == "__main__":
         oldmask = os.umask(0o002)
         for bid in b_ids:
             if outname:
-                outfile = libreport_xopen(outname, "w")
+                outfile = xopen(outname, "w")
                 outname = None
             outfile.write("%s\n" % bid)
         outfile.close()
