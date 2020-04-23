@@ -38,7 +38,8 @@ abrt_applet_problem_info_finalize (GObject *object)
 
     self = ABRT_APPLET_PROBLEM_INFO (object);
 
-    g_strfreev (self->envp);
+    g_clear_pointer (&self->envp, g_strfreev);
+    g_clear_pointer (&self->problem_data, g_hash_table_unref);
 }
 
 static void
