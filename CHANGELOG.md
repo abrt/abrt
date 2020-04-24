@@ -6,6 +6,33 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.14.1]
+### Added
+- tests: Add perl, php R and tcl to dont-blame-interpret
+- a-a-save-package-data: Add R and tcl to interpreted langs
+- a-a-save-package-data: Use regexps to match interpreters
+
+### Changed
+- .travis.yml: Update secret
+- plugins: xorg-utils: Loopify parsing
+- Add namespace to libreport function and global names
+
+### Fixed
+- cli: Correct debug directories in config
+- cli: Show defaults in help output
+- cli: Fix verbosity option
+- cli: Fix descriptions for --since and --until
+- autogen.sh: Handle NOCONFIGURE per the Build API
+- plugins: journal: Fix ci_mapping being overwritten
+- plugins: abrt-journal-core: Don’t assume anything about uid_t
+- lib,plugins: Accomodate for multiple debug directories
+
+### Removed
+- dbus: Drop bogus dependency
+- dbus: Drop abrt_problems2
+- Drop libcap dependency
+- Drop Travis config
+
 ## [2.14.0]
 ### Added
 - dbus: Warn the user when GetProblems() is called with a large (>100) number of problems
@@ -223,7 +250,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.14.0...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.14.1...HEAD
+[2.14.1]: https://github.com/abrt/abrt/compare/2.14.0...2.14.1
 [2.14.0]: https://github.com/abrt/abrt/compare/2.13.0...2.14.0
 [2.13.0]: https://github.com/abrt/abrt/compare/2.12.2...2.13.0
 [2.12.2]: https://github.com/abrt/abrt/compare/2.12.1...2.12.2

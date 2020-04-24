@@ -1011,6 +1011,63 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Fri Apr 24 2020 Michal Fabik <mfabik@redhat.com> 2.14.1-1
+- Allow editing CHANGELOG.md before release commit
+- Remove libreport_ namespace from python code
+- dbus: Drop bogus dependency
+- dbus: Drop abrt_problems2
+- plugins: journal: Fix ci_mapping being overwritten
+- github: coverity: Upload build log
+- Drop libcap dependency
+- Update translations
+- Add namespace to libreport function and global names
+- github: coverity: Pass email address to web form
+- github: coverity: Actually compress cov-int
+- github: coverity: Install @rpm-development-tools
+- github: coverity: Do add-path in a separate step
+- github: coverity: Fix amending PATH
+- Revert "github: coverity: Run find on /tmp"
+- github: coverity: Run find on /tmp
+- github: coverity: Fix PATH
+- Revert "github: coverity: Specify path to cov-build"
+- github: coverity: Fix secret for uploading
+- github: coverity: Specify path to cov-build
+- Revert "github: coverity: Run find after extraction"
+- github: coverity: Run find after extraction
+- github: coverity: Make wget less verbose
+- github: coverity: Use secret properly
+- github: coverity: Install wget
+- github: coverity: Install intltool
+- dont-blame-interpret: Rename and redo
+- plugins: abrt-journal-core: Don’t assume anything about uid_t
+- github: coverity: Don’t pipe yes to autogen.sh
+- autogen.sh: Don’t prompt when installing dependencies
+- github: coverity: Just use autogen.sh sysdeps
+- libabrt: Rework function namespacing without #defines
+- github: coverity: Don’t run configure too early
+- autogen.sh: Handle NOCONFIGURE per the Build API
+- Drop Travis config
+- github: coverity: Install gettext-devel
+- cli: Correct debug directories in config
+- a-a-analyze-core: Remove useless comments, unused function
+- lib,plugins: Accomodate for multiple debug directories
+- github: Rename workflow
+- Set up GitHub Actions
+- .travis.yml: Update secret
+- README.md: Add Coverity badge
+- Add Travis CI config for Coverity builds
+- plugins: xorg-utils: Loopify parsing
+- plugins: xorg-utils: Shorten and explain condition
+- plugins: xorg-utils: Drop outdated comment
+- cli: Show defaults in help output
+- cli: Fix verbosity option
+- abrt-action-analyze-oops: Fix typo in translatable string
+- tests: Add perl, php R and tcl to dont-blame-interpret
+- a-a-save-package-data: Add R and tcl to interpreted langs
+- a-a-save-package-data: Use regexps to match interpreters
+- spec: Add %ghost for /var/run/abrt
+- cli: Fix descriptions for --since and --until
+
 * Fri Feb 07 2020 Ernestas Kulik <ekulik@redhat.com> 2.14.0-1
 - Makefile.am: Don’t pull translations from Zanata
 - README.md: Add Weblate badge
