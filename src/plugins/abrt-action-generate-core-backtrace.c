@@ -75,7 +75,10 @@ int main(int argc, char **argv)
     /* The value 240 was taken from abrt-action-generate-backtrace.c. */
     int exec_timeout_sec = 240;
 
-    char *gdb_output = abrt_get_backtrace(dump_dir_name, exec_timeout_sec, NULL);
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        return 1;
+    char *gdb_output = abrt_get_backtrace(dd, exec_timeout_sec, NULL);
     if (!gdb_output)
     {
         log_warning(_("Error: GDB did not return any data"));
@@ -86,6 +89,7 @@ int main(int argc, char **argv)
                                                       gdb_output,
                                                       !raw_fingerprints,
                                                       &error_message);
+    dd_close(dd);
     free(gdb_output);
 
 #endif /* ENABLE_NATIVE_UNWINDER */

@@ -78,7 +78,10 @@ int main(int argc, char **argv)
         debuginfo_dirs = libreport_xasprintf("%s:%s", debuginfo_location, i_opt);
 
     /* Create gdb backtrace */
-    char *backtrace = abrt_get_backtrace(dump_dir_name, exec_timeout_sec,
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        return 1;
+    char *backtrace = abrt_get_backtrace(dd, exec_timeout_sec,
             (debuginfo_dirs) ? debuginfo_dirs : debuginfo_location);
     free(debuginfo_location);
     if (!backtrace)
@@ -91,9 +94,6 @@ int main(int argc, char **argv)
 
     /* Store gdb backtrace */
 
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return 1;
     dd_save_text(dd, FILENAME_BACKTRACE, backtrace);
     dd_close(dd);
 
