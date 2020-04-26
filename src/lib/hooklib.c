@@ -239,21 +239,15 @@ char *abrt_run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
     return libreport_strbuf_free_nobuf(buf_out);
 }
 
-char *abrt_get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char *debuginfo_dirs)
+char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *debuginfo_dirs)
 {
     INITIALIZE_LIBABRT();
-
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return NULL;
 
     char *executable = NULL;
     if (dd_exist(dd, FILENAME_BINARY))
         executable = libreport_concat_path_file(dd->dd_dirname, FILENAME_BINARY);
     else
         executable = dd_load_text(dd, FILENAME_EXECUTABLE);
-
-    dd_close(dd);
 
     /* Let user know what's going on */
     log_warning(_("Generating backtrace"));
@@ -333,7 +327,7 @@ char *abrt_get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const 
 
     args[i++] = (char*)"-ex";
     const unsigned core_cmd_index = i++;
-    args[core_cmd_index] = libreport_xasprintf("core-file %s/"FILENAME_COREDUMP, dump_dir_name);
+    args[core_cmd_index] = libreport_xasprintf("core-file %s/"FILENAME_COREDUMP, dd->dd_dirname);
 
     args[i++] = (char*)"-ex";
     const unsigned bt_cmd_index = i++;
