@@ -12,7 +12,8 @@ jobs:
 
       - name: Install build environment
         run: |
-          sudo dnf --assumeyes install \
+          dnf --assumeyes copr enable @abrt/devel
+          dnf --assumeyes install \
             @c-development @development-tools @rpm-development-tools \
             intltool wget
 
