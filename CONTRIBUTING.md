@@ -54,7 +54,7 @@ constitutes a bare minimum; more info is almost always better:
 ## Contributing changes
 
 It would be the best if you could discuss your plans with us on #abrt or on our
-mailinig list crash-catcher@lists.fedorahosted.org before you spent too much
+mailing list crash-catcher@lists.fedorahosted.org before you spent too much
 energy and time.
 
 Before contributing, please, make yourself familiar with git. You can [try git
@@ -68,7 +68,7 @@ Every commit must have either comprehensive commit message saying what is being
 changed and why or a link (an issue number on Github) to a bug report where
 this information is available. It is also useful to include notes about
 negative decisions - i.e. why you decided to not do particular things. Please
-bare in mind that other developers might not understand what the original
+bear in mind that other developers might not understand what the original
 problem was.
 
 ### Full example
