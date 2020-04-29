@@ -82,58 +82,6 @@ def run_autoreport(problem_data, event_name):
         raise RuntimeError("Event '{0}' exited with {1}"
                 .format(event_name, ret))
 
-def emit_crash_dbus_signal(problem_data):
-    """Emits a Crash signal on D-Bus Problem bus
-
-    Emits a signal with 5 members:
-        package -- value of 'package' element in problem_data
-        problem_id -- value of 'Directory' element in problem_data
-        uid -- empty string if 'uid' element is not present in problem_data
-        uuid -- empty string if 'uuid' element is not present in problem_data
-        duphash -- empty string if 'duphash' element is not present in problem_data
-
-    Keyword arguments:
-    problem_data -- problem data of notified problems
-
-    Returns None as it raises an exception on error
-
-    Raises:
-    RuntimeError -- for all D-Bus related errors
-    KeyError -- if any of required elements is missing
-    """
-
-    bus = None
-    try:
-        bus = dbus.SystemBus()
-        msg = dbus.lowlevel.SignalMessage("/org/freedesktop/problems",
-                "org.freedesktop.problems", "Crash")
-
-        # List of tuples where the first member is element name and the second
-        # member is a Boolean flag which is True if the element is required
-        arguments = ((FILENAME_PACKAGE, False), (CD_DUMPDIR, True),
-                (FILENAME_UID, False), (FILENAME_UUID, False),
-                (FILENAME_DUPHASH, False))
-
-        for elem in arguments:
-            itm = problem_data.get(elem[0])
-
-            if itm is None:
-                if elem[1]:
-                    raise KeyError(elem[0])
-
-                msg.append("", signature="s")
-            else:
-                msg.append(itm[0], signature="s")
-
-
-        bus.send_message(msg)
-    except dbus.exceptions.DBusException as ex:
-        raise RuntimeError("Failed to emit D-Bus Crash signal: {0}"
-                .format(str(ex)))
-    finally:
-        if bus is not None:
-            bus.close()
-
 def build_notification_problem_data(problem_dir):
     """Loads all necessary problem elements
 
@@ -227,19 +175,6 @@ if __name__ == "__main__":
     # The execution must continue because we should try to notify via all
     # configured channels. One of them might work properly.
     return_status = RETURN_OK
-    try:
-        emit_crash_dbus_signal(PD)
-    except RuntimeError as ex:
-        sys.stderr.write("Cannot notify '{0}' via D-Bus: {1}\n".
-                format(DIR_PATH, str(ex)))
-        return_status = RETURN_FAILURE
-    except KeyError as ex:
-        # this is a bug in build_notification_problem_data()
-        sys.stderr.write("BUG: problem data misses required element '{0}'"
-                         " required for D-Bus notification\n"
-                         .format(str(ex)))
-
-        return_status = RETURN_FAILURE
 
     if OPTIONS.autoreporting or conf.get("AutoreportingEnabled", "no") == "yes":
         event_name = OPTIONS.autoreporting_event
