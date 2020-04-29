@@ -402,10 +402,10 @@ new_dir_exists (GList **new_dirs)
         }
 
         fclose (fp);
-        libreport_list_free_with_free (old_dirlist);
+        g_list_free_full (old_dirlist, free);
     }
 
-    libreport_list_free_with_free (dirlist);
+    g_list_free_full (dirlist, free);
 }
 
 static gboolean
@@ -1140,7 +1140,7 @@ abrt_applet_application_process_new_directories (AbrtAppletApplication *self)
     abrt_applet_application_report_problems (self, problems);
     abrt_applet_application_send_problem_notifications (problems);
 
-    libreport_list_free_with_free (new_dirs);
+    g_list_free_full (new_dirs, free);
 }
 
 static void
