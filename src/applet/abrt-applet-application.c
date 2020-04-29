@@ -62,6 +62,7 @@ static void
 event_processing_state_free (EventProcessingState *state)
 {
     libreport_strbuf_free (state->cmd_output);
+    g_clear_object (&state->problem_info);
     g_clear_object (&state->application);
 
     g_free (state);
@@ -606,7 +607,6 @@ abrt_applet_application_send_problem_notification (AbrtAppletApplication *self,
 
     if (abrt_applet_problem_info_is_announced (problem_info))
     {
-        g_clear_object (&problem_info);
         return;
     }
 
@@ -913,7 +913,6 @@ abrt_applet_application_run_event_async (AbrtAppletApplication *self,
 
     if (!abrt_applet_problem_info_ensure_writable (problem_info))
     {
-        g_object_unref (problem_info);
         return;
     }
 
@@ -922,7 +921,7 @@ abrt_applet_application_run_event_async (AbrtAppletApplication *self,
     state = event_processing_state_new ();
 
     state->application = g_object_ref (self);
-    state->problem_info = problem_info;
+    state->problem_info = g_object_ref (problem_info);
     state->child_pid = spawn_event_handler_child(abrt_applet_problem_info_get_directory (state->problem_info),
                                                  event_name, &state->child_stdout_fd);
 
@@ -943,7 +942,7 @@ abrt_applet_application_report_problem (AbrtAppletApplication *self,
 
     if (!is_networking_enabled ())
     {
-        g_ptr_array_add (self->deferred_problems, problem_info);
+        g_ptr_array_add (self->deferred_problems, g_object_ref (problem_info));
 
         return false;
     }
