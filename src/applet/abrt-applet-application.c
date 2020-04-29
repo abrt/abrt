@@ -994,23 +994,12 @@ handle_message (GDBusConnection *connection,
                 GVariant        *parameters,
                 gpointer         user_data)
 {
-    static const char *elements[] = {
-        FILENAME_CMDLINE,
-        FILENAME_COUNT,
-        FILENAME_UUID,
-        FILENAME_DUPHASH,
-        FILENAME_COMPONENT,
-        FILENAME_ENVIRON,
-        FILENAME_PID,
-        NULL,
-    };
     const char *package_name;
     const char *dir;
     const char *uid_str;
     const char *uuid;
     const char *duphash;
     AbrtAppletProblemInfo *problem_info;
-    problem_data_t *problem_data;
     AbrtAppletApplication *self;
 
     g_debug ("Received signal: sender_name: %s, object_path: %s, "
@@ -1050,9 +1039,8 @@ handle_message (GDBusConnection *connection,
     }
 
     problem_info = abrt_applet_problem_info_new (dir);
-    problem_data = abrt_applet_problem_info_get_problem_data (problem_info);
 
-    fill_problem_data_over_dbus (dir, elements, problem_data);
+    abrt_applet_problem_info_load_over_dbus (problem_info);
 
     abrt_applet_problem_info_set_foreign (problem_info, foreign_problem);
     abrt_applet_problem_info_set_packaged (problem_info, package_name != NULL);
@@ -1075,18 +1063,6 @@ handle_message (GDBusConnection *connection,
 static void
 abrt_applet_application_process_new_directories (AbrtAppletApplication *self)
 {
-    static const char *elements[] = {
-        FILENAME_CMDLINE,
-        FILENAME_COUNT,
-        FILENAME_UUID,
-        FILENAME_DUPHASH,
-        FILENAME_COMPONENT,
-        FILENAME_UID,
-        FILENAME_TIME,
-        FILENAME_REPORTED_TO,
-        FILENAME_NOT_REPORTABLE,
-        NULL
-    };
     /* If some new dirs appeared since our last run, let user know it */
     GList *new_dirs = NULL;
     g_autoptr (GPtrArray) problems = NULL;
@@ -1102,13 +1078,11 @@ abrt_applet_application_process_new_directories (AbrtAppletApplication *self)
     {
         const char *problem_id;
         g_autoptr (AbrtAppletProblemInfo) problem_info = NULL;
-        problem_data_t *problem_data;
 
         problem_id = new_dirs->data;
         problem_info = abrt_applet_problem_info_new (problem_id);
-        problem_data = abrt_applet_problem_info_get_problem_data (problem_info);
 
-        if (fill_problem_data_over_dbus (problem_id, elements, problem_data) != 0)
+        if (!abrt_applet_problem_info_load_over_dbus (problem_info))
         {
             log_notice("'%s' is not a dump dir - ignoring\n", problem_id);
             continue;

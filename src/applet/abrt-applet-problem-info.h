@@ -18,7 +18,6 @@ int                     abrt_applet_problem_info_get_count        (AbrtAppletPro
 const char *            abrt_applet_problem_info_get_directory    (AbrtAppletProblemInfo *problem_info);
 const char            **abrt_applet_problem_info_get_environment  (AbrtAppletProblemInfo *problem_info);
 int                     abrt_applet_problem_info_get_pid          (AbrtAppletProblemInfo *problem_info);
-problem_data_t         *abrt_applet_problem_info_get_problem_data (AbrtAppletProblemInfo *problem_info);
 int                     abrt_applet_problem_info_get_time         (AbrtAppletProblemInfo *problem_info);
 
 void                    abrt_applet_problem_info_set_announced    (AbrtAppletProblemInfo *problem_info,
@@ -35,5 +34,7 @@ void                    abrt_applet_problem_info_set_reported     (AbrtAppletPro
                                                                    bool                   reported);
 
 bool                    abrt_applet_problem_info_ensure_writable  (AbrtAppletProblemInfo *problem_info);
+
+bool                    abrt_applet_problem_info_load_over_dbus   (AbrtAppletProblemInfo *problem_info);
 
 AbrtAppletProblemInfo  *abrt_applet_problem_info_new              (const char            *directory);
