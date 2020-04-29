@@ -17,6 +17,7 @@ const char             *abrt_applet_problem_info_get_command_line (AbrtAppletPro
 int                     abrt_applet_problem_info_get_count        (AbrtAppletProblemInfo *problem_info);
 const char *            abrt_applet_problem_info_get_directory    (AbrtAppletProblemInfo *problem_info);
 const char            **abrt_applet_problem_info_get_environment  (AbrtAppletProblemInfo *problem_info);
+const char             *abrt_applet_problem_info_get_executable   (AbrtAppletProblemInfo *problem_info);
 int                     abrt_applet_problem_info_get_pid          (AbrtAppletProblemInfo *problem_info);
 int                     abrt_applet_problem_info_get_time         (AbrtAppletProblemInfo *problem_info);
 

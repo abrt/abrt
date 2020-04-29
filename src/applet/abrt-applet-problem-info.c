@@ -133,6 +133,14 @@ abrt_applet_problem_info_get_environment (AbrtAppletProblemInfo *self)
     return (const char **) self->envp;
 }
 
+const char *
+abrt_applet_problem_info_get_executable (AbrtAppletProblemInfo *self)
+{
+    g_return_val_if_fail (ABRT_APPLET_IS_PROBLEM_INFO (self), NULL);
+
+    return problem_data_get_content_or_NULL (self->problem_data, FILENAME_EXECUTABLE);
+}
+
 int
 abrt_applet_problem_info_get_pid (AbrtAppletProblemInfo *self)
 {
@@ -271,6 +279,7 @@ abrt_applet_problem_info_load_over_dbus (AbrtAppletProblemInfo *self)
         FILENAME_COMPONENT,
         FILENAME_COUNT,
         FILENAME_ENVIRON,
+        FILENAME_EXECUTABLE,
         FILENAME_PID,
         FILENAME_TIME,
         FILENAME_REPORTED_TO,
