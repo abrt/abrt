@@ -1043,7 +1043,6 @@ handle_message (GDBusConnection *connection,
     abrt_applet_problem_info_load_over_dbus (problem_info);
 
     abrt_applet_problem_info_set_foreign (problem_info, foreign_problem);
-    abrt_applet_problem_info_set_packaged (problem_info, package_name != NULL);
 
     self = user_data;
 

@@ -28,8 +28,6 @@ void                    abrt_applet_problem_info_set_foreign      (AbrtAppletPro
                                                                    bool                   foreign);
 void                    abrt_applet_problem_info_set_known        (AbrtAppletProblemInfo *problem_info,
                                                                    bool                   known);
-void                    abrt_applet_problem_info_set_packaged     (AbrtAppletProblemInfo *problem_info,
-                                                                   bool                   packaged);
 void                    abrt_applet_problem_info_set_reported     (AbrtAppletProblemInfo *problem_info,
                                                                    bool                   reported);
 
