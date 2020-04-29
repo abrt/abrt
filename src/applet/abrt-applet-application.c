@@ -27,6 +27,8 @@ struct _AbrtAppletApplication
 
     GDBusConnection *connection;
     unsigned int filter_id;
+
+    GPtrArray *deferred_problems;
 };
 
 G_DEFINE_TYPE (AbrtAppletApplication, abrt_applet_application, G_TYPE_APPLICATION)
@@ -37,6 +39,7 @@ typedef struct
     int child_stdout_fd;
     struct strbuf *cmd_output;
 
+    AbrtAppletApplication *application;
     AbrtAppletProblemInfo *problem_info;
     int flags;
 } EventProcessingState;
@@ -59,33 +62,34 @@ static void
 event_processing_state_free (EventProcessingState *state)
 {
     libreport_strbuf_free (state->cmd_output);
+    g_clear_object (&state->application);
 
     g_free (state);
 }
 
-static GList *g_deferred_crash_queue;
 static unsigned int g_deferred_timeout;
 static bool g_gnome_abrt_available;
 static bool g_user_is_admin;
 
-static void abrt_applet_application_report_problems (GList *problems);
-static void abrt_applet_application_send_problem_notifications (GList *problems);
+static void abrt_applet_application_report_problems (AbrtAppletApplication *self,
+                                                     GPtrArray             *problems);
+static void abrt_applet_application_send_problem_notifications (GPtrArray *problems);
 
 static gboolean
 process_deferred_queue (gpointer user_data)
 {
-    GList *tmp;
+    AbrtAppletApplication *self;
+    g_autoptr (GPtrArray) problems = NULL;
 
-    tmp = g_deferred_crash_queue;
+    self = user_data;
+    problems = g_steal_pointer (&self->deferred_problems);
+
+    self->deferred_problems = g_ptr_array_new_with_free_func (g_object_unref);
 
     g_deferred_timeout = 0;
-    g_deferred_crash_queue = NULL;
 
-    /* this function calls push_to_deferred_queue() which appends data to
-     * g_deferred_crash_queue but the function also modifies the argument
-     * so we must reset g_deferred_crash_queue before the call */
-    abrt_applet_application_report_problems (tmp);
-    abrt_applet_application_send_problem_notifications (tmp);
+    abrt_applet_application_report_problems (self, problems);
+    abrt_applet_application_send_problem_notifications (problems);
 
     return G_SOURCE_REMOVE;
 }
@@ -106,7 +110,7 @@ on_connectivity_changed (GObject    *gobject,
             g_source_remove (g_deferred_timeout);
         }
 
-        g_deferred_timeout = g_idle_add ((GSourceFunc) process_deferred_queue, NULL);
+        g_deferred_timeout = g_idle_add ((GSourceFunc) process_deferred_queue, user_data);
     }
 }
 
@@ -169,9 +173,11 @@ abrt_applet_application_init (AbrtAppletApplication *self)
                                               _("Applet which notifies user when new problems are detected by ABRT"));
 
     g_signal_connect (network_monitor, "notify::connectivity",
-                      G_CALLBACK (on_connectivity_changed), NULL);
+                      G_CALLBACK (on_connectivity_changed), self);
     g_signal_connect (network_monitor, "notify::network-available",
                       G_CALLBACK (on_connectivity_changed), NULL);
+
+    self->deferred_problems = g_ptr_array_new_with_free_func (g_object_unref);
 }
 
 static bool
@@ -266,12 +272,6 @@ is_networking_enabled (void)
     monitor = g_network_monitor_get_default ();
 
     return g_network_monitor_get_connectivity (monitor) == G_NETWORK_CONNECTIVITY_FULL;
-}
-
-static void
-push_to_deferred_queue (AbrtAppletProblemInfo *problem_info)
-{
-    g_deferred_crash_queue = g_list_prepend (g_deferred_crash_queue, problem_info);
 }
 
 /* Compares the problem directories to list saved in
@@ -744,20 +744,16 @@ abrt_applet_application_send_problem_notification (AbrtAppletProblemInfo *proble
 }
 
 static void
-abrt_applet_application_send_problem_notifications (GList *problems)
+abrt_applet_application_send_problem_notifications (GPtrArray *problems)
 {
-    if (problems == NULL)
+    for (size_t i = 0; i < problems->len; i++)
     {
-        log_debug ("Not showing any notification bubble because the list of problems is empty.");
-        return;
-    }
+        AbrtAppletProblemInfo *problem_info;
 
-    for (GList *iter = g_list_reverse (problems); iter; iter = g_list_next (iter))
-    {
-        abrt_applet_application_send_problem_notification (iter->data);
-    }
+        problem_info = g_ptr_array_index (problems, i);
 
-    g_list_free (problems);
+        abrt_applet_application_send_problem_notification (problem_info);
+    }
 }
 
 /* Event-processing child output handler */
@@ -846,7 +842,7 @@ handle_event_output_cb (GIOChannel   *gio,
     else
     {
         log_debug ("fast report failed, deferring");
-        push_to_deferred_queue (problem_info);
+        g_ptr_array_add (state->application->deferred_problems, problem_info);
     }
 
     event_processing_state_free (state);
@@ -907,8 +903,9 @@ export_event_configuration (const char *event_name)
 }
 
 static void
-run_event_async (AbrtAppletProblemInfo *problem_info,
-                 const char            *event_name)
+abrt_applet_application_run_event_async (AbrtAppletApplication *self,
+                                         AbrtAppletProblemInfo *problem_info,
+                                         const char            *event_name)
 {
     EventProcessingState *state;
     GIOChannel *channel_event_output;
@@ -923,6 +920,7 @@ run_event_async (AbrtAppletProblemInfo *problem_info,
 
     state = event_processing_state_new ();
 
+    state->application = g_object_ref (self);
     state->problem_info = problem_info;
     state->child_pid = spawn_event_handler_child(abrt_applet_problem_info_get_directory (state->problem_info),
                                                  event_name, &state->child_stdout_fd);
@@ -934,7 +932,8 @@ run_event_async (AbrtAppletProblemInfo *problem_info,
 }
 
 static bool
-abrt_applet_application_report_problem (AbrtAppletProblemInfo *problem_info)
+abrt_applet_application_report_problem (AbrtAppletApplication *self,
+                                        AbrtAppletProblemInfo *problem_info)
 {
     if (abrt_applet_problem_info_is_foreign (problem_info) && !g_user_is_admin)
     {
@@ -943,31 +942,46 @@ abrt_applet_application_report_problem (AbrtAppletProblemInfo *problem_info)
 
     if (!is_networking_enabled ())
     {
-        push_to_deferred_queue (problem_info);
+        g_ptr_array_add (self->deferred_problems, problem_info);
 
         return false;
     }
 
-    run_event_async (problem_info, get_autoreport_event_name ());
+    abrt_applet_application_run_event_async (self, problem_info, get_autoreport_event_name ());
 
     return true;
 }
 
 static void
-abrt_applet_application_report_problems (GList *problems)
+abrt_applet_application_report_problems (AbrtAppletApplication *self,
+                                         GPtrArray             *problems)
 {
     if (!is_autoreporting_enabled ())
     {
         return;
     }
 
-    for (GList *l = g_list_reverse (problems); NULL != l; l = g_list_next (l))
+    for (size_t i = 0; i < problems->len; i++)
     {
-        if (abrt_applet_application_report_problem (l->data))
+        AbrtAppletProblemInfo *problem_info;
+
+        problem_info = g_ptr_array_index (problems, i);
+
+        if (abrt_applet_application_report_problem (self, problem_info))
         {
-            problems = g_list_delete_link (problems, l);
+            g_ptr_array_remove_index (problems, i);
         }
     }
+}
+
+static void
+abrt_applet_application_dispose (GObject *object)
+{
+    AbrtAppletApplication *self;
+
+    self = ABRT_APPLET_APPLICATION (object);
+
+    g_clear_pointer (&self->deferred_problems, g_ptr_array_unref);
 }
 
 static void
@@ -1049,13 +1063,13 @@ handle_message (GDBusConnection *connection,
      */
     if (is_autoreporting_enabled ())
     {
-        abrt_applet_application_report_problem (problem_info);
+        abrt_applet_application_report_problem (user_data, problem_info);
     }
     abrt_applet_application_send_problem_notification (problem_info);
 }
 
 static void
-process_new_dirs (void)
+abrt_applet_application_process_new_directories (AbrtAppletApplication *self)
 {
     static const char *elements[] = {
         FILENAME_CMDLINE,
@@ -1071,10 +1085,12 @@ process_new_dirs (void)
     };
     /* If some new dirs appeared since our last run, let user know it */
     GList *new_dirs = NULL;
-    GList *notify_list = NULL;
+    g_autoptr (GPtrArray) problems = NULL;
 #define time_before_ndays(n) (time(NULL) - (n)*24*60*60)
      /* Age limit = now - 3 days */
     const unsigned long min_born_time = (unsigned long)(time_before_ndays(3));
+
+    problems = g_ptr_array_new_with_free_func (g_object_unref);
 
     new_dir_exists (&new_dirs);
 
@@ -1118,14 +1134,11 @@ process_new_dirs (void)
         /* Can't be foreign because new_dir_exists() returns only own problems */
         abrt_applet_problem_info_set_foreign (problem_info, false);
 
-        notify_list = g_list_prepend (notify_list, g_steal_pointer (&problem_info));
+        g_ptr_array_add (problems, g_steal_pointer (&problem_info));
     }
 
-    if (notify_list != NULL)
-    {
-        abrt_applet_application_report_problems (notify_list);
-        abrt_applet_application_send_problem_notifications (notify_list);
-    }
+    abrt_applet_application_report_problems (self, problems);
+    abrt_applet_application_send_problem_notifications (problems);
 
     libreport_list_free_with_free (new_dirs);
 }
@@ -1178,13 +1191,14 @@ abrt_applet_application_startup (GApplication *application)
                                                           NULL,
                                                           G_DBUS_SIGNAL_FLAGS_NONE,
                                                           handle_message,
-                                                          NULL, NULL);
+                                                          g_object_ref (self),
+                                                          g_object_unref);
 
     g_user_is_admin = is_user_admin ();
 
     g_gnome_abrt_available = is_gnome_abrt_available ();
 
-    process_new_dirs ();
+    abrt_applet_application_process_new_directories (self);
     add_action_entries (application);
 
     g_application_hold (application);
@@ -1198,9 +1212,13 @@ abrt_applet_application_activate (GApplication *application)
 static void
 abrt_applet_application_class_init (AbrtAppletApplicationClass *klass)
 {
+    GObjectClass *object_class;
     GApplicationClass *application_class;
 
+    object_class = G_OBJECT_CLASS (klass);
     application_class = G_APPLICATION_CLASS (klass);
+
+    object_class->dispose = abrt_applet_application_dispose;
 
     application_class->startup = abrt_applet_application_startup;
     application_class->activate = abrt_applet_application_activate;
