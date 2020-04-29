@@ -151,14 +151,6 @@ abrt_applet_problem_info_get_pid (AbrtAppletProblemInfo *self)
     return self->pid;
 }
 
-problem_data_t *
-abrt_applet_problem_info_get_problem_data (AbrtAppletProblemInfo *self)
-{
-    g_return_val_if_fail (ABRT_APPLET_IS_PROBLEM_INFO (self), NULL);
-
-    return self->problem_data;
-}
-
 int
 abrt_applet_problem_info_get_time (AbrtAppletProblemInfo *self)
 {
@@ -279,6 +271,28 @@ abrt_applet_problem_info_ensure_writable (AbrtAppletProblemInfo *self)
     dd_close (dump_directory);
 
     return true;
+}
+
+bool
+abrt_applet_problem_info_load_over_dbus (AbrtAppletProblemInfo *self)
+{
+    static const char *elements[] = {
+        FILENAME_CMDLINE,
+        FILENAME_COMPONENT,
+        FILENAME_COUNT,
+        FILENAME_ENVIRON,
+        FILENAME_PID,
+        FILENAME_TIME,
+        FILENAME_REPORTED_TO,
+        NULL
+    };
+    const char *directory;
+
+    g_return_val_if_fail (ABRT_APPLET_IS_PROBLEM_INFO (self), false);
+
+    directory = problem_data_get_content_or_NULL (self->problem_data, CD_DUMPDIR);
+
+    return fill_problem_data_over_dbus (directory, elements, self->problem_data) == 0;
 }
 
 AbrtAppletProblemInfo *
