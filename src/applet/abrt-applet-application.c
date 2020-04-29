@@ -68,6 +68,7 @@ static unsigned int g_deferred_timeout;
 static bool g_gnome_abrt_available;
 static bool g_user_is_admin;
 
+static void abrt_applet_application_report_problems (GList *problems);
 static void show_problem_list_notification (GList *problems);
 
 static gboolean
@@ -83,6 +84,7 @@ process_deferred_queue (gpointer user_data)
     /* this function calls push_to_deferred_queue() which appends data to
      * g_deferred_crash_queue but the function also modifies the argument
      * so we must reset g_deferred_crash_queue before the call */
+    abrt_applet_application_report_problems (tmp);
     show_problem_list_notification (tmp);
 
     return G_SOURCE_REMOVE;
@@ -943,46 +945,48 @@ run_event_async (AbrtAppletProblemInfo *problem_info,
                     handle_event_output_cb, state);
 }
 
-/*
- * Destroys the problems argument
- */
+static bool
+abrt_applet_application_report_problem (AbrtAppletProblemInfo *problem_info)
+{
+    if (abrt_applet_problem_info_is_foreign (problem_info) && !g_user_is_admin)
+    {
+        return false;
+    }
+
+    if (!is_networking_enabled ())
+    {
+        push_to_deferred_queue (problem_info);
+
+        return false;
+    }
+
+    run_event_async (problem_info, get_autoreport_event_name ());
+
+    return true;
+}
+
+static void
+abrt_applet_application_report_problems (GList *problems)
+{
+    if (!is_autoreporting_enabled ())
+    {
+        return;
+    }
+
+    for (GList *l = g_list_reverse (problems); NULL != l; l = g_list_next (l))
+    {
+        if (abrt_applet_application_report_problem (l->data))
+        {
+            problems = g_list_delete_link (problems, l);
+        }
+    }
+}
+
 static void
 show_problem_list_notification (GList *problems)
 {
     problems = g_list_reverse (problems);
 
-    if (is_autoreporting_enabled ())
-    {
-        /* Automatically report only own problems */
-        /* and skip foreign problems */
-        for (GList *l = problems; l != NULL; l = g_list_next (l))
-        {
-            AbrtAppletProblemInfo *problem_info;
-
-            problem_info = l->data;
-
-            if (!abrt_applet_problem_info_is_foreign (problem_info) || g_user_is_admin)
-            {
-                if (is_networking_enabled ())
-                {
-                    run_event_async (problem_info, get_autoreport_event_name ());
-                    problems = g_list_delete_link (problems, l);
-                }
-                else
-                {
-                    /* Don't remove from the list, we'll tell the user
-                     * we'll report later, if it's not a dupe */
-                    push_to_deferred_queue (problem_info);
-                }
-            }
-        }
-
-    }
-
-    /* report the rest:
-     *  - only foreign if autoreporting is enabled
-     *  - the whole list otherwise
-     */
     if (problems != NULL)
     {
         notify_problem_list (problems);
@@ -1076,6 +1080,10 @@ handle_message (GDBusConnection *connection,
      * append_dirlist(dir);
      *
      */
+    if (is_autoreporting_enabled ())
+    {
+        abrt_applet_application_report_problem (problem_info);
+    }
     show_problem_notification (problem_info);
 }
 
@@ -1148,6 +1156,7 @@ process_new_dirs (void)
 
     if (notify_list != NULL)
     {
+        abrt_applet_application_report_problems (notify_list);
         show_problem_list_notification (notify_list);
     }
 
