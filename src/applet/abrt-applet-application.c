@@ -73,7 +73,8 @@ static bool g_user_is_admin;
 
 static void abrt_applet_application_report_problems (AbrtAppletApplication *self,
                                                      GPtrArray             *problems);
-static void abrt_applet_application_send_problem_notifications (GPtrArray *problems);
+static void abrt_applet_application_send_problem_notifications (AbrtAppletApplication *self,
+                                                                GPtrArray             *problems);
 
 static gboolean
 process_deferred_queue (gpointer user_data)
@@ -89,7 +90,7 @@ process_deferred_queue (gpointer user_data)
     g_deferred_timeout = 0;
 
     abrt_applet_application_report_problems (self, problems);
-    abrt_applet_application_send_problem_notifications (problems);
+    abrt_applet_application_send_problem_notifications (self, problems);
 
     return G_SOURCE_REMOVE;
 }
@@ -594,7 +595,8 @@ add_restart_app_button (GNotification         *notification,
 }
 
 static void
-abrt_applet_application_send_problem_notification (AbrtAppletProblemInfo *problem_info)
+abrt_applet_application_send_problem_notification (AbrtAppletApplication *self,
+                                                   AbrtAppletProblemInfo *problem_info)
 {
     gboolean auto_reporting;
     gboolean network_available;
@@ -723,7 +725,6 @@ abrt_applet_application_send_problem_notification (AbrtAppletProblemInfo *proble
     }
 
     notification = new_warn_notification (notify_body);
-    GApplication *application;
 
     abrt_applet_problem_info_set_announced (problem_info, true);
 
@@ -739,12 +740,12 @@ abrt_applet_application_send_problem_notification (AbrtAppletProblemInfo *proble
     add_default_action (notification, problem_info);
 
     log_debug ("Showing a notification");
-    application = g_application_get_default ();
-    g_application_send_notification (application, NULL, notification);
+    g_application_send_notification (G_APPLICATION (self), NULL, notification);
 }
 
 static void
-abrt_applet_application_send_problem_notifications (GPtrArray *problems)
+abrt_applet_application_send_problem_notifications (AbrtAppletApplication *self,
+                                                    GPtrArray             *problems)
 {
     for (size_t i = 0; i < problems->len; i++)
     {
@@ -752,7 +753,7 @@ abrt_applet_application_send_problem_notifications (GPtrArray *problems)
 
         problem_info = g_ptr_array_index (problems, i);
 
-        abrt_applet_application_send_problem_notification (problem_info);
+        abrt_applet_application_send_problem_notification (self, problem_info);
     }
 }
 
@@ -837,7 +838,7 @@ handle_event_output_cb (GIOChannel   *gio,
         abrt_applet_problem_info_set_reported (problem_info, true);
 
         log_debug ("fast report finished successfully");
-        abrt_applet_application_send_problem_notification (problem_info);
+        abrt_applet_application_send_problem_notification (state->application, problem_info);
     }
     else
     {
@@ -1010,6 +1011,7 @@ handle_message (GDBusConnection *connection,
     const char *duphash;
     AbrtAppletProblemInfo *problem_info;
     problem_data_t *problem_data;
+    AbrtAppletApplication *self;
 
     g_debug ("Received signal: sender_name: %s, object_path: %s, "
              "interface_name: %s, signal_name: %s",
@@ -1055,6 +1057,8 @@ handle_message (GDBusConnection *connection,
     abrt_applet_problem_info_set_foreign (problem_info, foreign_problem);
     abrt_applet_problem_info_set_packaged (problem_info, package_name != NULL);
 
+    self = user_data;
+
     /*
      * Can't append dir to the seen list because of directory stealing
      *
@@ -1063,9 +1067,9 @@ handle_message (GDBusConnection *connection,
      */
     if (is_autoreporting_enabled ())
     {
-        abrt_applet_application_report_problem (user_data, problem_info);
+        abrt_applet_application_report_problem (self, problem_info);
     }
-    abrt_applet_application_send_problem_notification (problem_info);
+    abrt_applet_application_send_problem_notification (self, problem_info);
 }
 
 static void
@@ -1138,7 +1142,7 @@ abrt_applet_application_process_new_directories (AbrtAppletApplication *self)
     }
 
     abrt_applet_application_report_problems (self, problems);
-    abrt_applet_application_send_problem_notifications (problems);
+    abrt_applet_application_send_problem_notifications (self, problems);
 
     g_list_free_full (new_dirs, free);
 }
