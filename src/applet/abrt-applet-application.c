@@ -69,7 +69,7 @@ static bool g_gnome_abrt_available;
 static bool g_user_is_admin;
 
 static void abrt_applet_application_report_problems (GList *problems);
-static void notify_problem_list (GList *problems);
+static void abrt_applet_application_send_problem_notifications (GList *problems);
 
 static gboolean
 process_deferred_queue (gpointer user_data)
@@ -85,7 +85,7 @@ process_deferred_queue (gpointer user_data)
      * g_deferred_crash_queue but the function also modifies the argument
      * so we must reset g_deferred_crash_queue before the call */
     abrt_applet_application_report_problems (tmp);
-    notify_problem_list (tmp);
+    abrt_applet_application_send_problem_notifications (tmp);
 
     return G_SOURCE_REMOVE;
 }
@@ -594,182 +594,170 @@ add_restart_app_button (GNotification         *notification,
 }
 
 static void
-notify_problem_list (GList *problems)
+abrt_applet_application_send_problem_notification (AbrtAppletProblemInfo *problem_info)
 {
-    /* For the whole system, we'll need to know:
-     * - Whether automatic reporting is enabled or not
-     * - Whether the network is available
-     */
     gboolean auto_reporting;
     gboolean network_available;
+    g_autofree char *notify_body = NULL;
+    g_autoptr (GAppInfo) app = NULL;
+    g_autoptr (GNotification) notification = NULL;
 
+    if (abrt_applet_problem_info_is_announced (problem_info))
+    {
+        g_clear_object (&problem_info);
+        return;
+    }
+
+    app = problem_create_app_from_env (abrt_applet_problem_info_get_environment (problem_info),
+                                       abrt_applet_problem_info_get_pid (problem_info));
+    if (app == NULL)
+    {
+        const char *const cmd_line = abrt_applet_problem_info_get_command_line (problem_info);
+        if (cmd_line != NULL)
+        {
+            app = problem_create_app_from_cmdline (cmd_line);
+        }
+    }
+
+    /* For each problem we'll need to know:
+     * - Whether or not the crash happened in an “app”
+     * - Whether the app is packaged (in Fedora) or not
+     * - Whether the app is back up and running
+     * - Whether the user is the one for which the app crashed
+     * - Whether the problem has already been reported on this machine
+     */
+    gboolean is_app = (app != NULL);
+    gboolean is_packaged = abrt_applet_problem_info_is_packaged (problem_info);;
+    gboolean is_running_again = is_app_running(app);
+    gboolean is_current_user = !abrt_applet_problem_info_is_foreign (problem_info);
+    gboolean already_reported = abrt_applet_problem_info_get_count (problem_info) > 1;
+
+    gboolean report_button = FALSE;
+    gboolean restart_button = FALSE;
+
+    auto_reporting = is_autoreporting_enabled ();
+    network_available = is_networking_enabled ();
+
+    if (is_app)
+    {
+        if (auto_reporting)
+        {
+            if (is_packaged)
+            {
+                if (network_available)
+                {
+                    notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. The problem has been automatically reported."),
+                                                   g_app_info_get_display_name (app));
+                }
+                else
+                {
+                    notify_body = g_strdup_printf (_("We’re sorry, it looks like %s crashed. The problem will be reported when the internet is available."),
+                                                   g_app_info_get_display_name (app));
+                }
+            }
+            else if (!already_reported)
+            {
+                notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. Please contact the developer if you want to report the issue."),
+                                               g_app_info_get_display_name (app));
+            }
+        }
+        else
+        {
+            if (is_packaged)
+            {
+                notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. If you'd like to help resolve the issue, please send a report."),
+                                               g_app_info_get_display_name (app));
+                report_button = TRUE;
+            }
+            else if (!already_reported)
+            {
+                notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. Please contact the developer if you want to report the issue."),
+                                               g_app_info_get_display_name (app));
+            }
+        }
+        if (is_current_user && !is_running_again)
+            restart_button = TRUE;
+    } else {
+        if (!already_reported)
+        {
+            if (auto_reporting && is_packaged)
+            {
+                if (network_available)
+                {
+                    notify_body = g_strdup (_("We're sorry, it looks like a problem occurred in a component. The problem has been automatically reported."));
+                }
+                else
+                {
+                    notify_body = g_strdup (_("We're sorry, it looks like a problem occurred in a component. The problem will be reported when the internet is available."));
+                }
+            }
+            else if (!auto_reporting && is_packaged)
+            {
+                notify_body = g_strdup (_("We're sorry, it looks like a problem occurred. If you'd like to help resolve the issue, please send a report."));
+                report_button = TRUE;
+            }
+            else
+            {
+                g_autofree char *binary = NULL;
+
+                binary = problem_get_argv0 (abrt_applet_problem_info_get_command_line (problem_info));
+                notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. Please contact the developer if you want to report the issue."),
+                                               binary);
+            }
+        }
+    }
+
+    if (notify_body == NULL)
+    {
+#define BOOL_AS_STR(x)  x ? "true" : "false"
+        log_debug ("Not showing a notification, as we have no message to show:");
+        log_debug ("auto reporting:    %s", BOOL_AS_STR (auto_reporting));
+        log_debug ("network available: %s", BOOL_AS_STR (network_available));
+        log_debug ("is app:            %s", BOOL_AS_STR (is_app));
+        log_debug ("is packaged:       %s", BOOL_AS_STR (is_packaged));
+        log_debug ("is running again:  %s", BOOL_AS_STR (is_running_again));
+        log_debug ("is current user:   %s", BOOL_AS_STR (is_current_user));
+        log_debug ("already reported:  %s", BOOL_AS_STR (already_reported));
+
+        return;
+    }
+
+    notification = new_warn_notification (notify_body);
+    GApplication *application;
+
+    abrt_applet_problem_info_set_announced (problem_info, true);
+
+    if (report_button)
+    {
+        add_send_a_report_button (notification, problem_info);
+    }
+    if (restart_button)
+    {
+        add_restart_app_button (notification, problem_info);
+    }
+
+    add_default_action (notification, problem_info);
+
+    log_debug ("Showing a notification");
+    application = g_application_get_default ();
+    g_application_send_notification (application, NULL, notification);
+}
+
+static void
+abrt_applet_application_send_problem_notifications (GList *problems)
+{
     if (problems == NULL)
     {
         log_debug ("Not showing any notification bubble because the list of problems is empty.");
         return;
     }
 
-    auto_reporting = is_autoreporting_enabled ();
-    network_available = is_networking_enabled ();
-
     for (GList *iter = g_list_reverse (problems); iter; iter = g_list_next (iter))
     {
-        g_autofree char *notify_body = NULL;
-        g_autoptr (GAppInfo) app = NULL;
-        g_autoptr (AbrtAppletProblemInfo) problem_info = NULL;
-        g_autoptr (GNotification) notification = NULL;
-
-        problem_info = iter->data;
-
-        if (abrt_applet_problem_info_is_announced (problem_info))
-        {
-            g_clear_object (&problem_info);
-            continue;
-        }
-
-        app = problem_create_app_from_env (abrt_applet_problem_info_get_environment (problem_info),
-                                           abrt_applet_problem_info_get_pid (problem_info));
-        if (app == NULL)
-        {
-            const char *const cmd_line = abrt_applet_problem_info_get_command_line (problem_info);
-            if (cmd_line != NULL)
-            {
-                app = problem_create_app_from_cmdline (cmd_line);
-            }
-        }
-
-        /* For each problem we'll need to know:
-         * - Whether or not the crash happened in an “app”
-         * - Whether the app is packaged (in Fedora) or not
-         * - Whether the app is back up and running
-         * - Whether the user is the one for which the app crashed
-         * - Whether the problem has already been reported on this machine
-         */
-        gboolean is_app = (app != NULL);
-        gboolean is_packaged = abrt_applet_problem_info_is_packaged (problem_info);;
-        gboolean is_running_again = is_app_running(app);
-        gboolean is_current_user = !abrt_applet_problem_info_is_foreign (problem_info);
-        gboolean already_reported = abrt_applet_problem_info_get_count (problem_info) > 1;
-
-        gboolean report_button = FALSE;
-        gboolean restart_button = FALSE;
-
-        if (is_app)
-        {
-            if (auto_reporting)
-            {
-                if (is_packaged)
-                {
-                    if (network_available)
-                    {
-                        notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. The problem has been automatically reported."),
-                                                       g_app_info_get_display_name (app));
-                    }
-                    else
-                    {
-                        notify_body = g_strdup_printf (_("We’re sorry, it looks like %s crashed. The problem will be reported when the internet is available."),
-                                                       g_app_info_get_display_name (app));
-                    }
-                }
-                else if (!already_reported)
-                {
-                    notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. Please contact the developer if you want to report the issue."),
-                                                   g_app_info_get_display_name (app));
-                }
-            }
-            else
-            {
-                if (is_packaged)
-                {
-                    notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. If you'd like to help resolve the issue, please send a report."),
-                                                   g_app_info_get_display_name (app));
-                    report_button = TRUE;
-                }
-                else if (!already_reported)
-                {
-                    notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. Please contact the developer if you want to report the issue."),
-                                                   g_app_info_get_display_name (app));
-                }
-            }
-            if (is_current_user && !is_running_again)
-                restart_button = TRUE;
-        } else {
-            if (!already_reported)
-            {
-                if (auto_reporting && is_packaged)
-                {
-                    if (network_available)
-                    {
-                        notify_body = g_strdup (_("We're sorry, it looks like a problem occurred in a component. The problem has been automatically reported."));
-                    }
-                    else
-                    {
-                        notify_body = g_strdup (_("We're sorry, it looks like a problem occurred in a component. The problem will be reported when the internet is available."));
-                    }
-                }
-                else if (!auto_reporting && is_packaged)
-                {
-                    notify_body = g_strdup (_("We're sorry, it looks like a problem occurred. If you'd like to help resolve the issue, please send a report."));
-                    report_button = TRUE;
-                }
-                else
-                {
-                    g_autofree char *binary = NULL;
-
-                    binary = problem_get_argv0 (abrt_applet_problem_info_get_command_line (problem_info));
-                    notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. Please contact the developer if you want to report the issue."),
-                                                   binary);
-                }
-            }
-        }
-
-        if (notify_body == NULL)
-        {
-#define BOOL_AS_STR(x)  x ? "true" : "false"
-            log_debug ("Not showing a notification, as we have no message to show:");
-            log_debug ("auto reporting:    %s", BOOL_AS_STR (auto_reporting));
-            log_debug ("network available: %s", BOOL_AS_STR (network_available));
-            log_debug ("is app:            %s", BOOL_AS_STR (is_app));
-            log_debug ("is packaged:       %s", BOOL_AS_STR (is_packaged));
-            log_debug ("is running again:  %s", BOOL_AS_STR (is_running_again));
-            log_debug ("is current user:   %s", BOOL_AS_STR (is_current_user));
-            log_debug ("already reported:  %s", BOOL_AS_STR (already_reported));
-
-            continue;
-        }
-
-        notification = new_warn_notification (notify_body);
-        GApplication *application;
-
-        abrt_applet_problem_info_set_announced (problem_info, true);
-
-        if (report_button)
-        {
-            add_send_a_report_button (notification, problem_info);
-        }
-        if (restart_button)
-        {
-            add_restart_app_button (notification, problem_info);
-        }
-
-        add_default_action (notification, problem_info);
-
-        log_debug ("Showing a notification");
-        application = g_application_get_default ();
-        g_application_send_notification (application, NULL, notification);
+        abrt_applet_application_send_problem_notification (iter->data);
     }
 
     g_list_free (problems);
-}
-
-static void
-notify_problem (AbrtAppletProblemInfo *problem_info)
-{
-    GList *problems;
-
-    problems = g_list_prepend (NULL, problem_info);
-
-    notify_problem_list(problems);
 }
 
 /* Event-processing child output handler */
@@ -853,7 +841,7 @@ handle_event_output_cb (GIOChannel   *gio,
         abrt_applet_problem_info_set_reported (problem_info, true);
 
         log_debug ("fast report finished successfully");
-        notify_problem (problem_info);
+        abrt_applet_application_send_problem_notification (problem_info);
     }
     else
     {
@@ -983,16 +971,6 @@ abrt_applet_application_report_problems (GList *problems)
 }
 
 static void
-show_problem_notification (AbrtAppletProblemInfo *problem_info)
-{
-    GList *problems;
-
-    problems = g_list_prepend (NULL, problem_info);
-
-    notify_problem_list (problems);
-}
-
-static void
 handle_message (GDBusConnection *connection,
                 const gchar     *sender_name,
                 const gchar     *object_path,
@@ -1073,7 +1051,7 @@ handle_message (GDBusConnection *connection,
     {
         abrt_applet_application_report_problem (problem_info);
     }
-    show_problem_notification (problem_info);
+    abrt_applet_application_send_problem_notification (problem_info);
 }
 
 static void
@@ -1146,7 +1124,7 @@ process_new_dirs (void)
     if (notify_list != NULL)
     {
         abrt_applet_application_report_problems (notify_list);
-        notify_problem_list (notify_list);
+        abrt_applet_application_send_problem_notifications (notify_list);
     }
 
     libreport_list_free_with_free (new_dirs);
