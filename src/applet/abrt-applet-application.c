@@ -69,7 +69,7 @@ static bool g_gnome_abrt_available;
 static bool g_user_is_admin;
 
 static void abrt_applet_application_report_problems (GList *problems);
-static void show_problem_list_notification (GList *problems);
+static void notify_problem_list (GList *problems);
 
 static gboolean
 process_deferred_queue (gpointer user_data)
@@ -85,7 +85,7 @@ process_deferred_queue (gpointer user_data)
      * g_deferred_crash_queue but the function also modifies the argument
      * so we must reset g_deferred_crash_queue before the call */
     abrt_applet_application_report_problems (tmp);
-    show_problem_list_notification (tmp);
+    notify_problem_list (tmp);
 
     return G_SOURCE_REMOVE;
 }
@@ -612,7 +612,7 @@ notify_problem_list (GList *problems)
     auto_reporting = is_autoreporting_enabled ();
     network_available = is_networking_enabled ();
 
-    for (GList *iter = problems; iter; iter = g_list_next (iter))
+    for (GList *iter = g_list_reverse (problems); iter; iter = g_list_next (iter))
     {
         g_autofree char *notify_body = NULL;
         g_autoptr (GAppInfo) app = NULL;
@@ -983,24 +983,13 @@ abrt_applet_application_report_problems (GList *problems)
 }
 
 static void
-show_problem_list_notification (GList *problems)
-{
-    problems = g_list_reverse (problems);
-
-    if (problems != NULL)
-    {
-        notify_problem_list (problems);
-    }
-}
-
-static void
 show_problem_notification (AbrtAppletProblemInfo *problem_info)
 {
     GList *problems;
 
     problems = g_list_prepend (NULL, problem_info);
 
-    show_problem_list_notification(problems);
+    notify_problem_list (problems);
 }
 
 static void
@@ -1157,7 +1146,7 @@ process_new_dirs (void)
     if (notify_list != NULL)
     {
         abrt_applet_application_report_problems (notify_list);
-        show_problem_list_notification (notify_list);
+        notify_problem_list (notify_list);
     }
 
     libreport_list_free_with_free (new_dirs);
