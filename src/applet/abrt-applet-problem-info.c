@@ -10,7 +10,6 @@ struct _AbrtAppletProblemInfo
     problem_data_t *problem_data;
     bool foreign;
     int count;
-    bool packaged;
     char **envp;
     pid_t pid;
     bool known;
@@ -73,7 +72,7 @@ abrt_applet_problem_info_is_packaged (AbrtAppletProblemInfo *self)
 {
     g_return_val_if_fail (ABRT_APPLET_IS_PROBLEM_INFO (self), false);
 
-    return self->packaged;
+    return problem_data_get_content_or_NULL (self->problem_data, FILENAME_COMPONENT) != NULL;
 }
 
 bool
@@ -207,15 +206,6 @@ abrt_applet_problem_info_set_known (AbrtAppletProblemInfo *self,
     g_return_if_fail (ABRT_APPLET_IS_PROBLEM_INFO (self));
 
     self->known = known;
-}
-
-void
-abrt_applet_problem_info_set_packaged (AbrtAppletProblemInfo *self,
-                                       bool                   packaged)
-{
-    g_return_if_fail (ABRT_APPLET_IS_PROBLEM_INFO (self));
-
-    self->packaged = packaged;
 }
 
 void
