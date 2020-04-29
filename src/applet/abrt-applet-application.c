@@ -700,10 +700,13 @@ abrt_applet_application_send_problem_notification (AbrtAppletApplication *self,
             }
             else
             {
+                const char *executable;
                 g_autofree char *binary = NULL;
 
-                binary = problem_get_argv0 (abrt_applet_problem_info_get_command_line (problem_info));
-                notify_body = g_strdup_printf (_("We're sorry, it looks like %s crashed. Please contact the developer if you want to report the issue."),
+                executable = abrt_applet_problem_info_get_executable (problem_info);
+                binary = g_path_get_basename (executable);
+
+                notify_body = g_strdup_printf (_("We're sorry, it looks like “%s” crashed. Please contact the developer if you want to report the issue."),
                                                binary);
             }
         }
