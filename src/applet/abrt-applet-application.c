@@ -994,43 +994,22 @@ handle_message (GDBusConnection *connection,
                 GVariant        *parameters,
                 gpointer         user_data)
 {
-    const char *package_name;
-    const char *dir;
-    const char *uid_str;
-    const char *uuid;
-    const char *duphash;
-    AbrtAppletProblemInfo *problem_info;
+    const char *problem_object_path;
+    uint32_t uid;
+    bool foreign_problem;
+    g_autoptr (GError) error = NULL;
+    g_autoptr (GDBusProxy) proxy = NULL;
+    g_autoptr (GVariant) variant = NULL;
+    g_autoptr (GVariant) id_variant = NULL;
+    const char *id;
+    g_autoptr (AbrtAppletProblemInfo) problem_info = NULL;
     AbrtAppletApplication *self;
 
-    g_debug ("Received signal: sender_name: %s, object_path: %s, "
-             "interface_name: %s, signal_name: %s",
-             sender_name, object_path, interface_name, signal_name);
+    g_variant_get (parameters, "(&oi)",
+                   &problem_object_path,
+                   &uid);
 
-    log_debug ("Crash recorded");
-
-    g_variant_get (parameters, "(&s&s&s&s&s)",
-                   &package_name,
-                   &dir,
-                   &uid_str,
-                   &uuid,
-                   &duphash);
-
-    bool foreign_problem = false;
-    if (uid_str[0] != '\0')
-    {
-        char *end;
-        unsigned long uid_num;
-
-        errno = 0;
-
-        uid_num = strtoul (uid_str, &end, 10);
-
-        if (errno != 0 || *end != '\0' || uid_num != getuid ())
-        {
-            foreign_problem = true;
-            log_notice ("foreign problem %i", foreign_problem);
-        }
-    }
+    foreign_problem = uid != getuid ();
 
     /* Non-admins shouldn't see other people's crashes */
     if (foreign_problem && !g_user_is_admin)
@@ -1038,20 +1017,47 @@ handle_message (GDBusConnection *connection,
         return;
     }
 
-    problem_info = abrt_applet_problem_info_new (dir);
+    proxy = g_dbus_proxy_new_sync (connection, G_DBUS_PROXY_FLAGS_NONE, NULL,
+                                   "org.freedesktop.problems",
+                                   problem_object_path,
+                                   "org.freedesktop.Problems2", NULL, &error);
+    if (NULL == proxy)
+    {
+        g_message ("Constructing D-Bus problem object proxy failed: %s", error->message);
+
+        return;
+    }
+    variant = g_dbus_connection_call_sync (connection,
+                                           "org.freedesktop.problems",
+                                           problem_object_path,
+                                           "org.freedesktop.DBus.Properties",
+                                           "Get",
+                                           g_variant_new ("(ss)",
+                                                          "org.freedesktop.Problems2.Entry",
+                                                          "ID"),
+                                           G_VARIANT_TYPE ("(v)"),
+                                           G_DBUS_CALL_FLAGS_NONE,
+                                           -1,
+                                           NULL,
+                                           &error);
+    if (NULL == variant)
+    {
+        g_message ("Getting ID property for problem entry %s failed: %s",
+                   problem_object_path, error->message);
+
+        return;
+    }
+
+    g_variant_get (variant, "(v)", &id_variant);
+    g_variant_get (id_variant, "&s", &id);
+
+    problem_info = abrt_applet_problem_info_new (id);
+    self = user_data;
 
     abrt_applet_problem_info_load_over_dbus (problem_info);
 
     abrt_applet_problem_info_set_foreign (problem_info, foreign_problem);
 
-    self = user_data;
-
-    /*
-     * Can't append dir to the seen list because of directory stealing
-     *
-     * append_dirlist(dir);
-     *
-     */
     if (is_autoreporting_enabled ())
     {
         abrt_applet_application_report_problem (self, problem_info);
@@ -1162,9 +1168,9 @@ abrt_applet_application_startup (GApplication *application)
 
     self->filter_id = g_dbus_connection_signal_subscribe (self->connection,
                                                           NULL,
-                                                          ABRT_DBUS_NAME,
+                                                          "org.freedesktop.Problems2",
                                                           "Crash",
-                                                          ABRT_DBUS_OBJECT,
+                                                          "/org/freedesktop/Problems2",
                                                           NULL,
                                                           G_DBUS_SIGNAL_FLAGS_NONE,
                                                           handle_message,
