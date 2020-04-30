@@ -42,8 +42,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-04-03 12:40+0000\n"
-"Last-Translator: Facundo <facevedo@disroot.org>\n"
+"PO-Revision-Date: 2020-04-16 18:40+0000\n"
+"Last-Translator: Emilio Herrera <ehespinosa57@gmail.com>\n"
 "Language-Team: Spanish <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/es/>\n"
 "Language: es\n"
@@ -51,7 +51,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.11.3\n"
+"X-Generator: Weblate 4.0.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -2302,10 +2302,8 @@ msgid "built-in output format"
 msgstr "formato de salida interno"
 
 #: ../src/cli/abrtcli/cli/__init__.py:79
-#, fuzzy
-#| msgid "Make the problem directory world readable"
 msgid "path to the problem directory, problem ID or wildcard"
-msgstr "Hacer la carpeta de problemas legible por todos"
+msgstr "ruta al directorio del problema, ID de problema o comodín"
 
 #: ../src/cli/abrtcli/cli/backtrace.py:35
 msgid "Problem has no backtrace"
@@ -2316,18 +2314,12 @@ msgid "Start retracing process?"
 msgstr "¿Iniciar el proceso de obtención de trazas?"
 
 #: ../src/cli/abrtcli/cli/gdb.py:25
-#, fuzzy
-#| msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgid "install debuginfo packages before launching GDB"
-msgstr "Descargue paquetes de depuración y genere trazado local mediante GDB"
+msgstr "instalar paquetes de depuración antes de lanzar GDB"
 
 #: ../src/cli/abrtcli/cli/gdb.py:38
-#, fuzzy
-#| msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
 msgid "The problem is not of a C/C++ type. Can't run GDB"
-msgstr ""
-"{} problema no es del tipo C/C++. No se puede instalar información de "
-"depuración"
+msgstr "El problema no es del tipo C/C++. No se puede ejecutar GDB"
 
 #: ../src/cli/abrtcli/cli/gdb.py:52
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:45
@@ -2339,11 +2331,9 @@ msgstr ""
 "Si es un problema de sistema, pruebe a ejecutar el comando como root"
 
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:36
-#, fuzzy
-#| msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
 msgid "The problem is not of a C/C++ type. Can't install debuginfo"
 msgstr ""
-"{} problema no es del tipo C/C++. No se puede instalar información de "
+"El problema no es del tipo C/C++. No se puede instalar información de "
 "depuración"
 
 #: ../src/cli/abrtcli/cli/list.py:34
@@ -2351,10 +2341,8 @@ msgid "No problems"
 msgstr "No hay problemas"
 
 #: ../src/cli/abrtcli/cli/remove.py:22
-#, fuzzy
-#| msgid "Do not prompt before removal"
 msgid "do not prompt before removal"
-msgstr "No preguntar antes de borrar"
+msgstr "no preguntar antes de borrar"
 
 #: ../src/cli/abrtcli/cli/remove.py:37
 msgid "Are you sure you want to delete this problem?"
@@ -2365,46 +2353,34 @@ msgid "Removed"
 msgstr "Borrado"
 
 #: ../src/cli/abrtcli/cli/report.py:23
-#, fuzzy
-#| msgid "Remove PROBLEM_DIR after reporting"
 msgid "remove after reporting"
-msgstr "Elimina PROBLEM_DIR después de reportarlo"
+msgstr "elimina después de reportarlo"
 
 #: ../src/cli/abrtcli/cli/report.py:25
-#, fuzzy
-#| msgid "Not reportable"
 msgid "ignore unreportable state"
-msgstr "No se puede informar"
+msgstr "ignorar estado no reportable"
 
 #: ../src/cli/abrtcli/cli/report.py:41
-#, fuzzy, python-brace-format
-#| msgid "Problem '%s' cannot be reported"
+#, python-brace-format
 msgid "Problem '{0}' cannot be reported"
-msgstr "No se puede informar del problema '%s'"
+msgstr "No se puede informar del problema '{0}'"
 
 #: ../src/cli/abrtcli/cli/report.py:50
-#, fuzzy, python-format
-#| msgid "Report problem"
+#, python-format
 msgid "Reporting problem %s\n"
-msgstr "Informar de problema"
+msgstr "Informando de problema %s\n"
 
 #: ../src/cli/abrtcli/cli/retrace.py:24
-#, fuzzy
-#| msgid "Perform local retracing"
 msgid "perform retracing locally"
-msgstr "Realiza una traza local"
+msgstr "realiza traza localmente"
 
 #: ../src/cli/abrtcli/cli/retrace.py:26
-#, fuzzy
-#| msgid "Send core dump to remote retrace server for analysis"
 msgid "submit core dump for remote retracing"
-msgstr "Enviar volcado de memoria al servidor retrace remoto para su análisis"
+msgstr "enviar volcado de memoria para traza remota"
 
 #: ../src/cli/abrtcli/cli/retrace.py:29
-#, fuzzy
-#| msgid "Local retracing"
 msgid "force retracing"
-msgstr "Traza local"
+msgstr "forzar traza"
 
 #: ../src/cli/abrtcli/cli/retrace.py:47
 msgid "Problem already has a backtrace"
@@ -2443,21 +2419,17 @@ msgid "Local retracing"
 msgstr "Traza local"
 
 #: ../src/cli/abrtcli/cli/status.py:17
-#, fuzzy
-#| msgid "List only not-reported problems"
 msgid "show only the number of problems"
-msgstr "Listar únicamente problemas no reportados"
+msgstr "mostrar únicamente el número de problemas"
 
 #: ../src/cli/abrtcli/cli/status.py:19
 msgid "only show output if at least one problem is found"
-msgstr ""
+msgstr "solo mostrar la salida si se ha encontrado al menos un problema"
 
 #: ../src/cli/abrtcli/cli/status.py:40
-#, fuzzy
-#| msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
 msgid "ABRT has detected a problem. For more information, run “abrt list{}”"
 msgstr ""
-"ABRT ha detectado {} problema(s). Para más información ejecute: abrt list{}"
+"ABRT ha detectado un problema. Para más información ejecute \"abrt list{}\""
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""

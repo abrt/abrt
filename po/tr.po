@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-04-11 16:40+0000\n"
+"PO-Revision-Date: 2020-04-23 00:40+0000\n"
 "Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
 "Language-Team: Turkish <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/tr/>\n"
@@ -29,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
-"X-Generator: Weblate 3.11.3\n"
+"X-Generator: Weblate 4.0.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -214,9 +214,9 @@ msgid ""
 "uReports are sent automatically immediately after problem detection."
 msgstr ""
 "uReport bir sorunun kısa ve tamamen anonim bir açıklamasıdır. ABRT "
-"uReport'ları hızlı küresel kopya tespiti için kullanır. Varsayılan "
-"yapılandırmada uReport bildirme işleminin başında gönderilir. Bu özellik "
-"etkin olduğunda uReport'lar sorun tespitinden hemen sonra otomatikman "
+"uReport'ları hızlı küresel yinelenme tespiti için kullanır. Öntanımlı "
+"yapılandırmada uReport raporlama işleminin başında gönderilir. Bu özellik "
+"etkin olduğunda uReport'lar sorun tespitinden hemen sonra otomatik olarak "
 "gönderilir."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
@@ -225,10 +225,10 @@ msgid ""
 "in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
-"Bu özellik etkinleştirildiğinde uReport gönderildikten sonra sorun bildirim "
-"balonundan Bildir düğmesine tıklatılarak başlatılan bildirme işlemi yarıda "
-"kalacaktır. Tam rapor göndermek için varsayılan sorun tarayıcısını her zaman "
-"kullanabilirsiniz."
+"Bu özellik etkinleştirildiğinde, sorun bildirim balonundan Bildir düğmesine "
+"tıklayarak başlatılan bildirme işlemi uReport gönderildikten sonra yarıda "
+"kesilecektir. Tam rapor göndermek için öntanımlı sorun tarayıcısını her "
+"zaman kullanabilirsiniz."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
@@ -398,8 +398,8 @@ msgstr "'%s' elemanında değişiklik yapılamıyor"
 #: ../src/dbus/abrt-dbus.c:506
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
-"Chowning dizini başarısız oldu. Daha fazla ayrıntı için sistem günlüklerini "
-"kontrol edin."
+"Dizinin sahibi değiştirilemedi. Daha fazla ayrıntı için sistem günlüklerine "
+"bakın."
 
 #: ../src/dbus/abrt-dbus.c:635
 #, c-format
@@ -421,8 +421,8 @@ msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr ""
-"'%s' ismi kaybedildi, lütfen ismin sahibi başka bir servisin çalışıp "
-"çalışmadığını kontrol edin.\n"
+"'%s' ismi kaybedildi, lütfen ismin sahibi başka bir hizmetin çalışıp "
+"çalışmadığını denetleyin.\n"
 
 #: ../src/dbus/abrt-dbus.c:1023 ../src/daemon/abrtd.c:753
 msgid "Exit after NUM seconds of inactivity"
@@ -502,11 +502,11 @@ msgstr "Arka planda çalıştır"
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr "Eş zamanlı çalışan işçi sayısı. Varsayılan: "
+msgstr "Eş zamanlı çalışan işçi sayısı. Öntanımlı olarak: "
 
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr "MiB olarak azami önbellek boyutu. Varsayılan: "
+msgstr "MiB olarak azami önbellek boyutu. Öntanımlı olarak: "
 
 #: ../src/daemon/abrt-auto-reporting.c:198
 #: ../src/daemon/abrt-auto-reporting.c:206
@@ -925,7 +925,7 @@ msgstr "gdb NUM saniyeden fazla süredir çalışıyorsa sonlandır"
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr "Yığın geri izlemesi oluşturuldu ve kaydedildi, %u byte"
+msgstr "Yığın geri izlemesi oluşturuldu ve kaydedildi, %u bayt"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:40
 msgid ""
@@ -986,7 +986,7 @@ msgstr "debuginfo dosyası eksik: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:176
 msgid "All debuginfo files are available"
-msgstr "Tüm debuginfo dosyaları mevcut"
+msgstr "Tüm debuginfo dosyaları kullanılabilir"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:190
 #, c-format
@@ -1038,19 +1038,19 @@ msgstr ""
 "    -v          Ayrıntılı ol\n"
 "    -y          Etkileşimsiz, tüm soruların 'Evet' olarak cevaplandığını "
 "varsay\n"
-"    --ids       Varsayılan: build_ids\n"
-"    --tmpdir    Varsayılan: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"    --ids       Öntanımlı olarak: build_ids\n"
+"    --tmpdir    Öntanımlı olarak: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
 "RASTGELE_SON_EK\n"
 "    --cache     İki nokta üst üste ile ayrılmış dizin listesi. İlki kurulan "
 "debuginfo'ları\n"
 "                kaydetmek için kullanılır.\n"
-"                Varsayılan: /var/cache/abrt-di\n"
-"    --size_mb   Varsayılan: 4096\n"
-"    --pkgmgr    Varsayılan: CCpp.conf dosyasındaki paket yöneticisi veya "
-"'dnf'\n"
+"                Öntanımlı olarak: /var/cache/abrt-di\n"
+"    --size_mb   Öntanımlı olarak: 4096\n"
+"    --pkgmgr    Öntanımlı olarak: CCpp.conf dosyasındaki paket yöneticisi "
+"veya 'dnf'\n"
 "    -e,--exact  Sadece belirtilen dosyaları indir\n"
 "    --repo      Depolar aranırken kullanılacak kalıp.\n"
-"                Varsayılan: *debug*\n"
+"                Öntanımlı olarak: *debug*\n"
 "    --releasever DAĞITIM_SÜRÜMÜ\n"
 "                Paket yöneticilerine bu işletim sistemi sürümünü aktar.\n"
 
@@ -1078,7 +1078,7 @@ msgstr "Etkileşimsiz, tüm soruların 'Evet' olarak cevaplandığını varsay"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
 msgid "- means STDIN, default: build_ids"
-msgstr "- STDIN anlamına gelir, varsayılan: build_ids"
+msgstr "- STDIN anlamına gelir, öntanımlı olarak: build_ids"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
 msgid "Download only specified files"
@@ -1086,7 +1086,7 @@ msgstr "Sadece belirtilen dosyaları indir"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:71
 msgid "Pattern to use when searching for repos, default: *debug*"
-msgstr "Depolar aranırken kullanılacak kalıp, varsayılan: *debug*"
+msgstr "Depolar aranırken kullanılacak kalıp, öntanımlı olarak: *debug*"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:72
 msgid "Ignored option"
@@ -1206,7 +1206,7 @@ msgstr "Klavye ile gönderilen sinyal"
 #: ../src/plugins/abrt-gdb-exploitable:549
 #: ../src/plugins/abrt-gdb-exploitable:574
 msgid "Job control signal sent by kernel"
-msgstr "Çekirdek (kernel) tarafından gönderilen iş kontrol sinyali"
+msgstr "Çekirdek (kernel) tarafından gönderilen iş denetim sinyali"
 
 #: ../src/plugins/abrt-gdb-exploitable:553
 #: ../src/plugins/abrt-gdb-exploitable:582
@@ -1376,7 +1376,7 @@ msgstr "Sorun dizini oluşturma sayısını saniyede 1 taneyle sınırla"
 
 #: ../src/plugins/abrt-dump-oops.c:107 ../src/plugins/abrt-dump-xorg.c:57
 msgid "Print search string(s) to stdout and exit"
-msgstr "Arama dizgi(ler)ini standart çıktıya yazdır ve çık"
+msgstr "Arama dizge(ler)ini standart çıktıya yazdır ve çık"
 
 #: ../src/plugins/abrt-dump-oops.c:127
 #: ../src/plugins/abrt-dump-journal-oops.c:128
@@ -1442,9 +1442,9 @@ msgstr ""
 "her ikisi de ilk okunan mesajı belirttiği için -c ve -e seçenekleri "
 "çakışmaktadır.\n"
 "\n"
-"-e sadece -f için faydalıdır, çünkü son görülen konum mevcut değilse "
-"günlüğü\n"
-"takip etme tüm günlüğü okuyarak başlar.\n"
+"-e sadece -f için faydalıdır, çünkü son görülen konum kullanılabilir "
+"değilse\n"
+"günlüğü takip etme tüm günlüğü okuyarak başlar.\n"
 "\n"
 "En son görülen konum şuraya kaydedilir: "
 
@@ -1478,7 +1478,8 @@ msgstr ""
 #: ../src/plugins/abrt-dump-journal-xorg.c:199
 msgid "Follow systemd-journal from the last seen position (if available)"
 msgstr ""
-"systemd-journal'ı (eğer mevcutsa) en son görülen konumdan itibaren takip et"
+"systemd-journal'ı (kullanılabilirse) en son görülen konumdan itibaren takip "
+"et"
 
 #: ../src/plugins/abrt-dump-journal-core.c:570
 #: ../src/plugins/abrt-dump-journal-oops.c:234
@@ -1554,9 +1555,9 @@ msgstr ""
 "her ikisi de ilk okunan mesajı belirttiği için -c ve -e seçenekleri "
 "çakışmaktadır.\n"
 "\n"
-"-e sadece -f için faydalıdır, çünkü son görülen konum mevcut değilse "
-"günlüğü\n"
-"takip etme tüm günlüğü okuyarak başlar.\n"
+"-e sadece -f için faydalıdır, çünkü son görülen konum kullanılabilir "
+"değilse\n"
+"günlüğü takip etme tüm günlüğü okuyarak başlar.\n"
 "\n"
 "En son görülen konum şuraya kaydedilir: "
 
@@ -1600,8 +1601,8 @@ msgstr ""
 "her ikisi de ilk okunan mesajı belirttiği için -c ve -e seçenekleri "
 "çakışmaktadır.\n"
 "\n"
-"e sadece -f için faydalıdır, çünkü son görülen konum mevcut değilse günlüğü\n"
-"takip etme tüm günlüğü okuyarak başlar.\n"
+"e sadece -f için faydalıdır, çünkü son görülen konum kullanılabilir değilse\n"
+"günlüğü takip etme tüm günlüğü okuyarak başlar.\n"
 "\n"
 "En son görülen konum %s dosyasına kaydedilir\n"
 "\n"
@@ -1898,7 +1899,7 @@ msgid ""
 "uploading the archive"
 msgstr ""
 "arşivi karşıya yüklemeden önce retrace sunucusu verilen paketi işleyebilir "
-"mi diye kontrol etme"
+"mi diye denetleme"
 
 #: ../src/plugins/abrt-retrace-client.c:1261
 msgid "retrace server URI"
@@ -2227,11 +2228,11 @@ msgstr "sadece eşleşen yürütülebilir dosyayla ilgili sorunları göster"
 
 #: ../src/cli/abrtcli/cli/__init__.py:71
 msgid "output format"
-msgstr "çıktı formatı"
+msgstr "çıktı biçimi"
 
 #: ../src/cli/abrtcli/cli/__init__.py:74
 msgid "built-in output format"
-msgstr "gömülü çıktı formatı"
+msgstr "gömülü çıktı biçimi"
 
 #: ../src/cli/abrtcli/cli/__init__.py:79
 msgid "path to the problem directory, problem ID or wildcard"
@@ -2436,8 +2437,8 @@ msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
 msgstr ""
-"/etc dizininde vimrc ve gvimrc dosyalarını kontrol et ve onları sırasıyla "
-"system_vimrc ve system_gvimrc olarak kaydet."
+"/etc dizininde vimrc ve gvimrc dosyaları olup olmadığını denetler ve onları "
+"sırasıyla system_vimrc ve system_gvimrc olarak kaydeder."
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid "Collect yours vim configuration files"
@@ -2452,8 +2453,8 @@ msgid ""
 "Checks if there are .vimrc and .gvimrc in your home directory and saves them "
 "as user_vimrc and user_gvimrc, respectively."
 msgstr ""
-"Ana dizinde .vimrc ve .gvimrc dosyalarını kontrol et ve onları sırasıyla "
-"user_vimrc ve user_gvimrc olarak kaydet."
+"Ev dizininde .vimrc ve .gvimrc dosyalarının olup olmadığını denetler ve "
+"onları sırasıyla user_vimrc ve user_gvimrc olarak kaydeder."
 
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"

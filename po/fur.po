@@ -1,18 +1,19 @@
-# Fabio Tomat <f.t.public@gmail.com>, 2019. #zanata
+# Fabio Tomat <f.t.public@gmail.com>, 2019. #zanata, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2019-08-06 10:36+0000\n"
+"PO-Revision-Date: 2020-04-23 00:40+0000\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
-"Language-Team: Friulian\n"
+"Language-Team: Friulian <https://translate.fedoraproject.org/projects/abrt/"
+"abrt/fur/>\n"
 "Language: fur\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.0.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -24,11 +25,13 @@ msgstr "Visualize e segnale i colàs des aplicazions"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
-msgstr ""
+msgstr "Jessi prolìs"
 
 #: ../src/applet/abrt-applet-application.c:167
 msgid "Applet which notifies user when new problems are detected by ABRT"
 msgstr ""
+"Applet che e notifiche l'utent cuant che gnûfs problemis a vegnin rilevâts "
+"di ABRT"
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
@@ -119,7 +122,7 @@ msgstr "Impussibil stabilî la codifiche sul canâl gio: %s"
 #: ../src/applet/abrt-applet-application.c:889
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr ""
+msgstr "Impussibil ativâ la modalitât di no-bloc pal canâl gio: %s"
 
 #: ../src/applet/abrt-applet-problem-info.c:259
 #, c-format
@@ -170,6 +173,14 @@ msgid ""
 "With option 'Never' the stack trace will be always generated locally. With "
 "option 'Ask' ABRT will always ask the user."
 msgstr ""
+"Il file dal nuclei di memorie tirât jù al è necessari pe gjenerazion des \""
+"olmis\" de memorie di stack, cheste e je une operazion che e consume spazi e "
+"timp. ABRT al ufrìs un servizi che al gjenere lis olmis dal stack partint "
+"dal nuclei di memorie  ma si à di cjariâ il nuclei di memorie su chest "
+"servizi. Cu la opzion 'Simpri' ABRT al cjariarà simpri il nuclei di memorie "
+"cence domandâ nuie. Cu la opzion 'Mai' lis olmis dal stack a vignaran simpri "
+"gjeneradis in locâl. Cu la opzion 'Domande' ABRT al domandarà simpri al "
+"utent ce fâ."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -237,6 +248,9 @@ msgid ""
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
 msgstr ""
+"I problemis incomplets a vegnin rilevâts intant che il computer si sta "
+"distudant o cuant che l'utent al sta jessint. Par podê dâ segnalazions "
+"utilis, ABRT nol permetarà di inviâ chescj problemis."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid "Always"
@@ -253,6 +267,8 @@ msgstr "Domande"
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
 msgid "Upload coredump for backtrace generation"
 msgstr ""
+"Cjarie il nuclei di memorie pe gjenerazion des olmis par tornâ indaûr "
+"(backtrace)"
 
 #: ../src/configuration-gui/system-config-abrt.c:66
 msgid "_Close"
@@ -285,6 +301,10 @@ msgid ""
 "\n"
 "Query package database and save package and component name"
 msgstr ""
+"& [-v] [-c FILECONF] [-r CHROOT] -d CARTELE\n"
+"\n"
+"Interoghe la base di dâts dal pachet e salve il non dal component e dal "
+"pachet"
 
 #: ../src/daemon/abrt-action-save-package-data.c:469
 #: ../src/daemon/abrt-action-save-container-data.c:265
@@ -296,7 +316,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
 msgid "Problem directory"
-msgstr ""
+msgstr "Cartele dal probleme"
 
 #: ../src/daemon/abrt-action-save-package-data.c:470
 msgid "Configuration file"
@@ -312,6 +332,9 @@ msgid ""
 "\n"
 "Save container metadata"
 msgstr ""
+"& [-v] -d CARTELE\n"
+"\n"
+"Salve i metadâts dal contignidôr"
 
 #: ../src/daemon/abrt-action-save-container-data.c:266
 msgid "Root directory for running container commands"
@@ -324,7 +347,7 @@ msgstr "& [opzions]"
 
 #: ../src/daemon/abrt-server.c:1111
 msgid "Use NUM as client uid"
-msgstr ""
+msgstr "Dopre NUM pal uid dal client"
 
 #: ../src/daemon/abrt-server.c:1112 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:176 ../src/plugins/abrt-dump-oops.c:97
@@ -347,7 +370,7 @@ msgstr "'%s' nol è un valit non di element"
 #: ../src/dbus/abrt-dbus.c:187
 #, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr ""
+msgstr "'%s' no je une cartele di probleme valide"
 
 #: ../src/dbus/abrt-dbus.c:240 ../src/dbus/abrt-dbus.c:490
 msgid "Not Authorized"
@@ -386,10 +409,12 @@ msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr ""
+"Il non '%s' al è lât pierdût, controle che altris servizis proprietaris dal "
+"non no sedin in esecuzion.\n"
 
 #: ../src/dbus/abrt-dbus.c:1023 ../src/daemon/abrtd.c:753
 msgid "Exit after NUM seconds of inactivity"
-msgstr ""
+msgstr "Jes dopo NUM seconts di inativitât"
 
 #: ../src/dbus/abrt-dbus.c:1041
 msgid "This program must be run as root."
@@ -424,7 +449,7 @@ msgstr ""
 
 #: ../src/daemon/abrt-handle-event.c:371
 msgid "Run EVENT on DIR"
-msgstr ""
+msgstr "Eseguìs EVENT su DIR"
 
 #: ../src/daemon/abrt-handle-event.c:372
 msgid "Communicate directly to the user"
@@ -452,8 +477,6 @@ msgid ""
 msgstr ""
 
 #: ../src/daemon/abrt-upload-watch.c:281
-#, fuzzy
-#| msgid "Daemize"
 msgid "Daemonize"
 msgstr "Convertî in demoni"
 
@@ -472,11 +495,11 @@ msgstr ""
 
 #: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
-msgstr ""
+msgstr "Al distude la autenticazion"
 
 #: ../src/daemon/abrt-auto-reporting.c:234
 msgid "Red Hat Support user name"
-msgstr ""
+msgstr "Non utent pal Red Hat Support"
 
 #: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
@@ -523,11 +546,11 @@ msgstr "Impussibil continuâ cence password\n"
 #. Print only the part before ':' of a string like "username:password"
 #: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
-msgstr ""
+msgstr "Segnalazion automatiche autenticade cun HTTP"
 
 #: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
-msgstr ""
+msgstr "Segnalazion automatiche autenticade cun client SSL"
 
 #: ../src/daemon/abrt-auto-reporting.c:384
 msgid "anonymous auto reporting"
@@ -548,7 +571,7 @@ msgstr ""
 #: ../src/daemon/abrt-handle-upload.in:166
 #: ../src/daemon/abrt-handle-upload.in:169
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "No je une cartele: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:172
 msgid "Skipping: '{0}' (starts with slash)"
@@ -568,11 +591,11 @@ msgstr "Si salte: '{0}' (al conten spazis)"
 
 #: ../src/daemon/abrt-handle-upload.in:184
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "Saltât: '{0}' (al conten une schede)"
 
 #: ../src/daemon/abrt-handle-upload.in:189
 msgid "Can't change directory to '{0}'"
-msgstr ""
+msgstr "Impussibil lâ te cartele '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:200
 msgid "Unknown file type: '{0}'"
@@ -580,7 +603,7 @@ msgstr "Gjenar di file no cognossût: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:205
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "Impussibil creâ une cartele di lavôr in '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:216
 msgid "Can't move '{0}' to '{1}'"
@@ -613,7 +636,7 @@ msgstr "'{0}' elaborâts cun sucès"
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:259
 msgid "Generating backtrace"
-msgstr ""
+msgstr "Gjenerazion des olmis par tornâ indaûr (backtrace)"
 
 #: ../src/lib/problem_api_dbus.c:42
 #, c-format
@@ -628,12 +651,12 @@ msgstr ""
 #: ../src/lib/problem_api_dbus.c:97
 #, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr ""
+msgstr "No si è rivâts a eliminâ la cartele dal probleme: %s"
 
 #: ../src/lib/problem_api_dbus.c:131
 #, c-format
 msgid "D-Bus GetInfo method call failed: %s"
-msgstr ""
+msgstr "Clamade falide al metodi GetInfo di D-Bus: %s"
 
 #: ../src/lib/problem_api_dbus.c:166
 msgid "Can't get problem data from abrt-dbus"
@@ -691,7 +714,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-backtrace.c:92
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "Analisi des olmis par tornâ indaûr falide par %s"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:152
 msgid "Crash thread not found"
@@ -707,21 +730,21 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-core.in:67
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "Analisi dal nuclei di memorie tirât jù '%s'"
 
 #: ../src/plugins/abrt-action-analyze-core.in:105
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "Al mancje l'id di compilazion: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:137
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr ""
+msgstr "Ûs: %s [-v] [-o FILEJESSUDE] -c COREFILE"
 
 #: ../src/plugins/abrt-action-analyze-core.in:159
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "COREFILE nol è stât specificât"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
@@ -759,7 +782,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:47
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
-msgstr ""
+msgstr "Ûs: {0} [-v[v]] [--core=VMCORE]"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:74
 msgid "File {0} doesn't exist"
@@ -767,7 +790,7 @@ msgstr "File {0} nol esist"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:77
 msgid "Extracting the oops text from core"
-msgstr ""
+msgstr "Estrazion dal test oops dal nuclei"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:82
 msgid ""
@@ -779,11 +802,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:90
 msgid "Can't extract the oops message: '{0}'"
-msgstr ""
+msgstr "Impussibil tirâ fûr il messaç oops: '{0}'"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:93
 msgid "Oops text extracted successfully"
-msgstr ""
+msgstr "Test oops estrat cun sucès"
 
 #: ../src/plugins/abrt-action-check-oops-for-hw-error.in:100
 msgid ""
@@ -804,27 +827,27 @@ msgstr "impussibil vierzi la cartele dal probleme '{0}'"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:121
 msgid "Using product '{0}' from /etc/os-release."
-msgstr ""
+msgstr "Si sta doprant il prodot '{0}' di /etc/os-release."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:123
 msgid "Using product {0}."
-msgstr ""
+msgstr "Si sta doprant il prodot {0}."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:125
 msgid "Using product version {0}."
-msgstr ""
+msgstr "Si sta doprant la version {0} dal prodot."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:137
 msgid "Duplicate bugzilla bug '#{0}' was found"
-msgstr ""
+msgstr "Al è stât cjatât un doplon dal erôr '#{0}' di Bugzilla"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:139
 msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
-msgstr ""
+msgstr "Nol esist nissun erôr di Bugzilla cun 'abrt_hash:{0}'"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:144
 msgid "Warning: abrt-bodhi do not support Product version 'Rawhide'"
-msgstr ""
+msgstr "Atenzion: abrt-bodhi nol supuarte la version 'Rawhide'"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
