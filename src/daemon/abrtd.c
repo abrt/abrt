@@ -174,19 +174,13 @@ static void queue_post_create_process(struct abrt_server_proc *proc)
 
     char *worst_dir = NULL;
     const double max_size = 1024 * 1024 * abrt_g_settings_nMaxCrashReportsSize;
-    while (libreport_get_dirsize_find_largest_dir(abrt_g_settings_dump_location, &worst_dir, ignored) >= max_size
+    while (libreport_get_dirsize_find_largest_dir(abrt_g_settings_dump_location, &worst_dir, ignored, proc->dirname) >= max_size
            && worst_dir)
     {
         const char *kind = "old";
 
         GList *proc_of_deleted_item = NULL;
-        if (proc != NULL && strcmp(worst_dir, proc->dirname) == 0)
-        {
-            kind = "new";
-            stop_abrt_server(proc);
-            proc = NULL;
-        }
-        else if ((proc_of_deleted_item = g_list_find_custom(s_dir_queue, worst_dir, (GCompareFunc)abrt_server_compare_dirname)))
+        if ((proc_of_deleted_item = g_list_find_custom(s_dir_queue, worst_dir, (GCompareFunc)abrt_server_compare_dirname)))
         {
             kind = "unprocessed";
             struct abrt_server_proc *removed_proc = (struct abrt_server_proc *)proc_of_deleted_item->data;

@@ -68,7 +68,7 @@ void abrt_trim_problem_dirs(const char *dirname, double cap_size, const char *ex
     {
         /* We exclude our own dir from candidates for deletion (3rd param): */
         char *worst_basename = NULL;
-        double cur_size = libreport_get_dirsize_find_largest_dir(dirname, &worst_basename, excluded_basename);
+        double cur_size = libreport_get_dirsize_find_largest_dir(dirname, &worst_basename, excluded_basename, NULL);
         if (cur_size <= cap_size || !worst_basename)
         {
             log_info("cur_size:%.0f cap_size:%.0f, no (more) trimming", cur_size, cap_size);
