@@ -12,6 +12,7 @@ jobs:
 
       - name: Install build environment
         run: |
+          dnf --assumeyes install dnf-plugins-core
           dnf --assumeyes copr enable @abrt/devel
           dnf --assumeyes install \
             @c-development @development-tools @rpm-development-tools \
