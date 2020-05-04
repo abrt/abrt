@@ -288,7 +288,6 @@ static SoupURI *build_uri_from_config(struct https_cfg *config,
 
 struct retrace_settings *get_settings(SoupSession *session)
 {
-    struct retrace_settings *settings;
     g_autoptr(SoupURI) uri = NULL;
     g_autoptr(SoupMessage) message = NULL;
     guint response_code;
@@ -297,7 +296,7 @@ struct retrace_settings *get_settings(SoupSession *session)
     char *value;
     const char *row;
 
-    settings = g_malloc0(sizeof(*settings));
+    struct retrace_settings *settings = g_new0(struct retrace_settings, 1);
     uri = build_uri_from_config(&cfg, "settings", NULL);
     message = soup_message_new_from_uri("GET", uri);
 

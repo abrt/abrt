@@ -285,7 +285,7 @@ static gboolean abrt_server_output_cb(GIOChannel *channel, GIOCondition conditio
 
 static void add_abrt_server_proc(const pid_t pid, int fdout)
 {
-    struct abrt_server_proc *proc = g_malloc(sizeof(*proc));
+    struct abrt_server_proc *proc = g_new(struct abrt_server_proc, 1);
     proc->pid = pid;
     proc->fdout = fdout;
     proc->dirname = NULL;

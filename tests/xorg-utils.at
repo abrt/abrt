@@ -61,7 +61,7 @@ void test(const char *backtrace, const char *exp_backtrace,
 
     dd_create_basic_files(dd, (uid_t)-1, NULL);
 
-    struct xorg_crash_info *crash_info = g_malloc(sizeof(struct xorg_crash_info));
+    struct xorg_crash_info *crash_info = g_new(struct xorg_crash_info, 1);
     crash_info->backtrace = g_strdup(backtrace);
     crash_info->reason = g_strdup(reason);
     crash_info->exe = g_strdup(exe);

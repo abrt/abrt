@@ -129,7 +129,7 @@ struct user_info
 
 static struct user_info *user_info_new(void)
 {
-    struct user_info *user = g_malloc0(sizeof(*user));
+    struct user_info *user = g_new0(struct user_info, 1);
     return user;
 }
 
@@ -298,8 +298,7 @@ static AbrtP2Object *abrt_p2_object_new(AbrtP2Service *service,
             void (*destructor)(AbrtP2Object *),
             GError **error)
 {
-    AbrtP2Object *obj = NULL;
-    obj = g_malloc0(sizeof(*obj));
+    AbrtP2Object *obj = g_new0(AbrtP2Object, 1);
     obj->p2o_path = path;
     obj->node = node;
     obj->destructor = destructor;
@@ -836,7 +835,7 @@ static void entry_object_dbus_method_call(GDBusConnection *connection,
     }
     else if (strcmp(method_name, "ReadElements") == 0)
     {
-        struct entry_object_read_elements_context *context = g_malloc(sizeof(*context));
+        struct entry_object_read_elements_context *context = g_new(struct entry_object_read_elements_context, 1);
         context->invocation = g_object_ref(invocation);
         context->elements = g_variant_get_child_value(parameters, 0);
         context->out_fd_list = g_unix_fd_list_new();
@@ -864,7 +863,7 @@ static void entry_object_dbus_method_call(GDBusConnection *connection,
         GDBusMessage *msg = g_dbus_method_invocation_get_message(invocation);
         GUnixFDList *fd_list = g_dbus_message_get_unix_fd_list(msg);
 
-        struct entry_object_save_elements_context *context = g_malloc(sizeof(*context));
+        struct entry_object_save_elements_context *context = g_new(struct entry_object_save_elements_context, 1);
 
         context->invocation = g_object_ref(invocation);
         context->elements = g_variant_get_child_value(parameters, 0);
@@ -1876,7 +1875,7 @@ static void task_object_dbus_method_call(GDBusConnection *connection,
     }
     else if (strcmp("Cancel", method_name) == 0)
     {
-        struct task_cancel_args *tca = g_malloc(sizeof(*tca));
+        struct task_cancel_args *tca = g_new(struct task_cancel_args, 1);
         tca->tca_object = user_data;
         tca->tca_session = g_object_ref(session);
 
