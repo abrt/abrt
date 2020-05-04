@@ -103,7 +103,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 struct abrt_inotify_watch *
 abrt_inotify_watch_init(const char *path, int inotify_flags, abrt_inotify_watch_handler handler, void *user_data)
 {
-    struct abrt_inotify_watch *aiw = g_malloc(sizeof(*aiw));
+    struct abrt_inotify_watch *aiw = g_new(struct abrt_inotify_watch, 1);
     aiw->handler = handler;
     aiw->user_data = user_data;
 

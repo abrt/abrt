@@ -42,7 +42,7 @@ struct oops_text *parse_file(const char *filename)
     if (n != 2)
         goto ret;
 
-    ot = g_malloc0(sizeof(*ot));
+    ot = g_new0(struct oops_text, 1);
     ot->filename = filename;
     ot->panic_no = n1;
     ot->part_no = n2;

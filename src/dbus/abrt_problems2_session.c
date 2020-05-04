@@ -245,7 +245,7 @@ static void check_authorization_callback(GObject *source,
 static void authorization_request_initialize(AbrtP2Session *session, GVariant *parameters)
 {
 #ifdef HAVE_POLKIT
-    struct check_auth_cb_params *auth_rq = g_malloc(sizeof(*auth_rq));
+    struct check_auth_cb_params *auth_rq = g_new(struct check_auth_cb_params, 1);
     auth_rq->session = session;
     auth_rq->cancellable = g_cancellable_new();
 

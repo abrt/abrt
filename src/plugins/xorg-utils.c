@@ -246,7 +246,7 @@ struct xorg_crash_info *process_xorg_bt(char *(*get_next_line)(void *), void *da
 
     if (list)
     {
-        struct xorg_crash_info *crash_info = g_malloc(sizeof(struct xorg_crash_info));
+        struct xorg_crash_info *crash_info = g_new(struct xorg_crash_info, 1);
 
         list = g_list_reverse(list);
         crash_info->backtrace = list2lines(list); /* frees list */
