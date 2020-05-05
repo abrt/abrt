@@ -814,8 +814,8 @@ killall abrt-dbus >/dev/null 2>&1 || :
 
 %dir %{_localstatedir}/lib/abrt
 
-# attr(6755) ~= SETUID|SETGID
-%attr(6755, abrt, abrt) %{_libexecdir}/abrt-action-install-debuginfo-to-abrt-cache
+# attr(2755) ~= SETGID
+%attr(2755, abrt, abrt) %{_libexecdir}/abrt-action-install-debuginfo-to-abrt-cache
 
 %{_bindir}/abrt-action-analyze-c
 %{_bindir}/abrt-action-trim-files

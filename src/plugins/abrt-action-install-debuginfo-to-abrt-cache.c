@@ -78,7 +78,6 @@ int main(int argc, char **argv)
     const gid_t egid = getegid();
     const gid_t rgid = getgid();
     const uid_t euid = geteuid();
-    const gid_t ruid = getuid();
 
     /* We need to open the build ids file under the caller's UID/GID to avoid
      * information disclosures when reading files with changed UID.
@@ -93,16 +92,10 @@ int main(int argc, char **argv)
         if (setregid(egid, rgid) < 0)
             perror_msg_and_die("setregid(egid, rgid)");
 
-        if (setreuid(euid, ruid) < 0)
-            perror_msg_and_die("setreuid(euid, ruid)");
-
         const int build_ids_fd = open(build_ids, O_RDONLY);
 
         if (setregid(rgid, egid) < 0)
             perror_msg_and_die("setregid(rgid, egid)");
-
-        if (setreuid(ruid, euid) < 0 )
-            perror_msg_and_die("setreuid(ruid, euid)");
 
         if (build_ids_fd < 0)
             perror_msg_and_die("Failed to open file '%s'", build_ids);
@@ -155,12 +148,10 @@ int main(int argc, char **argv)
      */
     /* do setregid only if we have to, to not upset selinux needlessly */
     if (egid != rgid)
-        IGNORE_RESULT(setregid(egid, egid));
-    if (euid != ruid)
     {
-        IGNORE_RESULT(setreuid(euid, euid));
-        /* We are suid'ed! */
-        /* Prevent malicious user from messing up with suid'ed process: */
+        IGNORE_RESULT(setregid(egid, egid));
+        /* We are sgid'ed! */
+        /* Prevent malicious user from messing up with sgid'ed process: */
 #if 1
 // We forgot to sanitize PYTHONPATH. And who knows what else we forgot
 // (especially considering *future* new variables of this kind).
