@@ -408,8 +408,8 @@ static int run_post_create(const char *dirname, struct response *resp)
             char *msg = cmd_output->buf;
 
             if (child_is_post_create
-             && libreport_prefixcmp(msg, "DUP_OF_DIR: ") == 0
-            ) {
+             && g_str_has_prefix(msg, "DUP_OF_DIR: "))
+            {
                 free(dup_of_dir);
                 dup_of_dir = g_strdup(msg + strlen("DUP_OF_DIR: "));
             }
@@ -942,11 +942,11 @@ static int perform_http_xact(struct response *rsp)
     /* First line must be "op<space>[http://host]/path<space>HTTP/n.n".
      * <space> is exactly one space char.
      */
-    if (libreport_prefixcmp(messagebuf_data, "DELETE ") == 0)
+    if (g_str_has_prefix(messagebuf_data, "DELETE "))
     {
         messagebuf_data += strlen("DELETE ");
         char *space = strchr(messagebuf_data, ' ');
-        if (!space || libreport_prefixcmp(space+1, "HTTP/") != 0)
+        if (!space || !g_str_has_prefix(space+1, "HTTP/"))
             return 400; /* Bad Request */
         *space = '\0';
         //decode_url(messagebuf_data); %20 => ' '
@@ -959,8 +959,8 @@ static int perform_http_xact(struct response *rsp)
      * "PUT /" implies creation or replace of resource named "/"!
      * Delete PUT in 2014.
      */
-    if (libreport_prefixcmp(messagebuf_data, "PUT ") != 0
-     && libreport_prefixcmp(messagebuf_data, "POST ") != 0
+    if (!g_str_has_prefix(messagebuf_data, "PUT ")
+     && !g_str_has_prefix(messagebuf_data, "POST ")
     ) {
         return 400; /* Bad Request */
     }
@@ -971,9 +971,9 @@ static int perform_http_xact(struct response *rsp)
     };
     int url_type;
     char *url = libreport_skip_non_whitespace(messagebuf_data) + 1; /* skip "POST " */
-    if (libreport_prefixcmp(url, "/creation_notification ") == 0)
+    if (g_str_has_prefix(url, "/creation_notification "))
         url_type = CREATION_NOTIFICATION;
-    else if (libreport_prefixcmp(url, "/ ") == 0)
+    else if (g_str_has_prefix(url, "/ "))
         url_type = CREATION_REQUEST;
     else
         return 400; /* Bad Request */
