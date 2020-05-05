@@ -126,14 +126,14 @@ static char* exec_vp(char **args, int redirect_stderr, int exec_timeout_sec, int
     libreport_ndelay_on(pipeout[0]);
     int t = time(NULL); /* int is enough, no need to use time_t */
     int endtime = t + exec_timeout_sec;
-    struct strbuf *buf_out = libreport_strbuf_new();
+    GString *buf_out = g_string_new(NULL);
     while (1)
     {
         int timeout = endtime - t;
         if (timeout < 0)
         {
             kill(child, SIGKILL);
-            libreport_strbuf_append_strf(buf_out, "\n"
+            g_string_append_printf(buf_out, "\n"
                         "Timeout exceeded: %u seconds, killing %s.\n"
                         "Looks like gdb hung while generating backtrace.\n"
                         "This may be a bug in gdb. Consider submitting a bug report to gdb developers.\n"
@@ -159,7 +159,7 @@ static char* exec_vp(char **args, int redirect_stderr, int exec_timeout_sec, int
             break;
         }
         buff[r] = '\0';
-        libreport_strbuf_append_str(buf_out, buff);
+        g_string_append(buf_out, buff);
  next:
         t = time(NULL);
     }
@@ -169,7 +169,7 @@ static char* exec_vp(char **args, int redirect_stderr, int exec_timeout_sec, int
      * (note that status == NULL is ok too) */
     libreport_safe_waitpid(child, status, 0);
 
-    return libreport_strbuf_free_nobuf(buf_out);
+    return g_string_free(buf_out, FALSE);
 }
 
 char *abrt_run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
@@ -191,14 +191,14 @@ char *abrt_run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
     libreport_ndelay_on(pipeout[0]);
     int t = time(NULL); /* int is enough, no need to use time_t */
     int endtime = t + timeout_sec;
-    struct strbuf *buf_out = libreport_strbuf_new();
+    GString *buf_out = g_string_new(NULL);
     while (1)
     {
         int timeout = endtime - t;
         if (timeout < 0)
         {
             kill(child, SIGKILL);
-            libreport_strbuf_free(buf_out);
+            g_string_free(buf_out, TRUE);
             buf_out = NULL;
             break;
         }
@@ -219,7 +219,7 @@ char *abrt_run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
             break;
         }
         buff[r] = '\0';
-        libreport_strbuf_append_str(buf_out, buff);
+        g_string_append(buf_out, buff);
  next:
         t = time(NULL);
     }
@@ -232,11 +232,11 @@ char *abrt_run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
     if (status != 0 || buf_out == NULL)
     {
         /* unstrip didnt exit with exit code 0, or we timed out */
-        libreport_strbuf_free(buf_out);
+        g_string_free(buf_out, TRUE);
         return NULL;
     }
 
-    return libreport_strbuf_free_nobuf(buf_out);
+    return g_string_free(buf_out, FALSE);
 }
 
 char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *debuginfo_dirs)
@@ -256,19 +256,19 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
     char *args[25];
     args[i++] = (char*)GDB;
     args[i++] = (char*)"-batch";
-    struct strbuf *set_debug_file_directory = libreport_strbuf_new();
+    GString *set_debug_file_directory = g_string_new(NULL);
     unsigned auto_load_base_index = 0;
     if(debuginfo_dirs == NULL)
     {
         // set non-existent debug file directory to prevent resolving
         // function names - we need offsets for core backtrace.
-        libreport_strbuf_append_str(set_debug_file_directory, "set debug-file-directory /");
+        g_string_append(set_debug_file_directory, "set debug-file-directory /");
     }
     else
     {
-        libreport_strbuf_append_str(set_debug_file_directory, "set debug-file-directory /usr/lib/debug:/usr/lib");
+        g_string_append(set_debug_file_directory, "set debug-file-directory /usr/lib/debug:/usr/lib");
 
-        struct strbuf *debug_directories = libreport_strbuf_new();
+        GString *debug_directories = g_string_new(NULL);
         const char *p = debuginfo_dirs;
         while (1)
         {
@@ -277,7 +277,7 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
             if (*p == '\0')
                 break;
             const char *colon_or_nul = strchrnul(p, ':');
-            libreport_strbuf_append_strf(debug_directories,
+            g_string_append_printf(debug_directories,
                                "%s%.*s/usr/lib/debug:%.*s/usr/lib",
                                (debug_directories->len == 0 ? "" : ":"),
                                (int)(colon_or_nul - p), p,
@@ -285,20 +285,20 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
             p = colon_or_nul;
         }
 
-        libreport_strbuf_append_strf(set_debug_file_directory, ":%s", debug_directories->buf);
+        g_string_append_printf(set_debug_file_directory, ":%s", debug_directories->str);
 
         args[i++] = (char*)"-iex";
         auto_load_base_index = i;
-        args[i++] = g_strdup_printf("add-auto-load-safe-path %s", debug_directories->buf);
+        args[i++] = g_strdup_printf("add-auto-load-safe-path %s", debug_directories->str);
         args[i++] = (char*)"-iex";
-        args[i++] = g_strdup_printf("add-auto-load-scripts-directory %s", debug_directories->buf);
+        args[i++] = g_strdup_printf("add-auto-load-scripts-directory %s", debug_directories->str);
 
-        libreport_strbuf_free(debug_directories);
+        g_string_free(debug_directories, TRUE);
     }
 
     args[i++] = (char*)"-ex";
     const unsigned debug_dir_cmd_index = i++;
-    args[debug_dir_cmd_index] = libreport_strbuf_free_nobuf(set_debug_file_directory);
+    args[debug_dir_cmd_index] = g_string_free(set_debug_file_directory, FALSE);
 
     /* "file BINARY_FILE" is needed, without it gdb cannot properly
      * unwind the stack. Currently the unwind information is located

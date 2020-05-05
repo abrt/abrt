@@ -801,7 +801,7 @@ static const char *const tnts_long[] = {
 
 char *abrt_kernel_tainted_long(const char *tainted_short)
 {
-    struct strbuf *tnt_long = libreport_strbuf_new();
+    GString *tnt_long = g_string_new(NULL);
     while (tainted_short[0] != '\0')
     {
         const int tnt_index = tainted_short[0] - 'A';
@@ -809,12 +809,12 @@ char *abrt_kernel_tainted_long(const char *tainted_short)
         {
             const char *const txt = tnts_long[tnt_index];
             if (txt)
-                libreport_strbuf_append_strf(tnt_long, "%c - %s\n", tainted_short[0], txt);
+                g_string_append_printf(tnt_long, "%c - %s\n", tainted_short[0], txt);
         }
 
         ++tainted_short;
     }
 
-    return libreport_strbuf_free_nobuf(tnt_long);
+    return g_string_free(tnt_long, FALSE);
 }
 

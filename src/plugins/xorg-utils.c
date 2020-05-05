@@ -73,15 +73,15 @@ char *skip_pfx(char *str)
 
 static char *list2lines(GList *list)
 {
-    struct strbuf *s = libreport_strbuf_new();
+    GString *s = g_string_new(NULL);
     while (list)
     {
-        libreport_strbuf_append_str(s, (char*)list->data);
-        libreport_strbuf_append_char(s, '\n');
+        g_string_append(s, (char*)list->data);
+        g_string_append_c(s, '\n');
         free(list->data);
         list = g_list_delete_link(list, list);
     }
-    return libreport_strbuf_free_nobuf(s);
+    return g_string_free(s, FALSE);
 }
 
 void xorg_crash_info_print_crash(struct xorg_crash_info *crash_info)

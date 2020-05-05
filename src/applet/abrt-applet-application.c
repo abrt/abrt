@@ -37,7 +37,7 @@ typedef struct
 {
     pid_t child_pid;
     int child_stdout_fd;
-    struct strbuf *cmd_output;
+    GString *cmd_output;
 
     AbrtAppletApplication *application;
     AbrtAppletProblemInfo *problem_info;
@@ -53,7 +53,7 @@ event_processing_state_new (void)
 
     state->child_pid = -1;
     state->child_stdout_fd = -1;
-    state->cmd_output = libreport_strbuf_new ();
+    state->cmd_output = g_string_new(NULL);
 
     return state;
 }
@@ -61,7 +61,7 @@ event_processing_state_new (void)
 static void
 event_processing_state_free (EventProcessingState *state)
 {
-    libreport_strbuf_free (state->cmd_output);
+    g_string_free(state->cmd_output, TRUE);
     g_clear_object (&state->problem_info);
     g_clear_object (&state->application);
 
@@ -808,17 +808,17 @@ handle_event_output_cb (GIOChannel   *gio,
         {
             *newline = '\0';
 
-            libreport_strbuf_append_str (state->cmd_output, raw);
+            g_string_append(state->cmd_output, raw);
 
-            log_debug ("%s", state->cmd_output->buf);
+            log_debug ("%s", state->cmd_output->str);
 
-            libreport_strbuf_clear(state->cmd_output);
+            g_string_erase(state->cmd_output, 0, -1);
             /* jump to next line */
             raw = newline + 1;
         }
 
         /* beginning of next line. the line continues by next read */
-        libreport_strbuf_append_str (state->cmd_output, raw);
+        g_string_append(state->cmd_output, raw);
     }
 
     /* EOF/error */

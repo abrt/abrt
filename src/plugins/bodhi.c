@@ -513,9 +513,9 @@ int main(int argc, char **argv)
     if (!bugs && !argv[optind])
         libreport_show_usage_and_die(program_usage_string, program_options);
 
-    struct strbuf *query = libreport_strbuf_new();
+    GString *query = g_string_new(NULL);
     if (bugs)
-        query = libreport_strbuf_append_strf(query, "bugs=%s&", bugs);
+        g_string_append_printf(query, "bugs=%s&", bugs);
 
     if (opts & OPT_r)
     {
@@ -525,7 +525,7 @@ int main(int argc, char **argv)
             if (strcasecmp(release, "rawhide") == 0)
                 error_msg_and_die("Release \"%s\" is not supported",release);
 
-            query = libreport_strbuf_append_strf(query, "releases=%s&", release);
+            g_string_append_printf(query, "releases=%s&", release);
         }
         else
         {
@@ -546,7 +546,7 @@ int main(int argc, char **argv)
             /* There are no bodhi updates for Rawhide */
             bool rawhide = strcasecmp(version, "rawhide") == 0;
             if (!rawhide)
-                query = libreport_strbuf_append_strf(query, "releases=f%s&", version);
+                g_string_append_printf(query, "releases=f%s&", version);
 
             free(product);
             free(version);
@@ -554,7 +554,7 @@ int main(int argc, char **argv)
 
             if (rawhide)
             {
-                libreport_strbuf_free(query);
+                g_string_free(query, TRUE);
                 error_msg_and_die("Release \"Rawhide\" is not supported");
             }
         }
@@ -563,16 +563,16 @@ int main(int argc, char **argv)
     if (argv[optind])
     {
         char *escaped = g_uri_escape_string(argv[optind], NULL, 0);
-        query = libreport_strbuf_append_strf(query, "packages=%s&", escaped);
+        g_string_append_printf(query, "packages=%s&", escaped);
         free(escaped);
     }
 
-    if (query->buf[query->len - 1] == '&')
-        query->buf[query->len - 1] = '\0';
+    if (query->str[query->len - 1] == '&')
+        query->str[query->len - 1] = '\0';
 
     log_warning(_("Searching for updates"));
-    GHashTable *update_hash_tbl = bodhi_query_list(query->buf, release);
-    libreport_strbuf_free(query);
+    GHashTable *update_hash_tbl = bodhi_query_list(query->str, release);
+    g_string_free(query, TRUE);
 
     if (!update_hash_tbl || !g_hash_table_size(update_hash_tbl))
     {
@@ -584,7 +584,7 @@ int main(int argc, char **argv)
     GHashTableIter iter;
     char *name;
     struct bodhi *b;
-    struct strbuf *q = libreport_strbuf_new();
+    GString *q = g_string_new(NULL);
     g_hash_table_iter_init(&iter, update_hash_tbl);
     while (g_hash_table_iter_next(&iter, (void **) &name, (void **) &b))
     {
@@ -597,14 +597,14 @@ int main(int argc, char **argv)
         }
         free(installed_pkg_nvr);
 
-        libreport_strbuf_append_strf(q, " %s", b->nvr);
+        g_string_append_printf(q, " %s", b->nvr);
     }
 
     /*g_hash_table_unref(update_hash_tbl);*/
 
     if (!q->len)
     {
-        /*libreport_strbuf_free(q);*/
+        /*g_string_free(q, TRUE);*/
         log_warning(_("Local version of the package is newer than available updates"));
         return 0;
     }
@@ -625,20 +625,20 @@ int main(int argc, char **argv)
     abrt_load_abrt_plugin_conf_file("CCpp.conf", settings);
 
     const char *value;
-    libreport_strbuf_prepend_str(q, " update --enablerepo=fedora --enablerepo=updates --enablerepo=updates-testing");
+    g_string_prepend(q, " update --enablerepo=fedora --enablerepo=updates --enablerepo=updates-testing");
     value = libreport_get_map_string_item_or_NULL(settings, "PackageManager");
     if (value)
-        libreport_strbuf_prepend_str(q, value);
+        g_string_prepend(q, value);
     else
-        libreport_strbuf_prepend_str(q, DEFAULT_PACKAGE_MANAGER);
+        g_string_prepend(q, DEFAULT_PACKAGE_MANAGER);
     libreport_free_map_string(settings);
 
     char *msg = g_strdup_printf(_("An update exists which might fix your problem. "
                                   "You can install it by running: %s. "
                                   "Do you want to continue with reporting the bug?"),
-                                q->buf
+                                q->str
     );
-    /*libreport_strbuf_free(q);*/
+    /*g_string_free(q, TRUE);*/
 
     return libreport_ask_yes_no(msg) ? 0 : EXIT_STOP_EVENT_RUN;
 }

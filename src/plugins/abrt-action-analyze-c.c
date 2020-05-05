@@ -113,7 +113,7 @@ static char *build_ids_from_core_backtrace(const char *dump_dir_name)
 
     void *build_id_list = NULL;
 
-    struct strbuf *strbuf = libreport_strbuf_new();
+    GString *strbuf = g_string_new(NULL);
     for (struct sr_core_frame *frame = thread->frames;
          frame;
          frame = frame->next)
@@ -128,13 +128,13 @@ static char *build_ids_from_core_backtrace(const char *dump_dir_name)
         GList *next = g_list_next(iter);
         if (next == NULL || 0 != strcmp(iter->data, next->data))
         {
-            strbuf = libreport_strbuf_append_strf(strbuf, "%s\n", (char *)iter->data);
+            g_string_append_printf(strbuf, "%s\n", (char *)iter->data);
         }
     }
     g_list_free(build_id_list);
     sr_core_stacktrace_free(stacktrace);
 
-    return libreport_strbuf_free_nobuf(strbuf);
+    return g_string_free(strbuf, FALSE);
 }
 
 int main(int argc, char **argv)
