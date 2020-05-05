@@ -278,7 +278,7 @@ int main(int argc, char **argv)
     if (container_cmdline == NULL)
         error_msg_and_die("The crash didn't occur in container");
 
-    if (strstr(container_cmdline, "/docker ") != 0 || libreport_prefixcmp(container_cmdline, "/usr/libexec/docker") == 0)
+    if (strstr(container_cmdline, "/docker ") != 0 || g_str_has_prefix(container_cmdline, "/usr/libexec/docker"))
         dump_docker_info(dd, root_dir);
     else if (strstr(container_cmdline, "/lxc-") != 0)
         dump_lxc_info(dd, container_cmdline);
