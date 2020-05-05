@@ -381,7 +381,7 @@ static int run_post_create(const char *dirname, struct response *resp)
     int child_pid = spawn_event_handler_child(dirname, "post-create", &child_stdout_fd);
 
     char *dup_of_dir = NULL;
-    struct strbuf *cmd_output = libreport_strbuf_new();
+    GString *cmd_output = g_string_new(NULL);
 
     bool child_is_post_create = 1; /* else it is a notify child */
 
@@ -404,8 +404,8 @@ static int run_post_create(const char *dirname, struct response *resp)
         while ((newline = strchr(raw, '\n')) != NULL)
         {
             *newline = '\0';
-            libreport_strbuf_append_str(cmd_output, raw);
-            char *msg = cmd_output->buf;
+            g_string_append(cmd_output, raw);
+            char *msg = cmd_output->str;
 
             if (child_is_post_create
              && g_str_has_prefix(msg, "DUP_OF_DIR: "))
@@ -416,13 +416,13 @@ static int run_post_create(const char *dirname, struct response *resp)
             else
                 log_warning("%s", msg);
 
-            libreport_strbuf_clear(cmd_output);
+            g_string_erase(cmd_output, 0, -1);
             /* jump to next line */
             raw = newline + 1;
         }
 
         /* beginning of next line. the line continues by next read */
-        libreport_strbuf_append_str(cmd_output, raw);
+        g_string_append(cmd_output, raw);
     }
 
     /* EOF/error */
@@ -547,7 +547,7 @@ static int run_post_create(const char *dirname, struct response *resp)
         free(dup_of_dir);
     }
     dup_of_dir = NULL;
-    libreport_strbuf_clear(cmd_output);
+    g_string_erase(cmd_output, 0, -1);
     goto read_child_output;
 
  delete_bad_dir:
@@ -557,7 +557,7 @@ static int run_post_create(const char *dirname, struct response *resp)
     RESPONSE_SETTER(resp, 403, NULL);
 
  ret:
-    libreport_strbuf_free(cmd_output);
+    g_string_free(cmd_output, TRUE);
     free(dup_of_dir);
     close(child_stdout_fd);
     return 0;

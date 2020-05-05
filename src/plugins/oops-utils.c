@@ -153,7 +153,7 @@ unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location,
 
 static char *abrt_oops_list_of_tainted_modules(const char *proc_modules)
 {
-    struct strbuf *result = libreport_strbuf_new();
+    GString *result = g_string_new(NULL);
 
     const char *p = proc_modules;
     for (;;)
@@ -169,7 +169,7 @@ static char *abrt_oops_list_of_tainted_modules(const char *proc_modules)
         {
             if ((unsigned)(toupper(*paren) - 'A') <= 'Z'-'A')
             {
-                libreport_strbuf_append_strf(result, result->len == 0 ? "%.*s" : ",%.*s",
+                g_string_append_printf(result, result->len == 0 ? "%.*s" : ",%.*s",
                         (int)(strchrnul(p,' ') - p), p
                 );
                 break;
@@ -185,10 +185,10 @@ static char *abrt_oops_list_of_tainted_modules(const char *proc_modules)
 
     if (result->len == 0)
     {
-        libreport_strbuf_free(result);
+        g_string_free(result, TRUE);
         return NULL;
     }
-    return libreport_strbuf_free_nobuf(result);
+    return g_string_free(result, FALSE);
 }
 
 void abrt_oops_save_data_in_dump_dir(struct dump_dir *dd, char *oops, const char *proc_modules)
@@ -244,21 +244,21 @@ void abrt_oops_save_data_in_dump_dir(struct dump_dir *dd, char *oops, const char
             char *tnt_long = abrt_kernel_tainted_long(tainted_short);
             dd_save_text(dd, FILENAME_TAINTED_LONG, tnt_long);
 
-            struct strbuf *reason = libreport_strbuf_new();
+            GString *reason = g_string_new(NULL);
             const char *fmt = _("A kernel problem occurred, but your kernel has been "
                     "tainted (flags:%s). Explanation:\n%s"
                     "Kernel maintainers are unable to diagnose tainted reports.");
-            libreport_strbuf_append_strf(reason, fmt, tainted_short, tnt_long);
+            g_string_append_printf(reason, fmt, tainted_short, tnt_long);
 
             char *modlist = !proc_modules ? NULL : abrt_oops_list_of_tainted_modules(proc_modules);
             if (modlist)
             {
-                libreport_strbuf_append_strf(reason, _(" Tainted modules: %s."), modlist);
+                g_string_append_printf(reason, _(" Tainted modules: %s."), modlist);
                 free(modlist);
             }
 
-            dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason->buf);
-            libreport_strbuf_free(reason);
+            dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason->str);
+            g_string_free(reason, TRUE);
             free(tainted_short);
             free(tnt_long);
         }

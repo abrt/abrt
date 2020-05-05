@@ -91,17 +91,17 @@ int main(int argc, char **argv)
          */
         log_warning(_("Backtrace parsing failed for %s"), dump_dir_name);
         log_warning("%d:%d: %s", location.line, location.column, location.message);
-        struct strbuf *emptybt = libreport_strbuf_new();
+        GString *emptybt = g_string_new(NULL);
 
         char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
-        libreport_strbuf_prepend_str(emptybt, executable);
+        g_string_prepend(emptybt, executable);
         free(executable);
 
-        libreport_strbuf_prepend_str(emptybt, component);
+        g_string_prepend(emptybt, component);
 
-        log_debug("Generating duphash: %s", emptybt->buf);
+        log_debug("Generating duphash: %s", emptybt->str);
 
-        checksum = g_compute_checksum_for_string(G_CHECKSUM_SHA1, emptybt->buf, -1);
+        checksum = g_compute_checksum_for_string(G_CHECKSUM_SHA1, emptybt->str, -1);
 
         dd_save_text(dd, FILENAME_DUPHASH, checksum);
         /*
@@ -112,7 +112,7 @@ int main(int argc, char **argv)
          */
         dd_save_text(dd, FILENAME_RATING, "0");
 
-        libreport_strbuf_free(emptybt);
+        g_string_free(emptybt, TRUE);
         free(component);
         dd_close(dd);
 
