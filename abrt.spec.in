@@ -1011,6 +1011,26 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Mon May 11 2020 Michal Fabik <mfabik@redhat.com> 2.14.2-1
+- auto-reporting: Fix missing libreport_ namespace
+- Update translations
+- github: coverity: Install dnf-plugins-core
+- applet: application: Don’t truncate command lines with spaces
+- applet: application: Enforce caller cleanup
+- applet: application: Use org.freedesktop.Problems2 API
+- applet: problem-info: Check component element
+- applet: problem-info: Move D-Bus loading code
+- applet: application: Don’t use g_application_get_default()
+- applet: application: Use g_list_free_full()
+- applet: problem-info: Destroy problem_data
+- applet: application: Use GPtrArray
+- applet: application: Properly split notification functions
+- applet: application: Drop show_problem_list_notification()
+- applet: application: Split off reporting from notifying
+- Fix spelling in documentation
+- github: coverity: Use Copr for libreport
+- Bump libreport dependency
+
 * Fri Apr 24 2020 Michal Fabik <mfabik@redhat.com> 2.14.1-1
 - Allow editing CHANGELOG.md before release commit
 - Remove libreport_ namespace from python code

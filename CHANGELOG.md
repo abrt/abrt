@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.14.2]
+### Fixed
+- Fix broken builds with --enable-authenticated-autoreporting
+
 ## [2.14.1]
 ### Added
 - tests: Add perl, php R and tcl to dont-blame-interpret
@@ -250,7 +254,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.14.1...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.14.2...HEAD
+[2.14.2]: https://github.com/abrt/abrt/compare/2.14.1...2.14.2
 [2.14.1]: https://github.com/abrt/abrt/compare/2.14.0...2.14.1
 [2.14.0]: https://github.com/abrt/abrt/compare/2.13.0...2.14.0
 [2.13.0]: https://github.com/abrt/abrt/compare/2.12.2...2.13.0
