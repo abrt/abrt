@@ -322,7 +322,7 @@ int main(int argc, char *argv[])
 #if AUTHENTICATED_AUTOREPORTING != 0
     if ((opts & OPT_a))
     {
-        ureport_conf_bck = clone_map_string(ureport_conf);
+        ureport_conf_bck = libreport_clone_map_string(ureport_conf);
 
         if (!clear_ureport_auth(ureport_conf))
             goto finito;
@@ -333,7 +333,7 @@ int main(int argc, char *argv[])
         char *tmp_password = NULL;
         if (!(opts & OPT_p))
         {
-            password = tmp_password = ask_password(_("Password:"));
+            password = tmp_password = libreport_ask_password(_("Password:"));
             if (tmp_password == NULL)
             {
                 error_msg(_("Cannot continue without password\n"));
@@ -341,12 +341,12 @@ int main(int argc, char *argv[])
             }
         }
 
-        ureport_conf_bck = clone_map_string(ureport_conf);
+        ureport_conf_bck = libreport_clone_map_string(ureport_conf);
 
         if (!set_ureport_http_auth(ureport_conf, UREPORT_RTHS_CREDENTIALS_AUTH))
             goto finito;
 
-        rhts_conf_bck = clone_map_string(rhts_conf);
+        rhts_conf_bck = libreport_clone_map_string(rhts_conf);
 
         if (!set_rhts_credentials(rhts_conf, username, password))
         {
@@ -359,7 +359,7 @@ int main(int argc, char *argv[])
 
     if ((opts & OPT_c))
     {
-        ureport_conf_bck = clone_map_string(ureport_conf);
+        ureport_conf_bck = libreport_clone_map_string(ureport_conf);
 
         if (!set_ureport_client_auth(ureport_conf, certificate))
             goto finito;
