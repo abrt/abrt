@@ -568,10 +568,6 @@ exit 0
 %systemd_post abrtd.service
 
 %post addon-ccpp
-# this is required for transition from 1.1.x to 2.x
-# because /cache/abrt-di/* was created under root with root:root
-# so 2.x fails when it tries to extract debuginfo there..
-chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %systemd_post abrt-journal-core.service
 %journal_catalog_update
 
