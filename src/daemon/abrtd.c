@@ -383,7 +383,7 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
     fflush(NULL); /* paranoia */
 
     int pipefd[2];
-    libreport_xpipe(pipefd);
+    g_unix_open_pipe(pipefd, 0, NULL);
 
     pid_t pid = fork();
     if (pid < 0)
@@ -771,7 +771,7 @@ int main(int argc, char** argv)
     if (opts & OPT_s)
         start_logging();
 
-    libreport_xpipe(s_signal_pipe);
+    g_unix_open_pipe(s_signal_pipe, 0, NULL);
     libreport_close_on_exec_on(s_signal_pipe[0]);
     libreport_close_on_exec_on(s_signal_pipe[1]);
     libreport_ndelay_on(s_signal_pipe[0]); /* I/O should not block - */

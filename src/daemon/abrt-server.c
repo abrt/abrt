@@ -15,6 +15,7 @@
   with this program; if not, write to the Free Software Foundation, Inc.,
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include <glib-unix.h>
 #include "problem_api.h"
 #include "abrt_glib.h"
 #include "libabrt.h"
@@ -347,7 +348,7 @@ static int run_post_create(const char *dirname, struct response *resp)
 
     log_debug("Setting up a signal handler");
     /* Set up signal pipe */
-    libreport_xpipe(g_signal_pipe);
+    g_unix_open_pipe(g_signal_pipe, 0, NULL);
     libreport_close_on_exec_on(g_signal_pipe[0]);
     libreport_close_on_exec_on(g_signal_pipe[1]);
     libreport_ndelay_on(g_signal_pipe[0]);

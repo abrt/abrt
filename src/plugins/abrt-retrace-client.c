@@ -134,7 +134,7 @@ static int create_archive(bool unlink_temp)
     xz_args[3] = NULL;
 
     int tar_xz_pipe[2];
-    libreport_xpipe(tar_xz_pipe);
+    g_unix_open_pipe(tar_xz_pipe, 0, NULL);
 
     fflush(NULL); /* paranoia */
 
