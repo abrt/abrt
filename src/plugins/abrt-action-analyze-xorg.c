@@ -17,6 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <paths.h>
+#include <glib/gstdio.h>
 #include "libabrt.h"
 
 #define XORG_CONF "xorg.conf"
@@ -150,7 +151,7 @@ int main(int argc, char **argv)
 
     dd_close(dd);
 
-    libreport_xchdir(dump_dir_name);
+    g_chdir(dump_dir_name);
 
     /* Get ready for extremely ugly sight.
      *

@@ -16,7 +16,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-#include <glib-2.0/glib/gstdio.h>
+#include <glib/gstdio.h>
 #include "abrt-inotify.h"
 #include "abrt_glib.h"
 #include "libabrt.h"
@@ -90,7 +90,7 @@ run_abrt_handle_upload(struct process *proc, const char *name)
     if (pid == 0)
     {
         /* child */
-        libreport_xchdir(proc->upload_directory);
+        g_chdir(proc->upload_directory);
         if (abrt_g_settings_delete_uploaded)
             execlp("abrt-handle-upload", "abrt-handle-upload", "-d",
                            abrt_g_settings_dump_location, proc->upload_directory, name, (char*)NULL);
@@ -235,7 +235,7 @@ daemonize()
         perror_msg_and_die("setsid");
 
     /* Change the current working directory */
-    libreport_xchdir("/");
+    g_chdir("/");
 
     /* Reopen the standard file descriptors to "/dev/null" */
     libreport_xmove_fd(g_open("/dev/null", O_RDWR), STDIN_FILENO);
