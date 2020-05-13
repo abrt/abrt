@@ -568,6 +568,12 @@ exit 0
 %systemd_post abrtd.service
 
 %post addon-ccpp
+# migration from 2.14.1.18
+if [ ! -e "%{_localstatedir}/cache/abrt-di/.migration-group-add" ]; then
+  chmod -R g+w %{_localstatedir}/cache/abrt-di
+  touch "%{_localstatedir}/cache/abrt-di/.migration-group-add"
+fi
+
 %systemd_post abrt-journal-core.service
 %journal_catalog_update
 
