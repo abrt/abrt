@@ -572,7 +572,7 @@ static int create(SoupSession  *session,
     /* get raw size */
     if (coredump)
     {
-        libreport_xstat(coredump, &file_stat);
+        g_stat(coredump, &file_stat);
         unpacked_size = (long long)file_stat.st_size;
     }
     else if (dump_dir_name != NULL)
@@ -590,7 +590,7 @@ static int create(SoupSession  *session,
         while (required_files[i])
         {
             path = g_build_filename(dump_dir_name, required_files[i], NULL);
-            libreport_xstat(path, &file_stat);
+            g_stat(path, &file_stat);
             free(path);
 
             if (!S_ISREG(file_stat.st_mode))
