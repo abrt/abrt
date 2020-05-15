@@ -69,14 +69,14 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
 {
     const char *value;
 
-    value = libreport_get_map_string_item_or_NULL(settings, "WatchCrashdumpArchiveDir");
+    value = g_hash_table_lookup(settings, "WatchCrashdumpArchiveDir");
     if (value)
     {
         abrt_g_settings_sWatchCrashdumpArchiveDir = xstrdup_normalized_path(value);
         libreport_remove_map_string_item(settings, "WatchCrashdumpArchiveDir");
     }
 
-    value = libreport_get_map_string_item_or_NULL(settings, "MaxCrashReportsSize");
+    value = g_hash_table_lookup(settings, "MaxCrashReportsSize");
     if (value)
     {
         char *end;
@@ -89,7 +89,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
         libreport_remove_map_string_item(settings, "MaxCrashReportsSize");
     }
 
-    value = libreport_get_map_string_item_or_NULL(settings, "DumpLocation");
+    value = g_hash_table_lookup(settings, "DumpLocation");
     if (value)
     {
         abrt_g_settings_dump_location = xstrdup_normalized_path(value);
@@ -98,21 +98,21 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     else
         abrt_g_settings_dump_location = g_strdup(DEFAULT_DUMP_LOCATION);
 
-    value = libreport_get_map_string_item_or_NULL(settings, "DeleteUploaded");
+    value = g_hash_table_lookup(settings, "DeleteUploaded");
     if (value)
     {
         abrt_g_settings_delete_uploaded = libreport_string_to_bool(value);
         libreport_remove_map_string_item(settings, "DeleteUploaded");
     }
 
-    value = libreport_get_map_string_item_or_NULL(settings, "AutoreportingEnabled");
+    value = g_hash_table_lookup(settings, "AutoreportingEnabled");
     if (value)
     {
         abrt_g_settings_autoreporting = libreport_string_to_bool(value);
         libreport_remove_map_string_item(settings, "AutoreportingEnabled");
     }
 
-    value = libreport_get_map_string_item_or_NULL(settings, "AutoreportingEvent");
+    value = g_hash_table_lookup(settings, "AutoreportingEvent");
     if (value)
     {
         abrt_g_settings_autoreporting_event = g_strdup(value);
@@ -121,7 +121,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     else
         abrt_g_settings_autoreporting_event = g_strdup("report_uReport");
 
-    value = libreport_get_map_string_item_or_NULL(settings, "ShortenedReporting");
+    value = g_hash_table_lookup(settings, "ShortenedReporting");
     if (value)
     {
         abrt_g_settings_shortenedreporting = libreport_string_to_bool(value);
@@ -134,7 +134,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
         abrt_g_settings_shortenedreporting = (desktop_env && strcasestr(desktop_env, "gnome") != NULL);
     }
 
-    value = libreport_get_map_string_item_or_NULL(settings, "ExploreChroots");
+    value = g_hash_table_lookup(settings, "ExploreChroots");
     if (value)
     {
         abrt_g_settings_explorechroots = libreport_string_to_bool(value);
@@ -143,7 +143,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     else
         abrt_g_settings_explorechroots = false;
 
-    value = libreport_get_map_string_item_or_NULL(settings, "DebugLevel");
+    value = g_hash_table_lookup(settings, "DebugLevel");
     if (value)
     {
         char *end;

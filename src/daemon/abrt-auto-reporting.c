@@ -51,7 +51,7 @@ static int
 set_abrt_reporting(map_string_t *conf, const char *opt_value)
 {
     const char *const def_value = REPORTING_STATES[0][1];
-    const char *const cur_value = libreport_get_map_string_item_or_NULL(conf, OPTION_NAME);
+    const char *const cur_value = g_hash_table_lookup(conf, OPTION_NAME);
 
     if (  (cur_value == NULL && strcmp(def_value, opt_value) != 0)
        || (cur_value != NULL && strcmp(cur_value, opt_value) != 0))
@@ -68,7 +68,7 @@ set_abrt_reporting(map_string_t *conf, const char *opt_value)
 static int
 set_ureport_http_auth(map_string_t *conf, const char *opt_value)
 {
-    const char *const cur_value = libreport_get_map_string_item_or_NULL(conf, UREPORT_HTTP_AUTH_OPTION);
+    const char *const cur_value = g_hash_table_lookup(conf, UREPORT_HTTP_AUTH_OPTION);
 
     if (cur_value == NULL || strcmp(cur_value, opt_value) != 0)
     {
@@ -85,7 +85,7 @@ set_ureport_http_auth(map_string_t *conf, const char *opt_value)
 static int
 set_ureport_client_auth(map_string_t *conf, const char *opt_value)
 {
-    const char *const cur_value = libreport_get_map_string_item_or_NULL(conf, UREPORT_CLIENT_AUTH_OPTION);
+    const char *const cur_value = g_hash_table_lookup(conf, UREPORT_CLIENT_AUTH_OPTION);
 
     if (cur_value == NULL || strcmp(cur_value, opt_value) != 0)
     {
@@ -102,8 +102,8 @@ set_ureport_client_auth(map_string_t *conf, const char *opt_value)
 static int
 clear_ureport_auth(map_string_t *conf)
 {
-    const char *const http_cur_value = libreport_get_map_string_item_or_NULL(conf, UREPORT_HTTP_AUTH_OPTION);
-    const char *const ssl_cur_value = libreport_get_map_string_item_or_NULL(conf, UREPORT_CLIENT_AUTH_OPTION);
+    const char *const http_cur_value = g_hash_table_lookup(conf, UREPORT_HTTP_AUTH_OPTION);
+    const char *const ssl_cur_value = g_hash_table_lookup(conf, UREPORT_CLIENT_AUTH_OPTION);
 
     if (http_cur_value != NULL || ssl_cur_value != NULL)
     {
@@ -120,8 +120,8 @@ clear_ureport_auth(map_string_t *conf)
 static int
 set_rhts_credentials(map_string_t *conf, const char *username, const char *password)
 {
-    const char *const username_cur_value = libreport_get_map_string_item_or_NULL(conf, RHTS_USERNAME_OPTION);
-    const char *const password_cur_value = libreport_get_map_string_item_or_NULL(conf, RHTS_PASSWORD_OPTION);
+    const char *const username_cur_value = g_hash_table_lookup(conf, RHTS_USERNAME_OPTION);
+    const char *const password_cur_value = g_hash_table_lookup(conf, RHTS_PASSWORD_OPTION);
 
     if (  (username_cur_value == NULL || strcmp(username_cur_value, username) != 0)
        || (password_cur_value == NULL || strcmp(password_cur_value, password) != 0))
@@ -149,13 +149,13 @@ get_abrt_reporting(map_string_t *conf)
 static const char *
 get_ureport_http_auth(map_string_t *conf)
 {
-    return libreport_get_map_string_item_or_NULL(conf, UREPORT_HTTP_AUTH_OPTION);
+    return g_hash_table_lookup(conf, UREPORT_HTTP_AUTH_OPTION);
 }
 
 static const char *
 get_ureport_client_auth(map_string_t *conf)
 {
-    return libreport_get_map_string_item_or_NULL(conf, UREPORT_CLIENT_AUTH_OPTION);
+    return g_hash_table_lookup(conf, UREPORT_CLIENT_AUTH_OPTION);
 }
 #endif
 

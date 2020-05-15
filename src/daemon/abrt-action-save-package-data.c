@@ -71,14 +71,14 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
 {
     const char *value;
 
-    value = libreport_get_map_string_item_or_NULL(settings, "OpenGPGCheck");
+    value = g_hash_table_lookup(settings, "OpenGPGCheck");
     if (value)
     {
         settings_bOpenGPGCheck = libreport_string_to_bool(value);
         libreport_remove_map_string_item(settings, "OpenGPGCheck");
     }
 
-    value = libreport_get_map_string_item_or_NULL(settings, "BlackList");
+    value = g_hash_table_lookup(settings, "BlackList");
     if (value)
     {
         settings_setBlackListedPkgs = libreport_parse_delimited_list(value, ",");
@@ -87,7 +87,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     else
         settings_setBlackListedPkgs = libreport_parse_delimited_list(DEFAULT_BLACKLISTED_PKGS, ",");
 
-    value = libreport_get_map_string_item_or_NULL(settings, "BlackListedPaths");
+    value = g_hash_table_lookup(settings, "BlackListedPaths");
     if (value)
     {
         settings_setBlackListedPaths = libreport_parse_delimited_list(value, ",");
@@ -96,14 +96,14 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     else
         settings_setBlackListedPaths = libreport_parse_delimited_list(DEFAULT_BLACKLISTED_PATHS, ",");
 
-    value = libreport_get_map_string_item_or_NULL(settings, "ProcessUnpackaged");
+    value = g_hash_table_lookup(settings, "ProcessUnpackaged");
     if (value)
     {
         settings_bProcessUnpackaged = libreport_string_to_bool(value);
         libreport_remove_map_string_item(settings, "ProcessUnpackaged");
     }
 
-    value = libreport_get_map_string_item_or_NULL(settings, "Interpreters");
+    value = g_hash_table_lookup(settings, "Interpreters");
     if (value)
     {
         settings_Interpreters = libreport_parse_delimited_list(value, ",");
@@ -129,7 +129,7 @@ static void load_gpg_keys(void)
         return;
     }
 
-    const char *gpg_keys_dir = libreport_get_map_string_item_or_NULL(settings, "GPGKeysDir");
+    const char *gpg_keys_dir = g_hash_table_lookup(settings, "GPGKeysDir");
     if (gpg_keys_dir == NULL)
     {
         gpg_keys_dir = DEFAULT_GPG_KEYS_DIR;

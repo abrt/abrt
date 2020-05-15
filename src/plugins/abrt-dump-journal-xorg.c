@@ -256,7 +256,7 @@ int main(int argc, char *argv[])
         abrt_load_abrt_plugin_conf_file(XORG_CONF, settings);
         log_debug("Loaded '%s'", XORG_CONF);
 
-        const char *conf_journal_filters = libreport_get_map_string_item_or_NULL(settings, "JournalFilters");
+        const char *conf_journal_filters = g_hash_table_lookup(settings, "JournalFilters");
         if (!conf_journal_filters) {
             conf_journal_filters = XORG_DEFAULT_JOURNAL_FILTERS;
         }

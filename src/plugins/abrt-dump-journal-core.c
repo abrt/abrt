@@ -600,7 +600,7 @@ main(int argc, char *argv[])
         abrt_load_abrt_plugin_conf_file("CCpp.conf", settings);
         const char *value;
 
-        value = libreport_get_map_string_item_or_NULL(settings, "VerboseLog");
+        value = g_hash_table_lookup(settings, "VerboseLog");
         if (value)
         {
             char *endptr;
