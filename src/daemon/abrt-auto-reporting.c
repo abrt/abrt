@@ -140,8 +140,8 @@ set_rhts_credentials(map_string_t *conf, const char *username, const char *passw
 static const char *
 get_abrt_reporting(map_string_t *conf)
 {
-    const char *const cur_value = libreport_get_map_string_item_or_empty(conf, OPTION_NAME);
-    const int index = !!libreport_string_to_bool(cur_value);
+    const char *const cur_value = (const char *)g_hash_table_lookup(conf, OPTION_NAME);
+    const int index = !!libreport_string_to_bool(cur_value ? cur_value : "");
     return REPORTING_STATES[index][0];
 }
 
