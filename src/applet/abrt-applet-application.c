@@ -177,7 +177,7 @@ abrt_applet_application_init (AbrtAppletApplication *self)
     g_signal_connect (network_monitor, "notify::connectivity",
                       G_CALLBACK (on_connectivity_changed), self);
     g_signal_connect (network_monitor, "notify::network-available",
-                      G_CALLBACK (on_connectivity_changed), NULL);
+                      G_CALLBACK (on_connectivity_changed), self);
 
     self->deferred_problems = g_ptr_array_new_with_free_func (g_object_unref);
 }
