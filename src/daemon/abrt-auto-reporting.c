@@ -73,7 +73,7 @@ set_ureport_http_auth(map_string_t *conf, const char *opt_value)
     if (cur_value == NULL || strcmp(cur_value, opt_value) != 0)
     {
         libreport_replace_map_string_item(conf, g_strdup(UREPORT_HTTP_AUTH_OPTION), g_strdup(opt_value));
-        libreport_remove_map_string_item(conf, UREPORT_CLIENT_AUTH_OPTION);
+        g_hash_table_remove(conf, UREPORT_CLIENT_AUTH_OPTION);
 
         return libreport_save_plugin_conf_file(UREPORT_NAME, conf);
     }
@@ -90,7 +90,7 @@ set_ureport_client_auth(map_string_t *conf, const char *opt_value)
     if (cur_value == NULL || strcmp(cur_value, opt_value) != 0)
     {
         libreport_replace_map_string_item(conf, g_strdup(UREPORT_CLIENT_AUTH_OPTION), g_strdup(opt_value));
-        libreport_remove_map_string_item(conf, UREPORT_HTTP_AUTH_OPTION);
+        g_hash_table_remove(conf, UREPORT_HTTP_AUTH_OPTION);
 
         return libreport_save_plugin_conf_file(UREPORT_NAME, conf);
     }
@@ -107,8 +107,8 @@ clear_ureport_auth(map_string_t *conf)
 
     if (http_cur_value != NULL || ssl_cur_value != NULL)
     {
-        libreport_remove_map_string_item(conf, UREPORT_HTTP_AUTH_OPTION);
-        libreport_remove_map_string_item(conf, UREPORT_CLIENT_AUTH_OPTION);
+        g_hash_table_remove(conf, UREPORT_HTTP_AUTH_OPTION);
+        g_hash_table_remove(conf, UREPORT_CLIENT_AUTH_OPTION);
 
         return libreport_save_plugin_conf_file(UREPORT_NAME, conf);
     }

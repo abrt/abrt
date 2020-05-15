@@ -75,14 +75,14 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     if (value)
     {
         settings_bOpenGPGCheck = libreport_string_to_bool(value);
-        libreport_remove_map_string_item(settings, "OpenGPGCheck");
+        g_hash_table_remove(settings, "OpenGPGCheck");
     }
 
     value = g_hash_table_lookup(settings, "BlackList");
     if (value)
     {
         settings_setBlackListedPkgs = libreport_parse_delimited_list(value, ",");
-        libreport_remove_map_string_item(settings, "BlackList");
+        g_hash_table_remove(settings, "BlackList");
     }
     else
         settings_setBlackListedPkgs = libreport_parse_delimited_list(DEFAULT_BLACKLISTED_PKGS, ",");
@@ -91,7 +91,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     if (value)
     {
         settings_setBlackListedPaths = libreport_parse_delimited_list(value, ",");
-        libreport_remove_map_string_item(settings, "BlackListedPaths");
+        g_hash_table_remove(settings, "BlackListedPaths");
     }
     else
         settings_setBlackListedPaths = libreport_parse_delimited_list(DEFAULT_BLACKLISTED_PATHS, ",");
@@ -100,14 +100,14 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     if (value)
     {
         settings_bProcessUnpackaged = libreport_string_to_bool(value);
-        libreport_remove_map_string_item(settings, "ProcessUnpackaged");
+        g_hash_table_remove(settings, "ProcessUnpackaged");
     }
 
     value = g_hash_table_lookup(settings, "Interpreters");
     if (value)
     {
         settings_Interpreters = libreport_parse_delimited_list(value, ",");
-        libreport_remove_map_string_item(settings, "Interpreters");
+        g_hash_table_remove(settings, "Interpreters");
     }
 
     map_string_iter_t iter;
