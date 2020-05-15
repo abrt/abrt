@@ -37,7 +37,7 @@ static PyObject *
 load_settings_to_dict(const char *file, int (*loader)(const char *, map_string_t *))
 {
     PyObject *dict = NULL;
-    map_string_t *settings = libreport_new_map_string();
+    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     if (!loader(file, settings))
     {
         PyErr_SetString(PyExc_OSError, "Failed to load configuration file.");

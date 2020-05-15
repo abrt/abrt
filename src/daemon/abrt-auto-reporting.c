@@ -300,12 +300,12 @@ int main(int argc, char *argv[])
 
     int exit_code = EXIT_FAILURE;
 
-    map_string_t *conf = libreport_new_map_string();
+    map_string_t *conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
 #if AUTHENTICATED_AUTOREPORTING != 0
-    map_string_t *rhts_conf = libreport_new_map_string();
+    map_string_t *rhts_conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     map_string_t *rhts_conf_bck = NULL;
 #endif
-    map_string_t *ureport_conf = libreport_new_map_string();
+    map_string_t *ureport_conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     map_string_t *ureport_conf_bck = NULL;
 
     if (!abrt_load_abrt_conf_file(CONF_NAME, conf))

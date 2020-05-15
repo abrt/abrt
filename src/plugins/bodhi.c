@@ -539,7 +539,7 @@ int main(int argc, char **argv)
                 libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
             char *product, *version;
-            map_string_t *osinfo = libreport_new_map_string();
+            map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
             problem_data_get_osinfo(problem_data, osinfo);
             libreport_parse_osinfo_for_rhts(osinfo, &product, &version);
 
@@ -621,7 +621,7 @@ int main(int argc, char **argv)
      * as it did happen to yum.
      */
 
-    map_string_t *settings = libreport_new_map_string();
+    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     abrt_load_abrt_plugin_conf_file("CCpp.conf", settings);
 
     const char *value;

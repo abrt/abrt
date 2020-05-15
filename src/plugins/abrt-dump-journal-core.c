@@ -596,7 +596,7 @@ main(int argc, char *argv[])
     }
 
     {   /* Load CCpp.conf */
-        map_string_t *settings = libreport_new_map_string();
+        map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
         abrt_load_abrt_plugin_conf_file("CCpp.conf", settings);
         const char *value;
 

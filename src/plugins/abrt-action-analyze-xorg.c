@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 
     libreport_export_abrt_envvars(0);
 
-    map_string_t *settings = libreport_new_map_string();
+    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     log_notice("Loading settings from '%s'", XORG_CONF);
     abrt_load_abrt_plugin_conf_file(XORG_CONF, settings);
     log_debug("Loaded '%s'", XORG_CONF);
