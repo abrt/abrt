@@ -310,7 +310,8 @@ char *abrt_oops_string_filter_regex(void)
     int only_fatal_mce = 0;
     libreport_try_get_map_string_item_as_bool(settings, "OnlyFatalMCE", &only_fatal_mce);
 
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
 
     if (only_fatal_mce)
         return g_strdup("^Machine .*$");

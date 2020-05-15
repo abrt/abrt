@@ -182,7 +182,8 @@ int abrt_load_abrt_conf()
         perror_msg("Can't load '%s'", abrt_conf);
 
     ParseCommon(settings, abrt_conf);
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
 
     return 0;
 }

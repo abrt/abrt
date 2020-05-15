@@ -404,12 +404,17 @@ int main(int argc, char *argv[])
 
 
 finito:
-    libreport_free_map_string(ureport_conf);
-    libreport_free_map_string(ureport_conf_bck);
+    if (ureport_conf)
+        g_hash_table_destroy(ureport_conf);
+    if (ureport_conf_bck)
+        g_hash_table_destroy(ureport_conf_bck);
 #if AUTHENTICATED_AUTOREPORTING != 0
-    libreport_free_map_string(rhts_conf);
-    libreport_free_map_string(rhts_conf_bck);
+    if (rhts_conf)
+        g_hash_table_destroy(rhts_conf);
+    if (rhts_conf_bck)
+        g_hash_table_destroy(rhts_conf_bck);
 #endif
-    libreport_free_map_string(conf);
+    if (conf)
+        g_hash_table_destroy(conf);
     return exit_code;
 }

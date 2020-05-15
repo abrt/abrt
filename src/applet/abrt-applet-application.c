@@ -246,7 +246,8 @@ migrate_auto_reporting_to_gsettings (void)
 
 #undef OPT_NAME
 finito:
-    libreport_free_map_string (settings_map);
+    if (settings_map)
+        g_hash_table_destroy(settings_map);
 }
 
 static const char *

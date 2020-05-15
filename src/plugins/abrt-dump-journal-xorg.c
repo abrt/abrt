@@ -264,7 +264,8 @@ int main(int argc, char *argv[])
         xorg_journal_filter = libreport_parse_delimited_list(conf_journal_filters, ",");
         /* list data will be free by g_list_free_full */
         free_filter_list_data = true;
-        libreport_free_map_string(settings);
+        if (settings)
+            g_hash_table_destroy(settings);
         if (xorg_journal_filter)
             log_debug("Using journal filter from conf file %s", XORG_CONF);
     }

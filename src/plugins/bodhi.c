@@ -550,7 +550,8 @@ int main(int argc, char **argv)
 
             free(product);
             free(version);
-            libreport_free_map_string(osinfo);
+            if (osinfo)
+                g_hash_table_destroy(osinfo);
 
             if (rawhide)
             {
@@ -631,7 +632,8 @@ int main(int argc, char **argv)
         g_string_prepend(q, value);
     else
         g_string_prepend(q, DEFAULT_PACKAGE_MANAGER);
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
 
     char *msg = g_strdup_printf(_("An update exists which might fix your problem. "
                                   "You can install it by running: %s. "
