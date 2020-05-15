@@ -612,7 +612,8 @@ main(int argc, char *argv[])
                 error_msg_and_die("expected number in range <%d, %d>: '%s'", 0, UINT_MAX, value);
         }
 
-        libreport_free_map_string(settings);
+        if (settings)
+            g_hash_table_destroy(settings);
     }
 
     /* systemd-coredump creates journal messages with SYSLOG_IDENTIFIER equals

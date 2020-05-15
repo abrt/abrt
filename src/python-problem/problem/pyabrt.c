@@ -61,12 +61,14 @@ load_settings_to_dict(const char *file, int (*loader)(const char *, map_string_t
             goto lacf_error;
         }
     }
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
     return dict;
 
 lacf_error:
     Py_XDECREF(dict);
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
     return NULL;
 }
 

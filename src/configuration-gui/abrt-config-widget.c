@@ -193,7 +193,8 @@ abrt_app_configuration_free(AbrtAppConfiguration *conf)
 
     if (conf->settings)
     {
-        libreport_free_map_string(conf->settings);
+        if (conf->settings)
+            g_hash_table_destroy(conf->settings);
         conf->settings = (void *)0xDEADBEAF;
     }
 

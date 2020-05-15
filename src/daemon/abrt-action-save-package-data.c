@@ -152,7 +152,8 @@ static void load_gpg_keys(void)
         }
 
         g_list_free_full(gpg_files, (GDestroyNotify)libreport_free_file_obj);
-        g_hash_table_destroy(done_set);
+        if (done_set)
+            g_hash_table_destroy(done_set);
     }
 }
 
@@ -172,7 +173,8 @@ static int load_conf(const char *conf_filename)
     }
 
     ParseCommon(settings, conf_filename);
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
 
     load_gpg_keys();
 

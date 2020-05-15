@@ -713,7 +713,8 @@ static int create(SoupSession  *session,
                 error_msg_and_die(_("Unknown package sent to Retrace server."));
         }
 
-        libreport_free_map_string(osinfo);
+        if (osinfo)
+            g_hash_table_destroy(osinfo);
         problem_data_free(pd);
     }
 

@@ -72,7 +72,8 @@ int main(int argc, char **argv)
     else
         debuginfo_location = g_strdup(LOCALSTATEDIR"/cache/abrt-di");
 
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
     char *debuginfo_dirs = NULL;
     if (i_opt)
         debuginfo_dirs = g_strdup_printf("%s:%s", debuginfo_location, i_opt);
