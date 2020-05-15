@@ -504,13 +504,18 @@ static int check_package(SoupSession   *session,
     {
         if (response_code == 404)
         {
-            const char *os = libreport_get_map_string_item_or_empty(osinfo, OSINFO_PRETTY_NAME);
+            const char *os = (const char*)g_hash_table_lookup(osinfo, OSINFO_PRETTY_NAME);
             if (!os)
-                os = libreport_get_map_string_item_or_empty(osinfo, OSINFO_NAME);
+                os = (const char*)g_hash_table_lookup(osinfo, OSINFO_NAME);
 
-            *msg = g_strdup_printf(_("Retrace server is unable to process package "
-                                     "'%s.%s'.\nIs it a part of official '%s' repositories?"),
-                                   nvr, arch, os);
+            if (os)
+                *msg = g_strdup_printf(_("Retrace server is unable to process package "
+                                         "'%s.%s'.\nIs it a part of official '%s' repositories?"),
+                                       nvr, arch, os);
+            else
+                *msg = g_strdup_printf(_("Retrace server is unable to process package "
+                                         "'%s.%s'.\nIs it a part of official repositories?"),
+                                       nvr, arch);
         }
         else
             *msg = NULL;
