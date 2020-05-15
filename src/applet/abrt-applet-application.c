@@ -985,6 +985,8 @@ abrt_applet_application_dispose (GObject *object)
     self = ABRT_APPLET_APPLICATION (object);
 
     g_clear_pointer (&self->deferred_problems, g_ptr_array_unref);
+
+    G_OBJECT_CLASS (abrt_applet_application_parent_class)->dispose (object);
 }
 
 static void
