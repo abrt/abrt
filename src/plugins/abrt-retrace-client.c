@@ -666,7 +666,7 @@ static int create(SoupSession  *session,
 
         char *package = problem_data_get_content_or_NULL(pd, FILENAME_PACKAGE);
         char *arch = problem_data_get_content_or_NULL(pd, FILENAME_ARCHITECTURE);
-        map_string_t *osinfo = libreport_new_map_string();
+        map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
         problem_data_get_osinfo(pd, osinfo);
 
         /* not needed for TASK_VMCORE - the information is kept in the vmcore itself */

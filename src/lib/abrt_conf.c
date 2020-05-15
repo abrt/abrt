@@ -177,7 +177,7 @@ int abrt_load_abrt_conf()
     abrt_free_abrt_conf_data();
 
     const char *const abrt_conf = get_abrt_conf_file_name();
-    map_string_t *settings = libreport_new_map_string();
+    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     if (!abrt_load_abrt_conf_file(abrt_conf, settings))
         perror_msg("Can't load '%s'", abrt_conf);
 

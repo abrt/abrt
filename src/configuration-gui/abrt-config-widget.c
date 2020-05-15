@@ -123,7 +123,7 @@ abrt_app_configuration_new(const char *app_name)
     AbrtAppConfiguration *conf = g_new(AbrtAppConfiguration, 1);
 
     conf->app_name = g_strdup(app_name);
-    conf->settings = libreport_new_map_string();
+    conf->settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     conf->glib_settings = NULL;
 
     if(!libreport_load_app_conf_file(conf->app_name, conf->settings)) {

@@ -122,7 +122,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
 
 static void load_gpg_keys(void)
 {
-    map_string_t *settings = libreport_new_map_string();
+    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     if (!abrt_load_abrt_conf_file(GPG_CONF, settings))
     {
         error_msg("Can't load '%s'", GPG_CONF);
@@ -158,7 +158,7 @@ static void load_gpg_keys(void)
 
 static int load_conf(const char *conf_filename)
 {
-    map_string_t *settings = libreport_new_map_string();
+    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     if (conf_filename != NULL)
     {
         if (!libreport_load_conf_file(conf_filename, settings, false))

@@ -201,7 +201,7 @@ migrate_auto_reporting_to_gsettings (void)
     int auto_reporting;
     int configured;
 
-    settings_map = libreport_new_map_string ();
+    settings_map = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
 
     if (!libreport_load_app_conf_file (APP_NAME, settings_map))
     {
