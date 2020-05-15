@@ -51,12 +51,12 @@ load_settings_to_dict(const char *file, int (*loader)(const char *, map_string_t
     }
 
     map_string_iter_t iter;
-    const char *key = NULL;
-    const char *value = NULL;
+    gpointer key = NULL;
+    gpointer value = NULL;
     g_hash_table_iter_init(&iter, settings);
-    while(libreport_next_map_string_iter(&iter, &key, &value))
+    while(g_hash_table_iter_next(&iter, &key, &value))
     {
-        if (0 != PyDict_SetItemString(dict, key, PyUnicode_FromString(value)))
+        if (0 != PyDict_SetItemString(dict, (char *)key, PyUnicode_FromString((char *)value)))
         {
             goto lacf_error;
         }

@@ -67,7 +67,7 @@ static char *xstrdup_normalized_path(const char *path)
 
 static void ParseCommon(map_string_t *settings, const char *conf_filename)
 {
-    const char *value;
+    gpointer value;
 
     value = g_hash_table_lookup(settings, "WatchCrashdumpArchiveDir");
     if (value)
@@ -81,9 +81,9 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     {
         char *end;
         errno = 0;
-        unsigned long ul = strtoul(value, &end, 10);
+        unsigned long ul = strtoul((char *)value, &end, 10);
         if (errno || end == value || *end != '\0' || ul > INT_MAX)
-            error_msg("Error parsing %s setting: '%s'", "MaxCrashReportsSize", value);
+            error_msg("Error parsing %s setting: '%s'", "MaxCrashReportsSize", (char *)value);
         else
             abrt_g_settings_nMaxCrashReportsSize = ul;
         g_hash_table_remove(settings, "MaxCrashReportsSize");
@@ -92,7 +92,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     value = g_hash_table_lookup(settings, "DumpLocation");
     if (value)
     {
-        abrt_g_settings_dump_location = xstrdup_normalized_path(value);
+        abrt_g_settings_dump_location = xstrdup_normalized_path((char *)value);
         g_hash_table_remove(settings, "DumpLocation");
     }
     else
@@ -101,14 +101,14 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     value = g_hash_table_lookup(settings, "DeleteUploaded");
     if (value)
     {
-        abrt_g_settings_delete_uploaded = libreport_string_to_bool(value);
+        abrt_g_settings_delete_uploaded = libreport_string_to_bool((char *)value);
         g_hash_table_remove(settings, "DeleteUploaded");
     }
 
     value = g_hash_table_lookup(settings, "AutoreportingEnabled");
     if (value)
     {
-        abrt_g_settings_autoreporting = libreport_string_to_bool(value);
+        abrt_g_settings_autoreporting = libreport_string_to_bool((char *)value);
         g_hash_table_remove(settings, "AutoreportingEnabled");
     }
 
@@ -124,7 +124,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     value = g_hash_table_lookup(settings, "ShortenedReporting");
     if (value)
     {
-        abrt_g_settings_shortenedreporting = libreport_string_to_bool(value);
+        abrt_g_settings_shortenedreporting = libreport_string_to_bool((char *)value);
         g_hash_table_remove(settings, "ShortenedReporting");
     }
     else
@@ -137,7 +137,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     value = g_hash_table_lookup(settings, "ExploreChroots");
     if (value)
     {
-        abrt_g_settings_explorechroots = libreport_string_to_bool(value);
+        abrt_g_settings_explorechroots = libreport_string_to_bool((char *)value);
         g_hash_table_remove(settings, "ExploreChroots");
     }
     else
@@ -148,21 +148,20 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     {
         char *end;
         errno = 0;
-        unsigned long ul = strtoul(value, &end, 10);
+        unsigned long ul = strtoul((char *)value, &end, 10);
         if (errno || end == value || *end != '\0' || ul > INT_MAX)
-            error_msg("Error parsing %s setting: '%s'", "DebugLevel", value);
+            error_msg("Error parsing %s setting: '%s'", "DebugLevel", (char *)value);
         else
             abrt_g_settings_debug_level = ul;
         g_hash_table_remove(settings, "DebugLevel");
     }
 
     GHashTableIter iter;
-    const char *name;
-    /*char *value; - already declared */
+    gpointer name;
     g_hash_table_iter_init(&iter, settings);
-    while (libreport_next_map_string_iter(&iter, &name, &value))
+    while (g_hash_table_iter_next(&iter, &name, NULL))
     {
-        error_msg("Unrecognized variable '%s' in '%s'", name, conf_filename);
+        error_msg("Unrecognized variable '%s' in '%s'", (char *)name, conf_filename);
     }
 }
 
