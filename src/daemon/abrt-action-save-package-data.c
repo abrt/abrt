@@ -113,7 +113,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     map_string_iter_t iter;
     const char *name;
     /*char *value; - already declared */
-    libreport_init_map_string_iter(&iter, settings);
+    g_hash_table_iter_init(&iter, settings);
     while (libreport_next_map_string_iter(&iter, &name, &value))
     {
         error_msg("Unrecognized variable '%s' in '%s'", name, conf_filename);
