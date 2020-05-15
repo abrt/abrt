@@ -69,19 +69,19 @@ static GList *settings_Interpreters = NULL;
 
 static void ParseCommon(map_string_t *settings, const char *conf_filename)
 {
-    const char *value;
+    gpointer value;
 
     value = g_hash_table_lookup(settings, "OpenGPGCheck");
     if (value)
     {
-        settings_bOpenGPGCheck = libreport_string_to_bool(value);
+        settings_bOpenGPGCheck = libreport_string_to_bool((char *)value);
         g_hash_table_remove(settings, "OpenGPGCheck");
     }
 
     value = g_hash_table_lookup(settings, "BlackList");
     if (value)
     {
-        settings_setBlackListedPkgs = libreport_parse_delimited_list(value, ",");
+        settings_setBlackListedPkgs = libreport_parse_delimited_list((char *)value, ",");
         g_hash_table_remove(settings, "BlackList");
     }
     else
@@ -90,7 +90,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     value = g_hash_table_lookup(settings, "BlackListedPaths");
     if (value)
     {
-        settings_setBlackListedPaths = libreport_parse_delimited_list(value, ",");
+        settings_setBlackListedPaths = libreport_parse_delimited_list((char *)value, ",");
         g_hash_table_remove(settings, "BlackListedPaths");
     }
     else
@@ -99,24 +99,23 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     value = g_hash_table_lookup(settings, "ProcessUnpackaged");
     if (value)
     {
-        settings_bProcessUnpackaged = libreport_string_to_bool(value);
+        settings_bProcessUnpackaged = libreport_string_to_bool((char *)value);
         g_hash_table_remove(settings, "ProcessUnpackaged");
     }
 
     value = g_hash_table_lookup(settings, "Interpreters");
     if (value)
     {
-        settings_Interpreters = libreport_parse_delimited_list(value, ",");
+        settings_Interpreters = libreport_parse_delimited_list((char *)value, ",");
         g_hash_table_remove(settings, "Interpreters");
     }
 
     map_string_iter_t iter;
-    const char *name;
-    /*char *value; - already declared */
+    gpointer name;
     g_hash_table_iter_init(&iter, settings);
-    while (libreport_next_map_string_iter(&iter, &name, &value))
+    while (g_hash_table_iter_next(&iter, &name, &value))
     {
-        error_msg("Unrecognized variable '%s' in '%s'", name, conf_filename);
+        error_msg("Unrecognized variable '%s' in '%s'", (char *)name, conf_filename);
     }
 }
 
