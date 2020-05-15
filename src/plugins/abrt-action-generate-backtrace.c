@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     if (!abrt_load_abrt_plugin_conf_file(CCPP_CONF, settings))
         error_msg("Can't load '%s'", CCPP_CONF);
 
-    const char *value = libreport_get_map_string_item_or_NULL(settings, "DebuginfoLocation");
+    const char *value = g_hash_table_lookup(settings, "DebuginfoLocation");
     char *debuginfo_location;
     if (value)
         debuginfo_location = g_strdup(value);

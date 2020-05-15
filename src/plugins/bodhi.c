@@ -627,7 +627,7 @@ int main(int argc, char **argv)
 
     const char *value;
     g_string_prepend(q, " update --enablerepo=fedora --enablerepo=updates --enablerepo=updates-testing");
-    value = libreport_get_map_string_item_or_NULL(settings, "PackageManager");
+    value = g_hash_table_lookup(settings, "PackageManager");
     if (value)
         g_string_prepend(q, value);
     else
