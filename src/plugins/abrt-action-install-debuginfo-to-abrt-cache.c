@@ -177,7 +177,7 @@ int main(int argc, char **argv)
         for (size_t i = 0; i < wlsize; i++)
             if (setlist[i] != NULL)
             {
-                libreport_xsetenv(whitelist[i], setlist[i]);
+                g_setenv(whitelist[i], setlist[i], TRUE);
                 free(setlist[i]);
             }
 #else
