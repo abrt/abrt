@@ -73,7 +73,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     if (value)
     {
         abrt_g_settings_sWatchCrashdumpArchiveDir = xstrdup_normalized_path(value);
-        libreport_remove_map_string_item(settings, "WatchCrashdumpArchiveDir");
+        g_hash_table_remove(settings, "WatchCrashdumpArchiveDir");
     }
 
     value = g_hash_table_lookup(settings, "MaxCrashReportsSize");
@@ -86,14 +86,14 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
             error_msg("Error parsing %s setting: '%s'", "MaxCrashReportsSize", value);
         else
             abrt_g_settings_nMaxCrashReportsSize = ul;
-        libreport_remove_map_string_item(settings, "MaxCrashReportsSize");
+        g_hash_table_remove(settings, "MaxCrashReportsSize");
     }
 
     value = g_hash_table_lookup(settings, "DumpLocation");
     if (value)
     {
         abrt_g_settings_dump_location = xstrdup_normalized_path(value);
-        libreport_remove_map_string_item(settings, "DumpLocation");
+        g_hash_table_remove(settings, "DumpLocation");
     }
     else
         abrt_g_settings_dump_location = g_strdup(DEFAULT_DUMP_LOCATION);
@@ -102,21 +102,21 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     if (value)
     {
         abrt_g_settings_delete_uploaded = libreport_string_to_bool(value);
-        libreport_remove_map_string_item(settings, "DeleteUploaded");
+        g_hash_table_remove(settings, "DeleteUploaded");
     }
 
     value = g_hash_table_lookup(settings, "AutoreportingEnabled");
     if (value)
     {
         abrt_g_settings_autoreporting = libreport_string_to_bool(value);
-        libreport_remove_map_string_item(settings, "AutoreportingEnabled");
+        g_hash_table_remove(settings, "AutoreportingEnabled");
     }
 
     value = g_hash_table_lookup(settings, "AutoreportingEvent");
     if (value)
     {
         abrt_g_settings_autoreporting_event = g_strdup(value);
-        libreport_remove_map_string_item(settings, "AutoreportingEvent");
+        g_hash_table_remove(settings, "AutoreportingEvent");
     }
     else
         abrt_g_settings_autoreporting_event = g_strdup("report_uReport");
@@ -125,7 +125,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     if (value)
     {
         abrt_g_settings_shortenedreporting = libreport_string_to_bool(value);
-        libreport_remove_map_string_item(settings, "ShortenedReporting");
+        g_hash_table_remove(settings, "ShortenedReporting");
     }
     else
     {
@@ -138,7 +138,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     if (value)
     {
         abrt_g_settings_explorechroots = libreport_string_to_bool(value);
-        libreport_remove_map_string_item(settings, "ExploreChroots");
+        g_hash_table_remove(settings, "ExploreChroots");
     }
     else
         abrt_g_settings_explorechroots = false;
@@ -153,7 +153,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
             error_msg("Error parsing %s setting: '%s'", "DebugLevel", value);
         else
             abrt_g_settings_debug_level = ul;
-        libreport_remove_map_string_item(settings, "DebugLevel");
+        g_hash_table_remove(settings, "DebugLevel");
     }
 
     GHashTableIter iter;

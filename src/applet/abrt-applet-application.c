@@ -239,7 +239,7 @@ migrate_auto_reporting_to_gsettings (void)
         g_settings_set_boolean (settings, GS_PRIVACY_OPT_AUTO_REPORTING, TRUE);
     }
 
-    libreport_remove_map_string_item (settings_map, OPT_NAME);
+    g_hash_table_remove(settings_map, OPT_NAME);
     libreport_save_app_conf_file (APP_NAME, settings_map);
 
     log_warning ("Successfully migrated "APP_NAME":"OPT_NAME" to "GS_SCHEMA_ID_PRIVACY":"GS_PRIVACY_OPT_AUTO_REPORTING);
