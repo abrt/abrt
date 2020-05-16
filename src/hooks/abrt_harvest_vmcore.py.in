@@ -161,7 +161,7 @@ def harvest_vmcore(crash_dir):
 
     # Wait for abrtd to start. Give it at least 1 second to initialize.
     for i in range(10):
-        if i is 9:
+        if i == 9:
             sys.exit(1)
         elif os.system('pidof abrtd >/dev/null'):
             time.sleep(1)
