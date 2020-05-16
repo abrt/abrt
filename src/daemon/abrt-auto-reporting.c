@@ -56,7 +56,7 @@ set_abrt_reporting(map_string_t *conf, const char *opt_value)
     if (  (cur_value == NULL && strcmp(def_value, opt_value) != 0)
        || (cur_value != NULL && strcmp(cur_value, opt_value) != 0))
     {
-        libreport_replace_map_string_item(conf, g_strdup(OPTION_NAME), g_strdup(opt_value));
+        g_hash_table_replace(conf, g_strdup(OPTION_NAME), g_strdup(opt_value));
         return abrt_save_abrt_conf_file(CONF_NAME, conf);
     }
 
@@ -72,7 +72,7 @@ set_ureport_http_auth(map_string_t *conf, const char *opt_value)
 
     if (cur_value == NULL || strcmp(cur_value, opt_value) != 0)
     {
-        libreport_replace_map_string_item(conf, g_strdup(UREPORT_HTTP_AUTH_OPTION), g_strdup(opt_value));
+        g_hash_table_replace(conf, g_strdup(UREPORT_HTTP_AUTH_OPTION), g_strdup(opt_value));
         g_hash_table_remove(conf, UREPORT_CLIENT_AUTH_OPTION);
 
         return libreport_save_plugin_conf_file(UREPORT_NAME, conf);
@@ -89,7 +89,7 @@ set_ureport_client_auth(map_string_t *conf, const char *opt_value)
 
     if (cur_value == NULL || strcmp(cur_value, opt_value) != 0)
     {
-        libreport_replace_map_string_item(conf, g_strdup(UREPORT_CLIENT_AUTH_OPTION), g_strdup(opt_value));
+        g_hash_table_replace(conf, g_strdup(UREPORT_CLIENT_AUTH_OPTION), g_strdup(opt_value));
         g_hash_table_remove(conf, UREPORT_HTTP_AUTH_OPTION);
 
         return libreport_save_plugin_conf_file(UREPORT_NAME, conf);
@@ -126,8 +126,8 @@ set_rhts_credentials(map_string_t *conf, const char *username, const char *passw
     if (  (username_cur_value == NULL || strcmp(username_cur_value, username) != 0)
        || (password_cur_value == NULL || strcmp(password_cur_value, password) != 0))
     {
-        libreport_replace_map_string_item(conf, g_strdup(RHTS_USERNAME_OPTION), g_strdup(username));
-        libreport_replace_map_string_item(conf, g_strdup(RHTS_PASSWORD_OPTION), g_strdup(password));
+        g_hash_table_replace(conf, g_strdup(RHTS_USERNAME_OPTION), g_strdup(username));
+        g_hash_table_replace(conf, g_strdup(RHTS_PASSWORD_OPTION), g_strdup(password));
 
         return libreport_save_plugin_conf_file(RHTS_NAME, conf);
     }
