@@ -64,7 +64,6 @@ GList *s_dir_queue;
 
 static GIOChannel *channel_socket = NULL;
 static guint channel_id_socket = 0;
-static int child_count = 0;
 
 struct abrt_server_proc
 {
@@ -317,7 +316,7 @@ static void add_abrt_server_proc(const pid_t pid, int fdout)
 
 static void start_idle_timeout(void)
 {
-    if (s_timeout == 0 || child_count > 0)
+    if (s_timeout == 0)
         return;
 
     s_timeout_src = g_timeout_add_seconds(s_timeout, (GSourceFunc)g_main_loop_quit, s_main_loop);
