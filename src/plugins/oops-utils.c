@@ -107,7 +107,7 @@ unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location,
     {
         char base[sizeof("oops-YYYY-MM-DD-hh:mm:ss-%lu-%lu") + 2 * sizeof(long)*3];
         sprintf(base, "oops-%s-%lu-%lu", iso_date, (long)my_pid, (long)idx);
-        char *path = libreport_concat_path_file(dump_location, base);
+        char *path = g_build_filename(dump_location ? dump_location : "", base, NULL);
 
         struct dump_dir *dd = dd_create(path, /*fs owner*/0, DEFAULT_DUMP_DIR_MODE);
         if (dd)

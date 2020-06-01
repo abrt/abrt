@@ -192,7 +192,7 @@ static void queue_post_create_process(struct abrt_server_proc *proc)
                 abrt_g_settings_dump_location, abrt_g_settings_nMaxCrashReportsSize,
                 kind, worst_dir);
 
-        char *deleted = libreport_concat_path_file(abrt_g_settings_dump_location, worst_dir);
+        char *deleted = g_build_filename(abrt_g_settings_dump_location ? abrt_g_settings_dump_location : "", worst_dir, NULL);
         free(worst_dir);
         worst_dir = NULL;
 
@@ -654,7 +654,7 @@ static void mark_unprocessed_dump_dirs_not_reportable(const char *path)
         if (libreport_dot_or_dotdot(dent->d_name))
             continue; /* skip "." and ".." */
 
-        char *full_name = libreport_concat_path_file(path, dent->d_name);
+        char *full_name = g_build_filename(path, dent->d_name, NULL);
 
         struct stat stat_buf;
         if (stat(full_name, &stat_buf) != 0)

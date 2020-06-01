@@ -298,13 +298,13 @@ new_dir_exists (GList **new_dirs)
     }
 
     cachedir = g_get_user_cache_dir ();
-    dirlist_name = libreport_concat_path_file (cachedir, "abrt");
+    dirlist_name = g_build_filename(cachedir, "abrt", NULL);
 
     g_mkdir_with_parents (dirlist_name, 0777);
 
     g_free (dirlist_name);
 
-    dirlist_name = libreport_concat_path_file (cachedir, "abrt/applet_dirlist");
+    dirlist_name = g_build_filename(cachedir, "abrt/applet_dirlist", NULL);
     fp = fopen (dirlist_name, "r+");
     if (fp == NULL)
     {

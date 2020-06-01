@@ -207,7 +207,7 @@ int abrt_load_abrt_plugin_conf_file(const char *file, map_string_t *settings)
 
 int abrt_save_abrt_conf_file(const char *file, map_string_t *settings)
 {
-    char *path = libreport_concat_path_file(CONF_DIR, file);
+    char *path = g_build_filename(CONF_DIR ? CONF_DIR : "", file, NULL);
     int retval = libreport_save_conf_file(path, settings);
     free(path);
     return retval;
@@ -215,7 +215,7 @@ int abrt_save_abrt_conf_file(const char *file, map_string_t *settings)
 
 int abrt_save_abrt_plugin_conf_file(const char *file, map_string_t *settings)
 {
-    char *path = libreport_concat_path_file(PLUGINS_CONF_DIR, file);
+    char *path = g_build_filename(PLUGINS_CONF_DIR ? PLUGINS_CONF_DIR : "", file, NULL);
     int retval = libreport_save_conf_file(path, settings);
     free(path);
     return retval;
