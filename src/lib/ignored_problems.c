@@ -105,12 +105,11 @@ static bool ignored_problems_file_contains(ignored_problems_t *set,
     unsigned line_num = 0;
     while (!found)
     {
-        char *line = libreport_xmalloc_fgetline(fp);
+        g_autofree char *line = libreport_xmalloc_fgetline(fp);
         if (!line)
             break;
         ++line_num;
         found = ignored_problems_eq(set, problem_id, uuid, duphash, line, line_num);
-        free(line);
     }
 
  ret_contains_end:
@@ -180,14 +179,11 @@ void ignored_problems_add(ignored_problems_t *set, const char *problem_id)
                 " can't open the problem", problem_id);
         return;
     }
-    char *uuid = dd_load_text_ext(dd, FILENAME_UUID, IGN_DD_LOAD_TEXT_FLAGS);
-    char *duphash = dd_load_text_ext(dd, FILENAME_DUPHASH, IGN_DD_LOAD_TEXT_FLAGS);
+    g_autofree char *uuid = dd_load_text_ext(dd, FILENAME_UUID, IGN_DD_LOAD_TEXT_FLAGS);
+    g_autofree char *duphash = dd_load_text_ext(dd, FILENAME_DUPHASH, IGN_DD_LOAD_TEXT_FLAGS);
     dd_close(dd);
 
     ignored_problems_add_row(set, problem_id, uuid, duphash);
-
-    free(duphash);
-    free(uuid);
 }
 
 void ignored_problems_remove_row(ignored_problems_t *set, const char *problem_id,
@@ -226,7 +222,7 @@ void ignored_problems_remove_row(ignored_problems_t *set, const char *problem_id
      */
     rewind(orig_fp);
 
-    char *new_tempfile_name = g_strdup_printf("%s.XXXXXX", set->ign_set_file_path);
+    g_autofree char *new_tempfile_name = g_strdup_printf("%s.XXXXXX", set->ign_set_file_path);
     int new_tempfile_fd = mkstemp(new_tempfile_name);
     if (new_tempfile_fd < 0)
     {
@@ -271,8 +267,6 @@ void ignored_problems_remove_row(ignored_problems_t *set, const char *problem_id
     fclose(orig_fp);
     if (new_tempfile_fd >= 0)
         close(new_tempfile_fd);
-    free(new_tempfile_name);
-
 }
 
 void ignored_problems_remove_problem_data(ignored_problems_t *set, problem_data_t *pd)
@@ -286,8 +280,8 @@ void ignored_problems_remove_problem_data(ignored_problems_t *set, problem_data_
 
 void ignored_problems_remove(ignored_problems_t *set, const char *problem_id)
 {
-    char *uuid = NULL;
-    char *duphash = NULL;
+    g_autofree char *uuid = NULL;
+    g_autofree char *duphash = NULL;
     struct dump_dir *dd = dd_opendir(problem_id, IGN_DD_OPEN_FLAGS);
     if (dd)
     {
@@ -308,9 +302,6 @@ void ignored_problems_remove(ignored_problems_t *set, const char *problem_id)
     }
 
     ignored_problems_remove_row(set, problem_id, uuid, duphash);
-
-    free(duphash);
-    free(uuid);
 }
 
 bool ignored_problems_contains_problem_data(ignored_problems_t *set, problem_data_t *pd)
@@ -338,8 +329,8 @@ bool ignored_problems_contains(ignored_problems_t *set, const char *problem_id)
                 problem_id);
         return false;
     }
-    char *uuid = dd_load_text_ext(dd, FILENAME_UUID, IGN_DD_LOAD_TEXT_FLAGS);
-    char *duphash = dd_load_text_ext(dd, FILENAME_DUPHASH, IGN_DD_LOAD_TEXT_FLAGS);
+    g_autofree char *uuid = dd_load_text_ext(dd, FILENAME_UUID, IGN_DD_LOAD_TEXT_FLAGS);
+    g_autofree char *duphash = dd_load_text_ext(dd, FILENAME_DUPHASH, IGN_DD_LOAD_TEXT_FLAGS);
     dd_close(dd);
 
     log_notice("Going to check if problem '%s' is in ignored problems '%s'",
@@ -347,9 +338,6 @@ bool ignored_problems_contains(ignored_problems_t *set, const char *problem_id)
 
     bool found = ignored_problems_file_contains(set, problem_id, uuid, duphash,
                     /* (FILE **) */NULL, "r");
-
-    free(duphash);
-    free(uuid);
 
     return found;
 }

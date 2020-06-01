@@ -172,7 +172,7 @@ static void queue_post_create_process(struct abrt_server_proc *proc)
         /* Move behind '/' */
         ++ignored;
 
-    char *worst_dir = NULL;
+    g_autofree char *worst_dir = NULL;
     const double max_size = 1024 * 1024 * abrt_g_settings_nMaxCrashReportsSize;
     while (libreport_get_dirsize_find_largest_dir(abrt_g_settings_dump_location, &worst_dir, ignored, proc->dirname) >= max_size
            && worst_dir)
@@ -192,15 +192,12 @@ static void queue_post_create_process(struct abrt_server_proc *proc)
                 abrt_g_settings_dump_location, abrt_g_settings_nMaxCrashReportsSize,
                 kind, worst_dir);
 
-        char *deleted = g_build_filename(abrt_g_settings_dump_location ? abrt_g_settings_dump_location : "", worst_dir, NULL);
-        free(worst_dir);
+        g_autofree char *deleted = g_build_filename(abrt_g_settings_dump_location ? abrt_g_settings_dump_location : "", worst_dir, NULL);
         worst_dir = NULL;
 
         struct dump_dir *dd = dd_opendir(deleted, DD_FAIL_QUIETLY_ENOENT);
         if (dd != NULL)
             dd_delete(dd);
-
-        free(deleted);
     }
 
 consider_processing:
@@ -239,7 +236,7 @@ static gboolean abrt_server_output_cb(GIOChannel *channel, GIOCondition conditio
 
     for (;;)
     {
-        gchar *line;
+        g_autofree gchar *line = NULL;
         gsize len = 0;
         gsize pos = 0;
         GError *error = NULL;
@@ -276,8 +273,6 @@ static gboolean abrt_server_output_cb(GIOChannel *channel, GIOCondition conditio
         }
         else
             log_warning("abrt-server(%d): not recognized message: '%s'", proc->pid, line);
-
-        g_free(line);
     }
 
     return TRUE; /* Keep this event */
@@ -574,11 +569,10 @@ static int create_pidfile(void)
                 long locking_pid = strtol(pid_str, NULL, 10);
                 if (!errno && locking_pid > 0 && locking_pid <= INT_MAX)
                 {
-                    char *cmdline = libreport_get_cmdline(locking_pid);
+                    g_autofree char *cmdline = libreport_get_cmdline(locking_pid);
                     if (cmdline)
                     {
                         error_msg("Process %lu '%s' is holding the lock", locking_pid, cmdline);
-                        free(cmdline);
                     }
                 }
             }
@@ -654,18 +648,18 @@ static void mark_unprocessed_dump_dirs_not_reportable(const char *path)
         if (libreport_dot_or_dotdot(dent->d_name))
             continue; /* skip "." and ".." */
 
-        char *full_name = g_build_filename(path, dent->d_name, NULL);
+        g_autofree char *full_name = g_build_filename(path, dent->d_name, NULL);
 
         struct stat stat_buf;
         if (stat(full_name, &stat_buf) != 0)
         {
             perror_msg("Can't access path '%s'", full_name);
-            goto next_dd;
+            continue;
         }
 
         if (S_ISDIR(stat_buf.st_mode) == 0)
             /* This is expected. The dump location contains some aux files */
-            goto next_dd;
+            continue;
 
         struct dump_dir *dd = dd_opendir(full_name, /*flags*/0);
         if (dd)
@@ -686,9 +680,6 @@ static void mark_unprocessed_dump_dirs_not_reportable(const char *path)
             }
             dd_close(dd);
         }
-
-  next_dd:
-        free(full_name);
     }
     closedir(dp);
 }

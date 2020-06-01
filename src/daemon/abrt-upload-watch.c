@@ -133,7 +133,7 @@ print_stats(struct process *proc)
 static void
 process_next_in_queue(struct process *proc)
 {
-    char *name = queue_pop(&proc->queue);
+    g_autofree char *name = queue_pop(&proc->queue);
     if (!name)
     {
         log_debug("Deferred queue is empty. Running workers: %d", proc->children);
@@ -141,7 +141,6 @@ process_next_in_queue(struct process *proc)
     }
 
     run_abrt_handle_upload(proc, name);
-    free(name);
 }
 
 static void

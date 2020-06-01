@@ -84,7 +84,7 @@ static double get_dir_size(const char *dirname,
         if (libreport_dot_or_dotdot(dent->d_name))
             continue;
 
-        char *fullname = g_build_filename(dirname, dent->d_name, NULL);
+        g_autofree char *fullname = g_build_filename(dirname, dent->d_name, NULL);
         struct stat stats;
         if (lstat(fullname, &stats) != 0)
             goto next;
@@ -125,7 +125,7 @@ static double get_dir_size(const char *dirname,
             }
         }
  next:
-        free(fullname);
+        continue;
     }
     closedir(dp);
 
@@ -262,13 +262,11 @@ int main(int argc, char **argv)
          */
         preserve_files_list = g_list_prepend(preserve_files_list, name);
 
-        char *rp = realpath(name, NULL);
+        g_autofree char *rp = realpath(name, NULL);
         if (rp)
         {
             if (strcmp(rp, name) != 0)
                 preserve_files_list = g_list_prepend(preserve_files_list, rp);
-            else
-                free(rp);
         }
     }
     /* Not really necessary, but helps to reduce confusion when debugging */

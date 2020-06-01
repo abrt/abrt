@@ -330,7 +330,7 @@ int main(int argc, char *argv[])
 
     if ((opts & OPT_u))
     {
-        char *tmp_password = NULL;
+        g_autofree char *tmp_password = NULL;
         if (!(opts & OPT_p))
         {
             password = tmp_password = libreport_ask_password(_("Password:"));
@@ -353,8 +353,6 @@ int main(int argc, char *argv[])
             libreport_save_plugin_conf_file(UREPORT_NAME, ureport_conf_bck);
             goto finito;
         }
-
-        free(tmp_password);
     }
 
     if ((opts & OPT_c))

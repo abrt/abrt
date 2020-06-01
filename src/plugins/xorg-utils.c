@@ -132,10 +132,9 @@ void xorg_crash_info_create_dump_dir(struct xorg_crash_info *crash_info, const c
     if (world_readable)
         dd_set_no_owner(dd);
 
-    char *path = g_strdup(dd->dd_dirname);
+    g_autofree char *path = g_strdup(dd->dd_dirname);
     dd_close(dd);
     abrt_notify_new_path(path);
-    free(path);
 }
 
 char *xorg_get_next_line_from_fd(void *fd)
@@ -173,7 +172,7 @@ struct xorg_crash_info *process_xorg_bt(char *(*get_next_line)(void *), void *da
     char *exe = NULL;
     GList *list = NULL;
     unsigned cnt = 0;
-    char *line = NULL;
+    g_autofree char *line = NULL;
     while ((line = get_next_line(data)) != NULL)
     {
         char *p = skip_pfx(line);
@@ -242,7 +241,6 @@ struct xorg_crash_info *process_xorg_bt(char *(*get_next_line)(void *), void *da
         if (++cnt > 255) /* prevent ridiculously large bts */
             break;
     }
-    free(line);
 
     if (list)
     {

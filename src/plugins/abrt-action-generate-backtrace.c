@@ -66,7 +66,7 @@ int main(int argc, char **argv)
         error_msg("Can't load '%s'", CCPP_CONF);
 
     const char *value = g_hash_table_lookup(settings, "DebuginfoLocation");
-    char *debuginfo_location;
+    g_autofree char *debuginfo_location = NULL;
     if (value)
         debuginfo_location = g_strdup(value);
     else
@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 
     if (settings)
         g_hash_table_destroy(settings);
-    char *debuginfo_dirs = NULL;
+    g_autofree char *debuginfo_dirs = NULL;
     if (i_opt)
         debuginfo_dirs = g_strdup_printf("%s:%s", debuginfo_location, i_opt);
 
@@ -82,15 +82,13 @@ int main(int argc, char **argv)
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return 1;
-    char *backtrace = abrt_get_backtrace(dd, exec_timeout_sec,
+    g_autofree char *backtrace = abrt_get_backtrace(dd, exec_timeout_sec,
             (debuginfo_dirs) ? debuginfo_dirs : debuginfo_location);
-    free(debuginfo_location);
     if (!backtrace)
     {
         backtrace = g_strdup("");
         log_warning("abrt_get_backtrace() returns NULL, broken core/gdb?");
     }
-    free(debuginfo_dirs);
     abrt_free_abrt_conf_data();
 
     /* Store gdb backtrace */
@@ -102,7 +100,6 @@ int main(int argc, char **argv)
      * it is useful to let user know it (maybe) worked.
      */
     log_warning(_("Backtrace is generated and saved, %u bytes"), (int)strlen(backtrace));
-    free(backtrace);
 
     return 0;
 }

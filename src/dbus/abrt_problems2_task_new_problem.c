@@ -165,7 +165,7 @@ static int abrt_p2_task_new_problem_notify_directory_task(AbrtP2TaskNewProblem *
 {
     AbrtP2Entry *entry = abrt_p2_object_get_node(task->pv->p2tnp_obj);
 
-    char *message = NULL;
+    g_autofree char *message = NULL;
     const char *problem_id = abrt_p2_entry_problem_id(entry);
     int r = abrt_notify_new_path_with_response(problem_id, &message);
     if (r < 0)
@@ -211,7 +211,6 @@ static int abrt_p2_task_new_problem_notify_directory_task(AbrtP2TaskNewProblem *
         if (obj == NULL)
         {
             error_msg("Problem Entry for directory '%s' does not exist", message);
-            free(message);
             return ABRT_P2_TASK_CODE_ERROR;
         }
 
@@ -267,7 +266,6 @@ static int abrt_p2_task_new_problem_notify_directory_task(AbrtP2TaskNewProblem *
         code = ABRT_P2_TASK_NEW_PROBLEM_INVALID_DATA;
     }
 
-    free(message);
     return code;
 }
 
@@ -306,7 +304,7 @@ static AbrtP2TaskCode abrt_p2_task_new_problem_run(AbrtP2Task *task, GError **er
         }
     }
 
-    char *new_path = NULL;
+    g_autofree char *new_path = NULL;
     gint32 code = abrt_p2_task_new_problem_notify_directory_task(np,
                                                                  &new_path,
                                                                  error);
@@ -322,7 +320,6 @@ static AbrtP2TaskCode abrt_p2_task_new_problem_run(AbrtP2Task *task, GError **er
                               "NewProblem.Entry",
                               "s",
                               new_path);
-        free(new_path);
     }
 
     log_debug("NewProblem task '%p' has successfully finished", task);

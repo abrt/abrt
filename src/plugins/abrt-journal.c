@@ -300,7 +300,7 @@ int abrt_journal_next(abrt_journal_t *journal)
 
 int abrt_journal_save_current_position(abrt_journal_t *journal, const char *file_name)
 {
-    char *crsr = NULL;
+    g_autofree char *crsr = NULL;
     const int r = abrt_journal_get_cursor(journal, &crsr);
 
     if (r < 0)
@@ -323,7 +323,6 @@ int abrt_journal_save_current_position(abrt_journal_t *journal, const char *file
     libreport_full_write_str(state_fd, crsr);
     close(state_fd);
 
-    free(crsr);
     return 0;
 }
 
@@ -361,7 +360,7 @@ int abrt_journal_restore_position(abrt_journal_t *journal, const char *file_name
         return -errno;
     }
 
-    char *crsr = g_malloc(buf.st_size + 1);
+    g_autofree char *crsr = g_malloc(buf.st_size + 1);
 
     const int sz = libreport_full_read(state_fd, crsr, buf.st_size);
     if (sz != buf.st_size)
@@ -382,7 +381,6 @@ int abrt_journal_restore_position(abrt_journal_t *journal, const char *file_name
         return r;
     }
 
-    free(crsr);
     return 0;
 }
 

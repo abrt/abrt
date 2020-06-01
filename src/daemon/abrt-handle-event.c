@@ -229,7 +229,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
     type = dd_load_text(dd, FILENAME_TYPE);
     free(executable);
     executable = dd_load_text_ext(dd, FILENAME_EXECUTABLE, DD_FAIL_QUIETLY_ENOENT);
-    char *container_id = dd_load_text_ext(dd, FILENAME_CONTAINER_ID, DD_FAIL_QUIETLY_ENOENT);
+    g_autofree char *container_id = dd_load_text_ext(dd, FILENAME_CONTAINER_ID, DD_FAIL_QUIETLY_ENOENT);
     dup_uuid_init(dd);
     dup_corebt_init(dd);
     dd_close(dd);
@@ -256,7 +256,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
 
         char *tmp_concat_path = g_build_filename(abrt_g_settings_dump_location, dent->d_name, NULL);
 
-        char *dump_dir_name2 = realpath(tmp_concat_path, NULL);
+        g_autofree char *dump_dir_name2 = realpath(tmp_concat_path, NULL);
         if (libreport_g_verbose > 1 && !dump_dir_name2)
             perror_msg("realpath(%s)", tmp_concat_path);
 
@@ -265,8 +265,8 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
         if (!dump_dir_name2)
             continue;
 
-        char *dd_uid = NULL, *dd_type = NULL;
-        char *dd_executable = NULL, *dd_container_id = NULL;
+        g_autofree char *dd_uid = NULL, *dd_type = NULL;
+        g_autofree char *dd_executable = NULL, *dd_container_id = NULL;
 
         if (strcmp(dump_dir_name, dump_dir_name2) == 0)
             goto next; /* we are never a dup of ourself */
@@ -323,17 +323,12 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
         }
 
 next:
-        free(dump_dir_name2);
         dd_close(dd);
-        free(dd_uid);
-        free(dd_type);
-        free(dd_container_id);
     }
     closedir(dir);
 
 end:
     free((char*)dump_dir_name);
-    free(container_id);
     return retval;
 }
 
@@ -402,7 +397,7 @@ int main(int argc, char **argv)
     }
 
     bool post_create = (strcmp(event_name, "post-create") == 0);
-    char *dump_dir_name = NULL;
+    g_autofree char *dump_dir_name = NULL;
     while (*argv)
     {
         dump_dir_name = g_strdup(*argv++);
@@ -458,7 +453,6 @@ int main(int argc, char **argv)
         if (r != 0)
             return r; /* yes */
 
-        free(dump_dir_name);
         dump_dir_name = NULL;
     }
 

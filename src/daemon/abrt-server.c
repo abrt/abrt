@@ -228,7 +228,7 @@ static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *ev
 
 static int problem_dump_dir_was_provoked_by_abrt_event(struct dump_dir *dd, char  **provoker)
 {
-    char *env_var = NULL;
+    g_autofree char *env_var = NULL;
     const int r = dd_get_env_variable(dd, ABRT_SERVER_EVENT_ENV, &env_var);
 
     /* Dump directory doesn't contain the environ file */
@@ -237,8 +237,6 @@ static int problem_dump_dir_was_provoked_by_abrt_event(struct dump_dir *dd, char
 
     if (provoker != NULL)
         *provoker = env_var;
-    else
-        free(env_var);
 
     return env_var != NULL;
 }
@@ -294,7 +292,7 @@ static int run_post_create(const char *dirname, struct response *resp)
     {
         struct dump_dir *dd = dd_opendir(dirname, DD_OPEN_READONLY);
 
-        char *provoker = NULL;
+        g_autofree char *provoker = NULL;
         const bool event_dir = dd && problem_dump_dir_was_provoked_by_abrt_event(dd, &provoker);
         if (event_dir)
         {
@@ -321,7 +319,6 @@ static int run_post_create(const char *dirname, struct response *resp)
 
             }
 
-            free(provoker);
             return 400;
         }
 
@@ -381,7 +378,7 @@ static int run_post_create(const char *dirname, struct response *resp)
     int child_stdout_fd;
     int child_pid = spawn_event_handler_child(dirname, "post-create", &child_stdout_fd);
 
-    char *dup_of_dir = NULL;
+    g_autofree char *dup_of_dir = NULL;
     GString *cmd_output = g_string_new(NULL);
 
     bool child_is_post_create = 1; /* else it is a notify child */
@@ -411,7 +408,6 @@ static int run_post_create(const char *dirname, struct response *resp)
             if (child_is_post_create
              && g_str_has_prefix(msg, "DUP_OF_DIR: "))
             {
-                free(dup_of_dir);
                 dup_of_dir = g_strdup(msg + strlen("DUP_OF_DIR: "));
             }
             else
@@ -488,7 +484,7 @@ static int run_post_create(const char *dirname, struct response *resp)
         {
             /* Update the last occurrence file by the time file of the new problem */
             struct dump_dir *new_dd = dd_opendir(dirname, DD_OPEN_READONLY);
-            char *last_ocr = NULL;
+            g_autofree char *last_ocr = NULL;
             if (new_dd)
             {
                 /* TIME must exists in a valid dump directory but we don't want to die
@@ -510,8 +506,6 @@ static int run_post_create(const char *dirname, struct response *resp)
             }
 
             dd_save_text(dd, FILENAME_LAST_OCCURRENCE, last_ocr);
-
-            free(last_ocr);
         }
     }
 
@@ -545,7 +539,6 @@ static int run_post_create(const char *dirname, struct response *resp)
     else
     {
         RESPONSE_SETTER(resp, 200, NULL);
-        free(dup_of_dir);
     }
     dup_of_dir = NULL;
     g_string_erase(cmd_output, 0, -1);
@@ -559,7 +552,6 @@ static int run_post_create(const char *dirname, struct response *resp)
 
  ret:
     g_string_free(cmd_output, TRUE);
-    free(dup_of_dir);
     close(child_stdout_fd);
     return 0;
 }
@@ -605,7 +597,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     }
 
     const int proc_dir_fd = libreport_open_proc_pid_dir(pid);
-    char *rootdir = NULL;
+    g_autofree char *rootdir = NULL;
 
     if (proc_dir_fd < 0)
     {
@@ -638,19 +630,17 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     if (proc_dir_fd >= 0)
     {
         /* Obtain and save the command line. */
-        char *cmdline = libreport_get_cmdline_at(proc_dir_fd);
+        g_autofree char *cmdline = libreport_get_cmdline_at(proc_dir_fd);
         if (cmdline)
         {
             dd_save_text(dd, FILENAME_CMDLINE, cmdline);
-            free(cmdline);
         }
 
         /* Obtain and save the environment variables. */
-        char *environ = libreport_get_environ_at(proc_dir_fd);
+        g_autofree char *environ = libreport_get_environ_at(proc_dir_fd);
         if (environ)
         {
             dd_save_text(dd, FILENAME_ENVIRON, environ);
-            free(environ);
         }
 
         dd_copy_file_at(dd, FILENAME_CGROUP,    proc_dir_fd, "cgroup");
@@ -691,9 +681,8 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
                 pid_t container_pid;
                 if (libreport_get_pid_of_container_at(proc_dir_fd, &container_pid) == 0)
                 {
-                    char *container_cmdline = libreport_get_cmdline(container_pid);
+                    g_autofree char *container_cmdline = libreport_get_cmdline(container_pid);
                     dd_save_text(dd, FILENAME_CONTAINER_CMDLINE, container_cmdline);
-                    free(container_cmdline);
                 }
             }
             else
@@ -703,7 +692,6 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
         }
         close(proc_dir_fd);
     }
-    free(rootdir);
 
     /* Store id of the user whose application crashed. */
     char uid_str[sizeof(long) * 3 + 2];
@@ -729,10 +717,9 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     /* Move the completely created problem directory
      * to final directory.
      */
-    char *newpath = g_strndup(path, strlen(path) - strlen(".new"));
+    g_autofree char *newpath = g_strndup(path, strlen(path) - strlen(".new"));
     if (rename(path, newpath) == 0)
         strcpy(path, newpath);
-    free(newpath);
 
     log_notice("Saved problem directory of pid %u to '%s'", pid, path);
 
@@ -793,7 +780,8 @@ static gboolean key_value_ok(gchar *key, gchar *value)
 /* Handles a message received from client over socket. */
 static void process_message(GHashTable *problem_info, char *message)
 {
-    gchar *key, *value;
+    g_autofree gchar *key = NULL;
+    gchar *value;
 
     value = strchr(message, '=');
     if (value)
@@ -821,7 +809,6 @@ static void process_message(GHashTable *problem_info, char *message)
             /* should use error_msg_and_die() here? */
             error_msg("Invalid key or value format: %s", message);
         }
-        free(key);
     }
     else
     {
@@ -1048,9 +1035,8 @@ static int perform_http_xact(struct response *rsp)
     char *executable = g_hash_table_lookup(problem_info, FILENAME_EXECUTABLE);
     if (executable)
     {
-        char *last_file = g_build_filename(abrt_g_settings_dump_location ? abrt_g_settings_dump_location : "", "last-via-server", NULL);
+        g_autofree char *last_file = g_build_filename(abrt_g_settings_dump_location ? abrt_g_settings_dump_location : "", "last-via-server", NULL);
         int repeating_crash = check_recent_crash_file(last_file, executable);
-        free(last_file);
         if (repeating_crash) /* Only pretend that we saved it */
         {
             error_msg("Not saving repeating crash in '%s'", executable);

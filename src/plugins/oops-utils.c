@@ -38,11 +38,10 @@ int abrt_oops_process_list(GList *oops_list, const char *dump_location, const ch
             while (i < oops_cnt)
             {
                 char *kernel_bt = (char*)g_list_nth_data(oops_list, i++);
-                char *tainted_short = abrt_kernel_tainted_short(kernel_bt);
+                g_autofree char *tainted_short = abrt_kernel_tainted_short(kernel_bt);
                 if (tainted_short)
                     log_warning("Kernel is tainted '%s'", tainted_short);
 
-                free(tainted_short);
                 printf("\nVersion: %s", kernel_bt);
             }
         }
@@ -92,10 +91,10 @@ unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location,
 
     log_notice("Saving %u oopses as problem dirs", oops_cnt >= countdown ? countdown : oops_cnt);
 
-    char *cmdline_str = libreport_xmalloc_fopen_fgetline_fclose("/proc/cmdline");
-    char *fips_enabled = libreport_xmalloc_fopen_fgetline_fclose("/proc/sys/crypto/fips_enabled");
-    char *proc_modules = libreport_xmalloc_open_read_close("/proc/modules", /*maxsize:*/ NULL);
-    char *suspend_stats = libreport_xmalloc_open_read_close("/sys/kernel/debug/suspend_stats", /*maxsize:*/ NULL);
+    g_autofree char *cmdline_str = libreport_xmalloc_fopen_fgetline_fclose("/proc/cmdline");
+    g_autofree char *fips_enabled = libreport_xmalloc_fopen_fgetline_fclose("/proc/sys/crypto/fips_enabled");
+    g_autofree char *proc_modules = libreport_xmalloc_open_read_close("/proc/modules", /*maxsize:*/ NULL);
+    g_autofree char *suspend_stats = libreport_xmalloc_open_read_close("/sys/kernel/debug/suspend_stats", /*maxsize:*/ NULL);
 
     time_t t = time(NULL);
     const char *iso_date = libreport_iso_date_string(&t);
@@ -107,7 +106,7 @@ unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location,
     {
         char base[sizeof("oops-YYYY-MM-DD-hh:mm:ss-%lu-%lu") + 2 * sizeof(long)*3];
         sprintf(base, "oops-%s-%lu-%lu", iso_date, (long)my_pid, (long)idx);
-        char *path = g_build_filename(dump_location ? dump_location : "", base, NULL);
+        g_autofree char *path = g_build_filename(dump_location ? dump_location : "", base, NULL);
 
         struct dump_dir *dd = dd_create(path, /*fs owner*/0, DEFAULT_DUMP_DIR_MODE);
         if (dd)
@@ -133,8 +132,6 @@ unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location,
         else
             errors++;
 
-        free(path);
-
         if (--countdown == 0)
             break;
 
@@ -142,11 +139,6 @@ unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location,
             if (abrt_oops_signaled_sleep(1) > 0)
                 break;
     }
-
-    free(cmdline_str);
-    free(proc_modules);
-    free(fips_enabled);
-    free(suspend_stats);
 
     return errors;
 }
@@ -202,7 +194,7 @@ void abrt_oops_save_data_in_dump_dir(struct dump_dir *dd, char *oops, const char
     dd_save_text(dd, FILENAME_BACKTRACE, second_line);
 
     /* save crash_function into dumpdir */
-    char *error_message = NULL;
+    g_autofree char *error_message = NULL;
     struct sr_stacktrace *stacktrace = sr_stacktrace_parse(SR_REPORT_KERNELOOPS,
                                                            (const char *)second_line, &error_message);
 
@@ -220,7 +212,6 @@ void abrt_oops_save_data_in_dump_dir(struct dump_dir *dd, char *oops, const char
     else
     {
         error_msg("Can't parse stacktrace: %s", error_message);
-        free(error_message);
     }
 
     /* check if trace doesn't have line: 'Your BIOS is broken' */
@@ -235,13 +226,13 @@ void abrt_oops_save_data_in_dump_dir(struct dump_dir *dd, char *oops, const char
                   "therefore kernel maintainers are unable to fix this problem."));
     else
     {
-        char *tainted_short = abrt_kernel_tainted_short(second_line);
+        g_autofree char *tainted_short = abrt_kernel_tainted_short(second_line);
         if (tainted_short)
         {
             log_notice("Kernel is tainted '%s'", tainted_short);
             dd_save_text(dd, FILENAME_TAINTED_SHORT, tainted_short);
 
-            char *tnt_long = abrt_kernel_tainted_long(tainted_short);
+            g_autofree char *tnt_long = abrt_kernel_tainted_long(tainted_short);
             dd_save_text(dd, FILENAME_TAINTED_LONG, tnt_long);
 
             GString *reason = g_string_new(NULL);
@@ -250,37 +241,31 @@ void abrt_oops_save_data_in_dump_dir(struct dump_dir *dd, char *oops, const char
                     "Kernel maintainers are unable to diagnose tainted reports.");
             g_string_append_printf(reason, fmt, tainted_short, tnt_long);
 
-            char *modlist = !proc_modules ? NULL : abrt_oops_list_of_tainted_modules(proc_modules);
+            g_autofree char *modlist = !proc_modules ? NULL : abrt_oops_list_of_tainted_modules(proc_modules);
             if (modlist)
             {
                 g_string_append_printf(reason, _(" Tainted modules: %s."), modlist);
-                free(modlist);
             }
 
             dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason->str);
             g_string_free(reason, TRUE);
-            free(tainted_short);
-            free(tnt_long);
         }
     }
 
     // TODO: add "Kernel oops: " prefix, so that all oopses have recognizable FILENAME_REASON?
     // kernel oops 1st line may look quite puzzling otherwise...
-    char *reason_pretty = NULL;
-    char *error = NULL;
+    g_autofree char *reason_pretty = NULL;
+    g_autofree char *error = NULL;
     struct sr_stacktrace *trace = sr_stacktrace_parse(SR_REPORT_KERNELOOPS, second_line, &error);
     if (trace)
     {
         reason_pretty = sr_stacktrace_get_reason(trace);
         sr_stacktrace_free(trace);
     }
-    else
-        free(error);
 
     if (reason_pretty)
     {
         dd_save_text(dd, FILENAME_REASON, reason_pretty);
-        free(reason_pretty);
     }
     else
         dd_save_text(dd, FILENAME_REASON, second_line);

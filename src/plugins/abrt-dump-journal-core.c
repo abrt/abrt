@@ -301,19 +301,17 @@ save_systemd_coredump_in_dump_directory(struct dump_dir *dd, struct crash_info *
     dd_save_text(dd, FILENAME_TYPE, "CCpp");
     dd_save_text(dd, FILENAME_ANALYZER, "abrt-journal-core");
 
-    char *reason;
+    g_autofree char *reason = NULL;
     if (info->ci_signal_name == NULL)
         reason = g_strdup_printf("%s killed by signal %d", info->ci_executable_name, info->ci_signal_no);
     else
         reason = g_strdup_printf("%s killed by SIG%s", info->ci_executable_name, info->ci_signal_name);
 
     dd_save_text(dd, FILENAME_REASON, reason);
-    free(reason);
 
-    char *cursor = NULL;
+    g_autofree char *cursor = NULL;
     if (abrt_journal_get_cursor(info->ci_journal, &cursor) == 0)
         dd_save_text(dd, "journald_cursor", cursor);
-    free(cursor);
 
     const char *data = NULL;
     size_t data_len = 0;
@@ -359,11 +357,10 @@ abrt_journal_core_to_abrt_problem(struct crash_info *info, const char *dump_loca
 
     if (dd != NULL)
     {
-        char *path = g_strdup(dd->dd_dirname);
+        g_autofree char *path = g_strdup(dd->dd_dirname);
         dd_close(dd);
         abrt_notify_new_path(path);
         log_debug("ABRT daemon has been notified about directory: '%s'", path);
-        free(path);
     }
 
     return dd == NULL;

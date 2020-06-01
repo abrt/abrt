@@ -45,9 +45,9 @@ static void record_oops(GList **oops_list, const struct abrt_koops_line_info* li
     /* too short oopses are invalid */
     if (len > SANE_MIN_OOPS_LEN)
     {
-        char *oops = (char*)g_malloc0(len);
+        g_autofree char *oops = (char*)g_malloc0(len);
         char *dst = oops;
-        char *version = NULL;
+        g_autofree char *version = NULL;
         for (q = oopsstart; q <= oopsend; q++)
         {
             if (!version)
@@ -70,8 +70,6 @@ static void record_oops(GList **oops_list, const struct abrt_koops_line_info* li
             /* too short oopses are invalid */
             rv = 0;
         }
-        free(oops);
-        free(version);
     }
 
     VERB3 if (rv == 0) log_warning("Dropped oops: too short");

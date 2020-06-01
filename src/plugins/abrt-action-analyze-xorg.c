@@ -45,9 +45,8 @@ char* is_in_comma_separated_list_with_fmt(const char *value, const char *fmt, co
     while (*list)
     {
         const char *comma = strchrnul(list, ',');
-        char *pattern = g_strdup_printf(fmt, (int)(comma - list), list);
+        g_autofree char *pattern = g_strdup_printf(fmt, (int)(comma - list), list);
         char *match = strstr(value, pattern);
-        free(pattern);
         if (match)
             return g_strndup(list, comma - list);
         if (!*comma)
@@ -109,9 +108,9 @@ int main(int argc, char **argv)
     if (!dd)
         return 1;
 
-    char *backtrace = dd_load_text(dd, FILENAME_BACKTRACE);
-    char *xorg_log = dd_load_text_ext(dd, "Xorg.0.log", DD_FAIL_QUIETLY_ENOENT);
-    char *blacklisted = is_in_comma_separated_list_with_fmt(backtrace, "/%.*s", BlacklistedXorgModules);
+    g_autofree char *backtrace = dd_load_text(dd, FILENAME_BACKTRACE);
+    g_autofree char *xorg_log = dd_load_text_ext(dd, "Xorg.0.log", DD_FAIL_QUIETLY_ENOENT);
+    g_autofree char *blacklisted = is_in_comma_separated_list_with_fmt(backtrace, "/%.*s", BlacklistedXorgModules);
     if (!blacklisted)
         blacklisted = is_in_comma_separated_list_with_fmt(xorg_log, "LoadModule: \"%.*s\"", BlacklistedXorgModules);
 
@@ -137,15 +136,10 @@ int main(int argc, char **argv)
         dd_save_text(dd, FILENAME_CRASH_FUNCTION, crash_function);
     }
 
-    free(backtrace);
-    free(xorg_log);
-
     if (blacklisted)
     {
-        char *foobared = g_strdup_printf(_("Module '%s' was loaded - won't report this crash"), blacklisted);
-        free(blacklisted);
+        g_autofree char *foobared = g_strdup_printf(_("Module '%s' was loaded - won't report this crash"), blacklisted);
         dd_save_text(dd, FILENAME_NOT_REPORTABLE, foobared);
-        free(foobared);
         dd_close(dd);
         return 0;
     }

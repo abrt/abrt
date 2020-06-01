@@ -25,9 +25,8 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
         dd_save_text(dd, FILENAME_CONTAINER, "docker");
 
     json_object *json = NULL;
-    char *mntnf_path = g_build_filename(dd->dd_dirname ? dd->dd_dirname : "", FILENAME_MOUNTINFO, NULL);
+    g_autofree char *mntnf_path = g_build_filename(dd->dd_dirname ? dd->dd_dirname : "", FILENAME_MOUNTINFO, NULL);
     FILE *mntnf_file = fopen(mntnf_path, "r");
-    free(mntnf_path);
 
     struct mount_point {
         const char *name;
@@ -41,7 +40,7 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
     };
 
     char *container_id = NULL;
-    char *output = NULL;
+    g_autofree char *output = NULL;
 
     /* initialized to 0 because we call libreport_mountinfo_destroy below */
     struct mountinfo mntnf = {0};
@@ -101,7 +100,7 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
             continue;
         }
 
-        char *docker_inspect_cmdline = NULL;
+        g_autofree char *docker_inspect_cmdline = NULL;
         if (root_dir != NULL)
             docker_inspect_cmdline = g_strdup_printf("chroot %s /bin/sh -c \"docker inspect %s\"", root_dir, container_id);
         else
@@ -110,8 +109,6 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
         log_debug("Executing: '%s'", docker_inspect_cmdline);
         output = libreport_run_in_shell_and_save_output(0, docker_inspect_cmdline, "/", NULL);
 
-        free(docker_inspect_cmdline);
-
         if (output == NULL || strcmp(output, "[]\n") == 0)
         {
             log_debug("Unsupported container ID: '%s'", container_id);
@@ -119,7 +116,6 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
             free(container_id);
             container_id = NULL;
 
-            free(output);
             output = NULL;
 
             continue;
@@ -139,7 +135,6 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
     dd_save_text(dd, FILENAME_DOCKER_INSPECT, output);
 
     json = json_tokener_parse(output);
-    free(output);
 
     if (json == NULL)
     {
@@ -186,9 +181,8 @@ void dump_lxc_info(struct dump_dir *dd, const char *lxc_cmd)
     if (!dd_exist(dd, FILENAME_CONTAINER))
         dd_save_text(dd, FILENAME_CONTAINER, "lxc");
 
-    char *mntnf_path = g_build_filename(dd->dd_dirname ? dd->dd_dirname : "", FILENAME_MOUNTINFO, NULL);
+    g_autofree char *mntnf_path = g_build_filename(dd->dd_dirname ? dd->dd_dirname : "", FILENAME_MOUNTINFO, NULL);
     FILE *mntnf_file = fopen(mntnf_path, "r");
-    free(mntnf_path);
 
     struct mountinfo mntnf;
     int r = libreport_get_mountinfo_for_mount_point(mntnf_file, &mntnf, "/");
@@ -274,7 +268,7 @@ int main(int argc, char **argv)
     if (dd == NULL)
         libreport_xfunc_die();
 
-    char *container_cmdline = dd_load_text_ext(dd, FILENAME_CONTAINER_CMDLINE, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    g_autofree char *container_cmdline = dd_load_text_ext(dd, FILENAME_CONTAINER_CMDLINE, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (container_cmdline == NULL)
         error_msg_and_die("The crash didn't occur in container");
 
@@ -285,7 +279,6 @@ int main(int argc, char **argv)
     else
         error_msg_and_die("Unsupported container technology");
 
-    free(container_cmdline);
     dd_close(dd);
 
     return 0;

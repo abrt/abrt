@@ -31,8 +31,8 @@ static void try_to_move(const char *old, const char *new)
 
 void migrate_to_xdg_dirs(void)
 {
-    char *old = g_build_filename(g_get_home_dir(), ".abrt/applet_dirlist", NULL);
-    char *new = g_build_filename(g_get_user_cache_dir(), "abrt/applet_dirlist", NULL);
+    g_autofree char *old = g_build_filename(g_get_home_dir(), ".abrt/applet_dirlist", NULL);
+    g_autofree char *new = g_build_filename(g_get_user_cache_dir(), "abrt/applet_dirlist", NULL);
     char *oslash = strrchr(old, '/');
     char *nslash = strrchr(new, '/');
 
@@ -48,18 +48,14 @@ void migrate_to_xdg_dirs(void)
     try_to_move(old, new);
 
     strcpy(oslash + 1, "settings");
-    free(new);
     new = g_build_filename(g_get_user_config_dir(), "abrt/settings", NULL);
     nslash = strrchr(new, '/');
     *nslash = '\0';
     g_mkdir_with_parents(new, 0777);
     *nslash = '/';
     try_to_move(old, new);
-    free(new);
 
     /* Delete $HOME/.abrt if it is empty */
     *oslash = '\0';
     rmdir(old);
-
-    free(old);
 }

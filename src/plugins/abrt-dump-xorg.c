@@ -89,7 +89,7 @@ int main(int argc, char **argv)
         libreport_xmove_fd(g_open(argv[0], O_RDONLY), STDIN_FILENO);
 
     int bt_count = 0;
-    char *line = NULL;
+    g_autofree char *line = NULL;
     while ((line = libreport_xmalloc_fgetline(stdin)) != NULL)
     {
         char *p = skip_pfx(line);
@@ -108,7 +108,6 @@ int main(int argc, char **argv)
             else
                 log_warning(_("Failed to parse Backtrace from log file"));
         }
-        free(line);
     }
 
     return 0;

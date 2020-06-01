@@ -11,22 +11,19 @@ int run_test(const struct test_struct *test)
 {
 	FILE *fp = xfopen_ro(test->filename);
 	fprintf(stderr, "%s\t", test->filename);
-	char *line;
-	char *version;
+	g_autofree char *line = NULL;
+	g_autofree char *version = NULL;
 	while ((line = libreport_xmalloc_fgetline(fp)) != NULL)
 	{
 		version = abrt_koops_extract_version(line);
-		free(line);
 		if (version && !strcmp(version, test->expected_results))
 			break;
-		free(version);
 		version = NULL;
 	}
 	if (version)
 		log_warning("version %s", version);
 	else
 		log_warning("version was not found");
-	free(version);
 	fclose(fp);
 	return version == NULL;
 }
@@ -60,10 +57,9 @@ enum {
 
 int run_test(const struct test_struct *test, int flags)
 {
-	char *koops_bt = fread_full(test->filename);
+	g_autofree char *koops_bt = fread_full(test->filename);
 
-	char *tnt = abrt_kernel_tainted_short(koops_bt);
-	free(koops_bt);
+	g_autofree char *tnt = abrt_kernel_tainted_short(koops_bt);
 	int ret = 0;
 	switch (flags) {
 	case TEST_NOT_TAINTED:
@@ -86,7 +82,6 @@ int run_test(const struct test_struct *test, int flags)
 		}
 	};
 
-	free(tnt);
 	return ret;
 }
 
@@ -170,9 +165,9 @@ AT_TESTFUN([koops_parser_sanity],
 int run_test(const struct test_struct *test)
 {
 	char *oops_test = fread_full(test->filename);
-	char *oops_test_bck = oops_test;
+	g_autofree char *oops_test_bck = oops_test;
 	char *oops_expected = fread_full(test->expected_results);
-	char *oops_expected_bck = oops_expected;
+	g_autofree char *oops_expected_bck = oops_expected;
 
 	if (strncmp(oops_expected, "abrt-dump-oops: Found oopses:",
 				strlen("abrt-dump-oops: Found oopses:")) == 0) {
@@ -195,8 +190,6 @@ int run_test(const struct test_struct *test)
 		log_warning("Obtained:\n'%s'\nExpected:\n'%s'", (char *)oops_list->data, oops_expected);
 
 	g_list_free_full(oops_list, free);
-	free(oops_expected_bck);
-	free(oops_test_bck);
 
 	return result;
 }

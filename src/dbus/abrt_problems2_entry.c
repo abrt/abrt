@@ -264,7 +264,7 @@ GVariant *abrt_p2_entry_read_elements(AbrtP2Entry *entry,
         size_t data_size = (INT_MAX - 4095);
 
         int elem_type = 0;
-        char *data = NULL;
+        g_autofree char *data = NULL;
         int fd = -1;
         const int r = problem_data_load_dump_dir_element(dd,
                                                          name,
@@ -290,7 +290,6 @@ GVariant *abrt_p2_entry_read_elements(AbrtP2Entry *entry,
         {
             log_debug("Element is not of the requested type: %s", name);
 
-            free(data);
             close(fd);
             continue;
         }
@@ -299,7 +298,6 @@ GVariant *abrt_p2_entry_read_elements(AbrtP2Entry *entry,
         {
             log_debug("Rewinding file descriptor %d", fd);
 
-            free(data);
             if (lseek(fd, 0, SEEK_SET))
             {
                 perror_msg("Failed to rewind file descriptor of %s", name);
@@ -358,8 +356,6 @@ GVariant *abrt_p2_entry_read_elements(AbrtP2Entry *entry,
                       name,
                       (long)DBUS_MAXIMUM_ARRAY_LENGTH);
 
-            free(data);
-
             continue;
         }
 
@@ -369,8 +365,6 @@ GVariant *abrt_p2_entry_read_elements(AbrtP2Entry *entry,
                       name,
                       max_size);
 
-            free(data);
-
             continue;
         }
 
@@ -379,8 +373,6 @@ GVariant *abrt_p2_entry_read_elements(AbrtP2Entry *entry,
             error_msg("With element '%s', reached static data size limit: %ld",
                       name,
                       max_size);
-
-            free(data);
 
             continue;
         }
@@ -405,7 +397,6 @@ GVariant *abrt_p2_entry_read_elements(AbrtP2Entry *entry,
                                             g_variant_new_string(data));
         }
 
-        free(data);
     }
 
     dd_close(dd);
@@ -537,7 +528,7 @@ int abrt_p2_entry_save_elements_in_dump_dir(struct dump_dir *dd,
 {
     int retval = 0;
 
-    gchar *name = NULL;
+    g_autofree gchar *name = NULL;
     GVariant *value = NULL;
     GVariantIter iter;
     g_variant_iter_init(&iter, elements);
@@ -838,7 +829,6 @@ exit_loop_on_too_many_elements:
     retval = -E2BIG;
 
 exit_loop_on_error:
-    g_free(name);
     g_variant_unref(value);
     return retval;
 }

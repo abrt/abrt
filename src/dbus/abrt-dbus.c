@@ -132,12 +132,11 @@ bool allowed_problem_element(GDBusMethodInvocation *invocation, const char *elem
         return true;
 
     log_notice("'%s' is not a valid element name", element);
-    char *error = g_strdup_printf(_("'%s' is not a valid element name"), element);
+    g_autofree char *error = g_strdup_printf(_("'%s' is not a valid element name"), element);
     g_dbus_method_invocation_return_dbus_error(invocation,
             "org.freedesktop.problems.InvalidElement",
             error);
 
-    free(error);
     return false;
 }
 
@@ -184,12 +183,10 @@ finito:
 
 static void return_InvalidProblemDir_error(GDBusMethodInvocation *invocation, const char *dir_name)
 {
-    char *msg = g_strdup_printf(_("'%s' is not a valid problem directory"), dir_name);
+    g_autofree char *msg = g_strdup_printf(_("'%s' is not a valid problem directory"), dir_name);
     g_dbus_method_invocation_return_dbus_error(invocation,
                                       "org.freedesktop.problems.InvalidProblemDir",
                                       msg);
-
-    free(msg);
 }
 
 enum {
@@ -282,11 +279,10 @@ static struct dump_dir *open_directory_for_modification_of_element(
         if (strcmp(*protected, element) == 0)
         {
             log_notice("'%s' element of '%s' can't be modified", element, problem_id);
-            char *error = g_strdup_printf(_("'%s' element can't be modified"), element);
+            g_autofree char *error = g_strdup_printf(_("'%s' element can't be modified"), element);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                         "org.freedesktop.problems.ProtectedElement",
                                         error);
-            free(error);
             return NULL;
         }
     }
@@ -312,15 +308,13 @@ static int add_dirname_to_GList_if_matches(struct dump_dir *dd, void *arg)
 {
     struct field_and_time_range *me = arg;
 
-    char *field_data = dd_load_text(dd, me->element);
+    g_autofree char *field_data = dd_load_text(dd, me->element);
     int brk = (strcmp(field_data, me->value) != 0);
-    free(field_data);
     if (brk)
         return 0;
 
     field_data = dd_load_text(dd, FILENAME_LAST_OCCURRENCE);
     long val = atol(field_data);
-    free(field_data);
     if (val < me->timestamp_from || val > me->timestamp_to)
         return 0;
 
@@ -376,20 +370,18 @@ static void handle_method_call(GDBusConnection *connection,
 
     if (g_strcmp0(method_name, "NewProblem") == 0)
     {
-        char *error = NULL;
-        char *problem_id = handle_new_problem(g_variant_get_child_value(parameters, 0), caller_uid, &error);
+        g_autofree char *error = NULL;
+        g_autofree char *problem_id = handle_new_problem(g_variant_get_child_value(parameters, 0), caller_uid, &error);
         if (!problem_id)
         {
             g_dbus_method_invocation_return_dbus_error(invocation,
                                                       "org.freedesktop.problems.Failure",
                                                       error);
-            free(error);
             return;
         }
         /* else */
         response = g_variant_new("(s)", problem_id);
         g_dbus_method_invocation_return_value(invocation, response);
-        free(problem_id);
 
         return;
     }
@@ -534,7 +526,7 @@ static void handle_method_call(GDBusConnection *connection,
         for (GList *l = elements; l; l = l->next)
         {
             const char *element_name = (const char*)l->data;
-            char *value = dd_load_text_ext(dd, element_name, 0
+            g_autofree char *value = dd_load_text_ext(dd, element_name, 0
                                                 | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
                                                 | DD_FAIL_QUIETLY_ENOENT
                                                 | DD_FAIL_QUIETLY_EACCES);
@@ -546,7 +538,6 @@ static void handle_method_call(GDBusConnection *connection,
 
                 /* g_variant_builder_add makes a copy. No need to g_strdup here */
                 g_variant_builder_add(builder, "{ss}", element_name, value);
-                free(value);
             }
         }
         libreport_list_free_with_free(elements);
@@ -682,11 +673,10 @@ static void handle_method_call(GDBusConnection *connection,
         if (res != 0)
         {
             log_notice("Can't delete the element '%s' from the problem directory '%s'", element, problem_id);
-            char *error = g_strdup_printf(_("Can't delete the element '%s' from the problem directory '%s'"), element, problem_id);
+            g_autofree char *error = g_strdup_printf(_("Can't delete the element '%s' from the problem directory '%s'"), element, problem_id);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                           "org.freedesktop.problems.Failure",
                                           error);
-            free(error);
             return;
         }
 
