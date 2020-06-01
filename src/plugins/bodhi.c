@@ -253,7 +253,7 @@ static void bodhi_print_errors_from_json(json_object *json)
             return;
         }
 
-        char *desc_item = NULL;
+        g_autofree char *desc_item = NULL;
         bodhi_read_value(error, "description", &desc_item, BODHI_READ_STR);
         if (!desc_item)
         {
@@ -263,7 +263,6 @@ static void bodhi_print_errors_from_json(json_object *json)
 
         error_msg("Error: %s", desc_item);
         json_object_put(error);
-        free(desc_item);
     }
 
     json_object_put(errors_array);
@@ -395,7 +394,7 @@ static GHashTable *bodhi_parse_json(json_object *json, const char *release)
 
 static GHashTable *bodhi_query_list(const char *query, const char *release)
 {
-    char *bodhi_url_bugs = g_strdup_printf("%s/?%s", bodhi_url, query);
+    g_autofree char *bodhi_url_bugs = g_strdup_printf("%s/?%s", bodhi_url, query);
 
     post_state_t *post_state = new_post_state(POST_WANT_BODY
                                               | POST_WANT_SSL_VERIFY
@@ -415,7 +414,6 @@ static GHashTable *bodhi_query_list(const char *query, const char *release)
         if (errmsg && errmsg[0])
             error_msg_and_die("%s '%s'", errmsg, bodhi_url_bugs);
     }
-    free(bodhi_url_bugs);
 
 //    log_warning("%s", post_state->body);
 
@@ -428,11 +426,10 @@ static GHashTable *bodhi_query_list(const char *query, const char *release)
      * the case it did not found the item */
     if (post_state->http_resp_code != 200)
     {
-        char *status_item = NULL;
+        g_autofree char *status_item = NULL;
         bodhi_read_value(json, "status", &status_item, BODHI_READ_STR);
         if (status_item != NULL && strcmp(status_item, "error") == 0)
         {
-            free(status_item);
             bodhi_print_errors_from_json(json);
             json_object_put(json);
             libreport_xfunc_die(); // error_msg are printed in bodhi_print_errors_from_json
@@ -538,7 +535,8 @@ int main(int argc, char **argv)
             if (!problem_data)
                 libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
-            char *product, *version;
+            g_autofree char *product = NULL;
+            g_autofree char *version = NULL;
             map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
             problem_data_get_osinfo(problem_data, osinfo);
             libreport_parse_osinfo_for_rhts(osinfo, &product, &version);
@@ -548,8 +546,6 @@ int main(int argc, char **argv)
             if (!rawhide)
                 g_string_append_printf(query, "releases=f%s&", version);
 
-            free(product);
-            free(version);
             if (osinfo)
                 g_hash_table_destroy(osinfo);
 
@@ -563,9 +559,8 @@ int main(int argc, char **argv)
 
     if (argv[optind])
     {
-        char *escaped = g_uri_escape_string(argv[optind], NULL, 0);
+        g_autofree char *escaped = g_uri_escape_string(argv[optind], NULL, 0);
         g_string_append_printf(query, "packages=%s&", escaped);
-        free(escaped);
     }
 
     if (query->str[query->len - 1] == '&')
@@ -589,14 +584,12 @@ int main(int argc, char **argv)
     g_hash_table_iter_init(&iter, update_hash_tbl);
     while (g_hash_table_iter_next(&iter, (void **) &name, (void **) &b))
     {
-        char *installed_pkg_nvr = rpm_get_nvr_by_pkg_name(name);
+        g_autofree char *installed_pkg_nvr = rpm_get_nvr_by_pkg_name(name);
         if (installed_pkg_nvr && rpmvercmp(installed_pkg_nvr, b->nvr) >= 0)
         {
             log_info("Update %s is older or same as local version %s, skipping", b->nvr, installed_pkg_nvr);
-            free(installed_pkg_nvr);
             continue;
         }
-        free(installed_pkg_nvr);
 
         g_string_append_printf(q, " %s", b->nvr);
     }

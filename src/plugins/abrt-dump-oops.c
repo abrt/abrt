@@ -47,7 +47,7 @@ static void scan_syslog_file(GList **oops_list, int fd)
      * We try to deal with it by reading READ_AHEAD extra.
      */
     sz += READ_AHEAD;
-    char *buffer = g_malloc0(sz);
+    g_autofree char *buffer = g_malloc0(sz);
 
     for (;;)
     {
@@ -58,8 +58,6 @@ static void scan_syslog_file(GList **oops_list, int fd)
         abrt_koops_extract_oopses(oops_list, buffer, r);
 //TODO: rewind to last newline?
     }
-
-    free(buffer);
 }
 
 int main(int argc, char **argv)
@@ -120,7 +118,7 @@ int main(int argc, char **argv)
 
     if (opts & OPT_m)
     {
-        char *oops_string_filter_regex = abrt_oops_string_filter_regex();
+        g_autofree char *oops_string_filter_regex = abrt_oops_string_filter_regex();
         if (oops_string_filter_regex)
         {
             regex_t filter_re;
@@ -132,7 +130,6 @@ int main(int argc, char **argv)
             abrt_koops_print_suspicious_strings_filtered(filter);
 
             regfree(&filter_re);
-            free(oops_string_filter_regex);
         }
         else
             abrt_koops_print_suspicious_strings();

@@ -272,9 +272,8 @@ static void abrt_p2_object_emit_signal_with_destination(AbrtP2Object *object,
 
     if (libreport_g_verbose > 2)
     {
-        gchar *pstr = g_variant_print(parameters, TRUE);
+        g_autofree gchar *pstr = g_variant_print(parameters, TRUE);
         log_debug("Emitting signal '%s' : (%s)", member, pstr);
-        g_free(pstr);
     }
 
     GError *error = NULL;
@@ -1026,9 +1025,8 @@ static GVariant *entry_object_dbus_get_property(GDBusConnection *connection,
         g_variant_builder_init(&builder, G_VARIANT_TYPE("(sssss)"));
         for (size_t i = 0; i < ARRAY_SIZE(elements); ++i)
         {
-            char *data = dd_load_text_ext(dd, elements[i], DD_FAIL_QUIETLY_ENOENT);
+            g_autofree char *data = dd_load_text_ext(dd, elements[i], DD_FAIL_QUIETLY_ENOENT);
             g_variant_builder_add(&builder, "s", data);
-            free(data);
         }
 
         retval = g_variant_builder_end(&builder);
@@ -1442,7 +1440,7 @@ char *abrt_p2_service_save_problem( AbrtP2Service *service,
      *
      * The problem data should be converted to some kind of interface!
      */
-    char *analyzer_str = NULL;
+    g_autofree char *analyzer_str = NULL;
     GVariant *analyzer_element = g_variant_dict_lookup_value(&pd,
                                                              FILENAME_ANALYZER,
                                                              G_VARIANT_TYPE_STRING);
@@ -1457,7 +1455,7 @@ char *abrt_p2_service_save_problem( AbrtP2Service *service,
         g_variant_unref(analyzer_element);
     }
 
-    char *type_str = NULL;
+    g_autofree char *type_str = NULL;
     GVariant *type_element = g_variant_dict_lookup_value(&pd,
                                                          FILENAME_TYPE,
                                                          G_VARIANT_TYPE_STRING);
@@ -1535,9 +1533,8 @@ char *abrt_p2_service_save_problem( AbrtP2Service *service,
     {   /* set uid field to caller's uid
            if caller is not root or root doesn't pass own uid */
         log_info("Adding UID %lu to the problem info", (long unsigned)caller_uid);
-        char *uid_str = g_strdup_printf("%lu", (long unsigned)caller_uid);
+        g_autofree char *uid_str = g_strdup_printf("%lu", (long unsigned)caller_uid);
         g_variant_dict_insert(&pd, FILENAME_UID, "s", uid_str);
-        free(uid_str);
     }
 
     if (uid_element != NULL)
@@ -1561,8 +1558,6 @@ char *abrt_p2_service_save_problem( AbrtP2Service *service,
                                           (void *)&args);
 
     g_variant_unref(args.problem_info);
-    free(type_str);
-    free(analyzer_str);
 
     if (dd == NULL)
     {
@@ -1599,12 +1594,11 @@ AbrtP2Object *abrt_p2_service_get_entry_for_problem(AbrtP2Service *service,
             AbrtP2ServiceEntryLookupFlags flags,
             GError **error)
 {
-    char *entry_path = entry_object_dir_name_to_path(problem_id);
+    g_autofree char *entry_path = entry_object_dir_name_to_path(problem_id);
     AbrtP2Object *obj = abrt_p2_service_get_entry_object(service,
                                                          entry_path,
                                                          flags,
                                                          error);
-    free(entry_path);
 
     return obj;
 }
@@ -1757,11 +1751,10 @@ static void task_object_on_status_changed(AbrtP2Task *task,
 
     if (libreport_g_verbose > 2)
     {
-        gchar *pstr = g_variant_print(parameters, TRUE);
+        g_autofree gchar *pstr = g_variant_print(parameters, TRUE);
         log_debug("Emitting signal '%s' : (%s)",
                   "PropertiesChanged",
                   pstr);
-        g_free(pstr);
     }
 
     GError *error = NULL;
@@ -2139,7 +2132,7 @@ GVariant *abrt_p2_service_delete_problems(AbrtP2Service *service,
                 GError **error)
 {
     GVariantIter *iter;
-    gchar *entry_path;
+    g_autofree gchar *entry_path = NULL;
     g_variant_get(entries, "ao", &iter);
     while (g_variant_iter_loop(iter, "o", &entry_path))
     {
@@ -2151,7 +2144,6 @@ GVariant *abrt_p2_service_delete_problems(AbrtP2Service *service,
 
         if (r != 0)
         {
-            g_free(entry_path);
             break;
         }
     }

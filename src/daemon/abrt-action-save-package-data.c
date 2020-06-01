@@ -263,17 +263,16 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
     if (!dd)
         return 1;
 
-    char *type = dd_load_text(dd, FILENAME_TYPE);
+    g_autofree char *type = dd_load_text(dd, FILENAME_TYPE);
     bool kernel_oops = !strcmp(type, "Kerneloops") || !strcmp(type, "vmcore");
-    free(type);
 
-    char *cmdline = NULL;
-    char *executable = NULL;
-    char *rootdir = NULL;
-    char *package_short_name = NULL;
-    char *fingerprint = NULL;
+    g_autofree char *cmdline = NULL;
+    g_autofree char *executable = NULL;
+    g_autofree char *rootdir = NULL;
+    g_autofree char *package_short_name = NULL;
+    g_autofree char *fingerprint = NULL;
     struct pkg_nevra *pkg_name = NULL;
-    char *component = NULL;
+    g_autofree char *component = NULL;
     char *kernel = NULL;
     int error = 1;
     /* note: "goto ret" statements below free all the above variables,
@@ -457,13 +456,7 @@ skip_interpreter:
     if (dd)
         dd_close(dd);
 
-    free(cmdline);
-    free(executable);
-    free(rootdir);
-    free(package_short_name);
     free_pkg_nevra(pkg_name);
-    free(component);
-    free(fingerprint);
 
     return error;
 }

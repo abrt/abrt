@@ -67,20 +67,17 @@ void abrt_trim_problem_dirs(const char *dirname, double cap_size, const char *ex
     while (--count >= 0)
     {
         /* We exclude our own dir from candidates for deletion (3rd param): */
-        char *worst_basename = NULL;
+        g_autofree char *worst_basename = NULL;
         double cur_size = libreport_get_dirsize_find_largest_dir(dirname, &worst_basename, excluded_basename, NULL);
         if (cur_size <= cap_size || !worst_basename)
         {
             log_info("cur_size:%.0f cap_size:%.0f, no (more) trimming", cur_size, cap_size);
-            free(worst_basename);
             break;
         }
         log_warning("%s is %.0f bytes (more than %.0fMiB), deleting '%s'",
                 dirname, cur_size, cap_size / (1024*1024), worst_basename);
-        char *d = g_build_filename(dirname ? dirname : "", worst_basename, NULL);
-        free(worst_basename);
+        g_autofree char *d = g_build_filename(dirname ? dirname : "", worst_basename, NULL);
         delete_dump_dir(d);
-        free(d);
     }
 }
 
@@ -351,7 +348,7 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
     unsigned bt_depth = 1024;
     const char *thread_apply_all = "thread apply all -ascending";
     const char *full = "full ";
-    char *bt = NULL;
+    g_autofree char *bt = NULL;
     while (1)
     {
         args[bt_cmd_index] = g_strdup_printf("%s backtrace %s%u", thread_apply_all, full, bt_depth);
@@ -370,7 +367,6 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
             /* (NB: in fact, current impl. of exec_vp() never returns NULL) */
             log_warning("Failed to generate backtrace, reducing depth to %u",
                         bt_depth);
-        free(bt);
 
         /* Replace -ex disassemble (which disasms entire function $pc points to)
          * to a version which analyzes limited, small patch of code around $pc.

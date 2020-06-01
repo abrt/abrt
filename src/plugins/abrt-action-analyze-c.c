@@ -73,14 +73,13 @@ core_thread_from_core_stacktrace(struct sr_core_stacktrace *stacktrace)
 static struct sr_core_stacktrace *
 core_stacktrace_from_core_json(char *core_backtrace)
 {
-    char *error = NULL;
+    g_autofree char *error = NULL;
     struct sr_core_stacktrace *stacktrace = sr_core_stacktrace_from_json_text(core_backtrace, &error);
     if (!stacktrace)
     {
         if (error)
         {
             log_info("Failed to parse core backtrace: %s", error);
-            free(error);
         }
         return NULL;
     }
@@ -90,15 +89,13 @@ core_stacktrace_from_core_json(char *core_backtrace)
 
 static char *build_ids_from_core_backtrace(const char *dump_dir_name)
 {
-    char *core_backtrace_path = g_strdup_printf("%s/"FILENAME_CORE_BACKTRACE, dump_dir_name);
-    char *json = libreport_xmalloc_open_read_close(core_backtrace_path, /*maxsize:*/ NULL);
-    free(core_backtrace_path);
+    g_autofree char *core_backtrace_path = g_strdup_printf("%s/"FILENAME_CORE_BACKTRACE, dump_dir_name);
+    g_autofree char *json = libreport_xmalloc_open_read_close(core_backtrace_path, /*maxsize:*/ NULL);
 
     if (!json)
         return NULL;
 
     struct sr_core_stacktrace *stacktrace = core_stacktrace_from_core_json(json);
-    free(json);
 
     if (!stacktrace)
         return NULL;
@@ -171,11 +168,9 @@ int main(int argc, char **argv)
     libreport_export_abrt_envvars(0);
 
     char *unstrip_n_output = NULL;
-    char *coredump_path = g_strdup_printf("%s/"FILENAME_COREDUMP, dump_dir_name);
+    g_autofree char *coredump_path = g_strdup_printf("%s/"FILENAME_COREDUMP, dump_dir_name);
     if (access(coredump_path, R_OK) == 0)
         unstrip_n_output = abrt_run_unstrip_n(dump_dir_name, /*timeout_sec:*/ 30);
-
-    free(coredump_path);
 
     if (unstrip_n_output)
     {
@@ -242,12 +237,11 @@ int main(int argc, char **argv)
     dd_save_text(dd, FILENAME_UUID, checksum);
 
     /* Create crash_function element from core_backtrace */
-    char *core_backtrace_json = dd_load_text_ext(dd, FILENAME_CORE_BACKTRACE,
+    g_autofree char *core_backtrace_json = dd_load_text_ext(dd, FILENAME_CORE_BACKTRACE,
                                                  DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (core_backtrace_json)
     {
         struct sr_core_stacktrace *stacktrace = core_stacktrace_from_core_json(core_backtrace_json);
-        free(core_backtrace_json);
 
         if (!stacktrace)
             goto next;

@@ -45,7 +45,7 @@ int for_each_problem_in_dir(const char *path,
         if (libreport_dot_or_dotdot(dent->d_name))
             continue; /* skip "." and ".." */
 
-        char *full_name = g_build_filename(path, dent->d_name, NULL);
+        g_autofree char *full_name = g_build_filename(path, dent->d_name, NULL);
 
         struct dump_dir *dd = dd_opendir(full_name,   DD_OPEN_FD_ONLY
                                                     | DD_FAIL_QUIETLY_ENOENT
@@ -53,7 +53,6 @@ int for_each_problem_in_dir(const char *path,
         if (dd == NULL)
         {
             VERB2 perror_msg("can't open problem directory '%s'", full_name);
-            free(full_name);
             continue;
         }
 
@@ -75,7 +74,6 @@ int for_each_problem_in_dir(const char *path,
         if (dd)
             dd_close(dd);
 
-        free(full_name);
         if (brk)
             break;
     }

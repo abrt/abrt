@@ -43,7 +43,7 @@ int main(int argc, char** argv)
     problem_data_free(problem_data);
     if (!dd)
         return 1;
-    char *dir_name = strdup(dd->dd_dirname);
+    g_autofree char *dir_name = strdup(dd->dd_dirname);
     dd_close(dd);
 
     printf("Temp dump dir: '%s'\n", dir_name);
@@ -56,7 +56,6 @@ int main(int argc, char** argv)
     free_run_event_state(run_state);
 
 //    delete_dump_dir(dir_name);
-    free(dir_name);
 
     return 0;
 }

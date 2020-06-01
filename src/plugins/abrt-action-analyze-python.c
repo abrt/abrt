@@ -62,10 +62,10 @@ int main(int argc, char **argv)
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return 1;
-    char *bt = dd_load_text(dd, FILENAME_BACKTRACE);
+    g_autofree char *bt = dd_load_text(dd, FILENAME_BACKTRACE);
 
     /* save crash_function and exception_name into dumpdir */
-    char *error_message = NULL;
+    g_autofree char *error_message = NULL;
     struct sr_stacktrace *stacktrace = sr_stacktrace_parse(SR_REPORT_PYTHON,
                                                            (const char *)bt, &error_message);
     if (stacktrace)
@@ -85,7 +85,6 @@ int main(int argc, char **argv)
     else
     {
         error_msg("Can't parse stacktrace: %s", error_message);
-        free(error_message);
     }
 
     /* Hash 1st line of backtrace and save it as UUID and DUPHASH */
@@ -94,8 +93,6 @@ int main(int argc, char **argv)
     char *bt_end = strchrnul(bt, '\n');
     *bt_end = '\0';
     checksum = g_compute_checksum_for_string(G_CHECKSUM_SHA1, bt, -1);
-
-    free(bt);
 
     dd_save_text(dd, FILENAME_UUID, checksum);
     dd_save_text(dd, FILENAME_DUPHASH, checksum);

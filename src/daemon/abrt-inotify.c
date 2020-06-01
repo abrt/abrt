@@ -62,7 +62,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
      * and we were going out of sync wrt struct inotify_event's layout.
      */
     inotify_bytes += 2 * (sizeof(struct inotify_event) + FILENAME_MAX);
-    char *buf = g_malloc(inotify_bytes);
+    g_autofree char *buf = g_malloc(inotify_bytes);
     errno = 0;
     gsize len;
     GError *gerror = NULL;
@@ -73,7 +73,6 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
     if (err != G_IO_STATUS_NORMAL)
     {
         error_msg("Error reading inotify fd: %s", gerror ? gerror->message : "unknown");
-        free(buf);
         if (gerror)
             g_error_free(gerror);
         return FALSE; /* "remove this event" (huh??) */
@@ -96,7 +95,6 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 
         aic->handler(aic, event, aic->user_data);
     }
-    free(buf);
     return TRUE;
 }
 

@@ -463,15 +463,15 @@ abrt_config_widget_init(AbrtConfigWidget *self)
             gpp_app = "gnome-privacy-panel.desktop";
 
         GDesktopAppInfo *app = g_desktop_app_info_new(gpp_app);
-        char *message = NULL;
-        char *markup = NULL;
+        g_autofree char *message = NULL;
+        g_autofree char *markup = NULL;
         if (!app)
         {
             /* Make the switch editable */
             self->priv->options[ABRT_OPT_SEND_UREPORT].config = self->priv->privacy_gsettings;
 
-            char *os_release = libreport_xmalloc_open_read_close("/etc/os-release", /*no size limit*/NULL);
-            char *privacy_policy = NULL;
+            g_autofree char *os_release = libreport_xmalloc_open_read_close("/etc/os-release", /*no size limit*/NULL);
+            g_autofree char *privacy_policy = NULL;
 
             /* Try to get the value of PRIVACY_POLICY from /etc/os-release */
             sr_parse_os_release(os_release, os_release_callback, (void *)&privacy_policy);
@@ -486,8 +486,6 @@ abrt_config_widget_init(AbrtConfigWidget *self)
             else
                 markup = g_strdup_printf("<i>%s</i>", message);
 
-            free(privacy_policy);
-            free(os_release);
         }
         else
         {
@@ -529,9 +527,6 @@ abrt_config_widget_init(AbrtConfigWidget *self)
         gtk_label_set_line_wrap(GTK_LABEL(lbl), TRUE);
         /* Let users to copy the warning. */
         gtk_label_set_selectable(GTK_LABEL(lbl), TRUE);
-
-        free(markup);
-        free(message);
 
         gtk_box_pack_start(GTK_BOX(hbox_auto_reporting), lbl, false, false, 0);
     }

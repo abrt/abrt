@@ -48,7 +48,7 @@ static GList *abrt_journal_extract_xorg_crashes(abrt_journal_t *journal)
 
     do
     {
-        char *line = abrt_journal_get_log_line(journal);
+        g_autofree char *line = abrt_journal_get_log_line(journal);
         if (line == NULL)
             error_msg_and_die(_("Cannot read journal data."));
 
@@ -61,7 +61,6 @@ static GList *abrt_journal_extract_xorg_crashes(abrt_journal_t *journal)
             else
                 log_warning(_("Failed to parse Backtrace from journal"));
         }
-        free(line);
     }
     while (abrt_journal_next(journal) > 0);
 

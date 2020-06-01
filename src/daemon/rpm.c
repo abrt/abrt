@@ -93,11 +93,10 @@ void rpm_destroy()
 void rpm_load_gpgkey(const char* filename)
 {
 #ifdef HAVE_LIBRPM
-    uint8_t *pkt = NULL;
+    g_autofree uint8_t *pkt = NULL;
     size_t pklen;
     if (pgpReadPkts(filename, &pkt, &pklen) != PGPARMOR_PUBKEY)
     {
-        free(pkt);
         error_msg("Can't load public GPG key %s", filename);
         return;
     }
@@ -113,7 +112,6 @@ void rpm_load_gpgkey(const char* filename)
         if (fingerprint != NULL)
             list_fingerprints = g_list_append(list_fingerprints, fingerprint);
     }
-    free(pkt);
 #else
     return;
 #endif
@@ -121,11 +119,10 @@ void rpm_load_gpgkey(const char* filename)
 
 int rpm_chk_fingerprint(const char* pkg)
 {
-    char *fingerprint = rpm_get_fingerprint(pkg);
+    g_autofree char *fingerprint = rpm_get_fingerprint(pkg);
     int res = 0;
     if (fingerprint)
         res = rpm_fingerprint_is_imported(fingerprint);
-    free(fingerprint);
     return res;
 }
 
@@ -138,7 +135,7 @@ char *rpm_get_fingerprint(const char *pkg)
 {
 #ifdef HAVE_LIBRPM
     char *fingerprint = NULL;
-    char *pgpsig = NULL;
+    g_autofree char *pgpsig = NULL;
     const char *errmsg = NULL;
 
     rpmts ts = rpmtsCreate();
@@ -160,7 +157,6 @@ char *rpm_get_fingerprint(const char *pkg)
         fingerprint = g_strdup(pgpsig_tmp + sizeof(" Key ID ") - 1);
 
 error:
-    free(pgpsig);
     rpmdbFreeIterator(iter);
     rpmtsFree(ts);
     return fingerprint;
@@ -249,7 +245,7 @@ char* rpm_get_component(const char *filename, const char *rootdir_or_NULL)
 {
 #ifdef HAVE_LIBRPM
     char *ret = NULL;
-    char *srpm = NULL;
+    g_autofree char *srpm = NULL;
     rpmts ts;
     rpmdbMatchIterator iter;
     Header header;
@@ -269,7 +265,6 @@ char* rpm_get_component(const char *filename, const char *rootdir_or_NULL)
     }
 
     ret = get_package_name_from_NVR_or_NULL(srpm);
-    free(srpm);
 
  error:
     rpmdbFreeIterator(iter);

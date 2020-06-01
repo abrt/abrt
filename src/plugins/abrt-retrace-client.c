@@ -115,13 +115,12 @@ static int create_archive(bool unlink_temp)
         return -1;
 
     /* Open a temporary file. */
-    char *filename = g_strdup(LARGE_DATA_TMP_DIR"/abrt-retrace-client-archive-XXXXXX.tar.xz");
+    g_autofree char *filename = g_strdup(LARGE_DATA_TMP_DIR"/abrt-retrace-client-archive-XXXXXX.tar.xz");
     int tempfd = mkstemps(filename, /*suffixlen:*/7);
     if (tempfd == -1)
         perror_msg_and_die(_("Can't create temporary file in "LARGE_DATA_TMP_DIR));
     if (unlink_temp)
         g_unlink(filename);
-    free(filename);
 
     /* Run xz:
      * - xz reads input from a pipe
@@ -407,7 +406,7 @@ static void free_settings(struct retrace_settings *settings)
 /* or NULL if unknown */
 static char *get_release_id(map_string_t *osinfo, const char *architecture)
 {
-    char *arch = g_strdup(architecture);
+    g_autofree char *arch = g_strdup(architecture);
 
     if (strcmp("i686", arch) == 0 || strcmp("i586", arch) == 0)
     {
@@ -416,8 +415,8 @@ static char *get_release_id(map_string_t *osinfo, const char *architecture)
     }
 
     char *result = NULL;
-    char *release = NULL;
-    char *version = NULL;
+    g_autofree char *release = NULL;
+    g_autofree char *version = NULL;
     libreport_parse_osinfo_for_rhts(osinfo, (char **)&release, (char **)&version);
 
     if (release == NULL || version == NULL)
@@ -451,9 +450,6 @@ static char *get_release_id(map_string_t *osinfo, const char *architecture)
 
     result = g_strdup_printf("%s-%s-%s", release, version, arch);
 
-    free(release);
-    free(version);
-    free(arch);
     return result;
 }
 
@@ -589,14 +585,13 @@ static int create(SoupSession  *session,
             task_type = TASK_VMCORE;
         dd_close(dd);
 
-        char *path;
+        g_autofree char *path = NULL;
         int i = 0;
         const char **required_files = task_type == TASK_VMCORE ? required_vmcore : required_retrace;
         while (required_files[i])
         {
             path = g_build_filename(dump_dir_name, required_files[i], NULL);
             g_stat(path, &file_stat);
-            free(path);
 
             if (!S_ISREG(file_stat.st_mode))
                 error_msg_and_die(_("'%s' must be a regular file in "
@@ -621,7 +616,6 @@ static int create(SoupSession  *session,
 
                     unpacked_size += (long long)file_stat.st_size;
                 }
-                free(path);
             }
         }
     }
@@ -677,7 +671,7 @@ static int create(SoupSession  *session,
         /* not needed for TASK_VMCORE - the information is kept in the vmcore itself */
         if (settings->supported_releases)
         {
-            char *releaseid = get_release_id(osinfo, arch);
+            g_autofree char *releaseid = get_release_id(osinfo, arch);
             if (!releaseid)
                 error_msg_and_die("Unable to parse release.");
 
@@ -692,26 +686,22 @@ static int create(SoupSession  *session,
 
             if (!supported)
             {
-                char *msg = g_strdup_printf(_("The release '%s' is not supported by the"
+                g_autofree char *msg = g_strdup_printf(_("The release '%s' is not supported by the"
                                               " Retrace server."), releaseid);
                 libreport_alert(msg);
-                free(msg);
                 error_msg_and_die(_("The server is not able to"
                                     " handle your request."));
             }
-
-            free(releaseid);
         }
 
         /* not relevant for vmcores - it may take a long time to get package from vmcore */
         if (!no_pkgcheck)
         {
-            char *msg;
+            g_autofree char *msg = NULL;
             int known = check_package(session, package, arch, osinfo, &msg);
             if (msg)
             {
                 libreport_alert(msg);
-                free(msg);
             }
 
             if (!known)
@@ -735,7 +725,7 @@ static int create(SoupSession  *session,
 
     /* Get the file size. */
     fstat(tempfd, &file_stat);
-    gchar *human_size = g_format_size_full((long long)file_stat.st_size, G_FORMAT_SIZE_IEC_UNITS);
+    g_autofree gchar *human_size = g_format_size_full((long long)file_stat.st_size, G_FORMAT_SIZE_IEC_UNITS);
     if ((long long)file_stat.st_size > settings->max_packed_size)
     {
         alert_crash_too_large();
@@ -756,11 +746,10 @@ static int create(SoupSession  *session,
 
     if (size_mb > 8) /* 8 MB - should be configurable */
     {
-        char *question = g_strdup_printf(_("You are going to upload %s. "
+        g_autofree char *question = g_strdup_printf(_("You are going to upload %s. "
                                            "Continue?"), human_size);
 
         int response = libreport_ask_yes_no(question);
-        free(question);
 
         if (!response)
         {
@@ -846,8 +835,6 @@ static int create(SoupSession  *session,
                           response_code, response->data);
     }
 
-    g_free(human_size);
-
     header_value = soup_message_headers_get_one(message->response_headers, "X-Task-Id");
     if (header_value == NULL)
     {
@@ -878,13 +865,12 @@ static int create(SoupSession  *session,
 static int run_create(SoupSession *session,
                       bool         delete_temp_archive)
 {
-    char *task_id, *task_password;
+    g_autofree char *task_id = NULL;
+    g_autofree char *task_password = NULL;
     int result = create(session, delete_temp_archive, &task_id, &task_password);
     if (0 != result)
         return result;
     printf(_("Task Id: %s\nTask Password: %s\n"), task_id, task_password);
-    free(task_id);
-    free(task_password);
     return 0;
 }
 
@@ -943,12 +929,10 @@ static void run_status(SoupSession *session,
                        const char  *task_id,
                        const char  *task_password)
 {
-    char *task_status;
-    char *status_message;
+    g_autofree char *task_status = NULL;
+    g_autofree char *status_message = NULL;
     status(session, task_id, task_password, &task_status, &status_message);
     printf(_("Task Status: %s\n%s\n"), task_status, status_message);
-    free(task_status);
-    free(status_message);
 }
 
 /* Caller must free backtrace */
@@ -996,10 +980,9 @@ static void run_backtrace(SoupSession *session,
                           const char  *task_id,
                           const char  *task_password)
 {
-    char *backtrace_text;
+    g_autofree char *backtrace_text = NULL;
     backtrace(session, task_id, task_password, &backtrace_text);
     printf("%s", backtrace_text);
-    free(backtrace_text);
 }
 
 /* This is not robust at all but will work for now */
@@ -1069,12 +1052,11 @@ static void run_exploitable(SoupSession *session,
                             const char  *task_id,
                             const char  *task_password)
 {
-    char *exploitable_text;
+    g_autofree char *exploitable_text = NULL;
     exploitable(session, task_id, task_password, &exploitable_text);
     if (exploitable_text)
     {
         printf("%s\n", exploitable_text);
-        free(exploitable_text);
     }
     else
         puts("No exploitability information available.");
@@ -1123,18 +1105,18 @@ static void run_log(SoupSession *session,
 static int run_batch(SoupSession *session,
                      bool         delete_temp_archive)
 {
-    char *task_id, *task_password;
+    g_autofree char *task_id = NULL;
+    g_autofree char *task_password = NULL;
     int retcode = create(session, delete_temp_archive, &task_id, &task_password);
     if (0 != retcode)
         return retcode;
-    char *task_status = g_strdup("");
-    char *status_message = g_strdup("");
+    g_autofree char *task_status = g_strdup("");
+    g_autofree char *status_message = g_strdup("");
     int status_delay = delay ? delay : 10;
     int dots = 0;
     while (0 != strncmp(task_status, "FINISHED", strlen("finished")))
     {
-        char *previous_status_message = status_message;
-        free(task_status);
+        g_autofree char *previous_status_message = status_message;
         sleep(status_delay);
         status(session, task_id, task_password, &task_status, &status_message);
         if (libreport_g_verbose > 0 || 0 != strcmp(previous_status_message, status_message))
@@ -1161,14 +1143,13 @@ static int run_batch(SoupSession *session,
             libreport_client_log(".");
             fflush(stdout);
         }
-        free(previous_status_message);
         previous_status_message = status_message;
     }
     if (0 == strcmp(task_status, "FINISHED_SUCCESS"))
     {
-        char *backtrace_text;
+        g_autofree char *backtrace_text = NULL;
         backtrace(session, task_id, task_password, &backtrace_text);
-        char *exploitable_text = NULL;
+        g_autofree char *exploitable_text = NULL;
         if (task_type == TASK_RETRACE)
         {
             exploitable(session, task_id, task_password, &exploitable_text);
@@ -1181,7 +1162,6 @@ static int run_batch(SoupSession *session,
             struct dump_dir *dd = dd_opendir(dump_dir_name, 0/* flags */);
             if (!dd)
             {
-                free(backtrace_text);
                 libreport_xfunc_die();
             }
 
@@ -1207,8 +1187,6 @@ static int run_batch(SoupSession *session,
             if (exploitable_text)
                 printf("%s\n", exploitable_text);
         }
-        free(backtrace_text);
-        free(exploitable_text);
     }
     else
     {
@@ -1217,10 +1195,6 @@ static int run_batch(SoupSession *session,
         run_log(session, task_id, task_password);
         retcode = 1;
     }
-    free(task_status);
-    free(status_message);
-    free(task_id);
-    free(task_password);
     return retcode;
 }
 

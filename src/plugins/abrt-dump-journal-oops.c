@@ -120,7 +120,7 @@ static void watch_journald(abrt_journal_t *journal, const char *dump_location, i
 {
     GList *koops_strings = abrt_koops_suspicious_strings_list();
 
-    char *oops_string_filter_regex = abrt_oops_string_filter_regex();
+    g_autofree char *oops_string_filter_regex = abrt_oops_string_filter_regex();
     if (oops_string_filter_regex)
     {
         regex_t filter_re;
@@ -146,7 +146,6 @@ static void watch_journald(abrt_journal_t *journal, const char *dump_location, i
         }
 
         regfree(&filter_re);
-        free(oops_string_filter_regex);
     }
 
     GList *koops_strings_blacklist = abrt_koops_suspicious_strings_blacklist();

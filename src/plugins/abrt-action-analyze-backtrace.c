@@ -61,10 +61,10 @@ int main(int argc, char **argv)
     if (!dd)
         return 1;
 
-    char *component = dd_load_text(dd, FILENAME_COMPONENT);
+    g_autofree char *component = dd_load_text(dd, FILENAME_COMPONENT);
 
     /* Read backtrace */
-    char *backtrace_str = dd_load_text_ext(dd, FILENAME_BACKTRACE,
+    g_autofree char *backtrace_str = dd_load_text_ext(dd, FILENAME_BACKTRACE,
                                            DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (!backtrace_str)
     {
@@ -77,7 +77,6 @@ int main(int argc, char **argv)
     sr_location_init(&location);
     const char *backtrace_str_ptr = backtrace_str;
     struct sr_gdb_stacktrace *backtrace = sr_gdb_stacktrace_parse(&backtrace_str_ptr, &location);
-    free(backtrace_str);
 
     /* Store backtrace hash */
     if (!backtrace)
@@ -93,9 +92,8 @@ int main(int argc, char **argv)
         log_warning("%d:%d: %s", location.line, location.column, location.message);
         GString *emptybt = g_string_new(NULL);
 
-        char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+        g_autofree char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
         g_string_prepend(emptybt, executable);
-        free(executable);
 
         g_string_prepend(emptybt, component);
 
@@ -113,7 +111,6 @@ int main(int argc, char **argv)
         dd_save_text(dd, FILENAME_RATING, "0");
 
         g_string_free(emptybt, TRUE);
-        free(component);
         dd_close(dd);
 
         /* Report success even if the parser failed, as the backtrace
@@ -133,20 +130,18 @@ int main(int argc, char **argv)
 
     if (crash_thread)
     {
-        char *hash_str;
+        g_autofree char *hash_str = NULL;
 
         if (libreport_g_verbose >= 3)
         {
             hash_str = sr_thread_get_duphash(crash_thread, 3, component,
                                              SR_DUPHASH_NOHASH);
             log_warning("Generating duphash: %s", hash_str);
-            free(hash_str);
         }
 
         hash_str = sr_thread_get_duphash(crash_thread, 3, component,
                                          SR_DUPHASH_NORMAL);
         dd_save_text(dd, FILENAME_DUPHASH, hash_str);
-        free(hash_str);
     }
     else
         log_warning(_("Crash thread not found"));
@@ -180,6 +175,5 @@ int main(int argc, char **argv)
     }
     sr_gdb_stacktrace_free(backtrace);
     dd_close(dd);
-    free(component);
     return 0;
 }
