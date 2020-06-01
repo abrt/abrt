@@ -84,7 +84,7 @@ static double get_dir_size(const char *dirname,
         if (libreport_dot_or_dotdot(dent->d_name))
             continue;
 
-        char *fullname = libreport_concat_path_file(dirname, dent->d_name);
+        char *fullname = g_build_filename(dirname, dent->d_name, NULL);
         struct stat stats;
         if (lstat(fullname, &stats) != 0)
             goto next;

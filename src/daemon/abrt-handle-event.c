@@ -254,7 +254,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
 
         dd = NULL;
 
-        char *tmp_concat_path = libreport_concat_path_file(abrt_g_settings_dump_location, dent->d_name);
+        char *tmp_concat_path = g_build_filename(abrt_g_settings_dump_location, dent->d_name, NULL);
 
         char *dump_dir_name2 = realpath(tmp_concat_path, NULL);
         if (libreport_g_verbose > 1 && !dump_dir_name2)

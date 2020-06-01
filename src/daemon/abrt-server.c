@@ -1047,7 +1047,7 @@ static int perform_http_xact(struct response *rsp)
     char *executable = g_hash_table_lookup(problem_info, FILENAME_EXECUTABLE);
     if (executable)
     {
-        char *last_file = libreport_concat_path_file(abrt_g_settings_dump_location, "last-via-server");
+        char *last_file = g_build_filename(abrt_g_settings_dump_location ? abrt_g_settings_dump_location : "", "last-via-server", NULL);
         int repeating_crash = check_recent_crash_file(last_file, executable);
         free(last_file);
         if (repeating_crash) /* Only pretend that we saved it */

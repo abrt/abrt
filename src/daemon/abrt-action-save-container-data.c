@@ -25,7 +25,7 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
         dd_save_text(dd, FILENAME_CONTAINER, "docker");
 
     json_object *json = NULL;
-    char *mntnf_path = libreport_concat_path_file(dd->dd_dirname, FILENAME_MOUNTINFO);
+    char *mntnf_path = g_build_filename(dd->dd_dirname ? dd->dd_dirname : "", FILENAME_MOUNTINFO, NULL);
     FILE *mntnf_file = fopen(mntnf_path, "r");
     free(mntnf_path);
 
@@ -186,7 +186,7 @@ void dump_lxc_info(struct dump_dir *dd, const char *lxc_cmd)
     if (!dd_exist(dd, FILENAME_CONTAINER))
         dd_save_text(dd, FILENAME_CONTAINER, "lxc");
 
-    char *mntnf_path = libreport_concat_path_file(dd->dd_dirname, FILENAME_MOUNTINFO);
+    char *mntnf_path = g_build_filename(dd->dd_dirname ? dd->dd_dirname : "", FILENAME_MOUNTINFO, NULL);
     FILE *mntnf_file = fopen(mntnf_path, "r");
     free(mntnf_path);
 

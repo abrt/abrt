@@ -77,7 +77,7 @@ void abrt_trim_problem_dirs(const char *dirname, double cap_size, const char *ex
         }
         log_warning("%s is %.0f bytes (more than %.0fMiB), deleting '%s'",
                 dirname, cur_size, cap_size / (1024*1024), worst_basename);
-        char *d = libreport_concat_path_file(dirname, worst_basename);
+        char *d = g_build_filename(dirname ? dirname : "", worst_basename, NULL);
         free(worst_basename);
         delete_dump_dir(d);
         free(d);
@@ -245,7 +245,7 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
 
     char *executable = NULL;
     if (dd_exist(dd, FILENAME_BINARY))
-        executable = libreport_concat_path_file(dd->dd_dirname, FILENAME_BINARY);
+        executable = g_build_filename(dd->dd_dirname ? dd->dd_dirname : "", FILENAME_BINARY, NULL);
     else
         executable = dd_load_text(dd, FILENAME_EXECUTABLE);
 

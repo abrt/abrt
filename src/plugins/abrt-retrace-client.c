@@ -589,7 +589,7 @@ static int create(SoupSession  *session,
         const char **required_files = task_type == TASK_VMCORE ? required_vmcore : required_retrace;
         while (required_files[i])
         {
-            path = libreport_concat_path_file(dump_dir_name, required_files[i]);
+            path = g_build_filename(dump_dir_name, required_files[i], NULL);
             libreport_xstat(path, &file_stat);
             free(path);
 
@@ -606,7 +606,7 @@ static int create(SoupSession  *session,
         {
             for (i = 0; optional_retrace[i]; ++i)
             {
-                path = libreport_concat_path_file(dump_dir_name, optional_retrace[i]);
+                path = g_build_filename(dump_dir_name, optional_retrace[i], NULL);
                 if (stat(path, &file_stat) != -1)
                 {
                     if (!S_ISREG(file_stat.st_mode))
