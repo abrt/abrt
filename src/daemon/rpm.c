@@ -282,7 +282,7 @@ char* rpm_get_component(const char *filename, const char *rootdir_or_NULL)
 
 #ifdef HAVE_LIBRPM
 #define pkg_add_id(name)                                                \
-    static inline int pkg_add_##name(Header header, struct pkg_envra *p) \
+    static inline int pkg_add_##name(Header header, struct pkg_nevra *p) \
     {                                                                   \
         const char *errmsg = NULL;                                      \
         p->p_##name = headerFormat(header, "%{"#name"}", &errmsg);      \
@@ -294,8 +294,8 @@ char* rpm_get_component(const char *filename, const char *rootdir_or_NULL)
         return -1;                                                      \
     }                                                                   \
 
-pkg_add_id(epoch);
 pkg_add_id(name);
+pkg_add_id(epoch);
 pkg_add_id(version);
 pkg_add_id(release);
 pkg_add_id(arch);
@@ -303,14 +303,14 @@ pkg_add_id(vendor);
 #endif
 
 // caller is responsible to free returned value
-struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_or_NULL)
+struct pkg_nevra *rpm_get_package_nvr(const char *filename, const char *rootdir_or_NULL)
 {
 #ifdef HAVE_LIBRPM
     rpmts ts;
     rpmdbMatchIterator iter;
     Header header;
 
-    struct pkg_envra *p = NULL;
+    struct pkg_nevra *p = NULL;
 
     if (rpm_query_file(&ts, &iter, &header, filename, rootdir_or_NULL) < 0)
         return NULL;
@@ -320,6 +320,11 @@ struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_
 
     p = libreport_xzalloc(sizeof(*p));
     int r;
+
+    r = pkg_add_name(header, p);
+    if (r)
+        goto error;
+
     r = pkg_add_epoch(header, p);
     if (r)
         goto error;
@@ -332,10 +337,6 @@ struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_
         free(p->p_epoch);
         p->p_epoch = libreport_xstrdup("0");
     }
-
-    r = pkg_add_name(header, p);
-    if (r)
-        goto error;
 
     r = pkg_add_version(header, p);
     if (r)
@@ -356,14 +357,14 @@ struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_
     if (strcmp(p->p_epoch, "0") == 0)
         p->p_nvr = libreport_xasprintf("%s-%s-%s", p->p_name, p->p_version, p->p_release);
     else
-        p->p_nvr = libreport_xasprintf("%s:%s-%s-%s", p->p_epoch, p->p_name, p->p_version, p->p_release);
+        p->p_nvr = libreport_xasprintf("%s-%s:%s-%s", p->p_name, p->p_epoch, p->p_version, p->p_release);
 
     rpmdbFreeIterator(iter);
     rpmtsFree(ts);
     return p;
 
  error:
-    free_pkg_envra(p);
+    free_pkg_nevra(p);
 
     rpmdbFreeIterator(iter);
     rpmtsFree(ts);
@@ -373,14 +374,14 @@ struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_
 #endif
 }
 
-void free_pkg_envra(struct pkg_envra *p)
+void free_pkg_nevra(struct pkg_nevra *p)
 {
     if (!p)
         return;
 
     free(p->p_vendor);
-    free(p->p_epoch);
     free(p->p_name);
+    free(p->p_epoch);
     free(p->p_version);
     free(p->p_release);
     free(p->p_arch);
