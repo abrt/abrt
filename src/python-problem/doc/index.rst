@@ -7,7 +7,7 @@ abrt-python
 ===========
 
 High-level API for querying, creating and manipulating
-problems handled by `ABRT <https://fedorahosted.org/abrt/>`_ 
+problems handled by `ABRT <https://github.com/abrt/abrt/>`_ 
 in Python.
 
 It works on top of low-level DBus or socket API provided
@@ -16,7 +16,7 @@ for systems without new DBus problem API
 as it can only handle the creation of new problems.
 
 This project lives in the
-`abrt repository <http://git.fedorahosted.org/git/abrt.git>`_ 
+`abrt repository <https://github.com/abrt/abrt.git>`_ 
 and is distributed under GPLv2 license.
 
 Contents:

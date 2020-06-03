@@ -43,7 +43,7 @@ rlJournalStart
 
         yum-builddep -y --nogpgcheck abrt
         rpmquery btparser-devel > /dev/null 2>&1 || yum install -y btparser-devel --enablerepo="updates-testing"
-        rlRun "git clone git://git.fedorahosted.org/abrt.git" 0 "Clone abrt.git"
+        rlRun "git clone https://github.com/abrt/btparser.git" 0 "Clone abrt.git"
         pushd abrt/
         rlRun "./autogen.sh" 0 "Autogen"
         rlRun "rpm --eval '%configure' | sh" 0 "Configure"

@@ -3,9 +3,11 @@ Implementation:
 C/C++ handling:
 ==============
 
+NOTE: This document describes legacy abrt-hook-cpp that was removed in favour of systemd-coredump.
+
 We change /proc/sys/kernel/core_pattern to invoke abrtd helper to save
 the coredump of the crashing app:
-* helper source code: http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob_plain;f=src/Hooks/abrt-hook-python.cpp
+* helper source code:
 the code responsible for this:
 
     #define CORE_PATTERN            "|/usr/libexec/abrt-hook-ccpp" "/var/tmp/abrt" %p %s %u"
@@ -64,8 +66,6 @@ the coredump and extract the backtrace. This is done on user demand by calling t
 getReport(UUID) method, or is done automatically if configured in /etc/abrt/abrt.conf
 * UUID is a unique id of the crash in the database, every user is allowed to see only
   their own crashes or kerneloops crashes.
-- See http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob;f=lib/Plugins/SQLite3.cpp line 394
-  for more details.
 
 1. processing coredump:
     a) determine if the crashed binary belongs to some installed package
@@ -76,9 +76,8 @@ execlp("abrt-action-install-debuginfo", "abrt-action-install-debuginfo", coredum
 
 abrt-action-install-debuginfo is a shell script using elfutils to get build-ids from a coredump and then use
 "yum provides" and "yumdownloader" to determine and download the missing debuginfo packages
-* script source code: http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob_plain;f=src/Daemon/abrt-action-install-debuginfo
+* script source code: https://github.com/abrt/abrt/blob/master/src/plugins/abrt-action-install-debuginfo.in
     c) Run gdb and get a backtrace from the coredump:
-    see http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob_plain;f=lib/Plugins/CCpp.cpp line 260
     - gdb is run with the same privileges as the crashed app (setregid, setreuid).
     d) The backtrace is saved to the same directory as the coredump.
 
