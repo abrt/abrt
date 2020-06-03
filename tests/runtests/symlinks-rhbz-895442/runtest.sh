@@ -45,13 +45,13 @@ rlPhaseStartSetup
     rlPhaseEnd
 
     rlPhaseStartTest
-        rlRun "./notlink $PROBLEMDIR" 0 "Reading regular file"
-        rlRun "./link $PROBLEMDIR" 0 "Reading link"
+        rlRun "./notlink '$PROBLEMDIR'" 0 "Reading regular file"
+        rlRun "./link '$PROBLEMDIR'" 0 "Reading link"
     rlPhaseEnd
 
     rlPhaseStartCleanup
         popd
-        rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
+        rlRun "rm -r '$TmpDir'" 0 "Removing tmp directory"
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd
