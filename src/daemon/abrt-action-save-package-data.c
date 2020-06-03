@@ -228,7 +228,7 @@ static bool is_path_blacklisted(const char *path)
     return false;
 }
 
-static struct pkg_envra *get_script_name(const char *cmdline, char **executable, const char *chroot)
+static struct pkg_nevra *get_script_name(const char *cmdline, char **executable, const char *chroot)
 {
 // TODO: we don't verify that python executable is not modified
 // or that python package is properly signed
@@ -237,7 +237,7 @@ static struct pkg_envra *get_script_name(const char *cmdline, char **executable,
      * This will work only if the cmdline contains the whole path.
      * Example: python /usr/bin/system-control-network
      */
-    struct pkg_envra *script_pkg = NULL;
+    struct pkg_nevra *script_pkg = NULL;
     char *script_name = get_argv1_if_full_path(cmdline);
     if (script_name)
     {
@@ -271,7 +271,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
     char *rootdir = NULL;
     char *package_short_name = NULL;
     char *fingerprint = NULL;
-    struct pkg_envra *pkg_name = NULL;
+    struct pkg_nevra *pkg_name = NULL;
     char *component = NULL;
     char *kernel = NULL;
     int error = 1;
@@ -353,7 +353,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
     if (g_regex_match_simple(DEFAULT_INTERPRETERS_REGEX, basename, G_REGEX_EXTENDED, /*MatchFlags*/0) ||
         g_list_find_custom(settings_Interpreters, basename, (GCompareFunc)g_strcmp0))
     {
-        struct pkg_envra *script_pkg = get_script_name(cmdline, &executable, chroot);
+        struct pkg_nevra *script_pkg = get_script_name(cmdline, &executable, chroot);
         /* executable may have changed, check it again */
         if (is_path_blacklisted(executable))
         {
@@ -379,7 +379,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
             goto ret0;
         }
 
-        free_pkg_envra(pkg_name);
+        free_pkg_nevra(pkg_name);
         pkg_name = script_pkg;
     }
 
@@ -460,7 +460,7 @@ skip_interpreter:
     free(executable);
     free(rootdir);
     free(package_short_name);
-    free_pkg_envra(pkg_name);
+    free_pkg_nevra(pkg_name);
     free(component);
     free(fingerprint);
 

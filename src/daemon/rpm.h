@@ -26,17 +26,17 @@
 extern "C" {
 #endif
 
-struct pkg_envra {
+struct pkg_nevra {
     char *p_nvr;
-    char *p_epoch;
     char *p_name;
+    char *p_epoch;
     char *p_version;
     char *p_release;
     char *p_arch;
     char *p_vendor;
 };
 
-void free_pkg_envra(struct pkg_envra *p);
+void free_pkg_nevra(struct pkg_nevra *p);
 
 /**
  * Checks if an application is modified by third party.
@@ -85,7 +85,7 @@ char *rpm_get_fingerprint(const char* pkg);
  * @param filename A file name.
  * @return A package name (malloc'ed string)
  */
-struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_or_NULL);
+struct pkg_nevra *rpm_get_package_nvr(const char *filename, const char *rootdir_or_NULL);
 /**
  * Finds a main package for given file. This package contains particular
  * file. If the file doesn't belong to any package, empty string is
