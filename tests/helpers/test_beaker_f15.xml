@@ -29,7 +29,7 @@
 <![CDATA[
 %post --interpreter=/bin/bash
 
-git clone git://git.fedorahosted.org/abrt /usr/local/share/abrt-tests/
+git clone https://github.com/abrt/abrt.git /usr/local/share/abrt-tests/
 
 cat >> /etc/crontab <<_END_
 0 3 * * * root /usr/local/share/abrt-tests/tests/runtests/abrt-nightly-test.sh | tee -a /tmp/abrt-nightly-test.log

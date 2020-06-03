@@ -1,14 +1,14 @@
 ABRT integration test suite documentation
 =========================================
 :Author: Richard Marko <rmarko@redhat.com>
-:Description: Since 2011, `ABRT <https://fedorahosted.org/abrt/>`_ is using `BeakerLib library <https://fedorahosted.org/beakerlib/>`_ based test suite for integration testing. This document describes the usage and the architecture of the test suite.
+:Description: Since 2011, `ABRT <https://github.com/abrt/abrt/>`_ is using `BeakerLib library <https://github.com/beakerlib/beakerlib/>`_ based test suite for integration testing. This document describes the usage and the architecture of the test suite.
 
 .. contents:: Table of Contents
 
 About
 -----
 
-At the time of writing this document, we have 32 tests which tests `ABRT <https://fedorahosted.org/abrt/>`_, `libreport <https://fedorahosted.org/libreport/>`_ and `btparser <https://fedorahosted.org/btparser/>`_.
+At the time of writing this document, we have 32 tests which tests `ABRT <https://github.com/abrt/abrt/>`_, `libreport <https://github.com/abrt/libreport/>`_ and `btparser <https://github.com/abrt/btparser/>`_.
 These tests are run nightly for each of the currently supported releases of Fedora and Red Hat Enterprise Linux. You can find the results on our `public mirror <http://rmarko.fedorapeople.org/abrt/>`_.
 
 
@@ -19,7 +19,7 @@ Running the test suite
         Don't run the test suite on your machine **directly**, use virtual machine or machine dedicated for the testing.
 
 In your virtual machine or dedicated machine:
- - clone the ABRT repository: *git clone git://git.fedorahosted.org/abrt.git*
+ - clone the ABRT repository: *git clone https://github.com/abrt/abrt.git*
  - go to *abrt/tests/runtest/*
  - run *./run*
 
@@ -65,7 +65,7 @@ To create a new test you have to:
    * PURPOSE file
  - add the test to *./aux/test_order*
 
-The tests are written in bash using `BeakerLib library <https://fedorahosted.org/beakerlib/>`_. BeakerLib Quick Reference [`PDF <https://fedorahosted.org/beakerlib/attachment/wiki/Download/BeakerLib%20Quick%20Reference.pdf?format=raw>`_] is what you need.
+The tests are written in bash using `BeakerLib library <https://github.com/beakerlib/beakerlib/>`_.
 
 It's always good to copy one of the existing tests as a base for your test. Good candidates are:
  - run-abrtd which basically serves as an example,

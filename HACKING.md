@@ -52,7 +52,7 @@ the tests/helpers directory.
 ## Verify ABRT plays nice with the rest of OS
 
 ABRT integration tests live in the test/runtest directory. The test are based
-on [BeakerLib](http://fedorahosted.org/beakerlib).
+on [BeakerLib](https://github.com/beakerlib/beakerlib).
 
 Caution! It is not recommended to run the tests unless you really know what
 you are doing. Lot of tests changes configuration of the system they are

@@ -79,7 +79,7 @@ rlJournalStart
 
     for package in $TARGETS; do
         rlPhaseStartTest "Build $package"
-            rlRun "git clone git://git.fedorahosted.org/$package.git" 0 "Clone $package.git"
+            rlRun "git clone https://github.com/abrt/$package.git" 0 "Clone $package.git"
 
             pushd $package
             rlLog "Git short rev: $(git rev-parse --short HEAD)"
