@@ -69,13 +69,13 @@ extern unsigned int  abrt_g_settings_debug_level;
 int abrt_load_abrt_conf(void);
 void abrt_free_abrt_conf_data(void);
 
-int abrt_load_abrt_conf_file(const char *file, map_string_t *settings);
+int abrt_load_abrt_conf_file(const char *file, GHashTable *settings);
 
-int abrt_load_abrt_plugin_conf_file(const char *file, map_string_t *settings);
+int abrt_load_abrt_plugin_conf_file(const char *file, GHashTable *settings);
 
-int abrt_save_abrt_conf_file(const char *file, map_string_t *settings);
+int abrt_save_abrt_conf_file(const char *file, GHashTable *settings);
 
-int abrt_save_abrt_plugin_conf_file(const char *file, map_string_t *settings);
+int abrt_save_abrt_plugin_conf_file(const char *file, GHashTable *settings);
 
 
 void migrate_to_xdg_dirs(void);

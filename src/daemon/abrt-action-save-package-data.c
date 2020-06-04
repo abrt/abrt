@@ -67,7 +67,7 @@ static GList *settings_setBlackListedPaths = NULL;
 static bool   settings_bProcessUnpackaged = false;
 static GList *settings_Interpreters = NULL;
 
-static void ParseCommon(map_string_t *settings, const char *conf_filename)
+static void ParseCommon(GHashTable *settings, const char *conf_filename)
 {
     gpointer value;
 
@@ -110,7 +110,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
         g_hash_table_remove(settings, "Interpreters");
     }
 
-    map_string_iter_t iter;
+    GHashTableIter iter;
     gpointer name;
     g_hash_table_iter_init(&iter, settings);
     while (g_hash_table_iter_next(&iter, &name, &value))
@@ -121,7 +121,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
 
 static void load_gpg_keys(void)
 {
-    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     if (!abrt_load_abrt_conf_file(GPG_CONF, settings))
     {
         error_msg("Can't load '%s'", GPG_CONF);
@@ -158,7 +158,7 @@ static void load_gpg_keys(void)
 
 static int load_conf(const char *conf_filename)
 {
-    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     if (conf_filename != NULL)
     {
         if (!libreport_load_conf_file(conf_filename, settings, false))

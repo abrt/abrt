@@ -65,7 +65,7 @@ static char *xstrdup_normalized_path(const char *path)
     return res;
 }
 
-static void ParseCommon(map_string_t *settings, const char *conf_filename)
+static void ParseCommon(GHashTable *settings, const char *conf_filename)
 {
     gpointer value;
 
@@ -176,7 +176,7 @@ int abrt_load_abrt_conf()
     abrt_free_abrt_conf_data();
 
     const char *const abrt_conf = get_abrt_conf_file_name();
-    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     if (!abrt_load_abrt_conf_file(abrt_conf, settings))
         perror_msg("Can't load '%s'", abrt_conf);
 
@@ -187,7 +187,7 @@ int abrt_load_abrt_conf()
     return 0;
 }
 
-int abrt_load_abrt_conf_file(const char *file, map_string_t *settings)
+int abrt_load_abrt_conf_file(const char *file, GHashTable *settings)
 {
     const char *env_conf_dir = getenv("ABRT_CONF_DIR");
     const char *const conf_directories[] = {
@@ -198,21 +198,21 @@ int abrt_load_abrt_conf_file(const char *file, map_string_t *settings)
     return libreport_load_conf_file_from_dirs(file, conf_directories, settings, /*skip key w/o values:*/ false);
 }
 
-int abrt_load_abrt_plugin_conf_file(const char *file, map_string_t *settings)
+int abrt_load_abrt_plugin_conf_file(const char *file, GHashTable *settings)
 {
     static const char *const conf_directories[] = { PLUGINS_CONF_DIR, NULL };
 
     return libreport_load_conf_file_from_dirs(file, conf_directories, settings, /*skip key w/o values:*/ false);
 }
 
-int abrt_save_abrt_conf_file(const char *file, map_string_t *settings)
+int abrt_save_abrt_conf_file(const char *file, GHashTable *settings)
 {
     g_autofree char *path = g_build_filename(CONF_DIR ? CONF_DIR : "", file, NULL);
     int retval = libreport_save_conf_file(path, settings);
     return retval;
 }
 
-int abrt_save_abrt_plugin_conf_file(const char *file, map_string_t *settings)
+int abrt_save_abrt_plugin_conf_file(const char *file, GHashTable *settings)
 {
     g_autofree char *path = g_build_filename(PLUGINS_CONF_DIR ? PLUGINS_CONF_DIR : "", file, NULL);
     int retval = libreport_save_conf_file(path, settings);

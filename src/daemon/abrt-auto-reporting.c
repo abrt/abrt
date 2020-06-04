@@ -48,7 +48,7 @@ const char *const REPORTING_STATES[8][2] = {
 };
 
 static int
-set_abrt_reporting(map_string_t *conf, const char *opt_value)
+set_abrt_reporting(GHashTable *conf, const char *opt_value)
 {
     const char *const def_value = REPORTING_STATES[0][1];
     const char *const cur_value = g_hash_table_lookup(conf, OPTION_NAME);
@@ -66,7 +66,7 @@ set_abrt_reporting(map_string_t *conf, const char *opt_value)
 
 #if AUTHENTICATED_AUTOREPORTING != 0
 static int
-set_ureport_http_auth(map_string_t *conf, const char *opt_value)
+set_ureport_http_auth(GHashTable *conf, const char *opt_value)
 {
     const char *const cur_value = g_hash_table_lookup(conf, UREPORT_HTTP_AUTH_OPTION);
 
@@ -83,7 +83,7 @@ set_ureport_http_auth(map_string_t *conf, const char *opt_value)
 }
 
 static int
-set_ureport_client_auth(map_string_t *conf, const char *opt_value)
+set_ureport_client_auth(GHashTable *conf, const char *opt_value)
 {
     const char *const cur_value = g_hash_table_lookup(conf, UREPORT_CLIENT_AUTH_OPTION);
 
@@ -100,7 +100,7 @@ set_ureport_client_auth(map_string_t *conf, const char *opt_value)
 }
 
 static int
-clear_ureport_auth(map_string_t *conf)
+clear_ureport_auth(GHashTable *conf)
 {
     const char *const http_cur_value = g_hash_table_lookup(conf, UREPORT_HTTP_AUTH_OPTION);
     const char *const ssl_cur_value = g_hash_table_lookup(conf, UREPORT_CLIENT_AUTH_OPTION);
@@ -118,7 +118,7 @@ clear_ureport_auth(map_string_t *conf)
 }
 
 static int
-set_rhts_credentials(map_string_t *conf, const char *username, const char *password)
+set_rhts_credentials(GHashTable *conf, const char *username, const char *password)
 {
     const char *const username_cur_value = g_hash_table_lookup(conf, RHTS_USERNAME_OPTION);
     const char *const password_cur_value = g_hash_table_lookup(conf, RHTS_PASSWORD_OPTION);
@@ -138,7 +138,7 @@ set_rhts_credentials(map_string_t *conf, const char *username, const char *passw
 #endif
 
 static const char *
-get_abrt_reporting(map_string_t *conf)
+get_abrt_reporting(GHashTable *conf)
 {
     const char *const cur_value = (const char *)g_hash_table_lookup(conf, OPTION_NAME);
     const int index = !!libreport_string_to_bool(cur_value ? cur_value : "");
@@ -147,13 +147,13 @@ get_abrt_reporting(map_string_t *conf)
 
 #if AUTHENTICATED_AUTOREPORTING != 0
 static const char *
-get_ureport_http_auth(map_string_t *conf)
+get_ureport_http_auth(GHashTable *conf)
 {
     return g_hash_table_lookup(conf, UREPORT_HTTP_AUTH_OPTION);
 }
 
 static const char *
-get_ureport_client_auth(map_string_t *conf)
+get_ureport_client_auth(GHashTable *conf)
 {
     return g_hash_table_lookup(conf, UREPORT_CLIENT_AUTH_OPTION);
 }
@@ -300,13 +300,13 @@ int main(int argc, char *argv[])
 
     int exit_code = EXIT_FAILURE;
 
-    map_string_t *conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    GHashTable *conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
 #if AUTHENTICATED_AUTOREPORTING != 0
-    map_string_t *rhts_conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
-    map_string_t *rhts_conf_bck = NULL;
+    GHashTable *rhts_conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    GHashTable *rhts_conf_bck = NULL;
 #endif
-    map_string_t *ureport_conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
-    map_string_t *ureport_conf_bck = NULL;
+    GHashTable *ureport_conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    GHashTable *ureport_conf_bck = NULL;
 
     if (!abrt_load_abrt_conf_file(CONF_NAME, conf))
         goto finito;
