@@ -39,8 +39,8 @@ AVCPROBLEMDIR=`pwd`"/avc-problem-dir"
 rlJournalStart
     rlPhaseStartSetup
         TmpDir=$(mktemp -d)
-        cp bugzilla.conf $TmpDir
-        rlRun "pushd $TmpDir"
+        cp bugzilla.conf "$TmpDir"
+        rlRun "pushd '$TmpDir'"
     rlPhaseEnd
 
     rlPhaseStartTest "simple dupehash search"
@@ -73,7 +73,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "avc reporting"
-        rlRun "reporter-bugzilla -d $AVCPROBLEMDIR -c bugzilla.conf &> output" 0 "Reporting already reported AVC"
+        rlRun "reporter-bugzilla -d '$AVCPROBLEMDIR' -c bugzilla.conf &> output" 0 "Reporting already reported AVC"
         # Tired of tracking ever-changing rhbz#s: it was bug 755535,
         # then it was 871696, then 871790...
         #out="`cat output2 | tr -d '\n'`"; test "$REPORTING_OUTPUT" = "${out:0:118}";
@@ -84,8 +84,8 @@ rlJournalStart
     rlPhaseStartCleanup
         rlBundleLogs abrt output $(ls *.log)
         rlRun "popd"
-        rlRun "rm -r $AVCPROBLEMDIR/reported_to" 0 "Removing reported_to"
-        rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
+        rlRun "rm -r '$AVCPROBLEMDIR/reported_to'" 0 "Removing reported_to"
+        rlRun "rm -r '$TmpDir'" 0 "Removing tmp directory"
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd
