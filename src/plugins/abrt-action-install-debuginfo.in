@@ -180,7 +180,7 @@ def run(config):
             result = downloader.download(missing, download_exact_files=config.exact_fls)
 
             # make sure that all downloaded directories are writeable by abrt group
-            for root, dirs, files in os.walk(self.cachedirs[0]):
+            for root, dirs, files in os.walk(config.cachedirs[0]):
                 for walked_dir in dirs:
                     os.chmod(os.path.join(root, walked_dir), 0o775)
 
