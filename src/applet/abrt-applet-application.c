@@ -196,7 +196,7 @@ static void
 migrate_auto_reporting_to_gsettings (void)
 {
 #define OPT_NAME "AutoreportingEnabled"
-    map_string_t *settings_map;
+    GHashTable *settings_map;
     int sv_logmode;
     int auto_reporting;
     int configured;

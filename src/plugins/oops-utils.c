@@ -288,7 +288,7 @@ int abrt_oops_signaled_sleep(int seconds)
 
 char *abrt_oops_string_filter_regex(void)
 {
-    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
 
     abrt_load_abrt_plugin_conf_file("oops.conf", settings);
 

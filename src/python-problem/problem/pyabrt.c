@@ -34,10 +34,10 @@ PyObject *p_notify_new_path(PyObject *pself, PyObject *args)
 }
 
 static PyObject *
-load_settings_to_dict(const char *file, int (*loader)(const char *, map_string_t *))
+load_settings_to_dict(const char *file, int (*loader)(const char *, GHashTable *))
 {
     PyObject *dict = NULL;
-    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     if (!loader(file, settings))
     {
         PyErr_SetString(PyExc_OSError, "Failed to load configuration file.");
@@ -50,7 +50,7 @@ load_settings_to_dict(const char *file, int (*loader)(const char *, map_string_t
         goto lacf_error;
     }
 
-    map_string_iter_t iter;
+    GHashTableIter iter;
     gpointer key = NULL;
     gpointer value = NULL;
     g_hash_table_iter_init(&iter, settings);
@@ -72,7 +72,7 @@ lacf_error:
     return NULL;
 }
 
-/* C: void abrt_load_abrt_conf_file(const char *file, map_string_t *settings); */
+/* C: void abrt_load_abrt_conf_file(const char *file, GHashTable *settings); */
 PyObject *p_load_conf_file(PyObject *pself, PyObject *args)
 {
     const char *file;
@@ -83,7 +83,7 @@ PyObject *p_load_conf_file(PyObject *pself, PyObject *args)
     return load_settings_to_dict(file, abrt_load_abrt_conf_file);
 }
 
-/* C: void abrt_load_abrt_plugin_conf_file(const char *file, map_string_t *settings); */
+/* C: void abrt_load_abrt_plugin_conf_file(const char *file, GHashTable *settings); */
 PyObject *p_load_plugin_conf_file(PyObject *pself, PyObject *args)
 {
     const char *file;

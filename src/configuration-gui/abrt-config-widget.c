@@ -46,7 +46,7 @@
  */
 typedef struct {
     char *app_name;             ///< e.g abrt-applet, org.gnome.desktop.privacy
-    map_string_t *settings;     ///< ABRT configuration file
+    GHashTable *settings;     ///< ABRT configuration file
     GSettings *glib_settings;   ///< GSettings
 } AbrtAppConfiguration;
 

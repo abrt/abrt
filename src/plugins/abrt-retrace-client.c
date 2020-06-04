@@ -404,7 +404,7 @@ static void free_settings(struct retrace_settings *settings)
 
 /* returns release identifier as dist-ver-arch */
 /* or NULL if unknown */
-static char *get_release_id(map_string_t *osinfo, const char *architecture)
+static char *get_release_id(GHashTable *osinfo, const char *architecture)
 {
     g_autofree char *arch = g_strdup(architecture);
 
@@ -456,7 +456,7 @@ static char *get_release_id(map_string_t *osinfo, const char *architecture)
 static int check_package(SoupSession   *session,
                          const char    *nvr,
                          const char    *arch,
-                         map_string_t  *osinfo,
+                         GHashTable  *osinfo,
                          char         **msg)
 {
     g_autofree char *release_id = NULL;
@@ -665,7 +665,7 @@ static int create(SoupSession  *session,
 
         char *package = problem_data_get_content_or_NULL(pd, FILENAME_PACKAGE);
         char *arch = problem_data_get_content_or_NULL(pd, FILENAME_ARCHITECTURE);
-        map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+        GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
         problem_data_get_osinfo(pd, osinfo);
 
         /* not needed for TASK_VMCORE - the information is kept in the vmcore itself */
