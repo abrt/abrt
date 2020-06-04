@@ -35,18 +35,18 @@ PROBLEMDIR=`pwd`"/problem_dir"
 rlJournalStart
     rlPhaseStartSetup
         TmpDir=$(mktemp -d)
-        cp bugzilla*.conf output.expected $TmpDir
-        rlRun "pushd $TmpDir"
+        cp bugzilla*.conf output.expected "$TmpDir"
+        rlRun "pushd '$TmpDir'"
     rlPhaseEnd
 
     rlPhaseStartTest "BZ comment generation"
-        rlRun "reporter-bugzilla -c bugzilla.conf -F bugzilla_format.conf -d $PROBLEMDIR --debug >output" 0 "Generating BZ comment"
+        rlRun "reporter-bugzilla -c bugzilla.conf -F bugzilla_format.conf -d '$PROBLEMDIR' --debug >output" 0 "Generating BZ comment"
         rlRun "diff -u output.expected output" 0 "Comparing with expected output"
     rlPhaseEnd
 
     rlPhaseStartCleanup
         rlRun "popd"
-        rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
+        rlRun "rm -r '$TmpDir'" 0 "Removing tmp directory"
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd
