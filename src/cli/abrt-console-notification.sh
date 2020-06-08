@@ -36,7 +36,7 @@ fi
 # always update the lastnotification
 if [ -f "$TMPPATH" ]; then
     # Be quite in case of errors and don't scare users by strange error messages.
-    date +%s > "$TMPPATH" 2>"$ABRT_DEBUG_LOG"
+    date +%s 2>"$ABRT_DEBUG_LOG" > "$TMPPATH"
     mv -f "$TMPPATH" "$SINCEFILE" >"$ABRT_DEBUG_LOG" 2>&1
 fi
 
