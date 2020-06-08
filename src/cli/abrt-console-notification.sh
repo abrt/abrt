@@ -30,13 +30,13 @@ TMPPATH=$(mktemp --tmpdir="$LPATHDIR" lastnotification.XXXXXXXX 2> "$ABRT_DEBUG_
 
 SINCE=0
 if [ -f "$SINCEFILE" ]; then
-    SINCE=$(cat "$SINCEFILE" 2>"$ABRT_DEBUG_LOG")
+    SINCE=$(tail -n1 "$SINCEFILE" 2>"$ABRT_DEBUG_LOG")
 fi
 
 # always update the lastnotification
 if [ -f "$TMPPATH" ]; then
     # Be quite in case of errors and don't scare users by strange error messages.
-    date +%s 2>"$ABRT_DEBUG_LOG" > "$TMPPATH"
+    date +%s 2>"$ABRT_DEBUG_LOG" >> "$TMPPATH"
     mv -f "$TMPPATH" "$SINCEFILE" >"$ABRT_DEBUG_LOG" 2>&1
 fi
 
