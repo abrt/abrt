@@ -300,24 +300,24 @@ int main(int argc, char *argv[])
 
     int exit_code = EXIT_FAILURE;
 
-    GHashTable *conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    g_autoptr(GHashTable) conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
 #if AUTHENTICATED_AUTOREPORTING != 0
-    GHashTable *rhts_conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
-    GHashTable *rhts_conf_bck = NULL;
+    g_autoptr(GHashTable) rhts_conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    g_autoptr(GHashTable) rhts_conf_bck = NULL;
 #endif
-    GHashTable *ureport_conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
-    GHashTable *ureport_conf_bck = NULL;
+    g_autoptr(GHashTable) ureport_conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    g_autoptr(GHashTable) ureport_conf_bck = NULL;
 
     if (!abrt_load_abrt_conf_file(CONF_NAME, conf))
-        goto finito;
+        return exit_code;
 
 #if AUTHENTICATED_AUTOREPORTING != 0
     if (!libreport_load_plugin_conf_file(RHTS_NAME, rhts_conf, false))
-        goto finito;
+        return exit_code;
 #endif
 
     if (!libreport_load_plugin_conf_file(UREPORT_NAME, ureport_conf, false))
-        goto finito;
+        return exit_code;
 
 #if AUTHENTICATED_AUTOREPORTING != 0
     if ((opts & OPT_a))
@@ -325,7 +325,7 @@ int main(int argc, char *argv[])
         ureport_conf_bck = libreport_clone_map_string(ureport_conf);
 
         if (!clear_ureport_auth(ureport_conf))
-            goto finito;
+            return exit_code;
     }
 
     if ((opts & OPT_u))
@@ -337,21 +337,21 @@ int main(int argc, char *argv[])
             if (tmp_password == NULL)
             {
                 error_msg(_("Cannot continue without password\n"));
-                goto finito;
+                return exit_code;
             }
         }
 
         ureport_conf_bck = libreport_clone_map_string(ureport_conf);
 
         if (!set_ureport_http_auth(ureport_conf, UREPORT_RTHS_CREDENTIALS_AUTH))
-            goto finito;
+            return exit_code;
 
         rhts_conf_bck = libreport_clone_map_string(rhts_conf);
 
         if (!set_rhts_credentials(rhts_conf, username, password))
         {
             libreport_save_plugin_conf_file(UREPORT_NAME, ureport_conf_bck);
-            goto finito;
+            return exit_code;
         }
     }
 
@@ -360,7 +360,7 @@ int main(int argc, char *argv[])
         ureport_conf_bck = libreport_clone_map_string(ureport_conf);
 
         if (!set_ureport_client_auth(ureport_conf, certificate))
-            goto finito;
+            return exit_code;
     }
 
 #endif
@@ -384,7 +384,7 @@ int main(int argc, char *argv[])
 #endif
         putchar('\n');
 
-        goto finito;
+        return exit_code;
     }
 
     exit_code = set_abrt_reporting(conf, opt_value) ? EXIT_SUCCESS : EXIT_FAILURE;
@@ -399,20 +399,5 @@ int main(int argc, char *argv[])
             libreport_save_plugin_conf_file(RHTS_NAME, rhts_conf_bck);
 #endif
     }
-
-
-finito:
-    if (ureport_conf)
-        g_hash_table_destroy(ureport_conf);
-    if (ureport_conf_bck)
-        g_hash_table_destroy(ureport_conf_bck);
-#if AUTHENTICATED_AUTOREPORTING != 0
-    if (rhts_conf)
-        g_hash_table_destroy(rhts_conf);
-    if (rhts_conf_bck)
-        g_hash_table_destroy(rhts_conf_bck);
-#endif
-    if (conf)
-        g_hash_table_destroy(conf);
     return exit_code;
 }

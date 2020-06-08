@@ -37,7 +37,7 @@ static PyObject *
 load_settings_to_dict(const char *file, int (*loader)(const char *, GHashTable *))
 {
     PyObject *dict = NULL;
-    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    g_autoptr(GHashTable) settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     if (!loader(file, settings))
     {
         PyErr_SetString(PyExc_OSError, "Failed to load configuration file.");
@@ -61,14 +61,10 @@ load_settings_to_dict(const char *file, int (*loader)(const char *, GHashTable *
             goto lacf_error;
         }
     }
-    if (settings)
-        g_hash_table_destroy(settings);
     return dict;
 
 lacf_error:
     Py_XDECREF(dict);
-    if (settings)
-        g_hash_table_destroy(settings);
     return NULL;
 }
 

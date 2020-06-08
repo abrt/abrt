@@ -235,7 +235,7 @@ void abrt_oops_save_data_in_dump_dir(struct dump_dir *dd, char *oops, const char
             g_autofree char *tnt_long = abrt_kernel_tainted_long(tainted_short);
             dd_save_text(dd, FILENAME_TAINTED_LONG, tnt_long);
 
-            GString *reason = g_string_new(NULL);
+            g_autoptr(GString) reason = g_string_new(NULL);
             const char *fmt = _("A kernel problem occurred, but your kernel has been "
                     "tainted (flags:%s). Explanation:\n%s"
                     "Kernel maintainers are unable to diagnose tainted reports.");
@@ -248,7 +248,6 @@ void abrt_oops_save_data_in_dump_dir(struct dump_dir *dd, char *oops, const char
             }
 
             dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason->str);
-            g_string_free(reason, TRUE);
         }
     }
 
@@ -288,15 +287,12 @@ int abrt_oops_signaled_sleep(int seconds)
 
 char *abrt_oops_string_filter_regex(void)
 {
-    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    g_autoptr(GHashTable) settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
 
     abrt_load_abrt_plugin_conf_file("oops.conf", settings);
 
     int only_fatal_mce = 0;
     libreport_try_get_map_string_item_as_bool(settings, "OnlyFatalMCE", &only_fatal_mce);
-
-    if (settings)
-        g_hash_table_destroy(settings);
 
     if (only_fatal_mce)
         return g_strdup("^Machine .*$");

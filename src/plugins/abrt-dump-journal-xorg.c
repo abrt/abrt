@@ -250,7 +250,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+        g_autoptr(GHashTable) settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
         log_notice("Loading settings from '%s'", XORG_CONF);
         abrt_load_abrt_plugin_conf_file(XORG_CONF, settings);
         log_debug("Loaded '%s'", XORG_CONF);
@@ -263,8 +263,6 @@ int main(int argc, char *argv[])
         xorg_journal_filter = libreport_parse_delimited_list(conf_journal_filters, ",");
         /* list data will be free by g_list_free_full */
         free_filter_list_data = true;
-        if (settings)
-            g_hash_table_destroy(settings);
         if (xorg_journal_filter)
             log_debug("Using journal filter from conf file %s", XORG_CONF);
     }

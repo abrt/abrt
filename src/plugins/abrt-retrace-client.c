@@ -665,7 +665,7 @@ static int create(SoupSession  *session,
 
         char *package = problem_data_get_content_or_NULL(pd, FILENAME_PACKAGE);
         char *arch = problem_data_get_content_or_NULL(pd, FILENAME_ARCHITECTURE);
-        GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+        g_autoptr(GHashTable) osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
         problem_data_get_osinfo(pd, osinfo);
 
         /* not needed for TASK_VMCORE - the information is kept in the vmcore itself */
@@ -708,8 +708,6 @@ static int create(SoupSession  *session,
                 error_msg_and_die(_("Unknown package sent to Retrace server."));
         }
 
-        if (osinfo)
-            g_hash_table_destroy(osinfo);
         problem_data_free(pd);
     }
 
