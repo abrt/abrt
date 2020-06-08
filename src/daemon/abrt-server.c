@@ -379,7 +379,7 @@ static int run_post_create(const char *dirname, struct response *resp)
     int child_pid = spawn_event_handler_child(dirname, "post-create", &child_stdout_fd);
 
     g_autofree char *dup_of_dir = NULL;
-    GString *cmd_output = g_string_new(NULL);
+    g_autoptr(GString) cmd_output = g_string_new(NULL);
 
     bool child_is_post_create = 1; /* else it is a notify child */
 
@@ -551,7 +551,6 @@ static int run_post_create(const char *dirname, struct response *resp)
     RESPONSE_SETTER(resp, 403, NULL);
 
  ret:
-    g_string_free(cmd_output, TRUE);
     close(child_stdout_fd);
     return 0;
 }
@@ -869,7 +868,7 @@ static int perform_http_xact(struct response *rsp)
     /* use free instead of g_free so that we can use xstr* functions from
      * libreport/lib/xfuncs.c
      */
-    GHashTable *problem_info = g_hash_table_new_full(g_str_hash, g_str_equal,
+    g_autoptr(GHashTable) problem_info = g_hash_table_new_full(g_str_hash, g_str_equal,
                                      free, free);
     /* Read header */
     char *body_start = NULL;
@@ -1022,7 +1021,7 @@ static int perform_http_xact(struct response *rsp)
         {
             error_msg("UID=%ld is not authorized to trigger post-create processing", (long)client_uid);
             ret = 403; /* Forbidden */
-            goto out;
+            return ret;
         }
 
         messagebuf_data[messagebuf_len] = '\0';
@@ -1040,7 +1039,7 @@ static int perform_http_xact(struct response *rsp)
         if (repeating_crash) /* Only pretend that we saved it */
         {
             error_msg("Not saving repeating crash in '%s'", executable);
-            goto out; /* ret is 0: "success" */
+            return ret; /* ret is 0: "success" */
         }
     }
 
@@ -1064,8 +1063,6 @@ static int perform_http_xact(struct response *rsp)
     create_problem_dir(problem_info, pid);
     /* does not return */
 
- out:
-    g_hash_table_destroy(problem_info);
     return ret; /* Used as HTTP response code */
 }
 

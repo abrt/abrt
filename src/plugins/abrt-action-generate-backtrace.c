@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 
     libreport_export_abrt_envvars(0);
 
-    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    g_autoptr(GHashTable) settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     if (!abrt_load_abrt_plugin_conf_file(CCPP_CONF, settings))
         error_msg("Can't load '%s'", CCPP_CONF);
 
@@ -72,8 +72,6 @@ int main(int argc, char **argv)
     else
         debuginfo_location = g_strdup(LOCALSTATEDIR"/cache/abrt-di");
 
-    if (settings)
-        g_hash_table_destroy(settings);
     g_autofree char *debuginfo_dirs = NULL;
     if (i_opt)
         debuginfo_dirs = g_strdup_printf("%s:%s", debuginfo_location, i_opt);

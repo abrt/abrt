@@ -196,16 +196,14 @@ static void
 migrate_auto_reporting_to_gsettings (void)
 {
 #define OPT_NAME "AutoreportingEnabled"
-    GHashTable *settings_map;
+    g_autoptr(GHashTable) settings_map = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     int sv_logmode;
     int auto_reporting;
     int configured;
 
-    settings_map = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
-
     if (!libreport_load_app_conf_file (APP_NAME, settings_map))
     {
-        goto finito;
+        return;
     }
 
     /* Silently ignore not configured options */
@@ -220,7 +218,7 @@ migrate_auto_reporting_to_gsettings (void)
 
     if (configured == 0)
     {
-        goto finito;
+        return;
     }
 
     /* Enable the GS option if AutoreportingEnabled is true because the user
@@ -245,9 +243,6 @@ migrate_auto_reporting_to_gsettings (void)
     log_warning ("Successfully migrated "APP_NAME":"OPT_NAME" to "GS_SCHEMA_ID_PRIVACY":"GS_PRIVACY_OPT_AUTO_REPORTING);
 
 #undef OPT_NAME
-finito:
-    if (settings_map)
-        g_hash_table_destroy(settings_map);
 }
 
 static const char *

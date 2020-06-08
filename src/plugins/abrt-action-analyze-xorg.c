@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 
     libreport_export_abrt_envvars(0);
 
-    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    g_autoptr(GHashTable) settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     log_notice("Loading settings from '%s'", XORG_CONF);
     abrt_load_abrt_plugin_conf_file(XORG_CONF, settings);
     log_debug("Loaded '%s'", XORG_CONF);
@@ -99,8 +99,6 @@ int main(int argc, char **argv)
         value = XORG_DEFAULT_BLACKLISTED_MODULES;
 
     char *BlacklistedXorgModules = g_strdup(value);
-    if (settings)
-        g_hash_table_destroy(settings);
 
     trim_spaces(BlacklistedXorgModules);
 

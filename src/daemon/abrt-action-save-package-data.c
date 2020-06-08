@@ -136,7 +136,7 @@ static void load_gpg_keys(void)
     if (gpg_keys_dir != NULL && strcmp(gpg_keys_dir, "") != 0)
     {
         log_debug("Reading gpg keys from '%s'", gpg_keys_dir);
-        GHashTable *done_set = g_hash_table_new(g_str_hash, g_str_equal);
+        g_autoptr(GHashTable) done_set = g_hash_table_new(g_str_hash, g_str_equal);
         GList *gpg_files = libreport_get_file_list(gpg_keys_dir, NULL /* we don't care about the file ext */);
         for (GList *iter = gpg_files; iter; iter = g_list_next(iter))
         {
@@ -151,14 +151,12 @@ static void load_gpg_keys(void)
         }
 
         g_list_free_full(gpg_files, (GDestroyNotify)libreport_free_file_obj);
-        if (done_set)
-            g_hash_table_destroy(done_set);
     }
 }
 
 static int load_conf(const char *conf_filename)
 {
-    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    g_autoptr(GHashTable) settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     if (conf_filename != NULL)
     {
         if (!libreport_load_conf_file(conf_filename, settings, false))
@@ -172,8 +170,6 @@ static int load_conf(const char *conf_filename)
     }
 
     ParseCommon(settings, conf_filename);
-    if (settings)
-        g_hash_table_destroy(settings);
 
     load_gpg_keys();
 

@@ -510,7 +510,7 @@ int main(int argc, char **argv)
     if (!bugs && !argv[optind])
         libreport_show_usage_and_die(program_usage_string, program_options);
 
-    GString *query = g_string_new(NULL);
+    g_autoptr(GString) query = g_string_new(NULL);
     if (bugs)
         g_string_append_printf(query, "bugs=%s&", bugs);
 
@@ -537,7 +537,7 @@ int main(int argc, char **argv)
 
             g_autofree char *product = NULL;
             g_autofree char *version = NULL;
-            GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+            g_autoptr(GHashTable) osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
             problem_data_get_osinfo(problem_data, osinfo);
             libreport_parse_osinfo_for_rhts(osinfo, &product, &version);
 
@@ -546,12 +546,8 @@ int main(int argc, char **argv)
             if (!rawhide)
                 g_string_append_printf(query, "releases=f%s&", version);
 
-            if (osinfo)
-                g_hash_table_destroy(osinfo);
-
             if (rawhide)
             {
-                g_string_free(query, TRUE);
                 error_msg_and_die("Release \"Rawhide\" is not supported");
             }
         }
@@ -568,7 +564,6 @@ int main(int argc, char **argv)
 
     log_warning(_("Searching for updates"));
     GHashTable *update_hash_tbl = bodhi_query_list(query->str, release);
-    g_string_free(query, TRUE);
 
     if (!update_hash_tbl || !g_hash_table_size(update_hash_tbl))
     {
@@ -598,7 +593,6 @@ int main(int argc, char **argv)
 
     if (!q->len)
     {
-        /*g_string_free(q, TRUE);*/
         log_warning(_("Local version of the package is newer than available updates"));
         return 0;
     }
@@ -615,7 +609,7 @@ int main(int argc, char **argv)
      * as it did happen to yum.
      */
 
-    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    g_autoptr(GHashTable) settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     abrt_load_abrt_plugin_conf_file("CCpp.conf", settings);
 
     const char *value;
@@ -625,15 +619,12 @@ int main(int argc, char **argv)
         g_string_prepend(q, value);
     else
         g_string_prepend(q, DEFAULT_PACKAGE_MANAGER);
-    if (settings)
-        g_hash_table_destroy(settings);
 
     char *msg = g_strdup_printf(_("An update exists which might fix your problem. "
                                   "You can install it by running: %s. "
                                   "Do you want to continue with reporting the bug?"),
                                 q->str
     );
-    /*g_string_free(q, TRUE);*/
 
     return libreport_ask_yes_no(msg) ? 0 : EXIT_STOP_EVENT_RUN;
 }

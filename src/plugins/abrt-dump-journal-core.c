@@ -593,7 +593,7 @@ main(int argc, char *argv[])
     }
 
     {   /* Load CCpp.conf */
-        GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+        g_autoptr(GHashTable) settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
         abrt_load_abrt_plugin_conf_file("CCpp.conf", settings);
         const char *value;
 
@@ -608,9 +608,6 @@ main(int argc, char *argv[])
             else
                 error_msg_and_die("expected number in range <%d, %d>: '%s'", 0, UINT_MAX, value);
         }
-
-        if (settings)
-            g_hash_table_destroy(settings);
     }
 
     /* systemd-coredump creates journal messages with SYSLOG_IDENTIFIER equals

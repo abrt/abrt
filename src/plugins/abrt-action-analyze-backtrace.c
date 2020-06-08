@@ -90,7 +90,7 @@ int main(int argc, char **argv)
          */
         log_warning(_("Backtrace parsing failed for %s"), dump_dir_name);
         log_warning("%d:%d: %s", location.line, location.column, location.message);
-        GString *emptybt = g_string_new(NULL);
+        g_autoptr(GString) emptybt = g_string_new(NULL);
 
         g_autofree char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
         g_string_prepend(emptybt, executable);
@@ -110,7 +110,6 @@ int main(int argc, char **argv)
          */
         dd_save_text(dd, FILENAME_RATING, "0");
 
-        g_string_free(emptybt, TRUE);
         dd_close(dd);
 
         /* Report success even if the parser failed, as the backtrace
