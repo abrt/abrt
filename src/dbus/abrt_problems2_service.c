@@ -691,46 +691,46 @@ void abrt_p2_service_notify_entry_object(AbrtP2Service *service,
 {
     AbrtP2Entry *entry = abrt_p2_object_get_node(obj);
     uid_t owner_uid = abrt_p2_entry_get_owner(entry, error);
+    GList *session_objects;
 
-    if (error == NULL)
+    if ((uid_t)-1 == owner_uid)
     {
-        GList *session_objects = problems2_object_type_get_all_objects(
-                                         &service->pv->p2srv_p2_session_type);
+        return;
+    }
 
-        for (GList *iter = session_objects; iter != NULL; iter = g_list_next(iter))
+    session_objects = problems2_object_type_get_all_objects(
+                                     &service->pv->p2srv_p2_session_type);
+
+    for (GList *iter = session_objects; iter != NULL; iter = g_list_next(iter))
+    {
+        AbrtP2Session *session = abrt_p2_object_get_node(iter->data);
+        const uid_t session_uid = abrt_p2_service_get_session_uid(service,
+                                                                  session);
+
+        const char *session_bus_address = abrt_p2_session_caller(session);
+
+        if ( 0 != abrt_p2_entry_accessible_by_uid(entry, session_uid, NULL))
         {
-            AbrtP2Session *session = abrt_p2_object_get_node(iter->data);
-            const uid_t session_uid = abrt_p2_service_get_session_uid(service,
-                                                                      session);
-
-            const char *session_bus_address = abrt_p2_session_caller(session);
-
-            if ( 0 != abrt_p2_entry_accessible_by_uid(entry, session_uid, NULL))
-            {
-                log_debug("Crash signal not sent to not-authorized session: '%s'",
-                          session_bus_address);
-                continue;
-            }
-
-            log_debug("Crash signal sent to authorized session: '%s'",
+            log_debug("Crash signal not sent to not-authorized session: '%s'",
                       session_bus_address);
-
-            GVariant *parameters = g_variant_new("(oi)",
-                                                 obj->p2o_path,
-                                                 (gint32)owner_uid);
-
-            abrt_p2_object_emit_signal_with_destination(
-                                                 service->pv->p2srv_p2_object,
-                                                 "Crash",
-                                                 parameters,
-                                                 session_bus_address);
+            continue;
         }
 
-        g_list_free(session_objects);
+        log_debug("Crash signal sent to authorized session: '%s'",
+                  session_bus_address);
+
+        GVariant *parameters = g_variant_new("(oi)",
+                                             obj->p2o_path,
+                                             (gint32)owner_uid);
+
+        abrt_p2_object_emit_signal_with_destination(
+                                             service->pv->p2srv_p2_object,
+                                             "Crash",
+                                             parameters,
+                                             session_bus_address);
     }
-    else
-        /* error message was already logged */
-        g_error_free(*error);
+
+    g_list_free(session_objects);
 }
 
 struct entry_object_save_elements_context
