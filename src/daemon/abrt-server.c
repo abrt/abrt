@@ -378,7 +378,7 @@ static int run_post_create(const char *dirname, struct response *resp)
     int child_stdout_fd;
     int child_pid = spawn_event_handler_child(dirname, "post-create", &child_stdout_fd);
 
-    g_autofree char *dup_of_dir = NULL;
+    char *dup_of_dir = NULL;
     g_autoptr(GString) cmd_output = g_string_new(NULL);
 
     bool child_is_post_create = 1; /* else it is a notify child */
@@ -408,6 +408,7 @@ static int run_post_create(const char *dirname, struct response *resp)
             if (child_is_post_create
              && g_str_has_prefix(msg, "DUP_OF_DIR: "))
             {
+                free(dup_of_dir);
                 dup_of_dir = g_strdup(msg + strlen("DUP_OF_DIR: "));
             }
             else
@@ -539,6 +540,7 @@ static int run_post_create(const char *dirname, struct response *resp)
     else
     {
         RESPONSE_SETTER(resp, 200, NULL);
+        free(dup_of_dir);
     }
     dup_of_dir = NULL;
     g_string_erase(cmd_output, 0, -1);
@@ -551,6 +553,7 @@ static int run_post_create(const char *dirname, struct response *resp)
     RESPONSE_SETTER(resp, 403, NULL);
 
  ret:
+    free(dup_of_dir);
     close(child_stdout_fd);
     return 0;
 }
