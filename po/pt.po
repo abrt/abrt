@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Bruno Martins <bmomartins@gmail.com>, 2011
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
@@ -12,11 +12,11 @@
 # Pedro Marques Daniel <danielthpro@gmail.com>, 2013
 # Ricardo Pinto <ricardo.bigote@gmail.com>, 2012
 # Rui Gouveia <rui.gouveia@gmail.com>, 2011, 2012
-# Manuela Silva <mmsrs@sky.com>, 2015. #zanata
+# Manuela Silva <mmsrs@sky.com>, 2015. #zanata, 2020.
 # Ricardo Pinto <ricardo.bigote@gmail.com>, 2016. #zanata
 # Rodrigo de Araujo Sousa Fonseca <rodrigodearaujo@fedoraproject.org>, 2017. #zanata
 # Ricardo Pinto <ricardo.bigote@gmail.com>, 2018. #zanata
-# Manuela Silva <mmsrs@sky.com>, 2019. #zanata
+# Manuela Silva <mmsrs@sky.com>, 2019. #zanata, 2020.
 # Tiago João Mateus de Almeida <tjamadeira@gmail.com>, 2020.
 # Diego Lima Novaes <diegonovaes@hotmail.com.br>, 2020.
 msgid ""
@@ -24,8 +24,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-03-24 19:38+0000\n"
-"Last-Translator: Diego Lima Novaes <diegonovaes@hotmail.com.br>\n"
+"PO-Revision-Date: 2020-05-29 13:40+0000\n"
+"Last-Translator: Manuela Silva <mmsrs@sky.com>\n"
 "Language-Team: Portuguese <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/pt/>\n"
 "Language: pt\n"
@@ -33,7 +33,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 3.11.3\n"
+"X-Generator: Weblate 4.0.4\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -41,7 +41,7 @@ msgstr "Comunicação de Problemas"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr "Ver e reportar erros de aplicação"
+msgstr "Ver e reportar craches da aplicação"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
@@ -50,7 +50,7 @@ msgstr "Ser detalhado"
 #: ../src/applet/abrt-applet-application.c:167
 msgid "Applet which notifies user when new problems are detected by ABRT"
 msgstr ""
-"Objeto que notifica o utilizador quando forem detetados novos problemas pelo "
+"Objeto que notifica o utilizador quando são detetados novos problemas pelo "
 "ABRT"
 
 #: ../src/applet/abrt-applet-application.c:534
@@ -59,7 +59,7 @@ msgstr "Ups!"
 
 #: ../src/applet/abrt-applet-application.c:573
 msgid "Report"
-msgstr "Relatório"
+msgstr "Reportar"
 
 #: ../src/applet/abrt-applet-application.c:590
 msgid "Restart"
@@ -71,7 +71,7 @@ msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
 "reported."
 msgstr ""
-"Desculpe, parece que o %s falhou. O problema foi reportado automaticamente."
+"Desculpe, parece que o %s crachou. O problema foi reportado automaticamente."
 
 #: ../src/applet/abrt-applet-application.c:668
 #, c-format
@@ -79,8 +79,8 @@ msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
 "internet is available."
 msgstr ""
-"Desculpe, parece que o %s falhou. O problema será reportado quando a "
-"internet estiver disponível."
+"Desculpe, parece que o %s crachou. O problema será reportado quando a "
+"Internet estiver disponível."
 
 #: ../src/applet/abrt-applet-application.c:674
 #: ../src/applet/abrt-applet-application.c:688
@@ -90,8 +90,8 @@ msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
 msgstr ""
-"Desculpe, parece que %s falhou. Por favor, contacte o programador se quiser "
-"reportar o ocorrido."
+"Desculpe, parece que o %s crachou. Por favor, contacte o programador se "
+"quiser reportar o problema."
 
 #: ../src/applet/abrt-applet-application.c:682
 #, c-format
@@ -99,8 +99,8 @@ msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
 msgstr ""
-"Desculpe, parece que %s falhou. Se desejar ajudar a resolver o problema, por "
-"favor, envie um relatório."
+"Desculpe, parece que o %s crachou. Se desejar ajudar a resolver o problema, "
+"por favor, envie um relatório."
 
 #: ../src/applet/abrt-applet-application.c:701
 msgid ""
@@ -116,7 +116,7 @@ msgid ""
 "will be reported when the internet is available."
 msgstr ""
 "Desculpe, ocorreu um problema num componente. O problema será reportado "
-"assim que a internet estiver disponível."
+"assim que a Internet estiver disponível."
 
 #: ../src/applet/abrt-applet-application.c:710
 msgid ""
@@ -159,8 +159,8 @@ msgid ""
 "linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
-"Esta opção de configuração acima foi movida para GSettings e o interruptor "
-"está ligado ao valor da definição 'report-technical-problems' do esquema "
+"A opção de configuração acima foi movida para GSettings e o botão está "
+"associado ao valor da definição 'report-technical-problems' do esquema "
 "'org.gnome.desktop.privacy'."
 
 #: ../src/configuration-gui/abrt-config-widget.c:496
@@ -169,7 +169,7 @@ msgstr "A opção de configuração acima pode ser configurada em"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr "Pergunte antes de roubar o diretório"
+msgstr "Pergunte antes de roubar a diretoria"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
@@ -253,7 +253,7 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid "Request private ticket for sensitive information"
-msgstr "Solicitar relatório privado para informação sensível"
+msgstr "Solicitar pedido privado para a informação sensível"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Notify incomplete problems"
@@ -283,7 +283,7 @@ msgstr "Perguntar"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
 msgid "Upload coredump for backtrace generation"
-msgstr "Enviar o \"coredump\" para geração do \"backtrace\""
+msgstr "Enviar o \"coredump\" para a geração de \"backtrace\""
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/system-config-abrt.c:66
@@ -335,7 +335,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
 msgid "Problem directory"
-msgstr "Pasta de problemas"
+msgstr "Diretoria de problemas"
 
 #: ../src/daemon/abrt-action-save-package-data.c:470
 msgid "Configuration file"
@@ -343,7 +343,7 @@ msgstr "Ficheiro de configuração"
 
 #: ../src/daemon/abrt-action-save-package-data.c:471
 msgid "Use this directory as RPM root"
-msgstr "Utilize esta pasta como raiz RPM"
+msgstr "Utilize esta diretoria como raiz RPM"
 
 #: ../src/daemon/abrt-action-save-container-data.c:254
 msgid ""
@@ -353,7 +353,7 @@ msgid ""
 msgstr ""
 "& [-v] -d DIR\n"
 "\n"
-"Guardar metadata do container"
+"Guardar metadados do \"container\""
 
 #: ../src/daemon/abrt-action-save-container-data.c:266
 msgid "Root directory for running container commands"
@@ -375,7 +375,7 @@ msgstr "Utilizar NUM como uid do cliente"
 #: ../src/plugins/abrt-dump-journal-xorg.c:191
 #: ../src/plugins/abrt-dump-xorg.c:52
 msgid "Log to syslog"
-msgstr "Registar no syslog"
+msgstr "Registar no \"syslog\""
 
 #: ../src/daemon/abrt-server.c:1113 ../src/daemon/abrtd.c:754
 msgid "Add program names to log"
@@ -483,9 +483,9 @@ msgid "Increment the nice value by INCREMENT"
 msgstr "Aumentar o agradável valor em INCREMENT"
 
 #: ../src/daemon/abrt-upload-watch.c:118
-#, c-format, fuzzy
+#, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
-msgstr "No free workers and full buffer. Omitting archive '%s'"
+msgstr "Não existem tarefas livres e ''buffer'' cheio. A omitir o arquivo '%s'"
 
 #: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
@@ -541,9 +541,8 @@ msgstr ""
 "posteriormente"
 
 #: ../src/daemon/abrt-auto-reporting.c:236
-#, fuzzy
 msgid "uReport SSL certificate paths or certificate type"
-msgstr "uReport reporta o caminho do certificado SSL ou o tipo do certificado"
+msgstr "Caminhos de certificado ou tipo do certificado de uReport SSL"
 
 #: ../src/daemon/abrt-auto-reporting.c:252
 msgid "You also need to specify --username for --password"
@@ -554,9 +553,8 @@ msgid "You can use either --username or --certificate"
 msgstr "Você pode usar o --nome de usuário ou --certificado"
 
 #: ../src/daemon/abrt-auto-reporting.c:264
-#, fuzzy
 msgid "You can use either --username or --anonymous"
-msgstr "Pode usar o --username ou --anonymous"
+msgstr "Pode utilizar --username ou --anonymous"
 
 #: ../src/daemon/abrt-auto-reporting.c:270
 msgid "You can use either --anonymous or --certificate"
@@ -986,7 +984,7 @@ msgstr "{0} ficheiros de depuração não estão instalados"
 #, c-format
 msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
 msgstr ""
-"Configuração inválida do addon CCpp, gerenciador de pacotes sem suporte: '%s'"
+"Configuração inválida do extra CCpp, gestor de Pacotes não suportados: '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:168
 msgid "Missing requested file: {0}"
@@ -998,10 +996,10 @@ msgstr "Ficheiro de depuração em falta: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:176
 msgid "All debuginfo files are available"
-msgstr "Estão disponíveis todos os ficheiros de depuração"
+msgstr "Estão disponíveis todos os ficheiros de ''debuginfo''"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:190
-#, c-format, fuzzy
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -1032,17 +1030,18 @@ msgid ""
 "    --releasever RELEASEVER\n"
 "                Pass this OS version to package managers.\n"
 msgstr ""
-"Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
+"Utilização: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
 "[--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH...]]\n"
 "       [--releasever=RELEASEVER] [--repo=PATTERN]\n"
 "\n"
-"Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
-"to CACHEDIR, using TMPDIR as temporary staging area.\n"
-"Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
+"Instala \"debuginfos\" para todas ids. de compilação no BUILD_IDS_FILE \n"
+"para CACHEDIR, utilizando TMPDIR como área de encenação temporária.\n"
+"Os ficheiros antigos no CACHEDIR são eliminados até que fique menor que SIZE."
 "\n"
-"Reads configuration from /etc/abrt/plugins/CCpp.conf\n"
+"\n"
+"Lê a configuração de /etc/abrt/plugins/CCpp.conf\n"
 "\n"
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
@@ -1076,25 +1075,26 @@ msgstr ""
 "& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
 "\t[-r REPO]\n"
 "\n"
-"Instala pacotes de depuração de informações para todos os ids de compilação "
-"listados em BUILD_IDS_FILE para\n"
-"Cache do sistema ABRT."
+"Instala pacotes de ''debuginfo'' para todos as ids. de compilação no "
+"BUILD_IDS_FILE para\n"
+"a cache do sistema ABRT."
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
 msgid "Noninteractive, assume 'Yes' to all questions"
-msgstr "Não-interactivo, assume 'Sim' a todas as questões"
+msgstr "Não interativo, assume 'Sim' a todas as questões"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
 msgid "- means STDIN, default: build_ids"
-msgstr "- significa STDIN, padrão: build_ids"
+msgstr "- significa STDIN, predefinição: build_ids"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
 msgid "Download only specified files"
-msgstr "Descarrega apenas os ficheiros especificados"
+msgstr "Transferir apenas os ficheiros especificados"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:71
 msgid "Pattern to use when searching for repos, default: *debug*"
-msgstr "Expressão usada na procura pelos repositórios, padrão: *debug*"
+msgstr ""
+"Padrão a utilizar quando procurar pelos repositórios, predefinição: *debug*"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:72
 msgid "Ignored option"
@@ -1110,6 +1110,9 @@ msgid ""
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
 msgstr ""
+"Ok para enviar ''core dump''? (Este pode conter dados confidenciais). Se a "
+"sua resposta for 'Não', será gerado localmente um rastreamento de ''stack''. "
+"(Pode transferir uma enorme quantidade de dados)."
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
 msgid ""
@@ -1127,21 +1130,21 @@ msgid ""
 msgstr ""
 "& [-v] [-d TAMANHO:DIR]... [-f TAMANHO:DIR]... [-p DIR] [FICHEIRO]...\n"
 "\n"
-"Elimina pastas de problemas (-d) ou ficheiros (-f) em DIRs até que estes "
-"sejam menores que TAMANHO.\n"
+"Elimina as diretorias de problemas (-d) ou os ficheiros (-f) nas DIRs até "
+"que estes sejam menores que TAMANHO.\n"
 "Os FICHEIROS são preservados (nunca eliminados)."
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
-msgstr "Eliminar todos as pastas de problemas"
+msgstr "Eliminar todas as diretorias de problemas"
 
 #: ../src/plugins/abrt-action-trim-files.c:237
 msgid "Delete files inside this directory"
-msgstr "Eliminar os ficheiros dentro desta pasta"
+msgstr "Eliminar os ficheiros dentro desta diretoria"
 
 #: ../src/plugins/abrt-action-trim-files.c:238
 msgid "Preserve this directory"
-msgstr "Preservar esta pasta"
+msgstr "Preservar esta diretoria"
 
 #: ../src/plugins/abrt-action-ureport:54
 #, c-format
@@ -1156,7 +1159,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-ureport:93
 #, c-format
 msgid "Usage: %s [-v]"
-msgstr "Uso: %s [-v]"
+msgstr "Utilização: %s [-v]"
 
 #: ../src/plugins/abrt-action-ureport:114
 msgid "Unable to get current working directory as it was probably deleted"
@@ -1952,7 +1955,6 @@ msgid "Send core dump to remote retrace server for analysis"
 msgstr "Enviar core dump para o servidor retrace remoto para análise"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
-#, fuzzy
 msgid ""
 "Uploads coredump to a server, which generates backtrace and returns it. "
 "Pros: no need for debuginfo downloads. Retrace server's database of "
@@ -1960,12 +1962,12 @@ msgid ""
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
 msgstr ""
-"Envia o coredump para um servidor, o que gera uma traçagem inversa e a "
-"retorna. Vantagens: não necessita de descarregar debuginfos. A base de dados "
-"de debuginfos do servidor retrace é mais completa. O servidor de retrace "
-"pode gerar melhores traçagens inversas. Desvantagens: o coredump que envia "
-"contém todos os dados do programa que crashou, incluindo, se existirem, "
-"dados privados."
+"Envia \"coredump\" para um servidor, que gera um ''backtrace'' e devolve-o. "
+"Vantagens: não precisa de transferências de \"debuginfos\". A base de dados "
+"de \"debuginfos\" do servidor \"retrace\" é mais completa. O servidor de \""
+"retrace\" pode gerar melhores ''backtraces''. Desvantagens: o \"coredump\" "
+"que envia contém todos os dados do programa que crachou, incluindo, se "
+"existirem, os dados privados."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Retrace server URI"

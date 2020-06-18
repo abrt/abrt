@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-04-23 00:40+0000\n"
+"PO-Revision-Date: 2020-05-27 17:40+0000\n"
 "Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
 "Language-Team: Turkish <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/tr/>\n"
@@ -29,11 +29,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
-"X-Generator: Weblate 4.0.1\n"
+"X-Generator: Weblate 4.0.4\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
-msgstr "Sorun Bildir"
+msgstr "Sorun Bildirme"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:2
 msgid "View and report application crashes"
@@ -55,7 +55,7 @@ msgstr "Tüh!"
 
 #: ../src/applet/abrt-applet-application.c:573
 msgid "Report"
-msgstr "Rapor"
+msgstr "Bildirme"
 
 #: ../src/applet/abrt-applet-application.c:590
 msgid "Restart"
@@ -66,7 +66,7 @@ msgstr "Yeniden Başlat"
 msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
 "reported."
-msgstr "Üzgünüz, %s çökmüş gibi gözüküyor. Sorun otomatik olarak raporlandı."
+msgstr "Üzgünüz, %s çökmüş gibi gözüküyor. Sorun otomatik olarak bildirildi."
 
 #: ../src/applet/abrt-applet-application.c:668
 #, c-format
@@ -74,8 +74,8 @@ msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
 "internet is available."
 msgstr ""
-"Üzgünüz, %s çökmüş gibi gözüküyor. Sorun İnternet bağlantısı olduğunda "
-"raporlanacak."
+"Üzgünüz, %s çökmüş gibi gözüküyor. Sorun internet bağlantısı olduğunda "
+"bildirilecek."
 
 #: ../src/applet/abrt-applet-application.c:674
 #: ../src/applet/abrt-applet-application.c:688
@@ -85,7 +85,7 @@ msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
 msgstr ""
-"Üzgünüz, %s çökmüş gibi gözüküyor. Eğer bu durumu raporlamak istiyorsanız "
+"Üzgünüz, %s çökmüş gibi gözüküyor. Eğer bu durumu bildirmek istiyorsanız "
 "lütfen geliştirici ile iletişime geçin."
 
 #: ../src/applet/abrt-applet-application.c:682
@@ -95,7 +95,7 @@ msgid ""
 "issue, please send a report."
 msgstr ""
 "Üzgünüz, %s çökmüş gibi gözüküyor. Sorunun çözümüne yardımcı olmak "
-"istiyorsanız lütfen bir rapor gönderin."
+"istiyorsanız lütfen bunu bildirin."
 
 #: ../src/applet/abrt-applet-application.c:701
 msgid ""
@@ -103,15 +103,15 @@ msgid ""
 "has been automatically reported."
 msgstr ""
 "Üzgünüz, bir bileşende sorun oluşmuş gibi gözüküyor. Sorun otomatik olarak "
-"raporlandı."
+"bildirildi."
 
 #: ../src/applet/abrt-applet-application.c:705
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
 msgstr ""
-"Üzgünüz, bir bileşende sorun oluşmuş gibi gözüküyor. Sorun, İnternet "
-"bağlantısı olduğunda raporlanacak."
+"Üzgünüz, bir bileşende sorun oluşmuş gibi gözüküyor. Sorun, internet "
+"bağlantısı olduğunda bildirilecek."
 
 #: ../src/applet/abrt-applet-application.c:710
 msgid ""
@@ -119,7 +119,7 @@ msgid ""
 "the issue, please send a report."
 msgstr ""
 "Üzgünüz, bir sorun oluşmuş gibi gözüküyor. Eğer sorunun çözümüne yardımcı "
-"olmak isterseniz lütfen bir rapor gönderin."
+"olmak isterseniz lütfen bunu bildirin."
 
 #. TODO: Terminate child's process?
 #: ../src/applet/abrt-applet-application.c:800 ../src/daemon/abrt-server.c:117
@@ -168,7 +168,7 @@ msgstr "Dizini çalmadan önce sor"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
-msgstr "uRaporunu Otomatik Olarak Gönder"
+msgstr "Otomatik olarak uReport gönder"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
@@ -213,9 +213,9 @@ msgid ""
 "uReport is sent at beginning of reporting process. With this option enabled "
 "uReports are sent automatically immediately after problem detection."
 msgstr ""
-"uReport bir sorunun kısa ve tamamen anonim bir açıklamasıdır. ABRT "
+"uReport bir sorunun kısa ve tamamen anonim bir açıklamasıdır. ABRT, "
 "uReport'ları hızlı küresel yinelenme tespiti için kullanır. Öntanımlı "
-"yapılandırmada uReport raporlama işleminin başında gönderilir. Bu özellik "
+"yapılandırmada uReport bildirme işleminin başında gönderilir. Bu özellik "
 "etkin olduğunda uReport'lar sorun tespitinden hemen sonra otomatik olarak "
 "gönderilir."
 
@@ -227,7 +227,7 @@ msgid ""
 msgstr ""
 "Bu özellik etkinleştirildiğinde, sorun bildirim balonundan Bildir düğmesine "
 "tıklayarak başlatılan bildirme işlemi uReport gönderildikten sonra yarıda "
-"kesilecektir. Tam rapor göndermek için öntanımlı sorun tarayıcısını her "
+"kesilecektir. Tam bildirme yapmak için öntanımlı sorun tarayıcısını her "
 "zaman kullanabilirsiniz."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
@@ -249,7 +249,7 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid "Request private ticket for sensitive information"
-msgstr "Hassas bilgiler için özel bilet talep et"
+msgstr "Hassas bilgiler için özel bilet iste"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Notify incomplete problems"
@@ -262,7 +262,7 @@ msgid ""
 "allow you to submit these problems."
 msgstr ""
 "Bilgisayar kapatılırken veya kullanıcı oturumu kapatırken eksik sorunlar "
-"tespit edildi. Önemli sorun raporları sunmak için ABRT bu sorunları "
+"tespit edildi. Kaliteli sorun bildirimleri sağlamak için ABRT bu sorunları "
 "göndermenize izin vermeyecektir."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
@@ -292,7 +292,7 @@ msgstr "_Öntanımlılar"
 #: ../src/configuration-gui/system-config-abrt.c:103
 #: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
-msgstr "Sorun Raporlama Yapılandırması"
+msgstr "Sorun Bildirme Yapılandırması"
 
 #: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
@@ -440,9 +440,9 @@ msgid ""
 "problem. If you have time and want to help the developers in their effort to "
 "sort out this problem, please contact them directly."
 msgstr ""
-"Sorunlu veriler eksik. Bu genellikle bilgisayar kapatılırken veya kullanıcı "
-"oturumu kapatırken bir sorun tespit edildiğinde olur. Değerli sorun "
-"raporları sunmak için ABRT bu sorunu göndermenize izin vermeyecektir. "
+"Sorun verileri eksik. Bu genellikle bilgisayar kapatılırken veya kullanıcı "
+"oturumu kapatırken bir sorun tespit edildiğinde olur. Kaliteli sorun "
+"bildirimleri sağlamak için ABRT bu sorunu göndermenize izin vermeyecektir. "
 "Zamanınız varsa ve geliştiricilere bu sorunu çözme çabalarında yardımcı "
 "olmak istiyorsanız, lütfen doğrudan onlarla iletişim kurun."
 
@@ -523,7 +523,8 @@ msgstr "Red Hat Support kullanıcı adı"
 
 #: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
-msgstr "Red Hat destek parolası, verilmezse, bunun için bir istem verilecek"
+msgstr ""
+"Red Hat Support parolası, belirtilmemişse, bunun için bir istem verilecek"
 
 #: ../src/daemon/abrt-auto-reporting.c:236
 msgid "uReport SSL certificate paths or certificate type"
@@ -569,15 +570,15 @@ msgstr "Parola olmadan devam edilemez\n"
 #. Print only the part before ':' of a string like "username:password"
 #: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
-msgstr "HTTP Onaylı otomatik raporlama"
+msgstr "HTTP kimlik doğrulamalı otomatik bildirme"
 
 #: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
-msgstr "SSL İstemcisi Onaylı otomatik raporlama"
+msgstr "SSL istemcisi kimlik doğrulamalı otomatik bildirme"
 
 #: ../src/daemon/abrt-auto-reporting.c:384
 msgid "anonymous auto reporting"
-msgstr "anonim otomatik raporlama"
+msgstr "anonim otomatik bildirme"
 
 #: ../src/daemon/abrt-handle-upload.in:130
 #, c-format
@@ -736,9 +737,10 @@ msgid ""
 msgstr ""
 "& [seçenekler] -d DİZİN\n"
 "\n"
-"C/C ++ yığın geri izlemesini analiz eder, yineleme hash'i, yığın geri "
-"izlemesi derecesi\n"
-"oluşturur, ve DİZİN problem dizinindeki çökme fonksiyonunu tanımlar"
+"C/C ++ yığın geri izlemesini inceler, yineleme sağlama (hash) kodu, yığın "
+"geri\n"
+"izleme derecesi oluşturur, ve DİZİN sorun dizinindeki çökme işlevini tespit "
+"eder"
 
 #.
 #. * The parser failed. Compute the duphash from the executable
@@ -752,7 +754,7 @@ msgstr "%s için yığın geri izlemesi ayrıştırması başarısız oldu"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:152
 msgid "Crash thread not found"
-msgstr "Kilitlenme iş parçacığı bulunamadı"
+msgstr "Çökme iş parçacığı bulunamadı"
 
 #: ../src/plugins/abrt-action-analyze-c.c:155
 msgid ""
@@ -767,7 +769,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-core.in:67
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr "'%s' bellek dökümü analiz ediliyor"
+msgstr "'%s' bellek dökümü inceleniyor"
 
 #: ../src/plugins/abrt-action-analyze-core.in:105
 #, c-format
@@ -800,10 +802,10 @@ msgid ""
 "your computer. ABRT will not allow you to create a report in a bug tracking "
 "system but you can contact kernel maintainers via e-mail."
 msgstr ""
-"Yığın geri izlemesi, bildirilecek yeterli anlamlı fonksiyon çerçevesi "
+"Yığın geri izlemesi, bildirilecek yeterli anlamlı işlev çerçevesi "
 "içermemektedir. Bu can sıkıcı bir durum ancak bilgisayarınız ile ilgili bir "
-"sorun olduğu anlamına gelmiyor. ABRT bir hata izleme sisteminde rapor "
-"oluşturmanıza izin vermemektedir, ancak e-posta yoluyla çekirdek "
+"sorun olduğu anlamına gelmiyor. ABRT bir hata izleme sisteminde bildirme "
+"yapmanıza izin vermeyecektir, ancak e-posta yoluyla çekirdek "
 "geliştiricileriyle iletişime geçebilirsiniz."
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:74
@@ -819,7 +821,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-xorg.c:143
 #, c-format
 msgid "Module '%s' was loaded - won't report this crash"
-msgstr "'%s' modülü yüklendi - bu çöküş raporlanmayacak"
+msgstr "'%s' modülü yüklendi - bu çöküş bildirilmeyecek"
 
 #: ../src/plugins/abrt-action-analyze-python.c:44
 msgid ""
@@ -908,7 +910,7 @@ msgid ""
 msgstr ""
 "& [seçenekler] -d DİZİN\n"
 "\n"
-"Problem dizini DİZİN'de bellek dökümünü analiz eder, yığın geri izlemesi "
+"DİZİN sorun dizinindeki bellek dökümünü inceler, yığın geri izlemesi "
 "oluşturur ve kaydeder"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
@@ -1090,7 +1092,7 @@ msgstr "Depolar aranırken kullanılacak kalıp, öntanımlı olarak: *debug*"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:72
 msgid "Ignored option"
-msgstr "Yoksayılan seçenek"
+msgstr "Yok sayılan seçenek"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:73
 msgid "OS release version"
@@ -1112,7 +1114,7 @@ msgid ""
 "amount of data but reporting can't continue without stack trace)."
 msgstr ""
 "Yerel olarak yığın izi oluşturmak istiyor musunuz? (Çok fazla veri "
-"indirebilir ancak raporlama yığın izlemesi olmadan devam edemez)."
+"indirebilir ancak bildirme yığın izlemesi olmadan devam edemez)."
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -1165,7 +1167,7 @@ msgstr "Bu sorun hakkında zaten bir hata bildirildi:"
 
 #: ../src/plugins/abrt-action-ureport:153
 msgid "uReport was already sent, not sending it again"
-msgstr "uReport zaten gönderildi, tekrar yollamadı"
+msgstr "uReport zaten gönderildi, tekrar gönderilmiyor"
 
 #: ../src/plugins/abrt-action-ureport:174
 msgid "Problem comes from unpackaged executable. Unable to create uReport."
@@ -1175,7 +1177,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-ureport:189
 msgid "Adding you to CC List of the existing bugzilla bug"
-msgstr "Mevcut bugzilla hatasının CC listesine ekleniyorsunuz"
+msgstr "Var olan bugzilla hatasının CC listesine ekleniyorsunuz"
 
 #: ../src/plugins/abrt-action-ureport:203
 #, c-format
@@ -1284,8 +1286,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-gdb-exploitable:688
 msgid "Can't get signal no and do exploitability analysis\n"
-msgstr ""
-"Sinyal numarası alınamıyor ve güvenlik açığı analizi gerçekleştirilemiyor\n"
+msgstr "Sinyal numarası alınamıyor ve güvenlik açığı incelemesi yapılamıyor\n"
 
 #: ../src/plugins/abrt-gdb-exploitable:701
 msgid "Likely crash reason: "
@@ -1301,7 +1302,7 @@ msgstr "Mevcut komut: "
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Exploitability analysis came up empty\n"
-msgstr "Güvenlik açığı analizi boş çıktı\n"
+msgstr "Güvenlik açığı incelemesi boş çıktı\n"
 
 #: ../src/plugins/abrt-watch-log.c:129 ../src/plugins/abrt-retrace-client.c:159
 #: ../src/plugins/abrt-retrace-client.c:213
@@ -1338,7 +1339,7 @@ msgstr ""
 #: ../src/plugins/abrt-dump-journal-core.c:572
 #: ../src/plugins/abrt-dump-journal-oops.c:223
 msgid "Print found oopses on standard output"
-msgstr "Standart çıktı üzerinde bulunan oops ları yazdır"
+msgstr "Bulunan oops'ları standart çıktıya yazdır"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
@@ -1737,8 +1738,7 @@ msgid ""
 "Unexpected HTTP response from server: %d\n"
 "%s"
 msgstr ""
-"Sunucudan beklenmeyen HTTP cevabı: %d\n"
-"\n"
+"Sunucudan beklenmeyen HTTP yanıtı: %d\n"
 "%s"
 
 #: ../src/plugins/abrt-retrace-client.c:510
@@ -1784,7 +1784,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:652
 msgid "The server does not support xz-compressed tarballs."
-msgstr "Sunucu sıkıştırılmış-xz tarball'ları desteklemiyor."
+msgstr "Sunucu, xz ile sıkıştırılmış tar arşivlerini desteklemiyor."
 
 #: ../src/plugins/abrt-retrace-client.c:689
 #, c-format
@@ -1793,7 +1793,7 @@ msgstr "'%s' sürümü Retrace sunucusu tarafından desteklenmiyor."
 
 #: ../src/plugins/abrt-retrace-client.c:693
 msgid "The server is not able to handle your request."
-msgstr "Sunucu, talebinizi değerlendiremiyor."
+msgstr "Sunucu, isteğinizi değerlendiremiyor."
 
 #: ../src/plugins/abrt-retrace-client.c:712
 msgid "Unknown package sent to Retrace server."
@@ -1845,11 +1845,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:848
 msgid "Invalid response from server: missing X-Task-Id."
-msgstr "Sunucudan geçersiz cevap: X-Task-Id eksik."
+msgstr "Sunucudan geçersiz yanıt: X-Task-Id eksik."
 
 #: ../src/plugins/abrt-retrace-client.c:857
 msgid "Invalid response from server: missing X-Task-Password."
-msgstr "Sunucudan geçersiz cevap: X-Task-Password eksik."
+msgstr "Sunucudan geçersiz yanıt: X-Task-Password eksik."
 
 #: ../src/plugins/abrt-retrace-client.c:864
 msgid "Retrace job started"
@@ -1861,12 +1861,12 @@ msgid ""
 "Task Id: %s\n"
 "Task Password: %s\n"
 msgstr ""
-"Görev Id: %s\n"
-"Görev Şifresi: %s\n"
+"Görev Kimliği: %s\n"
+"Görev Parolası: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:929
 msgid "Invalid response from server: missing X-Task-Status."
-msgstr "Sunucudan geçersiz cevap: X-Task-Status eksik."
+msgstr "Sunucudan geçersiz yanıt: X-Task-Status eksik."
 
 #: ../src/plugins/abrt-retrace-client.c:942
 #, c-format
@@ -1939,7 +1939,7 @@ msgstr "sunucudaki görevin id si"
 
 #: ../src/plugins/abrt-retrace-client.c:1278
 msgid "password of your task on server"
-msgstr "sunucudaki görevin şifresi"
+msgstr "sunucudaki görevinizin parolası"
 
 #: ../src/plugins/abrt-retrace-client.c:1282
 msgid ""
@@ -1966,7 +1966,7 @@ msgstr "Görev kimliği gerekli."
 #: ../src/plugins/abrt-retrace-client.c:1354
 #: ../src/plugins/abrt-retrace-client.c:1362
 msgid "Task password is needed."
-msgstr "Görev şifresi gerekli."
+msgstr "Görev parolası gerekli."
 
 #: ../src/plugins/abrt-retrace-client.c:1366
 #, c-format
@@ -1984,8 +1984,9 @@ msgid ""
 "Bodhi updates shipping fixes for the found Bugzilla bugs."
 msgstr ""
 "Bugzilla Bug Whiteboard'da, çökmenin 'UUID' değerine eşit 'abrt_hash' "
-"değerine sahip Bugzilla raporlarını arar. Böyle bir hata bulunursa, bulunan "
-"Bugzilla hataları için düzeltmeler içeren Bodhi güncellemelerini arar."
+"değerine sahip Bugzilla bildirimlerini arar. Böyle bir hata bulunursa, "
+"bulunan Bugzilla hataları için düzeltmeler içeren Bodhi güncellemelerini "
+"arar."
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
@@ -2009,7 +2010,7 @@ msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
-msgstr "Bellek dökümünü analiz için uzak retrace sunucusuna gönder"
+msgstr "Bellek dökümünü incelemek için uzak retrace sunucusuna gönder"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
@@ -2115,7 +2116,7 @@ msgid ""
 msgstr ""
 "Bir çekirdek sorunu oluştu, ancak çekirdeğiniz lekelendi (bayraklar: %s). "
 "Açıklama:\n"
-"%sKernel geliştiricileri lekeli (tainted) raporları teşhis edememektedir."
+"%sKernel geliştiricileri lekeli (tainted) bildirimleri teşhis edememektedir."
 
 #: ../src/plugins/oops-utils.c:254
 #, c-format
@@ -2165,7 +2166,7 @@ msgid ""
 "running: %s. Do you want to continue with reporting the bug?"
 msgstr ""
 "Sorununuzu çözebilecek bir güncelleme var. Şu komutu çalıştırarak "
-"kurabilirsiniz: %s. Hatayı raporlamaya devam etmek ister misiniz?"
+"kurabilirsiniz: %s. Hatayı bildirmeye devam etmek istiyor musunuz?"
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:85
 msgid ""
@@ -2192,7 +2193,7 @@ msgstr "Eşleşen sorun bulunamadı"
 
 #: ../src/cli/abrtcli/utils.py:79
 msgid "Not reportable"
-msgstr "Raporlanabilir değil"
+msgstr "Bildirilebilir değil"
 
 #: ../src/cli/abrtcli/cli/__init__.py:30
 msgid "increase output verbosity"
@@ -2240,7 +2241,7 @@ msgstr "sorun dizininin yolu, sorun kimliği veya joker karakter"
 
 #: ../src/cli/abrtcli/cli/backtrace.py:35
 msgid "Problem has no backtrace"
-msgstr "Problemin yığın geri izlemesi yok"
+msgstr "Sorunun yığın geri izlemesi yok"
 
 #: ../src/cli/abrtcli/cli/backtrace.py:37
 msgid "Start retracing process?"
@@ -2261,7 +2262,7 @@ msgid ""
 "If this is a system problem try running this command as root"
 msgstr ""
 "İzin reddedildi: '{}'\n"
-"Eğer bu bir sistem sorunuysa bu komutu kök olarak çalıştırmayı deneyin"
+"Eğer bu bir sistem sorunuysa bu komutu root olarak çalıştırmayı deneyin"
 
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:36
 msgid "The problem is not of a C/C++ type. Can't install debuginfo"
@@ -2315,7 +2316,7 @@ msgstr "geri izlemeyi zorla"
 
 #: ../src/cli/abrtcli/cli/retrace.py:47
 msgid "Problem already has a backtrace"
-msgstr "Problemin zaten bir yığın geri izlemesi var"
+msgstr "Sorunun zaten bir yığın geri izlemesi var"
 
 #: ../src/cli/abrtcli/cli/retrace.py:48
 msgid "Run abrt retrace with -f/--force to retrace again"
@@ -2370,8 +2371,8 @@ msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
 msgstr ""
-"Analiz için uzak retrace sunucusuna bellek dökümü gönderin veya uzaktan "
-"analiz başarısız olursa yerel analiz gerçekleştirin"
+"İncelemek için uzak retrace sunucusuna bellek dökümü gönderin veya uzaktan "
+"inceleme başarısız olursa yerel inceleme gerçekleştirin"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
 msgid ""
@@ -2385,12 +2386,12 @@ msgid ""
 msgstr ""
 "Bellek dökümünü sunucuya yükler, bu da yığın geri izlemesi oluşturur ve onu "
 "döndürür. Kullanıcı, bellek dökümünü herhangi bir yere yüklemek istemiyorsa, "
-"olay yerel analiz gerçekleştirir. Uzaktan analiz başarısız olsa bile yerel "
-"analiz çalıştırılır. Artıları: debuginfo indirme işlemine gerek yok. Retrace "
-"sunucusunun debuginfo veri tabanı daha eksiksizdir. Retrace sunucusu daha "
-"iyi yığın geri izlemesi oluşturabilir. Eksileri: yüklediğiniz bellek dökümü, "
-"varsa özel verileriniz de dahil olmak üzere, çöken programdaki tüm verileri "
-"içerir."
+"olay yerel inceleme gerçekleştirir. Uzaktan inceleme başarısız olsa bile "
+"yerel inceleme çalıştırılır. Artıları: debuginfo indirme işlemine gerek "
+"yoktur. Retrace sunucusunun debuginfo veri tabanı daha eksiksizdir. Retrace "
+"sunucusu daha iyi yığın geri izlemesi oluşturabilir. Eksileri: yüklediğiniz "
+"bellek dökümü, varsa özel verileriniz de dahil olmak üzere, çöken "
+"programdaki tüm verileri içerir."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -2398,19 +2399,20 @@ msgstr "VM çekirdeğini çözümle"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
 msgid "Install kernel debuginfo packages, generate kernel log and oops message"
-msgstr "kernel debuginfo paketlerini kur , kernel günlüğü ve oops mesajı üret"
+msgstr ""
+"Çekirdek debuginfo paketlerini kur , çekirdek günlüğü ve oops mesajı oluştur"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
 "Needs to install kernel debuginfo packages, which might take significant "
 "time, and take up disk space."
 msgstr ""
-"Önemli zaman alabilir ve disk alanı kaplayan çekirdek hata ayıklama "
-"paketlerini kurmanız gerekir."
+"Önemli zaman alan ve disk alanı kaplayan çekirdek debuginfo paketlerini "
+"kurması gerekir."
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
-msgstr "GConf yapılandırması toplanıyor"
+msgstr "GConf yapılandırmasını topla"
 
 #: ../src/plugins/collect_GConf.xml.in.h:2
 msgid "Save configuration from application's GConf directory"
@@ -2421,16 +2423,16 @@ msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
 msgstr ""
-"gconftool-2 --recursive-list /apps/executable komutunu çalıştır ve onu "
+"gconftool-2 --recursive-list /apps/executable komutunu çalıştırır ve onu "
 "'gconf_subtree' elemanı olarak kaydeder."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
-msgstr "Sistem genelindeki vim yapılandırma dosyalarını toplayın"
+msgstr "Sistem genelindeki vim yapılandırma dosyalarını topla"
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:2
 msgid "Save /etc/vimrc and /etc/gvimrc"
-msgstr "/etc/vimrc ve /etc/gvimrc kaydet"
+msgstr "/etc/vimrc ve /etc/gvimrc dosyalarını kaydet"
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:3
 msgid ""
@@ -2462,7 +2464,7 @@ msgstr "Sorunu postala"
 
 #: ../src/plugins/post_report.xml.in.h:2
 msgid "Executed after the reporting is finished"
-msgstr "Raporlama tamamlandıktan sonra yürütülür"
+msgstr "Bildirme işlemi bittikten sonra yürütülür"
 
 #: ../src/plugins/post_report.xml.in.h:3
 msgid "Used for updating of the databases"
