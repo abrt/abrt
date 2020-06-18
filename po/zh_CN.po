@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # alanzheng <machinecat1666@gmail.com>, 2011
 # Alick Zhao <alick9188@gmail.com>, 2011
@@ -28,13 +28,14 @@
 # Matej Habrnal <mhabrnal@redhat.com>, 2017. #zanata
 # lexuge <LEXUGEyky@outlook.com>, 2017. #zanata
 # Hongqiao Chen <harrychen0314@gmail.com>, 2020.
+# Tian Shixiong <tiansworld@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-03-20 00:38+0000\n"
-"Last-Translator: Hongqiao Chen <harrychen0314@gmail.com>\n"
+"PO-Revision-Date: 2020-06-02 09:40+0000\n"
+"Last-Translator: Tian Shixiong <tiansworld@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
 "projects/abrt/abrt/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -42,7 +43,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.11.3\n"
+"X-Generator: Weblate 4.0.4\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -54,19 +55,11 @@ msgstr "查看并报告应用程序崩溃"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
-msgstr ""
+msgstr "详细显示"
 
 #: ../src/applet/abrt-applet-application.c:167
-#, fuzzy
-#| msgid ""
-#| "& [-v] [DIR]...\n"
-#| "\n"
-#| "Applet which notifies user when new problems are detected by ABRT\n"
 msgid "Applet which notifies user when new problems are detected by ABRT"
-msgstr ""
-"& [-v] [DIR]...\n"
-"\n"
-"ABRT 探测到问题后，小程序会通知用户\n"
+msgstr "小程序会在 ABRT 探测到问题后通知用户"
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
@@ -482,8 +475,6 @@ msgstr ""
 "指定的 WatchCrashdumpArchiveDir 选项"
 
 #: ../src/daemon/abrt-upload-watch.c:281
-#, fuzzy
-#| msgid "Daemize"
 msgid "Daemonize"
 msgstr "在后台运行"
 
@@ -1009,33 +1000,7 @@ msgid "All debuginfo files are available"
 msgstr "所有调试信息文件均可用。"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:190
-#, fuzzy, c-format
-#| msgid ""
-#| "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-#| "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:"
-#| "DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
-#| "       [-e, --exact=PATH[:PATH]...]\n"
-#| "\n"
-#| "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
-#| "to CACHEDIR, using TMPDIR as temporary staging area.\n"
-#| "Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
-#| "\n"
-#| "Reads configuration from /etc/abrt/plugins/CCpp.conf\n"
-#| "\n"
-#| "    -v          Be verbose\n"
-#| "    -y          Noninteractive, assume 'Yes' to all questions\n"
-#| "    --ids       Default: build_ids\n"
-#| "    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
-#| "RANDOM_SUFFIX\n"
-#| "    --cache     Colon separated list of directories. The first one is "
-#| "used for\n"
-#| "                saving installed debuginfos.\n"
-#| "                Default: /var/cache/abrt-dir\n"
-#| "    --size_mb   Default: 4096\n"
-#| "    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
-#| "    -e,--exact  Download only specified files\n"
-#| "    --repo      Pattern to use when searching for repos.\n"
-#| "                Default: *debug*\n"
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -1067,25 +1032,31 @@ msgid ""
 "                Pass this OS version to package managers.\n"
 msgstr ""
 "使用方法：%s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-"      [--tmpdir=临时目录] [--cache=缓存目录[:调试信息目录1:调试信息目录"
-"2...]] [--size_mb=大小]\n"
-"      [-e, --exact=路径[:路径]...]\n"
+"      [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFORDIR1:DEBUGINFORDIR2...]]"
+" [--size_mb=SIZE]\n"
+"      [-e, --exact=PATH[:PATH]...]]\n"
+"      [--releasever=RELEASEVER] [--repo=PATTERN]\n"
 "\n"
-"为所有在BUILD_IDS_FILE中列出的构建-id安装调试信息软件包\n"
-"至 CACHEDIR 目录, 使用 TMPDIR 作为临时存储区。\n"
-"ACHEDIR 目录的旧文件将被删除, 直到小于 SIZE 大小。\n"
+"为所有在 BUILD_IDS_FILE 中列出的 build-id 安装调试信息\n"
+"安装位置为 CACHEDIR，使用 TMPDIR 作为临时存储区。\n"
+"ACHEDIR 目录的旧文件将被删除，直到小于 SIZE 大小。\n"
+"\n"
 "从 /etc/abrt/plugins/CCpp.conf 读取配置\n"
 "\n"
-"    -v          详细信息\n"
-"    -y          非交互模式, 假设所有问题为 'Yes'\n"
+"    -v          详细显示\n"
+"    -y          非交互模式，假设对所有问题回答“是”\n"
 "    --ids       默认: build_ids\n"
 "    --tmpdir    默认: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
-"    --cache     默认: /var/cache/abrt-di\n"
+"    --cache     冒号分割的目录列表。第一个目录用于\n"
+"                   保存已安装的调试信息。\n"
+"                   默认: /var/cache/abrt-di\n"
 "    --size_mb   默认: 4096\n"
-"    --pkgmgr    默认: 从 CCpp.conf 读取包管理设置或 'dnf'\n"
+"    --pkgmgr    默认: 从 CCpp.conf 读取包管理设置或“dnf”\n"
 "    -e,--exact  仅下载指定文件\n"
-"    --repo      当搜索库时使用该模式匹配.\n"
-"                默认: *debug*\n"
+"    --repo      搜索软件仓库时使用的模式。\n"
+"                默认：*debug*\n"
+"    --releasever 发行版本号\n"
+"                将此系统版本号传递至包管理器。\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:290
 msgid "Exiting on user command"
@@ -1127,7 +1098,7 @@ msgstr "忽略选项"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:73
 msgid "OS release version"
-msgstr ""
+msgstr "系统发布版本号"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
 msgid ""
@@ -1206,7 +1177,7 @@ msgstr "已发送 uReport，请不要再次发送。"
 
 #: ../src/plugins/abrt-action-ureport:174
 msgid "Problem comes from unpackaged executable. Unable to create uReport."
-msgstr ""
+msgstr "问题来自未打包的可执行文件。无法创建 uReport。"
 
 #: ../src/plugins/abrt-action-ureport:189
 msgid "Adding you to CC List of the existing bugzilla bug"
@@ -1429,7 +1400,7 @@ msgstr "找到更多 oops：只处理第一个 oops"
 #: ../src/plugins/abrt-dump-journal-core.c:378
 #, c-format
 msgid "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
-msgstr ""
+msgstr "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
 
 #: ../src/plugins/abrt-dump-journal-core.c:407
 #: ../src/plugins/abrt-dump-journal-core.c:446
@@ -1443,10 +1414,8 @@ msgid "Not saving repeating crash after %ds (limit is %ds)"
 msgstr "在 %ds 后 (上限为 %ds) 不保存重复的崩溃"
 
 #: ../src/plugins/abrt-dump-journal-core.c:478
-#, fuzzy
-#| msgid "Failed to save detect problem data in abrt database"
 msgid "Failed to print detect problem data to stdout"
-msgstr "无法在 abrt 数据库中保存检测的问题数据"
+msgstr "打印问题检测数据到标准输出时失败"
 
 #: ../src/plugins/abrt-dump-journal-core.c:486
 msgid "Failed to save detect problem data in abrt database"
@@ -1910,10 +1879,8 @@ msgid ""
 msgstr "在上传档案前不检查服务器是否有能力处理指定软件包"
 
 #: ../src/plugins/abrt-retrace-client.c:1261
-#, fuzzy
-#| msgid "retrace server URL"
 msgid "retrace server URI"
-msgstr "追溯服务器 URL"
+msgstr "追溯服务器 URI"
 
 #: ../src/plugins/abrt-retrace-client.c:1263
 msgid "(debug) show received HTTP headers"
@@ -1985,7 +1952,7 @@ msgstr "未知操作：%s。"
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:1
 msgid "Search for updated packages that fixes the crash."
-msgstr ""
+msgstr "搜索解决崩溃问题的更新软件包。"
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:2
 msgid ""
@@ -1993,6 +1960,8 @@ msgid ""
 "Whiteboar equal to 'UUID' of the crash. If such a bug found, search for "
 "Bodhi updates shipping fixes for the found Bugzilla bugs."
 msgstr ""
+"在 Bugzilla 中搜索 Bugzilla Bug Whiteboar "
+"中带有“abrt_hash”值等于崩溃产生的“UUID”的错误报告。如果找到这样的错误报告，则在 Bodhi 更新中搜寻为此错误提供的修正。"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
@@ -2028,10 +1997,8 @@ msgstr ""
 "上传的核心转储包含崩溃程序的所有数据，如果有私人数据，也将会包含在其中。"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-#, fuzzy
-#| msgid "Retrace server URL"
 msgid "Retrace server URI"
-msgstr "追溯服务器 URL"
+msgstr "追溯服务器 URI"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Address of the retrace server"
@@ -2106,17 +2073,12 @@ msgid ""
 msgstr "出现内核问题，但您的硬件不支持，因此内核维护者无法修复这个问题。"
 
 #: ../src/plugins/oops-utils.c:246
-#, fuzzy, c-format
-#| msgid ""
-#| "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
-#| "Kernel maintainers are unable to diagnose tainted reports."
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Explanation:\n"
 "%sKernel maintainers are unable to diagnose tainted reports."
-msgstr ""
-"发生了内核问题，但您的内核已被污染（标志：%s）。内核维护器无法诊断被污染的报"
-"告。"
+msgstr "发生了内核问题，但您的内核已被污染（标志：%s）。解释：%s内核维护人员无法诊断被污染的报告。"
 
 #: ../src/plugins/oops-utils.c:254
 #, c-format
@@ -2187,7 +2149,7 @@ msgstr "删除已找到的内核错误文件"
 
 #: ../src/cli/abrtcli/match.py:117
 msgid "No matching problems found"
-msgstr ""
+msgstr "未找到匹配的问题"
 
 #: ../src/cli/abrtcli/utils.py:79
 msgid "Not reportable"
@@ -2195,61 +2157,47 @@ msgstr "不可报告"
 
 #: ../src/cli/abrtcli/cli/__init__.py:30
 msgid "increase output verbosity"
-msgstr ""
+msgstr "增加输出详细程度"
 
 #: ../src/cli/abrtcli/cli/__init__.py:50
 msgid "positive non-zero integer expected"
-msgstr ""
+msgstr "要求非零正整数"
 
 #: ../src/cli/abrtcli/cli/__init__.py:54
-#, fuzzy
-#| msgid "List problems"
 msgid "filter last N problems"
-msgstr "问题列表"
+msgstr "列出最后 N 个问题"
 
 #: ../src/cli/abrtcli/cli/__init__.py:57
 msgid "filter problems with matching component"
-msgstr ""
+msgstr "列出匹配组件的问题"
 
 #: ../src/cli/abrtcli/cli/__init__.py:59
-#, fuzzy
-#| msgid "List only not-reported problems"
 msgid "filter unreported problems"
-msgstr "只列出未报告的问题"
+msgstr "列出未报告的问题"
 
 #: ../src/cli/abrtcli/cli/__init__.py:61
-#, fuzzy
-#| msgid "List only the problems older than specified timestamp"
 msgid "filter problems older than the specified timestamp"
-msgstr "仅列出比指定时间戳更早的问题"
+msgstr "仅列出早于指定时间点的问题"
 
 #: ../src/cli/abrtcli/cli/__init__.py:63
-#, fuzzy
-#| msgid "List only the problems older than specified timestamp"
 msgid "filter problems newer than the specified timestamp"
-msgstr "仅列出比指定时间戳更早的问题"
+msgstr "仅列出晚于指定时间点的问题"
 
 #: ../src/cli/abrtcli/cli/__init__.py:66
 msgid "filter problems with matching executable"
-msgstr ""
+msgstr "列出匹配可执行文件的问题"
 
 #: ../src/cli/abrtcli/cli/__init__.py:71
-#, fuzzy
-#| msgid "Output format"
 msgid "output format"
 msgstr "输出格式"
 
 #: ../src/cli/abrtcli/cli/__init__.py:74
-#, fuzzy
-#| msgid "Built-in output format"
 msgid "built-in output format"
 msgstr "内置输出格式"
 
 #: ../src/cli/abrtcli/cli/__init__.py:79
-#, fuzzy
-#| msgid "Make the problem directory world readable"
 msgid "path to the problem directory, problem ID or wildcard"
-msgstr "使问题目录可读"
+msgstr "问题目录的路径，问题 ID 或通配符"
 
 #: ../src/cli/abrtcli/cli/backtrace.py:35
 msgid "Problem has no backtrace"
@@ -2260,16 +2208,12 @@ msgid "Start retracing process?"
 msgstr "开始进行回溯？"
 
 #: ../src/cli/abrtcli/cli/gdb.py:25
-#, fuzzy
-#| msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgid "install debuginfo packages before launching GDB"
-msgstr "下载 debuginfo 软件包并用 GDB 在本地生成回溯数据"
+msgstr "运行 GDB 前安装调试信息软件包"
 
 #: ../src/cli/abrtcli/cli/gdb.py:38
-#, fuzzy
-#| msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
 msgid "The problem is not of a C/C++ type. Can't run GDB"
-msgstr "{} 问题不是一个 C/C++ 类型。不能安装 debuginfo 软件包"
+msgstr "这不是 C/C++ 类型的问题。不能运行 GDB"
 
 #: ../src/cli/abrtcli/cli/gdb.py:52
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:45
@@ -2281,20 +2225,16 @@ msgstr ""
 "如果是系统问题，请尝试以 root 运行这个命令"
 
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:36
-#, fuzzy
-#| msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
 msgid "The problem is not of a C/C++ type. Can't install debuginfo"
-msgstr "{} 问题不是一个 C/C++ 类型。不能安装 debuginfo 软件包"
+msgstr "这不是 C/C++ 类型的问题。不能安装调试信息软件包"
 
 #: ../src/cli/abrtcli/cli/list.py:34
 msgid "No problems"
 msgstr "无问题"
 
 #: ../src/cli/abrtcli/cli/remove.py:22
-#, fuzzy
-#| msgid "Do not prompt before removal"
 msgid "do not prompt before removal"
-msgstr "清除前不提示"
+msgstr "删除前不提示"
 
 #: ../src/cli/abrtcli/cli/remove.py:37
 msgid "Are you sure you want to delete this problem?"
@@ -2306,46 +2246,34 @@ msgstr "已删除"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/abrtcli/cli/report.py:23
-#, fuzzy
-#| msgid "Remove PROBLEM_DIR after reporting"
 msgid "remove after reporting"
-msgstr "报告后删除 PROBLEM_DIR"
+msgstr "报告后删除"
 
 #: ../src/cli/abrtcli/cli/report.py:25
-#, fuzzy
-#| msgid "Not reportable"
 msgid "ignore unreportable state"
-msgstr "不可报告"
+msgstr "忽略不可报告状态"
 
 #: ../src/cli/abrtcli/cli/report.py:41
-#, fuzzy, python-brace-format
-#| msgid "Problem '%s' cannot be reported"
+#, python-brace-format
 msgid "Problem '{0}' cannot be reported"
-msgstr "问题 '%s' 不能被报告"
+msgstr "问题“{0}”无法报告"
 
 #: ../src/cli/abrtcli/cli/report.py:50
-#, fuzzy, python-format
-#| msgid "Report problem"
+#, python-format
 msgid "Reporting problem %s\n"
-msgstr "报告问题"
+msgstr "报告问题 %s\n"
 
 #: ../src/cli/abrtcli/cli/retrace.py:24
-#, fuzzy
-#| msgid "Perform local retracing"
 msgid "perform retracing locally"
 msgstr "执行本地回溯"
 
 #: ../src/cli/abrtcli/cli/retrace.py:26
-#, fuzzy
-#| msgid "Send core dump to remote retrace server for analysis"
 msgid "submit core dump for remote retracing"
-msgstr "发送核心转储至远程追溯服务器以供分析"
+msgstr "提交核心转储用于远程回溯"
 
 #: ../src/cli/abrtcli/cli/retrace.py:29
-#, fuzzy
-#| msgid "Local retracing"
 msgid "force retracing"
-msgstr "本地回溯"
+msgstr "强行回溯"
 
 #: ../src/cli/abrtcli/cli/retrace.py:47
 msgid "Problem already has a backtrace"
@@ -2382,20 +2310,16 @@ msgid "Local retracing"
 msgstr "本地回溯"
 
 #: ../src/cli/abrtcli/cli/status.py:17
-#, fuzzy
-#| msgid "List only not-reported problems"
 msgid "show only the number of problems"
-msgstr "只列出未报告的问题"
+msgstr "只显示报告的数量"
 
 #: ../src/cli/abrtcli/cli/status.py:19
 msgid "only show output if at least one problem is found"
-msgstr ""
+msgstr "仅在至少找到一个问题时显示输出"
 
 #: ../src/cli/abrtcli/cli/status.py:40
-#, fuzzy
-#| msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
 msgid "ABRT has detected a problem. For more information, run “abrt list{}”"
-msgstr "ABRT 已检测 {} 问题。了解更多信息，请运行： abrt list{}"
+msgstr "ABRT 已检测到一个问题。了解更多信息，请运行：“abrt list{}”"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
