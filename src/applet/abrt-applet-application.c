@@ -53,7 +53,7 @@ event_processing_state_new (void)
 
     state->child_pid = -1;
     state->child_stdout_fd = -1;
-    state->cmd_output = g_string_new(NULL);
+    state->cmd_output = g_string_new (NULL);
 
     return state;
 }
@@ -61,7 +61,7 @@ event_processing_state_new (void)
 static void
 event_processing_state_free (EventProcessingState *state)
 {
-    g_string_free(state->cmd_output, TRUE);
+    g_string_free (state->cmd_output, TRUE);
     g_clear_object (&state->problem_info);
     g_clear_object (&state->application);
 
@@ -196,10 +196,12 @@ static void
 migrate_auto_reporting_to_gsettings (void)
 {
 #define OPT_NAME "AutoreportingEnabled"
-    g_autoptr(GHashTable) settings_map = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+    g_autoptr (GHashTable) settings_map = NULL;
     int sv_logmode;
     int auto_reporting;
     int configured;
+
+    settings_map = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 
     if (!libreport_load_app_conf_file (APP_NAME, settings_map))
     {
@@ -237,7 +239,7 @@ migrate_auto_reporting_to_gsettings (void)
         g_settings_set_boolean (settings, GS_PRIVACY_OPT_AUTO_REPORTING, TRUE);
     }
 
-    g_hash_table_remove(settings_map, OPT_NAME);
+    g_hash_table_remove (settings_map, OPT_NAME);
     libreport_save_app_conf_file (APP_NAME, settings_map);
 
     log_warning ("Successfully migrated "APP_NAME":"OPT_NAME" to "GS_SCHEMA_ID_PRIVACY":"GS_PRIVACY_OPT_AUTO_REPORTING);
@@ -294,13 +296,13 @@ new_dir_exists (GList **new_dirs)
     }
 
     cachedir = g_get_user_cache_dir ();
-    dirlist_name = g_build_filename(cachedir, "abrt", NULL);
+    dirlist_name = g_build_filename (cachedir, "abrt", NULL);
 
     g_mkdir_with_parents (dirlist_name, 0777);
 
     g_free (dirlist_name);
 
-    dirlist_name = g_build_filename(cachedir, "abrt/applet_dirlist", NULL);
+    dirlist_name = g_build_filename (cachedir, "abrt/applet_dirlist", NULL);
     fp = fopen (dirlist_name, "r+");
     if (fp == NULL)
     {
@@ -804,7 +806,7 @@ handle_event_output_cb (GIOChannel   *gio,
         {
             *newline = '\0';
 
-            g_string_append(state->cmd_output, raw);
+            g_string_append (state->cmd_output, raw);
 
             log_debug ("%s", state->cmd_output->str);
 
@@ -814,7 +816,7 @@ handle_event_output_cb (GIOChannel   *gio,
         }
 
         /* beginning of next line. the line continues by next read */
-        g_string_append(state->cmd_output, raw);
+        g_string_append (state->cmd_output, raw);
     }
 
     /* EOF/error */
