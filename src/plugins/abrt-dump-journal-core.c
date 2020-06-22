@@ -240,11 +240,11 @@ abrt_journal_core_retrieve_information(abrt_journal_t *journal, struct crash_inf
         return -ENOENT;
     }
 
-    uid_t tmp_fsuid = libreport_get_fsuid(proc_status);
+    int tmp_fsuid = libreport_get_fsuid(proc_status);
     if (tmp_fsuid < 0)
         return -EINVAL;
 
-    if (tmp_fsuid != info->ci_uid)
+    if ((uid_t)tmp_fsuid != info->ci_uid)
     {
         /* use root for suided apps unless it's explicitly set to UNSAFE */
         info->ci_uid = (dump_suid_policy() != DUMP_SUID_UNSAFE) ? 0 : tmp_fsuid;
