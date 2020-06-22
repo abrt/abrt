@@ -2594,7 +2594,7 @@ int abrt_p2_service_register_objects(AbrtP2Service *service, GDBusConnection *co
 
     service->pv->p2srv_p2_object = abrt_p2_object_new(service,
                                                       &(service->pv->p2srv_p2_type),
-                                                      (char *)ABRT_P2_PATH,
+                                                      g_strdup(ABRT_P2_PATH),
                                                       /*node*/NULL,
                                                       /*node destructor*/NULL,
                                                       error);
