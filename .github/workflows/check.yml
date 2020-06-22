@@ -1,0 +1,34 @@
+name: Build
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+jobs:
+  build:
+    name: Build
+    container: fedora:latest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out sources
+        uses: actions/checkout@v2
+
+      - name: Install build environment
+        run: |
+          dnf --assumeyes install dnf-plugins-core
+          dnf --assumeyes copr enable @abrt/devel
+          dnf --assumeyes install \
+            @c-development @development-tools @rpm-development-tools \
+            intltool
+
+      - name: Install build dependencies
+        run: ./autogen.sh sysdeps --install
+
+      - name: Configure build
+        run: ./autogen.sh
+
+      - name: Build
+        run: make
+
+      - name: Run tests
+        run: make check
