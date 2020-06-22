@@ -102,7 +102,7 @@ unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location,
     pid_t my_pid = getpid();
     unsigned idx = 0;
     unsigned errors = 0;
-    while (idx < oops_cnt)
+    for (GList *oops = oops_list; oops != NULL; oops = oops->next, ++idx)
     {
         char base[sizeof("oops-YYYY-MM-DD-hh:mm:ss-%lu-%lu") + 2 * sizeof(long)*3];
         sprintf(base, "oops-%s-%lu-%lu", iso_date, (long)my_pid, (long)idx);
@@ -112,7 +112,7 @@ unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location,
         if (dd)
         {
             dd_create_basic_files(dd, /*no uid*/(uid_t)-1L, NULL);
-            abrt_oops_save_data_in_dump_dir(dd, (char*)g_list_nth_data(oops_list, idx++), proc_modules);
+            abrt_oops_save_data_in_dump_dir(dd, (char *)oops->data, proc_modules);
             dd_save_text(dd, FILENAME_ABRT_VERSION, VERSION);
             dd_save_text(dd, FILENAME_ANALYZER, "abrt-oops");
             dd_save_text(dd, FILENAME_TYPE, "Kerneloops");
