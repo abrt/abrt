@@ -353,9 +353,9 @@ struct retrace_settings *get_settings(SoupSession *session)
             settings->max_unpacked_size = atoll(value) * 1024 * 1024;
         else if (0 == strcasecmp("supported_formats", row))
         {
-            char *space;
-            int i;
-            for (i = 0; i < MAX_FORMATS - 1 && (space = strchr(value, ' ')); ++i)
+            int i = 0;
+            char *space = NULL;
+            for (; i < MAX_FORMATS - 1 && (space = strchr(value, ' ')); ++i)
             {
                 *space = '\0';
                 settings->supported_formats[i] = g_strdup(value);
@@ -367,9 +367,9 @@ struct retrace_settings *get_settings(SoupSession *session)
         }
         else if (0 == strcasecmp("supported_releases", row))
         {
-            char *space;
-            int i;
-            for (i = 0; i < MAX_RELEASES - 1 && (space = strchr(value, ' ')); ++i)
+            int i = 0;
+            char *space = NULL;
+            for (; i < MAX_RELEASES - 1 && (space = strchr(value, ' ')); ++i)
             {
                 *space = '\0';
                 settings->supported_releases[i] = g_strdup(value);
@@ -636,20 +636,21 @@ static int create(SoupSession  *session,
     }
 
     {
-        int i;
         bool supported = false;
-        for (i = 0; i < MAX_FORMATS && settings->supported_formats[i]; ++i)
+        for (int i = 0; i < MAX_FORMATS && settings->supported_formats[i]; ++i)
+        {
             if (strcmp("application/x-xz-compressed-tar", settings->supported_formats[i]) == 0)
             {
                 supported = true;
                 break;
             }
+        }
 
         if (!supported)
         {
             alert_server_error(cfg.uri);
-            error_msg_and_die(_("The server does not support "
-                                "xz-compressed tarballs."));
+            error_msg_and_die(_("The server does not support"
+                                " xz-compressed tarballs."));
         }
     }
 
@@ -673,19 +674,21 @@ static int create(SoupSession  *session,
             if (!releaseid)
                 error_msg_and_die("Unable to parse release.");
 
-            int i;
             bool supported = false;
-            for (i = 0; i < MAX_RELEASES && settings->supported_releases[i]; ++i)
+            for (int i = 0; i < MAX_RELEASES && settings->supported_releases[i]; ++i)
+            {
                 if (strcmp(releaseid, settings->supported_releases[i]) == 0)
                 {
                     supported = true;
                     break;
                 }
+            }
 
             if (!supported)
             {
-                g_autofree char *msg = g_strdup_printf(_("The release '%s' is not supported by the"
-                                              " Retrace server."), releaseid);
+                g_autofree char *msg =
+                    g_strdup_printf(_("The release '%s' is not supported by the"
+                                      " Retrace server."), releaseid);
                 libreport_alert(msg);
                 error_msg_and_die(_("The server is not able to"
                                     " handle your request."));
