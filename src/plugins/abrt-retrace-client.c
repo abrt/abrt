@@ -635,7 +635,6 @@ static int create(SoupSession  *session,
                             size, max_size);
     }
 
-    if (settings->supported_formats)
     {
         int i;
         bool supported = false;
@@ -669,7 +668,6 @@ static int create(SoupSession  *session,
         problem_data_get_osinfo(pd, osinfo);
 
         /* not needed for TASK_VMCORE - the information is kept in the vmcore itself */
-        if (settings->supported_releases)
         {
             g_autofree char *releaseid = get_release_id(osinfo, arch);
             if (!releaseid)
