@@ -187,6 +187,7 @@ void abrt_oops_save_data_in_dump_dir(struct dump_dir *dd, char *oops, const char
 {
     char *first_line = oops;
     char *second_line = (char*)strchr(first_line, '\n'); /* never NULL */
+    assert(second_line != NULL);
     *second_line++ = '\0';
 
     if (first_line[0])
