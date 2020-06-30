@@ -18,7 +18,7 @@ package.m4: Makefile.in
              echo 'm4_define([AT_PACKAGE_URL],' && \
              echo '  [@PACKAGE_URL@])'; \
 	} >'package.m4'
-EXTRA_DIST = package.m4 ignored_problems_data
+EXTRA_DIST = package.m4
 
 ## ------------ ##
 ## Test suite.  ##
@@ -61,7 +61,6 @@ TESTSUITE_AT = \
   pyhook.at \
   koops-parser.at \
   xorg-utils.at \
-  ignored_problems.at \
   hooklib.at \
   abrt_conf.at
 
