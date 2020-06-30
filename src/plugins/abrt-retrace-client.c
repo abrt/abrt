@@ -723,7 +723,9 @@ static int create(SoupSession  *session,
         return 1;
 
     /* Get the file size. */
-    fstat(tempfd, &file_stat);
+    if (-1 == fstat(tempfd, &file_stat))
+        perror_msg_and_die("Could not get information about opened file");
+
     g_autofree gchar *human_size = g_format_size_full((long long)file_stat.st_size, G_FORMAT_SIZE_IEC_UNITS);
     if ((long long)file_stat.st_size > settings->max_packed_size)
     {

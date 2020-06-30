@@ -33,7 +33,9 @@ int check_recent_crash_file(const char *filename, const char *executable)
     struct stat sb;
     int sz;
 
-    fstat(fd, &sb); /* !paranoia. this can't fail. */
+    if (-1 == fstat(fd, &sb))
+        perror_msg_and_die("Could not get information about opened file");
+
     if (sb.st_size != 0 /* if it wasn't created by us just now... */
      && (unsigned)(time(NULL) - sb.st_mtime) < 20 /* and is relatively new [is 20 sec ok?] */
     ) {
