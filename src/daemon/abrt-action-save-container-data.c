@@ -27,6 +27,11 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
     json_object *json = NULL;
     g_autofree char *mntnf_path = g_build_filename(dd->dd_dirname ? dd->dd_dirname : "", FILENAME_MOUNTINFO, NULL);
     FILE *mntnf_file = fopen(mntnf_path, "r");
+    if (mntnf_file == NULL)
+    {
+        perror_msg("Could not open mountinfo file");
+        return;
+    }
 
     struct mount_point {
         const char *name;
@@ -183,6 +188,11 @@ void dump_lxc_info(struct dump_dir *dd, const char *lxc_cmd)
 
     g_autofree char *mntnf_path = g_build_filename(dd->dd_dirname ? dd->dd_dirname : "", FILENAME_MOUNTINFO, NULL);
     FILE *mntnf_file = fopen(mntnf_path, "r");
+    if (mntnf_file == NULL)
+    {
+        perror_msg("Could not open mountinfo file");
+        return;
+    }
 
     struct mountinfo mntnf;
     int r = libreport_get_mountinfo_for_mount_point(mntnf_file, &mntnf, "/");
