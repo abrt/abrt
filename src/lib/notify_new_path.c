@@ -67,6 +67,7 @@ int abrt_notify_new_path_with_response(const char *path, char **message)
     if (*message == NULL)
     {
         log_info("abrtd response could not be received");
+        close(fd);
         return -EBADMSG;
     }
 
