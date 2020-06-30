@@ -1144,7 +1144,6 @@ static int run_batch(SoupSession *session,
             libreport_client_log(".");
             fflush(stdout);
         }
-        previous_status_message = status_message;
     }
     if (0 == strcmp(task_status, "FINISHED_SUCCESS"))
     {
