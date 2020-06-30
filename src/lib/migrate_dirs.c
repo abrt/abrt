@@ -26,7 +26,10 @@ static void try_to_move(const char *old, const char *new)
      * Such check would be racy anyway...
      */
     if (access(new, F_OK) != 0 && (errno == ENOENT || errno == ENOTDIR))
-        rename(old, new);
+    {
+        if (rename(old, new) == -1)
+            perror_msg("Failed to rename ‘%s’ to ‘%s’", old, new);
+    }
 }
 
 void migrate_to_xdg_dirs(void)
