@@ -108,42 +108,46 @@ static gboolean
 handle_signal_pipe_cb(GIOChannel *gio, GIOCondition condition, gpointer user_data)
 {
     gsize len = 0;
-    uint8_t signals[2];
+    gchar signal = 0;
 
     for (;;)
     {
         GError *error = NULL;
-        GIOStatus stat = g_io_channel_read_chars(gio, (void *)signals, sizeof(signals), &len, NULL);
+        /* Only receive one signal at a time. */
+        GIOStatus stat = g_io_channel_read_chars(gio, &signal, 1, &len, NULL);
         if (stat == G_IO_STATUS_ERROR)
             error_msg_and_die(_("Can't read from gio channel: '%s'"), error ? error->message : "");
         if (stat == G_IO_STATUS_EOF)
-            return FALSE; /* Remove this GLib source */
+            return G_SOURCE_REMOVE;
         if (stat == G_IO_STATUS_AGAIN)
             break;
 
-        /* G_IO_STATUS_NORMAL */
-        for (unsigned signo = 0; signo < len; ++signo)
-        {
-            /* we did receive a signal */
-            struct waiting_context *context = (struct waiting_context *)user_data;
-            log_debug("Got signal %d through signal pipe", signals[signo]);
-            switch (signals[signo])
-            {
-                case SIGUSR1: context->reply = ABRT_CONTINUE; break;
-                case SIGINT:  context->reply = ABRT_INTERRUPT; break;
-                default:
-                {
-                    error_msg("Bug - aborting - unsupported signal: %d", signals[signo]);
-                    abort();
-                }
-            }
+        assert(stat == G_IO_STATUS_NORMAL);
 
-            g_main_loop_quit(context->main_loop);
-            return FALSE; /* remove this event */
+        if (len == 0)
+            continue;
+
+        /* We received a signal. */
+        struct waiting_context *context = (struct waiting_context *)user_data;
+        log_debug("Got signal %d through signal pipe", signal);
+        switch (signal)
+        {
+            case SIGUSR1:
+                context->reply = ABRT_CONTINUE;
+                break;
+            case SIGINT:
+                context->reply = ABRT_INTERRUPT;
+                break;
+            default:
+                error_msg_and_die("Bug - aborting - unsupported signal: %d", signal);
         }
+
+        g_main_loop_quit(context->main_loop);
+        return G_SOURCE_REMOVE;
     }
 
-    return TRUE; /* "please don't remove this event" */
+    /* Do not remove this event. */
+    return G_SOURCE_CONTINUE;
 }
 
 /* Remove dump dir */
