@@ -68,7 +68,6 @@ export PACKAGES="abrt \
                  abrt-console-notification \
                  libreport \
                  libreport-plugin-bugzilla \
-                 libreport-plugin-rhtsupport \
                  libreport-plugin-reportuploader \
                  libreport-plugin-mailx \
                  libreport-plugin-ureport \

@@ -100,9 +100,6 @@ Requires: python3-dbus
 Requires: dmidecode
 %endif
 Requires: libreport-plugin-ureport
-%if 0%{?rhel}
-Requires: libreport-plugin-rhtsupport
-%endif
 %if 0%{?fedora}
 Requires: libreport-plugin-systemd-journal
 %endif
@@ -354,10 +351,7 @@ Requires: abrt-addon-ccpp
 Requires: python3-abrt-addon
 %endif # with python3
 Requires: abrt-addon-xorg
-%if 0%{?rhel}
-Requires: libreport-rhel >= %{libreport_ver}
-Requires: libreport-plugin-rhtsupport >= %{libreport_ver}
-%else
+%if ! 0%{?rhel}
 %if %{with retrace}
 Requires: abrt-retrace-client
 %endif
@@ -397,10 +391,7 @@ Requires: abrt-addon-xorg
 Requires: gdb-headless
 Requires: abrt-gui
 Requires: gnome-abrt
-%if 0%{?rhel}
-Requires: libreport-rhel >= %{libreport_ver}
-Requires: libreport-plugin-rhtsupport >= %{libreport_ver}
-%else
+%if ! 0%{?rhel}
 %if %{with retrace}
 Requires: abrt-retrace-client
 %endif
@@ -497,9 +488,6 @@ CFLAGS="%{optflags} -Werror" %configure \
 %endif
 %if %{without retrace}
         --without-retrace \
-%endif
-%if 0%{?rhel}
-        --enable-authenticated-autoreporting \
 %endif
 %ifnarch %{arm}
         --enable-native-unwinder \

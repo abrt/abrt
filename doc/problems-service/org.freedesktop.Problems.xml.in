@@ -526,7 +526,6 @@ file "reported_to":
     Bugzilla: URL=https://bugzill.example.com/1234567
     email: URL=mailto://bugs@example-project.org
     ABRT Server: BTHASH=DEADBEFF81680083
-    RHTSupport: URL=https://support.corp.com/ticket=12345 MSG=New customer case 12345
 
 property "reports":
     [
@@ -541,10 +540,6 @@ property "reports":
         ),
         ( "ABRT Server",
             { "BTHASH" : "DEADBEFF81680083" },
-        ),
-        ( "RHTSupport",
-            { "URL" : "https://support.corp.com/ticket=12345",
-              "MSG" : "New customer case 12345" }
         )
     ]
 

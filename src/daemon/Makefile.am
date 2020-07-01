@@ -126,10 +126,6 @@ abrt_auto_reporting_CPPFLAGS = \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE
 
-if AUTHENTICATED_AUTOREPORTING
-abrt_auto_reporting_CPPFLAGS += -DAUTHENTICATED_AUTOREPORTING=1
-endif
-
 abrt_auto_reporting_LDADD = \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS)

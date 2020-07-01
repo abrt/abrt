@@ -2,7 +2,7 @@
 # vim: dict=/usr/share/beakerlib/dictionary.vim cpt=.,w,b,u,t,i,k
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-#   runtest.sh of reporter-bugzilla, reporter-rhtsupport, reporter-mantisbt
+#   runtest.sh of reporter-bugzilla and reporter-mantisbt
 #   Description: Verify their ability to read configuration from current user's home
 #   Author: Julius Milan <jmilan@redhat.com>
 #
@@ -34,10 +34,8 @@ PACKAGE="abrt"
 TEST_DIR="."
 
 GLOBAL_BUGZILLA_CONF=/etc/libreport/plugins/bugzilla.conf
-GLOBAL_RHTSUPPORT_CONF=/etc/libreport/plugins/rhtsupport.conf
 GLOBAL_MANTISBT_CONF=/etc/libreport/plugins/mantisbt.conf
 LOCAL_BUGZILLA_CONF=$HOME/.config/libreport/bugzilla.conf
-LOCAL_RHTSUPPORT_CONF=$HOME/.config/libreport/rhtsupport.conf
 LOCAL_MANTISBT_CONF=$HOME/.config/libreport/mantisbt.conf
 
 rlJournalStart
@@ -47,17 +45,14 @@ rlJournalStart
         # ensure local config exists
         mkdir -p  ~/.config/libreport/
         touch ~/.config/libreport/bugzilla.conf
-        touch ~/.config/libreport/rhtsupport.conf
         touch ~/.config/libreport/mantisbt.conf
 
-        rlFileBackup $GLOBAL_BUGZILLA_CONF $GLOBAL_RHTSUPPORT_CONF $GLOBAL_MANTISBT_CONF \
-            $LOCAL_BUGZILLA_CONF $LOCAL_RHTSUPPORT_CONF $LOCAL_MANTISBT_CONF
+        rlFileBackup $GLOBAL_BUGZILLA_CONF $GLOBAL_MANTISBT_CONF \
+            $LOCAL_BUGZILLA_CONF $LOCAL_MANTISBT_CONF
 
         # unset global configuration
         augtool clear /files${GLOBAL_BUGZILLA_CONF}/Login
         augtool clear /files${GLOBAL_BUGZILLA_CONF}/Password
-        augtool clear /files${GLOBAL_RHTSUPPORT_CONF}/Login
-        augtool clear /files${GLOBAL_RHTSUPPORT_CONF}/Password
         augtool clear /files${GLOBAL_MANTISBT_CONF}/Login
         augtool clear /files${GLOBAL_MANTISBT_CONF}/Password
 
@@ -129,73 +124,6 @@ rlJournalStart
         # this is determined according to user for which it asks for password
         rlAssertNotGrep "Login is not provided by configuration." out_bz_3
         rlAssertGrep "Password is not provided by configuration. Please enter the password for 'local_user':" out_bz_3
-
-        remove_problem_directory
-    rlPhaseEnd
-
-    rlPhaseStartTest "Check reporter-rhtsupport, without local config"
-        prepare
-        generate_crash
-        wait_for_hooks
-        get_crash_path
-
-        # delete local configuration
-        rlRun "augtool rm /files$LOCAL_RHTSUPPORT_CONF/Login" 0 "Delete local Login"
-        rlRun "augtool rm /files$LOCAL_RHTSUPPORT_CONF/Password" 0 "Delete local Password"
-        # set global configuration
-        rlRun "augtool set /files$GLOBAL_RHTSUPPORT_CONF/Login global_user" 0 "Set global Login"
-        rlRun "augtool clear /files$GLOBAL_RHTSUPPORT_CONF/Password" 0 "Clear global Password"
-
-        rlRun "yes no | reporter-rhtsupport -v -d $crash_PATH &> out_rhts_1" 69 "Try to report by reporter-rhtsupport"
-
-        # when there is no local config, global config should be used
-        rlAssertNotGrep "Login is not provided by configuration." out_rhts_1
-        rlAssertGrep "Password is not provided by configuration. Please enter the password for 'global_user'" out_rhts_1
-
-        remove_problem_directory
-    rlPhaseEnd
-
-    rlPhaseStartTest "Check reporter-rhtsupport, with local config"
-        prepare
-        generate_crash
-        wait_for_hooks
-        get_crash_path
-
-        # set local configuration
-        rlRun "augtool set /files$LOCAL_RHTSUPPORT_CONF/Login local_user" 0 "Set local Login"
-        rlRun "augtool set /files$LOCAL_RHTSUPPORT_CONF/Password bbb" 0 "Set local Password"
-        # unset global configuration
-        rlRun "augtool clear /files$GLOBAL_RHTSUPPORT_CONF/Login" 0 "Clear global Login"
-        rlRun "augtool clear /files$GLOBAL_RHTSUPPORT_CONF/Password" 0 "Clear global Password"
-
-        rlRun "yes no | reporter-rhtsupport -v -d $crash_PATH &> out_rhts_2" 69 "Try to report by reporter-rhtsupport"
-
-        # check that local config is not ignored
-        rlAssertNotGrep "Login is not provided by configuration." out_rhts_2
-        rlAssertNotGrep "Password is not provided by configuration." out_rhts_2
-
-        remove_problem_directory
-    rlPhaseEnd
-
-    rlPhaseStartTest "Check config priority of reporter-rhtsupport, with both global and local config"
-        prepare
-        generate_crash
-        wait_for_hooks
-        get_crash_path
-
-        # set local configuration
-        rlRun "augtool set /files$LOCAL_RHTSUPPORT_CONF/Login local_user" 0 "Set local Login"
-        rlRun "augtool clear /files$LOCAL_RHTSUPPORT_CONF/Password" 0 "Clear local Password"
-        # set global configuration
-        rlRun "augtool set /files$GLOBAL_RHTSUPPORT_CONF/Login global_user" 0 "Set global Login"
-        rlRun "augtool clear /files$GLOBAL_RHTSUPPORT_CONF/Password" 0 "Clear global Password"
-
-        rlRun "yes no | reporter-rhtsupport -v -d $crash_PATH &> out_rhts_3" 69 "Try to report by reporter-rhtsupport"
-
-        # when both configs are set, local config should be used
-        # this is determined according to user for which it asks for password
-        rlAssertNotGrep "Login is not provided by configuration." out_rhts_3
-        rlAssertGrep "Password is not provided by configuration. Please enter the password for 'local_user':" out_rhts_3
 
         remove_problem_directory
     rlPhaseEnd

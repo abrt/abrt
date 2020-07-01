@@ -262,18 +262,6 @@ fi
 
 AM_CONDITIONAL(DBUS_DOXYGEN_DOCS_ENABLED, test "$enable_doxygen_docs" = "yes")
 
-
-# Authenticated autoreporting
-
-AC_ARG_ENABLE(authenticated-autoreporting,
-    AS_HELP_STRING([--enable-authenticated-autoreporting],
-    [enable authenticated autoreporting]),
-    [enable_authenticated_autoreporting=$enableval],
-    [enable_authenticated_autoreporting=no]
-)
-
-AM_CONDITIONAL(AUTHENTICATED_AUTOREPORTING, test "$enable_authenticated_autoreporting" = "yes")
-
 # Make satyr use GDB or elfutils/libunwind for unwinding?
 
 AC_ARG_ENABLE([native-unwinder],
