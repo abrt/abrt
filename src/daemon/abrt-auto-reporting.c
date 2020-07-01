@@ -27,14 +27,7 @@
 #define STATE_MANUAL "disabled"
 #define STATE_AUTO "enabled"
 
-#define RHTS_NAME "rhtsupport.conf"
-#define RHTS_USERNAME_OPTION "Login"
-#define RHTS_PASSWORD_OPTION "Password"
-
 #define UREPORT_NAME "ureport.conf"
-#define UREPORT_HTTP_AUTH_OPTION "HTTPAuth"
-#define UREPORT_CLIENT_AUTH_OPTION "SSLClientAuth"
-#define UREPORT_RTHS_CREDENTIALS_AUTH "rhts-credentials"
 
 const char *const REPORTING_STATES[8][2] = {
     {STATE_MANUAL, "no" },
@@ -64,79 +57,6 @@ set_abrt_reporting(GHashTable *conf, const char *opt_value)
     return 1;
 }
 
-#if AUTHENTICATED_AUTOREPORTING != 0
-static int
-set_ureport_http_auth(GHashTable *conf, const char *opt_value)
-{
-    const char *const cur_value = g_hash_table_lookup(conf, UREPORT_HTTP_AUTH_OPTION);
-
-    if (cur_value == NULL || strcmp(cur_value, opt_value) != 0)
-    {
-        g_hash_table_replace(conf, g_strdup(UREPORT_HTTP_AUTH_OPTION), g_strdup(opt_value));
-        g_hash_table_remove(conf, UREPORT_CLIENT_AUTH_OPTION);
-
-        return libreport_save_plugin_conf_file(UREPORT_NAME, conf);
-    }
-
-    /* No changes needed -> success */
-    return 1;
-}
-
-static int
-set_ureport_client_auth(GHashTable *conf, const char *opt_value)
-{
-    const char *const cur_value = g_hash_table_lookup(conf, UREPORT_CLIENT_AUTH_OPTION);
-
-    if (cur_value == NULL || strcmp(cur_value, opt_value) != 0)
-    {
-        g_hash_table_replace(conf, g_strdup(UREPORT_CLIENT_AUTH_OPTION), g_strdup(opt_value));
-        g_hash_table_remove(conf, UREPORT_HTTP_AUTH_OPTION);
-
-        return libreport_save_plugin_conf_file(UREPORT_NAME, conf);
-    }
-
-    /* No changes needed -> success */
-    return 1;
-}
-
-static int
-clear_ureport_auth(GHashTable *conf)
-{
-    const char *const http_cur_value = g_hash_table_lookup(conf, UREPORT_HTTP_AUTH_OPTION);
-    const char *const ssl_cur_value = g_hash_table_lookup(conf, UREPORT_CLIENT_AUTH_OPTION);
-
-    if (http_cur_value != NULL || ssl_cur_value != NULL)
-    {
-        g_hash_table_remove(conf, UREPORT_HTTP_AUTH_OPTION);
-        g_hash_table_remove(conf, UREPORT_CLIENT_AUTH_OPTION);
-
-        return libreport_save_plugin_conf_file(UREPORT_NAME, conf);
-    }
-
-    /* No changes needed -> success */
-    return 1;
-}
-
-static int
-set_rhts_credentials(GHashTable *conf, const char *username, const char *password)
-{
-    const char *const username_cur_value = g_hash_table_lookup(conf, RHTS_USERNAME_OPTION);
-    const char *const password_cur_value = g_hash_table_lookup(conf, RHTS_PASSWORD_OPTION);
-
-    if (  (username_cur_value == NULL || strcmp(username_cur_value, username) != 0)
-       || (password_cur_value == NULL || strcmp(password_cur_value, password) != 0))
-    {
-        g_hash_table_replace(conf, g_strdup(RHTS_USERNAME_OPTION), g_strdup(username));
-        g_hash_table_replace(conf, g_strdup(RHTS_PASSWORD_OPTION), g_strdup(password));
-
-        return libreport_save_plugin_conf_file(RHTS_NAME, conf);
-    }
-
-    /* No changes needed -> success */
-    return 1;
-}
-#endif
-
 static const char *
 get_abrt_reporting(GHashTable *conf)
 {
@@ -144,20 +64,6 @@ get_abrt_reporting(GHashTable *conf)
     const int index = !!libreport_string_to_bool(cur_value ? cur_value : "");
     return REPORTING_STATES[index][0];
 }
-
-#if AUTHENTICATED_AUTOREPORTING != 0
-static const char *
-get_ureport_http_auth(GHashTable *conf)
-{
-    return g_hash_table_lookup(conf, UREPORT_HTTP_AUTH_OPTION);
-}
-
-static const char *
-get_ureport_client_auth(GHashTable *conf)
-{
-    return g_hash_table_lookup(conf, UREPORT_CLIENT_AUTH_OPTION);
-}
-#endif
 
 int main(int argc, char *argv[])
 {
@@ -193,85 +99,28 @@ int main(int argc, char *argv[])
             "\n"
 
     abrt_init(argv);
-#if AUTHENTICATED_AUTOREPORTING != 0
-    const char *program_usage_string = _(
-            "& [ "STATE_MANUAL" | "STATE_AUTO" | yes | no | 1 | 0 ] \\\n"
-            "  [[--anonymous] | [--username USERNAME [--password PASSWORD]] | [--certificate SOURCE]]\n"
-            PROGRAM_USAGE_MIDDLE_PART
-            "See abrt-auto-reporting(1), reporter-ureport(1) and reporter-rhtsupport(1)\n"
-            "for more details.\n"
-    );
-#else
+
     const char *program_usage_string = _(
             "& [ "STATE_MANUAL" | "STATE_AUTO" | yes | no | 1 | 0 ]\n"
             PROGRAM_USAGE_MIDDLE_PART
             "See abrt-auto-reporting(1) and reporter-ureport(1) for more details.\n"
     );
-#endif
 
     enum {
         OPT_v = 1 << 0,
-#if AUTHENTICATED_AUTOREPORTING != 0
-        OPT_a = 1 << 1,
-        OPT_u = 1 << 2,
-        OPT_p = 1 << 3,
-        OPT_c = 1 << 4,
-#endif
     };
-
-#if AUTHENTICATED_AUTOREPORTING != 0
-    int anonymous = 0;
-    const char *username = NULL;
-    const char *password = NULL;
-    const char *certificate = NULL;
-#endif
 
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&libreport_g_verbose),
-#if AUTHENTICATED_AUTOREPORTING != 0
-        OPT_BOOL  (  'a', "anonymous",   &anonymous,               _("Turns the authentication off")),
-        OPT_STRING(  'u', "username",    &username,    "USERNAME", _("Red Hat Support user name")),
-        OPT_STRING(  'p', "password",    &password,    "PASSWORD", _("Red Hat Support password, if not given, a prompt for it will be issued")),
-        OPT_STRING(  'c', "certificate", &certificate, "SOURCE",   _("uReport SSL certificate paths or certificate type")),
-#endif
         OPT_END()
     };
 
-#if AUTHENTICATED_AUTOREPORTING != 0
-    const unsigned opts =
-#endif
     libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
     argv += optind;
     argc -= optind;
 
-#if AUTHENTICATED_AUTOREPORTING != 0
-    if ((opts & OPT_p) && !(opts & OPT_u))
-    {
-        error_msg(_("You also need to specify --username for --password"));
-        libreport_show_usage_and_die(program_usage_string, program_options);
-    }
-
-    if ((opts & OPT_u) && (opts & OPT_c))
-    {
-        error_msg(_("You can use either --username or --certificate"));
-        libreport_show_usage_and_die(program_usage_string, program_options);
-    }
-
-    if ((opts & OPT_u) && (opts & OPT_a))
-    {
-        error_msg(_("You can use either --username or --anonymous"));
-        libreport_show_usage_and_die(program_usage_string, program_options);
-    }
-
-    if ((opts & OPT_a) && (opts & OPT_c))
-    {
-        error_msg(_("You can use either --anonymous or --certificate"));
-        libreport_show_usage_and_die(program_usage_string, program_options);
-    }
-
-#endif
     if (argc > 1)
     {
         error_msg(_("Invalid number of arguments"));
@@ -301,87 +150,20 @@ int main(int argc, char *argv[])
     int exit_code = EXIT_FAILURE;
 
     g_autoptr(GHashTable) conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
-#if AUTHENTICATED_AUTOREPORTING != 0
-    g_autoptr(GHashTable) rhts_conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
-    g_autoptr(GHashTable) rhts_conf_bck = NULL;
-#endif
     g_autoptr(GHashTable) ureport_conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     g_autoptr(GHashTable) ureport_conf_bck = NULL;
 
     if (!abrt_load_abrt_conf_file(CONF_NAME, conf))
         return exit_code;
 
-#if AUTHENTICATED_AUTOREPORTING != 0
-    if (!libreport_load_plugin_conf_file(RHTS_NAME, rhts_conf, false))
-        return exit_code;
-#endif
-
     if (!libreport_load_plugin_conf_file(UREPORT_NAME, ureport_conf, false))
         return exit_code;
 
-#if AUTHENTICATED_AUTOREPORTING != 0
-    if ((opts & OPT_a))
-    {
-        ureport_conf_bck = libreport_clone_map_string(ureport_conf);
-
-        if (!clear_ureport_auth(ureport_conf))
-            return exit_code;
-    }
-
-    if ((opts & OPT_u))
-    {
-        g_autofree char *tmp_password = NULL;
-        if (!(opts & OPT_p))
-        {
-            password = tmp_password = libreport_ask_password(_("Password:"));
-            if (tmp_password == NULL)
-            {
-                error_msg(_("Cannot continue without password\n"));
-                return exit_code;
-            }
-        }
-
-        ureport_conf_bck = libreport_clone_map_string(ureport_conf);
-
-        if (!set_ureport_http_auth(ureport_conf, UREPORT_RTHS_CREDENTIALS_AUTH))
-            return exit_code;
-
-        rhts_conf_bck = libreport_clone_map_string(rhts_conf);
-
-        if (!set_rhts_credentials(rhts_conf, username, password))
-        {
-            libreport_save_plugin_conf_file(UREPORT_NAME, ureport_conf_bck);
-            return exit_code;
-        }
-    }
-
-    if ((opts & OPT_c))
-    {
-        ureport_conf_bck = libreport_clone_map_string(ureport_conf);
-
-        if (!set_ureport_client_auth(ureport_conf, certificate))
-            return exit_code;
-    }
-
-#endif
     if (argc == 0)
     {
         printf("%s", get_abrt_reporting(conf));
         exit_code = EXIT_SUCCESS;
 
-#if AUTHENTICATED_AUTOREPORTING != 0
-        if (libreport_g_verbose >= 1)
-        {
-            const char *tmp = get_ureport_http_auth(ureport_conf);
-            if (tmp != NULL)
-                /* Print only the part before ':' of a string like "username:password" */
-                printf(" %s (%*s)", _("HTTP Authenticated auto reporting"), (int)(strchrnul(tmp, ':') - tmp), tmp);
-            else if ((tmp = get_ureport_client_auth(ureport_conf)) != NULL)
-                printf(" %s (%s)", _("SSL Client Authenticated auto reporting"), tmp);
-            else
-                printf(" %s", _("anonymous auto reporting"));
-        }
-#endif
         putchar('\n');
 
         return exit_code;
@@ -394,10 +176,6 @@ int main(int argc, char *argv[])
         if (ureport_conf_bck != NULL)
             libreport_save_plugin_conf_file(UREPORT_NAME, ureport_conf_bck);
 
-#if AUTHENTICATED_AUTOREPORTING != 0
-        if (rhts_conf_bck != NULL)
-            libreport_save_plugin_conf_file(RHTS_NAME, rhts_conf_bck);
-#endif
     }
     return exit_code;
 }

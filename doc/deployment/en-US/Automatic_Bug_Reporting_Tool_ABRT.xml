@@ -117,7 +117,7 @@
       <application>ABRT</application> currently supports detection of crashes in applications written in the C/C++ and Python languages, as well as kernel oopses. With Red Hat Enterprise Linux 6.3, <application>ABRT</application> can also detect kernel panics if the additional <package>abrt-addon-vmcore</package> package is installed and the <systemitem class="service">kdump</systemitem> crash dumping mechanism is enabled and configured on the system accordingly.
     </para>
     <para>
-      <application>ABRT</application> is capable of reporting problems to a remote issue tracker. Reporting can be configured to happen automatically whenever an issue is detected, or problem data can be stored locally, reviewed, reported, and deleted manually by a user. The reporting tools can send problem data to a Bugzilla database, a Red Hat Technical Support (RHTSupport) site, upload it using <systemitem class="protocol">FTP</systemitem>/<systemitem class="protocol">SCP</systemitem>, email it, or write it to a file.
+      <application>ABRT</application> is capable of reporting problems to a remote issue tracker. Reporting can be configured to happen automatically whenever an issue is detected, or problem data can be stored locally, reviewed, reported, and deleted manually by a user. The reporting tools can send problem data to a Bugzilla database, upload it using <systemitem class="protocol">FTP</systemitem>/<systemitem class="protocol">SCP</systemitem>, email it, or write it to a file.
     </para>
     <para>
       The part of <application>ABRT</application> which handles already-existing problem data (as opposed to, for example, creation of new problem data) has been factored out into a separate project, <application>libreport</application>. The <application>libreport</application> library provides a generic mechanism for analyzing and reporting problems, and it is used by applications other than <application>ABRT</application>. However, <application>ABRT</application> and <application>libreport</application> operation and configuration is closely integrated. They are therefore discussed as one in this document.
@@ -133,16 +133,6 @@
       After the problem directory is created and problem data gathered, you can further process, analyze and report the problem using either the <application>ABRT</application> GUI, or the <application>abrt</application> utility for the command line. For more information about these tools, refer to <xref linkend="sect-abrt-gui"/> and <xref linkend="sect-abrt-cli"/> respectively.
     </para>
     <note>
-      <title>The report utility is no longer supported</title>
-      <para>
-        If you do not use <application>ABRT</application> to further analyze and report the detected problems but instead you report problems using a legacy problem reporting tool, <application>report</application>, note that you can no longer file new bugs. The <application>report</application> utility can now only be used to attach new content to the already existing bugs in the RHTSupport or Bugzilla database. Use the following command to do so:
-      </para>
-      <synopsis>
-        <command>report <optional>-v</optional> <option>--target</option> <replaceable>target</replaceable> <option>--ticket</option> <replaceable>ID</replaceable> <replaceable>file</replaceable></command>
-      </synopsis>
-      <para>
-        …where <replaceable>target</replaceable> is either <emphasis role="bold">strata</emphasis> for reporting to RHTSupport or <emphasis role="bold">bugzilla</emphasis> for reporting to Bugzilla. <replaceable>ID</replaceable> stands for number identifying an existing problem case in the respective database, and <replaceable>file</replaceable> is a file containing information to be added to the problem case.
-      </para>
       <para>
         If you want to report new problems and you do not wish to use <application>abrt</application>, you can now use the <application>report-cli</application> utility instead of <application>report</application>. Issue the following command to let <application>report-cli</application> to guide you through the problem reporting process:
       </para>
@@ -292,7 +282,7 @@ Starting abrt daemon:                                      [  OK  ]</screen>
       </mediaobject>
     </figure>
     <para>
-      Next, choose how you want to report the issue. If you are using Red Hat Enterprise Linux, Red Hat Customer Support is the preferred choice.
+      Next, choose how you want to report the issue.
     </para>
     <figure id="fig-abrt-gui_select_reporter">
       <title>Selecting a problem reporter</title>
@@ -305,40 +295,6 @@ Starting abrt daemon:                                      [  OK  ]</screen>
         </imageobject>
         <textobject>
           <para>Selecting a problem reporter.</para>
-        </textobject>
-      </mediaobject>
-    </figure>
-    <para>
-      If you choose to report to Red Hat Customer Support, and you have not configured this event yet, you will be warned that this event is not configured properly and you will be offered an option to do so.
-    </para>
-    <figure id="fig-abrt-gui_rhtsupport_warning">
-      <title>Warning - missing Red Hat Customer Support configuration</title>
-      <mediaobject>
-        <imageobject>
-          <imagedata
-            fileref="images/abrt-gui_rhtsupport_warning.png"
-            format="PNG"
-            scalefit="0" />
-        </imageobject>
-        <textobject>
-          <para>Warning - missing Red Hat Customer Support configuration.</para>
-        </textobject>
-      </mediaobject>
-    </figure>
-    <para>
-      Here, you need to provide your Red Hat login information (Refer to <xref linkend="sect-abrt-configuration-event_configuration_in_gui"/> for more information on how to acquire it and how to set this event.), otherwise you will fail to report the problem.
-    </para>
-    <figure id="fig-abrt-gui_rhtsupport_configuration.png">
-      <title>Red Hat Customer Support configuration window</title>
-      <mediaobject>
-        <imageobject>
-          <imagedata
-            fileref="images/abrt-gui_rhtsupport_configuration.png"
-            format="PNG"
-            scalefit="0" />
-        </imageobject>
-        <textobject>
-          <para>Red Hat Customer Support configuration window.</para>
         </textobject>
       </mediaobject>
     </figure>
@@ -374,22 +330,8 @@ Starting abrt daemon:                                      [  OK  ]</screen>
       </mediaobject>
     </figure>
     <para>
-      Finally, the problem data is sent to the chosen destination, and you can now decide whether to continue with reporting the problem using another available method or finish your work on this problem. If you have reported your problem to the Red Hat Customer Support database, a problem case is filed in the database. From now on, you will be informed about the problem resolution progress via email you provided during the process of reporting. You can also oversee the problem case using the URL that is provided to you by <application>ABRT</application> GUI when the problem case is created, or via emails received from Red Hat Support.
+      Finally, the problem data is sent to the chosen destination, and you can now decide whether to continue with reporting the problem using another available method or finish your work on this problem.
     </para>
-    <figure id="fig-abrt-gui_rhtsupport_reporting">
-      <title>Problem is being reported to the Red Hat Customer Support database</title>
-      <mediaobject>
-        <imageobject>
-          <imagedata
-            fileref="images/abrt-gui_rhtsupport_reporting.png"
-            format="PNG"
-            scalefit="0" />
-        </imageobject>
-        <textobject>
-          <para>Problem is being reported to the Red Hat Customer Support database.</para>
-        </textobject>
-      </mediaobject>
-    </figure>
   </section>
   <section id="sect-abrt-cli">
     <title>Using the Command Line Interface</title>
@@ -974,16 +916,6 @@ rm '/var/spool/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
         </varlistentry>
         <varlistentry>
           <term>
-            report_RHTSupport — Red Hat Customer Support
-          </term>
-          <listitem>
-            <para>
-              Reports problems to the Red Hat Technical Support system. This possibility is intended for users of Red Hat Enterprise Linux. It is defined in the <filename>/etc/libreport/events.d/rhtsupport_event.conf</filename> configuration file.
-            </para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>
             report_Mailx — Mailx
           </term>
           <listitem>
@@ -1066,34 +998,6 @@ rm '/var/spool/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
             </itemizedlist>
             <para>
               When the <guilabel>Append</guilabel> option is checked, the Logger event will append new crash reports to the log file specified in the <guilabel>Logger file</guilabel> option. When unchecked, the new crash report always replaces the previous one.
-            </para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>Red Hat Customer Support</term>
-          <listitem>
-            <para>
-              In the <guilabel>Red Hat Customer Support</guilabel> event configuration window, you can configure the following parameters:
-            </para>
-            <itemizedlist>
-              <listitem>
-                <para>
-                  <guilabel>RH Portal URL</guilabel> — Specifies the Red Hat Customer Support URL where crash dumps are sent (by default, set to <ulink url="https://api.access.redhat.com/rs"/>).
-                </para>
-              </listitem>
-              <listitem>
-                <para>
-                  <guilabel>Username</guilabel> — User login which is used to log into Red Hat Customer Support and create a Red Hat Customer Support database entry for a reported crash. Use your <emphasis>Red Hat Login</emphasis> acquired by creating an account on <ulink url="http://www.redhat.com/">http://www.redhat.com/</ulink>, the Red Hat Customer Portal (<ulink url="https://access.redhat.com/home">https://access.redhat.com/home</ulink>) or the Red Hat Network (<ulink url="https://rhn.redhat.com/">https://rhn.redhat.com/</ulink>).
-                </para>
-              </listitem>
-              <listitem>
-                <para>
-                  <guilabel>Password</guilabel> — Password used to log into Red Hat Customer Support (that is, password associated with your <emphasis>Red Hat Login</emphasis>)
-                </para>
-              </listitem>
-            </itemizedlist>
-            <para>
-              When the <guilabel>SSL verify</guilabel> option is checked, the <systemitem class="protocol">SSL</systemitem> protocol is used when sending the data over the network.
             </para>
           </listitem>
         </varlistentry>
@@ -1500,7 +1404,7 @@ ftp> <command>quit</command></screen>
     <section id="sect-abrt-centralized_crash_collection-saving_package_information">
       <title>Saving Package Information</title>
       <para>
-        In a single-machine <application>ABRT</application> installation, problems are usually reported to external bug databases such as RHTSupport or Bugzilla. Reporting to these bug databases usually requires knowledge about the component and package in which the problem occurred. The <systemitem class="event">post-create</systemitem> event runs the <application>abrt-action-save-package-data</application> tool (among other steps) in order to provide this information in the standard <application>ABRT</application> installation.
+        In a single-machine <application>ABRT</application> installation, problems are usually reported to external bug databases such as Bugzilla. Reporting to these bug databases usually requires knowledge about the component and package in which the problem occurred. The <systemitem class="event">post-create</systemitem> event runs the <application>abrt-action-save-package-data</application> tool (among other steps) in order to provide this information in the standard <application>ABRT</application> installation.
       </para>
       <para>
         If you are setting up a centralized crash collection system, your requirements may be significantly different. Depending on your needs, you have two options:
@@ -1537,7 +1441,7 @@ ftp> <command>quit</command></screen>
           <term>Reporting to external bug database</term>
           <listitem>
             <para>
-              Alternatively, you may want to report crashes to RHTSupport or Bugzilla. In this case, you need to collect package information. Generally, client machines and dedicated crash collecting systems have non-identical sets of installed packages. Therefore, it may happen that problem data uploaded from a client does not correspond to any package installed on the dedicated crash collecting system. In the standard <application>ABRT</application> configuration, this will lead to deletion of problem data (ABRT will consider it to be a crash in an unpackaged executable). To prevent this from happening, it is necessary to modify <application>ABRT</application>'s configuration on the <emphasis>dedicated system</emphasis> in the following way:
+              Alternatively, you may want to report crashes to Bugzilla. In this case, you need to collect package information. Generally, client machines and dedicated crash collecting systems have non-identical sets of installed packages. Therefore, it may happen that problem data uploaded from a client does not correspond to any package installed on the dedicated crash collecting system. In the standard <application>ABRT</application> configuration, this will lead to deletion of problem data (ABRT will consider it to be a crash in an unpackaged executable). To prevent this from happening, it is necessary to modify <application>ABRT</application>'s configuration on the <emphasis>dedicated system</emphasis> in the following way:
             </para>
             <itemizedlist>
               <listitem>

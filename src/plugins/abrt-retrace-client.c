@@ -417,7 +417,7 @@ static char *get_release_id(GHashTable *osinfo, const char *architecture)
     char *result = NULL;
     g_autofree char *release = NULL;
     g_autofree char *version = NULL;
-    libreport_parse_osinfo_for_rhts(osinfo, (char **)&release, (char **)&version);
+    libreport_parse_osinfo_for_bz(osinfo, (char **)&release, (char **)&version);
 
     if (release == NULL || version == NULL)
         error_msg_and_die("Can't parse OS release name or version");

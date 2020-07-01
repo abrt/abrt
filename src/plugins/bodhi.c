@@ -539,7 +539,7 @@ int main(int argc, char **argv)
             g_autofree char *version = NULL;
             g_autoptr(GHashTable) osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
             problem_data_get_osinfo(problem_data, osinfo);
-            libreport_parse_osinfo_for_rhts(osinfo, &product, &version);
+            libreport_parse_osinfo_for_bz(osinfo, &product, &version);
 
             /* There are no bodhi updates for Rawhide */
             bool rawhide = strcasecmp(version, "rawhide") == 0;
