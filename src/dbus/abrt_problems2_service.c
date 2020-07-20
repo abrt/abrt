@@ -212,12 +212,15 @@ struct _AbrtP2Object
     guint p2o_regid;
     void *node;
     void (*destructor)(AbrtP2Object *);
+    guint owner_watcher_id;
 };
 
 static void abrt_p2_object_free(AbrtP2Object *obj)
 {
     if (obj == NULL)
         return;
+
+    g_clear_handle_id(&obj->owner_watcher_id, g_bus_unwatch_name);
 
     /* remove the destroyed object before destructing it */
     g_hash_table_remove(obj->p2o_type->objects, obj->p2o_path);
@@ -515,6 +518,18 @@ static void session_object_on_authorization_changed(AbrtP2Session *session,
                                                 session_bus_address);
 }
 
+static void
+abrt_p2_service_on_session_owner_vanished(GDBusConnection *connection,
+                                          const char      *name,
+                                          void            *user_data)
+{
+    (void)connection;
+    (void)user_data;
+
+    log_debug("Name %s vanished from the bus, owned session will be dropped",
+              name);
+}
+
 static AbrtP2Object *session_object_register(AbrtP2Service *service,
             char *path,
             const char *caller,
@@ -522,6 +537,7 @@ static AbrtP2Object *session_object_register(AbrtP2Service *service,
             GError **error)
 {
     struct user_info *user = abrt_p2_service_user_lookup(service, caller_uid);
+    GDBusConnection *connection;
 
     const unsigned client_limits = abrt_p2_service_user_clients_limit(service, caller_uid);
     if (user != NULL && g_list_length(user->sessions) >= client_limits)
@@ -564,6 +580,13 @@ static AbrtP2Object *session_object_register(AbrtP2Service *service,
     g_signal_emit(service,
                   service_signals[SERVICE_SIGNALS_NEW_CLIENT_CONNECTED],
                   0/*details*/);
+
+    connection = abrt_p2_service_dbus(service);
+
+    obj->owner_watcher_id = g_bus_watch_name_on_connection(connection, caller,
+                                                           G_BUS_NAME_WATCHER_FLAGS_NONE,
+                                                           NULL, abrt_p2_service_on_session_owner_vanished,
+                                                           obj, (GDestroyNotify)abrt_p2_object_destroy);
 
     return obj;
 }
