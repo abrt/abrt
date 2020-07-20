@@ -1,6 +1,7 @@
 import os
 import logging
 
+import dbus
 import problem
 
 
@@ -14,7 +15,6 @@ class ProblemWatcher(object):
     '''
 
     def __init__(self, auth):
-        import dbus
         from gi.repository import GObject as gobject
         from dbus.mainloop.glib import DBusGMainLoop
 
@@ -25,30 +25,31 @@ class ProblemWatcher(object):
             private=True)
 
         self.bus = bus
+        self.proxy = self.bus.get_object('org.freedesktop.problems',
+                                         '/org/freedesktop/Problems2')
+        self.interface = dbus.Interface(self.proxy,
+                                        dbus_interface='org.freedesktop.Problems2')
+        self.session = self.interface.GetSession()
         self.auth = auth
         self.callbacks = []
 
-        # local context required!?
-        # http://rmarko.fedorapeople.org/random/high_five.jpg
-        evt_match = self.bus.add_signal_receiver(
-            self._new_problem_handler,
-            signal_name='Crash', path='/org/freedesktop/problems')
-
-        # add second listener for the old path
-        evt_match_old_path = self.bus.add_signal_receiver(
-            self._new_problem_handler,
-            signal_name='Crash', path='/com/redhat/abrt')
+        self.proxy.connect_to_signal('Crash', self._new_problem_handler,
+                                     dbus_interface='org.freedesktop.Problems2')
 
         self.loop = gobject.MainLoop()
 
-    def _new_problem_handler(self, comp, ddir, uid, uuid, duphash):
+    def _new_problem_handler(self, problem_object, uid):
         logging.debug('New problem notification received')
         if int(uid) != os.getuid() and not self.auth:
             logging.debug('Auth disabled, ignoring crash with'
                           ' uid: {0}'.format(uid))
             return
 
+        proxy = self.bus.get_object('org.freedesktop.problems', problem_object)
+        ddir = proxy.Get('org.freedesktop.Problems2.Entry', 'ID',
+                         dbus_interface=dbus.PROPERTIES_IFACE)
         prob = problem.tools.problemify(ddir, problem.proxies.get_proxy())
+
         for cb in self.callbacks:
             cb(prob)
 
