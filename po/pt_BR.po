@@ -22,13 +22,14 @@
 # Daniel Lara <danniel@fedoraproject.org>, 2016. #zanata
 # Rafael Fontenelle <rafaelff@gnome.org>, 2020.
 # Adolfo Ketzer <reztek@gmail.com>, 2020.
+# José Lemos Neto <lemosjosex@protonmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-04-23 00:40+0000\n"
-"Last-Translator: Adolfo Ketzer <reztek@gmail.com>\n"
+"PO-Revision-Date: 2020-07-18 15:28+0000\n"
+"Last-Translator: José Lemos Neto <lemosjosex@protonmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://translate.fedoraproject.org/"
 "projects/abrt/abrt/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -36,7 +37,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.0.1\n"
+"X-Generator: Weblate 4.1.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -1222,6 +1223,8 @@ msgstr "uReport já foi enviado, não será enviado novamente"
 #: ../src/plugins/abrt-action-ureport:174
 msgid "Problem comes from unpackaged executable. Unable to create uReport."
 msgstr ""
+"O problema vem de um executável que não foi empacotado. Não é possível criar "
+"um uReport."
 
 #: ../src/plugins/abrt-action-ureport:189
 msgid "Adding you to CC List of the existing bugzilla bug"
@@ -1328,14 +1331,11 @@ msgid "Jump to an invalid address"
 msgstr "Saltar para um endereço inválido"
 
 #: ../src/plugins/abrt-gdb-exploitable:669
-#, fuzzy
-#| msgid ""
-#| "Access past the end of mapped file, invalid address, unaligned access, etc"
 msgid ""
 "Access past the end of mapped file, invalid address, unaligned access, etc."
 msgstr ""
 "Acesso após o final do arquivo mapeado, endereço inválido, acesso "
-"desalinhado, etc"
+"desalinhado, etc."
 
 #: ../src/plugins/abrt-gdb-exploitable:688
 msgid "Can't get signal no and do exploitability analysis\n"
@@ -2043,8 +2043,9 @@ msgid "Unknown operation: %s."
 msgstr "Operação desconhecida: %s."
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:1
+#, fuzzy
 msgid "Search for updated packages that fixes the crash."
-msgstr ""
+msgstr "Procure por pacotes atualizados que corrijam o encerramento inesperado."
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:2
 msgid ""
@@ -2258,7 +2259,7 @@ msgstr "Excluir arquivos com oopses encontrados"
 
 #: ../src/cli/abrtcli/match.py:117
 msgid "No matching problems found"
-msgstr ""
+msgstr "Sem problemas coincidentes."
 
 #: ../src/cli/abrtcli/utils.py:79
 msgid "Not reportable"
@@ -2266,11 +2267,11 @@ msgstr "Não relatável"
 
 #: ../src/cli/abrtcli/cli/__init__.py:30
 msgid "increase output verbosity"
-msgstr ""
+msgstr "Aumentar a quantidade de mensagens da saída."
 
 #: ../src/cli/abrtcli/cli/__init__.py:50
 msgid "positive non-zero integer expected"
-msgstr ""
+msgstr "Esperado um inteiro positivo diferente de 0"
 
 #: ../src/cli/abrtcli/cli/__init__.py:54
 #, fuzzy
@@ -2280,7 +2281,7 @@ msgstr "Listar problemas "
 
 #: ../src/cli/abrtcli/cli/__init__.py:57
 msgid "filter problems with matching component"
-msgstr ""
+msgstr "filtrar problemas com componente coincidente"
 
 #: ../src/cli/abrtcli/cli/__init__.py:59
 #, fuzzy
@@ -2302,7 +2303,7 @@ msgstr "Lista somente os problemas mais velhos do timestamp especificado"
 
 #: ../src/cli/abrtcli/cli/__init__.py:66
 msgid "filter problems with matching executable"
-msgstr ""
+msgstr "filtrar problemas com executável coincidente"
 
 #: ../src/cli/abrtcli/cli/__init__.py:71
 #, fuzzy
