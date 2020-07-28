@@ -42,6 +42,8 @@ typedef struct
     AbrtAppletApplication *application;
     AbrtAppletProblemInfo *problem_info;
     int flags;
+
+    GList *environment;
 } EventProcessingState;
 
 static EventProcessingState *
@@ -64,6 +66,8 @@ event_processing_state_free (EventProcessingState *state)
     g_string_free (state->cmd_output, TRUE);
     g_clear_object (&state->problem_info);
     g_clear_object (&state->application);
+
+    g_clear_pointer(&state->environment, unexport_event_config);
 
     g_free (state);
 }
@@ -885,32 +889,11 @@ my_io_channel_unix_new (int fd)
 }
 
 static void
-export_event_configuration (const char *event_name)
-{
-    static bool exported = false;
-    event_config_t *event_config;
-    g_autoptr (GList) ex_env = NULL;
-
-    if (exported)
-    {
-        return;
-    }
-
-    exported = true;
-    event_config = get_event_config (event_name);
-    /* load event config data only for the event */
-    if (event_config != NULL)
-    {
-        libreport_load_single_event_config_data_from_user_storage(event_config);
-    }
-    ex_env = export_event_config (event_name);
-}
-
-static void
 abrt_applet_application_run_event_async (AbrtAppletApplication *self,
                                          AbrtAppletProblemInfo *problem_info,
                                          const char            *event_name)
 {
+    event_config_t *event_config;
     EventProcessingState *state;
     GIOChannel *channel_event_output;
 
@@ -919,12 +902,18 @@ abrt_applet_application_run_event_async (AbrtAppletApplication *self,
         return;
     }
 
-    export_event_configuration (event_name);
+    event_config = get_event_config (event_name);
+    /* load event config data only for the event */
+    if (event_config != NULL)
+    {
+        libreport_load_single_event_config_data_from_user_storage(event_config);
+    }
 
     state = event_processing_state_new ();
 
     state->application = g_object_ref (self);
     state->problem_info = g_object_ref (problem_info);
+    state->environment = export_event_config (event_name);
     state->child_pid = spawn_event_handler_child(abrt_applet_problem_info_get_directory (state->problem_info),
                                                  event_name, &state->child_stdout_fd);
 
@@ -987,6 +976,14 @@ abrt_applet_application_dispose (GObject *object)
     g_clear_pointer (&self->deferred_problems, g_ptr_array_unref);
 
     G_OBJECT_CLASS (abrt_applet_application_parent_class)->dispose (object);
+}
+
+static void
+abrt_applet_application_finalize (GObject *object)
+{
+    free_event_config_data ();
+
+    G_OBJECT_CLASS (abrt_applet_application_parent_class)->finalize (object);
 }
 
 static void
@@ -1206,6 +1203,7 @@ abrt_applet_application_class_init (AbrtAppletApplicationClass *klass)
     application_class = G_APPLICATION_CLASS (klass);
 
     object_class->dispose = abrt_applet_application_dispose;
+    object_class->finalize = abrt_applet_application_finalize;
 
     application_class->startup = abrt_applet_application_startup;
     application_class->activate = abrt_applet_application_activate;
