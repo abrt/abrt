@@ -677,7 +677,9 @@ abrt_applet_application_send_problem_notification (AbrtAppletApplication *self,
         }
         if (is_current_user && !is_running_again)
             restart_button = TRUE;
-    } else {
+    }
+    else
+    {
         if (!already_reported)
         {
             if (auto_reporting && is_packaged)
