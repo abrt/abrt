@@ -127,7 +127,7 @@ is_gnome_abrt_available (void)
                                               &error);
     if (app == NULL)
     {
-        log_debug("Cannot find " GUI_EXECUTABLE ": %s", error->message);
+        g_debug("Cannot find " GUI_EXECUTABLE ": %s", error->message);
 
         return false;
     }
@@ -494,7 +494,7 @@ action_report (GSimpleAction *action,
     g_autoptr (GError) error = NULL;
     const char *directory;
 
-    log_debug ("Reporting a problem!");
+    g_debug ("Reporting a problem!");
 
     directory = g_variant_get_string (parameter, NULL);
     if (directory != NULL)
@@ -512,7 +512,7 @@ action_restart (GSimpleAction *action,
     g_autoptr (GAppInfo) app = NULL;
     g_autoptr (GError) error = NULL;
 
-    log_debug ("Restarting an application!");
+    g_debug ("Restarting an application!");
 
     command_line = g_variant_get_string (parameter, NULL);
     app = problem_create_app_from_cmdline (command_line);
@@ -713,14 +713,14 @@ abrt_applet_application_send_problem_notification (AbrtAppletApplication *self,
     if (notify_body == NULL)
     {
 #define BOOL_AS_STR(x)  x ? "true" : "false"
-        log_debug ("Not showing a notification, as we have no message to show:");
-        log_debug ("auto reporting:    %s", BOOL_AS_STR (auto_reporting));
-        log_debug ("network available: %s", BOOL_AS_STR (network_available));
-        log_debug ("is app:            %s", BOOL_AS_STR (is_app));
-        log_debug ("is packaged:       %s", BOOL_AS_STR (is_packaged));
-        log_debug ("is running again:  %s", BOOL_AS_STR (is_running_again));
-        log_debug ("is current user:   %s", BOOL_AS_STR (is_current_user));
-        log_debug ("already reported:  %s", BOOL_AS_STR (already_reported));
+        g_debug ("Not showing a notification, as we have no message to show:");
+        g_debug ("auto reporting:    %s", BOOL_AS_STR (auto_reporting));
+        g_debug ("network available: %s", BOOL_AS_STR (network_available));
+        g_debug ("is app:            %s", BOOL_AS_STR (is_app));
+        g_debug ("is packaged:       %s", BOOL_AS_STR (is_packaged));
+        g_debug ("is running again:  %s", BOOL_AS_STR (is_running_again));
+        g_debug ("is current user:   %s", BOOL_AS_STR (is_current_user));
+        g_debug ("already reported:  %s", BOOL_AS_STR (already_reported));
 
         return;
     }
@@ -740,7 +740,7 @@ abrt_applet_application_send_problem_notification (AbrtAppletApplication *self,
 
     add_default_action (notification, problem_info);
 
-    log_debug ("Showing a notification");
+    g_debug ("Showing a notification");
     g_application_send_notification (G_APPLICATION (self), NULL, notification);
 }
 
@@ -808,7 +808,7 @@ handle_event_output_cb (GIOChannel   *gio,
 
             g_string_append (state->cmd_output, raw);
 
-            log_debug ("%s", state->cmd_output->str);
+            g_debug ("%s", state->cmd_output->str);
 
             g_string_erase(state->cmd_output, 0, -1);
             /* jump to next line */
@@ -838,12 +838,12 @@ handle_event_output_cb (GIOChannel   *gio,
     {
         abrt_applet_problem_info_set_reported (problem_info, true);
 
-        log_debug ("fast report finished successfully");
+        g_debug ("fast report finished successfully");
         abrt_applet_application_send_problem_notification (state->application, problem_info);
     }
     else
     {
-        log_debug ("fast report failed, deferring");
+        g_debug ("fast report failed, deferring");
         g_ptr_array_add (state->application->deferred_problems, problem_info);
     }
 
