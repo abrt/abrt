@@ -771,11 +771,9 @@ handle_event_output_cb (GIOChannel   *gio,
                         gpointer      data)
 {
     EventProcessingState *state;
-    AbrtAppletProblemInfo *problem_info;
     int status;
 
     state = data;
-    problem_info = state->problem_info;
 
     /* Read streamed data and split lines */
     for (;;)
@@ -836,21 +834,23 @@ handle_event_output_cb (GIOChannel   *gio,
 
     if (WIFEXITED (status) && WEXITSTATUS (status) == EXIT_STOP_EVENT_RUN)
     {
-        abrt_applet_problem_info_set_known (problem_info, true);
+        abrt_applet_problem_info_set_known (state->problem_info, true);
         status = 0;
     }
 
     if (status == 0)
     {
-        abrt_applet_problem_info_set_reported (problem_info, true);
+        abrt_applet_problem_info_set_reported (state->problem_info, true);
 
         g_debug ("fast report finished successfully");
-        abrt_applet_application_send_problem_notification (state->application, problem_info);
+        abrt_applet_application_send_problem_notification (state->application,
+                                                           state->problem_info);
     }
     else
     {
         g_debug ("fast report failed, deferring");
-        g_ptr_array_add (state->application->deferred_problems, problem_info);
+        g_ptr_array_add (state->application->deferred_problems,
+                         g_steal_pointer (&state->problem_info));
     }
 
     event_processing_state_free (state);
