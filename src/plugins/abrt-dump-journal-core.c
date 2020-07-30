@@ -264,21 +264,14 @@ save_systemd_coredump_in_dump_directory(struct dump_dir *dd, struct crash_info *
     if (coredump_path != abrt_journal_get_string_field(info->ci_journal, "COREDUMP_FILENAME", coredump_path))
         log_debug("Processing coredumpctl entry without a real file");
 
-    const size_t len = strlen(coredump_path);
-    if (   (len >= 3
-            && coredump_path[len - 3] == '.'
-            && coredump_path[len - 2] == 'x'
-            && coredump_path[len - 1] == 'z')
-        || (len >= 4
-            && coredump_path[len - 4] == '.'
-            && coredump_path[len - 3] == 'l'
-            && coredump_path[len - 2] == 'z'
-            && coredump_path[len - 1] == '4'))
+    if (g_str_has_suffix(coredump_path, ".lz4") ||
+        g_str_has_suffix(coredump_path, ".xz") ||
+        g_str_has_suffix(coredump_path, ".zst"))
     {
         if (dd_copy_file_unpack(dd, FILENAME_COREDUMP, coredump_path))
             return -1;
     }
-    else if (len > 0)
+    else if (strlen(coredump_path) > 0)
     {
         if (dd_copy_file(dd, FILENAME_COREDUMP, coredump_path))
             return -1;
