@@ -108,7 +108,12 @@ unsigned abrt_oops_create_dump_dirs(GList *oops_list, const char *dump_location,
         sprintf(base, "oops-%s-%lu-%lu", iso_date, (long)my_pid, (long)idx);
         g_autofree char *path = g_build_filename(dump_location ? dump_location : "", base, NULL);
 
-        struct dump_dir *dd = dd_create(path, /*fs owner*/0, DEFAULT_DUMP_DIR_MODE);
+        mode_t dump_dir_mode = DEFAULT_DUMP_DIR_MODE;
+        if (flags & ABRT_OOPS_WORLD_READABLE)
+            /* Allow world to read the problem directory (o+r). */
+            dump_dir_mode |= S_IROTH;
+
+        struct dump_dir *dd = dd_create(path, /*fs owner*/0, dump_dir_mode);
         if (dd)
         {
             dd_create_basic_files(dd, /*no uid*/(uid_t)-1L, NULL);
