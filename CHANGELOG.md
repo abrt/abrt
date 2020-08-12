@@ -6,6 +6,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.14.3]
+### Added
+- plugins: abrt-dump-journal-core: Handle zstd compression
+
+### Changed
+- applet: application: Use GLib for logging
+- Replace various utility functions with stock GLib ones
+- Various coding style improvements
+- Update documentation
+
+### Fixed
+- applet: application: Fix crash when processing deferred problems
+- dbus: Remove session objects when owner disconnects
+- python-problem: Use org.freedesktop.Problems2 API 
+- abrt-console-notification: Work around noclobber
+- daemon: rpm: Use NEVRA instead of ENVRA
+- abrtd: Don't delete new problem dirs
+- Make sure that former caches are group writable
+- Various memory management fixes
+
+### Removed
+- Drop creates-items tag from event definitions
+- Remove references to libreport Red Hat support integration
+
 ## [2.14.2]
 ### Fixed
 - Fix broken builds with --enable-authenticated-autoreporting
@@ -254,7 +278,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.14.2...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.14.3...HEAD
+[2.14.3]: https://github.com/abrt/abrt/compare/2.14.2...2.14.3
 [2.14.2]: https://github.com/abrt/abrt/compare/2.14.1...2.14.2
 [2.14.1]: https://github.com/abrt/abrt/compare/2.14.0...2.14.1
 [2.14.0]: https://github.com/abrt/abrt/compare/2.13.0...2.14.0

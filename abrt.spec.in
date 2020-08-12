@@ -1001,6 +1001,93 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Wed Aug 12 2020 Michal Fabik <mfabik@redhat.com> 2.14.3-1
+- Update translations
+- plugins: abrt-dump-journal-core: Handle zstd compression
+- lib: Check rename() return code
+- retrace-client: Fix memory leak
+- a-a-save-container-data: Fix possible NULL dereferences
+- lib: Fix resource leak
+- lib: Remove ignored_problems
+- lib,a-retrace-client: Check fstat() return value
+- daemon: Refactor signal pipe callback
+- applet: application: Fix crash when processing deferred
+- applet: application: Free libreport event configuration
+- applet: application: Tweak style
+- applet: application: Use GLib for logging
+- dbus: Remove session objects when owner disconnects
+- python-problem: Use org.freedesktop.Problems2
+- Remove references to libreport Red Hat support integration
+- gitignore: Add abrt_ccpp.catalog
+- plugins: sosreport_event: Rename nfsserver plugin
+- oops-utils: Better list iteration pattern
+- oops-utils: Add an assertion
+- a-dump-journal-core: Fix type mismatch and compariso
+- rpm: Prevent null pointer dereference
+- retrace-client: Make code style more consistent
+- retrace-client: Don't check array for NULL
+- dbus: Duplicate string passed to abrt_p2_object_new()
+- github: check: Upload test log on failure
+- github: check: Pass --load-average to make
+- Add GitHub Actions workflow for building PRs
+- applet: application: Fix style
+- abrt-server: Fix double free and possible leaks
+- Use g_autoptr where possible
+- Remove GHashTable aliases
+- Use g_autofree where possible
+- Replace libreport_replace_map_string_item with g_hash_table_replace
+- Replace libreport_next_map_string_iter with g_hash_table_iter_next
+- Replace libreport_remove_map_string_item with g_hash_table_remove
+- Replace libreport_get_map_string_item_or_NULL with g_hash_table_lookup
+- Replace libreport_init_map_string_iter with g_hash_table_iter_init
+- Replace libreport_get_map_string_item_or_empty with g_hash_table_lookup
+- Replace libreport_free_map_string with g_hash_table_destroy
+- Replace libreport_new_map_string with g_hash_table_new_full
+- Replace libreport_xsetenv with g_setenv
+- Replace libreport_xstat with g_stat
+- Replace libreport_xpipe with g_unix_open_pipe
+- Replace libreport_xchdir with g_chdir
+- Replace libreport_concat_path_file with g_build_filename
+- Replace strbuf with GString
+- Replace libreport_prefixcmp with g_str_has_prefix
+- Replace g_malloc with g_new for structs
+- Replace libreport_xunlink with g_unlink
+- Replace libreport_xopen with g_open
+- Replace libreport_xzalloc with g_malloc0
+- Replace libreport_xrealloc with g_realloc
+- Replace libreport_xmalloc with g_malloc
+- Replace libreport_xatou with g_ascii_strtoull
+- Replace libreport_xatoi_positive with g_ascii_strtoull
+- Replace libreport_xatoi with g_ascii_strtoll
+- Replace libreport_xstrndup with g_strndup
+- Replace libreport_xstrdup with g_strdup
+- Replace libreport_xasprintf with g_strdup_printf
+- init-scripts: Add directories to systemd-tmpfiles config
+- abrt-console-notification: Work around noclobber
+- abrt-console-notification: Swap redirects
+- dbus: service: Fix Crash() emission
+- runtests: mailx-reporting: Use a neutral time zone
+- abrt-action-install-debuginfo: Fix variable reference
+- runtests: bugzilla-comment-format: Quote path variables
+- runtests: bugzilla-dupe-search: Quote path variables
+- daemon: rpm: Use NEVRA instead of ENVRA
+- runtests: symlinks: Quote variables
+- doc: Clarify --insecure option a bit more
+- doc: Remove or replace some fedorahosted links
+- Drop creates-items tag from event definitions
+- dbus: Update dd_get_owner
+- abrtd: Drop unused variable
+- applet: Chain up in dispose()
+- applet: Pass instance pointer to signal handler
+- sosreport_event: Update plugin name
+- abrt-vmcore: Fix SyntaxWarning with python3.8
+- abrtd: Don't delete new problem dirs
+- abrt_get_backtrace: Move dir (un)locking to caller
+- abrtd: Fix typo in function name
+- make sure that former caches are group writable
+- remove old transition postscriptlet
+- setgid instead of setuid the abrt-action-install-debuginfo-to-abrt-cache [RHBZ 1796245]
+
 * Mon May 11 2020 Michal Fabik <mfabik@redhat.com> 2.14.2-1
 - auto-reporting: Fix missing libreport_ namespace
 - Update translations
