@@ -743,16 +743,6 @@ int main(int argc, char** argv)
 
     libreport_export_abrt_envvars(opts & OPT_p);
 
-#if 0 /* We no longer use dbus */
-    /* When dbus daemon starts us, it doesn't set PATH
-     * (I saw it set only DBUS_STARTER_ADDRESS and DBUS_STARTER_BUS_TYPE).
-     * In this case, set something sane:
-     */
-    const char *env_path = getenv("PATH");
-    if (!env_path || !env_path[0])
-        putenv((char*)"PATH=/usr/sbin:/usr/bin:/sbin:/bin");
-#endif
-
     unsetenv("ABRT_SYSLOG");
     libreport_msg_prefix = libreport_g_progname; /* for log_warning(), error_msg() and such */
 

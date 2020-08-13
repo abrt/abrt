@@ -88,21 +88,6 @@ static void problems2_object_type_destroy(struct problems2_object_type *type)
     }
 }
 
-#if 0
-/* Debuging function */
-static void problems2_object_type_print_all_objects(struct problems2_object_type *type,
-            const char *prefix)
-{
-    GHashTableIter iter;
-    g_hash_table_iter_init(&iter, type->objects);
-
-    const char *p;
-    AbrtP2Object *obj;
-    while(g_hash_table_iter_next(&iter, (gpointer)&p, (gpointer)&obj))
-        log_warning("%s: '%s' : %p", prefix, p, obj);
-}
-#endif
-
 static AbrtP2Object *problems2_object_type_get_object(struct problems2_object_type *type,
             const char *path)
 {
