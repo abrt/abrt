@@ -390,7 +390,7 @@ static void handle_method_call(GDBusConnection *connection,
     {
         GList *dirs = get_problem_dirs_for_uid(caller_uid, abrt_g_settings_dump_location);
         response = variant_from_string_list(dirs);
-        libreport_list_free_with_free(dirs);
+        g_list_free_full(dirs, free);
 
         g_dbus_method_invocation_return_value(invocation, response);
         //I was told that g_dbus_method frees the response
@@ -411,10 +411,10 @@ static void handle_method_call(GDBusConnection *connection,
                 caller_uid = 0;
         }
 
-        GList * dirs = get_problem_dirs_for_uid(caller_uid, abrt_g_settings_dump_location);
+        GList *dirs = get_problem_dirs_for_uid(caller_uid, abrt_g_settings_dump_location);
         response = variant_from_string_list(dirs);
 
-        libreport_list_free_with_free(dirs);
+        g_list_free_full(dirs, free);
 
         g_dbus_method_invocation_return_value(invocation, response);
         return;
@@ -422,9 +422,9 @@ static void handle_method_call(GDBusConnection *connection,
 
     if (g_strcmp0(method_name, "GetForeignProblems") == 0)
     {
-        GList * dirs = get_problem_dirs_not_accessible_by_uid(caller_uid, abrt_g_settings_dump_location);
+        GList *dirs = get_problem_dirs_not_accessible_by_uid(caller_uid, abrt_g_settings_dump_location);
         response = variant_from_string_list(dirs);
-        libreport_list_free_with_free(dirs);
+        g_list_free_full(dirs, free);
 
         g_dbus_method_invocation_return_value(invocation, response);
         return;
@@ -540,7 +540,7 @@ static void handle_method_call(GDBusConnection *connection,
                 g_variant_builder_add(builder, "{ss}", element_name, value);
             }
         }
-        libreport_list_free_with_free(elements);
+        g_list_free_full(elements, free);
         dd_close(dd);
         /* It is OK to call g_variant_new("(a{ss})", NULL) because */
         /* G_VARIANT_TYPE_TUPLE allows NULL value */
@@ -749,7 +749,7 @@ static void handle_method_call(GDBusConnection *connection,
 
         g_dbus_method_invocation_return_value(invocation, NULL);
  ret:
-        libreport_list_free_with_free(problem_dirs);
+        g_list_free_full(problem_dirs, free);
         return;
     }
 
@@ -776,7 +776,7 @@ static void handle_method_call(GDBusConnection *connection,
         GList *dirs = get_problem_dirs_for_element_in_time(caller_uid, element, value, timestamp_from,
                                                         timestamp_to);
         response = variant_from_string_list(dirs);
-        libreport_list_free_with_free(dirs);
+        g_list_free_full(dirs, free);
 
         g_dbus_method_invocation_return_value(invocation, response);
         return;

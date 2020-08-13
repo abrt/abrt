@@ -196,8 +196,7 @@ int main(int argc, char **argv)
         errors = abrt_oops_process_list(oops_list, dump_location,
                                         ABRT_DUMP_OOPS_ANALYZER, oops_utils_flags);
 
-    libreport_list_free_with_free(oops_list);
-    //oops_list = NULL;
+    g_list_free_full(oops_list, free);
 
     return errors;
 }

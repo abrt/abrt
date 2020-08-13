@@ -357,8 +357,7 @@ void abrt_koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
                     free(lines_info);
                     lines_info = NULL;
                     lines_info_size = 0;
-                    libreport_list_free_with_free(*oops_list);
-                    *oops_list = NULL;
+                    g_list_free_full(g_steal_pointer(oops_list), free);
                 }
                 goto next_line;
             }
