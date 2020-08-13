@@ -1050,12 +1050,6 @@ static int perform_http_xact(struct response *rsp)
         }
     }
 
-#if 0
-//TODO:
-    /* At least it should generate local problem identifier UUID */
-    problem_data_add_basics(problem_info);
-//...the problem being that problem_info here is not a problem_data_t!
-#endif
     unsigned pid = convert_pid(problem_info);
     struct ns_ids client_ids;
     if (libreport_get_ns_ids(client_pid, &client_ids) < 0)

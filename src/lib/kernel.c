@@ -707,20 +707,6 @@ char *abrt_koops_extract_version(const char *linepointer)
  *  'T' - Tech_preview
  */
 
-#if 0 /* unused */
-static char *turn_off_flag(char *flags, char flag)
-{
-    size_t len = strlen(flags);
-    for (int i = 0; i < len; ++i)
-    {
-        if (flags[i] == flag)
-            flags[i] = ' ';
-    }
-
-    return flags;
-}
-#endif
-
 char *abrt_kernel_tainted_short(const char *kernel_bt)
 {
     /* example of flags: 'Tainted: G    B       ' */

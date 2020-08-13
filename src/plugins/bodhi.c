@@ -134,13 +134,6 @@ static const char *bodhi_url = "https://bodhi.fedoraproject.org/updates";
 
 struct bodhi {
     char *nvr;
-#if 0
-    char *date_pushed;
-    char *status;
-    char *dist_tag;
-
-    GList *bz_ids;
-#endif
 };
 
 enum {
@@ -155,13 +148,6 @@ static void free_bodhi_item(struct bodhi *b)
         return;
 
     free(b->nvr);
-
-#if 0
-    libreport_list_free_with_free(b->bz_ids);
-    free(b->date_pushed);
-    free(b->status);
-    free(b->dist_tag);
-#endif
 
     free(b);
 }
@@ -188,35 +174,6 @@ static void bodhi_read_value(json_object *json, const char *item_name,
         break;
     };
 }
-
-#if 0
-static void print_bodhi(struct bodhi *b)
-{
-    for (GList *l = b->nvr; l; l = l->next)
-        printf("'%s' ", (char *)l->data);
-
-    for (GList *l = b->name; l; l = l->next)
-        printf("'%s' ", (char *)l->data);
-
-    if (b->date_pushed)
-        printf(" '%s'", b->date_pushed);
-
-    if (b->status)
-        printf(" '%s'", b->status);
-
-    if (b->dist_tag)
-        printf(" '%s'", b->dist_tag);
-
-    printf(" %i", b->karma);
-
-
-/*
-    for (GList *li = b->bz_ids; li; li = li->next)
-        printf(" %i", *(int*) li->data);
-*/
-    puts("");
-}
-#endif
 
 /* bodhi returns following json structure in case of error
 {
@@ -364,29 +321,6 @@ static GHashTable *bodhi_parse_json(json_object *json, const char *release)
             }
             g_hash_table_replace(bodhi_table, name, b);
         }
-
-#if 0
-        bodhi_read_value(updates_item, "date_pushed", &b->date_pushed, BODHI_READ_STR);
-        bodhi_read_value(updates_item, "status", &b->status, BODHI_READ_STR);
-
-        json_object *release_item = NULL;
-        bodhi_read_value(updates_item, "release", &release_item, BODHI_READ_JSON_OBJ);
-        if (release_item)
-            bodhi_read_value(release_item, "dist_tag", &b->dist_tag, BODHI_READ_STR);
-
-        json_object *bugs = NULL;
-        bodhi_read_value(updates_item, "bugs", &release_item, BODHI_READ_JSON_OBJ);
-        if (bugs)
-        {
-            for (int j = 0; j < json_object_array_length(bugs); ++j)
-            {
-                int *bz_id = g_malloc(sizeof(int));
-                json_object *bug_item = json_object_array_get_idx(bugs, j);
-                bodhi_read_value(bug_item, "bz_id", bz_id, BODHI_READ_INT);
-                b->bz_ids = g_list_append(b->bz_ids, bz_id);
-            }
-        }
-#endif
     }
 
     return bodhi_table;

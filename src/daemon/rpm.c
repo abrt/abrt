@@ -75,15 +75,6 @@ void rpm_destroy()
     rpmFreeCrypto();
     rpmFreeMacros(NULL);
     rpmFreeRpmrc();
-
-/* rpm >= 4.14 handles this automatically on exit */
-#if 0
-    /* RPM doc says "clean up any open iterators and databases".
-     * Observed to eliminate these Berkeley DB warnings:
-     * "BDB2053 Freeing read locks for locker 0x1e0: 28718/139661746636736"
-     */
-    rpmdbCheckTerminate(1);
-#endif
 #endif
 
     libreport_list_free_with_free(list_fingerprints);
@@ -102,11 +93,7 @@ void rpm_load_gpgkey(const char* filename)
     }
 
     uint8_t keyID[8];
-#if 0
-    if (pgpPubkeyFingerprint(pkt, pklen, keyID) == 0)
-#else
     if (pgpPubkeyKeyID(pkt, pklen, keyID) == 0)
-#endif
     {
         char *fingerprint = pgpHexStr(keyID, sizeof(keyID));
         if (fingerprint != NULL)
