@@ -63,7 +63,7 @@ void rpm_init()
         error_msg("Can't read RPM rc files");
 #endif
 
-    libreport_list_free_with_free(list_fingerprints); /* paranoia */
+    g_list_free_full(list_fingerprints, free);
     /* Huh? Why do we start the list with an element with NULL string? */
     list_fingerprints = g_list_alloc();
 }
@@ -77,8 +77,7 @@ void rpm_destroy()
     rpmFreeRpmrc();
 #endif
 
-    libreport_list_free_with_free(list_fingerprints);
-    list_fingerprints = NULL;
+    g_list_free_full(g_steal_pointer(&list_fingerprints), free);
 }
 
 void rpm_load_gpgkey(const char* filename)

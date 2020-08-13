@@ -179,7 +179,7 @@ static void delete_files(gpointer data, gpointer void_preserve_list)
 
         if (cur_size <= cap_size || !worst_file_list)
         {
-            libreport_list_free_with_free(worst_file_list);
+            g_list_free_full(g_steal_pointer(&worst_file_list), free);
             log_info("cur_size:%.0f cap_size:%.0f, no (more) trimming", cur_size, cap_size);
             break;
         }
