@@ -265,7 +265,8 @@ Summary: %{name}'s pstore oops addon
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-libs = %{version}-%{release}
 Requires: abrt-addon-kerneloops
-Obsoletes: abrt-addon-uefioops
+Obsoletes: abrt-addon-uefioops <= 2.1.6
+Provides: abrt-addon-uefioops = %{version}-%{release}
 
 %description addon-pstoreoops
 This package contains plugin for collecting kernel oopses from pstore storage.
@@ -274,7 +275,7 @@ This package contains plugin for collecting kernel oopses from pstore storage.
 %package plugin-bodhi
 Summary: %{name}'s bodhi plugin
 Requires: %{name} = %{version}-%{release}
-Obsoletes: libreport-plugin-bodhi > 0.0.1
+Obsoletes: libreport-plugin-bodhi <= 2.0.10
 Provides: libreport-plugin-bodhi = %{version}-%{release}
 
 %description plugin-bodhi
