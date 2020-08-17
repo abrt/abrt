@@ -1001,6 +1001,11 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Mon Aug 17 2020 Michal Fabik <mfabik@redhat.com> 2.14.4-1
+- oops-utils: Respect the 'world-readable' flag
+- Decommission libreport_list_free_with_free
+- Purge commented-out code
+
 * Wed Aug 12 2020 Michal Fabik <mfabik@redhat.com> 2.14.3-1
 - Update translations
 - plugins: abrt-dump-journal-core: Handle zstd compression

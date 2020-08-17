@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.14.4]
+### Fixed
+Fix broken release 2.14.3
+oops-utils: Respect the 'world-readable' flag
+
+### Removed
+Decommission libreport_list_free_with_free
+
 ## [2.14.3]
 ### Added
 - plugins: abrt-dump-journal-core: Handle zstd compression
@@ -278,7 +286,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.14.3...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.14.4...HEAD
+[2.14.4]: https://github.com/abrt/abrt/compare/2.14.3...2.14.4
 [2.14.3]: https://github.com/abrt/abrt/compare/2.14.2...2.14.3
 [2.14.2]: https://github.com/abrt/abrt/compare/2.14.1...2.14.2
 [2.14.1]: https://github.com/abrt/abrt/compare/2.14.0...2.14.1
