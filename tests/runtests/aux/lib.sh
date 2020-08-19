@@ -90,10 +90,6 @@ function wait_for_process() {
     rlLog "Process ended in $t seconds"
 }
 
-function wait_for_sosreport() {
-    wait_for_process sosreport
-}
-
 function wait_for_hooks() {
     rlLog "Waiting for all hooks to end"
     # Wait at least 1 second
