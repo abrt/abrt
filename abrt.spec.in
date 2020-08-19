@@ -304,15 +304,6 @@ This package contains python 3 hook and handling uncaught exception in python 3
 programs in container.
 %endif # with python3
 
-%package plugin-sosreport
-Summary: %{name}'s plugin for building automatic sosreports
-Requires: sos >= 3.6
-Requires: %{name} = %{version}-%{release}
-
-%description plugin-sosreport
-This package contains a configuration snippet to enable automatic generation
-of sosreports for abrt events.
-
 %package plugin-machine-id
 Summary: %{name}'s plugin to generate machine_id based off dmidecode
 Requires: %{name} = %{version}-%{release}
@@ -933,9 +924,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{python3_sitelib}/abrt_exception_handler3_container.py
 %{python3_sitelib}/__pycache__/abrt_exception_handler3_container.*
 %endif # with python3
-
-%files plugin-sosreport
-%config(noreplace) %{_sysconfdir}/libreport/events.d/sosreport_event.conf
 
 %files plugin-machine-id
 %config(noreplace) %{_sysconfdir}/libreport/events.d/machine-id_event.conf

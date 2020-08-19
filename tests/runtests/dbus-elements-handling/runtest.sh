@@ -171,8 +171,6 @@ rlJournalStart
 
         wait_for_hooks
 
-        rlRun "rm -f $roots_problem/sosreport.tar.*"
-
         prepare
         rlLog "Create a problem data as the unprivileged user"
         unprivilegeds_problem=`su abrtdbustestone -c 'abrtDBusNewProblem deleted,to_be_deleted,changed,to_be_changed'`
@@ -181,8 +179,6 @@ rlJournalStart
         fi
 
         wait_for_hooks
-
-        rlRun "rm -f $unprivilegeds_problem/sosreport.tar.*"
     rlPhaseEnd
 
     rlPhaseStartTest "Sanity tests"
@@ -224,8 +220,6 @@ rlJournalStart
 
         wait_for_hooks
 
-        rlRun "rm -f $roots_problem/sosreport.tar.*"
-
         prepare
         rlLog "Create a problem data as the unprivileged user"
         unprivilegeds_problem=`su abrtdbustestone -c 'abrtDBusNewProblem'`
@@ -235,8 +229,6 @@ rlJournalStart
 
         wait_for_hooks
 
-        rlRun "rm -f $unprivilegeds_problem/sosreport.tar.*"
-
         prepare
         rlLog "Create a problem data as the unprivileged user"
         second_unprivilegeds_problem=`su abrtdbustestone -c 'abrtDBusNewProblem'`
@@ -245,8 +237,6 @@ rlJournalStart
         fi
 
         wait_for_hooks
-
-        rlRun "rm -f $second_unprivilegeds_problem/sosreport.tar.*"
     rlPhaseEnd
 
     rlPhaseStartTest "Handle elements as a user"

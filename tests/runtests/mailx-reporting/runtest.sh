@@ -129,7 +129,6 @@ rlJournalStart
         sleep $SLEEP_TIME
 
         rlAssertGrep " filename=\"coredump\"" /var/spool/mail/root
-        rlAssertGrep " filename=\"sosreport.tar.xz\"" /var/spool/mail/root
 
         rlRun "rm -rf problem_dir/reported_to"
     rlPhaseEnd

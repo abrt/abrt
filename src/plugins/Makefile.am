@@ -97,7 +97,6 @@ dist_eventsconf_DATA = \
     koops_event.conf \
     xorg_event.conf \
     smart_event.conf \
-    sosreport_event.conf \
     machine-id_event.conf \
     gconf_event.conf \
     vimrc_event.conf

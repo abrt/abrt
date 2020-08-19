@@ -67,8 +67,7 @@ rlJournalStart
         rlRun "ls -ld $rem_upload_dir | grep \"drwxr-x---\. [0-9]\+ root abrt \""
 
         pushd $rem_upload_dir
-        # do not check sosreport stuff
-        for elem in $(ls | egrep -v "sosreport\.log|$(hostname -s)");
+        for elem in $(ls);
         do
             ls -l $elem
             rlRun "ls -l $elem | grep \".rw-r-----\. [0-9]\+ root abrt \""

@@ -65,8 +65,6 @@ rlJournalStart
         kill -11 $straced_sleep_pid
 
         sleep 2
-        wait_for_sosreport
-        sleep 2
 
         rlRun "abrt list --format={executable} | grep strace" 1 "No strace in abrt output"
         rlRun "abrt list --format={executable} | grep sleep" 1 "No sleep in abrt output"
