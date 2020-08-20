@@ -34,10 +34,10 @@ ABRT_CONF="/etc/abrt/abrt.conf"
 
 rlJournalStart
     rlPhaseStartSetup
-        rlFileBackup $ABRT_CONF
+        rlFileBackup "$ABRT_CONF"
         TmpDir=$(mktemp -d)
-        cp -R problem_dir $TmpDir
-        pushd $TmpDir
+        cp -R problem_dir "$TmpDir"
+        pushd "$TmpDir"
         mkdir -p /var/spool/abrt-upload/
         rlRun "augtool set /files${ABRT_CONF}/WatchCrashdumpArchiveDir /var/spool/abrt-upload/" 0
         load_abrt_conf
@@ -63,14 +63,14 @@ rlJournalStart
         rem_upload_dir=$( echo $ABRT_CONF_DUMP_LOCATION/remote* )
         rlAssertExists "$rem_upload_dir/coredump"
 
-        ls -ld $rem_upload_dir
-        rlRun "ls -ld $rem_upload_dir | grep \"drwxr-x---\. [0-9]\+ root abrt \""
+        ls -ld "$rem_upload_dir"
+        rlRun "ls -ld '$rem_upload_dir' | grep \"drwxr-x---\. [0-9]\+ root abrt \""
 
-        pushd $rem_upload_dir
+        pushd "$rem_upload_dir"
         for elem in $(ls);
         do
-            ls -l $elem
-            rlRun "ls -l $elem | grep \".rw-r-----\. [0-9]\+ root abrt \""
+            ls -l "$elem"
+            rlRun "ls -l '$elem' | grep \".rw-r-----\. [0-9]\+ root abrt \""
         done
         popd
 
@@ -86,8 +86,8 @@ rlJournalStart
     rlPhaseStartTest "handle upload - sanitization"
         rm -f "/var/spool/abrt-upload/upload.tar.gz"
 
-        rlRun "touch $TmpDir/abrt_upload_test && ln -sf $TmpDir/abrt_upload_test problem_dir/malicious && mkdir -p problem_dir/dangerous && touch problem_dir/dangerous/contents"
-        rlRun "tar -czf $TmpDir/upload.tar.gz problem_dir && tar -tvzf $TmpDir/upload.tar.gz && cp $TmpDir/upload.tar.gz /var/spool/abrt-upload"
+        rlRun "touch '$TmpDir/abrt_upload_test' && ln -sf '$TmpDir/abrt_upload_test problem_dir/malicious' && mkdir -p problem_dir/dangerous && touch problem_dir/dangerous/contents"
+        rlRun "tar -czf '$TmpDir/upload.tar.gz' problem_dir && tar -tvzf '$TmpDir/upload.tar.gz' && cp '$TmpDir/upload.tar.gz' /var/spool/abrt-upload"
 
         wait_for_hooks
 
@@ -97,13 +97,13 @@ rlJournalStart
         rlAssertNotExists "$rem_upload_dir/malicious"
         rlAssertNotExists "$rem_upload_dir/dangerous"
 
-        rlRun "rm -rf problem_dir/malicious problem_dir/dangerous $TmpDir/abrt_upload_test"
+        rlRun "rm -rf problem_dir/malicious problem_dir/dangerous '$TmpDir/abrt_upload_test'"
     rlPhaseEnd
 
     rlPhaseStartCleanup
         popd # TmpDir
-        rm -rf $TmpDir
-        rm -rf $rem_upload_dir
+        rm -rf "$TmpDir"
+        rm -rf "$rem_upload_dir"
         rm -f "/var/spool/abrt-upload/upload.tar.gz"
         rlFileRestore
         rlServiceStop abrtd
