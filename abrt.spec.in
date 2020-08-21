@@ -533,6 +533,7 @@ rm -f %{buildroot}%{_infodir}/dir
 make check|| {
     # find and print the logs of failed test
     # do not cat tests/testsuite.log because it contains a lot of bloat
+    find src -name "test-suite.log" -print -exec cat '{}' \;
     find tests/testsuite.dir -name "testsuite.log" -print -exec cat '{}' \;
     exit 1
 }
