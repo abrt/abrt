@@ -43,7 +43,7 @@
     %define docdirversion -%{version}
 %endif
 
-%define libreport_ver 2.13.0
+%define libreport_ver 2.14.0
 %define satyr_ver 0.24
 
 Summary: Automatic bug detection and reporting tool
@@ -77,6 +77,7 @@ BuildRequires: libselinux-devel
 BuildRequires: python3-devel
 BuildRequires: python3-systemd
 BuildRequires: python3-argcomplete
+BuildRequires: python3-dbus
 %endif # with python3
 
 Requires: libreport >= %{libreport_ver}
