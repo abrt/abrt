@@ -134,7 +134,7 @@ def run(config):
     if missing:
         log2("%s", missing)
         if len(b_ids) > 0:
-            print(_("Coredump references {0} debuginfo files, {1} of them are not installed").format(len(b_ids), len(missing)))
+            print(_("Coredump references {0} debuginfo files").format(len(b_ids)))
         else:
             # Only --exact FILE[:FILE2]... was specified
             print(_("{0} of debuginfo files are not installed").format(len(missing)))
@@ -157,6 +157,9 @@ def run(config):
                                     repo_pattern=config.repo_pattern,
                                     releasever=config.releasever)
             downloader.find_packages(missing)
+
+            print(_("Going to install {0} debuginfo packages")
+                  .format(downloader.get_package_count()))
 
             # Check how much space we need in cache
             # If we don't have enough space, find files we need to keep in cache
