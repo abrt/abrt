@@ -42,7 +42,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-08-18 11:29+0000\n"
+"PO-Revision-Date: 2020-08-27 12:29+0000\n"
 "Last-Translator: Emilio Herrera <ehespinosa57@gmail.com>\n"
 "Language-Team: Spanish <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/es/>\n"
@@ -51,7 +51,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.1.1\n"
+"X-Generator: Weblate 4.2.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -258,7 +258,7 @@ msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
-"Con esta opción habilitada ABRT nunca muestra notificaciones de problemas "
+" Con esta opción habilitada ABRT nunca muestra notificaciones de problemas "
 "informados. Solo funciona si los informes abreviados están habilitados."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
@@ -266,7 +266,7 @@ msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
 msgstr ""
-"Con esta opción habilitada ABRT siempre crea una entrada del error con "
+" Con esta opción habilitada ABRT siempre crea una entrada del error con "
 "acceso restringido si se detecta datos posiblemente sensibles."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
@@ -527,11 +527,11 @@ msgstr "Demonizar"
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr "Número de trabajadores concurrentes. El valor por defecto es"
+msgstr "Número de trabajadores concurrentes. El valor por defecto es "
 
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr "Tamaño máximo de la caché en MB. El valor predeterminado es"
+msgstr "Tamaño máximo de la caché en MB. El valor predeterminado es "
 
 #: ../src/daemon/abrt-auto-reporting.c:198
 #: ../src/daemon/abrt-auto-reporting.c:206
@@ -810,7 +810,7 @@ msgid ""
 msgstr ""
 "& [-v] -d DIR\n"
 "\n"
-"Calcula y guarda el UUID del volcado de memoria en la carpeta del problema  "
+"Calcula y guarda el UUID del volcado de memoria en la carpeta del problema "
 "DIR"
 
 #: ../src/plugins/abrt-action-analyze-core.in:67
@@ -821,7 +821,7 @@ msgstr "Analizando el archivo de volcado '%s'"
 #: ../src/plugins/abrt-action-analyze-core.in:105
 #, c-format
 msgid "Missing build id: %s"
-msgstr "Falta el ID de construcción: %s "
+msgstr "Falta el ID de construcción: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:137
 #, c-format
@@ -853,7 +853,7 @@ msgstr ""
 "para ser reportado. Es molesto pero no necesariamente señala un problema con "
 "tu computadora. ABRT no permitirá la creación del reporte en sistema de "
 "rastreo de errores; pero puedes contactar a los mantenedores del kernel por "
-"correo electrónico. "
+"correo electrónico."
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:74
 msgid ""
@@ -1132,7 +1132,7 @@ msgstr "Descarga únicamente los archivos especificados"
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:71
 msgid "Pattern to use when searching for repos, default: *debug*"
 msgstr ""
-"Patrón para usar cuando se buscan repositorios, el predeterminado : *debug* "
+"Patrón para usar cuando se buscan repositorios, el predeterminado : *debug*"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:72
 msgid "Ignored option"
@@ -1339,15 +1339,15 @@ msgstr ""
 
 #: ../src/plugins/abrt-gdb-exploitable:701
 msgid "Likely crash reason: "
-msgstr "Razón de cuelgue más probable:"
+msgstr "Razón de cuelgue más probable: "
 
 #: ../src/plugins/abrt-gdb-exploitable:702
 msgid "Exploitable rating (0-9 scale): "
-msgstr "Tasa de explotabilidad (en escala de 0-9):"
+msgstr "Tasa de explotabilidad (en escala de 0-9): "
 
 #: ../src/plugins/abrt-gdb-exploitable:704
 msgid "Current instruction: "
-msgstr "Instrucciones actuales:"
+msgstr "Instrucciones actuales: "
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Exploitability analysis came up empty\n"
@@ -1404,8 +1404,7 @@ msgstr "Crea una nueva carpeta de problemas en DIR por cada ups encontrado"
 #: ../src/plugins/abrt-dump-journal-xorg.c:194
 #: ../src/plugins/abrt-dump-xorg.c:55
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
-msgstr ""
-"Igual que -d DumpLocation, lugar de volcado se especifica en  abrt.conf"
+msgstr "Igual que -d DumpLocation, lugar de volcado se especifica en abrt.conf"
 
 #: ../src/plugins/abrt-dump-oops.c:104
 msgid "Save the extracted information in PROBLEM"
@@ -1491,7 +1490,7 @@ msgstr ""
 "\n"
 "Extrae los volcados de memoria de systemd-journal\n"
 "\n"
-"Las opciones -c y -e entran en conflicto debido a que ambas especifican el\n"
+"Las opciones -c y -e entran en conflicto debido a que ambas especifican el "
 "primer mensaje leído.\n"
 "\n"
 "-e sólo es útil con -f, pues el seguimiento del registro comienza leyendo\n"
@@ -1608,7 +1607,7 @@ msgstr ""
 "-e es útil para -f ya que el seguimiento del diario comienza por la lectura\n"
 "completa del diario si la última posición vista no está disponible\n"
 "\n"
-"La última posición vista está guardada en"
+"La última posición vista está guardada en "
 
 #: ../src/plugins/abrt-dump-journal-oops.c:291
 msgid "Cannot filter systemd-journal to kernel data only"
@@ -1679,7 +1678,7 @@ msgid ""
 "abrt/plugins/xorg.conf file"
 msgstr ""
 "El filtro del diario debe indicarse con el parámetro -j o bien estar en /etc/"
-"abrt/plugins/xorg.conf."
+"abrt/plugins/xorg.conf"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:290
 msgid "Cannot filter systemd-journal to Xorg data only"
@@ -1769,7 +1768,7 @@ msgid ""
 "retracing."
 msgstr ""
 "El servidor Retrace no se puede utilizar debido a que el crash es demasiado "
-"grande. Intente hacer el trazado de forma local. "
+"grande. Intente hacer el trazado de forma local."
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
@@ -1778,7 +1777,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:230
 #: ../src/plugins/abrt-retrace-client.c:234
 msgid "Can't create temporary file in "
-msgstr "No se pudo crear la entrada de archivo temporal"
+msgstr "No se pudo crear archivo temporal en "
 
 #: ../src/plugins/abrt-retrace-client.c:322
 #: ../src/plugins/abrt-retrace-client.c:498
@@ -1849,7 +1848,7 @@ msgstr "El servidor Retrace no soporta la versión '%s'."
 
 #: ../src/plugins/abrt-retrace-client.c:693
 msgid "The server is not able to handle your request."
-msgstr "El servidor no está disponible para atender su solicitud"
+msgstr "El servidor no está disponible para atender su solicitud."
 
 #: ../src/plugins/abrt-retrace-client.c:712
 msgid "Unknown package sent to Retrace server."
@@ -1875,7 +1874,7 @@ msgstr "Estas a punto de subir %s. ¿Deseas continuar?"
 
 #: ../src/plugins/abrt-retrace-client.c:761
 msgid "Cancelled by user"
-msgstr "Cancelado por el usuario."
+msgstr "Cancelado por el usuario"
 
 #: ../src/plugins/abrt-retrace-client.c:789
 #, c-format
@@ -1884,7 +1883,7 @@ msgstr "Subiendo %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:814
 msgid "Upload successful"
-msgstr "¡Carga correcta!"
+msgstr "Carga correcta"
 
 #: ../src/plugins/abrt-retrace-client.c:830
 msgid ""
@@ -1988,7 +1987,7 @@ msgstr "Demora para sondear operaciones"
 msgid "(debug) do not delete temporary archive created from dump dir in "
 msgstr ""
 "(depuración) no borrar el archivo temporal creado en el directorio de "
-"entrada del volcado"
+"entrada del volcado "
 
 #: ../src/plugins/abrt-retrace-client.c:1274
 msgid "For status, backtrace, and log operations"
@@ -2032,7 +2031,7 @@ msgstr "Se necesita la contraseña de la tarea."
 #: ../src/plugins/abrt-retrace-client.c:1366
 #, c-format
 msgid "Unknown operation: %s."
-msgstr "Operación desconocida: %s"
+msgstr "Operación desconocida: %s."
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:1
 msgid "Search for updated packages that fixes the crash."
@@ -2120,7 +2119,7 @@ msgstr "Recolectar .xsession-errors"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
-msgstr "Guarde las líneas importantes del archivo "
+msgstr "Guarde las líneas importantes del archivo"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:3
 msgid ""
@@ -2133,7 +2132,7 @@ msgstr ""
 
 #: ../src/plugins/https-utils.c:53
 msgid "An error occurred on the server side."
-msgstr "Ha ocurrido un error en el servidor"
+msgstr "Ha ocurrido un error en el servidor."
 
 #: ../src/plugins/https-utils.c:56
 #, c-format
@@ -2169,7 +2168,7 @@ msgid ""
 "kernel maintainers are unable to fix this problem."
 msgstr ""
 "Ha ocurrido un problema de kernel, pero su hardware no tiene soporte, por lo "
-"tanto los mantenedores de kernel no pueden corregir  este problema."
+"tanto los mantenedores de kernel no pueden corregir este problema."
 
 #: ../src/plugins/oops-utils.c:246
 #, c-format
@@ -2179,14 +2178,14 @@ msgid ""
 "%sKernel maintainers are unable to diagnose tainted reports."
 msgstr ""
 "Ocurrió un problema de núcleo, pero este núcleo se ha corrompido (indic.: %s)"
-". Explicación:%.\n"
-" Los mantenedores del núcleo no pueden diagnosticar informes de núcleos "
+". Explicación:\n"
+"%s Los mantenedores del núcleo no pueden diagnosticar informes de núcleos "
 "dañados."
 
 #: ../src/plugins/oops-utils.c:254
 #, c-format
 msgid " Tainted modules: %s."
-msgstr "Módulos manchados: %s"
+msgstr " Módulos manchados: %s."
 
 #: ../src/plugins/bodhi.c:498
 msgid "List of bug ids"
@@ -2408,7 +2407,7 @@ msgstr ""
 "¿Enviar el archivo de volcado (puede contener información sensible) para "
 "generar la traza remotamente? Si responde 'No', se generará la traza en la "
 "máquina local, para lo cual puede ser necesario descargar una gran cantidad "
-"de información de depuración."
+"de información de depuración"
 
 #: ../src/cli/abrtcli/cli/retrace.py:71
 msgid "Remote retracing"
@@ -2474,7 +2473,7 @@ msgid ""
 "time, and take up disk space."
 msgstr ""
 "Es necesario instalar paquetes de información de depuración de kernel, los "
-"cuales pueden tomar un tiempo significativo y ocupar espacio de disco "
+"cuales pueden tomar un tiempo significativo y ocupar espacio de disco."
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
@@ -2494,7 +2493,7 @@ msgstr ""
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
-msgstr "Colecta archivos de configuración vim de system-wide "
+msgstr "Colecta archivos de configuración vim de system-wide"
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:2
 msgid "Save /etc/vimrc and /etc/gvimrc"
