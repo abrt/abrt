@@ -11,19 +11,22 @@ int run_test(const struct test_struct *test)
 {
 	FILE *fp = xfopen_ro(test->filename);
 	fprintf(stderr, "%s\t", test->filename);
-	g_autofree char *line = NULL;
-	g_autofree char *version = NULL;
+	char *line = NULL;
+	char *version = NULL;
 	while ((line = libreport_xmalloc_fgetline(fp)) != NULL)
 	{
 		version = abrt_koops_extract_version(line);
+        free(line);
 		if (version && !strcmp(version, test->expected_results))
 			break;
+		free(version);
 		version = NULL;
 	}
 	if (version)
 		log_warning("version %s", version);
 	else
 		log_warning("version was not found");
+	free(version);
 	fclose(fp);
 	return version == NULL;
 }
