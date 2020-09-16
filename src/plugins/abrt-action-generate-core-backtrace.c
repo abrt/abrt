@@ -33,7 +33,6 @@ int main(int argc, char **argv)
     abrt_init(argv);
 
     const char *dump_dir_name = ".";
-    int raw_fingerprints = 0; /* must be _int_, OPT_BOOL expects that! */
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
@@ -44,13 +43,11 @@ int main(int argc, char **argv)
     enum {
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
-        OPT_r = 1 << 2,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR", _("Problem directory")),
-        OPT_BOOL('r', "raw", &raw_fingerprints, _("Do not hash fingerprints")),
         OPT_END()
     };
     /*unsigned opts =*/ libreport_parse_opts(argc, argv, program_options, program_usage_string);
@@ -68,8 +65,7 @@ int main(int argc, char **argv)
 
 #ifdef ENABLE_NATIVE_UNWINDER
 
-    success = sr_abrt_create_core_stacktrace(dump_dir_name, !raw_fingerprints,
-                                             &error_message);
+    success = sr_abrt_create_core_stacktrace(dump_dir_name, false, &error_message);
 #else /* ENABLE_NATIVE_UNWINDER */
 
     /* The value 240 was taken from abrt-action-generate-backtrace.c. */
@@ -86,8 +82,7 @@ int main(int argc, char **argv)
     }
 
     success = sr_abrt_create_core_stacktrace_from_gdb(dump_dir_name,
-                                                      gdb_output,
-                                                      !raw_fingerprints,
+                                                      gdb_output, false,
                                                       &error_message);
     dd_close(dd);
 
