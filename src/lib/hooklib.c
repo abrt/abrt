@@ -348,7 +348,7 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
     unsigned bt_depth = 1024;
     const char *thread_apply_all = "thread apply all -ascending";
     const char *full = "full ";
-    g_autofree char *bt = NULL;
+    char *bt = NULL;
     while (1)
     {
         args[bt_cmd_index] = g_strdup_printf("%s backtrace %s%u", thread_apply_all, full, bt_depth);
@@ -367,6 +367,7 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
             /* (NB: in fact, current impl. of exec_vp() never returns NULL) */
             log_warning("Failed to generate backtrace, reducing depth to %u",
                         bt_depth);
+            free(bt);
 
         /* Replace -ex disassemble (which disasms entire function $pc points to)
          * to a version which analyzes limited, small patch of code around $pc.
