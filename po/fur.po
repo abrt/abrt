@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-04-23 00:40+0000\n"
+"PO-Revision-Date: 2020-09-22 21:29+0000\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/fur/>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.0.1\n"
+"X-Generator: Weblate 4.2.2\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -51,7 +51,7 @@ msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
 "reported."
 msgstr ""
-"Nus displâs, al semee che %s al sedi colassât. Il probleme al è stât "
+"Nus displâs, al somee che %s al sedi colassât. Il probleme al è stât "
 "segnalât in automatic."
 
 #: ../src/applet/abrt-applet-application.c:668
@@ -60,7 +60,7 @@ msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
 "internet is available."
 msgstr ""
-"Nus displâs, al semee che %s al sedi colassât. Il probleme al vignarà "
+"Nus displâs, al somee che %s al sedi colassât. Il probleme al vignarà "
 "segnalât cuant che internet al sarà disponibil."
 
 #: ../src/applet/abrt-applet-application.c:674
@@ -71,7 +71,7 @@ msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
 msgstr ""
-"Nus displâs, al semee che %s al sedi colassât. Par plasê, contate il "
+"Nus displâs, al somee che %s al sedi colassât. Par plasê, contate il "
 "disvilupadôr se tu desideris segnalâ il probleme."
 
 #: ../src/applet/abrt-applet-application.c:682
@@ -80,7 +80,7 @@ msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
 msgstr ""
-"Nus displâs, al semee che %s al sedi colassât. Se tu desideris judâ a "
+"Nus displâs, al somee che %s al sedi colassât. Se tu desideris judâ a "
 "risolvi il probleme, invie une segnalazion."
 
 #: ../src/applet/abrt-applet-application.c:701
@@ -88,7 +88,7 @@ msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
 msgstr ""
-"Nus displâs, al semee che al sedi capitât un probleme intun component. Il "
+"Nus displâs, al somee che al sedi capitât un probleme intun component. Il "
 "probleme al è stât segnalât in automatic."
 
 #: ../src/applet/abrt-applet-application.c:705
@@ -96,7 +96,7 @@ msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
 msgstr ""
-"Nus displâs, al semee che al sedi capitât un probleme intun component. Il "
+"Nus displâs, al somee che al sedi capitât un probleme intun component. Il "
 "probleme al vignarà segnalât cuant che internet al sarà disponibil."
 
 #: ../src/applet/abrt-applet-application.c:710
@@ -104,7 +104,7 @@ msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
 msgstr ""
-"Nus displâs, al semee che al sedi capitât un probleme. Se tu desideris judâ "
+"Nus displâs, al somee che al sedi capitât un probleme. Se tu desideris judâ "
 "a risolvi il probleme, invie une segnalazion."
 
 #. TODO: Terminate child's process?
@@ -388,6 +388,8 @@ msgstr "L'element '%s' nol pues jessi modificât"
 #: ../src/dbus/abrt-dbus.c:506
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
+"No si è rivâts a cambiâ il paron de cartele. Controlâ i regjistris di "
+"sisteme par vê plui detais."
 
 #: ../src/dbus/abrt-dbus.c:635
 #, c-format
@@ -491,7 +493,7 @@ msgstr "Dimension cache massime in MiB. Chê predefinide e je"
 #: ../src/daemon/abrt-auto-reporting.c:198
 #: ../src/daemon/abrt-auto-reporting.c:206
 msgid "& [ "
-msgstr ""
+msgstr "& [ "
 
 #: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
@@ -646,7 +648,7 @@ msgstr "Impussibil conetisi al DBus di sisteme: %s"
 #: ../src/lib/problem_api_dbus.c:68
 #, c-format
 msgid "Can't chown '%s': %s"
-msgstr ""
+msgstr "Impussibil cambiâ il paron di '%s': %s"
 
 #: ../src/lib/problem_api_dbus.c:97
 #, c-format
@@ -858,11 +860,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
-msgstr ""
+msgstr "Cartelis di debuginfo adizionâls"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:57
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr ""
+msgstr "Cope gdb se al è in esecuzion par plui di NUM seconts"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
@@ -886,7 +888,7 @@ msgstr ""
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
 msgid "Generating core_backtrace"
-msgstr ""
+msgstr "Gjenerazion di core_backtrace"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:81
 msgid "Error: GDB did not return any data"
@@ -916,11 +918,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:168
 msgid "Missing requested file: {0}"
-msgstr ""
+msgstr "File necessari mancjant: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:173
 msgid "Missing debuginfo file: {0}"
-msgstr ""
+msgstr "File debuginfo mancjant: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:176
 msgid "All debuginfo files are available"
