@@ -23,13 +23,14 @@
 # Rafael Fontenelle <rafaelff@gnome.org>, 2020.
 # Adolfo Ketzer <reztek@gmail.com>, 2020.
 # José Lemos Neto <lemosjosex@protonmail.com>, 2020.
+# Arthur Nunes Corrêa <arthurnunes@tutanota.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-07-18 15:28+0000\n"
-"Last-Translator: José Lemos Neto <lemosjosex@protonmail.com>\n"
+"PO-Revision-Date: 2020-09-29 02:29+0000\n"
+"Last-Translator: Arthur Nunes Corrêa <arthurnunes@tutanota.com>\n"
 "Language-Team: Portuguese (Brazil) <https://translate.fedoraproject.org/"
 "projects/abrt/abrt/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -37,7 +38,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.1.1\n"
+"X-Generator: Weblate 4.2.2\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -1448,7 +1449,7 @@ msgstr "Mais oopses encontrados: processar somente o primeiro"
 #: ../src/plugins/abrt-dump-journal-core.c:378
 #, c-format
 msgid "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
-msgstr ""
+msgstr "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
 
 #: ../src/plugins/abrt-dump-journal-core.c:407
 #: ../src/plugins/abrt-dump-journal-core.c:446
@@ -1462,10 +1463,8 @@ msgid "Not saving repeating crash after %ds (limit is %ds)"
 msgstr "Não é possível salvar travamentos repetidos após %ds (limite é %ds)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:478
-#, fuzzy
-#| msgid "Failed to save detect problem data in abrt database"
 msgid "Failed to print detect problem data to stdout"
-msgstr "Falha ao salvar os dados do problema detectado no banco de dados abrt"
+msgstr "Falha ao enviar os dados do problema detectado para a saída padrão"
 
 #: ../src/plugins/abrt-dump-journal-core.c:486
 msgid "Failed to save detect problem data in abrt database"
@@ -1966,10 +1965,8 @@ msgstr ""
 "antes de carregar o arquivo"
 
 #: ../src/plugins/abrt-retrace-client.c:1261
-#, fuzzy
-#| msgid "retrace server URL"
 msgid "retrace server URI"
-msgstr "Retraçar URL do servidor"
+msgstr "URI do servidor retrace"
 
 #: ../src/plugins/abrt-retrace-client.c:1263
 msgid "(debug) show received HTTP headers"
@@ -2043,9 +2040,8 @@ msgid "Unknown operation: %s."
 msgstr "Operação desconhecida: %s."
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:1
-#, fuzzy
 msgid "Search for updated packages that fixes the crash."
-msgstr "Procure por pacotes atualizados que corrijam o encerramento inesperado."
+msgstr "Procurar por pacotes atualizados que corrijam o crash."
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:2
 msgid ""
@@ -2053,6 +2049,9 @@ msgid ""
 "Whiteboar equal to 'UUID' of the crash. If such a bug found, search for "
 "Bodhi updates shipping fixes for the found Bugzilla bugs."
 msgstr ""
+"Procura por reportes da Bugzilla com o valor 'abrt_hash' no Bugzilla Bug "
+"Whiteboard igual ao 'UUID' do crash. Se o bug é encontrado, procura por "
+"atualizações Bodhi que contenham correções para os bugs Bugzilla encontrados."
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
@@ -2094,10 +2093,8 @@ msgstr ""
 "se houverem."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-#, fuzzy
-#| msgid "Retrace server URL"
 msgid "Retrace server URI"
-msgstr "URL do servidor de retraçamento"
+msgstr "URI do servidor de retraçamento"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Address of the retrace server"
@@ -2177,18 +2174,15 @@ msgstr ""
 "mantenedores do kernel são incapazes de corrigir esse problema."
 
 #: ../src/plugins/oops-utils.c:246
-#, fuzzy, c-format
-#| msgid ""
-#| "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
-#| "Kernel maintainers are unable to diagnose tainted reports."
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Explanation:\n"
 "%sKernel maintainers are unable to diagnose tainted reports."
 msgstr ""
 "Ocorreu um problema no kernel, mas seu kernel foi adulterado (flags: %s). "
-"Mantenedores do kernel não são capazes de diagnosticar relatórios "
-"adulterados."
+"Explicação: Mantenedores do kernel não são capazes de diagnosticar "
+"relatórios adulterados."
 
 #: ../src/plugins/oops-utils.c:254
 #, c-format
@@ -2464,7 +2458,7 @@ msgstr "Listar apenas problemas não reportados"
 
 #: ../src/cli/abrtcli/cli/status.py:19
 msgid "only show output if at least one problem is found"
-msgstr ""
+msgstr "só tem output se pelo menos um problema é encontrado"
 
 #: ../src/cli/abrtcli/cli/status.py:40
 #, fuzzy
