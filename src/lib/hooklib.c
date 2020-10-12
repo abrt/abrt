@@ -361,13 +361,17 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
 
         bt_depth /= 2;
         if (bt)
+        {
             log_warning("Backtrace is too big (%u bytes), reducing depth to %u",
                         (unsigned)strlen(bt), bt_depth);
+        }
         else
+        {
             /* (NB: in fact, current impl. of exec_vp() never returns NULL) */
             log_warning("Failed to generate backtrace, reducing depth to %u",
                         bt_depth);
-            free(bt);
+            g_clear_pointer(&bt, free);
+        }
 
         /* Replace -ex disassemble (which disasms entire function $pc points to)
          * to a version which analyzes limited, small patch of code around $pc.
