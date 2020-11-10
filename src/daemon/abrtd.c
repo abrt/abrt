@@ -172,7 +172,7 @@ static void queue_post_create_process(struct abrt_server_proc *proc)
         /* Move behind '/' */
         ++ignored;
 
-    g_autofree char *worst_dir = NULL;
+    char *worst_dir = NULL;
     const double max_size = 1024 * 1024 * abrt_g_settings_nMaxCrashReportsSize;
     while (libreport_get_dirsize_find_largest_dir(abrt_g_settings_dump_location, &worst_dir, ignored, proc->dirname) >= max_size
            && worst_dir)
@@ -193,7 +193,7 @@ static void queue_post_create_process(struct abrt_server_proc *proc)
                 kind, worst_dir);
 
         g_autofree char *deleted = g_build_filename(abrt_g_settings_dump_location ? abrt_g_settings_dump_location : "", worst_dir, NULL);
-        worst_dir = NULL;
+        g_clear_pointer(&worst_dir, free);
 
         struct dump_dir *dd = dd_opendir(deleted, DD_FAIL_QUIETLY_ENOENT);
         if (dd != NULL)
