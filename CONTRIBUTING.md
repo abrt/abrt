@@ -85,6 +85,8 @@ Your username is `yourname` and you're submitting a basic bugfix or feature.
 * `git status`
 * `git add`
 * `git commit -s -m "Foo the bars"`
+* Summarize all substantial, user-facing changes, if any, in `CHANGELOG.md` under 'Unreleased'
+* `git add CHANGELOG.md && git commit -s -m "CHANGELOG: Update unreleased changes"`, if applicable
 * `git push -u origin HEAD` to create foo_the_bars branch in your fork
 * Visit your fork at Github and click handy "Pull request" button.
 * In the description field, write down issue number (if submitting code fixing
