@@ -5,14 +5,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- Fix invalid free (rhbz#1895660)
+- Fix crash during local processing (rhbz#1881745)
+- Fix reported numbers of missing debuginfo packages in abrt-action-install-debuginfo
+
+### Removed
+- Drop --raw flag in abrt-action-generate-core-backtrace
 
 ## [2.14.4]
 ### Fixed
-Fix broken release 2.14.3
-oops-utils: Respect the 'world-readable' flag
+- Fix broken release 2.14.3
+- oops-utils: Respect the 'world-readable' flag
 
 ### Removed
-Decommission libreport_list_free_with_free
+- Decommission libreport_list_free_with_free
 
 ## [2.14.3]
 ### Added
