@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix invalid free (rhbz#1895660)
 - Fix crash during local processing (rhbz#1881745)
 - Fix reported numbers of missing debuginfo packages in abrt-action-install-debuginfo
+- Correct the format of NEVRA generated for packages where a problem occurred ([rhbz#1900982](https://bugzilla.redhat.com/show_bug.cgi?id=1900982))
 
 ### Removed
 - Drop --raw flag in abrt-action-generate-core-backtrace
