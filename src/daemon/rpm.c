@@ -339,7 +339,7 @@ struct pkg_nevra *rpm_get_package_nvr(const char *filename, const char *rootdir_
     if (strcmp(p->p_epoch, "0") == 0)
         p->p_nvr = g_strdup_printf("%s-%s-%s", p->p_name, p->p_version, p->p_release);
     else
-        p->p_nvr = g_strdup_printf("%s:%s-%s-%s", p->p_name, p->p_epoch, p->p_version, p->p_release);
+        p->p_nvr = g_strdup_printf("%s-%s:%s-%s", p->p_name, p->p_epoch, p->p_version, p->p_release);
 
     rpmdbFreeIterator(iter);
     rpmtsFree(ts);
