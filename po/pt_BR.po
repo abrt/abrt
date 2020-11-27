@@ -24,13 +24,14 @@
 # Adolfo Ketzer <reztek@gmail.com>, 2020.
 # José Lemos Neto <lemosjosex@protonmail.com>, 2020.
 # Arthur Nunes Corrêa <arthurnunes@tutanota.com>, 2020.
+# Gustavo Costa <gusta@null.net>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-09-29 02:29+0000\n"
-"Last-Translator: Arthur Nunes Corrêa <arthurnunes@tutanota.com>\n"
+"PO-Revision-Date: 2020-11-27 00:48+0000\n"
+"Last-Translator: Gustavo Costa <gusta@null.net>\n"
 "Language-Team: Portuguese (Brazil) <https://translate.fedoraproject.org/"
 "projects/abrt/abrt/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -38,7 +39,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.2.2\n"
+"X-Generator: Weblate 4.3.2\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -2180,9 +2181,10 @@ msgid ""
 "Explanation:\n"
 "%sKernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"Ocorreu um problema no kernel, mas seu kernel foi adulterado (flags: %s). "
-"Explicação: Mantenedores do kernel não são capazes de diagnosticar "
-"relatórios adulterados."
+"Ocorreu um problema de kernel, mas seu kernel foi contaminado (flags:%s). "
+"Explicação:\n"
+"%sOs mantenedores do kernel são incapazes de diagnosticar relatórios "
+"contaminados."
 
 #: ../src/plugins/oops-utils.c:254
 #, c-format
@@ -2253,7 +2255,7 @@ msgstr "Excluir arquivos com oopses encontrados"
 
 #: ../src/cli/abrtcli/match.py:117
 msgid "No matching problems found"
-msgstr "Sem problemas coincidentes."
+msgstr "Nenhum problema correspondente encontrado"
 
 #: ../src/cli/abrtcli/utils.py:79
 msgid "Not reportable"
@@ -2261,17 +2263,15 @@ msgstr "Não relatável"
 
 #: ../src/cli/abrtcli/cli/__init__.py:30
 msgid "increase output verbosity"
-msgstr "Aumentar a quantidade de mensagens da saída."
+msgstr "aumentar a verbosidade da saída"
 
 #: ../src/cli/abrtcli/cli/__init__.py:50
 msgid "positive non-zero integer expected"
 msgstr "Esperado um inteiro positivo diferente de 0"
 
 #: ../src/cli/abrtcli/cli/__init__.py:54
-#, fuzzy
-#| msgid "List problems"
 msgid "filter last N problems"
-msgstr "Listar problemas "
+msgstr "filtrar os últimos N problemas"
 
 #: ../src/cli/abrtcli/cli/__init__.py:57
 msgid "filter problems with matching component"
@@ -2378,22 +2378,18 @@ msgid "remove after reporting"
 msgstr "Remover PROBLEM_DIR após relatar"
 
 #: ../src/cli/abrtcli/cli/report.py:25
-#, fuzzy
-#| msgid "Not reportable"
 msgid "ignore unreportable state"
-msgstr "Não relatável "
+msgstr "ignorar estado não reportável"
 
 #: ../src/cli/abrtcli/cli/report.py:41
-#, fuzzy, python-brace-format
-#| msgid "Problem '%s' cannot be reported"
+#, python-brace-format
 msgid "Problem '{0}' cannot be reported"
-msgstr "O problema '%s' não pode ser relatado"
+msgstr "O problema '{0}' não pode ser relatado"
 
 #: ../src/cli/abrtcli/cli/report.py:50
-#, fuzzy, python-format
-#| msgid "Report problem"
+#, python-format
 msgid "Reporting problem %s\n"
-msgstr "Relatar problema"
+msgstr "Relatando o problema %s\n"
 
 #: ../src/cli/abrtcli/cli/retrace.py:24
 #, fuzzy
@@ -2402,11 +2398,8 @@ msgid "perform retracing locally"
 msgstr "Executar retraçamento local"
 
 #: ../src/cli/abrtcli/cli/retrace.py:26
-#, fuzzy
-#| msgid "Send core dump to remote retrace server for analysis"
 msgid "submit core dump for remote retracing"
-msgstr ""
-"Envia o despejo de núcleo ao servidor de retraçamento remoto para análise."
+msgstr "enviar 'core dump' para retraçamento remoto"
 
 #: ../src/cli/abrtcli/cli/retrace.py:29
 #, fuzzy

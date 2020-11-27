@@ -12,21 +12,23 @@
 # Jiri Grönroos <jiri.gronroos@iki.fi>, 2017. #zanata
 # Toni Rantala <trantalafilo@gmail.com>, 2017. #zanata
 # Jiri Grönroos <jiri.gronroos@iki.fi>, 2018. #zanata
+# Ricky Tigg <ricky.tigg@gmail.com>, 2020.
+# Jan Kuparinen <copper_fin@hotmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2018-08-19 12:18+0000\n"
-"Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
-"Language-Team: Finnish (http://www.transifex.com/projects/p/fedora-abrt/"
-"language/fi/)\n"
+"PO-Revision-Date: 2020-11-25 18:35+0000\n"
+"Last-Translator: Jan Kuparinen <copper_fin@hotmail.com>\n"
+"Language-Team: Finnish <https://translate.fedoraproject.org/projects/abrt/"
+"abrt/fi/>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.3.2\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -38,20 +40,11 @@ msgstr "Katsele ja raportoi ohjelmien kaatumisia"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
-msgstr ""
+msgstr "Ole monisanaisempi"
 
 #: ../src/applet/abrt-applet-application.c:167
-#, fuzzy
-#| msgid ""
-#| "& [-v] [DIR]...\n"
-#| "\n"
-#| "Applet which notifies user when new problems are detected by ABRT\n"
 msgid "Applet which notifies user when new problems are detected by ABRT"
-msgstr ""
-"& [-v] [HAK]...\n"
-"\n"
-"Ohjelma, joka huomauttaa käyttäjälle uusista ABRT:n havaitsemista "
-"ongelmista\n"
+msgstr "Appletti, joka ilmoittaa käyttäjälle, kun ABRT havaitsee uusia ongelmia"
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
@@ -136,12 +129,12 @@ msgstr "Gio-kanavalta ei voida lukea: '%s'"
 #: ../src/applet/abrt-applet-application.c:884
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr ""
+msgstr "Koodausta ei voi asettaa gio-kanavalle: %s"
 
 #: ../src/applet/abrt-applet-application.c:889
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr ""
+msgstr "Ei-estokäyttötilaa ei voi ottaa käyttöön gio-kanavalle: %s"
 
 #: ../src/applet/abrt-applet-problem-info.c:259
 #, c-format
@@ -159,10 +152,13 @@ msgid ""
 "linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
+"Yllä oleva määritysvaihtoehto on siirretty GSettings-sovellukseen ja kytkin "
+"on linkitetty asetuksen 'report-technical-problems' arvoon kaavasta 'org."
+"gnome.desktop.privacy'."
 
 #: ../src/configuration-gui/abrt-config-widget.c:496
 msgid "The configuration option above can be configured in"
-msgstr ""
+msgstr "Yllä oleva määritysvaihtoehto voidaan määrittää kohteessa"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
@@ -189,6 +185,12 @@ msgid ""
 "With option 'Never' the stack trace will be always generated locally. With "
 "option 'Ask' ABRT will always ask the user."
 msgstr ""
+"Ytimen pino -tiedosto coredump on välttämätön pinon jäljityksen luomiseksi, "
+"mikä vie aikaa ja tilaa vievää toimintaa. ABRT tarjoaa palvelun, joka luo "
+"pinon jäljityksen coredumpista, mutta sinun on ladattava coredump tähän "
+"palveluun. Vaihtoehdolla 'Aina' ABRT lähettää aina coredumpin kyselemättä. "
+"Vaihtoehdolla 'Ei koskaan' pinon jäljitys syntyy aina paikallisesti. "
+"Vaihtoehdolla 'Kysy' ABRT kysyy aina käyttäjältä."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -197,6 +199,10 @@ msgid ""
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
 msgstr ""
+"ABRT tallentaa ongelmatiedot hakemistoihin. Aina kun ABRT tarvitsee "
+"kirjoitettavaa hakemistoa, hakemisto siirretään järjestelmän sijainnista "
+"kotihakemistoon. Kun tämä vaihtoehto on poistettu käytöstä, ABRT siirtää "
+"ongelmahakemiston kysymättä."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
@@ -205,6 +211,11 @@ msgid ""
 "uReport is sent at beginning of reporting process. With this option enabled "
 "uReports are sent automatically immediately after problem detection."
 msgstr ""
+"uReport on lyhyt ja täysin tuntematon ongelman kuvaus. ABRT käyttää uReports-"
+"tiedostoja nopeaan kopioiden tunnistamiseen maailmanlaajuisesti. "
+"Oletusasetuksissa uReport lähetetään raportointiprosessin alussa. Kun tämä "
+"vaihtoehto on käytössä, uRaportit lähetetään automaattisesti heti ongelman "
+"havaitsemisen jälkeen."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
@@ -212,26 +223,35 @@ msgid ""
 "in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
+"Kun tämä vaihtoehto on käytössä, raportointiprosessi, joka aloitetaan "
+"napsauttamalla Ilmoita-painiketta ongelman ilmoituskuplassa, keskeytyy "
+"uReportin lähettämisen jälkeen. Voit aina käyttää ongelmaoletusselainta "
+"luodakseen täydellisen raportin."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
+" Kun tämä vaihtoehto on käytössä, ABRT ei koskaan näytä ilmoituksia "
+"ilmoitetuista ongelmista. Voimassa vain, jos Lyhennetty raportointi on "
+"käytössä."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
 msgstr ""
+" Kun tämä vaihtoehto on käytössä, ABRT luo aina virhelipun, jolla on "
+"rajoitettu pääsy, jos havaitaan mahdollisesti arkaluontoisia tietoja."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid "Request private ticket for sensitive information"
-msgstr "Pyydä yksityistä tikettiä arkaluontoiselle informaatiolle."
+msgstr "Pyydä yksityistä tikettiä arkaluontoiselle tiedolle"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Notify incomplete problems"
-msgstr ""
+msgstr "Ilmoita epätäydellisistä ongelmista"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid ""
@@ -239,6 +259,9 @@ msgid ""
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
 msgstr ""
+"Puutteelliset ongelmat havaitaan, kun tietokone sammuu tai käyttäjä "
+"kirjautuu ulos. Hyödyllisten ongelmaraporttien tarjoamiseksi ABRT ei salli "
+"sinun lähettää näitä ongelmia."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid "Always"
@@ -254,7 +277,7 @@ msgstr "Kysy"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
 msgid "Upload coredump for backtrace generation"
-msgstr ""
+msgstr "Lähetä ytimen pino jäljitysjäljen luontia varten"
 
 #: ../src/configuration-gui/system-config-abrt.c:66
 msgid "_Close"
@@ -271,7 +294,7 @@ msgstr "Ongelmienraportointiasetukset"
 
 #: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
-msgstr "Tietoja System Config ABRT:sta."
+msgstr "Tietoja System Config ABRT:sta"
 
 #: ../src/configuration-gui/main.c:105
 msgid "About"
@@ -323,7 +346,7 @@ msgstr ""
 
 #: ../src/daemon/abrt-action-save-container-data.c:266
 msgid "Root directory for running container commands"
-msgstr ""
+msgstr "Rootin hakemisto konttikomentojen suorittamiseksi"
 
 #: ../src/daemon/abrt-server.c:1100 ../src/dbus/abrt-dbus.c:1014
 #: ../src/daemon/abrtd.c:738
@@ -373,11 +396,13 @@ msgstr "elementtiä ”%s” ei voi muokata"
 #: ../src/dbus/abrt-dbus.c:506
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
+"Chownin asettaminen hakemistoon epäonnistui. Tarkista lisätietoja "
+"järjestelmälokeista."
 
 #: ../src/dbus/abrt-dbus.c:635
 #, c-format
 msgid "Can't get size of '%s'"
-msgstr "'%s':n kokoa ei saada."
+msgstr "'%s':n kokoa ei saada"
 
 #: ../src/dbus/abrt-dbus.c:650
 msgid "No problem space left"
@@ -386,7 +411,7 @@ msgstr "Ongelmatilaa ei jäljellä"
 #: ../src/dbus/abrt-dbus.c:685
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr ""
+msgstr "Elementtiä '%s'ei voi poistaa ongelmanhallinnasta '%s'"
 
 #: ../src/dbus/abrt-dbus.c:938 ../src/daemon/abrtd.c:720
 #, c-format
@@ -394,6 +419,8 @@ msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr ""
+"Nimi '%s' on kadonnut. Tarkista, onko jokin muu nimen omistava palvelu "
+"käynnissä.\n"
 
 #: ../src/dbus/abrt-dbus.c:1023 ../src/daemon/abrtd.c:753
 msgid "Exit after NUM seconds of inactivity"
@@ -411,6 +438,11 @@ msgid ""
 "problem. If you have time and want to help the developers in their effort to "
 "sort out this problem, please contact them directly."
 msgstr ""
+"Ongelmatiedot ovat puutteellisia. Tämä tapahtuu yleensä, kun ongelma "
+"havaitaan, kun tietokone sammuu tai käyttäjä kirjautuu ulos. Hyödyllisten "
+"ongelmaraporttien tarjoamiseksi ABRT ei salli sinun lähettää tätä ongelmaa. "
+"Jos sinulla on aikaa ja haluat auttaa kehittäjiä heidän pyrkimyksissään "
+"selvittää tämä ongelma, ota suoraan yhteyttä heihin."
 
 #: ../src/daemon/abrtd.c:751
 msgid "Do not daemonize"
@@ -422,7 +454,7 @@ msgstr "Kirjoita lokia syslogiin myös valitsimen -d kanssa"
 
 #: ../src/daemon/abrt-handle-event.c:362
 msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
-msgstr ""
+msgstr "& [-v -i -n LISÄYS] -e|--event TAPAHTUMA KAN..."
 
 #: ../src/daemon/abrt-handle-event.c:371
 msgid "Run EVENT on DIR"
@@ -439,7 +471,7 @@ msgstr "Kasvata nice-arvoa INCREMENT:llä"
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
-msgstr ""
+msgstr "Ei vapaita säikeitä ja bufferi täysi . Jätetään pois arkisto '%s'"
 
 #: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
@@ -452,20 +484,26 @@ msgid ""
 "If UPLOAD_DIRECTORY is not provided, uses a value of\n"
 "WatchCrashdumpArchiveDir option from abrt.conf"
 msgstr ""
+"& [-vs] [-w NRO] [-c MiB] [LATAUSKANSIO]\n"
+"\n"
+"\n"
+"Tarkkailee LATAUSKANSIOTA ja purkaa saapuvat arkistot DumpLocationiin,\n"
+"joka on määritelty tiedostossa abrt.conf\n"
+"\n"
+"Jos LATAUSKANSIOTA ei ole määritetty, käytettään abrt.conf tiedoston arvoa\n"
+"optiolle WatchCrashdumpArchiveDir"
 
 #: ../src/daemon/abrt-upload-watch.c:281
-#, fuzzy
-#| msgid "Do not daemonize"
 msgid "Daemonize"
-msgstr "Älä aseta taustaprosessiksi"
+msgstr "Aseta daemon-prosessiksi"
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr ""
+msgstr "Yhtäaikaisten säikeiden lukumäärä. Oletus on "
 
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr ""
+msgstr "Cachen maksimikoko MiB. Oletus on "
 
 #: ../src/daemon/abrt-auto-reporting.c:198
 #: ../src/daemon/abrt-auto-reporting.c:206
@@ -524,15 +562,15 @@ msgstr "Jatkaminen ilman salasanaa ei ole mahdollista\n"
 #. Print only the part before ':' of a string like "username:password"
 #: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
-msgstr ""
+msgstr "HTTP-todennettu automaattinen raportointi"
 
 #: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
-msgstr ""
+msgstr "SSL-asiakaan todennettu automaattinen raportointi"
 
 #: ../src/daemon/abrt-auto-reporting.c:384
 msgid "anonymous auto reporting"
-msgstr ""
+msgstr "anonyymi automaattinen raportointi"
 
 #: ../src/daemon/abrt-handle-upload.in:130
 #, c-format
@@ -581,7 +619,7 @@ msgstr "Tuntematon tiedostotyyppi: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:205
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "Työhakemistoa ei voi luoda kansioon {0}"
 
 #: ../src/daemon/abrt-handle-upload.in:216
 msgid "Can't move '{0}' to '{1}'"
@@ -629,26 +667,26 @@ msgstr "Ei voida chown '%s': %s"
 #: ../src/lib/problem_api_dbus.c:97
 #, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr "Ongelmhakemisto %s:n poisto epäonnistui."
+msgstr "Ongelmhakemisto %s:n poisto epäonnistui"
 
 #: ../src/lib/problem_api_dbus.c:131
 #, c-format
 msgid "D-Bus GetInfo method call failed: %s"
-msgstr ""
+msgstr "D-Bus GetInfo -menetelmän kutsu epäonnistui: %s"
 
 #: ../src/lib/problem_api_dbus.c:166
 msgid "Can't get problem data from abrt-dbus"
-msgstr ""
+msgstr "Ei voida saada ongelmatietoja abrt-dbusilta"
 
 #: ../src/lib/problem_api_dbus.c:193
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
-msgstr ""
+msgstr "Ei voida saada ongelmatietoja abrt-dbusilta: %s"
 
 #: ../src/lib/problem_api_dbus.c:230 ../src/lib/problem_api_dbus.c:315
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
-msgstr ""
+msgstr "Ei voida saada ongelmatietoja abrt-dbusilta: %s"
 
 #: ../src/lib/problem_api_dbus.c:274
 #, c-format
@@ -1007,7 +1045,7 @@ msgstr "Säästä tämä hakemisto"
 #: ../src/plugins/abrt-action-ureport:54
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr " '%s' ei voida käynnistää, virheilmoitus: '%s'"
+msgstr "'%s' ei voida käynnistää, virheilmoitus: '%s'"
 
 #: ../src/plugins/abrt-action-ureport:65
 #, c-format
@@ -1148,15 +1186,15 @@ msgstr ""
 
 #: ../src/plugins/abrt-gdb-exploitable:701
 msgid "Likely crash reason: "
-msgstr "Oletettu kaatumisen syy:"
+msgstr "Oletettu kaatumisen syy: "
 
 #: ../src/plugins/abrt-gdb-exploitable:702
 msgid "Exploitable rating (0-9 scale): "
-msgstr "Hyväksikäytön arvio (asteikolla 0-9)"
+msgstr "Hyväksikäytön arvio (asteikolla 0-9): "
 
 #: ../src/plugins/abrt-gdb-exploitable:704
 msgid "Current instruction: "
-msgstr "Tämänhetkiset ohjeet:"
+msgstr "Tämänhetkiset ohjeet: "
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Exploitability analysis came up empty\n"
@@ -1422,7 +1460,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:192
 msgid "Print found crashes on standard output"
-msgstr ""
+msgstr "Tulosta löydetyt kaatumiset vakiotulosteeseen"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:193
 msgid "Create new problem directory in DIR for every crash found"
@@ -1524,7 +1562,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:230
 #: ../src/plugins/abrt-retrace-client.c:234
 msgid "Can't create temporary file in "
-msgstr "Väliaikaista tiedostoa ei voida luoda"
+msgstr "Väliaikaista tiedostoa ei voida luoda kohteessa "
 
 #: ../src/plugins/abrt-retrace-client.c:322
 #: ../src/plugins/abrt-retrace-client.c:498
@@ -1699,10 +1737,8 @@ msgstr ""
 "ennen arkiston lähetystä"
 
 #: ../src/plugins/abrt-retrace-client.c:1261
-#, fuzzy
-#| msgid "retrace server URL"
 msgid "retrace server URI"
-msgstr "uudelleenjäljiyspalvelimen URL"
+msgstr "uudelleenjäljityspalvelimen URI"
 
 #: ../src/plugins/abrt-retrace-client.c:1263
 msgid "(debug) show received HTTP headers"
@@ -1819,10 +1855,8 @@ msgstr ""
 "myös mahdolliset yksityiset tiedot."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-#, fuzzy
-#| msgid "Retrace server URL"
 msgid "Retrace server URI"
-msgstr "Retrace-palvelimen URL"
+msgstr "Uudelleenjäljityspalvelimen URI"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Address of the retrace server"
@@ -1870,11 +1904,11 @@ msgstr "Palvelinpuolella tapahtui virhe."
 #: ../src/plugins/https-utils.c:56
 #, c-format
 msgid "A server-side error occurred on '%s'"
-msgstr "Palvelinpuolen virhe tapahtui  '%s':ssa"
+msgstr "Palvelinpuolen virhe tapahtui '%s':ssa"
 
 #: ../src/plugins/https-utils.c:65
 msgid "An error occurred while connecting to the server"
-msgstr "Palvelimeen yhdistäessä tapahtui virhe."
+msgstr "Palvelimeen yhdistäessä tapahtui virhe"
 
 #: ../src/plugins/https-utils.c:68
 #, c-format
@@ -1899,18 +1933,14 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/oops-utils.c:246
-#, fuzzy, c-format
-#| msgid ""
-#| "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
-#| "Kernel maintainers are unable to diagnose tainted reports."
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Explanation:\n"
 "%sKernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"Tapahtui ytimen ongelma, mutta järjestelmän ydin on tärvelty (tainted, "
-"liput: %s). Ytimen ylläpitäjät eivät pysty tutkimaan tärvellyistä ytimistä "
-"tehtyjä raportteja."
+"Ytimen ongelma ilmeni, mutta ytimesi on tärvelty (liput: %s). Selitys:\n"
+"%s Kernelin ylläpitäjät eivät pysty diagnosoimaan tärveltyjä raportteja."
 
 #: ../src/plugins/oops-utils.c:254
 #, c-format
@@ -1991,20 +2021,16 @@ msgid "positive non-zero integer expected"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/__init__.py:54
-#, fuzzy
-#| msgid "List problems"
 msgid "filter last N problems"
-msgstr "Listaa ongelmat"
+msgstr "suodata viimeiset N ongelmaa"
 
 #: ../src/cli/abrtcli/cli/__init__.py:57
 msgid "filter problems with matching component"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/__init__.py:59
-#, fuzzy
-#| msgid "Report problem"
 msgid "filter unreported problems"
-msgstr "Ilmoita ongelma"
+msgstr "suodata ilmoittamattomat ongelmat"
 
 #: ../src/cli/abrtcli/cli/__init__.py:61
 msgid "filter problems older than the specified timestamp"
@@ -2027,10 +2053,8 @@ msgid "built-in output format"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/__init__.py:79
-#, fuzzy
-#| msgid "Make the problem directory world readable"
 msgid "path to the problem directory, problem ID or wildcard"
-msgstr "Tee ongelmahakemistosta kaikkien luettava"
+msgstr "polku ongelman hakemistoon, ongelman tunnukseen tai jokeriin"
 
 #: ../src/cli/abrtcli/cli/backtrace.py:35
 msgid "Problem has no backtrace"
@@ -2041,11 +2065,8 @@ msgid "Start retracing process?"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/gdb.py:25
-#, fuzzy
-#| msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgid "install debuginfo packages before launching GDB"
-msgstr ""
-"Lataa debuginfo-paketit ja luo pinolistaus paikallisesti GDB:tä käyttäen"
+msgstr "asenna virheenkorjauspaketit ennen GDB:n käynnistämistä"
 
 #: ../src/cli/abrtcli/cli/gdb.py:38
 msgid "The problem is not of a C/C++ type. Can't run GDB"
@@ -2067,10 +2088,8 @@ msgid "No problems"
 msgstr "Ei ongelmia"
 
 #: ../src/cli/abrtcli/cli/remove.py:22
-#, fuzzy
-#| msgid "Do not prompt before removal"
 msgid "do not prompt before removal"
-msgstr "Älä kysy ennen poistamista"
+msgstr "älä kysy ennen poistamista"
 
 #: ../src/cli/abrtcli/cli/remove.py:37
 msgid "Are you sure you want to delete this problem?"
@@ -2081,38 +2100,30 @@ msgid "Removed"
 msgstr "Poistettu"
 
 #: ../src/cli/abrtcli/cli/report.py:23
-#, fuzzy
-#| msgid "Remove PROBLEM_DIR after reporting"
 msgid "remove after reporting"
-msgstr "Poista PROBLEM_DIR raportoinnin jälkeen"
+msgstr "poista raportoinnin jälkeen"
 
 #: ../src/cli/abrtcli/cli/report.py:25
-#, fuzzy
-#| msgid "Not reportable"
 msgid "ignore unreportable state"
-msgstr "Ei ilmoitettavissa"
+msgstr "ohita ilmoittamaton tila"
 
 #: ../src/cli/abrtcli/cli/report.py:41
-#, fuzzy, python-brace-format
-#| msgid "Problem '%s' cannot be reported"
+#, python-brace-format
 msgid "Problem '{0}' cannot be reported"
-msgstr "Ongelmaa '%s' ei voi ilmoittaa"
+msgstr "Ongelmaa '{0}' ei voi ilmoittaa"
 
 #: ../src/cli/abrtcli/cli/report.py:50
-#, fuzzy, python-format
-#| msgid "Report problem"
+#, python-format
 msgid "Reporting problem %s\n"
-msgstr "Ilmoita ongelma"
+msgstr "Ilmoita ongelmasta %s\n"
 
 #: ../src/cli/abrtcli/cli/retrace.py:24
 msgid "perform retracing locally"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/retrace.py:26
-#, fuzzy
-#| msgid "Send core dump to remote retrace server for analysis"
 msgid "submit core dump for remote retracing"
-msgstr "Lähetä muistivedos etäpalvelimelle analysointavaksi"
+msgstr "lähetä muistivedos etäjäljitystä varten"
 
 #: ../src/cli/abrtcli/cli/retrace.py:29
 msgid "force retracing"
@@ -2192,8 +2203,8 @@ msgid ""
 "Needs to install kernel debuginfo packages, which might take significant "
 "time, and take up disk space."
 msgstr ""
-"Ytimen debuginfo-paketit on asennettava, tämä saattaa viedä paljon aikaa ja "
-"levytilaa"
+"Ytimen debuginfo-paketit on asennettava; tämä saattaa viedä paljon aikaa ja "
+"levytilaa."
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
