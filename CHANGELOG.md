@@ -5,11 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.14.5]
 ### Fixed
 - Fix invalid free (rhbz#1895660)
 - Fix crash during local processing (rhbz#1881745)
 - Fix reported numbers of missing debuginfo packages in abrt-action-install-debuginfo
-- Correct the format of NEVRA generated for packages where a problem occurred ([rhbz#1900982](https://bugzilla.redhat.com/show_bug.cgi?id=1900982))
+- Correct the format of NEVRA generated for packages where a problem occurred (rhbz#1900982)
 
 ### Removed
 - Drop --raw flag in abrt-action-generate-core-backtrace
@@ -294,7 +296,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.14.4...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.14.5...HEAD
+[2.14.5]: https://github.com/abrt/abrt/compare/2.14.4...2.14.5
 [2.14.4]: https://github.com/abrt/abrt/compare/2.14.3...2.14.4
 [2.14.3]: https://github.com/abrt/abrt/compare/2.14.2...2.14.3
 [2.14.2]: https://github.com/abrt/abrt/compare/2.14.1...2.14.2

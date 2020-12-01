@@ -993,6 +993,27 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Tue Dec 01 2020 Michal Fabik <mfabik@redhat.com> 2.14.5-1
+- BR make
+- Update translations
+- spec: Don't use GitHub-generated tarball as Source
+- changelog: Add fix for rhbz#1900982
+- rpm: Correct NEVRA format
+- tests: Fix leaks
+- tests: Only fail on definite and indirect leaks
+- CONTRIBUTING: Add changelog instructions
+- CHANGELOG: Update with PR 1537
+- abrtd: Don't jump over g_autofree
+- hooklib: Proper freeing of backtrace
+- hooklib: Don't g_autofree backtrace
+- abrt-action-generate-core-backtrace: Drop --raw flag
+- a-a-install-debuginfo: Correct debuginfo numbers
+- spec: Output logs on make check failure
+- spec: Bump libreport_ver, require python3-dbus
+- tests: upload-handling: Quote paths more liberally
+- Drop sosreport_event.conf
+- spec: Fix Obsoletes
+
 * Mon Aug 17 2020 Michal Fabik <mfabik@redhat.com> 2.14.4-1
 - oops-utils: Respect the 'world-readable' flag
 - Decommission libreport_list_free_with_free
