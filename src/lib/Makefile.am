@@ -16,7 +16,8 @@ libabrt_la_SOURCES = \
     migrate_dirs.c \
     check_recent_crash_file.c \
     problem_api.c \
-    problem_api_dbus.c
+    problem_api_dbus.c \
+    libabrt.sym
 
 libabrt_la_CPPFLAGS = \
     -I$(srcdir)/../include \
@@ -34,6 +35,11 @@ libabrt_la_CPPFLAGS = \
     -D_GNU_SOURCE
 libabrt_la_LDFLAGS = \
     -version-info 0:1:0
+
+if HAVE_LD_VERSION_SCRIPT
+libabrt_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libabrt.sym
+endif
+
 libabrt_la_LIBADD = \
     $(GLIB_LIBS) \
     $(GIO_LIBS) \

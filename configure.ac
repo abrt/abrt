@@ -20,6 +20,7 @@ AC_INIT([abrt],
 	[crash-catcher@fedorahosted.org])
 
 AC_CONFIG_MACRO_DIR([m4])
+gl_LD_VERSION_SCRIPT
 AM_INIT_AUTOMAKE([-Wall foreign tar-ustar])
 # Support silent build rules. Disable by either passing --disable-silent-rules
 # to ./configure or passing V=1 to make

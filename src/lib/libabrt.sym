@@ -1,0 +1,81 @@
+LIBRABRT_2.14.5 {
+global:
+    /* internal_libabrt.h */
+    libabrt_init;
+    g_libabrt_inited;
+
+    /* hooklib.h */
+    problem_data_save;
+    problem_entry_is_post_create_condition;
+    dump_suid_policy;
+    signal_is_fatal;
+
+    /* libabrt.h */
+    abrt_low_free_space;
+    abrt_trim_problem_dirs;
+    abrt_ensure_writable_dir_uid_gid;
+    abrt_ensure_writable_dir;
+    abrt_ensure_writable_dir_group;
+    abrt_run_unstrip_n;
+    abrt_get_backtrace;
+    abrt_dir_is_in_dump_location;
+    abrt_dir_has_correct_permissions;
+    abrt_new_user_problem_entry_allowed;
+    abrt_g_settings_nMaxCrashReportsSize;
+    abrt_g_settings_sWatchCrashdumpArchiveDir;
+    abrt_g_settings_dump_location;
+    abrt_g_settings_delete_uploaded;
+    abrt_g_settings_autoreporting;
+    abrt_g_settings_autoreporting_event;
+    abrt_g_settings_shortenedreporting;
+    abrt_g_settings_explorechroots;
+    abrt_g_settings_debug_level;
+    abrt_load_abrt_conf;
+    abrt_free_abrt_conf_data;
+    abrt_load_abrt_conf_file;
+    abrt_load_abrt_plugin_conf_file;
+    abrt_save_abrt_conf_file;
+    abrt_save_abrt_plugin_conf_file;
+    migrate_to_xdg_dirs;
+    check_recent_crash_file;
+    abrt_daemon_is_ok;
+    abrt_notify_new_path;
+    abrt_notify_new_path_with_response;
+    abrt_koops_extract_version;
+    abrt_kernel_tainted_short;
+    abrt_kernel_tainted_long;
+    abrt_koops_hash_str_ext;
+    abrt_koops_hash_str;
+    abrt_koops_line_skip_level;
+    abrt_koops_line_skip_jiffies;
+    abrt_koops_extract_oopses_from_lines;
+    abrt_koops_extract_oopses;
+    abrt_koops_suspicious_strings_list;
+    abrt_koops_suspicious_strings_blacklist;
+    abrt_koops_print_suspicious_strings;
+    abrt_koops_print_suspicious_strings_filtered;
+    chown_dir_over_dbus;
+    test_exist_over_dbus;
+    dbus_problem_is_complete;
+    load_text_over_dbus;
+    delete_problem_dirs_over_dbus;
+    fill_problem_data_over_dbus;
+    get_problem_data_dbus;
+    get_full_problem_data_over_dbus;
+    get_problems_over_dbus;
+
+    /* problem_api.h */
+    for_each_problem_in_dir;
+    get_problem_storages;
+    get_problem_dirs_for_uid;
+    get_problem_dirs_not_accessible_by_uid;
+    problem_dump_dir_is_complete;
+
+    /* abrt_glib.h */
+    string_list_from_variant;
+    variant_from_string_list;
+    abrt_gio_channel_unix_new;
+    
+local:
+    *;
+};

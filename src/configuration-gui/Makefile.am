@@ -11,7 +11,8 @@ libabrt_gui_la_SOURCES = \
 	abrt-config-widget.c \
 	abrt-config-widget.h \
 	system-config-abrt.c \
-	system-config-abrt.h
+	system-config-abrt.h \
+	libabrt_gui.sym
 
 # G_DEFINE_TYPE(...) macros result in
 # typedef '_GStaticAssertCompileTimeAssertion_0' locally defined but not used
@@ -31,6 +32,10 @@ libabrt_gui_la_CPPFLAGS = \
 
 libabrt_gui_la_LDFLAGS = \
 	-version-info 0:1:0
+
+if HAVE_LD_VERSION_SCRIPT
+libabrt_gui_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libabrt_gui.sym
+endif
 
 libabrt_gui_la_LIBADD = \
 	../lib/libabrt.la \
