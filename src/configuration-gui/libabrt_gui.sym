@@ -1,0 +1,18 @@
+LIBRABRT_GUI_2.14.5 {
+global:
+    /* abrt-config-widget.h */
+    abrt_config_widget_get_type;
+    abrt_config_widget_new;
+    abrt_config_widget_reset_to_defaults;
+    abrt_config_widget_save_chnages;
+    abrt_config_widget_get_changed;
+
+    /* system-config-abrt.h */
+    system_config_abrt_widget_new;
+    system_config_abrt_widget_close_callback;
+    system_config_abrt_widget_new_with_close_button;
+    system_config_abrt_check_before_close;
+    show_system_config_abrt_dialog;
+local:
+    *;
+};
