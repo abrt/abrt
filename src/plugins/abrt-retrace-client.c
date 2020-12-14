@@ -856,7 +856,7 @@ static int create(SoupSession  *session,
 
     if (delay)
     {
-        puts(_("Retrace job started"));
+        printf(_("Retrace job #%s started\n"), task_id);
         fflush(stdout);
     }
 
