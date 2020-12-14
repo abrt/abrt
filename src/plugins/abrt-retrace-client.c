@@ -1261,7 +1261,7 @@ int main(int argc, char **argv)
     };
 
     const char *usage = _("abrt-retrace-client <operation> [options]\n"
-        "Operations: create/status/backtrace/log/batch/exploitable");
+        "Operations: create, status, backtrace, log, batch, exploitable");
 
     char *env_uri = getenv("RETRACE_SERVER_URI");
     if (env_uri)
