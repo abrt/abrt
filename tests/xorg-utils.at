@@ -50,10 +50,7 @@ void test(const char *backtrace, const char *exp_backtrace,
     char *last_slash = strrchr(template, '/');
     *last_slash = '\0';
 
-    if (mkdtemp(template) == NULL) {
-        perror("mkdtemp()");
-        return EXIT_FAILURE;
-    }
+    assert(mkdtemp(template));
 
     *last_slash = '/';
 
