@@ -37,7 +37,7 @@ jobs:
           tar --extract --file=/tmp/coverity_tool.tar.gz --directory=/tmp/coverity --strip-components=1
 
       - name: Add Coverity tools to PATH
-        run: echo '::add-path::/tmp/coverity/bin'
+        run: echo '/tmp/coverity/bin' >> "$GITHUB_PATH"
 
       - name: Build
         run: cov-build --dir cov-int make
