@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - abrt-retrace-client: Created task ID is now printed in batch mode
 - Start versioning the abrt libraries
+- cli: Gracefully handle disappearance of problem directory during reporting
 
 ## [2.14.5]
 ### Fixed

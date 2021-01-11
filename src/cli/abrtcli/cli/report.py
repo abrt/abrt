@@ -1,5 +1,6 @@
 import sys
 
+from problem.exception import InvalidProblem
 import report
 import reportclient
 
@@ -34,22 +35,27 @@ class Report(Command):
                                       n_latest=arguments.n_latest,
                                       not_reported=arguments.not_reported)
         for problem in problems:
-            if problem.not_reportable and not arguments.unsafe:
-                if reportclient.verbose > 0:
-                    print(problem.not_reportable_reason)
+            try:
+                if problem.not_reportable and not arguments.unsafe:
+                    if reportclient.verbose > 0:
+                        print(problem.not_reportable_reason)
 
-                print(_('Problem \'{0}\' cannot be reported').format(problem.short_id))
+                    print(_('Problem \'{0}\' cannot be reported').format(problem.short_id))
+                    sys.exit(1)
+
+                flags = report.LIBREPORT_WAIT | report.LIBREPORT_RUN_CLI
+                if arguments.unsafe:
+                    flags |= report.LIBREPORT_IGNORE_NOT_REPORTABLE
+
+                problem.chown()
+
+                print(_("Reporting problem %s\n" % (problem.short_id)))
+
+                report.report_problem_in_dir(problem.path, flags)
+
+                if arguments.delete:
+                    problem.delete(problem.path)
+            except InvalidProblem:
+                print(_("Problem '{0}' cannot be reported. The problem directory '{1}' is gone")
+                      .format(problem.short_id, problem.path))
                 sys.exit(1)
-
-            flags = report.LIBREPORT_WAIT | report.LIBREPORT_RUN_CLI
-            if arguments.unsafe:
-                flags |= report.LIBREPORT_IGNORE_NOT_REPORTABLE
-
-            problem.chown()
-
-            print(_("Reporting problem %s\n" % (problem.short_id)))
-
-            report.report_problem_in_dir(problem.path, flags)
-
-            if arguments.delete:
-                problem.delete(problem.path)
