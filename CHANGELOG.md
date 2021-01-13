@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - abrt-retrace-client: Created task ID is now printed in batch mode
 
+### Changed
+- Added dependency of the abrt-addon-vmcore package on python3-systemd
+
 ## [2.14.5]
 ### Fixed
 - Fix invalid free (rhbz#1895660)
