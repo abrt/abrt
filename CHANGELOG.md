@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Start versioning the abrt libraries
 - cli: Gracefully handle disappearance of problem directory during reporting
 
+### Changed
+- Added dependency of the abrt-addon-vmcore package on python3-systemd
+
 ## [2.14.5]
 ### Fixed
 - Fix invalid free (rhbz#1895660)
