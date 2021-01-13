@@ -23,22 +23,12 @@ Module for the ABRT exception handling hook
 import sys
 import os
 
+from systemd import journal
 
 def syslog(msg):
     """Log message to system logger (journal)"""
 
-    from systemd import journal
-
-    # required as a workaround for rhbz#1023041
-    # where journal tries to log into non-existent log
-    # and fails (during %check in mock)
-    #
-    # try/except block should be removed when the bug is fixed
-
-    try:
-        journal.send(msg)
-    except:
-        pass
+    journal.send(msg)
 
 
 def send(data):
