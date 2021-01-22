@@ -79,7 +79,7 @@ BuildRequires: python3-devel
 BuildRequires: python3-systemd
 BuildRequires: python3-argcomplete
 BuildRequires: python3-dbus
-%endif # with python3
+%endif
 
 Requires: libreport >= %{libreport_ver}
 Requires: satyr >= %{satyr_ver}
@@ -97,7 +97,7 @@ Requires(pre): %{shadow_utils}
 %if %{with python3}
 Requires: python3-augeas
 Requires: python3-dbus
-%endif # with python3
+%endif
 %ifarch aarch64 i686 x86_64
 Requires: dmidecode
 %endif
@@ -130,7 +130,7 @@ BuildRequires: python3-sphinx
 BuildRequires: python3-libreport
 #python3-abrt-doc
 BuildRequires: python3-devel
-%endif # with python3
+%endif
 
 %description
 %{name} is a tool to help users to detect defects in applications and
@@ -195,7 +195,7 @@ Requires: %{name} = %{version}-%{release}
 Requires: abrt-libs = %{version}-%{release}
 %if %{with python3}
 Requires: python3-libreport
-%endif # with python3
+%endif
 Obsoletes: abrt-addon-coredump-helper <= 2.12.2
 
 
@@ -256,7 +256,7 @@ Requires: kexec-tools
 Requires: python3-abrt
 Requires: python3-augeas
 Requires: python3-systemd
-%endif # with python3
+%endif
 Requires: util-linux
 
 %description addon-vmcore
@@ -305,7 +305,7 @@ Requires: container-exception-logger
 %description -n python3-abrt-container-addon
 This package contains python 3 hook and handling uncaught exception in python 3
 programs in container.
-%endif # with python3
+%endif
 
 %package plugin-machine-id
 Summary: %{name}'s plugin to generate machine_id based off dmidecode
@@ -328,7 +328,7 @@ Requires: python3-argcomplete
 
 Provides: %{name}-cli-ng = %{version}-%{release}
 Obsoletes: %{name}-cli-ng < 2.12.2
-%endif # with python3
+%endif
 
 %description tui
 This package contains a simple command line client for processing abrt reports
@@ -344,7 +344,7 @@ Requires: abrt-addon-vmcore
 Requires: abrt-addon-ccpp
 %if %{with python3}
 Requires: python3-abrt-addon
-%endif # with python3
+%endif
 Requires: abrt-addon-xorg
 %if ! 0%{?rhel}
 %if %{with retrace}
@@ -381,7 +381,7 @@ Requires: abrt-addon-vmcore
 Requires: abrt-addon-ccpp
 %if %{with python3}
 Requires: python3-abrt-addon
-%endif # with python3
+%endif
 Requires: abrt-addon-xorg
 Requires: gdb-headless
 Requires: abrt-gui
@@ -452,7 +452,7 @@ Requires: python3-%{name} = %{version}-%{release}
 
 %description -n python3-abrt-doc
 Examples and documentation for ABRT Python 3 API.
-%endif # with python3
+%endif
 
 %package console-notification
 Summary: ABRT console notification script
@@ -474,7 +474,7 @@ autoconf
 CFLAGS="%{optflags} -Werror" %configure \
 %if %{without python3}
         --without-python3 \
-%endif # with python3
+%endif
 %if %{without bodhi}
         --without-bodhi \
 %endif
@@ -498,7 +498,7 @@ CFLAGS="%{optflags} -Werror" %configure \
 %make_install \
 %if %{with python3}
              PYTHON=%{__python3} \
-%endif # with python3
+%endif
              dbusabrtdocdir=%{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/
 
 %find_lang %{name}
@@ -572,7 +572,7 @@ fi
 %if %{with python3}
 %post -n python3-abrt-addon
 %journal_catalog_update
-%endif # with python3
+%endif
 
 %post addon-vmcore
 %systemd_post abrt-vmcore.service
@@ -643,7 +643,7 @@ fi
 if [ -f /etc/abrt/plugins/CCpp.conf.rpmsave.atomic ]; then
     mv /etc/abrt/plugins/CCpp.conf.rpmsave.atomic /etc/abrt/plugins/CCpp.conf || exit 1
 fi
-%endif # with atomic
+%endif
 
 %if 0%{?rhel} && 0%{?rhel} <= 7
 %post libs -p /sbin/ldconfig
@@ -927,7 +927,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{python3_sitelib}/abrt3_container.pth
 %{python3_sitelib}/abrt_exception_handler3_container.py
 %{python3_sitelib}/__pycache__/abrt_exception_handler3_container.*
-%endif # with python3
+%endif
 
 %files plugin-machine-id
 %config(noreplace) %{_sysconfdir}/libreport/events.d/machine-id_event.conf
@@ -943,7 +943,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{python3_sitelib}/abrtcli/
 %{_mandir}/man1/abrt.1*
 %{_mandir}/man1/abrt-cli.1*
-%endif # with python3
+%endif
 
 %files desktop
 
@@ -988,7 +988,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 
 %files -n python3-abrt-doc
 %{python3_sitelib}/problem_examples
-%endif # with python3
+%endif
 
 %files console-notification
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
