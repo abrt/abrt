@@ -24,6 +24,18 @@
 #include <rpm/rpmcli.h>
 #include <rpm/rpmdb.h>
 #include <rpm/rpmpgp.h>
+#include <rpm/rpmkeyring.h>
+
+struct rpmPubkey_s {
+    uint8_t *pkt;
+    size_t pktlen;
+    pgpKeyID_t keyid;
+    pgpDigParams pgpkey;
+    int nrefs;
+    pthread_rwlock_t lock;
+};
+
+typedef struct rpmPubkey_s * rpmPubkey;
 #endif
 
 /**
@@ -83,20 +95,39 @@ void rpm_destroy()
 void rpm_load_gpgkey(const char* filename)
 {
 #ifdef HAVE_LIBRPM
+    rpmPubkey pubkey = NULL;
+    rpmPubkey *subkeys = NULL;
+    char *fingerprint = NULL;
+    int subkeysCount = 0;
     g_autofree uint8_t *pkt = NULL;
-    size_t pklen;
+    size_t pklen = 0;
+
     if (pgpReadPkts(filename, &pkt, &pklen) != PGPARMOR_PUBKEY)
     {
         error_msg("Can't load public GPG key %s", filename);
         return;
     }
 
-    uint8_t keyID[8];
-    if (pgpPubkeyKeyID(pkt, pklen, keyID) == 0)
+    pubkey = rpmPubkeyNew(pkt, pklen);
+    if (pubkey != NULL)
     {
-        char *fingerprint = pgpHexStr(keyID, sizeof(keyID));
+        fingerprint = pgpHexStr(pubkey->keyid, sizeof(pubkey->keyid));
         if (fingerprint != NULL)
             list_fingerprints = g_list_append(list_fingerprints, fingerprint);
+
+        subkeys = rpmGetSubkeys(pubkey, &subkeysCount);
+        for (int i = 0; i < subkeysCount; i++)
+        {
+            rpmPubkey subkey = subkeys[i];
+            if (subkey != NULL)
+            {
+                fingerprint = pgpHexStr(subkey->keyid, sizeof(subkey->keyid));
+                if (fingerprint != NULL)
+                    list_fingerprints = g_list_append(list_fingerprints, fingerprint);
+            }
+            rpmPubkeyFree(subkey);
+        }
+        free(subkeys);
     }
 #else
     return;
