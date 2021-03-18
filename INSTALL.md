@@ -43,6 +43,8 @@ otherwise run:
 
     $ make install
 
+(Note: If the build is failing, see if you don't have an older version of python3-abrt-addon already installed and try uninstalling the package as it might interfere with the build testsuite.)
+
 On platforms with SELinux enabled, the 'make install' command must be followed
 by the 'restorecon /' command. This is not required when installing rpm
 packages because rpm's selinux plugin takes care of it.
