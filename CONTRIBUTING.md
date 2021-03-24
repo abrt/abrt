@@ -84,7 +84,11 @@ Your username is `yourname` and you're submitting a basic bugfix or feature.
 * Run `make check`
 * `git status`
 * `git add`
-* `git commit -s -m "Foo the bars"`
+* `git commit -s -m "Foo the bars"  
+Note: You can set up a helpful commit message template for your text editor by running
+`$ git config commit.template .git-commit-template`. Remember though that
+committing with `git commit -m` defeats its purpose. You might want to rethink
+your habits.
 * Summarize all substantial, user-facing changes, if any, in `CHANGELOG.md` under 'Unreleased'
 * `git add CHANGELOG.md && git commit -s -m "CHANGELOG: Update unreleased changes"`, if applicable
 * `git push -u origin HEAD` to create foo_the_bars branch in your fork
