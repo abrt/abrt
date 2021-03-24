@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DEF_VER=2.14.5
+DEF_VER=$(sed -ne '/^Version:/s/^Version:\s*//p' abrt.spec)
 LF='
 '
 

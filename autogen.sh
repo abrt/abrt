@@ -19,17 +19,14 @@ EOH
 parse_build_requires_from_spec_file()
 {
     PACKAGE=$1
-    TEMPFILE=$(mktemp -u --suffix=.spec)
-    sed 's/@PACKAGE_VERSION@/1/' < $PACKAGE.spec.in | sed 's/@.*@//' > $TEMPFILE
-    rpmspec -P $TEMPFILE | grep "^\(Build\)\?Requires:" | \
+    rpmspec -P $PACKAGE.spec | grep "^\(Build\)\?Requires:" | \
         tr -s " " | tr "," "\n" | cut -f2- -d " " | \
         grep -v "\(^\|python[23]-\)"$PACKAGE | sort -u | sed -E 's/^(.*) (.*)$/"\1 \2"/' | tr \" \'
-    rm $TEMPFILE
 }
 
 list_build_dependencies()
 {
-    local BUILD_SYSTEM_DEPS_LIST="gettext-devel"
+    local BUILD_SYSTEM_DEPS_LIST="gettext-devel make tito"
     echo $BUILD_SYSTEM_DEPS_LIST $(parse_build_requires_from_spec_file abrt)
 }
 

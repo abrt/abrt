@@ -48,11 +48,11 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: @PACKAGE_VERSION@
+Version: 2.14.5
 Release: 1%{?dist}
 License: GPLv2+
 URL: https://abrt.readthedocs.org/
-Source: https://github.com/abrt/%{name}/releases/download/%{version}/%{name}-%{version}.tar.gz
+Source: https://github.com/abrt/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 BuildRequires: %{dbus_devel}
 BuildRequires: hostname
 BuildRequires: gtk3-devel
@@ -467,7 +467,7 @@ to the shell
 %setup -q
 
 %build
-autoconf
+./autogen.sh
 
 %define default_dump_dir %{_localstatedir}/spool/abrt
 
@@ -728,7 +728,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man5/abrt_event.conf.5*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/smart_event.conf
 %{_mandir}/man5/smart_event.conf.5*
-%dir %attr(@DEFAULT_DUMP_LOCATION_MODE@, root, abrt) %{default_dump_dir}
+%dir %attr(0751, root, abrt) %{default_dump_dir}
 %dir %attr(0700, abrt, abrt) %{_localstatedir}/spool/%{name}-upload
 # abrtd runs as root
 %ghost %dir %attr(0755, root, root) %{_localstatedir}/run/%{name}

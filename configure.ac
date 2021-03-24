@@ -407,7 +407,6 @@ AC_CHECK_PROGS([VALGRIND], [valgrind])
 AC_CONFIG_FILES([
 	Makefile
 	abrt.pc
-	abrt.spec
 	apidoc/Makefile
 	apidoc/Doxyfile
 	apidoc/html/Makefile
