@@ -24,23 +24,11 @@ endif
 systemdtmpfilesdir = $(prefix)/lib/tmpfiles.d
 systemdtmpfiles_DATA = init-scripts/abrt.conf
 
-RPM_DIRS = --define "_sourcedir `pwd`" \
-	   --define "_rpmdir `pwd`/build" \
-	   --define "_specdir `pwd`" \
-	   --define "_builddir `pwd`/build" \
-	   --define "_srcrpmdir `pwd`/build"
-
 rpm:
-	./gen-version
-	autoconf --force
-	$(MAKE) dist
-	rpmbuild $(RPM_DIRS) $(RPM_FLAGS) -ba abrt.spec
+	tito build --rpm
 
 srpm:
-	./gen-version
-	autoconf --force
-	$(MAKE) dist
-	rpmbuild $(RPM_DIRS) -bs abrt.spec
+	tito build --srpm
 
 # value for overriding from command line
 # e.g: make scratch-build DIST=f15
@@ -53,40 +41,6 @@ UPLOAD_URL ?= localhost
 upload: dist
 	scp $(distdir).tar.gz $$(test -n "$$UPLOAD_LOGIN" && echo "$$UPLOAD_LOGIN@")$(UPLOAD_URL)
 
-.PHONY: release-fix
-release-fix:
-	OLD_VER=$$(git describe --tags --match "[0-9]*" --abbrev=0 HEAD 2>/dev/null); \
-	MAJOR_VER=$$(echo $$OLD_VER | cut -d. -f 1); \
-	MINOR_VER=$$(echo $$OLD_VER | cut -d. -f 2); \
-	FIX_VER=$$(echo $$OLD_VER | cut -d. -f 3); \
-	$(MAKE) release OLD_VER=$$OLD_VER NEW_VER="$$MAJOR_VER.$$MINOR_VER.$$((FIX_VER+1))"
-
-.PHONY: release-minor
-release-minor:
-	OLD_VER=$$(git describe --tags --match "[0-9]*" --abbrev=0 HEAD 2>/dev/null); \
-	MAJOR_VER=$$(echo $$OLD_VER | cut -d. -f 1); \
-	MINOR_VER=$$(echo $$OLD_VER | cut -d. -f 2); \
-	$(MAKE) release OLD_VER=$$OLD_VER NEW_VER="$$MAJOR_VER.$$((MINOR_VER+1)).0"
-
-.PHONY: release-major
-release-major:
-	OLD_VER=$$(git describe --tags --match "[0-9]*" --abbrev=0 HEAD 2>/dev/null); \
-	MAJOR_VER=$$(echo $$OLD_VER | cut -d. -f 1); \
-	$(MAKE) release OLD_VER=$$OLD_VER NEW_VER="$$((MAJOR_VER+1)).0.0"
-
 .PHONY: release
 release:
-	echo "* $$(LC_TIME='en_US.UTF-8' date +'%a %b %d %Y') $$(git config --get user.name) <$$(git config --get user.email)> $$NEW_VER-1" | sort > /tmp/changelog.tmp
-	git log --oneline $$OLD_VER..HEAD | awk '{$$1=""; if (a[$$0]++ == 0) print "-" $$0} END {print ""}' | grep -v -e "- Merge" -e "- testsuite:" -e "- make:" >> /tmp/changelog.tmp
-	sed "$$(grep -n changelog abrt.spec.in | cut -f1 -d: | head -1)"'r /tmp/changelog.tmp' -i abrt.spec.in
-	sed -e "s/^## \[Unreleased\]/## [Unreleased]\n\n## [$$NEW_VER]\n[\/\/] # (Please sum up added, changed, removed and fixed features here. See below for examples.)/" \
-	    -e "s/^\[Unreleased\]: \(https:\/\/.*\/compare\)\(\/.*\)\.\.\.HEAD/[Unreleased]: \1\/$$NEW_VER...HEAD\n[$$NEW_VER]: \1\2...$$NEW_VER/" \
-	    -i CHANGELOG.md
-	$${EDITOR:-vi} CHANGELOG.md
-	sed 's|DEF_VER=.*$$|DEF_VER='$$NEW_VER'|' -i gen-version
-	git add gen-version abrt.spec.in CHANGELOG.md
-	git commit -m "New version $$NEW_VER"
-	git tag "$$NEW_VER"
-	echo -n "$$NEW_VER" > abrt-version
-	autoconf --force
-	$(MAKE) dist
+	tito tag

@@ -10,28 +10,34 @@ jobs:
     container: fedora:latest
     runs-on: ubuntu-latest
     steps:
-      - name: Check out sources
-        uses: actions/checkout@v2
-
       - name: Install build environment
         run: |
-          dnf --assumeyes install dnf-plugins-core
+          dnf --assumeyes install dnf-plugins-core git-core
           dnf --assumeyes copr enable @abrt/devel
           dnf --assumeyes install \
             @c-development @development-tools @rpm-development-tools \
-            intltool
+            intltool tito
+
+      - name: Check out sources
+        uses: actions/checkout@v2
 
       - name: Install build dependencies
-        run: ./autogen.sh sysdeps --install
+        run: dnf --assumeyes builddep --spec abrt.spec
+
+      - name: Set up build user
+        run: useradd builder
 
       - name: Configure build
-        run: ./autogen.sh
+        run: chown -R builder. .
 
       - name: Build
-        run: make --load-average=2
+        run: sudo -u builder -- tito build --test --rpm
 
       - name: Run tests
-        run: make check
+        run: |
+          sudo -u builder -- ./autogen.sh
+          sudo -u builder -- make
+          sudo -u builder -- make check
 
       - name: Upload test log
         uses: actions/upload-artifact@v2

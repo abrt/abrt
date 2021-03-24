@@ -16,12 +16,9 @@ The dependency installer gets the data from [the rpm spec file](abrt.spec.in)
 
 When you have all dependencies installed run the following commands:
 
-    $ ./autogen.sh --prefix=/usr \
-                   --sysconfdir=/etc \
-                   --localstatedir=/var \
-                   --sharedstatedir=/var/lib
+    $ tito build --rpm --test
 
-    $ make
+Note: You have to have your changes committed. Tito doesn't deal in dirty trees.
 
 or if you want to debug ABRT run:
 
@@ -35,14 +32,5 @@ or if you want to debug ABRT run:
 
 ### Installing
 
-If you need an rpm package, run:
+    $ tito build --rpm --test -i
 
-    $ make rpm
-
-otherwise run:
-
-    $ make install
-
-On platforms with SELinux enabled, the 'make install' command must be followed
-by the 'restorecon /' command. This is not required when installing rpm
-packages because rpm's selinux plugin takes care of it.
