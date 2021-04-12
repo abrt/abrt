@@ -63,17 +63,25 @@ int main(int argc, char **argv)
     g_autofree char *error_message = NULL;
     bool success;
 
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+    {
+        log_warning("Can't open problem directory '%s'", dump_dir_name);
+        return 1;
+    }
+
+    /* The value 240 was taken from abrt-action-generate-backtrace.c. */
+    int exec_timeout_sec = 240;
+
+    if (!dd_exist(dd, FILENAME_COREDUMP))
+    {
+        abrt_save_coredump(dd, exec_timeout_sec);
+    }
 #ifdef ENABLE_NATIVE_UNWINDER
 
     success = sr_abrt_create_core_stacktrace(dump_dir_name, false, &error_message);
 #else /* ENABLE_NATIVE_UNWINDER */
 
-    /* The value 240 was taken from abrt-action-generate-backtrace.c. */
-    int exec_timeout_sec = 240;
-
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return 1;
     g_autofree char *gdb_output = abrt_get_backtrace(dd, exec_timeout_sec, NULL);
     if (!gdb_output)
     {
@@ -84,9 +92,9 @@ int main(int argc, char **argv)
     success = sr_abrt_create_core_stacktrace_from_gdb(dump_dir_name,
                                                       gdb_output, false,
                                                       &error_message);
-    dd_close(dd);
 
 #endif /* ENABLE_NATIVE_UNWINDER */
+    dd_close(dd);
 
     if (!success)
     {
