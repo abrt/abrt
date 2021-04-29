@@ -98,7 +98,7 @@ int main(int argc, char **argv)
             dd_save_text(dd, FILENAME_NOT_REPORTABLE,
             _("The backtrace does not contain enough meaningful function frames "
               "to be reported. It is annoying but it does not necessarily "
-              "signalize a problem with your computer. ABRT will not allow "
+              "indicate a problem with your computer. ABRT will not allow "
               "you to create a report in a bug tracking system but you "
               "can contact kernel maintainers via e-mail.")
             );
