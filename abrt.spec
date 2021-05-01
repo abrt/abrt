@@ -49,7 +49,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: abrt
 Version: 2.14.5
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv2+
 URL: https://abrt.readthedocs.org/
 Source: https://github.com/abrt/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
@@ -105,6 +105,8 @@ Requires: libreport-plugin-ureport
 %if 0%{?fedora}
 Requires: libreport-plugin-systemd-journal
 %endif
+# to fix upgrade path abrt-plugin-sosreport was removed in 2.14.5 version.
+Obsoletes: abrt-plugin-sosreport < 2.14.5
 
 #gui
 BuildRequires: libreport-gtk-devel >= %{libreport_ver}
@@ -994,6 +996,9 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Sat May 01 2021 Sérgio Basto <sergio@serjux.com> - 2.14.5-2
+- Obsoletes abrt-plugin-sosreport
+
 * Tue Dec 01 2020 Michal Fabik <mfabik@redhat.com> 2.14.5-1
 - BR make
 - Update translations
