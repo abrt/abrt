@@ -105,6 +105,8 @@ Requires: libreport-plugin-ureport
 %if 0%{?fedora}
 Requires: libreport-plugin-systemd-journal
 %endif
+# abrt-plugin-sosreport was removed in the previous commit
+Obsoletes: abrt-plugin-sosreport < 2.14.5
 
 #gui
 BuildRequires: libreport-gtk-devel >= %{libreport_ver}
@@ -994,6 +996,9 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Fri Apr 30 2021 Sérgio Basto <sergio@serjux.com> - 2.14.5-4
+- Obsoletes abrt-plugin-sosreport, to fix upgrade path
+
 * Tue Dec 01 2020 Michal Fabik <mfabik@redhat.com> 2.14.5-1
 - BR make
 - Update translations
