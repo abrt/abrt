@@ -118,7 +118,7 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
         {
             log_debug("Unsupported container ID: '%s'", container_id);
 
-            free(container_id);
+            g_free(container_id);
             container_id = NULL;
 
             output = NULL;
@@ -230,7 +230,7 @@ void dump_lxc_info(struct dump_dir *dd, const char *lxc_cmd)
     dd_save_text(dd, FILENAME_CONTAINER_ID, container_id);
     dd_save_text(dd, FILENAME_CONTAINER_UUID, container_id);
 
-    free(container_id);
+    g_free(container_id);
 
     /* TODO: make a copy of 'config' */
     /* get mount point for MOUNTINFO_MOUNT_SOURCE(mntnf) + MOUNTINFO_ROOT(mntnf) */

@@ -223,7 +223,7 @@ static void abrt_p2_object_free(AbrtP2Object *obj)
 
     obj->p2o_service = NULL;
 
-    free(obj);
+    g_free(obj);
 }
 
 static AbrtP2Service *abrt_p2_object_service(AbrtP2Object *object)
@@ -534,7 +534,7 @@ static AbrtP2Object *session_object_register(AbrtP2Service *service,
         g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
                     "Too many sessions opened");
 
-        free(path);
+        g_free(path);
         return NULL;
     }
 
@@ -605,7 +605,7 @@ static AbrtP2Object *abrt_p2_service_get_session_for_caller(
                                        error);
     }
 
-    free(session_path);
+    g_free(session_path);
 
     AbrtP2Session *session = abrt_p2_object_get_node(obj);
     if (abrt_p2_session_check_sanity(session, caller, caller_uid, error) != 0)
@@ -1890,7 +1890,7 @@ static void task_object_dbus_method_call(GDBusConnection *connection,
         if (error != NULL)
         {
             g_signal_handler_disconnect(task, s);
-            free(tca);
+            g_free(tca);
         }
     }
     else if (strcmp("Finish", method_name) == 0)

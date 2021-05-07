@@ -45,10 +45,10 @@ void xorg_crash_info_free(struct xorg_crash_info *crash_info)
 {
     if (crash_info == NULL)
         return;
-    free(crash_info->backtrace);
-    free(crash_info->reason);
-    free(crash_info->exe);
-    free(crash_info);
+    g_free(crash_info->backtrace);
+    g_free(crash_info->reason);
+    g_free(crash_info->exe);
+    g_free(crash_info);
 }
 
 char *skip_pfx(char *str)

@@ -368,7 +368,7 @@ const char *abrt_p2_session_generate_token(AbrtP2Session *session,
     {
         g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
                     "Cannot get current time");
-        free(token);
+        g_free(token);
         return NULL;
     }
 

@@ -110,7 +110,7 @@ handle_new_path(struct process *proc, char *name)
     if (proc->children < proc->max_children)
     {
         run_abrt_handle_upload(proc, name);
-        free(name);
+        g_free(name);
         return;
     }
 
@@ -118,7 +118,7 @@ handle_new_path(struct process *proc, char *name)
     if (!queue_push(&proc->queue, name))
     {
         error_msg(_("No free workers and full buffer. Omitting archive '%s'"), name);
-        free(name);
+        g_free(name);
         return;
     }
 }

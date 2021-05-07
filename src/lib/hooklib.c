@@ -320,7 +320,7 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
     args[i++] = (char*)"-ex";
     const unsigned file_cmd_index = i++;
     args[file_cmd_index] = g_strdup_printf("file %s", executable);
-    free(executable);
+    g_free(executable);
 
     args[i++] = (char*)"-ex";
     const unsigned core_cmd_index = i++;
