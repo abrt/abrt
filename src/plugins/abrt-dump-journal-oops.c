@@ -66,7 +66,7 @@ static GList* abrt_journal_extract_kernel_oops(abrt_journal_t *journal)
     for (size_t i = 0; i < lines_info_count; ++i)
         free(lines_info[i].ptr);
 
-    free(lines_info);
+    g_free(lines_info);
 
     return oops_list;
 }

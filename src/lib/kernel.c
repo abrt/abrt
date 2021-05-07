@@ -354,7 +354,7 @@ void abrt_koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
                 if (strstr(c, "kernel oopses to Abrt"))
                 {
                     log_debug("Found our marker at line %d", linecount);
-                    free(lines_info);
+                    g_free(lines_info);
                     lines_info = NULL;
                     lines_info_size = 0;
                     g_list_free_full(g_steal_pointer(oops_list), free);
@@ -387,7 +387,7 @@ next_line:
     }
 
     abrt_koops_extract_oopses_from_lines(oops_list, lines_info, lines_info_size);
-    free(lines_info);
+    g_free(lines_info);
 }
 
 void abrt_koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_koops_line_info *lines_info, int lines_info_size)
@@ -744,7 +744,7 @@ char *abrt_kernel_tainted_short(const char *kernel_bt)
     if (cnt == 0)
     {   /* this should not happen
          * cnt eq 0 means that a tainted string contains only spaces */
-        free(tnt);
+        g_free(tnt);
         return NULL;
     }
 

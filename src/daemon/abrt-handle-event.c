@@ -260,7 +260,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
         if (libreport_g_verbose > 1 && !dump_dir_name2)
             perror_msg("realpath(%s)", tmp_concat_path);
 
-        free(tmp_concat_path);
+        g_free(tmp_concat_path);
 
         if (!dump_dir_name2)
             continue;

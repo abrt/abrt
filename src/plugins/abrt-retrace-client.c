@@ -394,12 +394,12 @@ static void free_settings(struct retrace_settings *settings)
 
     int i;
     for (i = 0; i < MAX_FORMATS; ++i)
-        free(settings->supported_formats[i]);
+        g_free(settings->supported_formats[i]);
 
     for (i = 0; i < MAX_RELEASES; ++i)
-        free(settings->supported_releases[i]);
+        g_free(settings->supported_releases[i]);
 
-    free(settings);
+    g_free(settings);
 }
 
 /* returns release identifier as dist-ver-arch */
@@ -410,7 +410,7 @@ static char *get_release_id(GHashTable *osinfo, const char *architecture)
 
     if (strcmp("i686", arch) == 0 || strcmp("i586", arch) == 0)
     {
-        free(arch);
+        g_free(arch);
         arch = g_strdup("i386");
     }
 

@@ -398,6 +398,6 @@ void free_pkg_nevra(struct pkg_nevra *p)
     free(p->p_version);
     free(p->p_release);
     free(p->p_arch);
-    free(p->p_nvr);
-    free(p);
+    g_free(p->p_nvr);
+    g_free(p);
 }

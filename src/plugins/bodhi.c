@@ -149,7 +149,7 @@ static void free_bodhi_item(struct bodhi *b)
 
     free(b->nvr);
 
-    free(b);
+    g_free(b);
 }
 
 static void bodhi_read_value(json_object *json, const char *item_name,

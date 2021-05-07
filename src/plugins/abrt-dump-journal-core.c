@@ -406,7 +406,7 @@ abrt_journal_dump_core(abrt_journal_t *journal, const char *dump_location, int r
 
 dump_cleanup:
     if (info.ci_executable_path != NULL)
-        free(info.ci_executable_path);
+        g_free(info.ci_executable_path);
 
     return r;
 }
@@ -484,7 +484,7 @@ watch_cleanup:
     abrt_journal_save_current_position(info.ci_journal, ABRT_JOURNAL_WATCH_STATE_FILE);
 
     if (info.ci_executable_path != NULL)
-        free(info.ci_executable_path);
+        g_free(info.ci_executable_path);
 
     return;
 }

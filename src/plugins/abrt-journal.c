@@ -89,7 +89,7 @@ void abrt_journal_free(abrt_journal_t *journal)
     sd_journal_close(journal->j);
     journal->j = (void *)0xDEADBEAF;
 
-    free(journal);
+    g_free(journal);
 }
 
 int abrt_journal_set_journal_filter(abrt_journal_t *journal, GList *journal_filter_list)
@@ -425,7 +425,7 @@ int abrt_journal_watch_new(abrt_journal_watch_t **watch, abrt_journal_t *journal
 void abrt_journal_watch_free(abrt_journal_watch_t *watch)
 {
     watch->j = (void *)0xDEADBEAF;
-    free(watch);
+    g_free(watch);
 }
 
 abrt_journal_t *abrt_journal_watch_get_journal(abrt_journal_watch_t *watch)
