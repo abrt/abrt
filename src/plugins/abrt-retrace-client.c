@@ -600,6 +600,7 @@ static int create(SoupSession  *session,
 
             unpacked_size += (long long)file_stat.st_size;
             ++i;
+            g_free(path);
         }
 
         if (task_type == TASK_RETRACE || task_type == TASK_DEBUG)
@@ -719,8 +720,10 @@ static int create(SoupSession  *session,
     }
 
     int tempfd = create_archive(delete_temp_archive);
-    if (-1 == tempfd)
+    if (-1 == tempfd) {
+        free_settings(settings);
         return 1;
+    }
 
     /* Get the file size. */
     if (-1 == fstat(tempfd, &file_stat))
