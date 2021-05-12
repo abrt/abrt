@@ -253,6 +253,8 @@ struct xorg_crash_info *process_xorg_bt(char *(*get_next_line)(void *), void *da
 
         return crash_info;
     }
-    return NULL;
 
+    g_free(exe);
+
+    return NULL;
 }
