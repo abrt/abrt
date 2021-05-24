@@ -48,8 +48,8 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 2.14.5
-Release: 2%{?dist}
+Version: 2.14.6
+Release: 1%{?dist}
 License: GPLv2+
 URL: https://abrt.readthedocs.org/
 Source: https://github.com/abrt/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
@@ -996,6 +996,8 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Mon May 24 2021 Michal Fabik <mfabik@redhat.com> 2.14.6-1
+- new package built with tito
 * Sat May 01 2021 Sérgio Basto <sergio@serjux.com> - 2.14.5-2
 - Obsoletes abrt-plugin-sosreport
 
