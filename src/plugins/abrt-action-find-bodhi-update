@@ -13,18 +13,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-"""
-abrt-action-find-bodhi-update - find bodhi update based on ABRT's problem dir
-
-
-"""
-
 import logging
 import os
 import sys
 from argparse import ArgumentParser
 from subprocess import PIPE, run
-from typing import Optional
+from typing import Optional, Tuple
 
 from reportclient import (_, RETURN_OK, RETURN_FAILURE)
 import report
@@ -34,10 +28,47 @@ FILENAME_OSINFO = "os_info"
 OSINFO_BUGZILLA_PRODUCT = "REDHAT_BUGZILLA_PRODUCT="
 OSINFO_BUGZILLA_PRODUCT_VERSION = "REDHAT_BUGZILLA_PRODUCT_VERSION="
 
+logging.basicConfig(format="%(name)s [%(levelname)s] %(message)s",
+                    level=logging.WARNING)
+logger = logging.getLogger("abrt-action-find-bodhi-update")
+
+
+def load_elements(dump_dir_path: str) -> Tuple[str, Optional[str], Optional[str]]:
+    dump_dir = report.dd_opendir(dump_dir_path, report.DD_OPEN_READONLY)
+    if not dump_dir:
+        logger.error(_("Cannot open problem directory '%s'"), dump_dir_path)
+        sys.exit(RETURN_FAILURE)
+
+    dd_load_flags = (report.DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE |
+                     report.DD_FAIL_QUIETLY_ENOENT)
+
+    duphash = dump_dir.load_text(FILENAME_DUPHASH, dd_load_flags)
+    if not duphash:
+        logger.error(_("Problem directory is missing file '%s'"), FILENAME_DUPHASH)
+        dump_dir.close()
+        sys.exit(RETURN_FAILURE)
+
+    os_info = dump_dir.load_text(FILENAME_OSINFO, dd_load_flags)
+    dump_dir.close()
+    if not os_info:
+        logger.error(_("Problem directory is missing file '%s'"), FILENAME_OSINFO)
+        sys.exit(RETURN_FAILURE)
+
+    # get Bugzilla Product and Version from os_info
+    product: Optional[str] = os.getenv("Bugzilla_Product")
+    version: Optional[str] = None
+    for line in os_info.split("\n"):
+        if not product and OSINFO_BUGZILLA_PRODUCT in line:
+            product = parse_os_release_line(line)
+        if OSINFO_BUGZILLA_PRODUCT_VERSION in line:
+            version = parse_os_release_line(line)
+
+    return duphash, product, version
+
 
 def parse_os_release_line(line: str) -> str:
     """Parse key-value line and returns value"""
-    return line.split("=")[1]
+    return line.split("=")[1].strip().strip('"')
 
 
 if __name__ == "__main__":
@@ -59,12 +90,9 @@ if __name__ == "__main__":
             action="count", dest="verbose", default=0,
             help="Be verbose")
 
-    logging.basicConfig(format="%(name)s [%(levelname)s] %(messages)s", level=logging.WARNING)
-    logger = logging.getLogger("abrt-action-find-bodhi-update")
-
     args = arg_parser.parse_args()
     try:
-        DIR_PATH = os.path.abspath(args.problem_dir)
+        dump_dir_path = os.path.abspath(args.problem_dir)
     except FileNotFoundError as ex:
         logging.error(_("Problem directory error: %s"), ex)
         sys.exit(RETURN_FAILURE)
@@ -79,36 +107,7 @@ if __name__ == "__main__":
     if args.verbose > 0:
         logger.setLevel(logging.INFO)
 
-    try:
-        dump_dir = report.dd_opendir(DIR_PATH, report.DD_OPEN_READONLY)
-        if not dump_dir:
-            raise ValueError(_("Cannot open problem directory '{0}'").format(DIR_PATH))
-
-        dd_load_flag = (report.DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE |
-                        report.DD_FAIL_QUIETLY_ENOENT)
-
-        duphash_content = dump_dir.load_text(FILENAME_DUPHASH, dd_load_flag)
-        if not duphash_content:
-            raise ValueError(_("Problem directory is missing file '{0}'").format(FILENAME_DUPHASH))
-
-        os_info = dump_dir.load_text(FILENAME_OSINFO, dd_load_flag)
-        if not os_info:
-            raise ValueError(_("Problem directory is missing file '{0}'").format(FILENAME_OSINFO))
-
-    except ValueError as ex:
-        logger.error(_("Problem directory error: %s"), ex)
-        sys.exit(RETURN_FAILURE)
-    finally:
-        dump_dir.close()
-
-    # get Bugzilla Product and Version from os_info
-    product: Optional[str] = os.getenv("Bugzilla_Product")
-    version: Optional[str] = None
-    for line in os_info.split("\n"):
-        if not product and OSINFO_BUGZILLA_PRODUCT in line:
-            product = parse_os_release_line(line)
-        if OSINFO_BUGZILLA_PRODUCT_VERSION in line:
-            version = parse_os_release_line(line)
+    duphash, product, version = load_elements(dump_dir_path)
 
     if product:
         logger.info(_("Using product %s."), product)
@@ -120,7 +119,7 @@ if __name__ == "__main__":
     # Find bugzilla bug with abrt_hash: == $duphash_content and product ==
     # $product, if OSINFO_BUGZILLA_PRODUCT from crash's os_info doesn't exist,
     # the OSINFO_BUGZILLA_PRODUCT from /etc/os-release is used
-    cmdline = ["reporter-bugzilla", "-h", duphash_content]
+    cmdline = ["reporter-bugzilla", "-h", duphash]
     if product:
         cmdline.extend(["-p", product])
 
@@ -134,7 +133,7 @@ if __name__ == "__main__":
     if bug_id:
         logger.warning(_("Duplicate Bugzilla bug '#%s' was found"), bug_id)
     else:
-        logger.info(_("There is no Bugzilla bug with 'abrt_hash:%s'"), duphash_content)
+        logger.info(_("There is no Bugzilla bug with 'abrt_hash:%s'"), duphash)
         sys.exit(RETURN_OK)
 
     if version and "rawhide" in version.lower():
@@ -142,7 +141,7 @@ if __name__ == "__main__":
         sys.exit(RETURN_OK)
 
     if not args.without_bodhi:
-        cmdline = ["abrt-bodhi", "-b", bug_id, "-d", DIR_PATH]
+        cmdline = ["abrt-bodhi", "-b", bug_id, "-d", dump_dir_path]
         if version:
             cmdline.extend(["-r", version])
         run(cmdline, check=False)
