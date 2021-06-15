@@ -16,32 +16,17 @@
 """
 abrt-action-find-bodhi-update - find bodhi update based on ABRT's problem dir
 
-The tool reads duphash file in problem directory and searches for a new updates
-according to the crash.
 
-OPTIONS
-    -v, --verbose
-        Be verbose
-
-    -b, --without-bodhi
-        Run without abrt-bodhi. Prints only Bugzilla bug id of duplicate bug,
-        if exists.
-
-    -d, --problem-dir PROBLEM_DIR
-        Problem directory [Default: current directory]
-
-ENVIRONMENT VARIABLES
-    Bugzilla_Product
-        Product bug field value. Useful if you needed different product than
-        specified in PROBLEM_DIR/os_info
 """
+
+import logging
 import os
 import sys
 from argparse import ArgumentParser
-from subprocess import Popen, PIPE
+from subprocess import PIPE, run
+from typing import Optional
 
-from reportclient import (_, log_warning, log1, set_verbosity, verbose, RETURN_OK,
-                          RETURN_FAILURE, error_msg)
+from reportclient import (_, RETURN_OK, RETURN_FAILURE)
 import report
 
 FILENAME_DUPHASH = "duphash"
@@ -49,104 +34,117 @@ FILENAME_OSINFO = "os_info"
 OSINFO_BUGZILLA_PRODUCT = "REDHAT_BUGZILLA_PRODUCT="
 OSINFO_BUGZILLA_PRODUCT_VERSION = "REDHAT_BUGZILLA_PRODUCT_VERSION="
 
-def parse_os_release_line(l):
+
+def parse_os_release_line(line: str) -> str:
     """Parse key-value line and returns value"""
-    return l.split('=')[1]
+    return line.split("=")[1]
+
 
 if __name__ == "__main__":
-    CMDARGS = ArgumentParser(
-            description=("Search bodhi updates based on ABRT's problem dir"))
-    CMDARGS.add_argument("-d", "--problem-dir",
+    arg_parser = ArgumentParser(
+            description="Find Bodhi updates based on ABRT's problem directory. "
+                        "This tool reads duphash file in problem directory and "
+                        "searches for a new updates according to the crash.",
+            epilog="environment variables: *Bugzilla_Product* -- Product bug "
+                   "field value. Useful if you needed different product than "
+                   "specified in PROBLEM_DIR/os_info.")
+    arg_parser.add_argument("-d", "--problem-dir",
             type=str, default=".",
             help="Path to problem directory")
-    CMDARGS.add_argument("-b", "--without-bodhi",
+    arg_parser.add_argument("-b", "--without-bodhi",
             action="store_true", dest="without_bodhi", default=False,
-            help="Run without abrt-bohi")
-    CMDARGS.add_argument("-v", "--verbose",
+            help="Run without abrt-bodhi. Prints only Bugzilla bug id of duplicate "
+                 "if it exists.")
+    arg_parser.add_argument("-v", "--verbose",
             action="count", dest="verbose", default=0,
             help="Be verbose")
 
-    OPTIONS = CMDARGS.parse_args()
+    logging.basicConfig(format="%(name)s [%(levelname)s] %(messages)s", level=logging.WARNING)
+    logger = logging.getLogger("abrt-action-find-bodhi-update")
+
+    args = arg_parser.parse_args()
     try:
-        DIR_PATH = os.path.abspath(OPTIONS.problem_dir)
+        DIR_PATH = os.path.abspath(args.problem_dir)
     except FileNotFoundError as ex:
-        error_msg(_("Problem directory error: {0}").format(ex))
+        logging.error(_("Problem directory error: %s"), ex)
         sys.exit(RETURN_FAILURE)
 
-    verbose = 0
     ABRT_VERBOSE = os.getenv("ABRT_VERBOSE")
     if ABRT_VERBOSE:
         try:
-            verbose = int(ABRT_VERBOSE)
-        #pylint: disable=bare-except
-        except:
+            args.verbose = int(ABRT_VERBOSE)
+        except ValueError:
             pass
 
-    verbose += OPTIONS.verbose
-    set_verbosity(verbose)
-    os.environ["ABRT_VERBOSE"] = str(verbose)
+    if args.verbose > 0:
+        logger.setLevel(logging.INFO)
 
     try:
         dump_dir = report.dd_opendir(DIR_PATH, report.DD_OPEN_READONLY)
         if not dump_dir:
-            raise ValueError(_("cannot open problem directory '{0}'").format(DIR_PATH))
+            raise ValueError(_("Cannot open problem directory '{0}'").format(DIR_PATH))
 
         dd_load_flag = (report.DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE |
                         report.DD_FAIL_QUIETLY_ENOENT)
 
         duphash_content = dump_dir.load_text(FILENAME_DUPHASH, dd_load_flag)
         if not duphash_content:
-            raise ValueError("problem directory misses '{0}'".format(FILENAME_DUPHASH))
+            raise ValueError(_("Problem directory is missing file '{0}'").format(FILENAME_DUPHASH))
 
         os_info = dump_dir.load_text(FILENAME_OSINFO, dd_load_flag)
         if not os_info:
-            raise ValueError("problem directory misses '{0}'" .format(FILENAME_OSINFO))
+            raise ValueError(_("Problem directory is missing file '{0}'").format(FILENAME_OSINFO))
 
     except ValueError as ex:
-        error_msg(_("Problem directory error: {0}").format(ex))
+        logger.error(_("Problem directory error: %s"), ex)
         sys.exit(RETURN_FAILURE)
     finally:
         dump_dir.close()
 
     # get Bugzilla Product and Version from os_info
-    product = os.getenv("Bugzilla_Product") or ""
-    version = ""
+    product: Optional[str] = os.getenv("Bugzilla_Product")
+    version: Optional[str] = None
     for line in os_info.split("\n"):
-        if (OSINFO_BUGZILLA_PRODUCT in line) and (product == ""):
+        if not product and OSINFO_BUGZILLA_PRODUCT in line:
             product = parse_os_release_line(line)
         if OSINFO_BUGZILLA_PRODUCT_VERSION in line:
             version = parse_os_release_line(line)
 
-    if product == "":
-        log1(_("Using product '{0}' from /etc/os-release.").format(OSINFO_BUGZILLA_PRODUCT))
+    if product:
+        logger.info(_("Using product %s."), product)
     else:
-        log1(_("Using product {0}.").format(product))
-    if version != "":
-        log1(_("Using product version {0}.").format(version))
+        logger.info(_("Using product '%s' from /etc/os-release."), OSINFO_BUGZILLA_PRODUCT)
+    if version:
+        logger.info(_("Using product version %s."), version)
 
     # Find bugzilla bug with abrt_hash: == $duphash_content and product ==
     # $product, if OSINFO_BUGZILLA_PRODUCT from crash's os_info doesn't exist,
     # the OSINFO_BUGZILLA_PRODUCT from /etc/os-release is used
-    with Popen(["reporter-bugzilla -h {0} -p{1}".format(duphash_content, product)],
-             shell=True,
-             stdout=PIPE,
-             bufsize=-1) as proc:
-        bug_id = proc.stdout.read().rstrip().decode("utf-8", "ignore")
+    cmdline = ["reporter-bugzilla", "-h", duphash_content]
+    if product:
+        cmdline.extend(["-p", product])
+
+    proc = run(cmdline, stdout=PIPE, check=False, encoding="utf-8")
+    if proc.returncode:
+        logger.error(_("Search for duplicate bugs failed: %s"), proc.stderr)
+        sys.exit(RETURN_FAILURE)
+
+    bug_id = proc.stdout.strip()
 
     if bug_id:
-        log_warning(_("Duplicate bugzilla bug '#{0}' was found").format(bug_id))
+        logger.warning(_("Duplicate Bugzilla bug '#%s' was found"), bug_id)
     else:
-        log1(_("There is no bugzilla bug with 'abrt_hash:{0}'").format(duphash_content))
+        logger.info(_("There is no Bugzilla bug with 'abrt_hash:%s'"), duphash_content)
         sys.exit(RETURN_OK)
 
-    # abrt-bodhi do not support rawhide, because there are no updates for rawhide in Bodhi
-    if "rawhide" in version.lower():
-        log1(_("Warning: abrt-bodhi do not support Product version 'Rawhide'"))
+    if version and "rawhide" in version.lower():
+        logger.error(_("abrt-bodhi does not support product version 'Rawhide'"))
         sys.exit(RETURN_OK)
 
-    if not OPTIONS.without_bodhi:
-        Popen(["abrt-bodhi -r -b {0} -d {1}".format(bug_id, DIR_PATH)],
-                shell=True,
-                bufsize=-1).wait()
+    if not args.without_bodhi:
+        cmdline = ["abrt-bodhi", "-b", bug_id, "-d", DIR_PATH]
+        if version:
+            cmdline.extend(["-r", version])
+        run(cmdline, check=False)
 
     sys.exit(RETURN_OK)
