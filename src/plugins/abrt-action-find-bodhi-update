@@ -75,10 +75,10 @@ if __name__ == "__main__":
     arg_parser = ArgumentParser(
             description="Find Bodhi updates based on ABRT's problem directory. "
                         "This tool reads duphash file in problem directory and "
-                        "searches for a new updates according to the crash.",
+                        "searches for new updates according to the crash data.",
             epilog="environment variables: *Bugzilla_Product* -- Product bug "
-                   "field value. Useful if you needed different product than "
-                   "specified in PROBLEM_DIR/os_info.")
+                   "field value. Useful if you need a product different from "
+                   "the one in PROBLEM_DIR/os_info.")
     arg_parser.add_argument("-d", "--problem-dir",
             type=str, default=".",
             help="Path to problem directory")
