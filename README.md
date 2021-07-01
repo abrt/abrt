@@ -23,7 +23,7 @@ technical details.
 
 ### Development
 
- * IRC Channel: #abrt on FreeNode
+ * IRC Channel: #abrt on [irc.libera.chat](https://libera.chat/)
  * [Mailing List](https://lists.fedorahosted.org/admin/lists/crash-catcher.lists.fedorahosted.org/)
  * [Bug Reports and RFEs](https://github.com/abrt/abrt/issues)
  * [Contributing to ABRT](CONTRIBUTING.md)
