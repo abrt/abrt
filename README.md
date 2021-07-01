@@ -1,4 +1,5 @@
 [![Translation status](https://translate.fedoraproject.org/widgets/abrt/-/abrt/svg-badge.svg)](https://translate.fedoraproject.org/engage/abrt/)
+[![Build status](https://github.com/abrt/abrt/actions/workflows/check.yml/badge.svg)](https://github.com/abrt/abrt/actions/workflows/check.yml)
 [![Coverity Scan build status](https://scan.coverity.com/projects/17423/badge.svg)](https://scan.coverity.com/projects/abrt-abrt)
 
 # ABRT
