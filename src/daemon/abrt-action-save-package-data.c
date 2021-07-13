@@ -27,13 +27,15 @@
 #define DEFAULT_BLACKLISTED_PKGS "bash, mono-core, nspluginwrapper, strace, valgrind"
 #define DEFAULT_GPG_KEYS_DIR "/etc/pki/rpm-gpg"
 /**
-  * The regexes should cover interpreters with basename:
+  * The regexes should cover interpreters with basenames such as:
+  *
   * Python:
   *   python
   *   python2
   *   python3
   *   python2.7
   *   python3.8
+  *   python3.10
   *   platform-python
   *   platform-python3
   *   platform-python3.8
@@ -56,7 +58,7 @@
 #define DEFAULT_INTERPRETERS_REGEX \
     "^(perl ([[:digit:]][.][[:digit:]]+[.][[:digit:]])? |" \
     "php (-cgi)? |" \
-    "(platform-)? python ([[:digit:]]([.][[:digit:]])?)? |" \
+    "(platform-)? python ([[:digit:]]([.][[:digit:]]+)?)? |" \
     "R |" \
     "tclsh ([[:digit:]][.][[:digit:]])?)$"
 
