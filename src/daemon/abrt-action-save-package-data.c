@@ -42,7 +42,7 @@
   *
   * Perl:
   *   perl
-  *   perl5.30.1
+  *   perl5.31.11
   *
   * PHP:
   *   php
@@ -56,7 +56,7 @@
   *   tclsh8.6
   **/
 #define DEFAULT_INTERPRETERS_REGEX \
-    "^(perl ([[:digit:]][.][[:digit:]]+[.][[:digit:]])? |" \
+    "^(perl ([[:digit:]][.][[:digit:]]+[.][[:digit:]]+)? |" \
     "php (-cgi)? |" \
     "(platform-)? python ([[:digit:]]([.][[:digit:]]+)?)? |" \
     "R |" \
