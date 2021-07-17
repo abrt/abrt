@@ -16,6 +16,11 @@ gdb(1) generates backtrace and other diagnostic information about the state
 of the application at the moment when coredump was generated.
 Then the tool saves it as new element 'backtrace' in this problem directory.
 
+If gdb(1) is built with debuginfod(8) support, gdb(1) will automatically
+attempt to aquire all debugging resources needed to generate the backtrace.
+This allows users to skip downloading these resources in advance through
+abrt-action-install-debuginfo or any other means.
+
 Integration with libreport events
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 'abrt-action-generate-backtrace' can be used as an analyzer for

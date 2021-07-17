@@ -62,6 +62,7 @@ static unsigned delay = 0;
 static int task_type = TASK_RETRACE;
 static bool http_show_headers;
 static bool no_pkgcheck;
+static bool use_debuginfod;
 
 static struct https_cfg cfg =
 {
@@ -588,6 +589,7 @@ static int create(SoupSession  *session,
         g_autofree char *path = NULL;
         int i = 0;
         const char **required_files = task_type == TASK_VMCORE ? required_vmcore : required_retrace;
+
         while (required_files[i])
         {
             path = g_build_filename(dump_dir_name, required_files[i], NULL);
@@ -784,6 +786,9 @@ static int create(SoupSession  *session,
     soup_message_headers_append(message->request_headers, "X-Task-Type", task_type_string);
     soup_message_headers_append(message->request_headers, "Accept-Charset", lang.charset);
 
+    if (use_debuginfod)
+        soup_message_headers_append(message->request_headers, "X-Debuginfod", "1");
+
     if (delay)
     {
         printf(_("Uploading %s\n"), human_size);
@@ -830,7 +835,8 @@ static int create(SoupSession  *session,
         libreport_alert(_("Your problem directory is corrupted and can not "
                 "be processed by the Retrace server."));
         error_msg_and_die(_("The archive contains malicious files (such as symlinks) "
-                            "and thus can not be processed."));
+                            "and thus can not be processed, or debuginfod was requested "
+                            "but has been disabled on the server."));
     }
     else if (response_code != 201)
     {
@@ -1216,20 +1222,21 @@ int main(int argc, char **argv)
     const char *task_password = NULL;
 
     enum {
-        OPT_verbose   = 1 << 0,
-        OPT_syslog    = 1 << 1,
-        OPT_insecure  = 1 << 2,
-        OPT_no_pkgchk = 1 << 3,
-        OPT_uri       = 1 << 4,
-        OPT_headers   = 1 << 5,
-        OPT_group_1   = 1 << 6,
-        OPT_dir       = 1 << 7,
-        OPT_core      = 1 << 8,
-        OPT_delay     = 1 << 9,
-        OPT_no_unlink = 1 << 10,
-        OPT_group_2   = 1 << 11,
-        OPT_task      = 1 << 12,
-        OPT_password  = 1 << 13
+        OPT_verbose    = 1 << 0,
+        OPT_syslog     = 1 << 1,
+        OPT_insecure   = 1 << 2,
+        OPT_no_pkgchk  = 1 << 3,
+        OPT_uri        = 1 << 4,
+        OPT_headers    = 1 << 5,
+        OPT_group_1    = 1 << 6,
+        OPT_dir        = 1 << 7,
+        OPT_core       = 1 << 8,
+        OPT_delay      = 1 << 9,
+        OPT_no_unlink  = 1 << 10,
+        OPT_debuginfod = 1 << 11,
+        OPT_group_2    = 1 << 12,
+        OPT_task       = 1 << 13,
+        OPT_password   = 1 << 14
     };
 
     /* Keep enum above and order of options below in sync! */
@@ -1255,6 +1262,9 @@ int main(int argc, char **argv)
         OPT_BOOL(0, "no-unlink", NULL,
                  _("(debug) do not delete temporary archive created"
                    " from dump dir in "LARGE_DATA_TMP_DIR)),
+        OPT_BOOL(0, "debuginfod", &use_debuginfod,
+                 _("use debuginfod to aquire necessary debugging resources"
+                   " when generating backtrace")),
         OPT_GROUP(_("For status, backtrace, and log operations")),
         OPT_STRING('t', "task", &task_id, "ID",
                    _("id of your task on server")),
