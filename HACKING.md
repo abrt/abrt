@@ -51,6 +51,16 @@ the tests/helpers directory.
 
 ## Verify ABRT plays nice with the rest of OS
 
+TL;DR: you can easily run a subset of the integration tests in a VM via [tmt](https://tmt.readthedocs.io/en/stable/).
+```shell
+# run tests in a Rawhide VM
+$ tmt run -vv
+# run tests in a F34 VM
+$ tmt run -vv --all provision --how virtual --image fedora-34
+```
+Note: You will need `tmt` and `tmt-provision-virtual` packages installed on your laptop.
+Also make sure that you have [virtualization configured](https://docs.fedoraproject.org/en-US/ci/tmt/#_virtualization_tips) properly.
+
 ABRT integration tests live in the test/runtest directory. The test are based
 on [BeakerLib](https://github.com/beakerlib/beakerlib).
 

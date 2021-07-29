@@ -1,0 +1,19 @@
+summary: ABRT integration tests.
+
+description: |
+    Checks that ABRT plays nice with the rest of the OS.
+
+discover:
+    how: fmf
+
+execute:
+    how: tmt
+
+provision:
+    how: virtual
+    image: fedora-rawhide
+
+prepare:
+    name: system-prepare
+    how: shell
+    script: bash ./prepare.sh
