@@ -14,6 +14,4 @@ provision:
     image: fedora-rawhide
 
 prepare:
-    name: system-prepare
-    how: shell
-    script: bash ./prepare.sh
+    script: ./runtests/prepare.sh
