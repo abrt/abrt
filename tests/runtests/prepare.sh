@@ -9,6 +9,8 @@ dnf install -y \
     abrt-addon-ccpp \
     python3-abrt-addon \
     libreport-plugin-logger \
+    libreport-plugin-reportuploader \
+    libreport-plugin-mailx \
     will-crash \
     augeas \
     pkgconf-pkg-config \
