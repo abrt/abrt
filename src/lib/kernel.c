@@ -399,10 +399,23 @@ void abrt_koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_k
     int oopsstart = -1;
     int inbacktrace = 0;
     regex_t arm_regex;
+    regex_t trace_regex;
+    regex_t trace_regex2;
+    regex_t trace_regex3;
+    regex_t register_regex;
     int arm_regex_rc = 0;
+    int trace_regex_rc = 0;
+    int trace_regex2_rc = 0;
+    int trace_regex3_rc = 0;
+    int register_regex_rc = 0;
 
     /* ARM backtrace regex, match a string similar to r7:df912310 */
     arm_regex_rc = regcomp(&arm_regex, "r[[:digit:]]{1,}:[a-f[:digit:]]{8}", REG_EXTENDED | REG_NOSUB);
+    trace_regex_rc = regcomp(&trace_regex, "^\\(\\[<[0-9a-f]\\+>\\] \\)\\?.\\++0x[0-9a-f]\\+/0x[0-9a-f]\\+\\( \\[.\\+\\]\\)\\?$", REG_NOSUB);
+    trace_regex2_rc = regcomp(&trace_regex2, "^(\\(\\[<[0-9a-f]\\+>\\] \\)\\?.\\+\\(+0x[0-9a-f]\\+/0x[0-9a-f]\\+\\)\\?\\( \\[.\\+\\]\\)\\?)$", REG_NOSUB);
+    trace_regex3_rc = regcomp(&trace_regex3, "^\\(\\[<[0-9a-f]\\+>\\] \\)\\?\\(? \\)\\?0x[0-9a-f]\\+$", REG_NOSUB);
+    /* Registers usually(?) come listed three per line in a call trace but let's play it safe and list them all */
+    register_regex_rc = regcomp(&register_regex, "^\\(R[ABCD]X\\|R[SD]I\\|RBP\\|R[0-9]\\{2\\}\\): [0-9a-f]\\+ .\\+", REG_NOSUB);
 
     i = 0;
     while (i < lines_info_size)
@@ -475,12 +488,10 @@ void abrt_koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_k
         {
             int oopsend = INT_MAX;
 
-            /* line needs to start with " [" or have "] [" if it is still a call trace */
+            /* line needs to start with "[" or have "] [" if it is still a call trace */
             /* example: "[<ffffffffa006c156>] radeon_get_ring_head+0x16/0x41 [radeon]" */
             /* example s390: "([<ffffffffa006c156>] 0xdeadbeaf)" */
-            if ((curline[0] != '[' && (curline[0] != '(' || curline[1] != '['))
-             && !strstr(curline, "] [")
-             && !strstr(curline, "--- Exception")
+            if (!strstr(curline, "--- Exception")
              && !strstr(curline, "LR =")
              && !strstr(curline, "<#DF>")
              && !strstr(curline, "<IRQ>")
@@ -491,13 +502,17 @@ void abrt_koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_k
              && !strstr(curline, "Hardware name:")
              && !strstr(curline, "Backtrace:")
              && strncmp(curline, "Code: ", 6) != 0
-             && strncmp(curline, "RIP ", 4) != 0
-             && strncmp(curline, "RSP ", 4) != 0
+             && strncmp(curline, "RIP: ", 5) != 0
+             && strncmp(curline, "RSP: ", 5) != 0
              /* s390 Call Trace ends with 'Last Breaking-Event-Address:'
               * which is followed by a single frame */
              && strncmp(curline, "Last Breaking-Event-Address:", strlen("Last Breaking-Event-Address:")) != 0
              /* ARM dumps registers intertwined with the backtrace */
              && (arm_regex_rc == 0 ? regexec(&arm_regex, curline, 0, NULL, 0) == REG_NOMATCH : 1)
+             && (trace_regex_rc == 0 ? regexec(&trace_regex, curline, 0, NULL, 0) == REG_NOMATCH : 1)
+             && (trace_regex2_rc == 0 ? regexec(&trace_regex2, curline, 0, NULL, 0) == REG_NOMATCH : 1)
+             && (trace_regex3_rc == 0 ? regexec(&trace_regex3, curline, 0, NULL, 0) == REG_NOMATCH : 1)
+             && (register_regex_rc == 0 ? regexec(&register_regex, curline, 0, NULL, 0) == REG_NOMATCH : 1)
             ) {
                 oopsend = i-1; /* not a call trace line */
             }
@@ -555,6 +570,10 @@ void abrt_koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_k
     } /* while (i < lines_info_size) */
 
     regfree(&arm_regex);
+    regfree(&trace_regex);
+    regfree(&trace_regex2);
+    regfree(&trace_regex3);
+    regfree(&register_regex);
 
     /* process last oops if we have one */
     if (oopsstart >= 0)
