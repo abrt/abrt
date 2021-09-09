@@ -1,0 +1,26 @@
+abrt-dump-oops: Found oopses: 1
+
+Version: 5.4.0-0.rc6.git0.1.fc32.x86_64
+Kernel panic - not syncing: sysrq triggered crash
+CPU: 0 PID: 4952 Comm: bash Kdump: loaded Not tainted 5.4.0-0.rc6.git0.1.fc32.x86_64 #1
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.12.0-2.fc30 04/01/2014
+Call Trace:
+  dump_stack+0x5c/0x80
+  panic+0x101/0x2e3
+  ? printk+0x58/0x6f
+  sysrq_handle_crash+0x11/0x20
+  __handle_sysrq.cold+0xcc/0x115
+  write_sysrq_trigger+0x27/0x40
+  proc_reg_write+0x3c/0x60
+  vfs_write+0xb6/0x1a0
+  ksys_write+0x5f/0xe0
+  do_syscall_64+0x5b/0x180
+  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+RIP: 0033:0x7f4584447447
+Code: 64 89 02 48 c7 c0 ff ff ff ff eb bb 0f 1f 80 00 00 00 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 48 89 54 24 18 48 89 74 24
+RSP: 002b:00007ffe65b82f08 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007f4584447447
+RDX: 0000000000000002 RSI: 0000561b5be577e0 RDI: 0000000000000001
+RBP: 0000561b5be577e0 R08: 000000000000000a R09: 0000000000000001
+R10: 0000561b5be81340 R11: 0000000000000246 R12: 0000000000000002
+R13: 00007f4584518500 R14: 0000000000000002 R15: 00007f4584518700

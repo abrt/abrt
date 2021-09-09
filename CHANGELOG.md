@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix crash during local processing (rhbz#1881745)
 - Fix reported numbers of missing debuginfo packages in abrt-action-install-debuginfo
 - Correct the format of NEVRA generated for packages where a problem occurred (rhbz#1900982)
+- Fix vmcore call trace parsing for modern kernels (rhbz#1993225)
 
 ### Removed
 - Drop --raw flag in abrt-action-generate-core-backtrace
