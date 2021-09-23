@@ -51,8 +51,17 @@ def filter_paths(problems, paths):
 
     def predicate(problem):
         for path in paths:
-            if pathlib.Path(problem.path).match(path):
+            # See whether the path is an actual path ...
+            if pathlib.Path(problem.path) == pathlib.Path(path).resolve():
                 return True
+        for path in paths:
+            try:
+                # ... failing that, see whether it can be interpreted as a glob
+                if pathlib.Path(problem.path).match(path):
+                    return True
+            # happens whem a lone '.' is being used as a glob
+            except ValueError:
+                return False
         return False
 
     return list(filter(predicate, problems))
