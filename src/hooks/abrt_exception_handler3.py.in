@@ -20,13 +20,15 @@
 Module for the ABRT exception handling hook
 """
 
+# Avoid importing anything but sys here, use lazy imports.
+# This file is imported on every Python startup,
+# all unused imports only increase the startup time and memory usage.
 import sys
-import os
 
-from systemd import journal
 
 def syslog(msg):
     """Log message to system logger (journal)"""
+    from systemd import journal
 
     journal.send(msg)
 
@@ -68,6 +70,8 @@ def send(data):
 
 
 def write_dump(tb_text, tb):
+    import os
+
     if sys.argv[0][0] == "/":
         executable = os.path.abspath(sys.argv[0])
     else:
@@ -118,6 +122,7 @@ def handle_exception(etype, value, tb):
         sys.excepthook = sys.__excepthook__  # pylint: disable-msg=E1101
 
         import errno
+        import os
 
         # Ignore Ctrl-C
         # SystemExit rhbz#636913 -> this exception is not an error
