@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Added dependency of the abrt-addon-vmcore package on python3-systemd
+- Use lazy imports in the Python exception handler to avoid slowing down every Python startup (rhbz#2007664)
 
 ## [2.14.5]
 ### Fixed
