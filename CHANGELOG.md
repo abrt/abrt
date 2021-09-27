@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- Handle crashes in Perl-based packages correctly as crashes of the package rather than Perl itself
+
+## [2.14.6]
 ### Added
 - abrt-retrace-client: Created task ID is now printed in batch mode
 - Start versioning the abrt libraries
@@ -303,7 +307,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.14.5...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.14.6...HEAD
+[2.14.6]: https://github.com/abrt/abrt/compare/2.14.5...2.14.6
 [2.14.5]: https://github.com/abrt/abrt/compare/2.14.4...2.14.5
 [2.14.4]: https://github.com/abrt/abrt/compare/2.14.3...2.14.4
 [2.14.3]: https://github.com/abrt/abrt/compare/2.14.2...2.14.3
