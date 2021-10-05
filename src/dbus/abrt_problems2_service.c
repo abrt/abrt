@@ -571,7 +571,7 @@ static AbrtP2Object *session_object_register(AbrtP2Service *service,
     obj->owner_watcher_id = g_bus_watch_name_on_connection(connection, caller,
                                                            G_BUS_NAME_WATCHER_FLAGS_NONE,
                                                            NULL, abrt_p2_service_on_session_owner_vanished,
-                                                           obj, (GDestroyNotify)abrt_p2_object_destroy);
+                                                           obj, NULL);
 
     return obj;
 }
