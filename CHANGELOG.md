@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Fixed
 - Handle crashes in Perl-based packages correctly as crashes of the package rather than Perl itself
+- abrt-dbus: Fix SIGSEGV in abrt_p2_service_dbus() with glib2 >= 2.69.2
 
 ### Changed
 - Use lazy imports in the Python exception handler to avoid slowing down every Python startup (rhbz#2007664)
