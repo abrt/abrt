@@ -335,7 +335,7 @@ int abrt_journal_restore_position(abrt_journal_t *journal, const char *file_name
             /* Only notice because this is expected */
             log_notice(_("Not restoring journal watch's position: file '%s' does not exist"), file_name);
         else
-            perror_msg(_("Cannot restore journal watch's position form file '%s'"), file_name);
+            perror_msg(_("Cannot restore journal watch's position from file '%s'"), file_name);
 
         return -errno;
     }
