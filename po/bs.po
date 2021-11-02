@@ -1,35 +1,36 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Arnes  <arnes99@gmail.com>, 2011
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
 # Michal Fabik <mfabik@redhat.com>, 2019. #zanata, 2020.
+# Enes Bosnic <ebosnic@msn.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-04-01 11:38+0000\n"
-"Last-Translator: Michal Fabik <mfabik@redhat.com>\n"
+"PO-Revision-Date: 2021-04-17 18:02+0000\n"
+"Last-Translator: Enes Bosnic <ebosnic@msn.com>\n"
 "Language-Team: Bosnian <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/bs/>\n"
 "Language: bs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
-"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 3.11.3\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.5.3\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
-msgstr "Prijava problema"
+msgstr "Izvještavanje o problemu"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr "Pregledati i prijaviti padove aplikacija"
+msgstr "Pregledati i prijaviti rušenje aplikacija"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
@@ -41,7 +42,7 @@ msgstr "Aplet koji upozorava korisnika da je ABRT zabilježio novi problem"
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
-msgstr ""
+msgstr "Ups, greška!"
 
 #: ../src/applet/abrt-applet-application.c:573
 msgid "Report"
@@ -155,7 +156,7 @@ msgstr "Postavka gore se može podesiti u"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr ""
+msgstr "Pitaj prije nego ukradeš direktorijum"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
@@ -375,7 +376,7 @@ msgstr "'%s' nije validan direktorij problema"
 
 #: ../src/dbus/abrt-dbus.c:240 ../src/dbus/abrt-dbus.c:490
 msgid "Not Authorized"
-msgstr ""
+msgstr "Nije ovlašten"
 
 #: ../src/dbus/abrt-dbus.c:253
 msgid "Can't open the problem"
@@ -501,7 +502,6 @@ msgstr "Maksimalna veličina keša u MiB. Početna vrijednost je "
 
 #: ../src/daemon/abrt-auto-reporting.c:198
 #: ../src/daemon/abrt-auto-reporting.c:206
-#, fuzzy
 msgid "& [ "
 msgstr "& [ "
 
@@ -515,7 +515,7 @@ msgstr "Korisničko ime podrške Red Hat"
 
 #: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
-msgstr "Šifra za podršku Red Hat. Ako nije zadata, biće izdat upit za nju."
+msgstr "Red Hat podrška lozinka, ako nije data, upit za istu će biti izdat"
 
 #: ../src/daemon/abrt-auto-reporting.c:236
 msgid "uReport SSL certificate paths or certificate type"
@@ -578,6 +578,14 @@ msgid ""
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
 msgstr ""
+"Korištenje: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
+"\n"
+"-v - Opširno\n"
+"-d - Obriši poslanu arhivu\n"
+"ABRT_SPOOL_DIR - Direktorijum gdje se validna poslana arhiva treba "
+"raspakovati\n"
+"UPLOAD_DIR - Direktorijum gdje su poslane arhive snimljene\n"
+"FILENAME - Ime dokumenta poslane arhive\n"
 
 #: ../src/daemon/abrt-handle-upload.in:166
 #: ../src/daemon/abrt-handle-upload.in:169
@@ -642,7 +650,7 @@ msgstr "Ne mogu raspakirati '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:255
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' uspješno procesiranih"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:259
@@ -733,7 +741,7 @@ msgstr "Prolazak kroz funkcijski trag nije uspjelo za %s"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:152
 msgid "Crash thread not found"
-msgstr ""
+msgstr "Skršena nit nije pronađena"
 
 #: ../src/plugins/abrt-action-analyze-c.c:155
 msgid ""
@@ -741,25 +749,28 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Izračunava i spašava UUID coredump-a u problematičnom direktorijumu DIR"
 
 #: ../src/plugins/abrt-action-analyze-core.in:67
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "Analiziranje jezgrenogdumpa '%s'"
 
 #: ../src/plugins/abrt-action-analyze-core.in:105
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "Nedostajući uradak identifikacije: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:137
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr ""
+msgstr "Korištenje: %s [-v] [-o Izlazna datoteka] -c Jezgrena datoteka"
 
 #: ../src/plugins/abrt-action-analyze-core.in:159
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "Jezgrena datoteka nije specificirana"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
@@ -767,6 +778,10 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Izračunava i spašava UUID i DUPHASH za operativne probleme u direktorijumu "
+"DIR"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:78
 msgid ""
@@ -775,6 +790,11 @@ msgid ""
 "your computer. ABRT will not allow you to create a report in a bug tracking "
 "system but you can contact kernel maintainers via e-mail."
 msgstr ""
+"Povratna istraga ne sadrži dovoljno značajnih okvira funkcija neophodnih za "
+"izvještavanje. Nezgodno jeste, ali ne mora signalizirati problem s vašim "
+"računarom. ABRT vam neće dopustiti da kreirate izvještaj u sustavu za "
+"praćenje grešaka, ali možete kontaktirati održavatelje jezgre putem "
+"elektronske pošte."
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:74
 msgid ""
@@ -782,11 +802,14 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Izračunava i spašava UUID i DUPHASH za xorg probleme direktorijum DIR"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:143
 #, c-format
 msgid "Module '%s' was loaded - won't report this crash"
-msgstr ""
+msgstr "Modul '%s' je učitan - neće ovo prijaviti kao pad"
 
 #: ../src/plugins/abrt-action-analyze-python.c:44
 msgid ""
@@ -794,71 +817,78 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Izračunava i spašava UUID i DUPHASH za python izvještaje o padovima"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:47
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
-msgstr ""
+msgstr "Korištenje: {0} [-v[v]] [--core=VMCORE]"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:74
 msgid "File {0} doesn't exist"
-msgstr ""
+msgstr "Datoteka {0} ne postoji"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:77
 msgid "Extracting the oops text from core"
-msgstr ""
+msgstr "Izdvajanje oops teksta iz jezgre"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:82
 msgid ""
 "Can't process {0}:\n"
 "{1}"
 msgstr ""
+"Nije moguće obraditi {0}:\n"
+"{1}"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:90
 msgid "Can't extract the oops message: '{0}'"
-msgstr ""
+msgstr "Nije moguće izvući oops poruku: '{0}'"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:93
 msgid "Oops text extracted successfully"
-msgstr ""
+msgstr "Oops tekst je uspješno izvučen"
 
 #: ../src/plugins/abrt-action-check-oops-for-hw-error.in:100
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
 msgstr ""
+"Dnevnik kernela ukazuje da su otkrivene hardverske greške.\n"
+"Ovo najvjerovatnije nije softverski problem.\n"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:73
 #: ../src/plugins/abrt-action-find-bodhi-update:106
 msgid "Problem directory error: {0}"
-msgstr ""
+msgstr "Problem direktorijum greška: {0}"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:92
 msgid "cannot open problem directory '{0}'"
-msgstr ""
+msgstr "ne mogu otvoriti direktorij problema \"{0}\""
 
 #: ../src/plugins/abrt-action-find-bodhi-update:121
 msgid "Using product '{0}' from /etc/os-release."
-msgstr ""
+msgstr "Koristim proizvod '{0}' iz /etc/os-release."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:123
 msgid "Using product {0}."
-msgstr ""
+msgstr "Koristi proizvod {0}."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:125
 msgid "Using product version {0}."
-msgstr ""
+msgstr "Korištenje verzije proizvoda {0}."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:137
 msgid "Duplicate bugzilla bug '#{0}' was found"
-msgstr ""
+msgstr "Duplikat bugzilla bube '#{0}' je pronađen"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:139
 msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
-msgstr ""
+msgstr "Ne postoji bugzilla greška s 'abrt_hash: {0}'"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:144
 msgid "Warning: abrt-bodhi do not support Product version 'Rawhide'"
-msgstr ""
+msgstr "Upozorenje: abrt-bodhi ne podržava verziju proizvoda 'Rawhide'"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
@@ -866,6 +896,10 @@ msgid ""
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
 msgstr ""
+"& [options] -d DIR\n"
+"\n"
+"analizira izvještaj jezgre u direktoriju problema DIR, generira i čuva "
+"ponovne praćenja"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
@@ -873,7 +907,7 @@ msgstr "Dodatni debuginfo direktoriji"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:57
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr ""
+msgstr "Ubij gdb ako se izvršava duže od NUM skeundi"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
@@ -889,53 +923,60 @@ msgid ""
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
 msgstr ""
+"& [-v] [-r] -d DIR\n"
+"\n"
+"Kreira izvještaj jezgre sa nivoom ponovnog praćenja iz izvornog izvještaja i "
+"odgovarajuće izvršne datoteke binarnog koda"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
-msgstr ""
+msgstr "Nemoj maskirati otiske"
 
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
 msgid "Generating core_backtrace"
-msgstr ""
+msgstr "Generisanje jezgrenog_traga"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:81
 msgid "Error: GDB did not return any data"
-msgstr ""
+msgstr "Greška: GDB nije vratio nikakav podatak"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:95
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Greška: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:61
 msgid "Can't open {0}: {1}"
-msgstr ""
+msgstr "Ne mogu otvoriti {0}: {1}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:101
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr ""
+"Izvještaj jezgra reference {0} debuginfo datoteke, {1} od njih nije "
+"instalirana"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:104
 msgid "{0} of debuginfo files are not installed"
-msgstr ""
+msgstr "{0} od debuginfo datoteka nisu instalirane"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:114
 #, c-format
 msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
 msgstr ""
+"Neispravna konfiguracija od CCpp dodatka, nije podržan paket menadžer: '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:168
 msgid "Missing requested file: {0}"
-msgstr ""
+msgstr "Nedostaje zahtjevana datoteka: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:173
 msgid "Missing debuginfo file: {0}"
-msgstr ""
+msgstr "Nedostaje debuginfo datoteka: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:176
 msgid "All debuginfo files are available"
-msgstr ""
+msgstr "Sve debuginfo datoteke su dostupne"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:190
 #, c-format
@@ -969,6 +1010,32 @@ msgid ""
 "    --releasever RELEASEVER\n"
 "                Pass this OS version to package managers.\n"
 msgstr ""
+"Korišrenje: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH[:PATH...]]\n"
+"       [--releasever=RELEASEVER] [--repo=PATTERN]\n"
+"\n"
+"Instalira debuginfo datoteke za sve izrade navedene u BUILD_IDS_FILE\n"
+"u CACHEDIR, koristeći TMPDIR kao privremenu lokaciju za inscenacije.\n"
+"Stare datoteke u CACHEDIR-u bivaju obrisane ako nisu manje od SIZE.\n"
+"\n"
+"Očitava konfiguracionu datoteku iz /etc/abrt/plugins/CCpp.conf\n"
+"\n"
+" -v  Budi opširan\n"
+" -y  Bez interakcije, smatraj 'Da' kao odgovor na sva pitajna\n"
+" --ids  Zadano: build_ids\n"
+" --tmpdir  Zadano: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+" --cache Zarezom odvojena lista direktorijuma. Prvi navedeni se koristi za\n"
+" čuvanje instaliranih debuginfos datoteka.\n"
+" Zadano: /var/cache/abrt-di\n"
+" --size_mb   Zadano: 4096\n"
+" --pkgmgr    Zadano: PackageManager from CCpp.conf or 'dnf'\n"
+" -e,--exact  Preuzmi samo specificirane datoteke\n"
+" --repo      Uzorak za korištenje pri pretraživanju repozitorijuma.\n"
+" Zadano: *debug*\n"
+" --releasever RELEASEVER\n"
+" Proslijedi ovu verziju Operativnog Sistema do paket menadžera.\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:290
 msgid "Exiting on user command"
@@ -982,30 +1049,36 @@ msgid ""
 "Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
 "ABRT system cache."
 msgstr ""
+"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+"\t[-r REPO]\n"
+"\n"
+"Instalira debuginfo pakete za sve build-ids navedene u BUILD_IDS_FILE u\n"
+"ABRT sistemski keš."
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
 msgid "Noninteractive, assume 'Yes' to all questions"
-msgstr ""
+msgstr "Bez interakcije, smatraj 'Da' kao odgovor na sva pitanja"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
 msgid "- means STDIN, default: build_ids"
-msgstr ""
+msgstr "- znači STDIN, zadano: build_ids"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
 msgid "Download only specified files"
-msgstr ""
+msgstr "Preuzmi samo specificirane datoteke"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:71
 msgid "Pattern to use when searching for repos, default: *debug*"
 msgstr ""
+"Uzorak za korištenje prilikom pretraživanja repositorijuma, zadano: *debug*"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:72
 msgid "Ignored option"
-msgstr ""
+msgstr "Ignorisana opcija"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:73
 msgid "OS release version"
-msgstr ""
+msgstr "OS verzija izdanja"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
 msgid ""
@@ -1013,12 +1086,17 @@ msgid ""
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
 msgstr ""
+"OK da se pošalje jezgrovni izvješraj? (Može sadržavati osjetljive podatke). "
+"Ako je vaš odgovor 'Ne', složeni tragovi će biti generirani lokalno. (Moguć "
+"download velike količine podataka)."
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
 msgstr ""
+"Dali želite generirati složene tragove lokalno? (Moguć download velike "
+"količine podataka, ali prijava greške nije moguća bez složenih tragova)."
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -1028,182 +1106,193 @@ msgid ""
 "SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
+"& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
+"\n"
+"Obriši problematične direktorijume (-d) ili datoteke (-f) u DIRs sve dok "
+"nisu kapaciteta manjeg od SIZE.\n"
+"FILEs su sačuvani (nikad obrisani)."
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
-msgstr ""
+msgstr "Obriši kompletne problematične direktorijume"
 
 #: ../src/plugins/abrt-action-trim-files.c:237
 msgid "Delete files inside this directory"
-msgstr ""
+msgstr "Obriši datoteke unutar ovog direktorijuma"
 
 #: ../src/plugins/abrt-action-trim-files.c:238
 msgid "Preserve this directory"
-msgstr ""
+msgstr "Sačuvaj ovaj direktorijum"
 
 #: ../src/plugins/abrt-action-ureport:54
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr "Ne mogu pokrenuti '%s', poruka iz greške je: '%s'"
 
 #: ../src/plugins/abrt-action-ureport:65
 #, c-format
 msgid "Not a number in file '%s'"
-msgstr ""
+msgstr "Nije broj u datoteci '%s'"
 
 #: ../src/plugins/abrt-action-ureport:93
 #, c-format
 msgid "Usage: %s [-v]"
-msgstr ""
+msgstr "Korištenje: %s [-v]"
 
 #: ../src/plugins/abrt-action-ureport:114
 msgid "Unable to get current working directory as it was probably deleted"
-msgstr ""
+msgstr "Ne mogu dohvatiti trenutni radni direktorijum, vjerovatno je obrisan"
 
 #: ../src/plugins/abrt-action-ureport:143
 msgid "A bug was already filed about this problem:"
-msgstr ""
+msgstr "Izvještaj o grešci i ovom problemu je već popunjen:"
 
 #: ../src/plugins/abrt-action-ureport:153
 msgid "uReport was already sent, not sending it again"
-msgstr ""
+msgstr "uReport je več proslijeđen, nećemo ga slati ponovo"
 
 #: ../src/plugins/abrt-action-ureport:174
 msgid "Problem comes from unpackaged executable. Unable to create uReport."
 msgstr ""
+"Problem dolazi iz neraspakovane izvršne datoteke. Nije moguće kreirati "
+"uReport."
 
 #: ../src/plugins/abrt-action-ureport:189
 msgid "Adding you to CC List of the existing bugzilla bug"
-msgstr ""
+msgstr "Dodajem vas na CC listu postojećih bugzilla grešaka"
 
 #: ../src/plugins/abrt-action-ureport:203
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
-msgstr ""
+msgstr "reporter-ureport nije uspio sa izlaznim kodom %d"
 
 #: ../src/plugins/abrt-gdb-exploitable:524
 msgid "Signal sent by userspace code"
-msgstr ""
+msgstr "Signal poslan kodom iz korisničkog prostora"
 
 #: ../src/plugins/abrt-gdb-exploitable:528
 msgid "Signal sent by timer/IO/async event"
-msgstr ""
+msgstr "Signal poslan štopericom/IO/asinkronim događajem"
 
 #: ../src/plugins/abrt-gdb-exploitable:536
 msgid "Signal has siginfo.si_code = SI_USER"
-msgstr ""
+msgstr "Signal ima siginfo.si_code = SI_USER"
 
 #: ../src/plugins/abrt-gdb-exploitable:539
 msgid "Signal due to write to closed pipe"
-msgstr ""
+msgstr "Signal se upisuje u zatvorenu cijev"
 
 #: ../src/plugins/abrt-gdb-exploitable:545
 #: ../src/plugins/abrt-gdb-exploitable:570
 msgid "Signal sent by keyboard"
-msgstr ""
+msgstr "Signal poslan sa tastature"
 
 #: ../src/plugins/abrt-gdb-exploitable:549
 #: ../src/plugins/abrt-gdb-exploitable:574
 msgid "Job control signal sent by kernel"
-msgstr ""
+msgstr "Signal kontrola zadatka poslan od kernela"
 
 #: ../src/plugins/abrt-gdb-exploitable:553
 #: ../src/plugins/abrt-gdb-exploitable:582
 msgid "Signal sent by window resize"
-msgstr ""
+msgstr "Signal poslan od promjene veličine prozora"
 
 #: ../src/plugins/abrt-gdb-exploitable:557
 #: ../src/plugins/abrt-gdb-exploitable:586
 msgid "Signal sent by alarm(N) expiration"
-msgstr ""
+msgstr "Signal upućen istekom alarma (N)"
 
 #: ../src/plugins/abrt-gdb-exploitable:578
 msgid "Signal due to write to broken pipe"
-msgstr ""
+msgstr "Signal poslan zbog zapisa u slomljenu cijev"
 
 #: ../src/plugins/abrt-gdb-exploitable:602
 msgid "ABRT signal (abort() was called?)"
-msgstr ""
+msgstr "ABRT signal (odustajanje() je bio pozvan?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:611
 msgid "XCPU signal (over CPU time limit)"
-msgstr ""
+msgstr "XCPU signal (preko CPU vremenskog ograničenja)"
 
 #: ../src/plugins/abrt-gdb-exploitable:615
 msgid "XFSZ signal (over file size limit)"
-msgstr ""
+msgstr "XFSZ signal (preko ograničenja veličine datoteka)"
 
 #: ../src/plugins/abrt-gdb-exploitable:619
 msgid "TRAP signal (can be a bug in a debugger/tracer)"
-msgstr ""
+msgstr "TRAP signal (moguće greška u debugger/tracer)"
 
 #: ../src/plugins/abrt-gdb-exploitable:623
 msgid "SYS signal (unknown syscall was called?)"
-msgstr ""
+msgstr "SYS signal (nepoznat syscall je pozvan?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:628
 msgid "Arithmetic exception"
-msgstr ""
+msgstr "Artimetička iznimka"
 
 #: ../src/plugins/abrt-gdb-exploitable:632
 msgid "Division by zero"
-msgstr ""
+msgstr "Podijeljen sa nulom"
 
 #: ../src/plugins/abrt-gdb-exploitable:636
 msgid "Illegal instruction (jump to a random address?)"
-msgstr ""
+msgstr "Nedozvoljena instrukcija (odi na nasumičnu adresu?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:642
 msgid "Non-crash related signal"
-msgstr ""
+msgstr "N-srušeno relevantan signal"
 
 #: ../src/plugins/abrt-gdb-exploitable:647
 msgid "Stack overflow"
-msgstr ""
+msgstr "Prelijevanje izvan definiranih okvira"
 
 #: ../src/plugins/abrt-gdb-exploitable:651
 msgid "Write to an invalid address"
-msgstr ""
+msgstr "Piši u neispravnu adresu"
 
 #: ../src/plugins/abrt-gdb-exploitable:655
 msgid "Subroutine return to an invalid address (corrupted stack?)"
-msgstr ""
+msgstr "Podrutina je vratila neispravnu adresu (koruptiran definirani okvir)"
 
 #: ../src/plugins/abrt-gdb-exploitable:661
 #: ../src/plugins/abrt-gdb-exploitable:665
 msgid "Jump to an invalid address"
-msgstr ""
+msgstr "Skoči na neispravnu adresu"
 
 #: ../src/plugins/abrt-gdb-exploitable:669
 msgid ""
 "Access past the end of mapped file, invalid address, unaligned access, etc."
 msgstr ""
+"Pristup iza kraja mapirane datoteke, neispravna adresa, neispravan pristup, "
+"i slično."
 
 #: ../src/plugins/abrt-gdb-exploitable:688
 msgid "Can't get signal no and do exploitability analysis\n"
 msgstr ""
+"Ne mogu dohvatiti signal ne, i uraditi analizu potencijalne mogućnosti "
+"zlorabljenja\n"
 
 #: ../src/plugins/abrt-gdb-exploitable:701
 msgid "Likely crash reason: "
-msgstr ""
+msgstr "Najvjerovatniji razlog rušenja: "
 
 #: ../src/plugins/abrt-gdb-exploitable:702
 msgid "Exploitable rating (0-9 scale): "
-msgstr ""
+msgstr "Rejting ugroženosti (na skali 0-9): "
 
 #: ../src/plugins/abrt-gdb-exploitable:704
 msgid "Current instruction: "
-msgstr ""
+msgstr "Trenutna instrukcija: "
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Exploitability analysis came up empty\n"
-msgstr ""
+msgstr "Ispostavilo se da je analiza ugroženosti prazna\n"
 
 #: ../src/plugins/abrt-watch-log.c:129 ../src/plugins/abrt-retrace-client.c:159
 #: ../src/plugins/abrt-retrace-client.c:213
 #, c-format
 msgid "Can't execute '%s'"
-msgstr ""
+msgstr "Ne mogu izvršiti '%s'"
 
 #: ../src/plugins/abrt-watch-log.c:165
 msgid ""
@@ -1211,10 +1300,13 @@ msgid ""
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
 msgstr ""
+"& [-vs] [-F STR]... FILE PROG [ARGS]\n"
+"\n"
+"Prati datoteku dnevnika FILE, pokreni PROG kada isti naraste ili je zamjenjen"
 
 #: ../src/plugins/abrt-watch-log.c:177
 msgid "Don't run PROG if STRs aren't found"
-msgstr ""
+msgstr "Nemoj pokretati PROG ako STRovi nisu pronađeni"
 
 #: ../src/plugins/abrt-dump-oops.c:77
 msgid ""
@@ -1222,6 +1314,9 @@ msgid ""
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr ""
+"& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"Izvadi oops iz FILE (ili standardnog ulaza)"
 
 #: ../src/plugins/abrt-dump-oops.c:98
 #: ../src/plugins/abrt-dump-journal-core.c:572
@@ -1235,7 +1330,7 @@ msgstr "Ispiši pronađene oopse na standardnom izlazu"
 #: ../src/plugins/abrt-dump-oops.c:102
 #: ../src/plugins/abrt-dump-journal-oops.c:227
 msgid "Create new problem directory in DIR for every oops found"
-msgstr ""
+msgstr "Napravi novi problematicni direktorijum u DIR za svaki pronadjeni oops"
 
 #: ../src/plugins/abrt-dump-oops.c:103
 #: ../src/plugins/abrt-dump-journal-core.c:564
@@ -1244,70 +1339,75 @@ msgstr ""
 #: ../src/plugins/abrt-dump-xorg.c:55
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
+"Isto kao -d DumpLocation, DumpLocation je specificiran u abrt.conf datoteci"
 
 #: ../src/plugins/abrt-dump-oops.c:104
 msgid "Save the extracted information in PROBLEM"
-msgstr ""
+msgstr "Sačuvaj izvađene informacije u PROBLEM"
 
 #: ../src/plugins/abrt-dump-oops.c:105
 #: ../src/plugins/abrt-dump-journal-oops.c:229
 #: ../src/plugins/abrt-dump-journal-xorg.c:195
 #: ../src/plugins/abrt-dump-xorg.c:56
 msgid "Make the problem directory world readable"
-msgstr ""
+msgstr "Napravi problem direktorijum čitljiv svijetu"
 
 #: ../src/plugins/abrt-dump-oops.c:106
 #: ../src/plugins/abrt-dump-journal-oops.c:230
 #: ../src/plugins/abrt-dump-journal-xorg.c:196
 msgid "Throttle problem directory creation to 1 per second"
 msgstr ""
+"Podesi brzinu kreiranja problem direktorijuma na 1 direktorijum po sekundi "
+"vremena"
 
 #: ../src/plugins/abrt-dump-oops.c:107 ../src/plugins/abrt-dump-xorg.c:57
 msgid "Print search string(s) to stdout and exit"
-msgstr ""
+msgstr "Odštampaj nizove pretraživanja u standardni izlaz i izađi"
 
 #: ../src/plugins/abrt-dump-oops.c:127
 #: ../src/plugins/abrt-dump-journal-oops.c:128
 msgid "Failed to compile regex"
-msgstr ""
+msgstr "Ne mogu da kompajliram regularni izraz"
 
 #: ../src/plugins/abrt-dump-oops.c:177
 msgid "Can't update the problem: no oops found"
-msgstr ""
+msgstr "Ne mogu da ažuriram problem: oops nisu pronađeni"
 
 #: ../src/plugins/abrt-dump-oops.c:183
 msgid "More oopses found: process only the first one"
-msgstr ""
+msgstr "Više oppsova pronađeno: processiraj samo i jedino prvi"
 
 #: ../src/plugins/abrt-dump-journal-core.c:378
 #, c-format
 msgid "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
-msgstr ""
+msgstr "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
 
 #: ../src/plugins/abrt-dump-journal-core.c:407
 #: ../src/plugins/abrt-dump-journal-core.c:446
 msgid "Failed to obtain all required information from journald"
 msgstr ""
+"Nje moguće dobaviti sve neophodne informacije iz daemona dnevnika journald"
 
 #. We don't want to update the counter here.
 #: ../src/plugins/abrt-dump-journal-core.c:470
 #, c-format
 msgid "Not saving repeating crash after %ds (limit is %ds)"
-msgstr ""
+msgstr "Ne čuvamo ponavljajuće rušenje nakon %ds (ograničenje je %ds)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:478
 msgid "Failed to print detect problem data to stdout"
-msgstr ""
+msgstr "Nije moguće ispisati podatke o detektovanom problemu u standardni izlaz"
 
 #: ../src/plugins/abrt-dump-journal-core.c:486
 msgid "Failed to save detect problem data in abrt database"
 msgstr ""
+"Nije moguce sacuvati detektovani problem sa podatcima u abrt bazi podataka"
 
 #: ../src/plugins/abrt-dump-journal-core.c:507
 #: ../src/plugins/abrt-dump-journal-oops.c:168
 #: ../src/plugins/abrt-dump-journal-xorg.c:123
 msgid "Failed to initialize systemd-journal watch"
-msgstr ""
+msgstr "Nije moguce izvršiti inicijalizaciju systemd-journal stražara"
 
 #: ../src/plugins/abrt-dump-journal-core.c:527
 msgid ""
@@ -1323,89 +1423,102 @@ msgid ""
 "\n"
 "The last seen position is saved in "
 msgstr ""
+"& [-vsf] [-e]/[-c CURSOR] [-t INT]/[-T] [-d DIR]/[-D]\n"
+"\n"
+"Izvadi jezgrene izvještaje iz dnevnika systemd-journal\n"
+"\n"
+"-c i -e opcije su u konfliktu jer obadvije specificiraju prvu pročitanu "
+"poruku.\n"
+"\n"
+"-e je korisno jedono za -f jer prati dnevnik čitajući \n"
+"cijeli dnevnik od početka u slučaju da zadnja viđena pozicija nije dostupna."
+"\n"
+"\n"
+"Zadnja viđena pozcija je sačuvana u "
 
 #: ../src/plugins/abrt-dump-journal-core.c:563
 msgid "Create new problem directory in DIR for every coredump"
-msgstr ""
+msgstr "Napravi novi problem direktorijum u DIR za svaki jezgreni izvještaj"
 
 #: ../src/plugins/abrt-dump-journal-core.c:565
 #: ../src/plugins/abrt-dump-journal-oops.c:231
 #: ../src/plugins/abrt-dump-journal-xorg.c:197
 msgid "Start reading systemd-journal from the CURSOR position"
-msgstr ""
+msgstr "Počni čitati systemd-journal sa CURSOR pozicije"
 
 #: ../src/plugins/abrt-dump-journal-core.c:566
 #: ../src/plugins/abrt-dump-journal-oops.c:232
 #: ../src/plugins/abrt-dump-journal-xorg.c:198
 msgid "Start reading systemd-journal from the end"
-msgstr ""
+msgstr "Počni čitati systemd-journal od kraja"
 
 #: ../src/plugins/abrt-dump-journal-core.c:567
 msgid "Throttle problem directory creation to 1 per INT second"
-msgstr ""
+msgstr "Ubrzaj kreiranje problem direktorijuma za 1 po INT sekundi vremena"
 
 #: ../src/plugins/abrt-dump-journal-core.c:568
 msgid "Same as -t INT, INT is specified in plugins/CCpp.conf"
-msgstr ""
+msgstr "Isto kao i -t INT, INT je specificiran u plugins/CCpp.conf datoteci"
 
 #: ../src/plugins/abrt-dump-journal-core.c:569
 #: ../src/plugins/abrt-dump-journal-oops.c:233
 #: ../src/plugins/abrt-dump-journal-xorg.c:199
 msgid "Follow systemd-journal from the last seen position (if available)"
-msgstr ""
+msgstr "Prati systemd-journal sa zadnje vidjene pozicije (ako postoji)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:570
 #: ../src/plugins/abrt-dump-journal-oops.c:234
 #: ../src/plugins/abrt-dump-journal-xorg.c:200
 msgid "Read journal files from all machines"
-msgstr ""
+msgstr "Pročitaj datoteke dnevnika sa svih mašina"
 
 #: ../src/plugins/abrt-dump-journal-core.c:571
 #: ../src/plugins/abrt-dump-journal-oops.c:235
 #: ../src/plugins/abrt-dump-journal-xorg.c:201
 msgid "Read all journal files from directory at PATH"
-msgstr ""
+msgstr "Pročitaj sve datoteke dnevnika iz direktorijuma koji se nalazi na PATH"
 
 #: ../src/plugins/abrt-dump-journal-core.c:583
 #: ../src/plugins/abrt-dump-journal-oops.c:249
 #: ../src/plugins/abrt-dump-journal-xorg.c:216
 msgid "You need to specify either -c CURSOR or -e"
-msgstr ""
+msgstr "Trebate specificirati ili -c CURSOR ili -e"
 
 #: ../src/plugins/abrt-dump-journal-core.c:627
 #: ../src/plugins/abrt-dump-journal-oops.c:282
 #: ../src/plugins/abrt-dump-journal-xorg.c:281
 #, c-format
 msgid "Cannot initialize systemd-journal in directory '%s'"
-msgstr ""
+msgstr "Ne mogu inicijalizirati systemd-journal u direktorijumu '%s'"
 
 #: ../src/plugins/abrt-dump-journal-core.c:632
 #: ../src/plugins/abrt-dump-journal-oops.c:287
 #: ../src/plugins/abrt-dump-journal-xorg.c:286
 msgid "Cannot open systemd-journal"
-msgstr ""
+msgstr "Ne mogu otvoriti systemd-journal"
 
 #: ../src/plugins/abrt-dump-journal-core.c:636
 msgid "Cannot filter systemd-journal to systemd-coredump data only"
 msgstr ""
+"Ne mogu filtrirati samo systemd-journal podatke u systemd-coredump podatcima"
 
 #: ../src/plugins/abrt-dump-journal-core.c:641
 #: ../src/plugins/abrt-dump-journal-oops.c:296
 #: ../src/plugins/abrt-dump-journal-xorg.c:299
 msgid "Cannot seek to the end of journal"
-msgstr ""
+msgstr "Ne mogu dohvatiti kraj ovog dnevnika"
 
 #: ../src/plugins/abrt-dump-journal-core.c:644
 #: ../src/plugins/abrt-dump-journal-oops.c:312
 #: ../src/plugins/abrt-dump-journal-xorg.c:315
 #, c-format
 msgid "Failed to set systemd-journal cursor '%s'"
-msgstr ""
+msgstr "Ne mogu da postavim systemd-journal cursor '%s'"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:40
 #: ../src/plugins/abrt-dump-journal-xorg.c:53
 msgid "Cannot read journal data."
-msgstr ""
+msgstr "Ne mogu da pročitam podatke dnevnika."
 
 #: ../src/plugins/abrt-dump-journal-oops.c:189
 msgid ""
@@ -1421,20 +1534,30 @@ msgid ""
 "\n"
 "The last seen position is saved in "
 msgstr ""
+"& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
+"\n"
+"Izvadi oops iz systemd-journal\n"
+"\n"
+"-c i -e opcije su u konfliktu, jer obe specificiraju prvu pročitanu poruku.\n"
+"\n"
+"-e je korisno samo uz -f jer prateci dnevnik pocinje sa citanjem \n"
+"cijelog dnevnika ako zadnja vidjena pozicija nije dostupna.\n"
+"\n"
+"Zadnja vidjena pozicija je sacuvana u "
 
 #: ../src/plugins/abrt-dump-journal-oops.c:291
 msgid "Cannot filter systemd-journal to kernel data only"
-msgstr ""
+msgstr "Ne mogu filtrirati samo system-journal u kernel podatcima"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:303
 #: ../src/plugins/abrt-dump-journal-xorg.c:306
 #, c-format
 msgid "Failed to start watch from cursor '%s'"
-msgstr ""
+msgstr "Startanje stražara neuspješno sa kursora '%s'"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:62
 msgid "Failed to parse Backtrace from journal"
-msgstr ""
+msgstr "Nije moguće procesirati povratni trag iz dnevnika"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:145
 #, c-format
@@ -1455,28 +1578,47 @@ msgid ""
 "parameter\n"
 "-j or in %s conf file.\n"
 msgstr ""
+"& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
+"\n"
+"Izvadi Xorg rušenje iz systemd-journal\n"
+"\n"
+"-c i -e opcije su međusobno konfliktne jer obje specificiraju prvu pročitanu "
+"poruku.\n"
+"\n"
+"-e je korisno jedino uz -f jer praćenje dnevnika počinje čitanjem \n"
+"cjelokupnog dnevnika od početka ako zadnja viđena pozicija nije dostupna.\n"
+"\n"
+"Zadnja viđena pozicija je sačuvana u %s\n"
+"\n"
+"Filter dnevnika je neophodan parametar i mora biti specificiran bilo "
+"parametrom \n"
+"-j ili u %s konfiguracionoj datoteci.\n"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:192
 msgid "Print found crashes on standard output"
-msgstr ""
+msgstr "Štampanje je pronašlo rušenje na standardnom izlazu"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:193
 msgid "Create new problem directory in DIR for every crash found"
-msgstr ""
+msgstr "Napravi novi problem direktorijum u DIR za svako pronađeno rušenje"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:202
 msgid "Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)"
 msgstr ""
+"Filter dnevnika kao na primjer '_COMM=gdm-x-session' (može biti specificiran "
+"više puta)"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:273
 msgid ""
 "Journal filter must be specified either by parameter -j or stored in /etc/"
 "abrt/plugins/xorg.conf file"
 msgstr ""
+"Filter dnevnika mora biti specificiran, bilo kroz parametar -j ili snimljen "
+"u /etc/abrt/plugins/xorg.conf datoteci"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:290
 msgid "Cannot filter systemd-journal to Xorg data only"
-msgstr ""
+msgstr "Ne mogu isfiltrirati Xorg dana i systemd-journal dnevnika"
 
 #: ../src/plugins/abrt-dump-xorg.c:35
 msgid ""
@@ -1484,28 +1626,31 @@ msgid ""
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
 msgstr ""
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"Izvadi Xorg rusenje iz FILE (ili sa standardnog ulaza)"
 
 #: ../src/plugins/abrt-dump-xorg.c:53
 msgid "Print found crash data on standard output"
-msgstr ""
+msgstr "Ispiši pronađene podatke o rušenjima na standardnom izlazu"
 
 #: ../src/plugins/abrt-dump-xorg.c:54
 msgid "Create problem directory in DIR for every crash found"
-msgstr ""
+msgstr "Napravi problem direktorijum u DIR za svako pronađeno rušenje"
 
 #: ../src/plugins/abrt-dump-xorg.c:108
 msgid "Failed to parse Backtrace from log file"
-msgstr ""
+msgstr "Nije moguće procesirati povratni trag iz datoteke dnevnika"
 
 #. abrt_journal_set_cursor() prints error message in verbose mode
 #: ../src/plugins/abrt-journal.c:274
 msgid "Cannot save journal watch's position"
-msgstr ""
+msgstr "Nije moguće sačuvati poziciju stražara u dnevniku"
 
 #: ../src/plugins/abrt-journal.c:284
 #, c-format
 msgid "Cannot save journal watch's position: open('%s')"
-msgstr ""
+msgstr "Ne mogu sačuvati poziciju stražara dnevnika: open('%s')"
 
 #. Only notice because this is expected
 #: ../src/plugins/abrt-journal.c:302
@@ -1558,7 +1703,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:230
 #: ../src/plugins/abrt-retrace-client.c:234
 msgid "Can't create temporary file in "
-msgstr ""
+msgstr "Ne mogu kreirati privremenu datoteku u "
 
 #: ../src/plugins/abrt-retrace-client.c:322
 #: ../src/plugins/abrt-retrace-client.c:498
@@ -1719,10 +1864,8 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1261
-#, fuzzy
-#| msgid "Retrace server URL"
 msgid "retrace server URI"
-msgstr "URL retrace servera"
+msgstr "ponovo isprati trag od server URI"
 
 #: ../src/plugins/abrt-retrace-client.c:1263
 msgid "(debug) show received HTTP headers"
@@ -1833,16 +1976,14 @@ msgid ""
 "including your private data, if any."
 msgstr ""
 "Prebacuje ispis jezgre na server koji stvara funkcijski trag i vraća ga. Za: "
-"nema potrebe za debuginfo preuzimanjima. Retrace serverova baza podataka  "
+"nema potrebe za debuginfo preuzimanjima. Retrace serverova baza podataka "
 "debuginfo-a je potpunija. Retrace server može stvarati bolje funkcijske "
 "tragove. Protiv: ispis jezgre koji prebacite sadrži sve podatke iz srušenog "
 "programa uključujući Vaše privatne podatke (ako postoje)."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-#, fuzzy
-#| msgid "Retrace server URL"
 msgid "Retrace server URI"
-msgstr "URL retrace servera"
+msgstr "Ponovo preprati server URI"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Address of the retrace server"
@@ -2040,11 +2181,8 @@ msgid "Start retracing process?"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/gdb.py:25
-#, fuzzy
-#| msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgid "install debuginfo packages before launching GDB"
-msgstr ""
-"Preuzmi debuginfo pakete i stvori funkcijski trag lokalno koristeći GDB"
+msgstr "instaliraj debuginfo pakete prije pokretanja GDB"
 
 #: ../src/cli/abrtcli/cli/gdb.py:38
 msgid "The problem is not of a C/C++ type. Can't run GDB"
@@ -2078,10 +2216,8 @@ msgid "Removed"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/report.py:23
-#, fuzzy
-#| msgid "Problem Reporting"
 msgid "remove after reporting"
-msgstr "Prijava problema"
+msgstr "obriši nakon prijave"
 
 #: ../src/cli/abrtcli/cli/report.py:25
 msgid "ignore unreportable state"
@@ -2102,10 +2238,8 @@ msgid "perform retracing locally"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/retrace.py:26
-#, fuzzy
-#| msgid "Send core dump to remote retrace server for analysis"
 msgid "submit core dump for remote retracing"
-msgstr "Pošalji ispis jezgre na udaljeni retrace server za analizu"
+msgstr "Pošalji ispis jezgre za udaljeno pnovno praćenje"
 
 #: ../src/cli/abrtcli/cli/retrace.py:29
 msgid "force retracing"
