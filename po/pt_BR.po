@@ -20,18 +20,19 @@
 # Teseu <tuliomac@gmail.com>, 2011
 # Vitor Lobo Ramos <lobocode@gmail.com>, 2014
 # Daniel Lara <danniel@fedoraproject.org>, 2016. #zanata
-# Rafael Fontenelle <rafaelff@gnome.org>, 2020.
+# Rafael Fontenelle <rafaelff@gnome.org>, 2020, 2021.
 # Adolfo Ketzer <reztek@gmail.com>, 2020.
 # José Lemos Neto <lemosjosex@protonmail.com>, 2020.
 # Arthur Nunes Corrêa <arthurnunes@tutanota.com>, 2020.
-# Gustavo Costa <gusta@null.net>, 2020.
+# Gustavo Costa <gusta@null.net>, 2020, 2021.
+# Fábio Rodrigues Ribeiro <farribeiro@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-11-27 00:48+0000\n"
-"Last-Translator: Gustavo Costa <gusta@null.net>\n"
+"PO-Revision-Date: 2021-10-05 12:05+0000\n"
+"Last-Translator: Fábio Rodrigues Ribeiro <farribeiro@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://translate.fedoraproject.org/"
 "projects/abrt/abrt/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -39,7 +40,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.3.2\n"
+"X-Generator: Weblate 4.8\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -457,11 +458,11 @@ msgstr ""
 
 #: ../src/daemon/abrtd.c:751
 msgid "Do not daemonize"
-msgstr "Não criar um daemon"
+msgstr "Não cria um daemon"
 
 #: ../src/daemon/abrtd.c:752
 msgid "Log to syslog even with -d"
-msgstr "Registrar no syslog mesmo com o -d"
+msgstr "Registra no syslog mesmo com o -d"
 
 #: ../src/daemon/abrt-handle-event.c:362
 msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
@@ -469,11 +470,11 @@ msgstr "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
 
 #: ../src/daemon/abrt-handle-event.c:371
 msgid "Run EVENT on DIR"
-msgstr "Executar o EVENT no DIR"
+msgstr "Executa o EVENT no DIR"
 
 #: ../src/daemon/abrt-handle-event.c:372
 msgid "Communicate directly to the user"
-msgstr "Comunicar diretamente com o usuário"
+msgstr "Comunica diretamente com o usuário"
 
 #: ../src/daemon/abrt-handle-event.c:373
 msgid "Increment the nice value by INCREMENT"
@@ -485,6 +486,7 @@ msgid "No free workers and full buffer. Omitting archive '%s'"
 msgstr "Não há tarefas livres e buffer cheio. Omitindo arquivo '%s'"
 
 #: ../src/daemon/abrt-upload-watch.c:258
+#, fuzzy
 msgid ""
 "& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
 "\n"
@@ -497,9 +499,11 @@ msgid ""
 msgstr ""
 "& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
 "\n"
-"Observe o UPLOAD_DIRECTORY e descompacte arquivos de entrada em\n"
+"\n"
+"Observe o UPLOAD_DIRECTORY e descompacte arquivos de entrada em "
 "DumpLocation\n"
 "especificado em abrt.conf\n"
+"\n"
 "Se o UPLOAD_DIRECTORY não é fornecido, usa um valor da\n"
 "opção WatchCrashdumpArchiveDir para abrt.conf"
 
@@ -785,9 +789,8 @@ msgid ""
 msgstr ""
 "& [options] -d DIR\n"
 "\n"
-"Analisa o C/C++backtrace, gera o hash de duplicação, classificação de "
-"backtrace, e identifica a função de travamento no DIR do diretório do "
-"problema"
+"Analisa o backtrace C/C++, gera o hash de duplicação, classificação de\n"
+"backtrace, e identifica a função de travamento no DIR do diretório do"
 
 #.
 #. * The parser failed. Compute the duphash from the executable
@@ -842,8 +845,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
 msgstr ""
-"& [-v] -d DIR⏎ ⏎ Calcula e salva a UUID e DUPHASH para o diretório de "
-"problema oops DIR"
+"& [-v] -d DIR\n"
+"\n"
+"Calcula e salva a UUID e DUPHASH para o diretório de problema oops DIR"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:78
 msgid ""
@@ -864,8 +868,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
 msgstr ""
-"& [-v] -d DIR⏎ ⏎ Calcula e salva a UUID e DUPHASH para o diretório de "
-"problema do xorg DIR"
+"& [-v] -d DIR\n"
+"\n"
+"Calcula e salva a UUID e DUPHASH para o diretório de problema do xorg DIR"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:143
 #, c-format
@@ -985,8 +990,8 @@ msgid ""
 msgstr ""
 "& [-v] [-r] -d DIR\n"
 "\n"
-"\n"
-"Gerar um coredump-level backtrace de dump de memória e binário correspondente"
+"Gera um backtrace de despejo a nível de coredump de memória e binário "
+"correspondente"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
@@ -1628,7 +1633,7 @@ msgid "Failed to parse Backtrace from journal"
 msgstr "Falha ao analisar Backtrace do journal"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:145
-#, c-format
+#, c-format, fuzzy
 msgid ""
 "& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
 "\n"
@@ -1652,13 +1657,14 @@ msgstr ""
 "\n"
 "opções -c e -e conflitam porque ambas especificam a primeira mensagem lida.\n"
 "\n"
-"-e é útil apenas para o -f porque o seguinte se inicia por ler o journal "
-"inteiro se a ultima posição vista não estiver disponível.\n"
+"-e é útil apenas para o -f porque o seguinte se inicia por ler\n"
+"o journal inteiro se a ultima posição vista não estiver disponível.\n"
 "\n"
 "A ultima posição vista está salva em %s\n"
 "\n"
 "Filtro do Journal é um parâmetro obrigatório e deve ser especificado tanto "
-"pelo parâmetro -j ou no arquivo de configuração %s.\n"
+"pelo parâmetro\n"
+"-j ou no arquivo de configuração %s.\n"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:192
 msgid "Print found crashes on standard output"
@@ -2012,8 +2018,7 @@ msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch/exploitable"
 msgstr ""
-"abrt-retrace-client <operation> [options]\n"
-"\n"
+"abrt-retrace-client <operação> [opções]\n"
 "Operações: create/status/backtrace/log/batch/exploitable"
 
 #: ../src/plugins/abrt-retrace-client.c:1324
@@ -2278,10 +2283,8 @@ msgid "filter problems with matching component"
 msgstr "filtrar problemas com componente coincidente"
 
 #: ../src/cli/abrtcli/cli/__init__.py:59
-#, fuzzy
-#| msgid "List only not-reported problems"
 msgid "filter unreported problems"
-msgstr "Listar apenas problemas não reportados"
+msgstr "listar apenas problemas não reportados"
 
 #: ../src/cli/abrtcli/cli/__init__.py:61
 #, fuzzy

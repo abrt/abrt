@@ -19,13 +19,14 @@
 # Daniel Rusek <mail@asciiwolf.com>, 2017. #zanata
 # Daniel Rusek <mail@asciiwolf.com>, 2018. #zanata
 # Michal Konečný <michal.konecny@packetseekers.eu>, 2020.
+# Josef Hruska <hrusjos@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-02-16 15:38+0000\n"
-"Last-Translator: Michal Konečný <michal.konecny@packetseekers.eu>\n"
+"PO-Revision-Date: 2021-01-06 17:36+0000\n"
+"Last-Translator: Josef Hruska <hrusjos@gmail.com>\n"
 "Language-Team: Czech <https://translate.fedoraproject.org/projects/abrt/abrt/"
 "cs/>\n"
 "Language: cs\n"
@@ -33,7 +34,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 3.10.3\n"
+"X-Generator: Weblate 4.4\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -304,7 +305,7 @@ msgstr "O"
 
 #: ../src/configuration-gui/main.c:106
 msgid "Quit"
-msgstr "Konec"
+msgstr "Ukončit"
 
 #: ../src/daemon/abrt-action-save-package-data.c:456
 msgid ""
@@ -1055,7 +1056,7 @@ msgid ""
 "ABRT system cache."
 msgstr ""
 "& [-y] [-i SOUBOR_ID_SESTAV|-i -] [-e CESTA[:CESTA]...]\n"
-"    [-r REPOZITÁŘ]\n"
+"\t[-r REPOZITÁŘ]\n"
 "\n"
 "Instaluje ladící balíčky jádra pro všechna ID sestav uvedených v "
 "SOUBORU_ID_SESTAV do\n"
@@ -1394,7 +1395,7 @@ msgstr "Nepodařilo se získat všechny požadované informace ze žurnálu"
 #: ../src/plugins/abrt-dump-journal-core.c:470
 #, c-format
 msgid "Not saving repeating crash after %ds (limit is %ds)"
-msgstr "Neukládat opakující se pád  po %ds (limit je %ds)"
+msgstr "Neukládat opakující se pád po %ds (limit je %ds)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:478
 msgid "Failed to print detect problem data to stdout"
@@ -2417,7 +2418,7 @@ msgid ""
 "system_vimrc and system_gvimrc, respectively."
 msgstr ""
 "Zkontroluje existenci souborů \"vimrc\" a \"gvimrc\" v adresáři \"/etc\" a "
-"uloží je jako \"system_vimrc\" resp. \"system_gvimrc\""
+"uloží je jako \"system_vimrc\" resp. \"system_gvimrc\"."
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid "Collect yours vim configuration files"
@@ -2433,7 +2434,7 @@ msgid ""
 "as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 "Zkontroluje existenci souborů \".vimrc\" a \".gvimrc\" v domácím adresáři a "
-"uloží je jako \"user_vimrc\" resp. \"user_gvimrc\""
+"uloží je jako \"user_vimrc\" resp. \"user_gvimrc\"."
 
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"

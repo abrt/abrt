@@ -28,13 +28,14 @@
 # $Revision: 1.43 $
 # Göran Uddeborg <goeran@uddeborg.se>, 2015. #zanata, 2020.
 # Göran Uddeborg <goeran@uddeborg.se>, 2016. #zanata, 2020.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-09-13 11:29+0000\n"
-"Last-Translator: Göran Uddeborg <goeran@uddeborg.se>\n"
+"PO-Revision-Date: 2021-07-01 13:04+0000\n"
+"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/sv/>\n"
 "Language: sv\n"
@@ -42,7 +43,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.2.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -108,7 +109,7 @@ msgid ""
 "issue, please send a report."
 msgstr ""
 "Vi är ledsna, men det verkar som att %s kraschade.  Om du vill hjälpa till "
-"att lösa problement, skicka då en rapport."
+"att lösa problemet, skicka då en rapport."
 
 #: ../src/applet/abrt-applet-application.c:701
 msgid ""
@@ -131,7 +132,7 @@ msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
 msgstr ""
-"Vi är ledsna, men det verkar som att ett problem uppstod.  OM du vill hjälpa "
+"Vi är ledsna, men det verkar som att ett problem uppstod.  Om du vill hjälpa "
 "till att lösa problemet, skicka då en rapport."
 
 #. TODO: Terminate child's process?
@@ -529,7 +530,7 @@ msgstr "& [ "
 # author Göran Uddeborg
 #: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
-msgstr "Slår av autenticering"
+msgstr "Slår av autentisering"
 
 # translation auto-copied from project abrt, version rhel7, document abrt,
 # author Göran Uddeborg
@@ -607,7 +608,7 @@ msgstr "HTTP-autenticerad automatrapportering"
 # author Göran Uddeborg
 #: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
-msgstr "SSL-klientautenticerad automatrapportering"
+msgstr "SSL-klientautentiserad automatrapportering"
 
 # translation auto-copied from project abrt, version rhel7, document abrt,
 # author Göran Uddeborg
@@ -1123,7 +1124,7 @@ msgstr "Mönster att använda vid sökning efter förråd, standard: *debug*"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:72
 msgid "Ignored option"
-msgstr "Ingorerad flagga"
+msgstr "Ignorerad flagga"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:73
 msgid "OS release version"
@@ -1432,7 +1433,7 @@ msgstr "Misslyckades att få tag i all nödvändig information från journald"
 #: ../src/plugins/abrt-dump-journal-core.c:470
 #, c-format
 msgid "Not saving repeating crash after %ds (limit is %ds)"
-msgstr "Sparar inte krasch so upprepas efter %d s (gränsen är %d s)"
+msgstr "Sparar inte krasch som upprepas efter %d s (gränsen är %d s)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:478
 msgid "Failed to print detect problem data to stdout"
@@ -1966,7 +1967,7 @@ msgstr "För operationerna status, backtrace och log"
 
 #: ../src/plugins/abrt-retrace-client.c:1276
 msgid "id of your task on server"
-msgstr "Id på din uppgift på servern"
+msgstr "id på din uppgift på servern"
 
 #: ../src/plugins/abrt-retrace-client.c:1278
 msgid "password of your task on server"
