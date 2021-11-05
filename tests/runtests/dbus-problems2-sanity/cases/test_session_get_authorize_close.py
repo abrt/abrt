@@ -25,7 +25,7 @@ class TestSession(abrt_p2_testing.TestCase):
                 self.logger.debug("Calling Authorize(): expecting pending")
 
                 if not exp_message is None:
-                    self.assertEquals(message, exp_message)
+                    self.assertEqual(message, exp_message)
 
                 # Verify that Authorize returns 2 if there is a pending request
                 ret = p2_session.Authorize(dict())

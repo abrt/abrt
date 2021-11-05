@@ -62,10 +62,10 @@ class TestConcurency(abrt_p2_testing.TestCase):
                 if status == 4:
                     results, code = t.Finish()
                     self.assertIn("Error.Message", results)
-                    self.assertRegexpMatches(results["Error.Message"],
-                                             "Failed to create new problem "
-                                             "directory: Problem data is "
-                                             "too big")
+                    self.assertRegex(results["Error.Message"],
+                                     "Failed to create new problem "
+                                     "directory: Problem data is "
+                                     "too big")
                     tasks.remove(t)
                 elif not status == 1:
                     self.fail("Unexpected task status: %s" % (str(status)))

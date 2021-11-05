@@ -378,7 +378,7 @@ def wait_for_task_status(test, bus, task_path, status):
     task.getobjectproperties().connect_to_signal("PropertiesChanged",
                                                  on_properties_changed)
     test.wait_for_signals(["PropertiesChanged"], 30000)
-    test.assertEquals(task.getproperty("Status"), status)
+    test.assertEqual(task.getproperty("Status"), status)
 
     return task
 

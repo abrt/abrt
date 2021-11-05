@@ -51,7 +51,7 @@ class TestGetProblemDataSanity(abrt_p2_testing.TestCase):
 
             g = p[k]
 
-            self.assertRegexpMatches(g[2], v[2], "invalid contents of '%s'" % (k))
+            self.assertRegex(g[2], v[2], "invalid contents of '%s'" % (k))
             self.assertEqual(v[1], g[1], "invalid length '%s'" % (k))
             self.assertEqual(v[0], g[0], "invalid flags %s" % (k))
 

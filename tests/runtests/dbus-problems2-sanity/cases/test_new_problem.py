@@ -28,7 +28,8 @@ class TestNewProblem(abrt_p2_testing.TestCase):
             details = self.task.getproperty("Details")
 
             self.assertIn("NewProblem.TemporaryEntry", details)
-            self.assertRegexpMatches(details["NewProblem.TemporaryEntry"], "/org/freedesktop/Problems2/Entry/.+");
+            self.assertRegex(details["NewProblem.TemporaryEntry"],
+                             "/org/freedesktop/Problems2/Entry/.+")
 
             self.task.Start(dict())
         elif changed["status"] == 3:
@@ -50,7 +51,7 @@ class TestNewProblem(abrt_p2_testing.TestCase):
         with abrt_p2_testing.create_fully_initialized_details(True) as description:
             task_path = self.p2.NewProblem(description, 0x1 | 0x2)
 
-        self.assertRegexpMatches(task_path, session_path + "/Task/.+");
+        self.assertRegex(task_path, session_path + "/Task/.+");
 
         self.task = abrt_p2_testing.Problems2Task(self.bus, task_path)
         self.task.getobjectproperties().connect_to_signal("PropertiesChanged", self.handle_properties_changed_signal)
@@ -73,7 +74,7 @@ class TestNewProblem(abrt_p2_testing.TestCase):
         self.assertEqual(0, code)
 
         self.assertIn("NewProblem.Entry", results)
-        self.assertRegexpMatches(results["NewProblem.Entry"], "/org/freedesktop/Problems2/Entry/.+");
+        self.assertRegex(results["NewProblem.Entry"], "/org/freedesktop/Problems2/Entry/.+");
 
         self.p2.DeleteProblems([str(results["NewProblem.Entry"])])
 

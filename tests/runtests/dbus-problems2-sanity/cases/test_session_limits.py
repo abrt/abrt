@@ -124,7 +124,7 @@ class TestSessionLimits(abrt_p2_testing.TestCase):
                 self.logger.debug("Authorizing own session")
 
                 r = p2s.Authorize(dict())
-                self.assertEquals(r, 1, "Session is being authorized")
+                self.assertEqual(r, 1, "Session is being authorized")
 
                 self.ac_signal_occurrences = list()
 
