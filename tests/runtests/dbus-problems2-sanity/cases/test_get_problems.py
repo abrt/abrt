@@ -33,7 +33,7 @@ class TestGetProblems(abrt_p2_testing.TestCase):
         time.sleep(1)
 
         new_problems = self.p2.GetProblems(0x2, dict())
-        self.assertEquals(0, len(new_problems))
+        self.assertEqual(0, len(new_problems))
 
     def test_get_new_foreign_problem(self):
         description = {"analyzer": "problems2testsuite_analyzer",
@@ -59,7 +59,7 @@ class TestGetProblems(abrt_p2_testing.TestCase):
         time.sleep(1)
 
         new_problems = self.p2.GetProblems(0x1 | 0x2, dict())
-        self.assertEquals(0, len(new_problems))
+        self.assertEqual(0, len(new_problems))
 
 
 if __name__ == "__main__":

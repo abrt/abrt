@@ -21,7 +21,7 @@ class TestProblemEntryProperties(abrt_p2_testing.TestCase):
     def test_problem_entry_properties(self):
         p2e = Problems2Entry(self.bus, self.p2_entry_path)
 
-        self.assertRegexpMatches(
+        self.assertRegex(
                 p2e.getproperty("ID"),
                 "/var/spool/abrt/problems2testsuite_type[^/]*",
                 "strange problem ID")
