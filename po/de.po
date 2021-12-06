@@ -23,13 +23,14 @@
 # Thomas Spura <thomas.spura@googlemail.com>, 2020.
 # KrishnaBabu K <k.meetme@gmail.com>, 2021.
 # Sundeep Anand <suanand@redhat.com>, 2021.
+# Ettore Atalan <atalanttore@googlemail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2021-10-13 14:09+0000\n"
-"Last-Translator: KrishnaBabu K <k.meetme@gmail.com>\n"
+"PO-Revision-Date: 2021-11-21 21:16+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/de/>\n"
 "Language: de\n"
@@ -37,7 +38,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.8\n"
+"X-Generator: Weblate 4.9\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -1187,7 +1188,7 @@ msgstr "Ignorierte Option"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:73
 msgid "OS release version"
-msgstr ""
+msgstr "BS-Freigabeversion"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
 msgid ""
@@ -2091,7 +2092,7 @@ msgstr "Unbekannte Operation: %s."
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:1
 msgid "Search for updated packages that fixes the crash."
-msgstr ""
+msgstr "Suchen Sie nach aktualisierten Paketen, die den Absturz beheben."
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:2
 msgid ""
@@ -2301,7 +2302,7 @@ msgstr "Löschen Dateien mit gefundenen Oopses"
 
 #: ../src/cli/abrtcli/match.py:117
 msgid "No matching problems found"
-msgstr ""
+msgstr "Keine passenden Probleme gefunden"
 
 #: ../src/cli/abrtcli/utils.py:79
 msgid "Not reportable"
@@ -2309,11 +2310,11 @@ msgstr "Kann nicht gemeldet werden"
 
 #: ../src/cli/abrtcli/cli/__init__.py:30
 msgid "increase output verbosity"
-msgstr ""
+msgstr "Ausführlichkeit der Ausgabe erhöhen"
 
 #: ../src/cli/abrtcli/cli/__init__.py:50
 msgid "positive non-zero integer expected"
-msgstr ""
+msgstr "positive ganze Zahl ungleich Null erwartet"
 
 #: ../src/cli/abrtcli/cli/__init__.py:54
 msgid "filter last N problems"
@@ -2321,43 +2322,31 @@ msgstr "Letzte N Probleme auflisten"
 
 #: ../src/cli/abrtcli/cli/__init__.py:57
 msgid "filter problems with matching component"
-msgstr ""
+msgstr "Probleme mit übereinstimmender Komponente filtern"
 
 #: ../src/cli/abrtcli/cli/__init__.py:59
-#, fuzzy
-#| msgid "List only not-reported problems"
 msgid "filter unreported problems"
-msgstr "Nur noch nicht berichtete Probleme anzeigen"
+msgstr "Nicht berichtete Probleme filtern"
 
 #: ../src/cli/abrtcli/cli/__init__.py:61
-#, fuzzy
-#| msgid "List only the problems older than specified timestamp"
 msgid "filter problems older than the specified timestamp"
-msgstr ""
-"Nur die Probleme anzeigen, welcher nach dem festgelegten Zeitpunkt auftraten"
+msgstr "Probleme filtern, die älter als der angegebene Zeitstempel sind"
 
 #: ../src/cli/abrtcli/cli/__init__.py:63
-#, fuzzy
-#| msgid "List only the problems older than specified timestamp"
 msgid "filter problems newer than the specified timestamp"
-msgstr ""
-"Nur die Probleme anzeigen, welcher nach dem festgelegten Zeitpunkt auftraten"
+msgstr "Probleme filtern, die neuer als der angegebene Zeitstempel sind"
 
 #: ../src/cli/abrtcli/cli/__init__.py:66
 msgid "filter problems with matching executable"
-msgstr ""
+msgstr "Probleme mit der passenden ausführbaren Datei filtern"
 
 #: ../src/cli/abrtcli/cli/__init__.py:71
-#, fuzzy
-#| msgid "Output format"
 msgid "output format"
 msgstr "Ausgabeformat"
 
 #: ../src/cli/abrtcli/cli/__init__.py:74
-#, fuzzy
-#| msgid "Built-in output format"
 msgid "built-in output format"
-msgstr "Eingebautes Ausgabeformat"
+msgstr "eingebautes Ausgabeformat"
 
 #: ../src/cli/abrtcli/cli/__init__.py:79
 #, fuzzy
@@ -2409,10 +2398,8 @@ msgid "No problems"
 msgstr "Keine Probleme"
 
 #: ../src/cli/abrtcli/cli/remove.py:22
-#, fuzzy
-#| msgid "Do not prompt before removal"
 msgid "do not prompt before removal"
-msgstr "Nicht vor Entfernung auffordern"
+msgstr "vor dem Entfernen nicht auffordern"
 
 #: ../src/cli/abrtcli/cli/remove.py:37
 msgid "Are you sure you want to delete this problem?"
@@ -2424,10 +2411,8 @@ msgstr "Entfernt"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/abrtcli/cli/report.py:23
-#, fuzzy
-#| msgid "Remove PROBLEM_DIR after reporting"
 msgid "remove after reporting"
-msgstr "PROBLEM_DIR nach Berichterstattung löschen"
+msgstr "nach der Berichterstattung entfernen"
 
 #: ../src/cli/abrtcli/cli/report.py:25
 #, fuzzy
@@ -2442,16 +2427,13 @@ msgid "Problem '{0}' cannot be reported"
 msgstr "Problem '%s' kann nicht gemeldet werden"
 
 #: ../src/cli/abrtcli/cli/report.py:50
-#, fuzzy, python-format
-#| msgid "Report problem"
+#, python-format
 msgid "Reporting problem %s\n"
-msgstr "Problem melden"
+msgstr "Problem %s wird gemeldet\n"
 
 #: ../src/cli/abrtcli/cli/retrace.py:24
-#, fuzzy
-#| msgid "Perform local retracing"
 msgid "perform retracing locally"
-msgstr "Lokale Rückverfolgung durchführen?"
+msgstr "Rückverfolgung lokal durchführen"
 
 #: ../src/cli/abrtcli/cli/retrace.py:26
 #, fuzzy
@@ -2460,10 +2442,8 @@ msgid "submit core dump for remote retracing"
 msgstr "Speicherauszug an entfernten Server zur Untersuchung senden"
 
 #: ../src/cli/abrtcli/cli/retrace.py:29
-#, fuzzy
-#| msgid "Local retracing"
 msgid "force retracing"
-msgstr "Lokale Rückverfolgung"
+msgstr "Rückverfolgung erzwingen"
 
 #: ../src/cli/abrtcli/cli/retrace.py:47
 msgid "Problem already has a backtrace"
@@ -2502,14 +2482,12 @@ msgid "Local retracing"
 msgstr "Lokale Rückverfolgung"
 
 #: ../src/cli/abrtcli/cli/status.py:17
-#, fuzzy
-#| msgid "List only not-reported problems"
 msgid "show only the number of problems"
-msgstr "Nur noch nicht berichtete Probleme anzeigen"
+msgstr "nur die Anzahl der Probleme anzeigen"
 
 #: ../src/cli/abrtcli/cli/status.py:19
 msgid "only show output if at least one problem is found"
-msgstr ""
+msgstr "Ausgabe nur anzeigen, wenn mindestens ein Problem gefunden wurde"
 
 #: ../src/cli/abrtcli/cli/status.py:40
 #, fuzzy
