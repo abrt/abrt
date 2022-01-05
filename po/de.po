@@ -23,13 +23,13 @@
 # Thomas Spura <thomas.spura@googlemail.com>, 2020.
 # KrishnaBabu K <k.meetme@gmail.com>, 2021.
 # Sundeep Anand <suanand@redhat.com>, 2021.
-# Ettore Atalan <atalanttore@googlemail.com>, 2021.
+# Ettore Atalan <atalanttore@googlemail.com>, 2021, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2021-11-21 21:16+0000\n"
+"PO-Revision-Date: 2022-01-02 21:16+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/de/>\n"
@@ -38,7 +38,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9\n"
+"X-Generator: Weblate 4.10.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -2349,10 +2349,8 @@ msgid "built-in output format"
 msgstr "eingebautes Ausgabeformat"
 
 #: ../src/cli/abrtcli/cli/__init__.py:79
-#, fuzzy
-#| msgid "Make the problem directory world readable"
 msgid "path to the problem directory, problem ID or wildcard"
-msgstr "Fehler-Verzeichnis allgemein lesbar machen"
+msgstr "Pfad zum Problemverzeichnis, Problemkennung oder Platzhalter"
 
 #: ../src/cli/abrtcli/cli/backtrace.py:35
 msgid "Problem has no backtrace"
@@ -2363,18 +2361,12 @@ msgid "Start retracing process?"
 msgstr "Rückverfolgungsprozess starten?"
 
 #: ../src/cli/abrtcli/cli/gdb.py:25
-#, fuzzy
-#| msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgid "install debuginfo packages before launching GDB"
-msgstr ""
-"Debuginfo-Pakete herunterladen und Ablaufverfolgung lokal mit GDB erstellen"
+msgstr "Debuginfo-Pakete vor dem Start von GDB installieren"
 
 #: ../src/cli/abrtcli/cli/gdb.py:38
-#, fuzzy
-#| msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
 msgid "The problem is not of a C/C++ type. Can't run GDB"
-msgstr ""
-"{} Problem ist nicht C/C++ Typ. Debuginfo kann nicht installiert werden"
+msgstr "Das Problem ist nicht vom Typ C/C++. GDB kann nicht ausgeführt werden"
 
 #: ../src/cli/abrtcli/cli/gdb.py:52
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:45
@@ -2387,11 +2379,9 @@ msgstr ""
 "auszuführen"
 
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:36
-#, fuzzy
-#| msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
 msgid "The problem is not of a C/C++ type. Can't install debuginfo"
 msgstr ""
-"{} Problem ist nicht C/C++ Typ. Debuginfo kann nicht installiert werden"
+"Das Problem ist nicht vom Typ C/C++. Debuginfo kann nicht installiert werden"
 
 #: ../src/cli/abrtcli/cli/list.py:34
 msgid "No problems"
@@ -2415,10 +2405,8 @@ msgid "remove after reporting"
 msgstr "nach der Berichterstattung entfernen"
 
 #: ../src/cli/abrtcli/cli/report.py:25
-#, fuzzy
-#| msgid "Not reportable"
 msgid "ignore unreportable state"
-msgstr "Kann nicht gemeldet werden"
+msgstr "nicht meldbaren Zustand ignorieren"
 
 #: ../src/cli/abrtcli/cli/report.py:41
 #, fuzzy, python-brace-format
@@ -2490,11 +2478,10 @@ msgid "only show output if at least one problem is found"
 msgstr "Ausgabe nur anzeigen, wenn mindestens ein Problem gefunden wurde"
 
 #: ../src/cli/abrtcli/cli/status.py:40
-#, fuzzy
-#| msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
 msgid "ABRT has detected a problem. For more information, run “abrt list{}”"
 msgstr ""
-"ABRT hat {} Problem(e) entdeckt. Für weitere Infos führen Sie abrt list{} aus"
+"ABRT hat ein Problem entdeckt. Für weitere Informationen führen Sie „abrt "
+"list{}“ aus"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
