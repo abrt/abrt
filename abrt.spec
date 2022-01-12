@@ -49,7 +49,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: abrt
 Version: 2.15.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv2+
 URL: https://abrt.readthedocs.org/
 Source: https://github.com/abrt/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
@@ -79,6 +79,10 @@ BuildRequires: python3-devel
 BuildRequires: python3-systemd
 BuildRequires: python3-argcomplete
 BuildRequires: python3-dbus
+
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python_Appendix/#_byte_compilation_reproducibility
+%global py_reproducible_pyc_path %{buildroot}%{python3_sitelib}
+BuildRequires: /usr/bin/marshalparser
 %endif
 
 Requires: libreport >= %{libreport_ver}
@@ -301,6 +305,7 @@ uncaught exception in python 3 programs.
 
 %package -n python3-abrt-container-addon
 Summary: %{name}'s container addon for catching Python 3 exceptions
+BuildArch: noarch
 Conflicts: python3-abrt-addon
 Requires: container-exception-logger
 
@@ -319,6 +324,7 @@ of machine_id for abrt events.
 
 %package tui
 Summary: %{name}'s command line interface
+BuildArch: noarch
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-cli >= %{libreport_ver}
 Requires: abrt-libs = %{version}-%{release}
@@ -996,6 +1002,10 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Tue Feb 22 2022 Miro Hrončok <mhroncok@redhat.com> - 2.15.0-2
+- Make abrt-tui and python3-abrt-container-addon noarch as they contain no architecture-specific content
+- Ensure Python bytecode in noarch subpackages is reproducible
+
 * Mon Jan 17 2022 Matěj Grabovský <mgrabovs@redhat.com> 2.15.0-1
 - tito: Fix custom tagger (mgrabovs@redhat.com)
 - lib: Bump library version to 1:0:1 (mgrabovs@redhat.com)
