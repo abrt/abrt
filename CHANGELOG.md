@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.15.0]
 ### Fixed
 - Handle crashes in Perl-based packages correctly as crashes of the package rather than Perl itself
 - abrt-dbus: Fix SIGSEGV in abrt_p2_service_dbus() with glib2 >= 2.69.2
@@ -312,7 +314,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.14.6...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.15.0...HEAD
+[2.15.0]: https://github.com/abrt/abrt/compare/2.14.6...2.15.0
 [2.14.6]: https://github.com/abrt/abrt/compare/2.14.5...2.14.6
 [2.14.5]: https://github.com/abrt/abrt/compare/2.14.4...2.14.5
 [2.14.4]: https://github.com/abrt/abrt/compare/2.14.3...2.14.4

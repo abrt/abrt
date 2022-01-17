@@ -48,7 +48,7 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 2.14.6
+Version: 2.15.0
 Release: 1%{?dist}
 License: GPLv2+
 URL: https://abrt.readthedocs.org/
@@ -996,6 +996,39 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Mon Jan 17 2022 Matěj Grabovský <mgrabovs@redhat.com> 2.15.0-1
+- tito: Fix custom tagger (mgrabovs@redhat.com)
+- lib: Bump library version to 1:0:1 (mgrabovs@redhat.com)
+- Update translations (mgrabovsky@users.noreply.github.com)
+- Update translations (mgrabovsky@users.noreply.github.com)
+- tests: Fix calls to deprecated methods (mgrabovs@redhat.com)
+- Update translations (mgrabovs@redhat.com)
+- Update abrt-journal.c (48353898+copperii@users.noreply.github.com)
+- cli: Fix path and glob matching for abrt info etc. (mfabik@redhat.com)
+- abrt-dump-oops: Fix vmcore call trace parsing (mfabik@redhat.com)
+- tito: Custom tagger for updating changelog (mgrabovs@redhat.com)
+- abrt-dbus: do not try to free session data twice (michal@redhat.com)
+- changelog: Move entry to correct release (mgrabovs@redhat.com)
+- Use lazy imports in abrt_exception_handler3: changelog entry
+  (miro@hroncok.cz)
+- Use lazy imports in abrt_exception_handler3 (miro@hroncok.cz)
+- Update changelog (mgrabovs@redhat.com)
+- a-a-generate-backtrace: Save coredump (mfabik@redhat.com)
+- a-a-generate-core-backtrace: Save coredump (mfabik@redhat.com)
+- Add abrt_save_coredump function (mfabik@redhat.com)
+- Don't copy coredump to problem dir (mfabik@redhat.com)
+- Prevent unnecessary duplication of test metadata (psplicha@redhat.com)
+- Make it possible to run a subset of integration tests via TMT
+  (michal@redhat.com)
+- a-a-save-package-data: Update regex for Perl interpreter
+  (mgrabovs@redhat.com)
+- a-a-save-package-data: Update regex for Python 3.10 (mgrabovs@redhat.com)
+- readme: Add badge for build status (mgrabovs@redhat.com)
+- readme: Update IRC channel (mgrabovs@redhat.com)
+- a-a-find-bodhi-update: Fix grammar and spelling (mgrabovs@redhat.com)
+- a-a-find-bodhi-update: More refactoring (mgrabovs@redhat.com)
+- a-a-find-bodhi-update: Refactoring (mgrabovs@redhat.com)
+
 * Mon May 24 2021 Michal Fabik <mfabik@redhat.com> 2.14.6-1
 - new package built with tito
 * Sat May 01 2021 Sérgio Basto <sergio@serjux.com> - 2.14.5-2
