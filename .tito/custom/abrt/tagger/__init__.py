@@ -1,5 +1,5 @@
 import re
-import shutil
+from fileinput import FileInput
 
 from tito.common import get_latest_tagged_version, run_command
 from tito.tagger import VersionTagger
@@ -20,9 +20,8 @@ class AbrtVersionTagger(VersionTagger):
         # Drop the RPM release number, e.g. 2.14.6-1 → 2.14.6.
         new_version = new_version[:new_version.find("-")]
 
-        with open(self.CHANGELOG_FILE, "r") as old_log, \
-            open(self.CHANGELOG_FILE + ".new", "w") as new_log:
-            for line in old_log.readlines():
+        with FileInput(self.CHANGELOG_FILE, inplace=True) as changelog:
+            for line in changelog:
                 if line.startswith("## [Unreleased]"):
                     # Add a heading for the release right below "Unreleased",
                     # inheriting its contents. This means that changes that were
@@ -37,8 +36,6 @@ class AbrtVersionTagger(VersionTagger):
                     line = (f"[Unreleased]: {url_prefix}{new_version}...HEAD\n"
                             f"[{new_version}]: {url_prefix}{old_version}...{new_version}\n")
 
-                new_log.write(line)
-
-        shutil.move(self.CHANGELOG_FILE + ".new", self.CHANGELOG_FILE)
+                print(line, end="")
 
         run_command(f"git add -- {self.CHANGELOG_FILE}")
