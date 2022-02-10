@@ -496,10 +496,13 @@ void abrt_journal_watch_notify_strings(abrt_journal_watch_t *watch, void *data)
 {
     struct abrt_journal_watch_notify_strings *conf = (struct abrt_journal_watch_notify_strings *)data;
 
-    char message[JOURNALD_MAX_FIELD_SIZE + 1];
+    char message[JOURNALD_MAX_FIELD_SIZE + 1] = "\0";
 
     if (abrt_journal_get_string_field(abrt_journal_watch_get_journal(watch), "MESSAGE", (char *)message) == NULL)
-        error_msg_and_die("Cannot read journal data.");
+    {
+        error_msg("Cannot read journal data, skipping.");
+        return;
+    }
 
     GList *cur = conf->strings;
     for (; cur; cur = g_list_next(cur))
