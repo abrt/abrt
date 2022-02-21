@@ -585,7 +585,7 @@ static int create(SoupSession  *session,
             task_type = TASK_VMCORE;
         dd_close(dd);
 
-        g_autofree char *path = NULL;
+        char *path = NULL;
         int i = 0;
         const char **required_files = task_type == TASK_VMCORE ? required_vmcore : required_retrace;
         while (required_files[i])
@@ -608,7 +608,7 @@ static int create(SoupSession  *session,
             for (i = 0; optional_retrace[i]; ++i)
             {
                 path = g_build_filename(dump_dir_name, optional_retrace[i], NULL);
-                if (stat(path, &file_stat) != -1)
+                if (g_stat(path, &file_stat) != -1)
                 {
                     if (!S_ISREG(file_stat.st_mode))
                         error_msg_and_die(_("'%s' must be a regular file in "
@@ -617,6 +617,7 @@ static int create(SoupSession  *session,
 
                     unpacked_size += (long long)file_stat.st_size;
                 }
+                g_free(path);
             }
         }
     }
