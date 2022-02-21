@@ -205,14 +205,14 @@ int abrt_load_abrt_plugin_conf_file(const char *file, GHashTable *settings)
 
 int abrt_save_abrt_conf_file(const char *file, GHashTable *settings)
 {
-    g_autofree char *path = g_build_filename(CONF_DIR ? CONF_DIR : "", file, NULL);
+    g_autofree char *path = g_build_filename(CONF_DIR, file, NULL);
     int retval = libreport_save_conf_file(path, settings);
     return retval;
 }
 
 int abrt_save_abrt_plugin_conf_file(const char *file, GHashTable *settings)
 {
-    g_autofree char *path = g_build_filename(PLUGINS_CONF_DIR ? PLUGINS_CONF_DIR : "", file, NULL);
+    g_autofree char *path = g_build_filename(PLUGINS_CONF_DIR, file, NULL);
     int retval = libreport_save_conf_file(path, settings);
     return retval;
 }
