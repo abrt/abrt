@@ -356,6 +356,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name, const ch
         if (is_path_blacklisted(executable))
         {
             log_warning("Blacklisted executable '%s'", executable);
+            g_clear_pointer(&pkg_name, free_pkg_nevra);
             pkg_name = script_pkg;
             goto ret; /* return 1 (failure) */
         }
