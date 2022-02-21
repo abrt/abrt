@@ -879,7 +879,7 @@ static int perform_http_xact(struct response *rsp)
                                      free, free);
     /* Read header */
     char *body_start = NULL;
-    char *messagebuf_data = NULL;
+    g_autofree char *messagebuf_data = NULL;
     unsigned messagebuf_len = 0;
     /* Loop until EOF/error/timeout/end_of_header */
     while (1)
