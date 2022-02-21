@@ -151,7 +151,6 @@ int main(int argc, char *argv[])
 
     g_autoptr(GHashTable) conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     g_autoptr(GHashTable) ureport_conf = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
-    g_autoptr(GHashTable) ureport_conf_bck = NULL;
 
     if (!abrt_load_abrt_conf_file(CONF_NAME, conf))
         return exit_code;
@@ -171,11 +170,5 @@ int main(int argc, char *argv[])
 
     exit_code = set_abrt_reporting(conf, opt_value) ? EXIT_SUCCESS : EXIT_FAILURE;
 
-    if (exit_code == EXIT_FAILURE)
-    {
-        if (ureport_conf_bck != NULL)
-            libreport_save_plugin_conf_file(UREPORT_NAME, ureport_conf_bck);
-
-    }
     return exit_code;
 }
