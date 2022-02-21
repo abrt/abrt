@@ -493,7 +493,7 @@ int main(int argc, char **argv)
         g_string_append_printf(query, "packages=%s&", escaped);
     }
 
-    if (query->str[query->len - 1] == '&')
+    if (query->len && query->str[query->len - 1] == '&')
         query->str[query->len - 1] = '\0';
 
     log_warning(_("Searching for updates"));
