@@ -98,7 +98,8 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
             /* None of the strings are found */
             log_debug("NOT FOUND");
             munmap(map, maplen);
-            lseek(fd, statbuf->st_size, SEEK_SET);
+            if (lseek(fd, statbuf->st_size, SEEK_SET) < 0)
+                perror_msg_and_die("Could not seek to position in log file");
             return;
  found: ;
             munmap(map, maplen);

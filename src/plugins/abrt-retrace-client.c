@@ -119,8 +119,9 @@ static int create_archive(bool unlink_temp)
     int tempfd = mkstemps(filename, /*suffixlen:*/7);
     if (tempfd == -1)
         perror_msg_and_die(_("Can't create temporary file in "LARGE_DATA_TMP_DIR));
-    if (unlink_temp)
-        g_unlink(filename);
+    if (unlink_temp && g_unlink(filename) != 0) {
+        pwarn_msg(_("Could not delete temporary file ‘%s’"), filename);
+    }
 
     /* Run xz:
      * - xz reads input from a pipe
@@ -591,7 +592,8 @@ static int create(SoupSession  *session,
         while (required_files[i])
         {
             path = g_build_filename(dump_dir_name, required_files[i], NULL);
-            g_stat(path, &file_stat);
+            if (g_stat(path, &file_stat) != 0)
+                perror_msg_and_die("Could read information about file ‘%s’", path);
 
             if (!S_ISREG(file_stat.st_mode))
                 error_msg_and_die(_("'%s' must be a regular file in "
