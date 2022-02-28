@@ -41,7 +41,8 @@ void migrate_to_xdg_dirs(void)
 
     /* we don't check success: it may already exists */
     *nslash = '\0';
-    g_mkdir_with_parents(new, 0777);
+    if (g_mkdir_with_parents(new, 0777) != 0)
+        perror_msg_and_die("Could not create directory ‘%s’", new);
 
     *nslash = '/';
     try_to_move(old, new);

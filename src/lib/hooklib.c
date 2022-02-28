@@ -140,11 +140,11 @@ static char* exec_vp(char **args, int redirect_stderr, int exec_timeout_sec, int
             break;
         }
 
-        /* We don't check poll result - checking read result is enough */
         struct pollfd pfd;
         pfd.fd = pipeout[0];
         pfd.events = POLLIN;
-        poll(&pfd, 1, timeout * 1000);
+        if (poll(&pfd, 1, timeout * 1000) < 0)
+            pwarn_msg("poll() failed on output of %s", args[0]);
 
         char buff[1024];
         int r = read(pipeout[0], buff, sizeof(buff) - 1);
@@ -200,11 +200,11 @@ char *abrt_run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
             break;
         }
 
-        /* We don't check poll result - checking read result is enough */
         struct pollfd pfd;
         pfd.fd = pipeout[0];
         pfd.events = POLLIN;
-        poll(&pfd, 1, timeout * 1000);
+        if (poll(&pfd, 1, timeout * 1000) < 0)
+            pwarn_msg("poll() failed on output of eu-unstrip");
 
         char buff[1024];
         int r = read(pipeout[0], buff, sizeof(buff) - 1);
