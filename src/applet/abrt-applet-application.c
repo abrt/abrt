@@ -302,7 +302,8 @@ new_dir_exists (GList **new_dirs)
     cachedir = g_get_user_cache_dir ();
     dirlist_name = g_build_filename (cachedir, "abrt", NULL);
 
-    g_mkdir_with_parents (dirlist_name, 0777);
+    if (g_mkdir_with_parents (dirlist_name, 0777) != 0)
+        perror_msg_and_die (_("Could not create directory ‘%s’"), dirlist_name);
 
     g_free (dirlist_name);
 

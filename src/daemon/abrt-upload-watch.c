@@ -91,7 +91,8 @@ run_abrt_handle_upload(struct process *proc, const char *name)
     if (pid == 0)
     {
         /* child */
-        g_chdir(proc->upload_directory);
+        if (g_chdir(proc->upload_directory) != 0)
+            perror_msg_and_die("Could not change working directory to ‘%s’", proc->upload_directory);
         if (abrt_g_settings_delete_uploaded)
             execlp("abrt-handle-upload", "abrt-handle-upload", "-d",
                            abrt_g_settings_dump_location, proc->upload_directory, name, (char*)NULL);
@@ -235,7 +236,8 @@ daemonize()
         perror_msg_and_die("setsid");
 
     /* Change the current working directory */
-    g_chdir("/");
+    if (g_chdir("/") != 0)
+        perror_msg_and_die("Could not change working directory to ‘/’");
 
     /* Reopen the standard file descriptors to "/dev/null" */
     libreport_xmove_fd(g_open("/dev/null", O_RDWR), STDIN_FILENO);
