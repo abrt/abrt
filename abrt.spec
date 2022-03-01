@@ -80,9 +80,11 @@ BuildRequires: python3-systemd
 BuildRequires: python3-argcomplete
 BuildRequires: python3-dbus
 
+%if 0%{?fedora}
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python_Appendix/#_byte_compilation_reproducibility
 %global py_reproducible_pyc_path %{buildroot}%{python3_sitelib}
 BuildRequires: /usr/bin/marshalparser
+%endif
 %endif
 
 Requires: libreport >= %{libreport_ver}
