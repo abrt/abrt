@@ -410,7 +410,7 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
     return bt;
 }
 
-void abrt_save_coredump(struct dump_dir *dd, unsigned timeout_sec)
+int abrt_save_coredump(struct dump_dir *dd, unsigned timeout_sec)
 {
     INITIALIZE_LIBABRT();
 
@@ -422,7 +422,7 @@ void abrt_save_coredump(struct dump_dir *dd, unsigned timeout_sec)
     executable = dd_load_text(dd, FILENAME_EXECUTABLE);
 
     /* Let user know what's going on */
-    log_warning(_("Retrieving coredump with coredumpctl"));
+    log_info(_("Retrieving coredump with coredumpctl"));
 
     unsigned i = 0;
     char *args[7];
@@ -433,13 +433,16 @@ void abrt_save_coredump(struct dump_dir *dd, unsigned timeout_sec)
     args[i++] = g_strdup(executable);
     args[i++] = g_strdup_printf("--output=%s/"FILENAME_COREDUMP, dd->dd_dirname);
     args[i++] = NULL;
+    int status = 0;
 
-    exec_vp(args, /*redirect_stderr:*/ 1, timeout_sec, NULL);
+    exec_vp(args, /*redirect_stderr:*/ 1, timeout_sec, &status);
 
     g_free(args[2]);
     g_free(args[3]);
     g_free(args[4]);
     g_free(args[5]);
+
+    return status;
 }
 
 char* problem_data_save(problem_data_t *pd)

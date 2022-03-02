@@ -75,7 +75,12 @@ int main(int argc, char **argv)
 
     if (!dd_exist(dd, FILENAME_COREDUMP))
     {
-        abrt_save_coredump(dd, exec_timeout_sec);
+        if (abrt_save_coredump(dd, exec_timeout_sec))
+        {
+            dd_delete_item(dd, FILENAME_COREDUMP);
+            dd_close(dd);
+            error_msg_and_die("Error: Couldn't retrieve coredump");
+        }
     }
 #ifdef ENABLE_NATIVE_UNWINDER
 
