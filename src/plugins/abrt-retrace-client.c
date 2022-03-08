@@ -156,8 +156,11 @@ static int create_archive(bool unlink_temp)
 
         perror_msg_and_die("posix_spawn init");
     }
-    if ((err = posix_spawnp(&xz_child, xz_args[0], &xz_actions, &xz_attr, (char * const*)xz_args, environ)) != 0)
+    if ((err = posix_spawnp(&xz_child, xz_args[0], &xz_actions, &xz_attr,
+                            (char * const*)xz_args, environ)) != 0)
+    {
         perror_msg_and_die(_("Can't execute '%s'"), xz_args[0]);
+    }
 
     if ((err = posix_spawn_file_actions_destroy(&xz_actions)) != 0
          || ((xz_attr_set == 1) && ((err = posix_spawnattr_destroy(&xz_attr)) != 0)))
@@ -210,14 +213,17 @@ static int create_archive(bool unlink_temp)
 
          perror_msg_and_die("posix_spawn init");
     }
-    if ((err = posix_spawnp(&tar_child, tar_args[0], &tar_actions, &tar_attr, (char * const*)tar_args, environ)) != 0)
-        perror_msg_and_die(_("Can't execute '%s'"), tar_args[0]);
+    if ((err = posix_spawnp(&tar_child, tar_args[0], &tar_actions, &tar_attr,
+                            (char * const*)tar_args, environ)) != 0)
+    {
+        perror_msg_and_die(_("Can't execute '%s'"), (const char *)tar_args[0]);
+    }
 
     if ((err = posix_spawn_file_actions_destroy(&tar_actions)) != 0
          || ((tar_attr_set == 1) && ((err = posix_spawnattr_destroy(&tar_attr)) != 0)))
          perror_msg_and_die("posix_spawn destroy");
 
-    free((void*)tar_args[2]);
+    g_free((void*)tar_args[2]);
     close(tar_xz_pipe[1]);
 
     /* Wait for tar and xz to finish successfully */
@@ -233,7 +239,7 @@ static int create_archive(bool unlink_temp)
     libreport_safe_waitpid(xz_child, &status, 0);
     if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
         error_msg_and_die(_("Can't create temporary file in "LARGE_DATA_TMP_DIR));
-    log_notice("Done...");
+    log_notice("Done.");
 
     libreport_xlseek(tempfd, 0, SEEK_SET);
     return tempfd;
@@ -272,9 +278,6 @@ static SoupURI *build_uri_from_config(struct https_cfg *config,
 
     for (segment = va_arg(args, const char *); NULL != segment; segment = va_arg(args, const char *))
     {
-        g_autofree const char *tmp = NULL;
-
-        tmp = path;
         path = g_build_path("/", path, segment, NULL);
     }
 
@@ -573,7 +576,8 @@ static int create(SoupSession  *session,
     /* get raw size */
     if (coredump)
     {
-        g_stat(coredump, &file_stat);
+        if (g_stat(coredump, &file_stat) != 0)
+            perror_msg_and_die("Could not read information about file ‘%s’", coredump);
         unpacked_size = (long long)file_stat.st_size;
     }
     else if (dump_dir_name != NULL)
@@ -592,7 +596,7 @@ static int create(SoupSession  *session,
         {
             path = g_build_filename(dump_dir_name, required_files[i], NULL);
             if (g_stat(path, &file_stat) != 0)
-                perror_msg_and_die("Could read information about file ‘%s’", path);
+                perror_msg_and_die("Could not read information about file ‘%s’", path);
 
             if (!S_ISREG(file_stat.st_mode))
                 error_msg_and_die(_("'%s' must be a regular file in "
@@ -736,14 +740,14 @@ static int create(SoupSession  *session,
     {
         alert_crash_too_large();
 
-        /* Leaking human_size and max_size in hope the memory will be released in
+        /* Leaking human_size and human_max_size in hope the memory will be released in
          * error_msg_and_die() */
-        gchar *max_size = g_format_size_full(settings->max_packed_size, G_FORMAT_SIZE_IEC_UNITS);
+        gchar *human_max_size = g_format_size_full(settings->max_packed_size, G_FORMAT_SIZE_IEC_UNITS);
 
         error_msg_and_die(_("The size of your archive is %s, "
                             "but the retrace server only accepts "
-                            "archives smaller or equal to %s."),
-                          human_size, max_size);
+                            "archives up to to %s."),
+                          human_size, human_max_size);
     }
 
     free_settings(settings);
@@ -753,7 +757,7 @@ static int create(SoupSession  *session,
     if (size_mb > 8) /* 8 MB - should be configurable */
     {
         g_autofree char *question = g_strdup_printf(_("You are going to upload %s. "
-                                           "Continue?"), human_size);
+                                                      "Continue?"), human_size);
 
         int response = libreport_ask_yes_no(question);
 
