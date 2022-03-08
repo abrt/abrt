@@ -142,7 +142,8 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
     if (lseek(fd, 0, SEEK_CUR) <= cur_pos)
     {
         log_warning("Warning, '%s' did not process its input", prog[0]);
-        lseek(fd, statbuf->st_size, SEEK_SET);
+        if (lseek(fd, statbuf->st_size, SEEK_SET) < 0)
+            pwarn_msg("Could not seek to position in log file");
     }
 }
 
@@ -265,8 +266,13 @@ int main(int argc, char **argv)
                      * IOW: ignore old log messages because they are unlikely
                      * to have sufficiently recent data to be useful.
                      */
-                    if (statbuf.st_size > (MAX_SCAN_BLOCK - READ_AHEAD))
-                        lseek(file_fd, statbuf.st_size - (MAX_SCAN_BLOCK - READ_AHEAD), SEEK_SET);
+                    if (statbuf.st_size > (MAX_SCAN_BLOCK - READ_AHEAD)) {
+                        if (lseek(file_fd, statbuf.st_size - (MAX_SCAN_BLOCK - READ_AHEAD),
+                                  SEEK_SET) < 0)
+                        {
+                            perror_msg_and_die("Could not seek to position in log file");
+                        }
+                    }
                     /* Note that statbuf is filled by fstat by now,
                      * run_scanner_prog needs that
                      */
