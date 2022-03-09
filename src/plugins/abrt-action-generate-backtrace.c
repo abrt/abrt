@@ -80,12 +80,6 @@ int main(int argc, char **argv)
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return 1;
-
-    if (!dd_exist(dd, FILENAME_COREDUMP))
-    {
-        abrt_save_coredump(dd, exec_timeout_sec);
-    }
-
     g_autofree char *backtrace = abrt_get_backtrace(dd, exec_timeout_sec,
             (debuginfo_dirs) ? debuginfo_dirs : debuginfo_location);
     if (!backtrace)
