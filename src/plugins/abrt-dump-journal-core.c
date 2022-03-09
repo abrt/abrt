@@ -260,6 +260,36 @@ abrt_journal_core_retrieve_information(abrt_journal_t *journal, struct crash_inf
 static int
 save_systemd_coredump_in_dump_directory(struct dump_dir *dd, struct crash_info *info)
 {
+    char coredump_path[PATH_MAX + 1] = { '\0' };
+    if (coredump_path != abrt_journal_get_string_field(info->ci_journal, "COREDUMP_FILENAME", coredump_path))
+        log_debug("Processing coredumpctl entry without a real file");
+
+    if (g_str_has_suffix(coredump_path, ".lz4") ||
+        g_str_has_suffix(coredump_path, ".xz") ||
+        g_str_has_suffix(coredump_path, ".zst"))
+    {
+        if (dd_copy_file_unpack(dd, FILENAME_COREDUMP, coredump_path))
+            return -1;
+    }
+    else if (strlen(coredump_path) > 0)
+    {
+        if (dd_copy_file(dd, FILENAME_COREDUMP, coredump_path))
+            return -1;
+    }
+    else
+    {
+        const char *data = NULL;
+        size_t data_len = 0;
+        int r = abrt_journal_get_field(info->ci_journal, "COREDUMP", (const void **)&data, &data_len);
+        if (r < 0)
+        {
+            log_info("Ignoring coredumpctl entry without core dump file.");
+            return -1;
+        }
+
+        dd_save_binary(dd, FILENAME_COREDUMP, data, data_len);
+    }
+
     dd_save_text(dd, FILENAME_ABRT_VERSION, VERSION);
     dd_save_text(dd, FILENAME_TYPE, "CCpp");
     dd_save_text(dd, FILENAME_ANALYZER, "abrt-journal-core");
