@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Fixed
 - Don't die on corrupt journal data in follow mode
+- Revert coredump retrieval optimization patches (rhbz#2052872)
 
 ## [2.15.0]
 ### Fixed
