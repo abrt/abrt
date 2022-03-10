@@ -48,8 +48,8 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 2.15.0
-Release: 2%{?dist}
+Version: 2.15.1
+Release: 1%{?dist}
 License: GPLv2+
 URL: https://abrt.readthedocs.org/
 Source: https://github.com/abrt/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
@@ -1004,6 +1004,29 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Thu Mar 10 2022 Michal Srb <michal@redhat.com> 2.15.1-1
+- Update changelog (michal@redhat.com)
+- Revert "Don't copy coredump to problem dir" (michal@redhat.com)
+- Revert "Add abrt_save_coredump function" (michal@redhat.com)
+- Revert "a-a-generate-core-backtrace: Save coredump" (michal@redhat.com)
+- Revert "a-a-generate-backtrace: Save coredump" (michal@redhat.com)
+- a-retrace-client: Check return value; code style (mgrabovs@redhat.com)
+- a-watch-log: Check return value of lseek (mgrabovs@redhat.com)
+- spec: Condition marshalparser on %%fedora (mgrabovs@redhat.com)
+- applet,daemon: Check return values (mgrabovs@redhat.com)
+- lib: Check return values (mgrabovs@redhat.com)
+- plugins: Check return values (mgrabovs@redhat.com)
+- a-auto-reporting: Remove dead code (mgrabovs@redhat.com)
+- bodhi: Check string for non-emptiness (mgrabovs@redhat.com)
+- abrt_conf: Remove dead code (mgrabovs@redhat.com)
+- a-a-save-package-data: Free data before rewriting it (mgrabovs@redhat.com)
+- abrt-server: Free message buffer automatically (mgrabovs@redhat.com)
+- a-retrace-client: Free strings manually (mgrabovs@redhat.com)
+- Fix issues with conflicting multilib packages (miro@hroncok.cz)
+- abrt-dump-journal: Don't die on corrupt data (mfabik@redhat.com)
+- Update translations (mgrabovsky@users.noreply.github.com)
+- tito: Improve custom tagger (mgrabovs@redhat.com)
+
 * Tue Feb 22 2022 Miro Hrončok <mhroncok@redhat.com> - 2.15.0-2
 - Make abrt-tui and python3-abrt-container-addon noarch as they contain no architecture-specific content
 - Ensure Python bytecode in noarch subpackages is reproducible

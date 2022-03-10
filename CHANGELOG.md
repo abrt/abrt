@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.15.1]
+
+## [2.15.1]
 ### Fixed
 - Don't die on corrupt journal data in follow mode
 - Revert coredump retrieval optimization patches (rhbz#2052872)
@@ -317,7 +321,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.15.0...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.15.1...HEAD
+[2.15.1]: https://github.com/abrt/abrt/compare/2.15.0...2.15.1
 [2.15.0]: https://github.com/abrt/abrt/compare/2.14.6...2.15.0
 [2.14.6]: https://github.com/abrt/abrt/compare/2.14.5...2.14.6
 [2.14.5]: https://github.com/abrt/abrt/compare/2.14.4...2.14.5
