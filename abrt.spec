@@ -810,14 +810,9 @@ killall abrt-dbus >/dev/null 2>&1 || :
 
 %dir %{_localstatedir}/lib/abrt
 
-# attr(2755) ~= SETGID
-%attr(2755, abrt, abrt) %{_libexecdir}/abrt-action-install-debuginfo-to-abrt-cache
-
 %{_bindir}/abrt-action-analyze-c
 %{_bindir}/abrt-action-trim-files
-%{_bindir}/abrt-action-analyze-core
 %{_bindir}/abrt-action-analyze-vulnerability
-%{_bindir}/abrt-action-install-debuginfo
 %{_bindir}/abrt-action-generate-backtrace
 %{_bindir}/abrt-action-generate-core-backtrace
 %{_bindir}/abrt-action-analyze-backtrace
@@ -845,9 +840,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man*/abrt-action-generate-core-backtrace.*
 %{_mandir}/man*/abrt-action-analyze-backtrace.*
 %{_mandir}/man*/abrt-action-list-dsos.*
-%{_mandir}/man*/abrt-action-install-debuginfo.*
 %{_mandir}/man*/abrt-action-analyze-ccpp-local.*
-%{_mandir}/man*/abrt-action-analyze-core.*
 %{_mandir}/man*/abrt-action-analyze-vulnerability.*
 %{_mandir}/man*/abrt-action-perform-ccpp-analysis.*
 %{_mandir}/man1/abrt-dump-journal-core.1*

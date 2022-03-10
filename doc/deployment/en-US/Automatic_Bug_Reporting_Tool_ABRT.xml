@@ -1227,46 +1227,6 @@ rm '/var/spool/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
         Unless <application>ABRT</application> is configured differently, problem data for any detected kernel panic is now stored in the <filename>/var/spool/abrt/</filename> directory (deprecated location <filename>/var/tmp/abrt/</filename> is used on some systems) and can be further processed by <application>ABRT</application> just as any other detected kernel oops.
       </para>
     </section>
-    <section id="sect-abrt-configuration-debuginfo">
-      <title>Automatic Downloads and Installation of Debuginfo Packages</title>
-      <para>
-        ABRT can be configured to automatically download and install packages needed for debugging of particular problems. This feature can be useful if you want to debug problems locally in your company environment. To enable automatic debuginfo downloads and installation, ensure that your system fulfills the following conditions:
-      </para>
-      <itemizedlist>
-        <listitem>
-          <para>
-            The <filename>/etc/libreport/events.d/ccpp_event.conf</filename> file contains the following analyzer event, which is present uncommented in default configuration:
-          </para>
-          <programlisting language="Bash">EVENT=analyze_LocalGDB analyzer=CCpp
-        abrt-action-analyze-core --core=coredump -o build_ids &amp;&amp;
-        # In RHEL we don't want to install anything by default
-        # and also this would fail, as the debuginfo repositories.
-        # are not available without root password rhbz#759443
-        # /usr/libexec/abrt-action-install-debuginfo-to-abrt-cache --size_mb=4096 &amp;&amp;
-        abrt-action-generate-backtrace &amp;&amp;
-        abrt-action-analyze-backtrace</programlisting>
-        </listitem>
-        <listitem>
-          <para>
-            The <filename>/etc/libreport/events.d/ccpp_event.conf</filename> file contains the following line, which allows ABRT to run binary to install debuginfo packages for the problems being analyzed. This line is, in order to avoid installations of unnecessary content, commented out by default so you have to remove the leading <literal>#</literal> character to enable it:
-          </para>
-          <programlisting language="Bash">/usr/libexec/abrt-action-install-debuginfo-to-abrt-cache --size_mb=4096 &amp;&amp;</programlisting>
-        </listitem>
-      </itemizedlist>
-        <itemizedlist>
-          <listitem>
-            <para>
-              The <package>gdb</package> package, which allows you to generate a backtrace during a problem analysis, is installed on your system. If needed, refer to [xref linkend="sec-Installing"/] for more information on how to install packages with the <application>Yum</application> package manager.
-            </para>
-          </listitem>
-        </itemizedlist>
-      <important>
-        <title>Root privileges required</title>
-        <para>
-          Note that debuginfo packages are installed using the <application>rhnplugin</application> which requires root privileges. Therefore, you have to run ABRT as <systemitem class="username">root</systemitem> to be able to install debuginfo packages.
-        </para>
-      </important>
-    </section>
     <section id="sect-abrt-configuration-automatic_reporting">
       <title>Configuring Automatic Reporting</title>
       <para>
@@ -1356,8 +1316,6 @@ ftp> <command>quit</command></screen>
             You can disable backtrace generation on the server if you do not wish to generate backtraces at all, or if you decide to create them locally on the machine where a problem occurred. In the standard ABRT installation, a backtrace of a C/C++ crash is generated using the following rule in the <filename>/etc/libreport/events.d/ccpp_events.conf</filename> configuration file:
           </para>
           <programlisting language="Bash">EVENT=analyze_LocalGDB analyzer=CCpp
-        abrt-action-analyze-core.py --core=coredump -o build_ids &amp;&amp;
-        abrt-action-install-debuginfo-to-abrt-cache --size_mb=4096 &amp;&amp;
         abrt-action-generate-backtrace &amp;&amp;
         abrt-action-analyze-backtrace</programlisting>
           <para>

@@ -74,7 +74,7 @@ int main(int argc, char **argv)
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return 1;
-    g_autofree char *gdb_output = abrt_get_backtrace(dd, exec_timeout_sec, NULL);
+    g_autofree char *gdb_output = abrt_get_backtrace(dd, exec_timeout_sec);
     if (!gdb_output)
     {
         log_warning(_("Error: GDB did not return any data"));

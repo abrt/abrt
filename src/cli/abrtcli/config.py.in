@@ -54,21 +54,8 @@ FORMATS = ['oneline', 'short', 'medium', 'full', 'email']
 LOCALE_DIR = "@LOCALE_DIR@"
 VERSION = "abrt @VERSION@"
 
-DEBUGINFO_INSTALL_CMD = '''
-abrt-action-analyze-ccpp-local --without-bz --without-bodhi
-'''
-
-DEBUGINFO_PATH = ':'.join([
-    '/usr/lib/debug',
-    '/usr/lib',
-    '/var/cache/abrt-di/usr/lib/debug',
-    '/var/cache/abrt-di/usr/lib'
-])
-
 GDB_CMD = '''
-gdb -iex "set debug-file-directory {di_path}" \
-    -iex "set add-auto-load-safe-path {di_path}" \
-    -iex "set add-auto-load-scripts-directory {di_path}" \
+gdb -ex "set debuginfod enabled on" \
     -ex "file $( cat executable )" \
     -ex "core-file coredump" \
     -ex "set height 0" \

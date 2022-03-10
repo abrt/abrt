@@ -84,9 +84,9 @@ $ abrt list --fmt '{count}x {short_id} {what}'
 $ abrt info --pretty full kernel
 ----
 
-*Install debuginfo packages and run GDB against last problem*
+*Run GDB against last problem*
 ----
-$ abrt gdb --debuginfo-install
+$ abrt gdb
 ----
 
 *Generate backtrace from last problem's coredump and generated detailed mail report*

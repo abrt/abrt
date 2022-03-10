@@ -1,8 +1,6 @@
 -include ../../config.mak
 
 bin_SCRIPTS = \
-    abrt-action-install-debuginfo \
-    abrt-action-analyze-core \
     abrt-action-analyze-vulnerability \
     abrt-action-list-dsos \
     abrt-action-perform-ccpp-analysis \
@@ -39,9 +37,6 @@ if BUILD_BODHI
 bin_PROGRAMS += \
     abrt-bodhi
 endif
-
-libexec_PROGRAMS = \
-    abrt-action-install-debuginfo-to-abrt-cache
 
 libexec_SCRIPTS = \
     abrt-action-generate-machine-id \
@@ -116,9 +111,7 @@ dist_eventsconf_DATA += \
 endif
 
 PYTHON_FILES = \
-    abrt-action-install-debuginfo.in \
     abrt-action-list-dsos \
-    abrt-action-analyze-core \
     abrt-action-analyze-vulnerability \
     abrt-action-check-oops-for-alt-component.in \
     abrt-action-check-oops-for-hw-error.in \
@@ -140,7 +133,6 @@ EXTRA_DIST = \
     analyze_CCpp.xml.in \
     analyze_LocalGDB.xml.in \
     analyze_RetraceServer.xml.in \
-    abrt-action-analyze-core.in \
     abrt-action-generate-machine-id \
     abrt-action-ureport \
     abrt-gdb-exploitable \
@@ -424,27 +416,6 @@ abrt_action_analyze_backtrace_LDADD = \
     $(LIBREPORT_LIBS) \
     $(SATYR_LIBS)
 
-# SUID application, building with full relro and PIE
-# for increased security.
-abrt_action_install_debuginfo_to_abrt_cache_SOURCES = \
-    abrt-action-install-debuginfo-to-abrt-cache.c
-abrt_action_install_debuginfo_to_abrt_cache_CPPFLAGS = \
-    -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-    -D_GNU_SOURCE \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DSBIN_DIR=\"$(sbindir)\" \
-    -DLARGE_DATA_TMP_DIR=\"$(LARGE_DATA_TMP_DIR)\" \
-    $(LIBREPORT_CFLAGS) \
-    -Wall -Wwrite-strings \
-    -fPIE
- abrt_action_install_debuginfo_to_abrt_cache_LDADD = \
-    $(LIBREPORT_LIBS) \
-    ../lib/libabrt.la
- abrt_action_install_debuginfo_to_abrt_cache_LDFLAGS = \
-    -Wl,-z,relro -Wl,-z,now \
-    -pie
-
 if BUILD_RETRACE_CLIENT
 abrt_retrace_client_SOURCES = \
     abrt-retrace-client.c \
@@ -489,7 +460,7 @@ endif
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
-DISTCLEANFILES = abrt-action-analyze-ccpp-local abrt-action-analyze-core
+DISTCLEANFILES = abrt-action-analyze-ccpp-local
 
 abrt-action-perform-ccpp-analysis: abrt-action-perform-ccpp-analysis.in
 	sed -e s,\@libexecdir\@,$(libexecdir),g \
@@ -497,11 +468,6 @@ abrt-action-perform-ccpp-analysis: abrt-action-perform-ccpp-analysis.in
 
 abrt-action-analyze-ccpp-local: abrt-action-analyze-ccpp-local.in
 	sed -e s,\@LIBEXEC_DIR\@,$(libexecdir),g \
-        $< >$@
-
-abrt-action-analyze-core: abrt-action-analyze-core.in
-	sed -e s,\@localedir\@,$(localedir),g \
-        -e s,\@PACKAGE\@,$(PACKAGE),g \
         $< >$@
 
 %.catalog: %.catalog.in

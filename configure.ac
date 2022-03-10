@@ -430,7 +430,6 @@ AC_CONFIG_FILES([
 	src/configuration-gui/Makefile
 	src/configuration-gui/abrt_gui.pc
 	src/dbus/Makefile
-	src/plugins/abrt-action-install-debuginfo
 	src/plugins/abrt-action-analyze-vmcore
 	src/plugins/abrt-action-analyze-vulnerability
 	src/plugins/abrt-action-check-oops-for-hw-error

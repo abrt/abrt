@@ -35,8 +35,6 @@ int main(int argc, char **argv)
 
     abrt_init(argv);
 
-    char *i_opt = NULL;
-
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
         "& [options] -d DIR\n"
@@ -53,7 +51,6 @@ int main(int argc, char **argv)
     struct options program_options[] = {
         OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING( 'd', NULL, &dump_dir_name   , "DIR"           , _("Problem directory")),
-        OPT_STRING( 'i', NULL, &i_opt           , "DIR1[:DIR2]...", _("Additional debuginfo directories")),
         OPT_INTEGER('t', NULL, &exec_timeout_sec,                   _("Kill gdb if it runs for more than NUM seconds")),
         OPT_END()
     };
@@ -65,23 +62,11 @@ int main(int argc, char **argv)
     if (!abrt_load_abrt_plugin_conf_file(CCPP_CONF, settings))
         error_msg("Can't load '%s'", CCPP_CONF);
 
-    const char *value = g_hash_table_lookup(settings, "DebuginfoLocation");
-    g_autofree char *debuginfo_location = NULL;
-    if (value)
-        debuginfo_location = g_strdup(value);
-    else
-        debuginfo_location = g_strdup(LOCALSTATEDIR"/cache/abrt-di");
-
-    g_autofree char *debuginfo_dirs = NULL;
-    if (i_opt)
-        debuginfo_dirs = g_strdup_printf("%s:%s", debuginfo_location, i_opt);
-
     /* Create gdb backtrace */
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return 1;
-    g_autofree char *backtrace = abrt_get_backtrace(dd, exec_timeout_sec,
-            (debuginfo_dirs) ? debuginfo_dirs : debuginfo_location);
+    g_autofree char *backtrace = abrt_get_backtrace(dd, exec_timeout_sec);
     if (!backtrace)
     {
         backtrace = g_strdup("");
