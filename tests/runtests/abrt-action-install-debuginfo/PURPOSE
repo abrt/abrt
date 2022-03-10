@@ -1,7 +1,0 @@
-PURPOSE of abrt-action-install-debuginfo
-Description: Test for CVE-2015-3159 (abrt missing process environment sanitizaton in)
-Author: Martin Kyral <mkyral@redhat.com>
-Bug summary: abrt: missing process environment sanitizaton in abrt-action-install-debuginfo-to-abrt-cache
-Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2015-3159
-
-This test aims at creating world-writable directory in the abrt's DumpLocation. It can be used to spoof data and gain root privileges via CVE-2015-1869.

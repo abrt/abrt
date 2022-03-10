@@ -3,7 +3,6 @@ abrtclicommands_PYTHON = \
 	backtrace.py \
 	gdb.py \
 	info.py \
-	install_debuginfo.py \
 	list.py \
 	remove.py \
 	report.py \

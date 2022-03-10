@@ -7,7 +7,7 @@ abrt-action-generate-backtrace - Analyzes coredump, generates and saves backtrac
 
 SYNOPSIS
 --------
-'abrt-action-generate-backtrace' [-v] [-d DIR] [-i DIR1[:DIR2]...] [-t NUM]
+'abrt-action-generate-backtrace' [-v] [-d DIR] [-t NUM]
 
 DESCRIPTION
 -----------
@@ -35,9 +35,6 @@ OPTIONS
 
 -v::
    Be more verbose. Can be given multiple times.
-
--i DIR1[:DIR2]::
-   Additional debuginfo directories
 
 -t NUM::
    Kill gdb if it runs for more than NUM seconds

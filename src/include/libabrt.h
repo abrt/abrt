@@ -44,7 +44,7 @@ void abrt_ensure_writable_dir_uid_gid(const char *dir, mode_t mode, uid_t uid, g
 void abrt_ensure_writable_dir(const char *dir, mode_t mode, const char *user);
 void abrt_ensure_writable_dir_group(const char *dir, mode_t mode, const char *user, const char *group);
 char *abrt_run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec);
-char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *debuginfo_dirs);
+char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec);
 
 bool abrt_dir_is_in_dump_location(const char *dir_name);
 

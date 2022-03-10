@@ -14,16 +14,6 @@ DESCRIPTION
 The configuration file consists of items in the format "Option = Value".
 Ithe following items are recognized:
 
-*DebuginfoLocation = 'directory'*::
-   Specify directories where ABRT should look for non-system debuginfos.
-   This is a colon-separated list of file system paths.
-   +
-   Beware the first path in the list is used by ABRT to save downloaded
-   debuginfos, therefore the first path in the list must be _writable_, the
-   rest of the list can be read-only.
-   +
-   Default is `/var/cache/abrt-di`.
-
 *PackageManager = 'yum/dnf'*::
    Specify the package manager used for downloading debuginfo packages.
    +

@@ -21,9 +21,6 @@ class Gdb(Command):
         self.add_filter_arguments()
         self.add_match_argument()
 
-        self.parser.add_argument('-d', '--debuginfo-install', action='store_true',
-                                 help=_('install debuginfo packages before launching GDB'))
-
     def run(self, arguments):
         problems = match_get_problems(arguments.patterns,
                                       authenticate=arguments.authenticate,
@@ -40,10 +37,7 @@ class Gdb(Command):
 
             problem.chown()
 
-            if getattr(arguments, 'debuginfo_install', False):
-                run_command('debuginfo-install', arguments)
-
-            cmd = config.GDB_CMD.format(di_path=config.DEBUGINFO_PATH)
+            cmd = config.GDB_CMD
 
             with remember_cwd():
                 try:

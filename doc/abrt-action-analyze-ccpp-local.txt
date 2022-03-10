@@ -7,13 +7,13 @@ abrt-action-analyze-ccpp-local - Generates backtrace and search for duplicates
 
 SYNOPSIS
 --------
-abrt-action-analyze-ccpp-local [--without-di][--without-bz][--without-bodhi]
+abrt-action-analyze-ccpp-local [--without-bz] [--without-bodhi]
 
 DESCRIPTION
 -----------
-This tool downloads debuginfo and generates a backtrace
+This tool uses gdb(1)'s built-in integration for debuginfod to generate a backtrace
 for coredump in the problem directory, also checks for existing duplicates in
-bugzilla and possible updates related to the detected crash
+Bugzilla and possible updates related to the detected crash.
 
 Integration with ABRT events
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -27,9 +27,6 @@ EVENT=analyze_LocalGDB analyzer=CCpp
 
 OPTIONS
 -------
---without-di::
-    Don't install debuginfo packages
-
 --without-bz::
     Don't search bugzilla for existing duplicates
 

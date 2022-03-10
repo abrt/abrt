@@ -236,7 +236,7 @@ char *abrt_run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
     return g_string_free(buf_out, FALSE);
 }
 
-char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *debuginfo_dirs)
+char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec)
 {
     INITIALIZE_LIBABRT();
 
@@ -253,49 +253,10 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
     char *args[25];
     args[i++] = (char*)GDB;
     args[i++] = (char*)"-batch";
-    GString *set_debug_file_directory = g_string_new(NULL);
     unsigned auto_load_base_index = 0;
-    if(debuginfo_dirs == NULL)
-    {
-        // set non-existent debug file directory to prevent resolving
-        // function names - we need offsets for core backtrace.
-        g_string_append(set_debug_file_directory, "set debug-file-directory /");
-    }
-    else
-    {
-        g_string_append(set_debug_file_directory, "set debug-file-directory /usr/lib/debug:/usr/lib");
-
-        GString *debug_directories = g_string_new(NULL);
-        const char *p = debuginfo_dirs;
-        while (1)
-        {
-            while (*p == ':')
-                p++;
-            if (*p == '\0')
-                break;
-            const char *colon_or_nul = strchrnul(p, ':');
-            g_string_append_printf(debug_directories,
-                               "%s%.*s/usr/lib/debug:%.*s/usr/lib",
-                               (debug_directories->len == 0 ? "" : ":"),
-                               (int)(colon_or_nul - p), p,
-                               (int)(colon_or_nul - p), p);
-            p = colon_or_nul;
-        }
-
-        g_string_append_printf(set_debug_file_directory, ":%s", debug_directories->str);
-
-        args[i++] = (char*)"-iex";
-        auto_load_base_index = i;
-        args[i++] = g_strdup_printf("add-auto-load-safe-path %s", debug_directories->str);
-        args[i++] = (char*)"-iex";
-        args[i++] = g_strdup_printf("add-auto-load-scripts-directory %s", debug_directories->str);
-
-        g_string_free(debug_directories, TRUE);
-    }
 
     args[i++] = (char*)"-ex";
-    const unsigned debug_dir_cmd_index = i++;
-    args[debug_dir_cmd_index] = g_string_free(set_debug_file_directory, FALSE);
+    args[i++] = (char*)"set debuginfod enabled on";
 
     /* "file BINARY_FILE" is needed, without it gdb cannot properly
      * unwind the stack. Currently the unwind information is located
@@ -404,7 +365,6 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
         free(args[auto_load_base_index + 2]);
     }
 
-    free(args[debug_dir_cmd_index]);
     free(args[file_cmd_index]);
     free(args[core_cmd_index]);
     return bt;

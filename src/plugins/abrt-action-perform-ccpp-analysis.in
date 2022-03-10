@@ -22,7 +22,8 @@ GETTEXT_PROGNAME = "abrt"
 _ = gettext.gettext
 
 def handle_event(event_name, problem_dir):
-    """Helper function handling a single event
+    """
+    Helper function handling a single event
 
     Keyword arguments:
     envet_name -- a name of handled event
@@ -43,7 +44,8 @@ def handle_event(event_name, problem_dir):
 
 
 def run_analyze_smart(problem_dir):
-    """Runs analyze_RetraceServer event or analyze_LocalGB event.
+    """
+    Runs analyze_RetraceServer event or analyze_LocalGB event.
 
     At first runs analyze_RetraceServer. If user dismisses
     analyze_RetraceServer event or if the run fails the analyze_LocalGDB event
@@ -57,10 +59,11 @@ def run_analyze_smart(problem_dir):
 
     """
 
+    # TODO: Suggest local retracing first.
     retval = RETURN_CANCEL_BY_USER
     allowed = ask_yes_no_save_result("abrt_analyze_upload_coredump",
-                _("Ok to upload core dump? (It may contain sensitive data). "\
-                  "If your answer is 'No', a stack trace will be generated locally. "\
+                _("Ok to upload core dump? (It may contain sensitive data). "
+                  "If your answer is 'No', a stack trace will be generated locally. "
                   "(It may download a huge amount of data)."))
 
     if allowed:
@@ -68,8 +71,8 @@ def run_analyze_smart(problem_dir):
 
     # temporary helper variables for better readability
     option = "abrt_analyze_smart_ask_perform_local_analysis"
-    question = _("Do you want to generate a stack trace locally? "\
-                 "(It may download a huge amount of data but reporting "\
+    question = _("Do you want to generate a stack trace locally? "
+                 "(It may download a huge amount of data but reporting "
                  "can't continue without stack trace).")
 
     # run local GDB if the retrace event was dismissed
@@ -87,16 +90,16 @@ if __name__ == "__main__":
     try:
         locale.setlocale(locale.LC_ALL, "")
     except locale.Error:
-        os.environ['LC_ALL'] = 'C'
+        os.environ["LC_ALL"] = "C"
         locale.setlocale(locale.LC_ALL, "")
 
-    gettext.bindtextdomain(GETTEXT_PROGNAME, '/usr/share/locale')
+    gettext.bindtextdomain(GETTEXT_PROGNAME, "/usr/share/locale")
     gettext.textdomain(GETTEXT_PROGNAME)
 
-    CMDARGS = ArgumentParser(description = _('Smartly runs analyze events'))
-    CMDARGS.add_argument('-d', '--problem-dir', type=str,
-                         default='.', help=_('Problem directory'))
+    CMDARGS = ArgumentParser(description = _("Smartly runs analyze events"))
+    CMDARGS.add_argument("-d", "--problem-dir", type=str,
+                         default='.', help=_("Problem directory"))
 
     OPTIONS = CMDARGS.parse_args()
 
-    sys.exit(run_analyze_smart(vars(OPTIONS)['problem_dir']))
+    sys.exit(run_analyze_smart(vars(OPTIONS)["problem_dir"]))
