@@ -17,12 +17,6 @@
 */
 #include "libabrt.h"
 
-/* I want to use -Werror, but gcc-4.4 throws a curveball:
- * "warning: ignoring return value of 'ftruncate', declared with attribute warn_unused_result"
- * and (void) cast is not enough to shut it up! Oh God...
- */
-#define IGNORE_RESULT(func_call) do { if (func_call) /* nothing */; } while (0)
-
 int check_recent_crash_file(const char *filename, const char *executable)
 {
     int fd = open(filename, O_RDWR | O_CREAT, 0600);
@@ -31,13 +25,13 @@ int check_recent_crash_file(const char *filename, const char *executable)
 
     int ex_len = strlen(executable);
     struct stat sb;
-    int sz;
+    ssize_t sz;
 
     if (-1 == fstat(fd, &sb))
         perror_msg_and_die("Could not get information about opened file");
 
     if (sb.st_size != 0 /* if it wasn't created by us just now... */
-     && (unsigned)(time(NULL) - sb.st_mtime) < 20 /* and is relatively new [is 20 sec ok?] */
+        && (unsigned)(time(NULL) - sb.st_mtime) < 20 /* and is relatively new [is 20 sec ok?] */
     ) {
         char buf[ex_len + 2];
         sz = read(fd, buf, ex_len + 1);
@@ -50,11 +44,12 @@ int check_recent_crash_file(const char *filename, const char *executable)
                 return 1;
             }
         }
-        lseek(fd, 0, SEEK_SET);
+        if (lseek(fd, 0, SEEK_SET) < 0)
+            pwarn_msg("Could not seek to beginning of file '%s'", filename);
     }
     sz = write(fd, executable, ex_len);
-    if (sz >= 0)
-        IGNORE_RESULT(ftruncate(fd, sz));
+    if (sz >= 0 && ftruncate(fd, sz) < 0)
+        pwarn_msg("Could not truncate file '%s' to %zd bytes", filename, sz);
 
     close(fd);
     return 0;
