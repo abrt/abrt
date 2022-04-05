@@ -19,21 +19,22 @@
 # Ooyama Yosiyuki <qqke6wd9k@apricot.ocn.ne.jp>, 2015. #zanata
 # Noriko Mizumoto <noriko.mizumoto@gmail.com>, 2016. #zanata
 # Casey Jones <nahareport@live.com>, 2018. #zanata
+# Yuto Nishiwaki <nishiwakiyuto.per@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2018-02-16 08:49+0000\n"
-"Last-Translator: Casey Jones <nahareport@live.com>\n"
-"Language-Team: Japanese (http://www.transifex.com/projects/p/fedora-abrt/"
-"language/ja/)\n"
+"PO-Revision-Date: 2022-03-22 17:17+0000\n"
+"Last-Translator: Yuto Nishiwaki <nishiwakiyuto.per@gmail.com>\n"
+"Language-Team: Japanese <https://translate.fedoraproject.org/projects/abrt/"
+"abrt/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Zanata 4.6.2\n"
+"X-Generator: Weblate 4.11.2\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -45,19 +46,11 @@ msgstr "アプリケーションクラッシュの表示とレポート"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
-msgstr ""
+msgstr "冗長な出力"
 
 #: ../src/applet/abrt-applet-application.c:167
-#, fuzzy
-#| msgid ""
-#| "& [-v] [DIR]...\n"
-#| "\n"
-#| "Applet which notifies user when new problems are detected by ABRT\n"
 msgid "Applet which notifies user when new problems are detected by ABRT"
-msgstr ""
-"& [-v] [DIR]...\n"
-"\n"
-"新しい問題が ABRT で検出されるとユーザーに通知するアプレットです\n"
+msgstr "新しい問題が ABRT で検出されるとユーザーに通知するアプレットです"
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
@@ -450,7 +443,7 @@ msgstr "休止状態が NUM 秒以上続いた場合は終了します"
 
 #: ../src/dbus/abrt-dbus.c:1041
 msgid "This program must be run as root."
-msgstr "このプログラムは root で実行しなければなりません"
+msgstr "このプログラムは root で実行しなければなりません。"
 
 #: ../src/daemon/abrtd.c:683
 msgid ""
@@ -493,8 +486,7 @@ msgstr "INCREMENT で nice 値の増加させる"
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
-msgstr ""
-"空きワーカーが無く、バッファーが満杯です。'%s' のアーカイブを省略します。"
+msgstr "空きワーカーが無く、バッファーが満杯です。'%s' のアーカイブを省略します"
 
 #: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
@@ -514,21 +506,19 @@ msgstr ""
 "DumpLocation に格納されたアーカイブを展開します。\n"
 "\n"
 "UPLOAD_DIRECTORY が指定されていない場合、\n"
-"abrt.conf の WatchCrashdumpArchiveDir オプションの値を使用します。"
+"abrt.conf の WatchCrashdumpArchiveDir オプションの値を使用します"
 
 #: ../src/daemon/abrt-upload-watch.c:281
-#, fuzzy
-#| msgid "Daemize"
 msgid "Daemonize"
 msgstr "デーモン化"
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr "同時実行ワーカー数。規定値は次のとおりです。"
+msgstr "同時実行ワーカー数。規定値は "
 
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr "MiB 単位の最大キャッシュ容量。規定値は次のとおりです。"
+msgstr "MiB 単位の最大キャッシュ容量。規定値は "
 
 #: ../src/daemon/abrt-auto-reporting.c:198
 #: ../src/daemon/abrt-auto-reporting.c:206
@@ -779,15 +769,14 @@ msgstr "一時ファイル '%s' を作成できません"
 msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
 "problems '%s'"
-msgstr ""
-"'%s' に書き込みできません。問題 '%s' は、無視した問題 '%s' からは削除されませ"
-"ん。"
+msgstr "'%s' に書き込みできません。問題 '%s' は、無視した問題 '%s' "
+"からは削除されません"
 
 #. Something nefarious happened
 #: ../src/lib/ignored_problems.c:264
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
-msgstr "'%s' の名前を '%s' に変更できません。問題 '%s' の削除に失敗しました。"
+msgstr "'%s' の名前を '%s' に変更できません。問題 '%s' の削除に失敗しました"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:41
 msgid ""
@@ -963,7 +952,7 @@ msgstr "重複している bugzilla バグ '#{0}' が見つかりました"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:139
 msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
-msgstr "'abrt_hash:{0}' の bugzilla バグはありません。"
+msgstr "'abrt_hash:{0}' に関する bugzilla バグはありません"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:144
 msgid "Warning: abrt-bodhi do not support Product version 'Rawhide'"
@@ -1057,33 +1046,7 @@ msgid "All debuginfo files are available"
 msgstr "すべての debuginfo ファイルが利用可能です"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:190
-#, fuzzy, c-format
-#| msgid ""
-#| "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-#| "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:"
-#| "DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
-#| "       [-e, --exact=PATH[:PATH]...]\n"
-#| "\n"
-#| "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
-#| "to CACHEDIR, using TMPDIR as temporary staging area.\n"
-#| "Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
-#| "\n"
-#| "Reads configuration from /etc/abrt/plugins/CCpp.conf\n"
-#| "\n"
-#| "    -v          Be verbose\n"
-#| "    -y          Noninteractive, assume 'Yes' to all questions\n"
-#| "    --ids       Default: build_ids\n"
-#| "    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
-#| "RANDOM_SUFFIX\n"
-#| "    --cache     Colon separated list of directories. The first one is "
-#| "used for\n"
-#| "                saving installed debuginfos.\n"
-#| "                Default: /var/cache/abrt-dir\n"
-#| "    --size_mb   Default: 4096\n"
-#| "    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
-#| "    -e,--exact  Download only specified files\n"
-#| "    --repo      Pattern to use when searching for repos.\n"
-#| "                Default: *debug*\n"
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -1118,27 +1081,31 @@ msgstr ""
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
 "[--size_mb=SIZE]\n"
 "       [-e, --exact=PATH[:PATH]...]\n"
+"       [--releasever=RELEASEVER] [--repo=PATTERN]\n"
 "\n"
 "BUILD_IDS_FILE に記載されている全 build-id の debuginfo を CACHEDIR に\n"
 "インストールします。TMPDIR を一時的なステージングエリアに使用します。\n"
-"CACHEDIR の大きさが SIZE に減少するまで CACHEDIR 内の古いファイルが削除されま"
-"す。\n"
+"CACHEDIR の大きさが SIZE に減少するまで CACHEDIR "
+"内の古いファイルが削除されます。\n"
 "\n"
 "/etc/abrt/plugins/CCpp.conf から設定を読み取ります。\n"
-"\n"
 "    -v          冗長表示にする\n"
 "    -y          非インテラクティブ、すべての質問に「はい」と答える\n"
 "    --ids       デフォルト: build_ids\n"
-"    --tmpdir    デフォルト: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
+"    --tmpdir    Dデフォルト: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
 "RANDOM_SUFFIX\n"
-"    --cache     コロン区切りの辞書リスト。1番目のものはインストールされた\n"
+"    --cache     コロン区切りのディレクトリ一覧。 1つめのものが\n"
 "                debuginfoの保存に使用されます。\n"
-"                デフォルト: /var/cache/abrt-dir\n"
+"                デフォルト: /var/cache/abrt-di\n"
 "    --size_mb   デフォルト: 4096\n"
-"    --pkgmgr   デフォルト:  CCpp.conf または 'dnf' の PackageManager\n"
+"    --pkgmgr    デフォルト: CCpp.confのパッケージマネージャーまたは 'dnf'\n"
+"    -e,--exact  Download only specified files\n"
+"    --repo      Pattern to use when searching for repos.\n"
 "    -e,--exact  指定したファイルのみダウンロードする\n"
 "    --repo      リポジトリの検索時に使用するパターン\n"
 "                デフォルト: *debug*\n"
+"    --releasever RELEASEVER\n"
+"                パッケージマネージャーにOSバージョンを渡す。\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:290
 msgid "Exiting on user command"
@@ -1180,7 +1147,7 @@ msgstr "無視オプション"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:73
 msgid "OS release version"
-msgstr ""
+msgstr "OSリリースバージョン"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
 msgid ""
@@ -1262,7 +1229,7 @@ msgstr "uReport はすでに送信されているので、再送信されませ�
 
 #: ../src/plugins/abrt-action-ureport:174
 msgid "Problem comes from unpackaged executable. Unable to create uReport."
-msgstr ""
+msgstr "展開済みの実行ファイルに由来する問題です。uReportを作成できません。"
 
 #: ../src/plugins/abrt-action-ureport:189
 msgid "Adding you to CC List of the existing bugzilla bug"
@@ -1368,14 +1335,10 @@ msgid "Jump to an invalid address"
 msgstr "無効なアドレスにジャンプ"
 
 #: ../src/plugins/abrt-gdb-exploitable:669
-#, fuzzy
-#| msgid ""
-#| "Access past the end of mapped file, invalid address, unaligned access, etc"
 msgid ""
 "Access past the end of mapped file, invalid address, unaligned access, etc."
-msgstr ""
-"未調整のアクセス、無効なアドレス、マッピングされているファイルより先にアクセ"
-"スしています"
+msgstr "未調整のアクセス、無効なアドレス、マッピングされているファイルより先にアクセ"
+"スしています。"
 
 #: ../src/plugins/abrt-gdb-exploitable:688
 msgid "Can't get signal no and do exploitability analysis\n"
@@ -1490,7 +1453,7 @@ msgstr "複数のウップスが見つかりました: 1番目のものだけ実
 #: ../src/plugins/abrt-dump-journal-core.c:378
 #, c-format
 msgid "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
-msgstr ""
+msgstr "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
 
 #: ../src/plugins/abrt-dump-journal-core.c:407
 #: ../src/plugins/abrt-dump-journal-core.c:446
@@ -1504,10 +1467,8 @@ msgid "Not saving repeating crash after %ds (limit is %ds)"
 msgstr " %ds 後に繰り返されたクラッシュは保存されません( %ds が制限です)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:478
-#, fuzzy
-#| msgid "Failed to save detect problem data in abrt database"
 msgid "Failed to print detect problem data to stdout"
-msgstr "abrtデータベースに検知プログラムデータを保存できませんでした"
+msgstr "標準出力に検知プログラムデータを表示できませんでした"
 
 #: ../src/plugins/abrt-dump-journal-core.c:486
 msgid "Failed to save detect problem data in abrt database"
@@ -1567,7 +1528,7 @@ msgstr "問題のディレクトリの作成を毎INT秒 1 個に制限"
 
 #: ../src/plugins/abrt-dump-journal-core.c:568
 msgid "Same as -t INT, INT is specified in plugins/CCpp.conf"
-msgstr "-t INTと同じです、INTはplugins/CCpp.confで指定されます。"
+msgstr "-t INTと同じです、INTはplugins/CCpp.confで指定されます"
 
 #: ../src/plugins/abrt-dump-journal-core.c:569
 #: ../src/plugins/abrt-dump-journal-oops.c:233
@@ -1626,7 +1587,7 @@ msgstr "systemd-journal cursor '%s' を設定できませんでした"
 #: ../src/plugins/abrt-dump-journal-oops.c:40
 #: ../src/plugins/abrt-dump-journal-xorg.c:53
 msgid "Cannot read journal data."
-msgstr "ジャーナルデータを読めません"
+msgstr "ジャーナルデータを開けません。"
 
 #: ../src/plugins/abrt-dump-journal-oops.c:189
 msgid ""
@@ -1884,7 +1845,7 @@ msgstr "サーバーでは xz 圧縮の tarball には対応していません�
 #: ../src/plugins/abrt-retrace-client.c:689
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
-msgstr "リトレースサーバーでは「%s」リリースには対応していません"
+msgstr "リリース '%s'はリトレースサーバーでサポートされていません。"
 
 #: ../src/plugins/abrt-retrace-client.c:693
 msgid "The server is not able to handle your request."
@@ -1999,10 +1960,8 @@ msgstr ""
 "るかどうかのチェックを行なわない"
 
 #: ../src/plugins/abrt-retrace-client.c:1261
-#, fuzzy
-#| msgid "retrace server URL"
 msgid "retrace server URI"
-msgstr "リトレースサーバーの URL"
+msgstr "リトレースサーバーの URI"
 
 #: ../src/plugins/abrt-retrace-client.c:1263
 msgid "(debug) show received HTTP headers"
@@ -2072,11 +2031,11 @@ msgstr "タスクパスワードが必要です。"
 #: ../src/plugins/abrt-retrace-client.c:1366
 #, c-format
 msgid "Unknown operation: %s."
-msgstr "不明な操作: %s　"
+msgstr "不明な操作: %s。"
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:1
 msgid "Search for updated packages that fixes the crash."
-msgstr ""
+msgstr "クラッシュを修正するアップデートパッケージを探します。"
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:2
 msgid ""
@@ -2084,6 +2043,9 @@ msgid ""
 "Whiteboar equal to 'UUID' of the crash. If such a bug found, search for "
 "Bodhi updates shipping fixes for the found Bugzilla bugs."
 msgstr ""
+"Bugzillaバグホワイトボードに'abrt_hash'の値が'UUID'に一致する報告がないか探し"
+"ています。もしこのようなバグが存在した場合、そのBugzillaバグの修正を提供するB"
+"odhiアップデートを探します。"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
@@ -2126,10 +2088,8 @@ msgstr ""
 "ります。"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-#, fuzzy
-#| msgid "Retrace server URL"
 msgid "Retrace server URI"
-msgstr "リトレースサーバーの URL"
+msgstr "リトレースサーバーの URI"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Address of the retrace server"
@@ -2209,17 +2169,15 @@ msgstr ""
 "いため、カーネルメンテナーは問題の修正ができません。"
 
 #: ../src/plugins/oops-utils.c:246
-#, fuzzy, c-format
-#| msgid ""
-#| "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
-#| "Kernel maintainers are unable to diagnose tainted reports."
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Explanation:\n"
 "%sKernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"カーネル関連の問題が発生しましたが、カーネル自体が破損しています (フラグ:"
-"%s)。破損したレポートの診断はカーネルメンテナーでは行なえません。"
+"カーネル関連の問題が発生しましたが、カーネル自体が破損しています "
+"(フラグ:%s)。説明：%s "
+"破損したレポートの診断はカーネルメンテナーでは行なえません。"
 
 #: ../src/plugins/oops-utils.c:254
 #, c-format
@@ -2293,7 +2251,7 @@ msgstr "検出した oops を含んでいるファイルを削除"
 
 #: ../src/cli/abrtcli/match.py:117
 msgid "No matching problems found"
-msgstr ""
+msgstr "一致する問題が見つかりませんでした"
 
 #: ../src/cli/abrtcli/utils.py:79
 msgid "Not reportable"
@@ -2301,61 +2259,47 @@ msgstr "報告できません"
 
 #: ../src/cli/abrtcli/cli/__init__.py:30
 msgid "increase output verbosity"
-msgstr ""
+msgstr "出力の冗長性を高める"
 
 #: ../src/cli/abrtcli/cli/__init__.py:50
 msgid "positive non-zero integer expected"
-msgstr ""
+msgstr "正のゼロでない整数が想定されています"
 
 #: ../src/cli/abrtcli/cli/__init__.py:54
-#, fuzzy
-#| msgid "List problems"
 msgid "filter last N problems"
-msgstr "問題の一覧"
+msgstr "末尾N個の問題を表示"
 
 #: ../src/cli/abrtcli/cli/__init__.py:57
 msgid "filter problems with matching component"
-msgstr ""
+msgstr "一致するコンポーネントがある問題を表示"
 
 #: ../src/cli/abrtcli/cli/__init__.py:59
-#, fuzzy
-#| msgid "List only not-reported problems"
 msgid "filter unreported problems"
 msgstr "報告されていない問題のみを表示する"
 
 #: ../src/cli/abrtcli/cli/__init__.py:61
-#, fuzzy
-#| msgid "List only the problems older than specified timestamp"
 msgid "filter problems older than the specified timestamp"
 msgstr "指定したタイムスタンプよりも古い問題のみを表示します"
 
 #: ../src/cli/abrtcli/cli/__init__.py:63
-#, fuzzy
-#| msgid "List only the problems older than specified timestamp"
 msgid "filter problems newer than the specified timestamp"
-msgstr "指定したタイムスタンプよりも古い問題のみを表示します"
+msgstr "指定したタイムスタンプよりも新しい問題のみを表示"
 
 #: ../src/cli/abrtcli/cli/__init__.py:66
 msgid "filter problems with matching executable"
-msgstr ""
+msgstr "一致する実行ファイルの問題のみを表示"
 
 #: ../src/cli/abrtcli/cli/__init__.py:71
-#, fuzzy
-#| msgid "Output format"
 msgid "output format"
 msgstr "出力形式"
 
 #: ../src/cli/abrtcli/cli/__init__.py:74
-#, fuzzy
-#| msgid "Built-in output format"
 msgid "built-in output format"
-msgstr "組み込みの出力方式"
+msgstr "ビルトインの出力方式"
 
 #: ../src/cli/abrtcli/cli/__init__.py:79
-#, fuzzy
-#| msgid "Make the problem directory world readable"
 msgid "path to the problem directory, problem ID or wildcard"
-msgstr "問題ディレクトリを誰でも見れるようにします"
+msgstr "問題IDへのパス、問題IDまたはワイルドカード"
 
 #: ../src/cli/abrtcli/cli/backtrace.py:35
 msgid "Problem has no backtrace"
@@ -2366,18 +2310,12 @@ msgid "Start retracing process?"
 msgstr "プロセスのリトレースをスタートしますか？"
 
 #: ../src/cli/abrtcli/cli/gdb.py:25
-#, fuzzy
-#| msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgid "install debuginfo packages before launching GDB"
-msgstr ""
-"debuginfo パッケージをダウンロードし、GDB を使用してローカルにバックトレース"
-"を生成します"
+msgstr "GDBを実行する前にdebuginfoパッケージをインストールします"
 
 #: ../src/cli/abrtcli/cli/gdb.py:38
-#, fuzzy
-#| msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
 msgid "The problem is not of a C/C++ type. Can't run GDB"
-msgstr "{} 問題は C/C++ タイプではないためデバッグ情報をインストールできません"
+msgstr "問題は C/C++ 型ではありません。GDBを実行できません"
 
 #: ../src/cli/abrtcli/cli/gdb.py:52
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:45
@@ -2389,18 +2327,14 @@ msgstr ""
 "システムの問題の場合、コマンドをrootとして実行してみてください"
 
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:36
-#, fuzzy
-#| msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
 msgid "The problem is not of a C/C++ type. Can't install debuginfo"
-msgstr "{} 問題は C/C++ タイプではないためデバッグ情報をインストールできません"
+msgstr "問題は C/C++ 型ではないためデバッグ情報をインストールできません"
 
 #: ../src/cli/abrtcli/cli/list.py:34
 msgid "No problems"
 msgstr "問題ありません"
 
 #: ../src/cli/abrtcli/cli/remove.py:22
-#, fuzzy
-#| msgid "Do not prompt before removal"
 msgid "do not prompt before removal"
 msgstr "削除の前に確認しない"
 
@@ -2414,46 +2348,34 @@ msgstr "削除しました"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/abrtcli/cli/report.py:23
-#, fuzzy
-#| msgid "Remove PROBLEM_DIR after reporting"
 msgid "remove after reporting"
-msgstr "レポート後に PROBLEM_DIR を削除します"
+msgstr "報告後に削除します"
 
 #: ../src/cli/abrtcli/cli/report.py:25
-#, fuzzy
-#| msgid "Not reportable"
 msgid "ignore unreportable state"
-msgstr "報告できません"
+msgstr "報告できない状態を無視"
 
 #: ../src/cli/abrtcli/cli/report.py:41
-#, fuzzy, python-brace-format
-#| msgid "Problem '%s' cannot be reported"
+#, python-brace-format
 msgid "Problem '{0}' cannot be reported"
-msgstr "問題 '%s' は報告できません"
+msgstr "問題 '{0}' は報告できません"
 
 #: ../src/cli/abrtcli/cli/report.py:50
-#, fuzzy, python-format
-#| msgid "Report problem"
+#, python-format
 msgid "Reporting problem %s\n"
-msgstr "問題を報告する"
+msgstr "問題 '%s' を報告しています\n"
 
 #: ../src/cli/abrtcli/cli/retrace.py:24
-#, fuzzy
-#| msgid "Perform local retracing"
 msgid "perform retracing locally"
-msgstr "ローカルリトレースを実行する"
+msgstr "ローカルでリトレースを実行します"
 
 #: ../src/cli/abrtcli/cli/retrace.py:26
-#, fuzzy
-#| msgid "Send core dump to remote retrace server for analysis"
 msgid "submit core dump for remote retracing"
-msgstr "コアダンプを分析のためリモートのリトレースサーバーに送信します"
+msgstr "コアダンプをリモートリトレースのために送信します"
 
 #: ../src/cli/abrtcli/cli/retrace.py:29
-#, fuzzy
-#| msgid "Local retracing"
 msgid "force retracing"
-msgstr "ローカルリトレース"
+msgstr "リトレースを強制"
 
 #: ../src/cli/abrtcli/cli/retrace.py:47
 msgid "Problem already has a backtrace"
@@ -2493,21 +2415,16 @@ msgid "Local retracing"
 msgstr "ローカルリトレース"
 
 #: ../src/cli/abrtcli/cli/status.py:17
-#, fuzzy
-#| msgid "List only not-reported problems"
 msgid "show only the number of problems"
-msgstr "報告されていない問題のみを表示する"
+msgstr "問題の数のみを表示する"
 
 #: ../src/cli/abrtcli/cli/status.py:19
 msgid "only show output if at least one problem is found"
-msgstr ""
+msgstr "問題が1つ以上見つかった場合にのみ表示する"
 
 #: ../src/cli/abrtcli/cli/status.py:40
-#, fuzzy
-#| msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
 msgid "ABRT has detected a problem. For more information, run “abrt list{}”"
-msgstr ""
-"ABRTは {} 問題を検出しました。詳細はこれを実行してください: abrt list{}"
+msgstr "ABRTは問題を検出しました。詳細な情報は abrt list{} を実行してください"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
@@ -2567,8 +2484,8 @@ msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
 msgstr ""
-"gconftool-2 --recursive-list /apps/executable を実行して、「gconf_subtree」エ"
-"レメントとして保存します"
+"gconftool-2 --recursive-list /apps/executable "
+"を実行して、「gconf_subtree」エレメントとして保存します。"
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"

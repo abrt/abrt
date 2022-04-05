@@ -24,13 +24,14 @@
 # KrishnaBabu K <k.meetme@gmail.com>, 2021.
 # Sundeep Anand <suanand@redhat.com>, 2021.
 # Ettore Atalan <atalanttore@googlemail.com>, 2021, 2022.
+# Joachim Philipp <joachim.philipp@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2022-01-02 21:16+0000\n"
-"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"PO-Revision-Date: 2022-04-03 14:54+0000\n"
+"Last-Translator: Joachim Philipp <joachim.philipp@gmail.com>\n"
 "Language-Team: German <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/de/>\n"
 "Language: de\n"
@@ -38,7 +39,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 4.11.2\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -433,7 +434,7 @@ msgstr "Kein weiterer Speicherplatz für die Fehlerbeschreibung vorhanden"
 #: ../src/dbus/abrt-dbus.c:685
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr "Element »%s« kann nicht vo Fehlerverzeichnis »%s« entfernt werden"
+msgstr "Element »%s« kann nicht von Fehlerverzeichnis »%s« entfernt werden"
 
 #: ../src/dbus/abrt-dbus.c:938 ../src/daemon/abrtd.c:720
 #, c-format
@@ -519,10 +520,8 @@ msgstr ""
 "WatchCrashdumpArchiveDir festgelegt in abrt.conf ausgewählt"
 
 #: ../src/daemon/abrt-upload-watch.c:281
-#, fuzzy
-#| msgid "Daemize"
 msgid "Daemonize"
-msgstr "Als Dienst ausführen"
+msgstr "Als Dienst einrichten"
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
@@ -1063,33 +1062,7 @@ msgid "All debuginfo files are available"
 msgstr "Alle Debuginfo-Dateien sind vorhanden"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:190
-#, fuzzy, c-format
-#| msgid ""
-#| "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-#| "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:"
-#| "DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
-#| "       [-e, --exact=PATH[:PATH]...]\n"
-#| "\n"
-#| "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
-#| "to CACHEDIR, using TMPDIR as temporary staging area.\n"
-#| "Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
-#| "\n"
-#| "Reads configuration from /etc/abrt/plugins/CCpp.conf\n"
-#| "\n"
-#| "    -v          Be verbose\n"
-#| "    -y          Noninteractive, assume 'Yes' to all questions\n"
-#| "    --ids       Default: build_ids\n"
-#| "    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
-#| "RANDOM_SUFFIX\n"
-#| "    --cache     Colon separated list of directories. The first one is "
-#| "used for\n"
-#| "                saving installed debuginfos.\n"
-#| "                Default: /var/cache/abrt-dir\n"
-#| "    --size_mb   Default: 4096\n"
-#| "    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
-#| "    -e,--exact  Download only specified files\n"
-#| "    --repo      Pattern to use when searching for repos.\n"
-#| "                Default: *debug*\n"
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -1146,6 +1119,8 @@ msgstr ""
 "    -e,--exact  Lädt nut die angegebenen Dateien herunter\n"
 "    --repo      Muster für die Suche nach Paketquellen\n"
 "                Standard: *debug*\n"
+"    --releasever RELEASEVER\n"
+"                Weitergabe der OS Version an die Paketverwaltung.\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:290
 msgid "Exiting on user command"
