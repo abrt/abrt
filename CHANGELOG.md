@@ -5,8 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-
-## [2.15.1]
+### Fixed
+- abrt-oops: Follow journal from the end if the position cannot be restored (gh#1604)
 
 ## [2.15.1]
 ### Fixed

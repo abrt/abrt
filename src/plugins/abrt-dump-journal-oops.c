@@ -294,12 +294,27 @@ int main(int argc, char *argv[])
     if ((opts & OPT_e) && abrt_journal_seek_tail(journal) < 0)
         error_msg_and_die(_("Cannot seek to the end of journal"));
 
+    if (cursor && abrt_journal_set_cursor(journal, cursor))
+        error_msg_and_die(_("Failed to set systemd-journal cursor '%s'"), cursor);
+
     if ((opts & OPT_f))
     {
-        if (!cursor)
-            abrt_journal_restore_position(journal, ABRT_JOURNAL_WATCH_STATE_FILE);
-        else if(abrt_journal_set_cursor(journal, cursor))
-            error_msg_and_die(_("Failed to start watch from cursor '%s'"), cursor);
+        if (!cursor && !(opts & OPT_e))
+        {
+            if (abrt_journal_restore_position(journal, ABRT_JOURNAL_WATCH_STATE_FILE) < 0)
+            {
+                /* We couldn't restore the position, so let's start following the journal from the current (tail) position */
+                if (abrt_journal_seek_tail(journal) < 0)
+                {
+                    error_msg_and_die(_("Cannot seek to the end of journal"));
+                }
+            }
+            else
+            {
+                /* The stored position has already been seen, so move to the next one. */
+                abrt_journal_next(journal);
+            }
+        }
 
         watch_journald(journal, dump_location, oops_utils_flags);
 
@@ -307,13 +322,6 @@ int main(int argc, char *argv[])
     }
     else
     {
-        if (cursor && abrt_journal_set_cursor(journal, cursor))
-            error_msg_and_die(_("Failed to set systemd-journal cursor '%s'"), cursor);
-
-        /* Compatibility hack, a watch's callback gets the journal already moved
-         * to a next message.*/
-        abrt_journal_next(journal);
-
         GList *oopses = abrt_journal_extract_kernel_oops(journal);
         const int errors = abrt_oops_process_list(oopses, dump_location,
                                                   ABRT_JOURNAL_KOOPS_ANALYZER, oops_utils_flags);
