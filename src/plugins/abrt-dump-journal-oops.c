@@ -102,7 +102,8 @@ static void abrt_journal_watch_extract_kernel_oops(abrt_journal_watch_t *watch, 
     /* Skip stuff which appeared while processing oops as it is not necessary */
     /* to catch all consecutive oopses (anyway such oopses are almost */
     /* certainly duplicates of the already extracted ones) */
-    abrt_journal_seek_tail(journal);
+    if (abrt_journal_seek_tail(journal) < 0)
+        error_msg_and_die(_("Cannot seek to the end of journal"));
 
     /* In case of disaster, lets make sure we won't read the journal messages */
     /* again. */
