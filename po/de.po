@@ -30,7 +30,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2022-04-03 14:54+0000\n"
+"PO-Revision-Date: 2022-04-09 11:17+0000\n"
 "Last-Translator: Joachim Philipp <joachim.philipp@gmail.com>\n"
 "Language-Team: German <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/de/>\n"
@@ -1249,6 +1249,8 @@ msgstr "uReport wurde bereits gesendet und wird nicht erneut gesendet"
 #: ../src/plugins/abrt-action-ureport:174
 msgid "Problem comes from unpackaged executable. Unable to create uReport."
 msgstr ""
+"Das Problem kommt von einer nicht paketierten ausführbaren Datei. Leider "
+"kann kein uReport erstellt werden."
 
 #: ../src/plugins/abrt-action-ureport:189
 msgid "Adding you to CC List of the existing bugzilla bug"
@@ -2075,6 +2077,8 @@ msgid ""
 "Whiteboar equal to 'UUID' of the crash. If such a bug found, search for "
 "Bodhi updates shipping fixes for the found Bugzilla bugs."
 msgstr ""
+"Sucht nach Bugzilla Berichten im Bugzilla Bug Whiteboard mit dem Wert "
+"'abrt_hash' gleich 'UUID' des Absturzes."
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
@@ -2384,10 +2388,9 @@ msgid "ignore unreportable state"
 msgstr "nicht meldbaren Zustand ignorieren"
 
 #: ../src/cli/abrtcli/cli/report.py:41
-#, fuzzy, python-brace-format
-#| msgid "Problem '%s' cannot be reported"
+#, python-brace-format
 msgid "Problem '{0}' cannot be reported"
-msgstr "Problem '%s' kann nicht gemeldet werden"
+msgstr "Problem '{0}' kann nicht gemeldet werden"
 
 #: ../src/cli/abrtcli/cli/report.py:50
 #, python-format
@@ -2399,10 +2402,8 @@ msgid "perform retracing locally"
 msgstr "Rückverfolgung lokal durchführen"
 
 #: ../src/cli/abrtcli/cli/retrace.py:26
-#, fuzzy
-#| msgid "Send core dump to remote retrace server for analysis"
 msgid "submit core dump for remote retracing"
-msgstr "Speicherauszug an entfernten Server zur Untersuchung senden"
+msgstr "Speicherauszug an entfernten Server zur Untersuchung übermitteln"
 
 #: ../src/cli/abrtcli/cli/retrace.py:29
 msgid "force retracing"
