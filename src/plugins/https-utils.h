@@ -21,7 +21,6 @@
 #define ABRT_HTTPS_UTILS_H_
 
 #include <libreport/client.h>
-#include <libsoup/soup.h>
 #include "libabrt.h"
 
 #if HAVE_LOCALE_H

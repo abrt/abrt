@@ -66,7 +66,7 @@ BuildRequires: gettext
 BuildRequires: libxml2-devel
 BuildRequires: intltool
 BuildRequires: libtool
-BuildRequires: libsoup-devel
+BuildRequires: libsoup3-devel
 BuildRequires: asciidoc
 BuildRequires: doxygen
 BuildRequires: xmlto
@@ -225,7 +225,7 @@ Requires: %{name} = %{version}-%{release}
 Requires: xz
 Requires: tar
 Requires: p11-kit-trust
-Requires: libsoup
+Requires: libsoup3
 
 %description retrace-client
 This package contains the client application for Retrace server
