@@ -24,6 +24,7 @@
 #include <rpm/rpmcli.h>
 #include <rpm/rpmdb.h>
 #include <rpm/rpmpgp.h>
+#include <rpm/rpmstring.h>
 #include <rpm/rpmkeyring.h>
 
 struct rpmPubkey_s {
@@ -92,6 +93,15 @@ void rpm_destroy()
     g_list_free_full(g_steal_pointer(&list_fingerprints), free);
 }
 
+
+// TODO: pgpHexStr() has been renamed to rpmhex() recently, and
+//       pgpHexStr() is now deprecated and it will be dropped
+//       in the future. Let's keep using the old name for now
+//       as the replacement is only available in Rawhide (f37).
+// https://github.com/rpm-software-management/rpm/commit/d44be2cbc1c3265d55f05b47daa69334a7a133e6
+// Ignore the deprecation warning in this function
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 void rpm_load_gpgkey(const char* filename)
 {
 #ifdef HAVE_LIBRPM
@@ -133,6 +143,7 @@ void rpm_load_gpgkey(const char* filename)
     return;
 #endif
 }
+#pragma GCC diagnostic pop
 
 int rpm_chk_fingerprint(const char* pkg)
 {
