@@ -22,7 +22,7 @@
 %bcond_without retrace
 
 # rpmbuild --define 'desktopvendor mystring'
-%if "x%{desktopvendor}" == "x"
+%if "x%{?desktopvendor}" == "x"
     %define desktopvendor %(source /etc/os-release; echo ${ID})
 %endif
 
