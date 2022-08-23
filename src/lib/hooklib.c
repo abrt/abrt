@@ -121,12 +121,12 @@ static char* exec_vp(char **args, int redirect_stderr, int exec_timeout_sec, int
      * Therefore we have a (largish) timeout, after which we kill the child.
      */
     libreport_ndelay_on(pipeout[0]);
-    int t = time(NULL); /* int is enough, no need to use time_t */
-    int endtime = t + exec_timeout_sec;
+    time_t starttime = time(NULL);
+    time_t endtime = starttime + exec_timeout_sec;
     GString *buf_out = g_string_new(NULL);
     while (1)
     {
-        int timeout = endtime - t;
+        double timeout = difftime(endtime, starttime);
         if (timeout < 0)
         {
             kill(child, SIGKILL);
@@ -158,7 +158,7 @@ static char* exec_vp(char **args, int redirect_stderr, int exec_timeout_sec, int
         buff[r] = '\0';
         g_string_append(buf_out, buff);
  next:
-        t = time(NULL);
+        starttime = time(NULL);
     }
     close(pipeout[0]);
 
@@ -186,12 +186,12 @@ char *abrt_run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
      * Therefore we have a (largish) timeout, after which we kill the child.
      */
     libreport_ndelay_on(pipeout[0]);
-    int t = time(NULL); /* int is enough, no need to use time_t */
-    int endtime = t + timeout_sec;
+    time_t starttime = time(NULL);
+    time_t endtime = starttime + timeout_sec;
     GString *buf_out = g_string_new(NULL);
     while (1)
     {
-        int timeout = endtime - t;
+        double timeout = difftime(endtime, starttime);
         if (timeout < 0)
         {
             kill(child, SIGKILL);
@@ -218,7 +218,7 @@ char *abrt_run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
         buff[r] = '\0';
         g_string_append(buf_out, buff);
  next:
-        t = time(NULL);
+        starttime = time(NULL);
     }
     close(pipeout[0]);
 
