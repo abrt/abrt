@@ -947,7 +947,6 @@ killall abrt-dbus >/dev/null 2>&1 || :
 
 %files tui
 %if %{with python3}
-%config(noreplace) %{_sysconfdir}/bash_completion.d/abrt.bash_completion
 %{_bindir}/abrt
 %{_bindir}/abrt-cli
 %{python3_sitelib}/abrtcli/
