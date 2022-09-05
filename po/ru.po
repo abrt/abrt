@@ -1,22 +1,23 @@
 # Igor Gorbounov <igor.gorbounov@gmail.com>, 2016. #zanata, 2020.
 # Jakub Filak <jfilak@redhat.com>, 2016. #zanata
 # Petr Molodyk <pamolodyk@gmail.com>, 2020.
+# V I <xasertop@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-04-01 11:38+0000\n"
-"Last-Translator: Petr Molodyk <pamolodyk@gmail.com>\n"
+"PO-Revision-Date: 2022-08-27 19:40+0000\n"
+"Last-Translator: V I <xasertop@gmail.com>\n"
 "Language-Team: Russian <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
-"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 3.11.3\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.14\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -153,7 +154,7 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.c:496
 msgid "The configuration option above can be configured in"
-msgstr "Указанный выше параметр теперь настраивается в "
+msgstr "Указанный выше параметр можно настроить в"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
@@ -392,7 +393,7 @@ msgstr "Добавить названия программ в журнал"
 #: ../src/dbus/abrt-dbus.c:135
 #, c-format
 msgid "'%s' is not a valid element name"
-msgstr "Недопустимое имя элемента:  «%s»"
+msgstr "Недопустимое имя элемента: «%s»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/dbus/abrt-dbus.c:187
@@ -537,12 +538,12 @@ msgstr "Перевод в фоновый режим"
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr "Число параллельных потоков обработки. По умолчанию:"
+msgstr "Число параллельных потоков обработки. По умолчанию "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr "Максимальный размер кэша в МиБ. По умолчанию:"
+msgstr "Максимальный размер кэша в МиБ. По умолчанию "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-auto-reporting.c:198
@@ -586,7 +587,7 @@ msgstr "Если задан параметр --password, необходимо о
 # author yuliya
 #: ../src/daemon/abrt-auto-reporting.c:258
 msgid "You can use either --username or --certificate"
-msgstr "Укажите --username или --certificate "
+msgstr "Укажите --username или --certificate"
 
 # translation auto-copied from project abrt, version rhel7, document abrt,
 # author yuliya
@@ -808,15 +809,14 @@ msgid ""
 "problems '%s'"
 msgstr ""
 "Ошибка записи в «%s». Не удалось удалить «%s» из списка игнорируемых проблем "
-"«%s»."
+"«%s»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #. Something nefarious happened
 #: ../src/lib/ignored_problems.c:264
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
-msgstr ""
-"Ошибка при переименовании «%s» в «%s». Не удалось удалить проблему «%s»."
+msgstr "Ошибка при переименовании «%s» в «%s». Не удалось удалить проблему «%s»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-analyze-backtrace.c:41
@@ -1001,7 +1001,7 @@ msgstr "Используется версия {0}."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:137
 msgid "Duplicate bugzilla bug '#{0}' was found"
-msgstr "Обнаружен дубликат отчета №{0} в Bugzilla "
+msgstr "Обнаружен дубликат отчета «#{0}» в Bugzilla"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:139
 msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
@@ -1300,7 +1300,7 @@ msgstr "Для этой ошибки уже есть запрос:"
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-ureport:153
 msgid "uReport was already sent, not sending it again"
-msgstr "uReport уже отправлен. Повторно отправляться не будет."
+msgstr "uReport уже отправлен. Повторно отправляться не будет"
 
 #: ../src/plugins/abrt-action-ureport:174
 msgid "Problem comes from unpackaged executable. Unable to create uReport."
@@ -1362,7 +1362,7 @@ msgstr "Сигнал, вызванный изменением размеров �
 #: ../src/plugins/abrt-gdb-exploitable:557
 #: ../src/plugins/abrt-gdb-exploitable:586
 msgid "Signal sent by alarm(N) expiration"
-msgstr "Сигнал по завершении alarm(N) "
+msgstr "Сигнал по завершении alarm(N)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:578
@@ -1377,7 +1377,7 @@ msgstr "Сигнал ABRT (был вызван abort()?)"
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:611
 msgid "XCPU signal (over CPU time limit)"
-msgstr "Сигнал XCPU  (превышен лимит времени CPU)"
+msgstr "Сигнал XCPU (превышен лимит времени CPU)"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:615
@@ -1456,12 +1456,12 @@ msgstr "Вероятная причина сбоя: "
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:702
 msgid "Exploitable rating (0-9 scale): "
-msgstr "Оценка уязвимости (по шкале от 0 до 9):"
+msgstr "Оценка уязвимости (по шкале от 0 до 9): "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:704
 msgid "Current instruction: "
-msgstr "Текущая инструкция:"
+msgstr "Текущая инструкция: "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:706
@@ -1770,16 +1770,17 @@ msgstr ""
 "\n"
 "Извлечение данных об ошибках Xorg из журнала systemd-journal.\n"
 "\n"
-"Параметры «-c» и «-e» являются взаимоисключающими, так как они \n"
-"оба определяют первое прочитанное сообщение.\n"
+"Параметры «-c» и «-e» являются конфиктующими, так как они оба определяют "
+"первое прочитанное сообщение.\n"
 "\n"
-"«-e» используется только с «-f», так как отслеживание журнала \n"
-"начинается с чтения всего журнала, если нет последней позиции просмотра.\n"
+"«-e» используется только с «-f», так как отслеживание журнала начинается с  "
+"\n"
+"чтения всего журнала, если нет последней позиции просмотра.\n"
 "\n"
 "Последняя позиция просмотра сохраняется в %s\n"
 "\n"
-"Фильтр журнала - обязательный параметр и должен задаваться \n"
-"параметром -j или в файле конфигурации %s.\n"
+"Фильтр журнала — обязательный параметр и должен задаваться \n"
+"параметром «-j» или в файле конфигурации %s.\n"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:192
 msgid "Print found crashes on standard output"
@@ -1962,7 +1963,7 @@ msgstr "Отказ сервера."
 #, c-format
 msgid "'%s' must be a regular file in order to use Retrace server."
 msgstr ""
-"Чтобы использовать возможности сервера трассировки,  необходимо, чтобы  «%s» "
+"Чтобы использовать возможности сервера трассировки, необходимо, чтобы «%s» "
 "был обычным файлом."
 
 #: ../src/plugins/abrt-retrace-client.c:632
@@ -2449,7 +2450,7 @@ msgstr "Удалить файлы с найденными сбоями"
 
 #: ../src/cli/abrtcli/match.py:117
 msgid "No matching problems found"
-msgstr "Не найдено подходящих сбоев"
+msgstr "Не найдено подходящих проблем"
 
 #: ../src/cli/abrtcli/utils.py:79
 msgid "Not reportable"
@@ -2742,8 +2743,8 @@ msgid ""
 "Checks if there are .vimrc and .gvimrc in your home directory and saves them "
 "as user_vimrc and user_gvimrc, respectively."
 msgstr ""
-"Проверка наличия  .vimrc и .gvimrc  в домашнем каталоге и их сохранение в "
-"user_vimrc и user_gvimrc."
+"Проверка наличия .vimrc и .gvimrc в домашнем каталоге и их сохранение в "
+"user_vimrc и user_gvimrc соответственно."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/post_report.xml.in.h:1
