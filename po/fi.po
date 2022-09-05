@@ -6,7 +6,7 @@
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
 # Juhani Numminen <juhaninumminen0@gmail.com>, 2012-2013
 # Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>, 2011
-# Ville-Pekka Vainio <vpvainio@iki.fi>, 2011-2013
+# Ville-Pekka Vainio <vpvainio@iki.fi>, 2011-2013, 2022.
 # Ville Skyttä <ville.skytta@iki.fi>, 2011
 # Juhani Numminen <juhaninumminen0@gmail.com>, 2016. #zanata
 # Jiri Grönroos <jiri.gronroos@iki.fi>, 2017. #zanata
@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2021-10-30 19:05+0000\n"
-"Last-Translator: Jan Kuparinen <copper_fin@hotmail.com>\n"
+"PO-Revision-Date: 2022-08-06 14:19+0000\n"
+"Last-Translator: Ville-Pekka Vainio <vpvainio@iki.fi>\n"
 "Language-Team: Finnish <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/fi/>\n"
 "Language: fi\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.8\n"
+"X-Generator: Weblate 4.13\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -185,11 +185,11 @@ msgid ""
 "With option 'Never' the stack trace will be always generated locally. With "
 "option 'Ask' ABRT will always ask the user."
 msgstr ""
-"Ytimen pino -tiedosto coredump on välttämätön pinon jäljityksen luomiseksi, "
-"mikä vie aikaa ja tilaa vievää toimintaa. ABRT tarjoaa palvelun, joka luo "
-"pinon jäljityksen coredumpista, mutta sinun on ladattava coredump tähän "
-"palveluun. Vaihtoehdolla 'Aina' ABRT lähettää aina coredumpin kyselemättä. "
-"Vaihtoehdolla 'Ei koskaan' pinon jäljitys syntyy aina paikallisesti. "
+"Muistivedostiedosto (coredump) on välttämätön pinolistauksen luomiseksi, "
+"mikä vie aikaa ja tilaa. ABRT tarjoaa palvelun, joka luo pinolistauksen "
+"muistivedoksesta, mutta muistivedos on ladattava tähän palveluun. "
+"Vaihtoehdolla 'Aina' ABRT lähettää aina muistivedoksen kyselemättä. "
+"Vaihtoehdolla 'Ei koskaan' pinolistaus syntyy aina paikallisesti. "
 "Vaihtoehdolla 'Kysy' ABRT kysyy aina käyttäjältä."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
@@ -277,7 +277,7 @@ msgstr "Kysy"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
 msgid "Upload coredump for backtrace generation"
-msgstr "Lähetä ytimen pino jäljitysjäljen luontia varten"
+msgstr "Lähetä muistivedos pinolistauksen luontia varten"
 
 #: ../src/configuration-gui/system-config-abrt.c:66
 msgid "_Close"
@@ -758,7 +758,7 @@ msgid ""
 msgstr ""
 "& [-v] -d DIR\n"
 "\n"
-"Laskee ja tallentaa coredump-UUID: n ongelmahakemistoon DIR"
+"Laskee ja tallentaa muistivedoksen UUID:n ongelmahakemistoon DIR"
 
 #: ../src/plugins/abrt-action-analyze-core.in:67
 #, c-format
@@ -904,8 +904,8 @@ msgid ""
 msgstr ""
 "& [vaihtoehdot] -d DIR\n"
 "\n"
-"Analysoi muistivedoksen ongelmahakemistossa DIR, luo ja tallentaa taaksepäin "
-"jäljityksen"
+"Analysoi muistivedoksen ongelmahakemistossa DIR, luo ja tallentaa "
+"pinolistauksen"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
@@ -931,8 +931,8 @@ msgid ""
 msgstr ""
 "& [-v] [-r] -d DIR\n"
 "\n"
-"Luo muistivedos-tason jälkien seurannan muistivedoksesta ja vastaavasta "
-"binaarista"
+"Luo muistivedos-tason pinolistauksen muistivedoksesta ja vastaavasta "
+"binääristä"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
@@ -941,7 +941,7 @@ msgstr "Älä hajauta sormenjälkiä"
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
 msgid "Generating core_backtrace"
-msgstr "Luodaan core_backtrace (ytimen takaisin jäljitys)"
+msgstr "Luodaan core_backtrace (ytimen pinolistaus)"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:81
 msgid "Error: GDB did not return any data"
@@ -1096,9 +1096,9 @@ msgid ""
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
 msgstr ""
-"Sopiiko ydinjätteen lataaminen? Se voi sisältää arkaluonteisia tietoja. Jos "
-"vastauksesi on 'Ei', pinojälki luodaan paikallisesti. Se voi ladata valtavan "
-"määrän dataa."
+"Sopiiko muistivedoksen lataaminen? Se voi sisältää arkaluonteisia tietoja. "
+"Jos vastauksesi on 'Ei', pinolistaus luodaan paikallisesti. Tämä voi ladata "
+"suuren määrän dataa."
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
 msgid ""
@@ -1432,7 +1432,7 @@ msgid ""
 msgstr ""
 "& [-vsf] [-e]/[-c CURSOR] [-t INT]/[-T] [-d DIR]/[-D]\n"
 "\n"
-"Pura coredumpit systemd-journalista\n"
+"Pura muistivedokset (coredumpit) systemd-journalista\n"
 "\n"
 "Asetukset '-c'- ja '-e' ovat ristiriidassa, koska molemmat määrittävät "
 "ensimmäisen luetun viestin.\n"
@@ -1445,7 +1445,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-journal-core.c:563
 msgid "Create new problem directory in DIR for every coredump"
-msgstr "Luo uusi ongelmahakemisto DIR: lle jokaiselle ydinjätteelle"
+msgstr "Luo uusi ongelmahakemisto hakemistoon DIR jokaiselle muistivedokselle"
 
 #: ../src/plugins/abrt-dump-journal-core.c:565
 #: ../src/plugins/abrt-dump-journal-oops.c:231
@@ -1542,7 +1542,7 @@ msgid ""
 msgstr ""
 "& [-vsoxtf] [-e]/[-c CURSOR] [-d DIR]/[-D]\n"
 "\n"
-"Pura coredumpit systemd-journalista\n"
+"Pura oopsit systemd-journalista\n"
 "\n"
 "Asetukset '-c'- ja '-e' ovat ristiriidassa, koska molemmat määrittävät "
 "ensimmäisen luetun viestin.\n"
@@ -2339,9 +2339,9 @@ msgid ""
 "Local retracing requires downloading potentially large amount of debuginfo "
 "data"
 msgstr ""
-"Ladataanko ydinsuoritus ja suoritetaan etäällä uudelleenjäljitys? Se voi "
-"sisältää arkaluonteisia tietoja. Jos vastauksesi on ’Ei’, pinojälki luodaan "
-"paikallisesti. Paikallinen uudelleenjäljitys edellyttää mahdollisesti suuren "
+"Ladataanko muistivedos ja suoritetaanko uudelleenjäljitys etänä? Vedos voi "
+"sisältää arkaluonteisia tietoja. Jos vastauksesi on ’Ei’, pinolistaus "
+"luodaan paikallisesti. Paikallinen uudelleenjäljitys saattaa vaatia suuren "
 "määrän virheenkorjaustiedon lataamista"
 
 #: ../src/cli/abrtcli/cli/retrace.py:71
@@ -2370,7 +2370,7 @@ msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
 msgstr ""
-"Lähetä ydinvedos etäiselle uudelleenjäljityspalvelimelle analysoitavaksi tai "
+"Lähetä muistivedos uudelleenjäljityspalvelimelle etänä analysoitavaksi tai "
 "suorita paikallinen analyysi, jos etäanalyysi epäonnistuu"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
@@ -2383,14 +2383,13 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
-"Lataa ydinvedoksen palvelimelle, joka luo taaksepäin jäljityksen ja "
-"palauttaa sen. Jos käyttäjä ei halua ladata ydinvedostaan minne tahansa, "
-"tapahtuma suorittaa paikallisen analyysin. Paikallinen analyysi suoritetaan, "
-"jos etäanalyysi epäonnistuu. Plussat: debuginfo-latauksia ei tarvita. "
-"Uudelleenjäljityspalvelimen virheenkorjaustietokanta on täydellisempi. "
-"Uudelleenjäljityspalvelin voi luoda parempia jälkiä. Miinukset: lataamasi "
-"ydinvedos sisältää kaikki kaatuneen ohjelman tiedot, myös mahdolliset "
-"yksityiset tietosi."
+"Lataa muistivedoksen palvelimelle, joka luo pinolistauksen ja palauttaa sen. "
+"Jos käyttäjä ei halua ladata muistivedostaan minnekään, tehdään paikallinen "
+"analyysi. Paikallinen analyysi tehdään, jos etäanalyysi epäonnistuu. Plussat:"
+" debuginfo-latauksia ei tarvita. Uudelleenjäljityspalvelimen "
+"virheenkorjaustietokanta on täydellisempi. Uudelleenjäljityspalvelin voi "
+"luoda parempia listauksia. Miinukset: lataamasi muistivedos sisältää kaikki "
+"kaatuneen ohjelman tiedot, myös mahdolliset yksityiset tietosi."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
