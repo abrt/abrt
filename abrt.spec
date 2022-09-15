@@ -43,6 +43,7 @@
     %define docdirversion -%{version}
 %endif
 
+%define glib_ver 2.73.3
 %define libreport_ver 2.14.0
 %define satyr_ver 0.24
 
@@ -56,7 +57,7 @@ Source: https://github.com/abrt/%{name}/archive/%{version}/%{name}-%{version}.ta
 BuildRequires: %{dbus_devel}
 BuildRequires: hostname
 BuildRequires: gtk3-devel
-BuildRequires: glib2-devel >= 2.43.4
+BuildRequires: glib2-devel >= %{glib_ver}
 BuildRequires: rpm-devel >= 4.6
 BuildRequires: desktop-file-utils
 BuildRequires: libnotify-devel

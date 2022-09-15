@@ -1215,6 +1215,6 @@ abrt_applet_application_new (void)
 {
     return g_object_new (ABRT_APPLET_TYPE_APPLICATION,
                          "application-id", ABRT_DBUS_NAME ".applet",
-                         "flags", G_APPLICATION_FLAGS_NONE,
+                         "flags", G_APPLICATION_DEFAULT_FLAGS,
                          NULL);
 }
