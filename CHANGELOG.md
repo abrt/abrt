@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - abrt-oops: Follow journal from the end if the position cannot be restored (gh#1604)
 
+### Removed
+- Removed the option of remote retracing, the only option is now GDB with debuginfod integration
+- Removed `abrt-retrace-client` and the `analyze_RetraceServer` event
+
 ## [2.15.1]
 ### Fixed
 - Don't die on corrupt journal data in follow mode

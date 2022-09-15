@@ -7,16 +7,5 @@
     Cons: coredump you upload contains all the data from the crashed program, including your private data, if any.
     </_long-description>
     <gui-review-elements>no</gui-review-elements>
-
-    <!-- The event shows a message about sensitive data on its own.
-         It has to ask user on its own because other tools interrupts
-         processing at all if user rejects sending of sensitive data.
-         The second result for showing the question on its own is that the
-         event implementation automatically runs the analyze_LocalGDB event if
-         user dismisses the analyze_RetraceServer event. -->
     <sending-sensitive-data>no</sending-sensitive-data>
-
-    <options>
-        <import-event-options event="analyze_RetraceServer"/>
-    </options>
 </event>
