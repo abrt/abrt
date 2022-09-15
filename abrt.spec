@@ -75,6 +75,8 @@ BuildRequires: libreport-devel >= %{libreport_ver}
 BuildRequires: satyr-devel >= %{satyr_ver}
 BuildRequires: augeas
 BuildRequires: libselinux-devel
+# Required for the %%{_unitdir} and %%{_tmpfilesdir} macros.
+BuildRequires: systemd-rpm-macros
 %if %{with python3}
 BuildRequires: python3-devel
 BuildRequires: python3-systemd
