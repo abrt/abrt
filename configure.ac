@@ -380,18 +380,6 @@ ABRT_PARSE_WITH([polkit]))
     AC_SUBST([HAVE_POLKIT], ["False"])
 [fi]
 
-AC_ARG_WITH(retrace,
-    AS_HELP_STRING([--with-retrace],
-        [Add abrt-retrace-client plugin (default is YES)]),
-    ABRT_PARSE_WITH([retrace]))
-
-[if test -z "$NO_RETRACE"]
-[then]
-    AM_CONDITIONAL(BUILD_RETRACE_CLIENT, true)
-[else]
-    AM_CONDITIONAL(BUILD_RETRACE_CLIENT, false)
-[fi]
-
 # Initialize the test suite.
 AC_CONFIG_TESTDIR(tests)
 AC_CONFIG_FILES([tests/Makefile tests/atlocal])
