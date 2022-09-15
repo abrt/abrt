@@ -196,6 +196,8 @@ Summary: %{name}'s C/C++ addon
 Requires: cpio
 Requires: gdb-headless
 Requires: elfutils
+# Required for local retracing with GDB.
+Requires: elfutils-debuginfod-client
 %if 0%{!?rhel:1}
 %endif
 Requires: %{name} = %{version}-%{release}
