@@ -206,6 +206,7 @@ Requires: abrt-libs = %{version}-%{release}
 Requires: python3-libreport
 %endif
 Obsoletes: abrt-addon-coredump-helper <= 2.12.2
+Obsoletes: abrt-retrace-client <= 2.15.1
 
 
 %description addon-ccpp
