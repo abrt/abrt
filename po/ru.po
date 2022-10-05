@@ -2,13 +2,14 @@
 # Jakub Filak <jfilak@redhat.com>, 2016. #zanata
 # Petr Molodyk <pamolodyk@gmail.com>, 2020.
 # V I <xasertop@gmail.com>, 2022.
+# Vi <xasertop@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2022-08-27 19:40+0000\n"
-"Last-Translator: V I <xasertop@gmail.com>\n"
+"PO-Revision-Date: 2022-09-30 22:19+0000\n"
+"Last-Translator: Vi <xasertop@gmail.com>\n"
 "Language-Team: Russian <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/ru/>\n"
 "Language: ru\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.14\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -382,7 +383,7 @@ msgstr "Использовать NUM как uid клиента"
 #: ../src/plugins/abrt-dump-journal-xorg.c:191
 #: ../src/plugins/abrt-dump-xorg.c:52
 msgid "Log to syslog"
-msgstr "Запись в журнал"
+msgstr "Запись в системный журнал"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/daemon/abrt-server.c:1113 ../src/daemon/abrtd.c:754
@@ -863,7 +864,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-core.in:67
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr "Анализ дампа «%s»..."
+msgstr "Анализ дампа «%s»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-analyze-core.in:105
@@ -1290,7 +1291,7 @@ msgstr "Формат: %s [-v]"
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-ureport:114
 msgid "Unable to get current working directory as it was probably deleted"
-msgstr "Не удалось определить рабочий каталог. Возможно, он был удален."
+msgstr "Не удалось определить рабочий каталог, возможно, он был удален"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-action-ureport:143
@@ -1552,7 +1553,7 @@ msgstr "Сократить темп создания каталога сбоев
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-dump-oops.c:107 ../src/plugins/abrt-dump-xorg.c:57
 msgid "Print search string(s) to stdout and exit"
-msgstr "Вывести строку (строки) поиска в stdout и выйти"
+msgstr "Вывести строку(и) поиска в stdout и выйти"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-dump-oops.c:127
@@ -1562,11 +1563,11 @@ msgstr "Не удалось скомпилировать регулярное в
 
 #: ../src/plugins/abrt-dump-oops.c:177
 msgid "Can't update the problem: no oops found"
-msgstr "Не удалось обновить данные проблемы: ошибка не обнаружена."
+msgstr "Не удалось обновить данные проблемы: ошибка не обнаружена"
 
 #: ../src/plugins/abrt-dump-oops.c:183
 msgid "More oopses found: process only the first one"
-msgstr "Обнаружено несколько ошибо: будет обработана только первая из них."
+msgstr "Обнаружено много ошибок: будет обработана только первая из них"
 
 #: ../src/plugins/abrt-dump-journal-core.c:378
 #, c-format
@@ -1693,7 +1694,7 @@ msgstr "Не удается отобрать из журнала systemd тол�
 #: ../src/plugins/abrt-dump-journal-oops.c:296
 #: ../src/plugins/abrt-dump-journal-xorg.c:299
 msgid "Cannot seek to the end of journal"
-msgstr "Не удается перейти в конец журнала "
+msgstr "Не удается перейти к концу журнала"
 
 #: ../src/plugins/abrt-dump-journal-core.c:644
 #: ../src/plugins/abrt-dump-journal-oops.c:312
@@ -1773,13 +1774,12 @@ msgstr ""
 "Параметры «-c» и «-e» являются конфиктующими, так как они оба определяют "
 "первое прочитанное сообщение.\n"
 "\n"
-"«-e» используется только с «-f», так как отслеживание журнала начинается с  "
-"\n"
+"«-e» используется только с «-f», так как отслеживание журнала начинается с \n"
 "чтения всего журнала, если нет последней позиции просмотра.\n"
 "\n"
 "Последняя позиция просмотра сохраняется в %s\n"
 "\n"
-"Фильтр журнала — обязательный параметр и должен задаваться \n"
+"Фильтр журнала — обязательный параметр и должен задаваться\n"
 "параметром «-j» или в файле конфигурации %s.\n"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:192
@@ -1800,14 +1800,14 @@ msgid ""
 "Journal filter must be specified either by parameter -j or stored in /etc/"
 "abrt/plugins/xorg.conf file"
 msgstr ""
-"Фильтр для выборки данных из журнала может быть задан с помощью параметра -j "
-"или в файле /etc/abrt/plugins/xorg.conf."
+"Фильтр выборки из журнала должен быть задан с помощью параметра -j или "
+"храниться в файле /etc/abrt/plugins/xorg.conf"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:290
 msgid "Cannot filter systemd-journal to Xorg data only"
 msgstr ""
-"Не удается отобрать из журнала systemd-journal только данные, имеющие "
-"отношение к Xorg."
+"Не удается отфильтровать журнал systemd-journal на данные, относящиеся "
+"только к Xorg"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-dump-xorg.c:35
@@ -1908,7 +1908,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:230
 #: ../src/plugins/abrt-retrace-client.c:234
 msgid "Can't create temporary file in "
-msgstr "Не удается создать временный файл в"
+msgstr "Не удалось создать временный файл в "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-retrace-client.c:322
@@ -2147,7 +2147,7 @@ msgstr "Ожидать операций опроса"
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1272
 msgid "(debug) do not delete temporary archive created from dump dir in "
-msgstr "(отладка) не удалять временный архив, созданный из каталога дампа в"
+msgstr "(отладка) не удалять временный архив, созданный из каталога дампа в "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1274
@@ -2316,7 +2316,7 @@ msgstr "Произошла ошибка на сервере."
 #: ../src/plugins/https-utils.c:56
 #, c-format
 msgid "A server-side error occurred on '%s'"
-msgstr "Произошла ошибка на сервере «%s»."
+msgstr "Произошла ошибка на сервере «%s»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/https-utils.c:65
@@ -2327,7 +2327,7 @@ msgstr "Произошла ошибка при подключении к сер�
 #: ../src/plugins/https-utils.c:68
 #, c-format
 msgid "An error occurred while connecting to '%s'"
-msgstr "Произошла ошибка при подключении к «%s»."
+msgstr "Произошла ошибка при подключении к «%s»"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/oops-utils.c:78
@@ -2361,9 +2361,9 @@ msgid ""
 "Explanation:\n"
 "%sKernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"Возник сбой в работе ядра, но ваше ядро содержит несвободные компоненты "
+"Произошла ошибка в работе ядра, ваше ядро содержит несвободные компоненты "
 "(флаги:%s). Объяснение:\n"
-"%sРазработчики не могут диагностировать проблему в таких ядрах."
+"%sРазработчики не могут диагностировать отчёты в таких ядрах."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/oops-utils.c:254
@@ -2610,10 +2610,10 @@ msgid ""
 "Local retracing requires downloading potentially large amount of debuginfo "
 "data"
 msgstr ""
-"Загрузить дамп на сервер для прохождения трассировки? Он может содержать "
-"конфиденциальные данные. Если вы откажетесь, трассировка стека будет "
-"генерироваться локально, однако это может потребовать загрузки значительного "
-"объема данных."
+"Загрузить дамп на сервер для прохождения трассировки? (Он может содержать "
+"конфиденциальные данные.) Если вы откажетесь, трассировка стека будет "
+"сгенерирована локально, однако это потребует загрузки значительного объема "
+"данных отладки"
 
 #: ../src/cli/abrtcli/cli/retrace.py:71
 msgid "Remote retracing"

@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2022-07-01 17:50+0000\n"
+"PO-Revision-Date: 2022-10-02 05:22+0000\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/ka/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.13\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -55,6 +55,7 @@ msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
 "reported."
 msgstr ""
+"ვწუხვართ, მაგრამ %s ავარიულად დასრულდა. პრობლემა ავტომატურად გადაიგზავნა."
 
 #: ../src/applet/abrt-applet-application.c:668
 #, c-format
@@ -62,6 +63,8 @@ msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
 "internet is available."
 msgstr ""
+"ვწუხვართ, მაგრამ %s ავარიულად დასრულდა. ინტერნეტკავშირის აღდგენის შემდეგ "
+"პრობლემა ავტომატურად გადაიგზავნება."
 
 #: ../src/applet/abrt-applet-application.c:674
 #: ../src/applet/abrt-applet-application.c:688
@@ -71,6 +74,8 @@ msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
 msgstr ""
+"ვწუხვართ, მაგრამ %s ავარიულად დასრულდა. თუ გნებავთ, გადაგზავნოთ შეცდომის "
+"ანგარიში, პროგრამის ავტორს დაუკავშირდით."
 
 #: ../src/applet/abrt-applet-application.c:682
 #, c-format
@@ -78,24 +83,32 @@ msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
 msgstr ""
+"ვწუხვართ, მაგრამ %s ავარიულად დასრულდა. თუ გნებავთ, დაგვეხმაროთ პრობლემის "
+"მოგვარებაში, გამოაგზავნეთ შეცდომის ანგარიში."
 
 #: ../src/applet/abrt-applet-application.c:701
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
 msgstr ""
+"ვწუხვართ, მაგრამ, როგორც ჩანს, ერთ-ერთ კომპონენტს პრობლემა აქვს. ის "
+"ავტომატურად გადაიგზავნა."
 
 #: ../src/applet/abrt-applet-application.c:705
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
 msgstr ""
+"ვწუხვართ, მაგრამ, როგორც ჩანს, ერთ-ერთ კომპონენტს პრობლემა აქვს. ანგარიში "
+"ინტერნეტკავშირის აღდგენისთანავე გაიგზავნება."
 
 #: ../src/applet/abrt-applet-application.c:710
 msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
 msgstr ""
+"ვწუხვართ, მაგრამ, როგორც ჩანს, ერთ-ერთ კომპონენტს პრობლემა აქვს. თუ გნებავთ, "
+"დაგვეხმაროთ ამ პრობლემის მოგვარებაში, გადმოაგზავნეთ ანგარიში."
 
 #. TODO: Terminate child's process?
 #: ../src/applet/abrt-applet-application.c:800 ../src/daemon/abrt-server.c:117
@@ -328,7 +341,7 @@ msgstr "საჭიროა ავტორიზაცია"
 
 #: ../src/dbus/abrt-dbus.c:253
 msgid "Can't open the problem"
-msgstr ""
+msgstr "პრობლემის გახსნის შეცდომა"
 
 #: ../src/dbus/abrt-dbus.c:285
 #, c-format
@@ -342,7 +355,7 @@ msgstr ""
 #: ../src/dbus/abrt-dbus.c:635
 #, c-format
 msgid "Can't get size of '%s'"
-msgstr ""
+msgstr "\"%s\"-ის ზომის მიღების პრობლემა"
 
 #: ../src/dbus/abrt-dbus.c:650
 msgid "No problem space left"
@@ -366,7 +379,7 @@ msgstr ""
 
 #: ../src/dbus/abrt-dbus.c:1041
 msgid "This program must be run as root."
-msgstr ""
+msgstr "ეს პროგრამა root მომხმარებლით უნდა იყოს გაშვებული."
 
 #: ../src/daemon/abrtd.c:683
 msgid ""
@@ -379,7 +392,7 @@ msgstr ""
 
 #: ../src/daemon/abrtd.c:751
 msgid "Do not daemonize"
-msgstr ""
+msgstr "ფონზე არ გაშვება"
 
 #: ../src/daemon/abrtd.c:752
 msgid "Log to syslog even with -d"
@@ -437,15 +450,15 @@ msgstr "& [ "
 
 #: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
-msgstr ""
+msgstr "ავთენტიკაციის გამორთვა"
 
 #: ../src/daemon/abrt-auto-reporting.c:234
 msgid "Red Hat Support user name"
-msgstr ""
+msgstr "Red Hat -ის მხარდაჭერის მომხმარებლის სახელი"
 
 #: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
-msgstr ""
+msgstr "Red Hat -ის მხარდაჭერის პაროლი. თუ არ მიუთითებთ, ყოველ ჯერზე გკითავთ"
 
 #: ../src/daemon/abrt-auto-reporting.c:236
 msgid "uReport SSL certificate paths or certificate type"
@@ -469,12 +482,12 @@ msgstr ""
 
 #: ../src/daemon/abrt-auto-reporting.c:277
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "არგუმენტების არასწორი რაოდენობა"
 
 #: ../src/daemon/abrt-auto-reporting.c:296
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "პარამეტრის უცნობი მნიშვნელობა: \"%s\"\n"
 
 #: ../src/daemon/abrt-auto-reporting.c:336
 msgid "Password:"
@@ -482,7 +495,7 @@ msgstr "პაროლი:"
 
 #: ../src/daemon/abrt-auto-reporting.c:339
 msgid "Cannot continue without password\n"
-msgstr ""
+msgstr "პაროლის გარეშე გაგრძელება შეუძლებელია\n"
 
 #. Print only the part before ':' of a string like "username:password"
 #: ../src/daemon/abrt-auto-reporting.c:380
@@ -1070,7 +1083,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-gdb-exploitable:632
 msgid "Division by zero"
-msgstr ""
+msgstr "ნულზე გაყოფა"
 
 #: ../src/plugins/abrt-gdb-exploitable:636
 msgid "Illegal instruction (jump to a random address?)"
@@ -1481,7 +1494,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:230
 #: ../src/plugins/abrt-retrace-client.c:234
 msgid "Can't create temporary file in "
-msgstr ""
+msgstr "დროებითი ფაილების შექმნის შეცდომა "
 
 #: ../src/plugins/abrt-retrace-client.c:322
 #: ../src/plugins/abrt-retrace-client.c:498
@@ -1978,7 +1991,7 @@ msgstr ""
 
 #: ../src/cli/abrtcli/cli/remove.py:37
 msgid "Are you sure you want to delete this problem?"
-msgstr ""
+msgstr "დარწმუნებული ბრძანდებით, რომ გნებავთ, წაშალოთ ეს პრობლემა?"
 
 #: ../src/cli/abrtcli/cli/remove.py:41
 msgid "Removed"
