@@ -35,12 +35,15 @@
 struct abrt_journal
 {
     sd_journal *j;
+    int fd;
 };
 
 static int abrt_journal_new_flags(abrt_journal_t **journal, int flags)
 {
     sd_journal *j;
     const int r = sd_journal_open(&j, flags);
+    const int fd = sd_journal_get_fd(j);
+
     if (r < 0)
     {
         log_notice("Failed to open journal: %s", strerror(-r));
@@ -49,6 +52,7 @@ static int abrt_journal_new_flags(abrt_journal_t **journal, int flags)
 
     *journal = g_malloc0(sizeof(**journal));
     (*journal)->j = j;
+    (*journal)->fd = fd;
 
     return 0;
 }
@@ -452,7 +456,7 @@ int abrt_journal_watch_run_sync(abrt_journal_watch_t *watch)
     sigdelset(&mask, SIGKILL);
 
     struct pollfd pollfd;
-    pollfd.fd = sd_journal_get_fd(watch->j->j);
+    pollfd.fd = watch->j->fd;
     pollfd.events = sd_journal_get_events(watch->j->j);
 
     int r = 0;
