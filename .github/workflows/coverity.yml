@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    container: fedora:latest
+    container: quay.io/fedora/fedora:latest
     runs-on: ubuntu-latest
     steps:
       - name: Check out sources
