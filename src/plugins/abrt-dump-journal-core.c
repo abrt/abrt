@@ -628,16 +628,21 @@ main(int argc, char *argv[])
             error_msg_and_die(_("Cannot open systemd-journal"));
     }
 
+    if (opts & OPT_e) {
+        if (abrt_journal_seek_tail(journal) < 0)
+            error_msg_and_die(_("Cannot seek to the end of journal"));
+
+        if (abrt_journal_save_current_position(journal, ABRT_JOURNAL_WATCH_STATE_FILE) < 0)
+            log_warning("Failed to save the starting cursor position");
+    }
+
+    if (cursor && abrt_journal_set_cursor(journal, cursor))
+        error_msg_and_die(_("Failed to set systemd-journal cursor '%s'"), cursor);
+
     if (abrt_journal_set_journal_filter(journal, coredump_journal_filter) < 0)
         error_msg_and_die(_("Cannot filter systemd-journal to systemd-coredump data only"));
 
     g_list_free(coredump_journal_filter);
-
-    if ((opts & OPT_e) && abrt_journal_seek_tail(journal) < 0)
-        error_msg_and_die(_("Cannot seek to the end of journal"));
-
-    if (cursor && abrt_journal_set_cursor(journal, cursor))
-        error_msg_and_die(_("Failed to set systemd-journal cursor '%s'"), cursor);
 
     if ((opts & OPT_f))
     {
