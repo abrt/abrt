@@ -34,7 +34,7 @@ libabrt_la_CPPFLAGS = \
     $(SATYR_CFLAGS) \
     -D_GNU_SOURCE
 libabrt_la_LDFLAGS = \
-    -version-info 2:0:0
+    -version-info 1:0:1
 
 if HAVE_LD_VERSION_SCRIPT
 libabrt_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libabrt.sym
