@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Fixed
+- abrt-dump-journal-core: Fix the way how the service reads the journal (rhbz#2128662)
 - abrt-oops: Follow journal from the end if the position cannot be restored (gh#1604)
 
 ### Removed
