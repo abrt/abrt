@@ -49,8 +49,8 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 2.15.1
-Release: 1%{?dist}
+Version: 2.16.0
+Release: 1
 License: GPLv2+
 URL: https://abrt.readthedocs.org/
 Source: https://github.com/abrt/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
@@ -964,6 +964,44 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Mon Oct 24 2022 Michal Srb <michal@redhat.com> 2.16.0-1
+- Update changelog (michal@redhat.com)
+- a-a-gen-bt: Increase timeout to 20 minutes (michal@redhat.com)
+- Keep abrt_get_backtrace() backward compatible. (michal@redhat.com)
+- a-dump-journal-core: First seek the journal tail and then set filters
+  (michal@redhat.com)
+- ci: Pull the latest fedora from quay.io (michal@redhat.com)
+- abrt-journal: call sd_journal_get_fd() right after sd_journal_open()
+  (michal@redhat.com)
+- Update translations (mgrabovsky@users.noreply.github.com)
+- lib: Bump library version (mgrabovs@redhat.com)
+- spec: Obsolete abrt-retrace-client due to removal (mgrabovs@redhat.com)
+- spec: Require elfutils-debuginfod-client (mgrabovs@redhat.com)
+- spec: Require systemd-rpm-macros in build (mgrabovs@redhat.com)
+- applet: Update GLib constant name (mgrabovs@redhat.com)
+- a-a-gen-bt: Increase default timeout to 15 minutes (mgrabovs@redhat.com)
+- Remove remote retracing capabilities (mgrabovs@redhat.com)
+- Generate backtraces locally using debuginfod integration
+  (mgrabovs@redhat.com)
+- Remove old test (mgrabovs@redhat.com)
+- Update translations (mgrabovsky@users.noreply.github.com)
+- cli: use python3-argcomplete global completion (frederic@moulins.org)
+- lib: Use time_t for timestamps (mgrabovs@redhat.com)
+- retrace-client: Port to libsoup3 (mcrha@redhat.com)
+- Update translations (mgrabovsky@users.noreply.github.com)
+- spec: Fix macro expansion (mfabik@redhat.com)
+- Update translations (mgrabovsky@users.noreply.github.com)
+- Fix for rpm 4.18 (michal@redhat.com)
+- Update translations (mgrabovsky@users.noreply.github.com)
+- Update translations (mgrabovsky@users.noreply.github.com)
+- a-dump-journal-oops: Check return value of abrt_journal_seek_tail()
+  (mgrabovs@redhat.com)
+- abrt-oops: Follow journal from the end if the position cannot be restored
+  (michal@redhat.com)
+- Update translations (mgrabovsky@users.noreply.github.com)
+- check_recent_crash_file: Check return value of lseek() (mgrabovs@redhat.com)
+- [man] Update man page for abrt-bodhi (michal@redhat.com)
+
 * Thu Mar 10 2022 Michal Srb <michal@redhat.com> 2.15.1-1
 - Update changelog (michal@redhat.com)
 - Revert "Don't copy coredump to problem dir" (michal@redhat.com)

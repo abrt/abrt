@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.16.0]
 ### Fixed
 - abrt-dump-journal-core: Fix the way how the service reads the journal (rhbz#2128662)
 - abrt-oops: Follow journal from the end if the position cannot be restored (gh#1604)
@@ -326,7 +328,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.15.1...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.16.0...HEAD
+[2.16.0]: https://github.com/abrt/abrt/compare/2.15.1...2.16.0
 [2.15.1]: https://github.com/abrt/abrt/compare/2.15.0...2.15.1
 [2.15.0]: https://github.com/abrt/abrt/compare/2.14.6...2.15.0
 [2.14.6]: https://github.com/abrt/abrt/compare/2.14.5...2.14.6
