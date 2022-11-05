@@ -12,13 +12,14 @@
 # runab <runab@redhat.com>, 2009-2011
 # runa <runabh@gmail.com>, 2011-2012
 # Abu Huraira <abuhuraira@tutamail.com>, 2021.
+# Mahmudul Hasan <ptcmahmudulhasa@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2021-04-15 08:02+0000\n"
-"Last-Translator: Abu Huraira <abuhuraira@tutamail.com>\n"
+"PO-Revision-Date: 2022-11-02 15:19+0000\n"
+"Last-Translator: Mahmudul Hasan <ptcmahmudulhasa@gmail.com>\n"
 "Language-Team: Bengali <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/bn/>\n"
 "Language: bn\n"
@@ -26,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 4.5.3\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -546,26 +547,27 @@ msgid "You can use either --anonymous or --certificate"
 msgstr ""
 
 #: ../src/daemon/abrt-auto-reporting.c:277
+#, fuzzy
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "অকার্যকর আর্গুমেন্ট সংখ্যা"
 
 #: ../src/daemon/abrt-auto-reporting.c:296
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "অজানা বিকল্প মান: '%s'\n"
 
 #: ../src/daemon/abrt-auto-reporting.c:336
 msgid "Password:"
-msgstr ""
+msgstr "পাসওয়ার্ড:"
 
 #: ../src/daemon/abrt-auto-reporting.c:339
 msgid "Cannot continue without password\n"
-msgstr ""
+msgstr "পাসওয়ার্ড ছাড়া চালিয়ে যাওয়া যাবে না\n"
 
 #. Print only the part before ':' of a string like "username:password"
 #: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
-msgstr ""
+msgstr "HTTP প্রমাণীকৃত স্বয়ংক্রিয় প্রতিবেদন করবে"
 
 #: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
@@ -573,7 +575,7 @@ msgstr ""
 
 #: ../src/daemon/abrt-auto-reporting.c:384
 msgid "anonymous auto reporting"
-msgstr ""
+msgstr "বেনামে স্বয়ংক্রিয় প্রতিবেদন করবে"
 
 #: ../src/daemon/abrt-handle-upload.in:130
 #, c-format
@@ -622,11 +624,11 @@ msgstr ""
 
 #: ../src/daemon/abrt-handle-upload.in:205
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "'{0}' এ কাজের ডিরেক্টরি তৈরি করা যাবে না"
 
 #: ../src/daemon/abrt-handle-upload.in:216
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}' থেকে '{1}' এ সরানো যাচ্ছে না"
 
 #: ../src/daemon/abrt-handle-upload.in:221
 msgid "Can't copy '{0}' to '{1}'"
