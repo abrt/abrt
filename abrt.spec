@@ -51,7 +51,7 @@ Summary: Automatic bug detection and reporting tool
 Name: abrt
 Version: 2.16.0
 Release: 1
-License: GPLv2+
+License: GPL-2.0-or-later
 URL: https://abrt.readthedocs.org/
 Source: https://github.com/abrt/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 BuildRequires: %{dbus_devel}
