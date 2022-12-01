@@ -1,5 +1,5 @@
 [Unit]
-Description=Harvest vmcores for ABRT
+Description=Automated Bug Reporting Tool kernel panic detection
 After=abrtd.service kdump.service
 Requisite=abrtd.service
 ConditionDirectoryNotEmpty=/var/crash
