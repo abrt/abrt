@@ -1,5 +1,5 @@
 [Unit]
-Description=Automated Bug Reporting Tool kernel oops pstore collector
+Description=ABRT kernel oops pstore collector
 After=abrtd.service
 Requisite=abrtd.service
 ConditionDirectoryNotEmpty=/sys/fs/pstore

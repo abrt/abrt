@@ -1,5 +1,5 @@
 [Unit]
-Description=Automated Bug Reporting Tool kernel panic detection
+Description=ABRT kernel panic detection
 After=abrtd.service kdump.service
 Requisite=abrtd.service
 ConditionDirectoryNotEmpty=/var/crash
