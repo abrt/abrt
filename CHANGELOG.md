@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Update service descriptions in init scripts
+
 ## [2.16.0]
 ### Fixed
 - abrt-dump-journal-core: Fix the way how the service reads the journal (rhbz#2128662)
