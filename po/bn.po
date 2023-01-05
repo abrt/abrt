@@ -12,13 +12,13 @@
 # runab <runab@redhat.com>, 2009-2011
 # runa <runabh@gmail.com>, 2011-2012
 # Abu Huraira <abuhuraira@tutamail.com>, 2021.
-# Mahmudul Hasan <ptcmahmudulhasa@gmail.com>, 2022.
+# Mahmudul Hasan <ptcmahmudulhasa@gmail.com>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2022-11-18 18:37+0000\n"
+"PO-Revision-Date: 2023-01-01 17:20+0000\n"
 "Last-Translator: Mahmudul Hasan <ptcmahmudulhasa@gmail.com>\n"
 "Language-Team: Bengali <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/bn/>\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 4.14.2\n"
+"X-Generator: Weblate 4.15\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -536,15 +536,15 @@ msgstr "--password এর জন্য আপনাকে --username ও উল�
 
 #: ../src/daemon/abrt-auto-reporting.c:258
 msgid "You can use either --username or --certificate"
-msgstr ""
+msgstr "আপনি --username অথবা --certificate ব্যবহার করতে পারেন"
 
 #: ../src/daemon/abrt-auto-reporting.c:264
 msgid "You can use either --username or --anonymous"
-msgstr ""
+msgstr "আপনি --username অথবা --anonymous ব্যবহার করতে পারেন"
 
 #: ../src/daemon/abrt-auto-reporting.c:270
 msgid "You can use either --anonymous or --certificate"
-msgstr ""
+msgstr "আপনি --anonymous অথবা --certificate ব্যবহার করতে পারেন"
 
 #: ../src/daemon/abrt-auto-reporting.c:277
 #, fuzzy
@@ -570,15 +570,17 @@ msgid "HTTP Authenticated auto reporting"
 msgstr "HTTP প্রমাণীকৃত স্বয়ংক্রিয় প্রতিবেদন করবে"
 
 #: ../src/daemon/abrt-auto-reporting.c:382
+#, fuzzy
 msgid "SSL Client Authenticated auto reporting"
-msgstr ""
+msgstr "SSL ক্লায়েন্ট প্রমাণীকৃত স্বয়ংক্রিয় প্রতিবেদন"
 
 #: ../src/daemon/abrt-auto-reporting.c:384
+#, fuzzy
 msgid "anonymous auto reporting"
 msgstr "বেনামে স্বয়ংক্রিয় প্রতিবেদন করবে"
 
 #: ../src/daemon/abrt-handle-upload.in:130
-#, c-format
+#, c-format, fuzzy
 msgid ""
 "Usage: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
 "\n"
@@ -588,31 +590,45 @@ msgid ""
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
 msgstr ""
+"ব্যবহার: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR নথিরনাম\n"
+"\n"
+"   -v             - ভার্বোস\n"
+"   -d             - আপলোড করা সংরক্ষণাগার মুছুন\n"
+"   ABRT_SPOOL_DIR - ডিরেক্টরি যেখানে বৈধ আপলোড করা সংরক্ষণাগারগুলি আনপ্যাক "
+"করা হয়\n"
+"   UPLOAD_DIR     - ডিরেক্টরি যেখানে আপলোড করা সংরক্ষণাগার সংরক্ষণ করা হয়\n"
+"   FILENAME       - আপলোড করা সংরক্ষণাগার ফাইলের নাম\n"
 
 #: ../src/daemon/abrt-handle-upload.in:166
 #: ../src/daemon/abrt-handle-upload.in:169
+#, fuzzy
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "এটি ডিরেক্টরি নয়: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:172
+#, fuzzy
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
+msgstr "এড়িয়ে যাওয়া: '{0}' (স্ল্যাশ দিয়ে শুরু হয়)"
 
 #: ../src/daemon/abrt-handle-upload.in:175
+#, fuzzy
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
+msgstr "এড়িয়ে যাওয়া: '{0}' (ডট দিয়ে শুরু হয়)"
 
 #: ../src/daemon/abrt-handle-upload.in:178
+#, fuzzy
 msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
+msgstr "এড়িয়ে যাওয়া: '{0}' (ধারণ করে ..)"
 
 #: ../src/daemon/abrt-handle-upload.in:181
+#, fuzzy
 msgid "Skipping: '{0}' (contains space)"
-msgstr ""
+msgstr "এড়িয়ে যাওয়া: '{0}' (ধারণ করার ফাঁকা স্থান রয়েছে)"
 
 #: ../src/daemon/abrt-handle-upload.in:184
+#, fuzzy
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "এড়িয়ে যাওয়া: '{0}' (ট্যাব রয়েছে)"
 
 #: ../src/daemon/abrt-handle-upload.in:189
 msgid "Can't change directory to '{0}'"
@@ -620,7 +636,7 @@ msgstr "ডিরেক্টটরিকে '{0}' এ পরিবর্তন 
 
 #: ../src/daemon/abrt-handle-upload.in:200
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "নথির ধরণ অজানা: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:205
 msgid "Can't create working directory in '{0}'"
@@ -632,23 +648,26 @@ msgstr "'{0}' থেকে '{1}' এ সরানো যাচ্ছে না"
 
 #: ../src/daemon/abrt-handle-upload.in:221
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}' থেকে '{1}' এ অনুলিপি করা যাচ্ছে না"
 
 #: ../src/daemon/abrt-handle-upload.in:225
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "'{0}' এ যাচাইকরণ ত্রুটি"
 
 #: ../src/daemon/abrt-handle-upload.in:227
+#, fuzzy
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "'{0}' আনপ্যাক করা হচ্ছে"
 
 #: ../src/daemon/abrt-handle-upload.in:231
+#, fuzzy
 msgid "Can't create '{0}' directory"
-msgstr ""
+msgstr "'{0}' ডিরেক্টরি তৈরি করা যাচ্ছে না"
 
 #: ../src/daemon/abrt-handle-upload.in:235
+#, fuzzy
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "'{0}' আনপ্যাক করা যাচ্ছে না"
 
 #: ../src/daemon/abrt-handle-upload.in:255
 msgid "'{0}' processed successfully"
@@ -660,73 +679,77 @@ msgid "Generating backtrace"
 msgstr "ব্যাক-ট্রেস সৃষ্টি করা হচ্ছে"
 
 #: ../src/lib/problem_api_dbus.c:42
-#, c-format
+#, c-format, fuzzy
 msgid "Can't connect to system DBus: %s"
-msgstr ""
+msgstr "সিস্টেম DBus এর সাথে সংযোগ করা যাচ্ছে না: %s"
 
 #: ../src/lib/problem_api_dbus.c:68
-#, c-format
+#, c-format, fuzzy
 msgid "Can't chown '%s': %s"
-msgstr ""
+msgstr "'%s' চাউন কাটা যাবে না: %s"
 
 #: ../src/lib/problem_api_dbus.c:97
-#, c-format
+#, c-format, fuzzy
 msgid "Deleting problem directory failed: %s"
-msgstr ""
+msgstr "সমস্যাকৃত ডিরেক্টরি মুছতে ব্যর্থ হয়েছে: %s"
 
 #: ../src/lib/problem_api_dbus.c:131
-#, c-format
+#, c-format, fuzzy
 msgid "D-Bus GetInfo method call failed: %s"
-msgstr ""
+msgstr "D-Bus GetInfo পদ্ধতি কল ব্যর্থ হয়েছে: %s"
 
 #: ../src/lib/problem_api_dbus.c:166
+#, fuzzy
 msgid "Can't get problem data from abrt-dbus"
-msgstr ""
+msgstr "abrt-dbus থেকে সমস্যা তথ্য পাওয়া যাচ্ছে না"
 
 #: ../src/lib/problem_api_dbus.c:193
-#, c-format
+#, c-format, fuzzy
 msgid "Can't get problem list from abrt-dbus: %s"
-msgstr ""
+msgstr "abrt-dbus থেকে সমস্যার তালিকা পাওয়া যাচ্ছে না: %s"
 
 #: ../src/lib/problem_api_dbus.c:230 ../src/lib/problem_api_dbus.c:315
-#, c-format
+#, c-format, fuzzy
 msgid "Can't get problem data from abrt-dbus: %s"
-msgstr ""
+msgstr "abrt-dbus থেকে সমস্যা তথ্য পাওয়া যাচ্ছে না: %s"
 
 #: ../src/lib/problem_api_dbus.c:274
-#, c-format
+#, c-format, fuzzy
 msgid "Can't test whether the element exists over abrt-dbus: %s"
-msgstr ""
+msgstr "abrt-dbus-এ উপাদানটি বিদ্যমান কিনা তা পরীক্ষা করা যাচ্ছে না: %s"
 
 #: ../src/lib/ignored_problems.c:233
-#, c-format
+#, c-format, fuzzy
 msgid "Can't create temporary file '%s'"
-msgstr ""
+msgstr "অস্থায়ী ফাইল '%s' তৈরি করা যাচ্ছে না"
 
 #: ../src/lib/ignored_problems.c:250
-#, c-format
+#, c-format, fuzzy
 msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
 "problems '%s'"
 msgstr ""
+"'%s'-এ লেখা যাবে না। সমস্যা '%s' উপেক্ষা করা সমস্যা '%s' থেকে সরানো হবে না"
 
 #. Something nefarious happened
 #: ../src/lib/ignored_problems.c:264
-#, c-format
+#, c-format, fuzzy
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
 msgstr ""
+"'%s' এর নাম পরিবর্তন করে '%s' করা যাবে না। সমস্যা '%s' সরাতে ব্যর্থ হয়েছে"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:41
+#, fuzzy
 msgid ""
 "& [options] -d DIR\n"
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
 msgstr ""
-"& [options] -d DIR\n"
+"& [বিকল্প] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
-"and identifies crash function in problem directory DIR"
+"C/C++ ব্যাকট্রেস বিশ্লেষণ করে, ডুপ্লিকেশন হ্যাশ তৈরি করে, ব্যাকট্রেস রেটিং,\n"
+"এবং সমস্যা ডিরেক্টরি DIR-এ ক্র্যাশ ফাংশন সনাক্ত করে"
 
 #.
 #. * The parser failed. Compute the duphash from the executable
@@ -739,8 +762,9 @@ msgid "Backtrace parsing failed for %s"
 msgstr "%s-র জন্য ব্যাক-ট্রেস পার্সিং করতে ব্যর্থ"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:152
+#, fuzzy
 msgid "Crash thread not found"
-msgstr ""
+msgstr "ক্র্যাশ থ্রেড পাওয়া যায়নি"
 
 #: ../src/plugins/abrt-action-analyze-c.c:155
 msgid ""
@@ -753,14 +777,14 @@ msgstr ""
 "সমস্যাযুক্ত ডিরেক্টরি DIR-র মধ্যে coredump-র UUID গণনা করে সংরক্ষণ করা হয়"
 
 #: ../src/plugins/abrt-action-analyze-core.in:67
-#, c-format
+#, c-format, fuzzy
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "coredump '%s' বিশ্লেষণ করা হচ্ছে"
 
 #: ../src/plugins/abrt-action-analyze-core.in:105
-#, c-format
+#, c-format, fuzzy
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "অনুপস্থিত বিল্ড আইডি: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:137
 #, c-format
@@ -768,35 +792,50 @@ msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
 msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-core.in:159
+#, fuzzy
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "COREFILE নির্দিষ্ট করা নেই"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
+#, fuzzy
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"ওপস সমস্যা ডিরেক্টরি DIR-এর জন্য UUID এবং DUPHASH গণনা করে এবং সংরক্ষণ করে"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:78
+#, fuzzy
 msgid ""
 "The backtrace does not contain enough meaningful function frames to be "
 "reported. It is annoying but it does not necessary signalize a problem with "
 "your computer. ABRT will not allow you to create a report in a bug tracking "
 "system but you can contact kernel maintainers via e-mail."
 msgstr ""
+"ব্যাকট্রেস রিপোর্ট করার জন্য যথেষ্ট অর্থপূর্ণ ফাংশন ফ্রেম ধারণ করে না। এটি "
+"বিরক্তিকর কিন্তু এটি আপনার কম্পিউটারের সাথে একটি সমস্যা সংকেত করার প্রয়োজন "
+"নেই। ABRT আপনাকে বাগ ট্র্যাকিং সিস্টেমে একটি প্রতিবেদন তৈরি করার অনুমতি দেবে "
+"না তবে আপনি ই-মেইলের মাধ্যমে কার্নেল রক্ষণাবেক্ষণকারীদের সাথে যোগাযোগ করতে "
+"পারেন।"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:74
+#, fuzzy
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Xorg সমস্যা ডিরেক্টরি DIR-এর জন্য UUID এবং DUPHASH গণনা করে এবং সংরক্ষণ করে"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:143
-#, c-format
+#, c-format, fuzzy
 msgid "Module '%s' was loaded - won't report this crash"
-msgstr ""
+msgstr "মডিউল '%s' লোড হয়েছে - এই ক্র্যাশের রিপোর্ট করবে না"
 
 #: ../src/plugins/abrt-action-analyze-python.c:44
 msgid ""
@@ -817,63 +856,81 @@ msgid "File {0} doesn't exist"
 msgstr "{0} ফাইল উপস্থিত নেই"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:77
+#, fuzzy
 msgid "Extracting the oops text from core"
-msgstr ""
+msgstr "কোর থেকে oops টেক্সট বের করা হচ্ছে"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:82
+#, fuzzy
 msgid ""
 "Can't process {0}:\n"
 "{1}"
 msgstr ""
+"প্রক্রিয়া করা যাচ্ছে না {0}:\n"
+"{1}"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:90
+#, fuzzy
 msgid "Can't extract the oops message: '{0}'"
-msgstr ""
+msgstr "oops বার্তাটি বের করা যাচ্ছে না: '{0}'"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:93
+#, fuzzy
 msgid "Oops text extracted successfully"
-msgstr ""
+msgstr "oops পাঠ্য সফলভাবে নিষ্কাশন করা হয়েছে"
 
 #: ../src/plugins/abrt-action-check-oops-for-hw-error.in:100
+#, fuzzy
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
 msgstr ""
+"কার্নেল লগ নির্দেশ করে যে হার্ডওয়্যার ত্রুটি সনাক্ত করা হয়েছে।\n"
+"সম্ভবত এটি কোনো সফ্টওয়্যার সমস্যা নয়।\n"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:73
 #: ../src/plugins/abrt-action-find-bodhi-update:106
+#, fuzzy
 msgid "Problem directory error: {0}"
-msgstr ""
+msgstr "সমস্যা ডিরেক্টরি ত্রুটি: {0}"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:92
+#, fuzzy
 msgid "cannot open problem directory '{0}'"
-msgstr ""
+msgstr "সমস্যা ডিরেক্টরি '{0}' খোলা যাচ্ছে না"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:121
+#, fuzzy
 msgid "Using product '{0}' from /etc/os-release."
-msgstr ""
+msgstr "/etc/os-release থেকে পণ্য '{0}' ব্যবহার করা হচ্ছে।"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:123
+#, fuzzy
 msgid "Using product {0}."
-msgstr ""
+msgstr "পণ্য ব্যবহার {0}"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:125
+#, fuzzy
 msgid "Using product version {0}."
-msgstr ""
+msgstr "পণ্য সংস্করণ ব্যবহার করা হচ্ছে {0}"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:137
+#, fuzzy
 msgid "Duplicate bugzilla bug '#{0}' was found"
-msgstr ""
+msgstr "ডুপ্লিকেট বাগজিলা বাগ '#{0}' পাওয়া গেছে"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:139
+#, fuzzy
 msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
-msgstr ""
+msgstr "'abrt_hash:{0}' এর সাথে কোনো বাগজিলা বাগ নেই"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:144
+#, fuzzy
 msgid "Warning: abrt-bodhi do not support Product version 'Rawhide'"
-msgstr ""
+msgstr "সতর্কতা: abrt-bodhi পণ্য সংস্করণ 'Rawhide' সমর্থন করে না"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
+#, fuzzy
 msgid ""
 "& [options] -d DIR\n"
 "\n"
@@ -881,8 +938,8 @@ msgid ""
 msgstr ""
 "& [options] -d DIR\n"
 "\n"
-"সমস্যায়ুক্ত ডিরেক্টরি DIR-র মধ্যে coredump বিশ্লেষণ করে backtrace প্রস্তুত করে সংরক্ষণ "
-"করা হয়"
+"সমস্যাযুক্ত ডিরেক্টরি DIR-র মধ্যে coredump বিশ্লেষণ করে backtrace প্রস্তুত "
+"করে সংরক্ষণ করা হয়"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
@@ -901,15 +958,20 @@ msgid "Backtrace is generated and saved, %u bytes"
 msgstr "ব্যাক-ট্রেস প্রস্তুত করে সংরক্ষণ করা হয়েছে, %u বাইট"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:40
+#, fuzzy
 msgid ""
 "& [-v] [-r] -d DIR\n"
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
 msgstr ""
+"& [-v][-r] -d DIR\n"
+"\n"
+"কোর ডাম্প এবং সংশ্লিষ্ট বাইনারি থেকে কোরডাম্প-স্তরের ব্যাকট্রেস তৈরি করে"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
+#, fuzzy
 msgid "Do not hash fingerprints"
-msgstr ""
+msgstr "আঙ্গুলের ছাপ হ্যাশ করবেন না"
 
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
