@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2023-01-01 17:20+0000\n"
+"PO-Revision-Date: 2023-01-24 15:20+0000\n"
 "Last-Translator: Mahmudul Hasan <ptcmahmudulhasa@gmail.com>\n"
 "Language-Team: Bengali <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/bn/>\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 4.15\n"
+"X-Generator: Weblate 4.15.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -451,9 +451,8 @@ msgid "Log to syslog even with -d"
 msgstr "-d সহযোগেও syslog-এ লগ করা হবে"
 
 #: ../src/daemon/abrt-handle-event.c:362
-#, fuzzy
 msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
-msgstr "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
+msgstr ""
 
 #: ../src/daemon/abrt-handle-event.c:371
 msgid "Run EVENT on DIR"
@@ -508,9 +507,8 @@ msgstr "MiB তে সর্বোচ্চ ক্যাশের আকার�
 
 #: ../src/daemon/abrt-auto-reporting.c:198
 #: ../src/daemon/abrt-auto-reporting.c:206
-#, fuzzy
 msgid "& [ "
-msgstr "& [ "
+msgstr ""
 
 #: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
@@ -976,16 +974,17 @@ msgstr "আঙ্গুলের ছাপ হ্যাশ করবেন ন�
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
 msgid "Generating core_backtrace"
-msgstr ""
+msgstr "ব্যাক-ট্রেস সৃষ্টি করা হচ্ছে"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:81
+#, fuzzy
 msgid "Error: GDB did not return any data"
-msgstr ""
+msgstr "ত্রুটি: GDB কোনো ডেটা ফেরত দেয়নি"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:95
-#, c-format
+#, c-format, fuzzy
 msgid "Error: %s"
-msgstr ""
+msgstr "ত্রুটি: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:61
 msgid "Can't open {0}: {1}"
@@ -998,17 +997,19 @@ msgstr ""
 "হয়নি"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:104
+#, fuzzy
 msgid "{0} of debuginfo files are not installed"
-msgstr ""
+msgstr "debuginfo ফাইলগুলির মধ্যে {0}টি ইনস্টল করা নেই৷"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:114
-#, c-format
+#, c-format, fuzzy
 msgid "Invalid configuration of CCpp addon, unsupported Package manager: '%s'"
-msgstr ""
+msgstr "CCpp অ্যাডঅনের অবৈধ কনফিগারেশন, অসমর্থিত প্যাকেজ ম্যানেজার: '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:168
+#, fuzzy
 msgid "Missing requested file: {0}"
-msgstr ""
+msgstr "অনুপস্থিত অনুরোধ করা ফাইল: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:173
 msgid "Missing debuginfo file: {0}"
@@ -1019,7 +1020,7 @@ msgid "All debuginfo files are available"
 msgstr "সকল debuginfo ফাইল উপলব্ধ"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:190
-#, c-format
+#, c-format, fuzzy
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -1050,12 +1051,41 @@ msgid ""
 "    --releasever RELEASEVER\n"
 "                Pass this OS version to package managers.\n"
 msgstr ""
+"ব্যবহার: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
+"        [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]]"
+" [--size_mb=SIZE]\n"
+"        [-e, --exact=PATH[:PATH...]]\n"
+"        [--releasever=RELEASEVER] [--repo=PATTERN]\n"
+"\n"
+"BUILD_IDS_FILE-এ তালিকাভুক্ত সমস্ত বিল্ড-আইডির জন্য ডিবাগইনফো ইনস্টল করে\n"
+"CACHEDIR-এ, TMPDIR অস্থায়ী স্টেজিং এলাকা হিসাবে ব্যবহার করে।\n"
+"CACHEDIR-এর পুরানো ফাইলগুলি SIZE-এর থেকে ছোট না হওয়া পর্যন্ত মুছে ফেলা হয়"
+"৷\n"
+"\n"
+"/etc/abrt/plugins/CCpp.conf থেকে কনফিগারেশন পড়া হয়\n"
+"\n"
+"     -v শব্দগুচ্ছ হবে\n"
+"     -y Noninteractive, সব প্রশ্নের জন্য 'হ্যাঁ' ধরে নিবে\n"
+"     --ids ডিফল্ট: build_ids\n"
+"     --tmpdir ডিফল্ট: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"     --ক্যাশে কোলন আলাদা করা ডিরেক্টরিগুলির তালিকা। প্রথমবাবের জন্য ব্যবহার "
+"করা হয়\n"
+"                 ইনস্টল করা debuginfos সংরক্ষণ।\n"
+"                 ডিফল্ট: /var/cache/abrt-di\n"
+"     --size_mb ডিফল্ট: 4096\n"
+"     --pkgmgr ডিফল্ট: CCpp.conf বা 'dnf' থেকে PackageManager\n"
+"    -e,--exact   নির্দিষ্ট ফাইল ডাউনলোড করুন\n"
+"     -- repos অনুসন্ধান করার সময় ব্যবহার করার জন্য repo প্যাটার্ন।\n"
+"                 ডিফল্ট: *debug*\n"
+"    --releasever RELEASEVER\n"
+"                 এই OS সংস্করণটি প্যাকেজ পরিচালকদের কাছে পাঠান।\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:290
 msgid "Exiting on user command"
 msgstr "ব্যবহারকারী দ্বারা উল্লিখিত কমান্ডের ফলে প্রস্থান করা হচ্ছে"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:43
+#, fuzzy
 msgid ""
 "& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
 "\t[-r REPO]\n"
@@ -1063,43 +1093,63 @@ msgid ""
 "Installs debuginfo packages for all build-ids listed in BUILD_IDS_FILE to\n"
 "ABRT system cache."
 msgstr ""
+"& [-y] [-i BUILD_IDS_FILE|-i -] [-e PATH[:PATH]...]\n"
+"\t[-r REPO]\n"
+"\n"
+"BUILD_IDS_FILE এ তালিকাভুক্ত সমস্ত বিল্ড-আইডির জন্য ডিবাগিনফো প্যাকেজ ইনস্টল "
+"করে\n"
+"ABRT সিস্টেম ক্যাশে।"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:68
+#, fuzzy
 msgid "Noninteractive, assume 'Yes' to all questions"
-msgstr ""
+msgstr "মিথস্ক্রিয়াহীন, সমস্ত প্রশ্নের জন্য 'হ্যাঁ' ধরে নিন"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:69
 msgid "- means STDIN, default: build_ids"
 msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:70
+#, fuzzy
 msgid "Download only specified files"
-msgstr ""
+msgstr "শুধুমাত্র নির্দিষ্ট ফাইল ডাউনলোড হবে"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:71
+#, fuzzy
 msgid "Pattern to use when searching for repos, default: *debug*"
 msgstr ""
+"যখন repos অনুসন্ধান করার জন্য প্যাটার্ন ব্যবহার করা হয় , ডিফল্ট: *debug*"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:72
+#, fuzzy
 msgid "Ignored option"
-msgstr ""
+msgstr "উপেক্ষা করা বিকল্প"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:73
+#, fuzzy
 msgid "OS release version"
-msgstr ""
+msgstr "ওএস রিলিজ সংস্করণ"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
+#, fuzzy
 msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
 msgstr ""
+"কোর ডাম্প আপলোড করা ঠিক আছে? (এতে সংবেদনশীল তথ্য থাকতে পারে)। আপনার উত্তর 'না"
+"' হলে, স্থানীয়ভাবে একটি স্ট্যাক ট্রেস তৈরি করা হবে। (এটি বিপুল পরিমাণ ডেটা ডা"
+"উনলড করতে পারে)।"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
+#, fuzzy
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
 msgstr ""
+"আপনি কি স্থানীয়ভাবে একটি স্ট্যাক ট্রেস তৈরি করতে চান? (এটি প্রচুর পরিমাণে "
+"ডেটা ডাউনলোড করতে পাবে; তবে স্ট্যাক ট্রেস ছাড়া রিপোর্টিং চালিয়ে যেতে পারে "
+"না)।"
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -1109,11 +1159,6 @@ msgid ""
 "SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
-"& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
-"\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
-"SIZE.\n"
-"FILEs are preserved (never deleted)."
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
