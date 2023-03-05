@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2023-01-24 15:20+0000\n"
+"PO-Revision-Date: 2023-02-23 10:20+0000\n"
 "Last-Translator: Mahmudul Hasan <ptcmahmudulhasa@gmail.com>\n"
 "Language-Team: Bengali <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/bn/>\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 4.15.1\n"
+"X-Generator: Weblate 4.15.2\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -1152,6 +1152,7 @@ msgstr ""
 "না)।"
 
 #: ../src/plugins/abrt-action-trim-files.c:222
+#, fuzzy
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
@@ -1159,6 +1160,11 @@ msgid ""
 "SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
+"& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
+"\n"
+"SIZE-এর থেকে ছোট না হওয়া পর্যন্ত DIR-তে সমস্যা dirs (-d) বা ফাইল (-f) মুছে "
+"দিবে।\n"
+"ফাইল সংরক্ষণ করা হয় (কখনও মুছে ফেলা হয় না)।"
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
@@ -1173,9 +1179,9 @@ msgid "Preserve this directory"
 msgstr "এই ডিরেক্টরিটি সংরক্ষণ করা হবে"
 
 #: ../src/plugins/abrt-action-ureport:54
-#, c-format
+#, c-format, fuzzy
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr "'%s' শুরু করতে অক্ষম, ত্রুটি বার্তা ছিল: '%s'"
 
 #: ../src/plugins/abrt-action-ureport:65
 #, c-format
