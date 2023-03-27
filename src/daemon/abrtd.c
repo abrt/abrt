@@ -173,7 +173,7 @@ static void queue_post_create_process(struct abrt_server_proc *proc)
         ++ignored;
 
     char *worst_dir = NULL;
-    const double max_size = 1024 * 1024 * abrt_g_settings_nMaxCrashReportsSize;
+    const double max_size = (double) abrt_g_settings_nMaxCrashReportsSize * (1024 * 1024);
     while (libreport_get_dirsize_find_largest_dir(abrt_g_settings_dump_location, &worst_dir, ignored, proc->dirname) >= max_size
            && worst_dir)
     {
