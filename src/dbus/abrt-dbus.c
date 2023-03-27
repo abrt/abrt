@@ -618,7 +618,7 @@ static void handle_method_call(GDBusConnection *connection,
             return;
 
         /* Is it good idea to make it static? Is it possible to change the max size while a single run? */
-        const double max_dir_size = abrt_g_settings_nMaxCrashReportsSize * (1024 * 1024);
+        const double max_dir_size = (double) abrt_g_settings_nMaxCrashReportsSize * (1024 * 1024);
         const long item_size = dd_get_item_size(dd, element);
         if (item_size < 0)
         {
