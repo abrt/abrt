@@ -49,7 +49,7 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 2.16.0
+Version: 2.16.1
 Release: 1
 License: GPL-2.0-or-later
 URL: https://abrt.readthedocs.org/
@@ -964,6 +964,13 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Thu Mar 30 2023 Michal Srb <michal@redhat.com> 2.16.1-1
+- Fix integer overflow for MaxCrashReportsSize (michal@redhat.com)
+- Update translations (mgrabovs@redhat.com)
+- Abbreviate service description names (rquarry1@yahoo.com)
+- Update init script service descriptions (rquarry1@yahoo.com)
+- use SPDX format for license (msuchy@redhat.com)
+
 * Mon Oct 24 2022 Michal Srb <michal@redhat.com> 2.16.0-1
 - Update changelog (michal@redhat.com)
 - a-a-gen-bt: Increase timeout to 20 minutes (michal@redhat.com)
