@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- Fix integer overflow for MaxCrashReportsSize (rhbz#2177153)
+
 ### Changed
 - Update service descriptions in init scripts
 
