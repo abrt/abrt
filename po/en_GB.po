@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2023-02-10 22:20+0000\n"
+"PO-Revision-Date: 2023-03-28 18:20+0000\n"
 "Last-Translator: Andi Chandler <andi@gowling.com>\n"
 "Language-Team: English (United Kingdom) <https://translate.fedoraproject.org/"
 "projects/abrt/abrt/en_GB/>\n"
@@ -39,16 +39,8 @@ msgid "Be verbose"
 msgstr "Be verbose"
 
 #: ../src/applet/abrt-applet-application.c:167
-#, fuzzy
-#| msgid ""
-#| "& [-v] [DIR]...\n"
-#| "\n"
-#| "Applet which notifies user when new problems are detected by ABRT\n"
 msgid "Applet which notifies user when new problems are detected by ABRT"
-msgstr ""
-"& [-v] [DIR]...\n"
-"\n"
-"Applet which notifies user when new problems are detected by ABRT\n"
+msgstr "Applet which notifies user when new problems are detected by ABRT"
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
@@ -484,12 +476,18 @@ msgid ""
 "If UPLOAD_DIRECTORY is not provided, uses a value of\n"
 "WatchCrashdumpArchiveDir option from abrt.conf"
 msgstr ""
+"& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
+"\n"
+"\n"
+"Watches UPLOAD_DIRECTORY and unpacks incoming archives into DumpLocation\n"
+"specified in abrt.conf\n"
+"\n"
+"If UPLOAD_DIRECTORY is not provided, uses a value of\n"
+"WatchCrashdumpArchiveDir option from abrt.conf"
 
 #: ../src/daemon/abrt-upload-watch.c:281
-#, fuzzy
-#| msgid "Daemize"
 msgid "Daemonize"
-msgstr "Daemise"
+msgstr "Daemonise"
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
@@ -502,11 +500,11 @@ msgstr "Maximal cache size in MiB. Default is "
 #: ../src/daemon/abrt-auto-reporting.c:198
 #: ../src/daemon/abrt-auto-reporting.c:206
 msgid "& [ "
-msgstr ""
+msgstr "& [ "
 
 #: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
-msgstr ""
+msgstr "Turns the authentication off"
 
 #: ../src/daemon/abrt-auto-reporting.c:234
 msgid "Red Hat Support user name"
@@ -514,7 +512,7 @@ msgstr "Red Hat Support username"
 
 #: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
-msgstr ""
+msgstr "Red Hat Support password, if not given, a prompt for it will be issued"
 
 #: ../src/daemon/abrt-auto-reporting.c:236
 msgid "uReport SSL certificate paths or certificate type"
@@ -522,7 +520,7 @@ msgstr "uReport SSL certificate paths or certificate type"
 
 #: ../src/daemon/abrt-auto-reporting.c:252
 msgid "You also need to specify --username for --password"
-msgstr ""
+msgstr "You also need to specify --username for --password"
 
 #: ../src/daemon/abrt-auto-reporting.c:258
 msgid "You can use either --username or --certificate"
@@ -538,12 +536,12 @@ msgstr "You can use either --anonymous or --certificate"
 
 #: ../src/daemon/abrt-auto-reporting.c:277
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "Invalid number of arguments"
 
 #: ../src/daemon/abrt-auto-reporting.c:296
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "Unknown option value: '%s'\n"
 
 #: ../src/daemon/abrt-auto-reporting.c:336
 msgid "Password:"
@@ -556,11 +554,11 @@ msgstr "Cannot continue without password\n"
 #. Print only the part before ':' of a string like "username:password"
 #: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
-msgstr ""
+msgstr "HTTP Authenticated auto reporting"
 
 #: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
-msgstr ""
+msgstr "SSL Client Authenticated auto reporting"
 
 #: ../src/daemon/abrt-auto-reporting.c:384
 msgid "anonymous auto reporting"
@@ -577,6 +575,13 @@ msgid ""
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
 msgstr ""
+"Usage: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
+"\n"
+"   -v             - Verbose\n"
+"   -d             - Delete uploaded archive\n"
+"   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n"
+"   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
+"   FILENAME       - Uploaded archive file name\n"
 
 #: ../src/daemon/abrt-handle-upload.in:166
 #: ../src/daemon/abrt-handle-upload.in:169
@@ -585,23 +590,23 @@ msgstr "Not a directory: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:172
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
+msgstr "Skipping: '{0}' (starts with slash)"
 
 #: ../src/daemon/abrt-handle-upload.in:175
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
+msgstr "Skipping: '{0}' (starts with dot)"
 
 #: ../src/daemon/abrt-handle-upload.in:178
 msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
+msgstr "Skipping: '{0}' (contains ..)"
 
 #: ../src/daemon/abrt-handle-upload.in:181
 msgid "Skipping: '{0}' (contains space)"
-msgstr ""
+msgstr "Skipping: '{0}' (contains space)"
 
 #: ../src/daemon/abrt-handle-upload.in:184
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "Skipping: '{0}' (contains tab)"
 
 #: ../src/daemon/abrt-handle-upload.in:189
 msgid "Can't change directory to '{0}'"
@@ -609,7 +614,7 @@ msgstr "Can't change directory to '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:200
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "Unknown file type: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:205
 msgid "Can't create working directory in '{0}'"
@@ -617,11 +622,11 @@ msgstr "Can't create working directory in '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:216
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "Can't move '{0}' to '{1}'"
 
 #: ../src/daemon/abrt-handle-upload.in:221
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "Can't copy '{0}' to '{1}'"
 
 #: ../src/daemon/abrt-handle-upload.in:225
 msgid "Verification error on '{0}'"
@@ -629,7 +634,7 @@ msgstr "Verification error on '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:227
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "Unpacking '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:231
 msgid "Can't create '{0}' directory"
@@ -637,11 +642,11 @@ msgstr "Can't create '{0}' directory"
 
 #: ../src/daemon/abrt-handle-upload.in:235
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "Can't unpack '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:255
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' processed successfully"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:259
@@ -666,11 +671,11 @@ msgstr "Deleting problem directory failed: %s"
 #: ../src/lib/problem_api_dbus.c:131
 #, c-format
 msgid "D-Bus GetInfo method call failed: %s"
-msgstr ""
+msgstr "D-Bus GetInfo method call failed: %s"
 
 #: ../src/lib/problem_api_dbus.c:166
 msgid "Can't get problem data from abrt-dbus"
-msgstr ""
+msgstr "Can't get problem data from abrt-dbus"
 
 #: ../src/lib/problem_api_dbus.c:193
 #, c-format
@@ -685,7 +690,7 @@ msgstr "Can't get problem data from abrt-dbus: %s"
 #: ../src/lib/problem_api_dbus.c:274
 #, c-format
 msgid "Can't test whether the element exists over abrt-dbus: %s"
-msgstr ""
+msgstr "Can't test whether the element exists over abrt-dbus: %s"
 
 #: ../src/lib/ignored_problems.c:233
 #, c-format
@@ -705,7 +710,7 @@ msgstr ""
 #: ../src/lib/ignored_problems.c:264
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
-msgstr ""
+msgstr "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:41
 msgid ""
@@ -731,7 +736,7 @@ msgstr "Backtrace parsing failed for %s"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:152
 msgid "Crash thread not found"
-msgstr ""
+msgstr "Crash thread not found"
 
 #: ../src/plugins/abrt-action-analyze-c.c:155
 msgid ""
@@ -746,21 +751,21 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-core.in:67
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "Analysing coredump '%s'"
 
 #: ../src/plugins/abrt-action-analyze-core.in:105
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "Missing build id: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:137
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr ""
+msgstr "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
 
 #: ../src/plugins/abrt-action-analyze-core.in:159
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "COREFILE is not specified"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""

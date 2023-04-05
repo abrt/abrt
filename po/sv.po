@@ -29,13 +29,14 @@
 # Göran Uddeborg <goeran@uddeborg.se>, 2015. #zanata, 2020.
 # Göran Uddeborg <goeran@uddeborg.se>, 2016. #zanata, 2020.
 # Anders Jonsson <anders.jonsson@norsjovallen.se>, 2021.
+# Kristoffer Grundström <swedishsailfishosuser@tutanota.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2021-07-01 13:04+0000\n"
-"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
+"PO-Revision-Date: 2023-03-08 04:20+0000\n"
+"Last-Translator: Kristoffer Grundström <swedishsailfishosuser@tutanota.com>\n"
 "Language-Team: Swedish <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/sv/>\n"
 "Language: sv\n"
@@ -43,7 +44,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.7.1\n"
+"X-Generator: Weblate 4.15.2\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -88,8 +89,8 @@ msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
 "internet is available."
 msgstr ""
-"Vi är ledsna, men det verkar som att %s kraschade.  Problemet kommer "
-"rapporteras när internet kan nås."
+"Tyvärr, men det verkar som att %s kraschade.  Problemet kommer rapporteras "
+"när internet är tillgängligt."
 
 #: ../src/applet/abrt-applet-application.c:674
 #: ../src/applet/abrt-applet-application.c:688
@@ -99,8 +100,8 @@ msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
 msgstr ""
-"Vi är ledsna, men det verkar som att %s kraschade.  Kontakta utvecklaren om "
-"du vill rapportera saken."
+"Tyvärr, men det verkar som att %s kraschade. Vänligen kontakta utvecklaren "
+"om du vill rapportera problemet."
 
 #: ../src/applet/abrt-applet-application.c:682
 #, c-format
@@ -108,32 +109,32 @@ msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
 msgstr ""
-"Vi är ledsna, men det verkar som att %s kraschade.  Om du vill hjälpa till "
-"att lösa problemet, skicka då en rapport."
+"Tyvärr, men det verkar som att %s kraschade. Vänligen skicka en rapport om "
+"du vill hjälpa till att lösa problemet."
 
 #: ../src/applet/abrt-applet-application.c:701
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
 msgstr ""
-"Vi är ledsna, men det verkar som att ett problem uppstod i en komponent.  "
-"Problemet har rapporterats automatiskt."
+"Tyvärr, det verkar som att ett problem uppstod i en komponent. Problemet har "
+"rapporterats automatiskt."
 
 #: ../src/applet/abrt-applet-application.c:705
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
 msgstr ""
-"Vi är ledsna, men det verkar som att ett problem uppstod i en komponent.  "
-"Problemet kommer rapporteras när internet kan nås."
+"Tyvärr, det ser ut som att ett problem uppstod i en komponent. Problemet "
+"kommer rapporteras när internet är tillgängligt."
 
 #: ../src/applet/abrt-applet-application.c:710
 msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
 msgstr ""
-"Vi är ledsna, men det verkar som att ett problem uppstod.  Om du vill hjälpa "
-"till att lösa problemet, skicka då en rapport."
+"Tyvärr, det verkar som att ett problem uppstod. Skicka en rapport om du vill "
+"hjälpa till att lösa problemet."
 
 #. TODO: Terminate child's process?
 #: ../src/applet/abrt-applet-application.c:800 ../src/daemon/abrt-server.c:117
@@ -201,13 +202,13 @@ msgid ""
 "With option 'Never' the stack trace will be always generated locally. With "
 "option 'Ask' ABRT will always ask the user."
 msgstr ""
-"Minnesdumpsfilen är nödvändig för att gnerera stackspåret som är en tids- "
-"och utrymmeskrävande åtgärd.  ABRT tillhandahåller en tjänst som genererar "
+"Minnesdumpsfilen är nödvändig för att generera stackspåret som är en tids- "
+"och utrymmeskrävande åtgärd. ABRT tillhandahåller en tjänst som genererar "
 "stackspåret från minnesdumpen men du måste skicka upp minnesdumpen till "
-"denna tjänst.  Med alternativet ”Alltid” kommer ABRT alltidk skicka upp "
-"minnesdumpen utan att fråga.  Med alternativet ”Aldrig” kommer stackspåret "
-"alltid genereras lokalt.  Med alternativet ”Fråga” kommer ABRT  alltid fråga "
-"användaren."
+"denna tjänst. Med alternativet ”Alltid” så kommer ABRT alltid skicka upp "
+"minnesdumpen utan att fråga. Med alternativet ”Aldrig” så kommer stackspåret "
+"alltid genereras lokalt. Med alternativet ”Fråga” så kommer ABRT alltid "
+"fråga användaren."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -216,9 +217,9 @@ msgid ""
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
 msgstr ""
-"ABRT lagrar problemdata i kataloger.  När ABRT behöver en skrivbar katalog "
-"flyttas katalogen från systemplatsen till din hemkatalog.  Med detta "
-"alternativ avaktiverat kommer ABRT flytta problemkatalogen utan att fråga."
+"ABRT lagrar problemdata i kataloger. När ABRT behöver en skrivbar katalog så "
+"flyttas katalogen från systemplatsen till din hemkatalog. Med detta "
+"alternativ avaktiverat så kommer ABRT flytta problemkatalogen utan att fråga."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
