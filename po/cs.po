@@ -20,13 +20,15 @@
 # Daniel Rusek <mail@asciiwolf.com>, 2018. #zanata
 # Michal Konečný <michal.konecny@packetseekers.eu>, 2020.
 # Josef Hruska <hrusjos@gmail.com>, 2021.
+# Zdenek Chmelar <chmelarz@gmail.com>, 2023.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2021-01-06 17:36+0000\n"
-"Last-Translator: Josef Hruska <hrusjos@gmail.com>\n"
+"PO-Revision-Date: 2023-03-30 19:20+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech <https://translate.fedoraproject.org/projects/abrt/abrt/"
 "cs/>\n"
 "Language: cs\n"
@@ -34,7 +36,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.4\n"
+"X-Generator: Weblate 4.15.2\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -238,7 +240,7 @@ msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
-"Pokud je tato volba povolena, ABRT nebude nikdy zobrazovat upozornění na "
+" Pokud je tato volba povolena, ABRT nebude nikdy zobrazovat upozornění na "
 "nahlášené problémy. Funguje pouze, pokud je povoleno Zkrácené hlášení."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
@@ -246,7 +248,7 @@ msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
 msgstr ""
-"Pokud je tato volba povolená, ABRT vždy vytvoří chybové hlášení s omezeným "
+" Pokud je tato volba povolená, ABRT vždy vytvoří chybové hlášení s omezeným "
 "přístupem, jsou-li potenciálně citlivá data detekována."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
@@ -473,7 +475,7 @@ msgstr "Zvýšit hodnotu o PŘÍRŮSTEK"
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
-msgstr "Žádný volný \"dělník\" a plný zásobník. Archivování '%s' je vynecháno."
+msgstr "Žádný volný \"dělník\" a plný zásobník. Archivování '%s' je vynecháno"
 
 #: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
@@ -854,7 +856,7 @@ msgstr "Nelze vytáhnout zprávu oops: '{0}'"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:93
 msgid "Oops text extracted successfully"
-msgstr "Text oops úspěšně vyňat."
+msgstr "Text oops úspěšně vyňat"
 
 #: ../src/plugins/abrt-action-check-oops-for-hw-error.in:100
 msgid ""
@@ -1281,15 +1283,15 @@ msgstr "Nelze získat číslo signálu a udělat analýzu zranitelnosti\n"
 
 #: ../src/plugins/abrt-gdb-exploitable:701
 msgid "Likely crash reason: "
-msgstr "Pravděpodobný důvod pádu:"
+msgstr "Pravděpodobný důvod pádu: "
 
 #: ../src/plugins/abrt-gdb-exploitable:702
 msgid "Exploitable rating (0-9 scale): "
-msgstr "Hodnocení zranitelnosti (škála 0-9):"
+msgstr "Hodnocení zranitelnosti (škála 0-9): "
 
 #: ../src/plugins/abrt-gdb-exploitable:704
 msgid "Current instruction: "
-msgstr "Současná situace:"
+msgstr "Současná situace: "
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Exploitability analysis came up empty\n"
@@ -1847,8 +1849,8 @@ msgid ""
 "Task Id: %s\n"
 "Task Password: %s\n"
 msgstr ""
-"Task Id: %s\n"
-"Task Password: %s\n"
+"Identif. úlohy: %s\n"
+"Heslo k úloze: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:929
 msgid "Invalid response from server: missing X-Task-Status."
@@ -1860,7 +1862,7 @@ msgid ""
 "Task Status: %s\n"
 "%s\n"
 msgstr ""
-"Task Status: %s\n"
+"Stav úlohy: %s\n"
 "%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:1208
@@ -1885,7 +1887,7 @@ msgid ""
 "uploading the archive"
 msgstr ""
 "Nezjišťuj zda-li je stopovací server schopen zprocesovat dané balíčky před "
-"odesláním archívu."
+"odesláním archívu"
 
 #: ../src/plugins/abrt-retrace-client.c:1261
 msgid "retrace server URI"
@@ -2025,7 +2027,7 @@ msgstr "Nezabezpečený"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 msgid "Whether or not to use insecure connection"
-msgstr "Použít nezabezpečeného připojení?"
+msgstr "Zdali použít nezabezpečeného připojení"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
@@ -2323,7 +2325,7 @@ msgstr ""
 "Odeslat obraz paměti a provést vzdálené stopování? (Ten může obsahovat "
 "citlivá data). Pokud bude vaše odpověď 'Ne', zásobník volání se vygeneruje "
 "lokálně. Lokální stopování vyžaduje stažení potenciálně velkého množství dat "
-"pro debuginfo."
+"pro debuginfo"
 
 #: ../src/cli/abrtcli/cli/retrace.py:71
 msgid "Remote retracing"
