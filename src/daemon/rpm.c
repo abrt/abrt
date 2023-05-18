@@ -94,14 +94,6 @@ void rpm_destroy()
 }
 
 
-// TODO: pgpHexStr() has been renamed to rpmhex() recently, and
-//       pgpHexStr() is now deprecated and it will be dropped
-//       in the future. Let's keep using the old name for now
-//       as the replacement is only available in Rawhide (f37).
-// https://github.com/rpm-software-management/rpm/commit/d44be2cbc1c3265d55f05b47daa69334a7a133e6
-// Ignore the deprecation warning in this function
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 void rpm_load_gpgkey(const char* filename)
 {
 #ifdef HAVE_LIBRPM
@@ -121,7 +113,7 @@ void rpm_load_gpgkey(const char* filename)
     pubkey = rpmPubkeyNew(pkt, pklen);
     if (pubkey != NULL)
     {
-        fingerprint = pgpHexStr(pubkey->keyid, sizeof(pubkey->keyid));
+        fingerprint = rpmhex(pubkey->keyid, sizeof(pubkey->keyid));
         if (fingerprint != NULL)
             list_fingerprints = g_list_append(list_fingerprints, fingerprint);
 
@@ -131,7 +123,7 @@ void rpm_load_gpgkey(const char* filename)
             rpmPubkey subkey = subkeys[i];
             if (subkey != NULL)
             {
-                fingerprint = pgpHexStr(subkey->keyid, sizeof(subkey->keyid));
+                fingerprint = rpmhex(subkey->keyid, sizeof(subkey->keyid));
                 if (fingerprint != NULL)
                     list_fingerprints = g_list_append(list_fingerprints, fingerprint);
             }
@@ -143,7 +135,6 @@ void rpm_load_gpgkey(const char* filename)
     return;
 #endif
 }
-#pragma GCC diagnostic pop
 
 int rpm_chk_fingerprint(const char* pkg)
 {
