@@ -17,18 +17,23 @@
 */
 #include "libabrt.h"
 
+#define MAX_EXECUTABLE_LENGTH 2048
+
 int check_recent_crash_file(const char *filename, const char *executable)
 {
     int fd = open(filename, O_RDWR | O_CREAT, 0600);
     if (fd < 0)
         return 0;
 
-    int ex_len = strlen(executable);
+    size_t ex_len = strlen(executable);
     struct stat sb;
     ssize_t sz;
 
     if (-1 == fstat(fd, &sb))
         perror_msg_and_die("Could not get information about opened file");
+
+    if (ex_len > MAX_EXECUTABLE_LENGTH)
+        perror_msg_and_die("Executable name too long, %zd > %d", ex_len, MAX_EXECUTABLE_LENGTH);
 
     if (sb.st_size != 0 /* if it wasn't created by us just now... */
         && (unsigned)(time(NULL) - sb.st_mtime) < 20 /* and is relatively new [is 20 sec ok?] */
