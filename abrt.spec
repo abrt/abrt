@@ -58,7 +58,7 @@ BuildRequires: %{dbus_devel}
 BuildRequires: hostname
 BuildRequires: gtk3-devel
 BuildRequires: glib2-devel >= %{glib_ver}
-BuildRequires: rpm-devel >= 4.6
+BuildRequires: rpm-devel >= 4.18
 BuildRequires: desktop-file-utils
 BuildRequires: libnotify-devel
 #why? BuildRequires: file-devel
