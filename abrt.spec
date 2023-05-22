@@ -49,7 +49,7 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 2.16.1
+Version: 2.17.0
 Release: 1
 License: GPL-2.0-or-later
 URL: https://abrt.readthedocs.org/
@@ -964,6 +964,18 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Mon May 22 2023 Matěj Grabovský <mgrabovs@redhat.com> 2.17.0-1
+- lib: Fix ‘read size exceeds maximum object’ error (mgrabovs@redhat.com)
+- spec: Bump rpm dependency to 4.18 (mgrabovs@redhat.com)
+- Replace now gone pgpHexStr() with rpmhex() (mdomonko@redhat.com)
+- Update translations (mgrabovsky@users.noreply.github.com)
+
+* Mon May 22 2023 Matěj Grabovský <mgrabovs@redhat.com>
+- lib: Fix ‘read size exceeds maximum object’ error (mgrabovs@redhat.com)
+- spec: Bump rpm dependency to 4.18 (mgrabovs@redhat.com)
+- Replace now gone pgpHexStr() with rpmhex() (mdomonko@redhat.com)
+- Update translations (mgrabovsky@users.noreply.github.com)
+
 * Thu Mar 30 2023 Michal Srb <michal@redhat.com> 2.16.1-1
 - Fix integer overflow for MaxCrashReportsSize (michal@redhat.com)
 - Update translations (mgrabovs@redhat.com)
