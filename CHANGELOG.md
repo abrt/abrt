@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Updated library code for RPM 4.19 (#1637)
+- Bumped `rpm` library dependency to 4.18
 
 ## [2.16.1]
 ### Fixed
