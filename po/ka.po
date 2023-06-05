@@ -4,13 +4,13 @@
 #
 # Translators:
 # George Machitidze <giomac@gmail.com>, 2012,2014
-# Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2022.
+# Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2022-10-02 05:22+0000\n"
+"PO-Revision-Date: 2023-06-01 05:20+0000\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/ka/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 4.17\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -590,7 +590,7 @@ msgstr ""
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:259
 msgid "Generating backtrace"
-msgstr ""
+msgstr "უკუტრეისის გენერაცია"
 
 #: ../src/lib/problem_api_dbus.c:42
 #, c-format
@@ -833,7 +833,7 @@ msgstr ""
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
 msgid "Generating core_backtrace"
-msgstr ""
+msgstr "Core_backtrace-ის გენერაცია"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:81
 msgid "Error: GDB did not return any data"
@@ -937,7 +937,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:72
 msgid "Ignored option"
-msgstr ""
+msgstr "გამოტოვებული პარამეტრი"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:73
 msgid "OS release version"
@@ -1079,7 +1079,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-gdb-exploitable:628
 msgid "Arithmetic exception"
-msgstr ""
+msgstr "არითმეტიკული გამონაკლისი"
 
 #: ../src/plugins/abrt-gdb-exploitable:632
 msgid "Division by zero"
@@ -1095,7 +1095,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-gdb-exploitable:647
 msgid "Stack overflow"
-msgstr ""
+msgstr "სტეკის გადავსება"
 
 #: ../src/plugins/abrt-gdb-exploitable:651
 msgid "Write to an invalid address"
@@ -1129,7 +1129,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-gdb-exploitable:704
 msgid "Current instruction: "
-msgstr ""
+msgstr "მიმდინარე ინსტრუქცია: "
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Exploitability analysis came up empty\n"
@@ -1519,7 +1519,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:541
 #, c-format
 msgid "Uploading %d%%\n"
-msgstr ""
+msgstr "ატვირთვა %d%%\n"
 
 #: ../src/plugins/abrt-retrace-client.c:554
 msgid "Querying server settings"
@@ -1586,7 +1586,7 @@ msgstr "შეწყვეტილია მომხმარებლის �
 #: ../src/plugins/abrt-retrace-client.c:789
 #, c-format
 msgid "Uploading %s\n"
-msgstr ""
+msgstr "%s-ის ატვირთვა\n"
 
 #: ../src/plugins/abrt-retrace-client.c:814
 msgid "Upload successful"
@@ -1788,7 +1788,7 @@ msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
-msgstr ""
+msgstr ".xsession-errors-ის მოგროვება"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1944,7 +1944,7 @@ msgstr ""
 
 #: ../src/cli/abrtcli/cli/__init__.py:71
 msgid "output format"
-msgstr ""
+msgstr "გამოტანის ფორმატი"
 
 #: ../src/cli/abrtcli/cli/__init__.py:74
 msgid "built-in output format"
@@ -1983,7 +1983,7 @@ msgstr ""
 
 #: ../src/cli/abrtcli/cli/list.py:34
 msgid "No problems"
-msgstr ""
+msgstr "პრობლემების გარეშე"
 
 #: ../src/cli/abrtcli/cli/remove.py:22
 msgid "do not prompt before removal"
@@ -2025,7 +2025,7 @@ msgstr ""
 
 #: ../src/cli/abrtcli/cli/retrace.py:29
 msgid "force retracing"
-msgstr ""
+msgstr "ნაძალადევი რეტრეისი"
 
 #: ../src/cli/abrtcli/cli/retrace.py:47
 msgid "Problem already has a backtrace"
@@ -2037,7 +2037,7 @@ msgstr ""
 
 #: ../src/cli/abrtcli/cli/retrace.py:49
 msgid "Show backtrace?"
-msgstr ""
+msgstr "ვაჩვენო უკუტრეისი?"
 
 #: ../src/cli/abrtcli/cli/retrace.py:52
 msgid "No retracing possible for this problem type"
@@ -2053,11 +2053,11 @@ msgstr ""
 
 #: ../src/cli/abrtcli/cli/retrace.py:71
 msgid "Remote retracing"
-msgstr ""
+msgstr "დაშორებული რეტრეისინგი"
 
 #: ../src/cli/abrtcli/cli/retrace.py:74
 msgid "Local retracing"
-msgstr ""
+msgstr "ლოკალური რეტრეისინგი"
 
 #: ../src/cli/abrtcli/cli/status.py:17
 msgid "show only the number of problems"
