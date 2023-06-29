@@ -86,15 +86,28 @@ int main(int argc, char **argv)
     {
         error_msg("Can't find a meaningful backtrace for hashing in '%s'", dump_directory);
 
-        /* Do not drop such oopses by default. */
-        int drop_notreportable_oopses = 0;
-        const int res = libreport_try_get_map_string_item_as_bool(settings,
-                "DropNotReportableOopses", &drop_notreportable_oopses);
-        if (!res || !drop_notreportable_oopses)
-        {
-            /* Let users know that they can configure ABRT to drop these oopses. */
-            log_warning("Preserving oops '%s' because DropNotReportableOopses is 'no'", dump_directory);
+        /* Drop non-reportable oopses by default.
+         *
+         * General protection faults can be caused by both kernel and user space programs.
+         * We are only interested in kernel oopses here, but trying to distinguish between
+         * the two can be tricky. Oopses caused by user space programs don't have the stacktrace,
+         * and therefore are not reportable.
+         * Therefor we are going to ignore all non-reportable oopses by default.
+         * Users can still configure ABRT to keep all oopses, if they so desire.
+         */
+        int drop_notreportable_oopses = 1;
+        libreport_try_get_map_string_item_as_bool(settings, "DropNotReportableOopses", &drop_notreportable_oopses);
 
+        if (drop_notreportable_oopses)
+        {
+            /* Let the users know that this behavior is configurable. */
+            log_warning("Deleting non-reportable oops '%s' because DropNotReportableOopses is set to 'yes'", dump_directory);
+
+            /* abrtd will delete the problem directory if we exit with non-zero status code */
+            return EXIT_FAILURE;
+        }
+        else
+        {
             dd_save_text(dd, FILENAME_NOT_REPORTABLE,
             _("The backtrace does not contain enough meaningful function frames "
               "to be reported. It is annoying but it does not necessarily "
