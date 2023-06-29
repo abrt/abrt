@@ -628,12 +628,14 @@ abrt_applet_application_send_problem_notification (AbrtAppletApplication *self,
      * - Whether or not the crash happened in an “app”
      * - Whether the app is packaged (in Fedora) or not
      * - Whether the app is back up and running
+     * - Whether the app should be shown in menus that list available applications
      * - Whether the user is the one for which the app crashed
      * - Whether the problem has already been reported on this machine
      */
     gboolean is_app = (app != NULL);
     gboolean is_packaged = abrt_applet_problem_info_is_packaged (problem_info);;
     gboolean is_running_again = is_app_running(app);
+    gboolean is_shown_in_menus = g_app_info_should_show(app);
     gboolean is_current_user = !abrt_applet_problem_info_is_foreign (problem_info);
     gboolean already_reported = abrt_applet_problem_info_get_count (problem_info) > 1;
 
@@ -680,7 +682,7 @@ abrt_applet_application_send_problem_notification (AbrtAppletApplication *self,
                                                g_app_info_get_display_name (app));
             }
         }
-        if (is_current_user && !is_running_again)
+        if (is_current_user && !is_running_again && is_shown_in_menus)
             restart_button = TRUE;
     }
     else
