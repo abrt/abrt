@@ -49,7 +49,7 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 2.17.0
+Version: 2.17.1
 Release: 1
 License: GPL-2.0-or-later
 URL: https://abrt.readthedocs.org/
@@ -964,6 +964,13 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Fri Jun 30 2023 Michal Srb <michal@redhat.com> 2.17.1-1
+- applet: only show the restart button for apps that are listed in menus
+  (michal@redhat.com)
+- a-a-generate-backtrace: bump timeout to half an hour (michal@redhat.com)
+- a-a-analyze-oops: Drop non-reportable oopses by default (michal@redhat.com)
+- Update translations (mgrabovsky@users.noreply.github.com)
+
 * Mon May 22 2023 Matěj Grabovský <mgrabovs@redhat.com> 2.17.0-1
 - lib: Fix ‘read size exceeds maximum object’ error (mgrabovs@redhat.com)
 - spec: Bump rpm dependency to 4.18 (mgrabovs@redhat.com)

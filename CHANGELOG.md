@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.17.1]
+### Changed
+- Increase timeout for downloading debuginfos from 20 to 30 minutes
+- Do not show the "Restart" button if the application is not listed in menus
+- Drop non-reportable oopses by default
+
 ## [2.17.0]
 ### Changed
 - Updated library code for RPM 4.19 (#1637)
@@ -340,7 +346,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.17.0...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.17.1...HEAD
+[2.17.1]: https://github.com/abrt/abrt/compare/2.17.0...2.17.1
 [2.17.0]: https://github.com/abrt/abrt/compare/2.16.1...2.17.0
 [2.16.1]: https://github.com/abrt/abrt/compare/2.16.0...2.16.1
 [2.16.0]: https://github.com/abrt/abrt/compare/2.15.1...2.16.0
