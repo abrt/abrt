@@ -274,6 +274,7 @@ This package contains plugin for collecting kernel oopses from pstore storage.
 %package plugin-bodhi
 Summary: %{name}'s bodhi plugin
 Requires: %{name} = %{version}-%{release}
+Requires: abrt-libs = %{version}-%{release}
 Obsoletes: libreport-plugin-bodhi <= 2.0.10
 Provides: libreport-plugin-bodhi = %{version}-%{release}
 
