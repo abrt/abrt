@@ -20,14 +20,15 @@
 # Tiago João Mateus de Almeida <tjamadeira@gmail.com>, 2020.
 # Diego Lima Novaes <diegonovaes@hotmail.com.br>, 2020.
 # Juliano Camargo <julianosc@protonmail.com>, 2020.
-# Hugo Carvalho <hugokarvalho@hotmail.com>, 2021, 2022.
+# Hugo Carvalho <hugokarvalho@hotmail.com>, 2021, 2022, 2023.
+# Gabriel Aguas <gabriel.alex.aguas@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2022-08-06 14:19+0000\n"
-"Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
+"PO-Revision-Date: 2023-08-22 12:21+0000\n"
+"Last-Translator: Gabriel Aguas <gabriel.alex.aguas@gmail.com>\n"
 "Language-Team: Portuguese <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/pt/>\n"
 "Language: pt\n"
@@ -35,7 +36,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 4.13\n"
+"X-Generator: Weblate 4.18.2\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -101,8 +102,8 @@ msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
 msgstr ""
-"Lamentamos, parece que o %s terminou inesperadamente. Se desejar ajudar a "
-"resolver o problema, envie um relatório."
+"Pedimos desculpa, parece que %s terminou inesperadamente. Se desejar ajudar "
+"a resolver o problema, por favor, envie um relatório."
 
 #: ../src/applet/abrt-applet-application.c:701
 msgid ""
@@ -1121,6 +1122,9 @@ msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
 msgstr ""
+"Pretende gerar um traço de pilha localmente? (Pode descarregar uma grande "
+"quantidade de dados, mas o relatório não pode continuar sem o traço de "
+"pilha)."
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -1151,12 +1155,12 @@ msgstr "Preservar esta diretoria"
 #: ../src/plugins/abrt-action-ureport:54
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr "Não foi possível iniciar '%s', mensagem de erro: '%s'"
 
 #: ../src/plugins/abrt-action-ureport:65
 #, c-format
 msgid "Not a number in file '%s'"
-msgstr ""
+msgstr "Não existe um número no ficheiro '%s'"
 
 #: ../src/plugins/abrt-action-ureport:93
 #, c-format
@@ -1166,129 +1170,135 @@ msgstr "Utilização: %s [-v]"
 #: ../src/plugins/abrt-action-ureport:114
 msgid "Unable to get current working directory as it was probably deleted"
 msgstr ""
+"Não é possível obter o diretório de trabalho atual porque provavelmente foi "
+"eliminado"
 
 #: ../src/plugins/abrt-action-ureport:143
 msgid "A bug was already filed about this problem:"
-msgstr ""
+msgstr "Já foi registado um erro sobre este problema:"
 
 #: ../src/plugins/abrt-action-ureport:153
 msgid "uReport was already sent, not sending it again"
-msgstr ""
+msgstr "uReport já foi enviado, não enviar novamente"
 
 #: ../src/plugins/abrt-action-ureport:174
 msgid "Problem comes from unpackaged executable. Unable to create uReport."
 msgstr ""
+"O problema vem do executável não embalado. Não é possível criar o uReport."
 
 #: ../src/plugins/abrt-action-ureport:189
 msgid "Adding you to CC List of the existing bugzilla bug"
-msgstr ""
+msgstr "Adicionando-o à lista CC do erro existente no bugzilla"
 
 #: ../src/plugins/abrt-action-ureport:203
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
-msgstr ""
+msgstr "reporter-ureport falhou com o código de saída %d"
 
 #: ../src/plugins/abrt-gdb-exploitable:524
 msgid "Signal sent by userspace code"
-msgstr ""
+msgstr "Sinal enviado pelo código do espaço do utilizador"
 
 #: ../src/plugins/abrt-gdb-exploitable:528
 msgid "Signal sent by timer/IO/async event"
-msgstr ""
+msgstr "Sinal enviado por um evento de timer/IO/async"
 
 #: ../src/plugins/abrt-gdb-exploitable:536
 msgid "Signal has siginfo.si_code = SI_USER"
-msgstr ""
+msgstr "Sinal tem siginfo.si_code = SI_USER"
 
 #: ../src/plugins/abrt-gdb-exploitable:539
 msgid "Signal due to write to closed pipe"
-msgstr ""
+msgstr "Sinal devido a escrita num tubo fechado"
 
 #: ../src/plugins/abrt-gdb-exploitable:545
 #: ../src/plugins/abrt-gdb-exploitable:570
 msgid "Signal sent by keyboard"
-msgstr ""
+msgstr "Sinal enviado pelo teclado"
 
 #: ../src/plugins/abrt-gdb-exploitable:549
 #: ../src/plugins/abrt-gdb-exploitable:574
 msgid "Job control signal sent by kernel"
-msgstr ""
+msgstr "Sinal de controlo do trabalho enviado pelo kernel"
 
 #: ../src/plugins/abrt-gdb-exploitable:553
 #: ../src/plugins/abrt-gdb-exploitable:582
 msgid "Signal sent by window resize"
-msgstr ""
+msgstr "Sinal enviado por redimensionamento da janela"
 
 #: ../src/plugins/abrt-gdb-exploitable:557
 #: ../src/plugins/abrt-gdb-exploitable:586
 msgid "Signal sent by alarm(N) expiration"
-msgstr ""
+msgstr "Sinal enviado pela expiração do alarme(N)"
 
 #: ../src/plugins/abrt-gdb-exploitable:578
 msgid "Signal due to write to broken pipe"
-msgstr ""
+msgstr "Sinal devido a escrita num tubo danificado"
 
 #: ../src/plugins/abrt-gdb-exploitable:602
 msgid "ABRT signal (abort() was called?)"
-msgstr ""
+msgstr "Sinal ABRT (abort() foi chamado?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:611
 msgid "XCPU signal (over CPU time limit)"
-msgstr ""
+msgstr "Sinal XCPU (acima do tempo limite do CPU)"
 
 #: ../src/plugins/abrt-gdb-exploitable:615
 msgid "XFSZ signal (over file size limit)"
-msgstr ""
+msgstr "Sinal XFSZ (limite de tamanho do ficheiro)"
 
 #: ../src/plugins/abrt-gdb-exploitable:619
 msgid "TRAP signal (can be a bug in a debugger/tracer)"
-msgstr ""
+msgstr "Sinal TRAP (pode ser um erro num depurador/rastreador)"
 
 #: ../src/plugins/abrt-gdb-exploitable:623
 msgid "SYS signal (unknown syscall was called?)"
-msgstr ""
+msgstr "Sinal SYS (foi chamada uma syscall desconhecida?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:628
 msgid "Arithmetic exception"
-msgstr ""
+msgstr "Exceção aritmética"
 
 #: ../src/plugins/abrt-gdb-exploitable:632
 msgid "Division by zero"
-msgstr ""
+msgstr "Divisão por zero"
 
 #: ../src/plugins/abrt-gdb-exploitable:636
 msgid "Illegal instruction (jump to a random address?)"
-msgstr ""
+msgstr "Instrução ilegal (saltar para um endereço aleatório?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:642
 msgid "Non-crash related signal"
-msgstr ""
+msgstr "Sinal não relacionado com falha"
 
 #: ../src/plugins/abrt-gdb-exploitable:647
 msgid "Stack overflow"
-msgstr ""
+msgstr "Stack overflow"
 
 #: ../src/plugins/abrt-gdb-exploitable:651
 msgid "Write to an invalid address"
-msgstr ""
+msgstr "Escrever para um endereço inválido"
 
 #: ../src/plugins/abrt-gdb-exploitable:655
 msgid "Subroutine return to an invalid address (corrupted stack?)"
-msgstr ""
+msgstr "Retorno da sub-rotina para um endereço inválido (pilha corrompida?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:661
 #: ../src/plugins/abrt-gdb-exploitable:665
 msgid "Jump to an invalid address"
-msgstr ""
+msgstr "Saltar para um endereço inválido"
 
 #: ../src/plugins/abrt-gdb-exploitable:669
 msgid ""
 "Access past the end of mapped file, invalid address, unaligned access, etc."
 msgstr ""
+"Acesso para além do fim do ficheiro mapeado, endereço inválido, acesso não "
+"alinhado, etc."
 
 #: ../src/plugins/abrt-gdb-exploitable:688
 msgid "Can't get signal no and do exploitability analysis\n"
 msgstr ""
+"Não é possível obter o sinal não e efetuar uma análise de explorabilidade\n"
 
 #: ../src/plugins/abrt-gdb-exploitable:701
 msgid "Likely crash reason: "
@@ -2213,11 +2223,11 @@ msgstr ""
 
 #: ../src/cli/abrtcli/cli/remove.py:37
 msgid "Are you sure you want to delete this problem?"
-msgstr ""
+msgstr "Tem a certeza de que pretende eliminar este problema?"
 
 #: ../src/cli/abrtcli/cli/remove.py:41
 msgid "Removed"
-msgstr ""
+msgstr "Removido"
 
 #: ../src/cli/abrtcli/cli/report.py:23
 msgid "remove after reporting"
