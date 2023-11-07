@@ -705,24 +705,26 @@ char *abrt_koops_extract_version(const char *linepointer)
  *
  *  'P' - Proprietary module has been loaded.
  *  'F' - Module has been forcibly loaded.
- *  'S' - SMP with CPUs not designed for SMP.
- *  'R' - User forced a module unload.
+ *  'S' - Kernel running on an out of specification system.
+ *  'R' - Module was force unloaded.
  *  'M' - System experienced a machine check exception.
- *  'B' - System has hit bad_page.
- *  'U' - Userspace-defined naughtiness.
- *  'D' - Kernel has oopsed before
- *  'A' - ACPI table overridden.
- *  'W' - Taint on warning.
- *  'C' - modules from drivers/staging are loaded.
- *  'I' - Working around severe firmware bug.
+ *  'B' - Bad page referenced or some unexpected page flags.
+ *  'U' - Taint requested by userspace application.
+ *  'D' - Kernel has oopsed before.
+ *  'A' - ACPI table overridden by user.
+ *  'W' - Kernel issued warning.
+ *  'C' - Staging driver was loaded.
+ *  'I' - Workaround for bug in platform firmware applied.
  *  'O' - Out-of-tree module has been loaded.
  *  'E' - Unsigned module has been loaded.
  *  'L' - A soft lockup has previously occurred.
  *  'K' - Kernel has been live patched.
+ *  'X' - Auxiliary taint, defined for and used by distros.
+ *  'T' - Kernel was built with the struct randomization plugin.
+ *  'N' - An in-kernel test has been run.
  *
  * Compatibility flags from older versions and downstream sources:
  *  'H' - Hardware is unsupported.
- *  'T' - Tech_preview
  */
 
 char *abrt_kernel_tainted_short(const char *kernel_bt)
@@ -772,31 +774,31 @@ char *abrt_kernel_tainted_short(const char *kernel_bt)
 }
 
 static const char *const tnts_long[] = {
-    /* A */ "ACPI table overridden.",
-    /* B */ "System has hit bad_page.",
-    /* C */ "Modules from drivers/staging are loaded.",
-    /* D */ "Kernel has oopsed before",
+    /* A */ "ACPI table overridden by user.",
+    /* B */ "Bad page referenced or some unexpected page flags.",
+    /* C */ "Staging driver was loaded.",
+    /* D */ "Kernel has oopsed before.",
     /* E */ "Unsigned module has been loaded.",
     /* F */ "Module has been forcibly loaded.",
             /* We don't want to be more descriptive about G flag */
     /* G */ NULL, /* "Proprietary module has not been loaded." */
     /* H */ NULL,
-    /* I */ "Working around severe firmware bug.",
+    /* I */ "Workaround for bug in platform firmware applied.",
     /* J */ NULL,
     /* K */ "Kernel has been live patched.",
     /* L */ "A soft lockup has previously occurred.",
     /* M */ "System experienced a machine check exception.",
-    /* N */ NULL,
+    /* N */ "An in-kernel test has been run.",
     /* O */ "Out-of-tree module has been loaded.",
     /* P */ "Proprietary module has been loaded.",
     /* Q */ NULL,
-    /* R */ "User forced a module unload.",
-    /* S */ "SMP with CPUs not designed for SMP.",
-    /* T */ NULL,
-    /* U */ "Userspace-defined naughtiness.",
+    /* R */ "Module was force unloaded.",
+    /* S */ "Kernel running on an out of specification system.",
+    /* T */ "Kernel was built with the struct randomization plugin.",
+    /* U */ "Taint requested by userspace application.",
     /* V */ NULL,
-    /* W */ "Taint on warning.",
-    /* X */ NULL,
+    /* W */ "Kernel issued warning.",
+    /* X */ "Auxiliary taint, defined for and used by distros.",
     /* Y */ NULL,
     /* Z */ NULL,
 };
