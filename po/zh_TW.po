@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Cheng-Chia Tseng <pswo10680@gmail.com>, 2011-2012
+# Cheng-Chia Tseng <pswo10680@gmail.com>, 2011-2012, 2023.
 # Chester Cheng <ccheng@redhat.com>, 2012
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
 # Terry Chuang <tchuang@redhat.com>, 2011-2013
@@ -11,22 +11,22 @@
 # Ding-Yi Chen <dingyichen@gmail.com>, 2016. #zanata
 # Jakub Filak <jfilak@redhat.com>, 2016. #zanata
 # 張仁傑 <s9727453@gmail.com>, 2016. #zanata
-# Cheng-Chia Tseng <pswo10680@gmail.com>, 2017. #zanata
+# Cheng-Chia Tseng <pswo10680@gmail.com>, 2017. #zanata, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2017-09-05 03:02+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/fedora-"
-"abrt/language/zh_TW/)\n"
+"PO-Revision-Date: 2023-11-10 11:29+0000\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
+"Language-Team: Chinese (Traditional) <https://translate.fedoraproject.org/"
+"projects/abrt/abrt/zh_TW/>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Zanata 4.6.2\n"
+"X-Generator: Weblate 5.1.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -38,19 +38,11 @@ msgstr "檢視與回報應用程式崩潰"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
-msgstr ""
+msgstr "詳盡模式"
 
 #: ../src/applet/abrt-applet-application.c:167
-#, fuzzy
-#| msgid ""
-#| "& [-v] [DIR]...\n"
-#| "\n"
-#| "Applet which notifies user when new problems are detected by ABRT\n"
 msgid "Applet which notifies user when new problems are detected by ABRT"
-msgstr ""
-"& [-v] [DIR]...\n"
-"\n"
-"新問題被 ABRT 偵測到時通知使用者的面板程式\n"
+msgstr "新問題被 ABRT 偵測到時通知使用者的面板程式"
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
@@ -467,10 +459,8 @@ msgstr ""
 "WatchCrashdumpArchiveDir 選項的其中一值"
 
 #: ../src/daemon/abrt-upload-watch.c:281
-#, fuzzy
-#| msgid "Daemize"
 msgid "Daemonize"
-msgstr "幕後處理"
+msgstr "幕後運行"
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
@@ -1115,7 +1105,7 @@ msgstr "忽略選項"
 
 #: ../src/plugins/abrt-action-install-debuginfo-to-abrt-cache.c:73
 msgid "OS release version"
-msgstr ""
+msgstr "OS 發行版本"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
 msgid ""
@@ -1194,7 +1184,7 @@ msgstr "uReport 已經送出，不再傳送"
 
 #: ../src/plugins/abrt-action-ureport:174
 msgid "Problem comes from unpackaged executable. Unable to create uReport."
-msgstr ""
+msgstr "問題來自未打包的可執行檔。無法建立 uReport。"
 
 #: ../src/plugins/abrt-action-ureport:189
 msgid "Adding you to CC List of the existing bugzilla bug"
@@ -1300,12 +1290,9 @@ msgid "Jump to an invalid address"
 msgstr "跳入無效的位址"
 
 #: ../src/plugins/abrt-gdb-exploitable:669
-#, fuzzy
-#| msgid ""
-#| "Access past the end of mapped file, invalid address, unaligned access, etc"
 msgid ""
 "Access past the end of mapped file, invalid address, unaligned access, etc."
-msgstr "存取已通過映射檔案的結尾、無效的位址、無對齊的存取…等"
+msgstr "存取已通過映射檔案的結尾、無效的位址、無對齊的存取…等。"
 
 #: ../src/plugins/abrt-gdb-exploitable:688
 msgid "Can't get signal no and do exploitability analysis\n"
@@ -1417,7 +1404,7 @@ msgstr "找到更多 oops：僅處理第一則"
 #: ../src/plugins/abrt-dump-journal-core.c:378
 #, c-format
 msgid "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
-msgstr ""
+msgstr "UID=%9i; SIG=%2i (%4s); EXE=%s\n"
 
 #: ../src/plugins/abrt-dump-journal-core.c:407
 #: ../src/plugins/abrt-dump-journal-core.c:446
@@ -1431,10 +1418,8 @@ msgid "Not saving repeating crash after %ds (limit is %ds)"
 msgstr "在 %d 秒內不再儲存重複崩潰 (限制為 %d 秒)"
 
 #: ../src/plugins/abrt-dump-journal-core.c:478
-#, fuzzy
-#| msgid "Failed to save detect problem data in abrt database"
 msgid "Failed to print detect problem data to stdout"
-msgstr "無法在 abrt 資料庫中儲存偵測問題資料"
+msgstr "無法列印偵測問題資料到 stdout"
 
 #: ../src/plugins/abrt-dump-journal-core.c:486
 msgid "Failed to save detect problem data in abrt database"
@@ -1901,8 +1886,6 @@ msgid ""
 msgstr "在上傳封存檔之前，不要檢查追溯伺服器是否可以處理給定的軟體包"
 
 #: ../src/plugins/abrt-retrace-client.c:1261
-#, fuzzy
-#| msgid "retrace server URL"
 msgid "retrace server URI"
 msgstr "追溯伺服器網址"
 
@@ -1976,7 +1959,7 @@ msgstr "未知操作：%s。"
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:1
 msgid "Search for updated packages that fixes the crash."
-msgstr ""
+msgstr "搜尋可修正該崩潰的更新軟體包。"
 
 #: ../src/plugins/analyze_BodhiUpdates.xml.in.h:2
 msgid ""
@@ -2021,8 +2004,6 @@ msgstr ""
 "including your private data, if any."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-#, fuzzy
-#| msgid "Retrace server URL"
 msgid "Retrace server URI"
 msgstr "追溯伺服器網址"
 
@@ -2102,17 +2083,14 @@ msgstr ""
 "遭遇一項內核問題，但實際上並不受支援您的硬體，因此內核維護者無法修正此問題。"
 
 #: ../src/plugins/oops-utils.c:246
-#, fuzzy, c-format
-#| msgid ""
-#| "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
-#| "Kernel maintainers are unable to diagnose tainted reports."
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Explanation:\n"
 "%sKernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"遭遇一項內核問題，但您的內核已經損壞 (旗標：%s)。內核維護者無法診斷損壞的回報"
-"有什麼問題。"
+"遭遇一項內核心問題，但您的內核心已經損壞（旗標：%s）。預期：\n"
+"%s內核心維護者無法診斷損壞的回報有什麼問題。"
 
 #: ../src/plugins/oops-utils.c:254
 #, c-format
@@ -2183,7 +2161,7 @@ msgstr "刪除找到的 oops 其檔案"
 
 #: ../src/cli/abrtcli/match.py:117
 msgid "No matching problems found"
-msgstr ""
+msgstr "找不到符合的問題"
 
 #: ../src/cli/abrtcli/utils.py:79
 msgid "Not reportable"
@@ -2191,61 +2169,47 @@ msgstr "無可回報"
 
 #: ../src/cli/abrtcli/cli/__init__.py:30
 msgid "increase output verbosity"
-msgstr ""
+msgstr "增加輸出的詳盡程度"
 
 #: ../src/cli/abrtcli/cli/__init__.py:50
 msgid "positive non-zero integer expected"
-msgstr ""
+msgstr "預期正的非零整數"
 
 #: ../src/cli/abrtcli/cli/__init__.py:54
-#, fuzzy
-#| msgid "List problems"
 msgid "filter last N problems"
-msgstr "列出問題"
+msgstr "篩選出最近 N 個問題"
 
 #: ../src/cli/abrtcli/cli/__init__.py:57
 msgid "filter problems with matching component"
-msgstr ""
+msgstr "篩選出符合組件的問題"
 
 #: ../src/cli/abrtcli/cli/__init__.py:59
-#, fuzzy
-#| msgid "List only not-reported problems"
 msgid "filter unreported problems"
-msgstr "僅列出尚未回報的問題"
+msgstr "篩選出未回報的問題"
 
 #: ../src/cli/abrtcli/cli/__init__.py:61
-#, fuzzy
-#| msgid "List only the problems older than specified timestamp"
 msgid "filter problems older than the specified timestamp"
-msgstr "僅列出比指定的時間戳記更之前的問題"
+msgstr "篩選出比指定的時間戳記更之前的問題"
 
 #: ../src/cli/abrtcli/cli/__init__.py:63
-#, fuzzy
-#| msgid "List only the problems older than specified timestamp"
 msgid "filter problems newer than the specified timestamp"
-msgstr "僅列出比指定的時間戳記更之前的問題"
+msgstr "篩選出比指定的時間戳記更之後的問題"
 
 #: ../src/cli/abrtcli/cli/__init__.py:66
 msgid "filter problems with matching executable"
-msgstr ""
+msgstr "篩選出符合可執行檔的問題"
 
 #: ../src/cli/abrtcli/cli/__init__.py:71
-#, fuzzy
-#| msgid "Output format"
 msgid "output format"
 msgstr "輸出格式"
 
 #: ../src/cli/abrtcli/cli/__init__.py:74
-#, fuzzy
-#| msgid "Built-in output format"
 msgid "built-in output format"
 msgstr "內建輸出格式"
 
 #: ../src/cli/abrtcli/cli/__init__.py:79
-#, fuzzy
-#| msgid "Make the problem directory world readable"
 msgid "path to the problem directory, problem ID or wildcard"
-msgstr "讓問題目錄全世界都可以讀取"
+msgstr "問題目錄的路徑、問題 ID 或萬用字符"
 
 #: ../src/cli/abrtcli/cli/backtrace.py:35
 msgid "Problem has no backtrace"
@@ -2256,16 +2220,12 @@ msgid "Start retracing process?"
 msgstr "開始追溯程序？"
 
 #: ../src/cli/abrtcli/cli/gdb.py:25
-#, fuzzy
-#| msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgid "install debuginfo packages before launching GDB"
-msgstr "下載 debuginfo 軟體包並透過本地端的 GDB 產生回溯資訊"
+msgstr "在啟動 GDB 之前先安裝 debuginfo 軟體包"
 
 #: ../src/cli/abrtcli/cli/gdb.py:38
-#, fuzzy
-#| msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
 msgid "The problem is not of a C/C++ type. Can't run GDB"
-msgstr "{} 問題不屬 C/C++ 類型。無法安裝 debuginfo"
+msgstr "問題不屬 C/C++ 類型。無法執行 GDB"
 
 #: ../src/cli/abrtcli/cli/gdb.py:52
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:45
@@ -2277,18 +2237,14 @@ msgstr ""
 "如果這式系統問題，請試著以 root 身份執行此指令"
 
 #: ../src/cli/abrtcli/cli/install_debuginfo.py:36
-#, fuzzy
-#| msgid "{} problem is not of a C/C++ type. Can't install debuginfo"
 msgid "The problem is not of a C/C++ type. Can't install debuginfo"
-msgstr "{} 問題不屬 C/C++ 類型。無法安裝 debuginfo"
+msgstr "問題不屬 C/C++ 類型。無法安裝 debuginfo"
 
 #: ../src/cli/abrtcli/cli/list.py:34
 msgid "No problems"
 msgstr "沒有問題"
 
 #: ../src/cli/abrtcli/cli/remove.py:22
-#, fuzzy
-#| msgid "Do not prompt before removal"
 msgid "do not prompt before removal"
 msgstr "不要在移除前先提示"
 
@@ -2302,46 +2258,34 @@ msgstr "已移除"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/abrtcli/cli/report.py:23
-#, fuzzy
-#| msgid "Remove PROBLEM_DIR after reporting"
 msgid "remove after reporting"
-msgstr "在回報後移除 PROBLEM_DIR"
+msgstr "在回報後移除"
 
 #: ../src/cli/abrtcli/cli/report.py:25
-#, fuzzy
-#| msgid "Not reportable"
 msgid "ignore unreportable state"
-msgstr "無可回報"
+msgstr "忽略未回報的狀態"
 
 #: ../src/cli/abrtcli/cli/report.py:41
-#, fuzzy, python-brace-format
-#| msgid "Problem '%s' cannot be reported"
+#, python-brace-format
 msgid "Problem '{0}' cannot be reported"
 msgstr "無法回報「%s」問題"
 
 #: ../src/cli/abrtcli/cli/report.py:50
-#, fuzzy, python-format
-#| msgid "Report problem"
+#, python-format
 msgid "Reporting problem %s\n"
-msgstr "移除問題"
+msgstr "回報問題 %s\n"
 
 #: ../src/cli/abrtcli/cli/retrace.py:24
-#, fuzzy
-#| msgid "Perform local retracing"
 msgid "perform retracing locally"
 msgstr "執行本機追溯"
 
 #: ../src/cli/abrtcli/cli/retrace.py:26
-#, fuzzy
-#| msgid "Send core dump to remote retrace server for analysis"
 msgid "submit core dump for remote retracing"
-msgstr "傳送核心傾印至遠端追溯伺服器來分析"
+msgstr "提交核心傾印以供遠端追溯"
 
 #: ../src/cli/abrtcli/cli/retrace.py:29
-#, fuzzy
-#| msgid "Local retracing"
 msgid "force retracing"
-msgstr "本機追溯"
+msgstr "強制追溯"
 
 #: ../src/cli/abrtcli/cli/retrace.py:47
 msgid "Problem already has a backtrace"
@@ -2378,20 +2322,16 @@ msgid "Local retracing"
 msgstr "本機追溯"
 
 #: ../src/cli/abrtcli/cli/status.py:17
-#, fuzzy
-#| msgid "List only not-reported problems"
 msgid "show only the number of problems"
-msgstr "僅列出尚未回報的問題"
+msgstr "僅顯示問題數量"
 
 #: ../src/cli/abrtcli/cli/status.py:19
 msgid "only show output if at least one problem is found"
-msgstr ""
+msgstr "僅在至少找到一個問題時顯示輸出"
 
 #: ../src/cli/abrtcli/cli/status.py:40
-#, fuzzy
-#| msgid "ABRT has detected {} problem(s). For more info run: abrt list{}"
 msgid "ABRT has detected a problem. For more information, run “abrt list{}”"
-msgstr "ABRT 已偵測到 { } 個問題。若想瞭解更多資訊請執行： abrt list{}"
+msgstr "ABRT 已偵測到一個問題。若想瞭解更多資訊，請執行「abrt list{}」"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
