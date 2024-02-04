@@ -35,7 +35,8 @@ endif
 libexec_SCRIPTS = \
     abrt-action-generate-machine-id \
     abrt-action-ureport \
-    abrt-gdb-exploitable
+    abrt-gdb-exploitable \
+    abrt-action-coredump
 
 eventsdir = $(EVENTS_DIR)
 
