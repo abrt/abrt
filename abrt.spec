@@ -49,7 +49,7 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 2.17.1
+Version: 2.17.2
 Release: 1
 License: GPL-2.0-or-later
 URL: https://abrt.readthedocs.org/
@@ -966,6 +966,16 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Sun Feb 04 2024 Michal Srb <michal@redhat.com> 2.17.2-1
+- spec: bump libreport version to 2.17.13 (michal@redhat.com)
+- Add abrt-action-coredump for unpacking coredumps (michal@redhat.com)
+- Maintain compressed coredump files in the problem directory (michal@redhat.com)
+- Update systemd settings (michal@redhat.com)
+- spec: plugin-bodhi requires abrt-libs (michal@redhat.com)
+- Update translations (mgrabovsky@users.noreply.github.com)
+- lib: kernel: Update kernel taint flag descriptions (marcan@marcan.st)
+- abrtd: remove livesys.service reference from the systemd unit file (michal@redhat.com)
+
 * Fri Jun 30 2023 Michal Srb <michal@redhat.com> 2.17.1-1
 - applet: only show the restart button for apps that are listed in menus
   (michal@redhat.com)

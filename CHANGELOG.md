@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.17.2]
 ### Added
 - Add abrt-action-coredump for unpacking coredumps
 - spec: plugin-bodhi requires abrt-libs
@@ -354,7 +356,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.17.1...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.17.2...HEAD
+[2.17.2]: https://github.com/abrt/abrt/compare/2.17.1...2.17.2
 [2.17.1]: https://github.com/abrt/abrt/compare/2.17.0...2.17.1
 [2.17.0]: https://github.com/abrt/abrt/compare/2.16.1...2.17.0
 [2.16.1]: https://github.com/abrt/abrt/compare/2.16.0...2.16.1
