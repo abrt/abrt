@@ -1,0 +1,105 @@
+#!/usr/bin/python3 -u
+
+import argparse
+import logging
+import os
+import re
+import sys
+
+from reportclient import (_, RETURN_OK, RETURN_FAILURE)
+import report
+
+
+FILENAME_COREDUMP = "coredump"
+
+logging.basicConfig(
+    format="%(name)s [%(levelname)s] %(message)s",
+    level=logging.WARNING
+)
+logger = logging.getLogger("abrt-action-coredump")
+
+
+def find_coredump_archive(dd_path):
+    coredump_pattern = re.compile(FILENAME_COREDUMP + r"\.(zst|lz4|xz)")
+    for _, _, files in os.walk(dd_path):
+        for filename in files:
+            if re.match(coredump_pattern, filename):
+                return filename
+    return None
+
+
+def unpack(dd_path):
+    if os.path.exists(os.path.join(dd_path, FILENAME_COREDUMP)):
+        logger.info('coredump already exists, skipping...')
+        sys.exit(RETURN_OK)
+
+    coredump_archive_filename = find_coredump_archive(dd_path)
+    if not coredump_archive_filename:
+        logger.error(_("coredump file is missing"))
+        sys.exit(RETURN_FAILURE)
+
+    dd = report.dd_opendir(dd_path)
+    dd.unpack_coredump(coredump_archive_filename)
+
+
+def remove(dd_path):
+    try:
+        coredump_path = os.path.join(dd_path, FILENAME_COREDUMP)
+        os.remove(coredump_path)
+    except FileNotFoundError:
+        logger.debug(_("No coredump in: %s"), coredump_path)
+
+
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(
+        prog=os.path.basename(sys.argv[0]),
+        description="Handle coredump in the problem directory."
+    )
+
+    parser.add_argument("-d", "--problem-dir",
+        type=str, default=".",
+        help="Path to the problem directory"
+    )
+    parser.add_argument("-x", "--unpack",
+        action='store_true',
+        help="Unpack the coredump, if needed"
+    )
+    parser.add_argument("-r", "--remove",
+        action='store_true',
+        help="Remove the coredump"
+    )
+    parser.add_argument(
+        '-v', '--verbose',
+        action='store_true',
+        help="Be verbose"
+    )
+
+    args = parser.parse_args()
+
+    if not args.unpack and not args.remove:
+        parser.print_help(sys.stderr)
+        sys.exit(RETURN_FAILURE)
+
+    try:
+        dd_path = os.path.abspath(args.problem_dir)
+    except FileNotFoundError as ex:
+        logging.error(_("Problem directory error: %s"), ex)
+        sys.exit(RETURN_FAILURE)
+
+    ABRT_VERBOSE = os.getenv("ABRT_VERBOSE")
+    if ABRT_VERBOSE:
+        try:
+            args.verbose = int(ABRT_VERBOSE)
+        except ValueError:
+            pass
+
+    if args.verbose > 0:
+        logger.setLevel(logging.INFO)
+
+    if args.unpack:
+        unpack(dd_path)
+    elif args.remove:
+        remove(dd_path)
+
+    sys.exit(RETURN_OK)

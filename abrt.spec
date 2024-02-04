@@ -784,6 +784,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
 %{_mandir}/man5/abrt-CCpp.conf.5*
 %{_libexecdir}/abrt-gdb-exploitable
+%{_libexecdir}/abrt-action-coredump
 %config(noreplace) %{_sysconfdir}/libreport/plugins/catalog_journal_ccpp_format.conf
 %{_unitdir}/abrt-journal-core.service
 %{_journalcatalogdir}/abrt_ccpp.catalog
