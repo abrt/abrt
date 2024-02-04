@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Add abrt-action-coredump for unpacking coredumps
+- spec: plugin-bodhi requires abrt-libs
+
+### Changed
+- Keep coredumps compressed in the problem directory, unpack when needed
+- Update systemd settings - https://fedoraproject.org/wiki/Changes/SystemdSecurityHardening (Thanks to Tim Lawrence)
+- abrtd: remove livesys.service reference from the systemd unit file (rhbz#2171200)
 
 ## [2.17.1]
 ### Changed
