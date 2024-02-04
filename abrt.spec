@@ -44,7 +44,7 @@
 %endif
 
 %define glib_ver 2.73.3
-%define libreport_ver 2.14.0
+%define libreport_ver 2.17.13
 %define satyr_ver 0.24
 
 Summary: Automatic bug detection and reporting tool
