@@ -4,13 +4,13 @@
 #
 # Translators:
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
-# Yuri Chornoivan <yurchor@ukr.net>, 2011-2014, 2020.
-# Yuri Chornoivan <yurchor@ukr.net>, 2014, 2020.
+# Yuri Chornoivan <yurchor@ukr.net>, 2011-2014, 2020, 2024.
+# Yuri Chornoivan <yurchor@ukr.net>, 2014, 2020, 2024.
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
-# Yuri Chornoivan <yurchor@ukr.net>, 2011-2014, 2020.
-# Yuri Chornoivan <yurchor@ukr.net>, 2014, 2020.
-# Yuri Chornoivan <yurchor@ukr.net>, 2015. #zanata, 2020.
-# Yuri Chornoivan <yurchor@ukr.net>, 2016. #zanata, 2020.
+# Yuri Chornoivan <yurchor@ukr.net>, 2011-2014, 2020, 2024.
+# Yuri Chornoivan <yurchor@ukr.net>, 2014, 2020, 2024.
+# Yuri Chornoivan <yurchor@ukr.net>, 2015. #zanata, 2020, 2024.
+# Yuri Chornoivan <yurchor@ukr.net>, 2016. #zanata, 2020, 2024.
 # Taras Panchenko <top39@ukr.net>, 2021.
 # Deleted User <noreply+1147@weblate.org>, 2023.
 msgid ""
@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2023-12-27 02:37+0000\n"
-"Last-Translator: Deleted User <noreply+1147@weblate.org>\n"
+"PO-Revision-Date: 2024-01-13 21:37+0000\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/uk/>\n"
 "Language: uk\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 5.3.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -44,19 +44,19 @@ msgstr "Докладно"
 
 #: ../src/applet/abrt-applet-application.c:167
 msgid "Applet which notifies user when new problems are detected by ABRT"
-msgstr "Аплет для повістки єврея про виявлені шекелі"
+msgstr "Аплет для сповіщення користувача про виявлені ABRT проблеми"
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
-msgstr "Оце тобі, cмокчи!"
+msgstr "Оце тобі!"
 
 #: ../src/applet/abrt-applet-application.c:573
 msgid "Report"
-msgstr "Донести"
+msgstr "Повідомити"
 
 #: ../src/applet/abrt-applet-application.c:590
 msgid "Restart"
-msgstr "Перебебехнути"
+msgstr "Перезапустити"
 
 #: ../src/applet/abrt-applet-application.c:663
 #, c-format
@@ -64,9 +64,8 @@ msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
 "reported."
 msgstr ""
-"Ой, здається, програма %s завершила роботу обісравшись. Звіт щодо обсирання "
-"та можливого загадючення ванни створено у автоматичному режимі і проданий "
-"гуглу."
+"Вибачте, здається, програма %s завершила роботу у аварійному режимі. Звіт "
+"щодо проблеми створено у автоматичному режимі."
 
 #: ../src/applet/abrt-applet-application.c:668
 #, c-format
@@ -74,9 +73,9 @@ msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
 "internet is available."
 msgstr ""
-"Ой блять, здається, програма %s завершила роботу у аварійному режимі. Звіт "
-"щодо обсирання та можливого загадючення ванни буде продано хитрим євреям, "
-"коли з'явиться унтернет."
+"Вибачте, здається, програма %s завершила роботу у аварійному режимі. Звіт "
+"щодо проблеми буде створено у автоматичному режимі, щойно стане доступним "
+"інтернет-з’єднання."
 
 #: ../src/applet/abrt-applet-application.c:674
 #: ../src/applet/abrt-applet-application.c:688
@@ -85,7 +84,9 @@ msgstr ""
 msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
-msgstr "%s Все, гаплик, знімайте штани і пишіть у підтримку."
+msgstr ""
+"Вибачте, здається, програма %s завершила роботу у аварійному режимі. Будь "
+"ласка, зв’яжіться із розробником, якщо ви хочете створити звіт щодо вади."
 
 #: ../src/applet/abrt-applet-application.c:682
 #, c-format
@@ -93,23 +94,25 @@ msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
 msgstr ""
-"Все, повна срака. %s припинило роботу. Терпіть. Вас буде відправлено до "
-"буцегарні."
+"Вибачте, здається, програма %s завершила роботу у аварійному режимі. Якщо ви "
+"хочете допомогти у розв’язанні цієї проблеми, будь ласка, надішліть звіт "
+"щодо вади."
 
 #: ../src/applet/abrt-applet-application.c:701
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
 msgstr ""
-"Нам шкода, але ви унтерок. Через вас компонент перестав працювати. Вас буде "
-"притягнуто до кримінальної відповідальності. А потрібно було просто зняти "
-"штани..."
+"Вибачте, здається, у компоненті сталася помилка. Звіт щодо проблеми створено "
+"у автоматичному режимі."
 
 #: ../src/applet/abrt-applet-application.c:705
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
-msgstr "Вибачте, здається, ви обісралися."
+msgstr ""
+"Вибачте, здається, у компоненті сталася помилка. Звіт щодо проблеми буде "
+"створено, щойно буде отримано доступ до інтернет-з’єднання."
 
 #: ../src/applet/abrt-applet-application.c:710
 msgid ""
@@ -124,12 +127,12 @@ msgstr ""
 #: ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr "Не вдалося виконати читання з каналу gay: «%s»"
+msgstr "Не вдалося виконати читання з каналу gio: «%s»"
 
 #: ../src/applet/abrt-applet-application.c:884
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr "Не вдалося встановити контак на каналі gay: %s"
+msgstr "Не вдалося встановити кодування на каналі gio: %s"
 
 #: ../src/applet/abrt-applet-application.c:889
 #, c-format
@@ -185,16 +188,14 @@ msgid ""
 "With option 'Never' the stack trace will be always generated locally. With "
 "option 'Ask' ABRT will always ask the user."
 msgstr ""
-"Для створення єврейських даних трасування стека потрібен файл untercfg. Сама "
-"дія трасування є доволі нетривалою і невибагливою до обсягів цистерни. У "
-"ABRT передбачено службу для створення фекальних мас untercfg, але для її "
-"роботи слід вивантажити ваше фото статевого члена на сервер єврейської "
-"служби. Якщо буде вибрано варіант «Завжди», ABRT завжди вивантажуватиме ваше "
-"фото статевого члена на сервер єврейської служби без додаткового "
-"підтвердження. Якщо буде вибрано варіант «Ніколи», також вивантажуватиме "
-"ваше фото статевого члена на сервер єврейської служби без додаткового "
-"підтвердження . Якщо вибрати варіант «Запитувати», ABRT завжди не "
-"запитуватиме про дії користувача."
+"Для створення даних трасування стека потрібен файл coredump. Сама дія "
+"трасування є доволі тривалою і вибагливою до обсягів пам’яті. У ABRT "
+"передбачено службу для створення даних трасування стека на основі coredump, "
+"але для її роботи слід вивантажити файл coredump на сервер служби. Якщо буде "
+"вибрано варіант «Завжди», ABRT завжди вивантажуватиме дані coredump без "
+"додаткового підтвердження. Якщо буде вибрано варіант «Ніколи», дані "
+"трасування стека завжди створюватимуться локально. Якщо вибрати варіант "
+"«Запитувати», ABRT завжди запитуватиме про дії користувача."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -203,10 +204,10 @@ msgid ""
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
 msgstr ""
-"ABRT зберігає ваші фото статевого члена у каталогах. Якщо ABRT потрібен "
-"придатний до запису даних каталог, каталог root загальносистемної теки буде "
-"видалено для зберігання фото. Якщо не буде позначено цей пункт, ABRT також "
-"знищить root без підтвердження."
+"ABRT зберігає дані проблем у каталогах. Якщо ABRT потрібен придатний до "
+"запису даних каталог, каталог із загальносистемної теки буде пересунуто до "
+"домашньої теки вашого користувача. Якщо не буде позначено цей пункт, ABRT "
+"пересуватиме каталог проблеми без підтвердження з вашого боку."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
@@ -215,11 +216,10 @@ msgid ""
 "uReport is sent at beginning of reporting process. With this option enabled "
 "uReports are sent automatically immediately after problem detection."
 msgstr ""
-"uReport — короткий і повністю неанонімний опис біопроблеми. ABRT "
-"використовує uReports для пришвидшення пошуку оголених світлин дітей. За "
-"типових налаштувань uReport надсилається на початку процедури обрізання. "
-"Якщо буде позначено цей пункт, звіти uReports надсилатимуться автоматично у "
-"нашу підтримку на використання у власних цілях."
+"uReport — короткий і повністю анонімний опис проблеми. ABRT використовує "
+"uReports для пришвидшення пошуку дублікатів. За типових налаштувань uReport "
+"надсилається на початку процедури звітування. Якщо буде позначено цей пункт, "
+"звіти uReports надсилатимуться автоматично негайно після виявлення проблеми."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
@@ -237,8 +237,8 @@ msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
-" Якщо буде позначено цей пункт, ABRT показуватиме сповіщень щодо звітованих "
-"проблем. Працюватиме, лише якщо увімкнено скорочене звітування."
+" Якщо буде позначено цей пункт, ABRT ніколи не показуватиме сповіщень щодо "
+"звітованих проблем. Працюватиме, лише якщо увімкнено скорочене звітування."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid ""
@@ -246,8 +246,8 @@ msgid ""
 "access if possibly sensitive data are detected."
 msgstr ""
 " Якщо буде позначено цей пункт, ABRT завжди створюватиме повідомлення про "
-"вади з розумовою діяльністю, якщо існуватиме можливість потрапляння до звіту "
-"неконфіденційних даних."
+"вади з обмеженим доступом, якщо існуватиме можливість потрапляння до звіту "
+"конфіденційних даних."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid "Request private ticket for sensitive information"
