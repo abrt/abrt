@@ -49,7 +49,7 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 2.17.2
+Version: 2.17.4
 Release: 1
 License: GPL-2.0-or-later
 URL: https://abrt.readthedocs.org/
@@ -966,6 +966,9 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Mon Feb 12 2024 Michal Srb <michal@redhat.com>
+- Do not fail if coredump.zst doesn't exist in the problem directory (michal@redhat.com)
+
 * Sun Feb 04 2024 Michal Srb <michal@redhat.com> 2.17.2-1
 - spec: bump libreport version to 2.17.13 (michal@redhat.com)
 - Add abrt-action-coredump for unpacking coredumps (michal@redhat.com)

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.17.4]
+### Fixed
+- Do not fail if coredump.zst doesn't exist in the problem directory
+
 ## [2.17.2]
 ### Added
 - Add abrt-action-coredump for unpacking coredumps
@@ -356,7 +360,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.17.2...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.17.4...HEAD
+[2.17.4]: https://github.com/abrt/abrt/compare/2.17.2...2.17.4
 [2.17.2]: https://github.com/abrt/abrt/compare/2.17.1...2.17.2
 [2.17.1]: https://github.com/abrt/abrt/compare/2.17.0...2.17.1
 [2.17.0]: https://github.com/abrt/abrt/compare/2.16.1...2.17.0
