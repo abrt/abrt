@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     name: Build
-    container: quay.io/fedora/fedora:latest
+    container: quay.io/fedora/fedora:rawhide
     runs-on: ubuntu-latest
     steps:
       - name: Install build environment
