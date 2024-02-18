@@ -49,7 +49,7 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 2.17.4
+Version: 2.17.5
 Release: 1
 License: GPL-2.0-or-later
 URL: https://abrt.readthedocs.org/
@@ -966,6 +966,10 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Sun Feb 18 2024 Michal Srb <michal@redhat.com>
+- ccpp: don't fail bug reporting on ureport failure (michal@redhat.com)
+- ci: Run tests on Rawhide (michal@redhat.com)
+
 * Mon Feb 12 2024 Michal Srb <michal@redhat.com>
 - Do not fail if coredump.zst doesn't exist in the problem directory (michal@redhat.com)
 

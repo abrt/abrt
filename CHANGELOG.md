@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.17.5]
+### Changed
+- ccpp: don't fail bug reporting on ureport failures
+
 ## [2.17.4]
 ### Fixed
 - Do not fail if coredump.zst doesn't exist in the problem directory
@@ -360,7 +364,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.17.4...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.17.5...HEAD
+[2.17.5]: https://github.com/abrt/abrt/compare/2.17.4...2.17.5
 [2.17.4]: https://github.com/abrt/abrt/compare/2.17.2...2.17.4
 [2.17.2]: https://github.com/abrt/abrt/compare/2.17.1...2.17.2
 [2.17.1]: https://github.com/abrt/abrt/compare/2.17.0...2.17.1
