@@ -12,13 +12,13 @@
 # MinWoo Joh <igtzhsou@naver.com>, 2015. #zanata
 # woosuk park <bjh13579@gmail.com>, 2020.
 # simmon <simmon@nplob.com>, 2021.
-# 김인수 <simmon@nplob.com>, 2022, 2023.
+# 김인수 <simmon@nplob.com>, 2022, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2023-08-06 18:21+0000\n"
+"PO-Revision-Date: 2024-02-18 14:36+0000\n"
 "Last-Translator: 김인수 <simmon@nplob.com>\n"
 "Language-Team: Korean <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/ko/>\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.4\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -35,7 +35,7 @@ msgstr "문제 보고"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr "응용프로그램 충돌을 확인 및 보고합니다"
+msgstr "응용프로그램 충돌 확인 및 보고"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
@@ -449,7 +449,7 @@ msgstr "-d를 사용하여 syslog에 로그"
 
 #: ../src/daemon/abrt-handle-event.c:362
 msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
-msgstr "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
+msgstr "& [-v -i -n 증가] -e|--event EVENT DIR..."
 
 #: ../src/daemon/abrt-handle-event.c:371
 msgid "Run EVENT on DIR"
@@ -560,7 +560,7 @@ msgstr "비밀번호:"
 
 #: ../src/daemon/abrt-auto-reporting.c:339
 msgid "Cannot continue without password\n"
-msgstr "암호없이 계속 진행할 수 없습니다\n"
+msgstr "비밀번호 없이 계속 진행 할 수 없습니다\n"
 
 #. Print only the part before ':' of a string like "username:password"
 #: ../src/daemon/abrt-auto-reporting.c:380
@@ -1317,22 +1317,22 @@ msgstr "잘못된 주소로 이동"
 #: ../src/plugins/abrt-gdb-exploitable:669
 msgid ""
 "Access past the end of mapped file, invalid address, unaligned access, etc."
-msgstr "조정되지 않은 액세스, 잘못된 주소, 매핑된 파일의 끝을 지나 접근합니다."
+msgstr "대응하는 파일의 끝을 지나 접근, 잘못된 주소, 정렬되지 않은 접근 등."
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:688
 msgid "Can't get signal no and do exploitability analysis\n"
-msgstr "신호 번호를 가져올 수 없기 때문에 악용 가능성을 분석할 수 없습니다\n"
+msgstr "신호 번호를 가져올 수 없고 악용 가능성을 분석 할 수 없습니다\n"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:701
 msgid "Likely crash reason: "
-msgstr "가능한 충돌 원인: "
+msgstr "충돌 원인 가능성: "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:702
 msgid "Exploitable rating (0-9 scale): "
-msgstr "악용 수준 (0-9): "
+msgstr "악용 가능 수준 (0-9 등급): "
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-gdb-exploitable:704
@@ -1348,7 +1348,7 @@ msgstr "악용 분석이 비어있습니다\n"
 #: ../src/plugins/abrt-retrace-client.c:213
 #, c-format
 msgid "Can't execute '%s'"
-msgstr "'%s'을(를) 실행할 수 없습니다"
+msgstr "'%s'를 실행 할 수 없습니다"
 
 #: ../src/plugins/abrt-watch-log.c:165
 msgid ""
@@ -1958,7 +1958,7 @@ msgstr "서버 상의 작업 id"
 
 #: ../src/plugins/abrt-retrace-client.c:1278
 msgid "password of your task on server"
-msgstr "서버 상의 작업 암호"
+msgstr "서버에서 작업 비밀번호"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/plugins/abrt-retrace-client.c:1282
@@ -1986,7 +1986,7 @@ msgstr "작업 id가 필요합니다."
 #: ../src/plugins/abrt-retrace-client.c:1354
 #: ../src/plugins/abrt-retrace-client.c:1362
 msgid "Task password is needed."
-msgstr "작업 암호가 필요합니다."
+msgstr "작업 비밀번호가 필요합니다."
 
 #: ../src/plugins/abrt-retrace-client.c:1366
 #, c-format
@@ -2364,16 +2364,16 @@ msgstr ""
 
 #: ../src/cli/abrtcli/cli/retrace.py:71
 msgid "Remote retracing"
-msgstr "원격 재추적중"
+msgstr "원격 재추적 중"
 
 #: ../src/cli/abrtcli/cli/retrace.py:74
 msgid "Local retracing"
-msgstr "로컬 재추적중"
+msgstr "로컬 재추적 중"
 
 # translation auto-copied from project abrt, version rhel7, document abrt
 #: ../src/cli/abrtcli/cli/status.py:17
 msgid "show only the number of problems"
-msgstr "문제의 수만 표시됩니다"
+msgstr "문제의 수만 표시"
 
 #: ../src/cli/abrtcli/cli/status.py:19
 msgid "only show output if at least one problem is found"
