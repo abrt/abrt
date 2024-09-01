@@ -49,7 +49,7 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 2.17.5
+Version: 2.17.6
 Release: 1
 License: GPL-2.0-or-later
 URL: https://abrt.readthedocs.org/
@@ -966,6 +966,8 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Sun Sep 01 2024 Michal Srb <michal@redhat.com> 2.17.6-1
+- Fix reading signature information from RPM headers (rhbz#2307278)
 * Sun Feb 18 2024 Michal Srb <michal@redhat.com>
 - ccpp: don't fail bug reporting on ureport failure (michal@redhat.com)
 - ci: Run tests on Rawhide (michal@redhat.com)
