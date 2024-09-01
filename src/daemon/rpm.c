@@ -164,7 +164,7 @@ char *rpm_get_fingerprint(const char *pkg)
     if (!header)
         goto error;
 
-    pgpsig = headerFormat(header, "%|SIGGPG?{%{SIGGPG:pgpsig}}:{%{SIGPGP:pgpsig}}|", &errmsg);
+    pgpsig = headerFormat(header, "%|DSAHEADER?{%{DSAHEADER:pgpsig}}:{%|RSAHEADER?{%{RSAHEADER:pgpsig}}:{%|SIGGPG?{%{SIGGPG:pgpsig}}:{%|SIGPGP?{%{SIGPGP:pgpsig}}:{(none)}|}|}|}|", &errmsg);
     if (!pgpsig)
     {
         log_notice("cannot get siggpg:pgpsig. reason: %s",
