@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.17.6]
+### Fixed
+- Fix reading signature information from RPM headers (rhbz#2307278)
+
 ## [2.17.5]
 ### Changed
 - ccpp: don't fail bug reporting on ureport failures
@@ -364,7 +368,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.17.5...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.17.6...HEAD
+[2.17.6]: https://github.com/abrt/abrt/compare/2.17.5...2.17.6
 [2.17.5]: https://github.com/abrt/abrt/compare/2.17.4...2.17.5
 [2.17.4]: https://github.com/abrt/abrt/compare/2.17.2...2.17.4
 [2.17.2]: https://github.com/abrt/abrt/compare/2.17.1...2.17.2
