@@ -119,7 +119,7 @@ bool allowed_problem_dir(const char *dir_name)
 
     if (!abrt_dir_has_correct_permissions(dir_name, DD_PERM_DAEMONS))
     {
-        error_msg("Problem directory '%s' has invalid owner, groop or mode", dir_name);
+        error_msg("Problem directory '%s' has invalid owner, group or mode", dir_name);
         return false;
     }
 
