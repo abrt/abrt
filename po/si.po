@@ -2,13 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Hela Basa <r45xveza@pm.me>, 2021.
+# Tharindu Widanagama <otheraccounts@keemail.me>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2021-08-18 19:05+0000\n"
-"Last-Translator: Hela Basa <r45xveza@pm.me>\n"
+"PO-Revision-Date: 2024-12-30 18:16+0000\n"
+"Last-Translator: Tharindu Widanagama <otheraccounts@keemail.me>\n"
 "Language-Team: Sinhala <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/si/>\n"
 "Language: si\n"
@@ -16,27 +17,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.7.2\n"
+"X-Generator: Weblate 5.9.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
-msgstr ""
+msgstr "ගැටළු වාර්තා කිරීම"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr ""
+msgstr "යෙදුම් බිඳ වැටීම් බැලීම සහ වාර්තා කිරීම"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
-msgstr ""
+msgstr "වාචික විය යුතුය"
 
 #: ../src/applet/abrt-applet-application.c:167
 msgid "Applet which notifies user when new problems are detected by ABRT"
-msgstr ""
+msgstr "ABRT මගින් නව ගැටළු අනාවරණය වූ විට පරිශීලකයාට දැනුම් දෙන ඇප්ලටය"
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
-msgstr ""
+msgstr "අපොයි!"
 
 #: ../src/applet/abrt-applet-application.c:573
 msgid "Report"
@@ -51,7 +52,7 @@ msgstr "නැවත අරඹන්න"
 msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
 "reported."
-msgstr ""
+msgstr "කණගාටුයි, %s බිඳ වැටී ඇති බව පෙනේ. ගැටළුව ස්වයංක්‍රීයව වාර්තා කර ඇත."
 
 #: ../src/applet/abrt-applet-application.c:668
 #, c-format
@@ -59,6 +60,7 @@ msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
 "internet is available."
 msgstr ""
+"කණගාටුයි, %s බිඳ වැටී ඇති බව පෙනේ. අන්තර්ජාලය ලබා ගත හැකි වූ විට ගැටළුව වාර්තා කරනු ලැබේ."
 
 #: ../src/applet/abrt-applet-application.c:674
 #: ../src/applet/abrt-applet-application.c:688
@@ -68,6 +70,8 @@ msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
 msgstr ""
+"කණගාටුයි, %s බිඳ වැටී ඇති බව පෙනේ. ගැටලුවක් වාර්තා කිරීමට අවශ්‍ය නම් කරුණාකර සංවර්ධකයා "
+"අමතන්න."
 
 #: ../src/applet/abrt-applet-application.c:682
 #, c-format
@@ -75,51 +79,58 @@ msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
 msgstr ""
+"කණගාටුයි, %s බිඳ වැටී ඇති බව පෙනේ. ගැටලුව විසඳීමට ඔබට උදව් කිරීමට අවශ්‍ය නම්, කරුණාකර "
+"වාර්තාවක් එවන්න."
 
 #: ../src/applet/abrt-applet-application.c:701
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
 msgstr ""
+"කණගාටුයි, සංරචකයක ගැටලුවක් ඇති වූ බව පෙනේ. ගැටලුව ස්වයංක්‍රීයව වාර්තා කර ඇත."
 
 #: ../src/applet/abrt-applet-application.c:705
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
 msgstr ""
+"කණගාටුයි, සංරචකයක ගැටලුවක් ඇති වී ඇති බව පෙනේ. අන්තර්ජාලය පවතින විට ගැටලුව වාර්තා කරනු "
+"ලැබේ."
 
 #: ../src/applet/abrt-applet-application.c:710
 msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
 msgstr ""
+"කණගාටුයි, ගැටලුවක් ඇති වූ බව පෙනේ. ගැටලුව විසඳීමට උදව් කිරීමට ඔබ කැමති නම්, කරුණාකර වාර්තාවක් "
+"එවන්න."
 
 #. TODO: Terminate child's process?
 #: ../src/applet/abrt-applet-application.c:800 ../src/daemon/abrt-server.c:117
 #: ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr ""
+msgstr "gio නාලිකාවෙන් කියවිය නොහැක: '%s'"
 
 #: ../src/applet/abrt-applet-application.c:884
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr ""
+msgstr "gio නාලිකාවේ කේතනය සැකසිය නොහැක: %s"
 
 #: ../src/applet/abrt-applet-application.c:889
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr ""
+msgstr "jio නාලිකාව සඳහා අවහිර නොවන මාදිලිය ක්‍රියාත්මක කළ නොහැක: %s"
 
 #: ../src/applet/abrt-applet-problem-info.c:259
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr ""
+msgstr "'%s' හි හිමිකාරිත්වය ලබා ගත නොහැක"
 
 #: ../src/applet/abrt-applet-problem-info.c:269
 #, c-format
 msgid "Can't open directory for writing '%s'"
-msgstr ""
+msgstr "'%s' ලිවීම සඳහා නාමාවලිය විවෘත කළ නොහැක"
 
 #: ../src/configuration-gui/abrt-config-widget.c:478
 msgid ""
@@ -127,6 +138,9 @@ msgid ""
 "linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
+"ඉහත වින්‍යාස විකල්පය GSettings වෙත ගෙන ගොස් ඇති අතර ස්විචය "
+"'org.gnome.desktop.privacy' යෝජනා ක්‍රමයේ 'report-technical-problems' සැකසීමේ "
+"අගයට සම්බන්ධ කර ඇත."
 
 #: ../src/configuration-gui/abrt-config-widget.c:496
 msgid "The configuration option above can be configured in"
