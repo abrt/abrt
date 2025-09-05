@@ -12,13 +12,14 @@
 # Jakub Filak <jfilak@redhat.com>, 2016. #zanata
 # 張仁傑 <s9727453@gmail.com>, 2016. #zanata
 # Cheng-Chia Tseng <pswo10680@gmail.com>, 2017. #zanata, 2023.
+# hsu zangmen <chzang55@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2023-11-10 11:29+0000\n"
-"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
+"PO-Revision-Date: 2025-04-02 00:46+0000\n"
+"Last-Translator: hsu zangmen <chzang55@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translate.fedoraproject.org/"
 "projects/abrt/abrt/zh_TW/>\n"
 "Language: zh_TW\n"
@@ -26,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.1.1\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -339,7 +340,7 @@ msgstr "紀錄至 syslog"
 
 #: ../src/daemon/abrt-server.c:1113 ../src/daemon/abrtd.c:754
 msgid "Add program names to log"
-msgstr "加入程式名稱至紀錄檔"
+msgstr "加入程式名稱至記錄檔中"
 
 #: ../src/dbus/abrt-dbus.c:135
 #, c-format
@@ -380,7 +381,7 @@ msgstr "無剩餘問題空間"
 #: ../src/dbus/abrt-dbus.c:685
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr "無法從「%2$s」問題目錄刪除「%1$s」元素"
+msgstr "無法從「'%s'」問題目錄刪除「'%s'」元素"
 
 #: ../src/dbus/abrt-dbus.c:938 ../src/daemon/abrtd.c:720
 #, c-format
@@ -827,7 +828,7 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
-"&  [-v] -d DIR\n"
+"& [-v] -d DIR\n"
 "\n"
 "計算並儲存 python 崩潰傾印的 UUID 與 DUPHASH"
 
@@ -886,7 +887,7 @@ msgstr "使用 {0} 產品。"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:125
 msgid "Using product version {0}."
-msgstr "使用 {0} 產品版本"
+msgstr "使用 {0} 產品版本."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:137
 msgid "Duplicate bugzilla bug '#{0}' was found"
@@ -984,33 +985,7 @@ msgid "All debuginfo files are available"
 msgstr "所有的 debuginfo 檔案皆可用"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:190
-#, fuzzy, c-format
-#| msgid ""
-#| "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
-#| "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:"
-#| "DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
-#| "       [-e, --exact=PATH[:PATH]...]\n"
-#| "\n"
-#| "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
-#| "to CACHEDIR, using TMPDIR as temporary staging area.\n"
-#| "Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
-#| "\n"
-#| "Reads configuration from /etc/abrt/plugins/CCpp.conf\n"
-#| "\n"
-#| "    -v          Be verbose\n"
-#| "    -y          Noninteractive, assume 'Yes' to all questions\n"
-#| "    --ids       Default: build_ids\n"
-#| "    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-"
-#| "RANDOM_SUFFIX\n"
-#| "    --cache     Colon separated list of directories. The first one is "
-#| "used for\n"
-#| "                saving installed debuginfos.\n"
-#| "                Default: /var/cache/abrt-dir\n"
-#| "    --size_mb   Default: 4096\n"
-#| "    --pkgmgr   Default: PackageManager from CCpp.conf or 'dnf'\n"
-#| "    -e,--exact  Download only specified files\n"
-#| "    --repo      Pattern to use when searching for repos.\n"
-#| "                Default: *debug*\n"
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE] [--pkgmgr=(yum|dnf)]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -1052,7 +1027,7 @@ msgstr ""
 "\n"
 "從 /etc/abrt/plugins/CCpp.conf 中讀取組態檔。\n"
 "\n"
-"    -v          詳盡\n"
+"      -v          詳盡\n"
 "    -y          非互動，假定所有問題皆答「是」\n"
 "    --ids       預設：build_ids\n"
 "    --tmpdir    預設：@LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
@@ -1120,9 +1095,8 @@ msgstr ""
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
-msgstr ""
-"您想要在本機上生成堆疊回溯嗎？(這可能需要下載巨量資料，不過報告若無堆疊回溯便"
-"無法繼續。)"
+msgstr "您想要在本機上生成堆疊回溯嗎？(這可能需要下載巨量資料，不過報告若無堆疊回溯便"
+"無法繼續）。"
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -1300,15 +1274,15 @@ msgstr "無法取得訊號編號，無法執行可利用性分析\n"
 
 #: ../src/plugins/abrt-gdb-exploitable:701
 msgid "Likely crash reason: "
-msgstr "可能的崩潰原因："
+msgstr "可能的崩潰原因： "
 
 #: ../src/plugins/abrt-gdb-exploitable:702
 msgid "Exploitable rating (0-9 scale): "
-msgstr "可利用等級 (0-9 分級)："
+msgstr "可利用等級 (0-9 分級)： "
 
 #: ../src/plugins/abrt-gdb-exploitable:704
 msgid "Current instruction: "
-msgstr "目前指示："
+msgstr "目前指示： "
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Exploitability analysis came up empty\n"
@@ -1911,7 +1885,7 @@ msgstr "為投票操作而延遲"
 
 #: ../src/plugins/abrt-retrace-client.c:1272
 msgid "(debug) do not delete temporary archive created from dump dir in "
-msgstr "（除錯）不要從此目錄內的傾印目錄刪除已建立的暫存封存檔："
+msgstr "（除錯）不要從此目錄內的傾印目錄刪除已建立的暫存封存檔： "
 
 #: ../src/plugins/abrt-retrace-client.c:1274
 msgid "For status, backtrace, and log operations"
@@ -1967,6 +1941,8 @@ msgid ""
 "Whiteboar equal to 'UUID' of the crash. If such a bug found, search for "
 "Bodhi updates shipping fixes for the found Bugzilla bugs."
 msgstr ""
+"在 Bugzilla Bug Whiteboar 中尋找「abrt_hash」值等於崩潰的「UUID」的 Bugzilla "
+"報告。如果發現這樣的錯誤，請搜尋 Bodhi 更新以修復發現的 Bugzilla 錯誤。"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
@@ -1997,11 +1973,10 @@ msgid ""
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
 msgstr ""
-"Uploads coredump to a server, which generates backtrace and returns it. "
-"Pros: no need for debuginfo downloads. Retrace server's database of "
-"debuginfos is more complete. Retrace server may generate better backtraces. "
-"Cons: coredump you upload contains all the data from the crashed program, "
-"including your private data, if any."
+"將 coredump 上傳到伺服器，伺服器會產生 backtrace 並將其傳回。 優點：無需下載 "
+"debuginfo。 Retrace 伺服器的 debuginfo 資料庫更完整。 Retrace "
+"伺服器可能會產生更好的回溯。 缺點：您上傳的 coredump 包含當機程式的所有資料，"
+"包括您的私人資料 (如果有的話)。"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Retrace server URI"
@@ -2268,7 +2243,7 @@ msgstr "忽略未回報的狀態"
 #: ../src/cli/abrtcli/cli/report.py:41
 #, python-brace-format
 msgid "Problem '{0}' cannot be reported"
-msgstr "無法回報「%s」問題"
+msgstr "無法回報「'{0}'」問題"
 
 #: ../src/cli/abrtcli/cli/report.py:50
 #, python-format

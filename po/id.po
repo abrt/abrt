@@ -9,16 +9,17 @@
 # Muhammad Panji <sumodirjo@gmail.com>, 2012
 # Prima Yogi Loviniltra <jurankc0d3@gmail.com>, 2012
 # Ferdi Saptanera <ferdisn@fedoraproject.org>, 2016. #zanata
-# Andika Triwidada <andika@gmail.com>, 2017. #zanata, 2020.
-# Andika Triwidada <andika@gmail.com>, 2018. #zanata, 2020.
+# Andika Triwidada <andika@gmail.com>, 2017. #zanata, 2020, 2025.
+# Andika Triwidada <andika@gmail.com>, 2018. #zanata, 2020, 2025.
 # Didik Supriadi <didiksupriadi41@gmail.com>, 2021.
+# Muhammad Difagama Ivanka <imdifagama@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2021-07-09 13:04+0000\n"
-"Last-Translator: Didik Supriadi <didiksupriadi41@gmail.com>\n"
+"PO-Revision-Date: 2025-04-29 04:12+0000\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/id/>\n"
 "Language: id\n"
@@ -26,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.7.1\n"
+"X-Generator: Weblate 5.11\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -224,11 +225,11 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid "Request private ticket for sensitive information"
-msgstr ""
+msgstr "Permintaat tiket privat untuk informasi sensitif"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Notify incomplete problems"
-msgstr ""
+msgstr "Beritahu masalah-masalah tidak lengkap"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid ""
@@ -236,6 +237,9 @@ msgid ""
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
 msgstr ""
+"Beberapa masalah terdeteksi ketika komputer sedang mati atau pengguna sedang "
+"log out. Dalam rangka memberi laporan-laporan masalah yang berharga, ABRT "
+"tidak akan membolehkan anda untuk mengirim masalah tersebut."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid "Always"
@@ -251,7 +255,7 @@ msgstr "Tanya"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
 msgid "Upload coredump for backtrace generation"
-msgstr ""
+msgstr "Unggah coredump untuk pembuatan generation"
 
 #: ../src/configuration-gui/system-config-abrt.c:66
 msgid "_Close"
@@ -259,16 +263,16 @@ msgstr "_Tutup"
 
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Defaults"
-msgstr ""
+msgstr "_Bawaan"
 
 #: ../src/configuration-gui/system-config-abrt.c:103
 #: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
-msgstr ""
+msgstr "Konfigurasi Pelaporan Masalah"
 
 #: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
-msgstr ""
+msgstr "Tentang Konfigurasi Sistem ABRT"
 
 #: ../src/configuration-gui/main.c:105
 msgid "About"
@@ -284,6 +288,9 @@ msgid ""
 "\n"
 "Query package database and save package and component name"
 msgstr ""
+"& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
+"\n"
+"Kueri basis data package serta simpan package dan nama komponen"
 
 #: ../src/daemon/abrt-action-save-package-data.c:469
 #: ../src/daemon/abrt-action-save-container-data.c:265
@@ -303,7 +310,7 @@ msgstr "Berkas konfigurasi"
 
 #: ../src/daemon/abrt-action-save-package-data.c:471
 msgid "Use this directory as RPM root"
-msgstr ""
+msgstr "Gunakan direktori ini sebagai root RPM"
 
 #: ../src/daemon/abrt-action-save-container-data.c:254
 msgid ""
@@ -317,16 +324,16 @@ msgstr ""
 
 #: ../src/daemon/abrt-action-save-container-data.c:266
 msgid "Root directory for running container commands"
-msgstr ""
+msgstr "Direktori Root untuk menjalankan perintah kontainer"
 
 #: ../src/daemon/abrt-server.c:1100 ../src/dbus/abrt-dbus.c:1014
 #: ../src/daemon/abrtd.c:738
 msgid "& [options]"
-msgstr ""
+msgstr "& [opsi]"
 
 #: ../src/daemon/abrt-server.c:1111
 msgid "Use NUM as client uid"
-msgstr ""
+msgstr "Gunakan NUM sebagai uid klien"
 
 #: ../src/daemon/abrt-server.c:1112 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:176 ../src/plugins/abrt-dump-oops.c:97
@@ -344,43 +351,45 @@ msgstr "Menambahkan nama program untuk log"
 #: ../src/dbus/abrt-dbus.c:135
 #, c-format
 msgid "'%s' is not a valid element name"
-msgstr ""
+msgstr "'%s' bukan sebuah nama elemen yang valid"
 
 #: ../src/dbus/abrt-dbus.c:187
 #, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr ""
+msgstr "'%s' bukan sebuah masalah direktori yang valid"
 
 #: ../src/dbus/abrt-dbus.c:240 ../src/dbus/abrt-dbus.c:490
 msgid "Not Authorized"
-msgstr ""
+msgstr "Tidak diotorisasi"
 
 #: ../src/dbus/abrt-dbus.c:253
 msgid "Can't open the problem"
-msgstr ""
+msgstr "Tidak bisa membuka masalah"
 
 #: ../src/dbus/abrt-dbus.c:285
 #, c-format
 msgid "'%s' element can't be modified"
-msgstr ""
+msgstr "elemen '%s' tidak dapat diubah"
 
 #: ../src/dbus/abrt-dbus.c:506
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
+"Perubahan pengguna direktori gagal. Periksa log sistem untuk detail "
+"selengkapnya."
 
 #: ../src/dbus/abrt-dbus.c:635
 #, c-format
 msgid "Can't get size of '%s'"
-msgstr ""
+msgstr "Tidak bisa mendapat ukuran '%s'"
 
 #: ../src/dbus/abrt-dbus.c:650
 msgid "No problem space left"
-msgstr ""
+msgstr "Tidak ada ruang masalah yang tersisa"
 
 #: ../src/dbus/abrt-dbus.c:685
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr ""
+msgstr "Tidak bisa menghapus elemen '%s' dari direktori masalah '%s'"
 
 #: ../src/dbus/abrt-dbus.c:938 ../src/daemon/abrtd.c:720
 #, c-format
@@ -388,14 +397,16 @@ msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr ""
+"Nama '%s' telah hilang, silahkan cek agar layanan lain dengan nama tersebut "
+"tidak sedang berjalan.\n"
 
 #: ../src/dbus/abrt-dbus.c:1023 ../src/daemon/abrtd.c:753
 msgid "Exit after NUM seconds of inactivity"
-msgstr ""
+msgstr "Keluar setelah tidak aktif selama NUM detik"
 
 #: ../src/dbus/abrt-dbus.c:1041
 msgid "This program must be run as root."
-msgstr ""
+msgstr "Program ini harus berjalan sebagai root."
 
 #: ../src/daemon/abrtd.c:683
 msgid ""
@@ -405,6 +416,12 @@ msgid ""
 "problem. If you have time and want to help the developers in their effort to "
 "sort out this problem, please contact them directly."
 msgstr ""
+"Data masalah tidak lengkap. Hal ini biasa terjadi ketika sebuah masalah "
+"terdeteksi ketika komputer sedang mati atau pengguna sedang log out. Dalam "
+"rangka memberikan laporan-laporan masalah yang berharga, ABRT tidak akan "
+"membolehkan anda untuk mengirim masalah ini. Jika anda punya waktu dan ingin "
+"membantu para developer dalam usaha mereka untuk mengatasi masalah ini, "
+"silahkan menghubungi mereka secara langsung."
 
 #: ../src/daemon/abrtd.c:751
 msgid "Do not daemonize"
@@ -416,19 +433,19 @@ msgstr "Log ke syslog meskipun dengan -d"
 
 #: ../src/daemon/abrt-handle-event.c:362
 msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
-msgstr ""
+msgstr "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
 
 #: ../src/daemon/abrt-handle-event.c:371
 msgid "Run EVENT on DIR"
-msgstr ""
+msgstr "Jalankan EVENT di DIR"
 
 #: ../src/daemon/abrt-handle-event.c:372
 msgid "Communicate directly to the user"
-msgstr ""
+msgstr "Komunikasi langsung ke pengguna"
 
 #: ../src/daemon/abrt-handle-event.c:373
 msgid "Increment the nice value by INCREMENT"
-msgstr ""
+msgstr "Tambahkan nice value dengan INCREMENT"
 
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
@@ -466,19 +483,21 @@ msgstr ""
 
 #: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
-msgstr ""
+msgstr "Matikan autentikasi"
 
 #: ../src/daemon/abrt-auto-reporting.c:234
 msgid "Red Hat Support user name"
-msgstr ""
+msgstr "Red Hat mendukung user name"
 
 #: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
 msgstr ""
+"Red Hat mendukung kata sandi, jika tidak diberi, sebuah perintah untuk hal "
+"itu akan ditampilkan"
 
 #: ../src/daemon/abrt-auto-reporting.c:236
 msgid "uReport SSL certificate paths or certificate type"
-msgstr ""
+msgstr "uReport SSL dari path atau tipe sertifikat"
 
 #: ../src/daemon/abrt-auto-reporting.c:252
 msgid "You also need to specify --username for --password"
@@ -541,67 +560,67 @@ msgstr ""
 #: ../src/daemon/abrt-handle-upload.in:166
 #: ../src/daemon/abrt-handle-upload.in:169
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "Bukan sebuah direktori: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:172
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
+msgstr "Lewati: '{0}' (mulai dengan garis miring)"
 
 #: ../src/daemon/abrt-handle-upload.in:175
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
+msgstr "Lewati: '{0}' (mulai dengan titik)"
 
 #: ../src/daemon/abrt-handle-upload.in:178
 msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
+msgstr "Lewati: '{0}' (mengandung ..)"
 
 #: ../src/daemon/abrt-handle-upload.in:181
 msgid "Skipping: '{0}' (contains space)"
-msgstr ""
+msgstr "Lewati: '{0}' (mengandung spasi)"
 
 #: ../src/daemon/abrt-handle-upload.in:184
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "Lewati: '{0}' (mengandung indentasi)"
 
 #: ../src/daemon/abrt-handle-upload.in:189
 msgid "Can't change directory to '{0}'"
-msgstr ""
+msgstr "Tidak bisa mengubah direktori ke '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:200
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "Tipe file tidak diketahui: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:205
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "Tidak bisa membuat direktori kerja di '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:216
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "Tidak bisa memindah '{0}' ke '{1}'"
 
 #: ../src/daemon/abrt-handle-upload.in:221
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "Tidak bisa salin '{0}' ke '{1}'"
 
 #: ../src/daemon/abrt-handle-upload.in:225
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "Verifikasi gagal di '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:227
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "Bongkar '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:231
 msgid "Can't create '{0}' directory"
-msgstr ""
+msgstr "Tidak bisa membuat direktori '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:235
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "Tidak bisa bongkar '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:255
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' berhasil diproses"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:259
@@ -858,7 +877,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:95
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Galat: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:61
 msgid "Can't open {0}: {1}"

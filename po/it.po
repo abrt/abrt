@@ -21,13 +21,13 @@
 # Luca Ciavatta <luca.ciavatta@gmail.com>, 2016. #zanata
 # Enrico Bella <enric@e.email>, 2020.
 # Agostino Montanaro <telometto@protonmail.com>, 2021.
-# Nathan <nathan95@live.it>, 2022.
+# Nathan <nathan95@live.it>, 2022, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2022-11-10 22:19+0000\n"
+"PO-Revision-Date: 2025-06-07 22:25+0000\n"
 "Last-Translator: Nathan <nathan95@live.it>\n"
 "Language-Team: Italian <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/it/>\n"
@@ -36,7 +36,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -1114,15 +1114,16 @@ msgstr ""
 "RANDOM_SUFFIX\n"
 "    --cache     Lista delle directory separate da virgole. La prima viene "
 "utilizzata per\n"
-"               il salvataggio delle informazioni di debug.\n"
-"               Predefinito: /var/cache/abrt-di\n"
+"                il salvataggio delle informazioni di debug.\n"
+"                Predefinito: /var/cache/abrt-di\n"
 "    --size_mb   Predefinito: 4096\n"
-"    --pkgmgr   Predefinito: PackageManager da CCpp.conf o 'dnf'\n"
+"    --pkgmgr    Predefinito: PackageManager da CCpp.conf o 'dnf'\n"
 "    -e,--exact  Scarica solo file specifici\n"
 "    --repo      Pattern da usare durante la ricerca dei repositori.\n"
 "                Predefinito: *debug*\n"
-" --releasever RELEASEVER\n"
-" Passa questa versione del sistema operativo al gestore pacchetti\n"
+"    --releasever RELEASEVER\n"
+"                Passa questa versione del sistema operativo al gestore "
+"pacchetti\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:290
 msgid "Exiting on user command"
@@ -1525,7 +1526,7 @@ msgstr ""
 "-e è utile solo per -f perché inizia leggendo l'intero journal\n"
 "se l'ultima posizione letta non è disponibile.\n"
 "\n"
-"L'ultima posizione letta viene salvata in"
+"L'ultima posizione letta viene salvata in "
 
 #: ../src/plugins/abrt-dump-journal-core.c:563
 msgid "Create new problem directory in DIR for every coredump"
@@ -1634,7 +1635,7 @@ msgstr ""
 "-e è utile solo per -f perché inizia leggendo l'intero journal\n"
 "se l'ultima posizione letta non è disponibile.\n"
 "\n"
-"L'ultima posizione letta viene salvata in"
+"L'ultima posizione letta viene salvata in "
 
 #: ../src/plugins/abrt-dump-journal-oops.c:291
 msgid "Cannot filter systemd-journal to kernel data only"
