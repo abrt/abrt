@@ -33,17 +33,19 @@
 # Eduard Lucena <x3mboy@fedoraproject.org>, 2017. #zanata
 # Kevin Puertas <kevin01010@gmail.com>, 2017. #zanata
 # Máximo Castañeda Riloba <mcrcctm@gmail.com>, 2017. #zanata
-# Juan Antonio Burgos López <suriem@surkum.com>, 2020.
+# Juan Antonio Burgos López <suriem@surkum.com>, 2020, 2025.
 # Adolfo Jayme Barrientos <fitoschido@gmail.com>, 2020.
 # Emilio Herrera <ehespinosa57@gmail.com>, 2020.
 # Facundo <facevedo@disroot.org>, 2020.
+# Javier Francisco <fserrador@gmail.com>, 2025.
+# "Fco. Javier F. Serrador" <fserrador@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2020-08-27 12:29+0000\n"
-"Last-Translator: Emilio Herrera <ehespinosa57@gmail.com>\n"
+"PO-Revision-Date: 2025-05-15 17:21+0000\n"
+"Last-Translator: \"Fco. Javier F. Serrador\" <fserrador@gmail.com>\n"
 "Language-Team: Spanish <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/es/>\n"
 "Language: es\n"
@@ -51,7 +53,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.2.1\n"
+"X-Generator: Weblate 5.11.3\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -63,12 +65,11 @@ msgstr "Vista e informe de cuelgues de aplicaciones"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
-msgstr "Sea minucioso"
+msgstr "Ser minucioso"
 
 #: ../src/applet/abrt-applet-application.c:167
 msgid "Applet which notifies user when new problems are detected by ABRT"
-msgstr ""
-"Miniaplicación que notifica al usuario cuando ABRT detecta nuevos problemas"
+msgstr "Applet que notifica al usuario cuando ABRT detecta nuevos problemas"
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
@@ -88,8 +89,8 @@ msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
 "reported."
 msgstr ""
-"Lo sentimos, parece que %s ha dejado de funcionar. Se ha informado "
-"automáticamente de este problema."
+"Lo sentimos, parece que %s ha dejado de funcionar. Se ha informado del "
+"problema automáticamente."
 
 #: ../src/applet/abrt-applet-application.c:668
 #, c-format
@@ -97,8 +98,8 @@ msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
 "internet is available."
 msgstr ""
-"Lo sentimos, parece que %s ha dejado de funcionar. Se informará de este "
-"problema cuando el acceso a Internet esté disponible."
+"Lo sentimos, parece que %s ha dejado de funcionar. El problema será "
+"notificado cuando el acceso a Internet esté disponible."
 
 #: ../src/applet/abrt-applet-application.c:674
 #: ../src/applet/abrt-applet-application.c:688
@@ -178,8 +179,9 @@ msgid ""
 "linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
-"Esta opción se ha llevado a GSettings. Se usa el valor de 'report-technical-"
-"problems' del esquema 'org.gnome.desktop.privacy'."
+"Esta opción de la configuración de arriba ha sido trasladado a GSettings y "
+"el interruptor está enlazado al valor del parámetro 'report-technical-"
+"problems' desde el esquema 'org.gnome.desktop.privacy'."
 
 #: ../src/configuration-gui/abrt-config-widget.c:496
 msgid "The configuration option above can be configured in"
@@ -210,12 +212,12 @@ msgid ""
 "With option 'Never' the stack trace will be always generated locally. With "
 "option 'Ask' ABRT will always ask the user."
 msgstr ""
-"El archivo de volcado es necesario para generar la traza y es una operación "
-"costosa en tiempo y espacio. ABRT suministra un servicio que genera la traza "
-"a partir del archivo de volcado, pero para usarlo hay que enviar el archivo "
-"a ese servicio. Con la opción 'Siempre' ABRT subirá el archivo sin "
-"preguntar. Con 'Nunca' se generará la traza en el equipo local. Con "
-"'Preguntar', preguntará siempre qué hacer."
+"Para generar la traza es necesario el archivo de volcado y es una operación "
+"costosa en tiempo y espacio. ABRT proporciona un servicio que genera la "
+"traza a partir del archivo de volcado, pero para usarlo hay que enviar el "
+"archivo a ese servicio. Con la opción 'Always' (Siempre) ABRT subirá el "
+"archivo sin preguntar. Con 'Never' (Nunca) se generará la traza en el equipo "
+"local. En la opción 'Ask' (Preguntar) ABRT preguntará siempre qué hacer."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -225,7 +227,7 @@ msgid ""
 "without asking."
 msgstr ""
 "ABRT almacena los datos del problema en carpetas. Cada vez que ABRT necesite "
-"una carpeta con permiso de escritura, la carpeta se moverá del lugar del "
+"una carpeta con permiso de escritura, la carpeta irá desde el lugar del "
 "sistema a su carpeta de usuario. Con esta opción deshabilitada, ABRT moverá "
 "la carpeta del problema sin preguntar."
 
@@ -1664,7 +1666,7 @@ msgstr "Lista las caídas encontradas en la salida estándar"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:193
 msgid "Create new problem directory in DIR for every crash found"
-msgstr "Crea un directorio de problemas en DIR para cada fallo encontrado"
+msgstr "Crea un directorio de problema nuevo en DIR para cada fallo encontrado"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:202
 msgid "Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)"
@@ -1700,7 +1702,7 @@ msgstr "Prime los datos del cuelgue encontrados en la salida estándar"
 
 #: ../src/plugins/abrt-dump-xorg.c:54
 msgid "Create problem directory in DIR for every crash found"
-msgstr "Crea un directorio de problemas en DIR para cada fallo encontrado"
+msgstr "Crea un directorio de problema en DIR para cada fallo encontrado"
 
 #: ../src/plugins/abrt-dump-xorg.c:108
 msgid "Failed to parse Backtrace from log file"
@@ -1961,7 +1963,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1261
 msgid "retrace server URI"
-msgstr "URL del servidor de rastreo"
+msgstr "URI del servidor de rastreo"
 
 #: ../src/plugins/abrt-retrace-client.c:1263
 msgid "(debug) show received HTTP headers"
@@ -2089,7 +2091,7 @@ msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Retrace server URI"
-msgstr "URL del servidor de rastreo"
+msgstr "URI del servidor de rastreo"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Address of the retrace server"
