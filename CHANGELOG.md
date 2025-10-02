@@ -5,8 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.17.7]
 ### Fixed
 - Fixed typo in src/dbus/abrt-dbus.c
+- Fixed reading gpg keys with RPM 6.0.0 (rhbz#2396899)
 
 ## [2.17.6]
 ### Fixed
@@ -370,7 +373,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.17.6...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.17.7...HEAD
+[2.17.7]: https://github.com/abrt/abrt/compare/2.17.6...2.17.7
 [2.17.6]: https://github.com/abrt/abrt/compare/2.17.5...2.17.6
 [2.17.5]: https://github.com/abrt/abrt/compare/2.17.4...2.17.5
 [2.17.4]: https://github.com/abrt/abrt/compare/2.17.2...2.17.4
