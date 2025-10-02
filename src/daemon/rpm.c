@@ -90,7 +90,7 @@ void rpm_destroy()
     rpmFreeRpmrc();
 #endif
 
-    g_list_free_full(g_steal_pointer(&list_fingerprints), free);
+    g_list_free_full(g_steal_pointer(&list_fingerprints), g_free);
 }
 
 
@@ -113,7 +113,7 @@ void rpm_load_gpgkey(const char* filename)
     pubkey = rpmPubkeyNew(pkt, pklen);
     if (pubkey != NULL)
     {
-        fingerprint = rpmhex(pubkey->keyid, sizeof(pubkey->keyid));
+        fingerprint = g_strdup(rpmPubkeyKeyIDAsHex(pubkey));
         if (fingerprint != NULL)
             list_fingerprints = g_list_append(list_fingerprints, fingerprint);
 
@@ -123,7 +123,7 @@ void rpm_load_gpgkey(const char* filename)
             rpmPubkey subkey = subkeys[i];
             if (subkey != NULL)
             {
-                fingerprint = rpmhex(subkey->keyid, sizeof(subkey->keyid));
+                fingerprint = g_strdup(rpmPubkeyKeyIDAsHex(subkey));
                 if (fingerprint != NULL)
                     list_fingerprints = g_list_append(list_fingerprints, fingerprint);
             }
