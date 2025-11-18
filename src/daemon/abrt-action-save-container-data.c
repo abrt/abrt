@@ -105,6 +105,24 @@ void dump_docker_info(struct dump_dir *dd, const char *root_dir)
             continue;
         }
 
+        /* Check that the Container ID contains only alphanumeric characters */
+        bool valid_id = true;
+        for (int i = 0; i < 12; i++)
+        {
+            if (!g_ascii_isalnum(container_id[i]))
+            {
+                valid_id = false;
+                break;
+            }
+        }
+        if (!valid_id)
+        {
+            log_debug("Container ID contains invalid characters: '%s'", container_id);
+            g_free(container_id);
+            container_id = NULL;
+            continue;
+        }
+
         g_autofree char *docker_inspect_cmdline = NULL;
         if (root_dir != NULL)
             docker_inspect_cmdline = g_strdup_printf("chroot %s /bin/sh -c \"docker inspect %s\"", root_dir, container_id);
