@@ -46,7 +46,7 @@ char* is_in_comma_separated_list_with_fmt(const char *value, const char *fmt, co
     {
         const char *comma = strchrnul(list, ',');
         g_autofree char *pattern = g_strdup_printf(fmt, (int)(comma - list), list);
-        char *match = strstr(value, pattern);
+        const char *match = strstr(value, pattern);
         if (match)
             return g_strndup(list, comma - list);
         if (!*comma)
