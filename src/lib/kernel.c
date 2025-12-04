@@ -730,7 +730,7 @@ char *abrt_koops_extract_version(const char *linepointer)
 char *abrt_kernel_tainted_short(const char *kernel_bt)
 {
     /* example of flags: 'Tainted: G    B       ' */
-    char *tainted = strstr(kernel_bt, "Tainted: ");
+    const char *tainted = strstr(kernel_bt, "Tainted: ");
     if (!tainted)
         return NULL;
 
