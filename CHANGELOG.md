@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.17.8]
+### Fixed
+- a-a-save-container-data: validate input (CVE-2025-12744)
+
 ## [2.17.7]
 ### Fixed
 - Fixed typo in src/dbus/abrt-dbus.c
@@ -373,7 +377,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.17.7...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.17.8...HEAD
+[2.17.8]: https://github.com/abrt/abrt/compare/2.17.7...2.17.8
 [2.17.7]: https://github.com/abrt/abrt/compare/2.17.6...2.17.7
 [2.17.6]: https://github.com/abrt/abrt/compare/2.17.5...2.17.6
 [2.17.5]: https://github.com/abrt/abrt/compare/2.17.4...2.17.5

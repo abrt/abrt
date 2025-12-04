@@ -49,7 +49,7 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 2.17.7
+Version: 2.17.8
 Release: 1
 License: GPL-2.0-or-later
 URL: https://abrt.readthedocs.org/
@@ -966,6 +966,9 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Thu Dec 04 2025 Michal Srb <michal@redhat.com> 2.17.8-1
+- a-a-save-container-data: validate input (michal@redhat.com)
+
 * Thu Oct 02 2025 Michal Srb <michal@redhat.com> 2.17.7-1
 - Use rpmPubkeyKeyIDAsHex() to obtain the gpg key in hex format
   (michal@redhat.com)
