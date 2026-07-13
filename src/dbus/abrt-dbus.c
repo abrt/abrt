@@ -491,6 +491,15 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
+        if (!problem_dump_dir_is_complete(dd))
+        {
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                              "org.freedesktop.problems.InvalidProblemDir",
+                                              _("Problem directory is being processed"));
+            dd_close(dd);
+            return;
+        }
+
         int chown_res = dd_chown(dd, caller_uid);
         if (chown_res != 0)
             g_dbus_method_invocation_return_dbus_error(invocation,
