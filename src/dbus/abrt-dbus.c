@@ -287,8 +287,23 @@ static struct dump_dir *open_directory_for_modification_of_element(
         }
     }
 
-    return open_dump_directory(invocation, /*caller*/NULL, caller_uid, problem_id, /*Read/Write*/0,
-                               OPEN_AUTH_FAIL);
+    struct dump_dir *dd = open_dump_directory(invocation, /*caller*/NULL, caller_uid, problem_id,
+                                              /*Read/Write*/0, OPEN_AUTH_FAIL);
+    if (!dd)
+        return NULL;
+
+    if (!problem_dump_dir_is_complete(dd))
+    {
+        log_notice("Refusing modification of element '%s' in incomplete problem directory '%s'",
+                   element, problem_id);
+        g_dbus_method_invocation_return_dbus_error(invocation,
+                                    "org.freedesktop.problems.InvalidProblemDir",
+                                    _("Problem directory is being processed"));
+        dd_close(dd);
+        return NULL;
+    }
+
+    return dd;
 }
 
 
