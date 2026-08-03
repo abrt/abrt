@@ -79,7 +79,8 @@ def journal_has_string(identifier, string):
     j.this_boot()
     j.this_machine()
     j.log_level(journal.LOG_INFO)
-    j.add_match(SYSLOG_IDENTIFIER=identifier, MESSAGE=string)
+    j.add_match(SYSLOG_IDENTIFIER=identifier, MESSAGE=string,
+                _TRANSPORT="journal", _UID="0")
 
     return bool(list(j))
 
