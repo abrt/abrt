@@ -81,7 +81,17 @@ if __name__ == "__main__":
     if crash.returncode != 0:
         error_msg_and_die(_("Can't process {0}:\n{1}").format(vmcore, err))
 
-    backtrace_file = open("backtrace", "w")
+    dir_fd = os.open(".", os.O_DIRECTORY | os.O_NOFOLLOW)
+    try:
+        try:
+            os.unlink("backtrace", dir_fd=dir_fd)
+        except FileNotFoundError:
+            pass
+        bt_fd = os.open("backtrace", os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+                         0o640, dir_fd=dir_fd)
+    finally:
+        os.close(dir_fd)
+    backtrace_file = os.fdopen(bt_fd, "w")
     dump_oops = Popen(["abrt-dump-oops", "-u", ".", dmesg_log], stdout=backtrace_file, stderr=PIPE, bufsize=-1)
     out, err = dump_oops.communicate()
     backtrace_file.close()
