@@ -25,7 +25,6 @@ import sys
 from argparse import ArgumentParser
 from subprocess import check_output, CalledProcessError
 import logging
-
 import hashlib
 
 def generate_machine_id_dmidecode():
@@ -174,7 +173,21 @@ if __name__ == '__main__':
 
     if ARGS['output']:
         try:
-            with open(ARGS['output'], 'w') as fout:
+            output_path = ARGS['output']
+            output_dir = os.path.dirname(output_path) or '.'
+            output_name = os.path.basename(output_path)
+            dir_fd = os.open(output_dir, os.O_DIRECTORY | os.O_NOFOLLOW)
+            try:
+                try:
+                    os.unlink(output_name, dir_fd=dir_fd)
+                except FileNotFoundError:
+                    pass
+                fd = os.open(output_name,
+                             os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+                             0o640, dir_fd=dir_fd)
+            finally:
+                os.close(dir_fd)
+            with os.fdopen(fd, 'w') as fout:
                 print_result(machineids, fout, not ARGS['noprefix'])
         except IOError as ex:
             logging.error("Could not open output file: {0}".format(str(ex)))
