@@ -56,7 +56,7 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 2.17.8
+Version: 2.17.9
 Release: 1
 License: GPL-2.0-or-later
 URL: https://abrt.readthedocs.org/
@@ -994,6 +994,12 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Mon Aug 03 2026 Michal Srb <michal@redhat.com> 2.17.9-1
+- Fix journal entry spoofing in journal dump services (rhbz#2484614)
+- Fix symlink following in event handler scripts (CVE-2026-54230)
+- Fix content injection in journal log collection (CVE-2026-54231)
+- Fix TOCTOU in SetElement/DeleteElement (CVE-2026-54228)
+- Fix race condition in ChownProblemDir (CVE-2026-54229)
 * Thu Dec 04 2025 Michal Srb <michal@redhat.com> 2.17.8-1
 - a-a-save-container-data: validate input (michal@redhat.com)
 

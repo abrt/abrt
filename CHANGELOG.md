@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.17.9]
++### Fixed
++- Fix journal entry spoofing in journal dump services by filtering on trusted fields (rhbz#2484614)
++- Fix symlink following in event handler scripts (CVE-2026-54230)
++- Fix content injection in journal log collection (CVE-2026-54231)
++- Fix TOCTOU in SetElement/DeleteElement allowing dump directory poisoning (CVE-2026-54228)
++- Fix race condition in ChownProblemDir allowing ownership seizure (CVE-2026-54229)
+
 ## [2.17.8]
 ### Fixed
 - a-a-save-container-data: validate input (CVE-2025-12744)
@@ -377,7 +385,8 @@ data to `abrt list --fmt` and `abrt info --fmt`.
 - Fix several file descriptor leaks in abrtd.
 
 
-[Unreleased]: https://github.com/abrt/abrt/compare/2.17.8...HEAD
+[Unreleased]: https://github.com/abrt/abrt/compare/2.17.9...HEAD
+[2.17.9]: https://github.com/abrt/abrt/compare/2.17.8...2.17.9
 [2.17.8]: https://github.com/abrt/abrt/compare/2.17.7...2.17.8
 [2.17.7]: https://github.com/abrt/abrt/compare/2.17.6...2.17.7
 [2.17.6]: https://github.com/abrt/abrt/compare/2.17.5...2.17.6
