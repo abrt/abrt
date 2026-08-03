@@ -9,6 +9,13 @@
 %bcond_with python3
 %endif
 
+%if 0%{?fedora} >= 41 || 0%{?rhel} >= 10
+%bcond_with container_handler
+%else
+%bcond_without container_handler
+%endif
+
+
 %if 0%{?rhel}%{?suse_version}
     %bcond_with bodhi
 %else
@@ -54,6 +61,7 @@ Release: 1
 License: GPL-2.0-or-later
 URL: https://abrt.readthedocs.org/
 Source: https://github.com/abrt/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
+BuildRequires: git-core
 BuildRequires: %{dbus_devel}
 BuildRequires: hostname
 BuildRequires: gtk3-devel
@@ -82,12 +90,6 @@ BuildRequires: python3-devel
 BuildRequires: python3-systemd
 BuildRequires: python3-argcomplete
 BuildRequires: python3-dbus
-
-%if 0%{?fedora}
-# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python_Appendix/#_byte_compilation_reproducibility
-%global py_reproducible_pyc_path %{buildroot}%{python3_sitelib}
-BuildRequires: /usr/bin/marshalparser
-%endif
 %endif
 
 Requires: libreport >= %{libreport_ver}
@@ -116,6 +118,11 @@ Requires: libreport-plugin-systemd-journal
 %endif
 # to fix upgrade path abrt-plugin-sosreport was removed in 2.14.5 version.
 Obsoletes: abrt-plugin-sosreport < 2.14.5
+# fros was retired 2025-07, and was initially added to comps to support
+# abrt-desktop, so let's obsolete it here
+Obsoletes: fros < 1.1-42
+Obsoletes: fros-gnome < 1.1-42
+Obsoletes: fros-recordmydesktop < 1.1-42
 
 #gui
 BuildRequires: libreport-gtk-devel >= %{libreport_ver}
@@ -247,7 +254,11 @@ log.
 Summary: %{name}'s vmcore addon
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-addon-kerneloops
+# On riscv64, kexec-tools does not compile:
+# "configure: error: unsupported architecture riscv64"
+%ifnarch riscv64
 Requires: kexec-tools
+%endif
 %if %{with python3}
 Requires: python3-abrt
 Requires: python3-augeas
@@ -294,6 +305,7 @@ Requires: python3-abrt
 This package contains python 3 hook and python analyzer plugin for handling
 uncaught exception in python 3 programs.
 
+%if %{with container_handler}
 %package -n python3-abrt-container-addon
 Summary: %{name}'s container addon for catching Python 3 exceptions
 BuildArch: noarch
@@ -303,6 +315,8 @@ Requires: container-exception-logger
 %description -n python3-abrt-container-addon
 This package contains python 3 hook and handling uncaught exception in python 3
 programs in container.
+%endif
+
 %endif
 
 %package plugin-machine-id
@@ -457,7 +471,15 @@ A small script which prints a count of detected problems when someone logs in
 to the shell
 
 %prep
-%setup -q
+%global __scm_apply_git(qp:m:) %{__git} am --exclude doc/design --exclude doc/project/abrt.tex
+%autosetup -S git -p 0
+
+# Create a sysusers.d config file
+#uidgid pair 173:173 reserved in setup rhbz#670231
+%global abrt_gid_uid 173
+cat >abrt.sysusers.conf <<EOF
+u abrt %{abrt_gid_uid} - /etc/abrt -
+EOF
 
 %build
 ./autogen.sh
@@ -516,10 +538,19 @@ ln -sf %{_datadir}/applications/org.freedesktop.problems.applet.desktop %{buildr
 %if %{with python3}
 ln -sf %{_bindir}/abrt %{buildroot}%{_bindir}/abrt-cli
 ln -sf %{_mandir}/man1/abrt.1 %{buildroot}%{_mandir}/man1/abrt-cli.1
+
+%if ! %{with container_handler}
+rm -vf %{buildroot}%{python3_sitelib}/abrt3_container.pth
+rm -vf %{buildroot}%{python3_sitelib}/abrt_exception_handler3_container.py
+rm -vf %{buildroot}%{python3_sitelib}/__pycache__/abrt_exception_handler3_container.*
+%endif
+
 %endif
 
 # After everything is installed, remove info dir
 rm -f %{buildroot}%{_infodir}/dir
+
+install -m0644 -D abrt.sysusers.conf %{buildroot}%{_sysusersdir}/abrt.conf
 
 %check
 make check|| {
@@ -529,13 +560,6 @@ make check|| {
     find tests/testsuite.dir -name "testsuite.log" -print -exec cat '{}' \;
     exit 1
 }
-
-%pre
-#uidgid pair 173:173 reserved in setup rhbz#670231
-%define abrt_gid_uid 173
-getent group abrt >/dev/null || groupadd -f -g %{abrt_gid_uid} --system abrt
-getent passwd abrt >/dev/null || useradd --system -g abrt -u %{abrt_gid_uid} -d /etc/abrt -s /sbin/nologin abrt
-exit 0
 
 %post
 # $1 == 1 if install; 2 if upgrade
@@ -736,6 +760,7 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{_mandir}/man5/abrt-action-save-package-data.conf.5*
 %{_mandir}/man5/gpg_keys.conf.5*
 %{_mandir}/man8/abrtd.8*
+%{_sysusersdir}/abrt.conf
 
 %files libs
 %{_libdir}/libabrt.so.*
@@ -896,10 +921,13 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %{python3_sitelib}/abrt_exception_handler3.py
 %{python3_sitelib}/__pycache__/abrt_exception_handler3.*
 
+%if %{with container_handler}
 %files -n python3-abrt-container-addon
 %{python3_sitelib}/abrt3_container.pth
 %{python3_sitelib}/abrt_exception_handler3_container.py
 %{python3_sitelib}/__pycache__/abrt_exception_handler3_container.*
+%endif
+
 %endif
 
 %files plugin-machine-id
