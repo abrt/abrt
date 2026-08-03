@@ -617,6 +617,12 @@ main(int argc, char *argv[])
     coredump_journal_filter = g_list_append(coredump_journal_filter,
            (env_journal_filter ? (gpointer)env_journal_filter : (gpointer)"SYSLOG_IDENTIFIER=systemd-coredump"));
 
+    if (!env_journal_filter)
+    {
+        coredump_journal_filter = g_list_append(coredump_journal_filter, (gpointer)"_UID=0");
+        coredump_journal_filter = g_list_append(coredump_journal_filter, (gpointer)"_COMM=systemd-coredum");
+    }
+
     abrt_journal_t *journal = NULL;
     if ((opts & OPT_J))
     {
