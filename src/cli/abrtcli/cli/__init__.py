@@ -1,7 +1,7 @@
 from argparse import Action, ArgumentDefaultsHelpFormatter, ArgumentTypeError
 from glob import glob
 from importlib import import_module
-from os.path import basename, dirname
+from pkgutil import iter_modules
 from reportclient import set_verbosity
 
 from abrtcli import config
@@ -107,9 +107,5 @@ def load_commands(subparsers):
         _commands[instance.name] = instance
 
 
-module_names = [basename(path[:-3])
-                for path in glob('%s/*.py' % (dirname(__file__)))
-                if path != __file__]
-
-for name in module_names:
-    import_module(".%s" % (name), package=__name__)
+for module in iter_modules(__path__):
+    import_module(".%s" % (module.name), package=__name__)
