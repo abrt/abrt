@@ -21,13 +21,13 @@
 # Michal Konečný <michal.konecny@packetseekers.eu>, 2020.
 # Josef Hruska <hrusjos@gmail.com>, 2021.
 # Zdenek Chmelar <chmelarz@gmail.com>, 2023.
-# Pavel Borecki <pavel.borecki@gmail.com>, 2023.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2023, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2023-03-30 19:20+0000\n"
+"PO-Revision-Date: 2026-05-12 13:59+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech <https://translate.fedoraproject.org/projects/abrt/abrt/"
 "cs/>\n"
@@ -36,7 +36,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.15.2\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -333,7 +333,7 @@ msgstr "Adresář problému"
 
 #: ../src/daemon/abrt-action-save-package-data.c:470
 msgid "Configuration file"
-msgstr "Konfigurační soubor"
+msgstr "Soubor s nastaveními"
 
 #: ../src/daemon/abrt-action-save-package-data.c:471
 msgid "Use this directory as RPM root"
@@ -772,7 +772,7 @@ msgstr "Analýza obrazu paměti '%s'"
 #: ../src/plugins/abrt-action-analyze-core.in:105
 #, c-format
 msgid "Missing build id: %s"
-msgstr "Chybějící ID buildu: %s"
+msgstr "Chybějící identifikátor sestavení: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:137
 #, c-format
@@ -2112,7 +2112,7 @@ msgstr " Závadné moduly: %s."
 
 #: ../src/plugins/bodhi.c:498
 msgid "List of bug ids"
-msgstr "Seznam ID chyb"
+msgstr "Seznam identifikátorů chyb"
 
 #: ../src/plugins/bodhi.c:499
 msgid "Specify a bodhi server url"
