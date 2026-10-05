@@ -30,13 +30,14 @@
 # Göran Uddeborg <goeran@uddeborg.se>, 2016. #zanata, 2020.
 # Anders Jonsson <anders.jonsson@norsjovallen.se>, 2021.
 # Kristoffer Grundström <swedishsailfishosuser@tutanota.com>, 2023.
+# Daniel Nylander <po@danielnylander.se>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2023-03-08 04:20+0000\n"
-"Last-Translator: Kristoffer Grundström <swedishsailfishosuser@tutanota.com>\n"
+"PO-Revision-Date: 2026-09-17 08:17+0000\n"
+"Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/sv/>\n"
 "Language: sv\n"
@@ -44,7 +45,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15.2\n"
+"X-Generator: Weblate 2026.9.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -728,7 +729,7 @@ msgstr "D-Bus GetInfo-metodanropet misslyckades: %s"
 
 #: ../src/lib/problem_api_dbus.c:166
 msgid "Can't get problem data from abrt-dbus"
-msgstr "Kan inte hämpta problemdata från abrt-dbus"
+msgstr "Kan inte hämta problemdata från abrt-dbus"
 
 #: ../src/lib/problem_api_dbus.c:193
 #, c-format
@@ -1368,7 +1369,7 @@ msgstr ""
 #: ../src/plugins/abrt-dump-journal-core.c:572
 #: ../src/plugins/abrt-dump-journal-oops.c:223
 msgid "Print found oopses on standard output"
-msgstr "Skriv ut hittade oops:ar på standard ut"
+msgstr "Skriv ut hittade oops:ar på standardutdata"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
@@ -1646,7 +1647,7 @@ msgstr "Skriv ut hittade krascher på standard ut"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:193
 msgid "Create new problem directory in DIR for every crash found"
-msgstr "Skapa en ny problemkatalog i KAT för varje hittad krash"
+msgstr "Skapa en ny problemkatalog i KAT för varje hittad krasch"
 
 #: ../src/plugins/abrt-dump-journal-xorg.c:202
 msgid "Journal filter e.g. '_COMM=gdm-x-session' (may be given many times)"
@@ -2340,7 +2341,7 @@ msgstr "utför omspårning lokalt"
 
 #: ../src/cli/abrtcli/cli/retrace.py:26
 msgid "submit core dump for remote retracing"
-msgstr "skicka minnesdump för fjärromspårning"
+msgstr "skicka minnesdump för fjärrspårning"
 
 #: ../src/cli/abrtcli/cli/retrace.py:29
 msgid "force retracing"
@@ -2369,13 +2370,13 @@ msgid ""
 "Local retracing requires downloading potentially large amount of debuginfo "
 "data"
 msgstr ""
-"Skicka minnesdump och utför fjärromspårning?  (Den kan innehålla känsliga "
-"data.)  Om du svarar ”Nej” kommer ett stackspår genereras lokalt.  Lokal "
+"Skicka minnesdump och utför fjärrspårning?  (Den kan innehålla känsliga "
+"data.)  Om du svarar ”Nej” kommer ett stackspår att genereras lokalt. Lokal "
 "omspårning kräver att man hämtar eventuellt stora mängder debuginfo-data"
 
 #: ../src/cli/abrtcli/cli/retrace.py:71
 msgid "Remote retracing"
-msgstr "Fjärromspårning"
+msgstr "Fjärrspårning"
 
 #: ../src/cli/abrtcli/cli/retrace.py:74
 msgid "Local retracing"

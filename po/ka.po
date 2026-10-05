@@ -4,14 +4,14 @@
 #
 # Translators:
 # George Machitidze <giomac@gmail.com>, 2012,2014
-# Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2022, 2023, 2024, 2025.
+# Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2022, 2023, 2024, 2025, 2026.
 # Mariam Low-Ghelaghutashvili <mariamlow@zusmail.xyz>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2025-04-30 00:43+0000\n"
+"PO-Revision-Date: 2026-01-19 02:58+0000\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/ka/>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -116,29 +116,29 @@ msgstr ""
 #. TODO: Terminate child's process?
 #: ../src/applet/abrt-applet-application.c:800 ../src/daemon/abrt-server.c:117
 #: ../src/daemon/abrt-upload-watch.c:168
-#, c-format, fuzzy
+#, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr "ვერ იკითხება არხიდან გიო: '%s'"
+msgstr "არხიდან gio წაკითხვა შეუძლებელია: '%s'"
 
 #: ../src/applet/abrt-applet-application.c:884
-#, c-format, fuzzy
+#, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr "ვერ ხდება კოდირება არხზე გიო: %s"
+msgstr "კოდირების დაყენება შეუძლებელია gio არხზე: %s"
 
 #: ../src/applet/abrt-applet-application.c:889
-#, c-format, fuzzy
+#, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr "ვერ ჩაირთო დაუბლოკავი რეჟიმი არხისთვის გიო: %s"
+msgstr "ვერ ჩაირთო დაუბლოკავი რეჟიმი არხისთვის gio: %s"
 
 #: ../src/applet/abrt-applet-problem-info.c:259
-#, c-format, fuzzy
+#, c-format
 msgid "Can't take ownership of '%s'"
-msgstr "ვერ ხდება '%s'-ის საკუთრების აღება"
+msgstr "'%s'-ის მფლობელობის აღება შეუძლებელია"
 
 #: ../src/applet/abrt-applet-problem-info.c:269
-#, c-format, fuzzy
+#, c-format
 msgid "Can't open directory for writing '%s'"
-msgstr "ვერ იხსნება დირექტორია '%s'-ის დასაწერად"
+msgstr "'%s'-ის ჩასაწერად საქაღალდის გახსნა შეუძლებელია"
 
 #: ../src/configuration-gui/abrt-config-widget.c:478
 msgid ""
@@ -603,7 +603,7 @@ msgstr "სისტემურ DBus-თან დაკავშირებ�
 #: ../src/lib/problem_api_dbus.c:68
 #, c-format
 msgid "Can't chown '%s': %s"
-msgstr ""
+msgstr "'%s'-ის chown შეუძლებელია: %s"
 
 #: ../src/lib/problem_api_dbus.c:97
 #, c-format
@@ -689,7 +689,7 @@ msgstr "მიმდინარეობს ანალიზი დამპ�
 #: ../src/plugins/abrt-action-analyze-core.in:105
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "აკლია აგების id: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:137
 #, c-format
@@ -785,7 +785,7 @@ msgstr "გამოიყენება პროდუქტი {0}."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:125
 msgid "Using product version {0}."
-msgstr ""
+msgstr "გამოიყენება პროდუქტის ვერსია {0}."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:137
 msgid "Duplicate bugzilla bug '#{0}' was found"
@@ -1819,7 +1819,7 @@ msgstr ""
 #: ../src/plugins/https-utils.c:68
 #, c-format
 msgid "An error occurred while connecting to '%s'"
-msgstr ""
+msgstr "შეცდომა '%s'-ისთან დაკავშირებისას"
 
 #: ../src/plugins/oops-utils.c:78
 #, c-format
