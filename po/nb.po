@@ -7,13 +7,14 @@
 # Kjartan Maraas <kmaraas@gnome.org>, 2012
 # Kjartan Maraas <kmaraas@gnome.org>, 2011
 # Agostino Montanaro <telometto@protonmail.com>, 2021.
+# Kjartan Maraas <kjartan.maraas@proton.me>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2021-05-30 07:02+0000\n"
-"Last-Translator: Agostino Montanaro <telometto@protonmail.com>\n"
+"PO-Revision-Date: 2026-09-17 08:17+0000\n"
+"Last-Translator: Kjartan Maraas <kjartan.maraas@proton.me>\n"
 "Language-Team: Norwegian Bokmål <https://translate.fedoraproject.org/"
 "projects/abrt/abrt/nb_NO/>\n"
 "Language: nb\n"
@@ -21,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 2026.9.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -1878,9 +1879,8 @@ msgid "retrace server URI"
 msgstr "Sporingsserver-URL"
 
 #: ../src/plugins/abrt-retrace-client.c:1263
-#, fuzzy
 msgid "(debug) show received HTTP headers"
-msgstr "(debug) ikke vis mottatte HTTP-overskrifter"
+msgstr "(debug) vis mottatte HTTP-hoder"
 
 #: ../src/plugins/abrt-retrace-client.c:1264
 msgid "For create and batch operations"
@@ -1978,7 +1978,7 @@ msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
-msgstr ""
+msgstr "Send kjernedump til ekstern tjener for analyse"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
@@ -1990,14 +1990,12 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-#, fuzzy
-#| msgid "Retrace server URL"
 msgid "Retrace server URI"
-msgstr "URL til Retrace-tjener"
+msgstr "URI til Retrace-tjener"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Address of the retrace server"
-msgstr ""
+msgstr "Adressen til retrace-tjener"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:5
 msgid "Insecure"
@@ -2005,7 +2003,7 @@ msgstr "Usikker"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 msgid "Whether or not to use insecure connection"
-msgstr ""
+msgstr "Hvorvidt usikker tilkobling skal brukes"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
@@ -2030,26 +2028,26 @@ msgstr ""
 
 #: ../src/plugins/https-utils.c:53
 msgid "An error occurred on the server side."
-msgstr ""
+msgstr "En feil oppsto på tjenersiden."
 
 #: ../src/plugins/https-utils.c:56
 #, c-format
 msgid "A server-side error occurred on '%s'"
-msgstr ""
+msgstr "En tjener-side feil oppsto på «%s»"
 
 #: ../src/plugins/https-utils.c:65
 msgid "An error occurred while connecting to the server"
-msgstr ""
+msgstr "En feil oppsto under forsøk på å koble til tjeneren"
 
 #: ../src/plugins/https-utils.c:68
 #, c-format
 msgid "An error occurred while connecting to '%s'"
-msgstr ""
+msgstr "Det oppsto en feil under tilkobling til «%s»"
 
 #: ../src/plugins/oops-utils.c:78
 #, c-format
 msgid "Sleeping for %d seconds"
-msgstr ""
+msgstr "Venter i %d sekunder"
 
 #: ../src/plugins/oops-utils.c:227
 msgid ""
@@ -2078,7 +2076,7 @@ msgstr ""
 
 #: ../src/plugins/bodhi.c:498
 msgid "List of bug ids"
-msgstr ""
+msgstr "Liste med feilrapport-ider"
 
 #: ../src/plugins/bodhi.c:499
 msgid "Specify a bodhi server url"
