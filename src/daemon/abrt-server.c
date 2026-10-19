@@ -1060,6 +1060,11 @@ static int perform_http_xact(struct response *rsp)
         log_notice("Client is running in own PID Namespace, using PID %d instead of %d", client_pid, pid);
         pid = client_pid;
     }
+    else if (client_uid != 0 && pid != (unsigned)client_pid)
+    {
+        error_msg_and_die("Non-root client (uid %u) reported PID %u which does not match its actual PID %d",
+                          client_uid, pid, client_pid);
+    }
 
     create_problem_dir(problem_info, pid);
     /* does not return */
