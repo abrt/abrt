@@ -383,6 +383,7 @@ static int run_post_create(const char *dirname, struct response *resp)
     int child_pid = spawn_event_handler_child(dirname, "post-create", &child_stdout_fd);
 
     char *dup_of_dir = NULL;
+    const char *work_dir = NULL;
     g_autoptr(GString) cmd_output = g_string_new(NULL);
 
     bool child_is_post_create = 1; /* else it is a notify child */
@@ -435,9 +436,28 @@ static int run_post_create(const char *dirname, struct response *resp)
     /* should not happen */
         perror_msg("waitpid(%d)", child_pid);
 
-    /* If it was a "notify[-dup]" event, then we're done */
+    /* If it was a "notify[-dup]" event, then all processing is complete.
+     * Now write the count element to mark the directory as complete.
+     */
     if (!child_is_post_create)
+    {
+        struct dump_dir *dd = dd_opendir(work_dir, /*flags:*/ 0);
+        if (dd)
+        {
+            char *count_str = dd_load_text_ext(dd, FILENAME_COUNT, DD_FAIL_QUIETLY_ENOENT);
+            unsigned long count = strtoul(count_str, NULL, 10);
+            free(count_str);
+
+            count++;
+            char new_count_str[sizeof(long)*3 + 2];
+            sprintf(new_count_str, "%lu", count);
+            dd_save_text(dd, FILENAME_COUNT, new_count_str);
+
+            dd_sanitize_mode_and_owner(dd);
+            dd_close(dd);
+        }
         goto ret;
+    }
 
     /* exit 0 means "this is a good, non-dup dir" */
     /* exit with 1 + "DUP_OF_DIR: dir" string => dup */
@@ -458,7 +478,7 @@ static int run_post_create(const char *dirname, struct response *resp)
         }
     }
 
-    const char *work_dir = (dup_of_dir ? dup_of_dir : dirname);
+    work_dir = (dup_of_dir ? dup_of_dir : dirname);
 
     /* Load problem_data (from the *first dir* if this one is a dup) */
     struct dump_dir *dd = dd_opendir(work_dir, /*flags:*/ 0);
@@ -466,25 +486,12 @@ static int run_post_create(const char *dirname, struct response *resp)
         /* dd_opendir already emitted error msg */
         goto delete_bad_dir;
 
-    /* Update count */
-    char *count_str = dd_load_text_ext(dd, FILENAME_COUNT, DD_FAIL_QUIETLY_ENOENT);
-    unsigned long count = strtoul(count_str, NULL, 10);
-
-    /* Don't increase crash count if we are working with newly uploaded
-     * directory (remote crash) which already has its crash count set.
+    /* For duplicates, update last occurrence. Count is NOT written here —
+     * it is deferred until after the notify phase completes, so that the
+     * directory is not marked as complete while root is still processing it.
      */
-    if ((status != 0 && dup_of_dir) || count == 0)
+    if (status != 0 && dup_of_dir)
     {
-        count++;
-        char new_count_str[sizeof(long)*3 + 2];
-        sprintf(new_count_str, "%lu", count);
-        dd_save_text(dd, FILENAME_COUNT, new_count_str);
-
-        /* This condition can be simplified to either
-         * (status * != 0 && * dup_of_dir) or (count == 1). But the
-         * chosen form is much more reliable and safe. We must not call
-         * dd_opendir() to locked dd otherwise we go into a deadlock.
-         */
         if (strcmp(dd->dd_dirname, dirname) != 0)
         {
             /* Update the last occurrence file by the time file of the new problem */

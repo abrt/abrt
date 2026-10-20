@@ -271,6 +271,7 @@ static struct dump_dir *open_directory_for_modification_of_element(
     static const char *const protected_elements[] = {
         FILENAME_TIME,
         FILENAME_UID,
+        FILENAME_COUNT,
         NULL,
     };
 
@@ -763,7 +764,12 @@ static void handle_method_call(GDBusConnection *connection,
 
             if (dd)
             {
-                if (dd_delete(dd) != 0)
+                if (!problem_dump_dir_is_complete(dd))
+                {
+                    log_notice("Refusing to delete incomplete problem directory '%s'", dir_name);
+                    dd_close(dd);
+                }
+                else if (dd_delete(dd) != 0)
                 {
                     error_msg("Failed to delete problem directory '%s'", dir_name);
                     dd_close(dd);

@@ -17,6 +17,7 @@
 */
 
 #include "libabrt.h"
+#include "problem_api.h"
 #include "abrt_problems2_entry.h"
 
 #include <dbus/dbus.h>
@@ -136,6 +137,18 @@ int abrt_p2_entry_delete(AbrtP2Entry *entry, uid_t caller_uid, GError **error)
                     "Cannot lock the problem. Check system logs.");
 
         return -EWOULDBLOCK;
+    }
+
+    /* Refuse to delete a directory that is still being processed by the
+     * post-create/notify pipeline.  Root callers are exempt because internal
+     * cleanup of failed/rejected temporary directories passes caller_uid=0. */
+    if (caller_uid != 0 && !problem_dump_dir_is_complete(dd))
+    {
+        g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
+                    "Problem directory is being processed");
+
+        dd_close(dd);
+        return -EBUSY;
     }
 
     ret = dd_delete(dd);
@@ -503,6 +516,14 @@ GVariant *abrt_p2_entry_save_elements(AbrtP2Entry *entry,
     if (dd == NULL)
         return NULL;
 
+    if (!problem_dump_dir_is_complete(dd))
+    {
+        dd_close(dd);
+        g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
+                    "Problem directory is being processed");
+        return NULL;
+    }
+
     abrt_p2_entry_save_elements_in_dump_dir(dd,
                                             flags,
                                             elements,
@@ -561,6 +582,12 @@ int abrt_p2_entry_save_elements_in_dump_dir(struct dump_dir *dd,
     while (g_variant_iter_loop(&iter, "{sv}", &name, &value))
     {
         log_debug("Saving element: %s", name);
+
+        if (caller_uid != 0 && strcmp(name, FILENAME_COUNT) == 0)
+        {
+            log_notice("Non-root caller cannot set element '%s', skipping", name);
+            continue;
+        }
 
         struct stat item_stat;
         memset(&item_stat, 0, sizeof(item_stat));
@@ -925,6 +952,14 @@ GVariant *abrt_p2_entry_delete_elements(AbrtP2Entry *entry,
                                                       error);
     if (dd == NULL)
         return NULL;
+
+    if (!problem_dump_dir_is_complete(dd))
+    {
+        dd_close(dd);
+        g_set_error(error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
+                    "Problem directory is being processed");
+        return NULL;
+    }
 
     gchar *name = NULL;
     GVariantIter iter;

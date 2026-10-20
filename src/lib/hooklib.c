@@ -620,6 +620,13 @@ bool abrt_new_user_problem_entry_allowed(uid_t uid, const char *name, const char
     if (uid == 0)
         return true;
 
+    /* "count" is the pipeline completion marker — only the daemon may set it */
+    if (strcmp(name, FILENAME_COUNT) == 0)
+    {
+        error_msg("Only root is permitted to create element '%s'", name);
+        return false;
+    }
+
     /* Permit non-root users to create everything except post-create condition elements */
     if (!problem_entry_is_post_create_condition(name))
         return true;
