@@ -617,6 +617,15 @@ main(int argc, char *argv[])
     coredump_journal_filter = g_list_append(coredump_journal_filter,
            (env_journal_filter ? (gpointer)env_journal_filter : (gpointer)"SYSLOG_IDENTIFIER=systemd-coredump"));
 
+    if (!env_journal_filter)
+    {
+        /* Filter on trusted fields (set by the kernel, not spoofable) to
+         * ensure we only process genuine systemd-coredump entries.
+         * "systemd-coredum" is not a typo — the kernel truncates _COMM to 15 chars. */
+        coredump_journal_filter = g_list_append(coredump_journal_filter, (gpointer)"_EXE=/usr/lib/systemd/systemd-coredump");
+        coredump_journal_filter = g_list_append(coredump_journal_filter, (gpointer)"_COMM=systemd-coredum");
+    }
+
     abrt_journal_t *journal = NULL;
     if ((opts & OPT_J))
     {

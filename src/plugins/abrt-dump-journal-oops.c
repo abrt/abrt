@@ -273,6 +273,9 @@ int main(int argc, char *argv[])
     kernel_journal_filter = g_list_append(kernel_journal_filter,
             (env_journal_filter ? (gpointer)env_journal_filter : (gpointer)"SYSLOG_IDENTIFIER=kernel"));
 
+    if (!env_journal_filter)
+        kernel_journal_filter = g_list_append(kernel_journal_filter, (gpointer)"_TRANSPORT=kernel");
+
     abrt_journal_t *journal = NULL;
     if ((opts & OPT_J))
     {

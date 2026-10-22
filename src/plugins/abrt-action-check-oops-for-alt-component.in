@@ -45,8 +45,24 @@ def get_new_component(filename):
     f.close()
     return None
 
+def safe_open_for_write(filename):
+    dir_fd = os.open(".", os.O_DIRECTORY | os.O_NOFOLLOW)
+    try:
+        try:
+            os.unlink(filename, dir_fd=dir_fd)
+        except FileNotFoundError:
+            pass
+        fd = os.open(filename, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+                     0o640, dir_fd=dir_fd)
+    finally:
+        os.close(dir_fd)
+    return os.fdopen(fd, 'w')
+
+
 def open_or_die(filename, mode):
     try:
+        if mode == "w":
+            return safe_open_for_write(filename)
         f = open(filename, mode)
     except IOError as e:
         sys.stderr.write(str(e) + "\n")
