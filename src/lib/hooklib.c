@@ -253,8 +253,9 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
     char *args[25];
     args[i++] = (char*)GDB;
     args[i++] = (char*)"-batch";
+    args[i++] = (char*)"-iex";
+    args[i++] = (char*)"set auto-load off";
     GString *set_debug_file_directory = g_string_new(NULL);
-    unsigned auto_load_base_index = 0;
     if(debuginfo_dirs != NULL)
     {
         g_string_append(set_debug_file_directory, "set debug-file-directory /usr/lib/debug:/usr/lib");
@@ -277,12 +278,6 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
         }
 
         g_string_append_printf(set_debug_file_directory, ":%s", debug_directories->str);
-
-        args[i++] = (char*)"-iex";
-        auto_load_base_index = i;
-        args[i++] = g_strdup_printf("add-auto-load-safe-path %s", debug_directories->str);
-        args[i++] = (char*)"-iex";
-        args[i++] = g_strdup_printf("add-auto-load-scripts-directory %s", debug_directories->str);
 
         g_string_free(debug_directories, TRUE);
     }
@@ -391,12 +386,6 @@ char *abrt_get_backtrace(struct dump_dir *dd, unsigned timeout_sec, const char *
             bt_depth = 128;
             full = "";
         }
-    }
-
-    if (auto_load_base_index > 0)
-    {
-        free(args[auto_load_base_index]);
-        free(args[auto_load_base_index + 2]);
     }
 
     free(args[debug_dir_cmd_index]);
