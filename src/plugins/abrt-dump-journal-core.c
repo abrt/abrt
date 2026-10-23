@@ -16,6 +16,7 @@
 #include "abrt-journal.h"
 
 #define ABRT_JOURNAL_WATCH_STATE_FILE VAR_STATE"/abrt-dump-journal-core.state"
+#define SYSTEMD_COREDUMP_DIR "/var/lib/systemd/coredump/"
 
 enum {
     ABRT_CORE_PRINT_STDOUT = 1 << 0,
@@ -266,7 +267,25 @@ save_systemd_coredump_in_dump_directory(struct dump_dir *dd, struct crash_info *
 
     if (strlen(coredump_path) > 0)
     {
-        // Copy the likely compressed coredump file to the problem directory
+        /* COREDUMP_FILENAME is a non-trusted journal field (no "_" prefix) —
+         * any process running the real systemd-coredump binary can set it to
+         * an arbitrary path.  Without validation, abrt-dump-journal-core
+         * (running as root) would copy the attacker-chosen file into a dump
+         * directory readable by the crash UID via the Problems2 D-Bus API,
+         * disclosing e.g. /etc/shadow or SSH host keys.  Resolve symlinks
+         * and ".." components via realpath() and restrict to the directory
+         * systemd-coredump actually writes to. (ZDI-CAN-34447) */
+        char *resolved = realpath(coredump_path, NULL);
+        if (resolved == NULL
+            || strncmp(resolved, SYSTEMD_COREDUMP_DIR, strlen(SYSTEMD_COREDUMP_DIR)) != 0)
+        {
+            error_msg("Rejecting COREDUMP_FILENAME outside of "
+                      SYSTEMD_COREDUMP_DIR ": '%s'", coredump_path);
+            free(resolved);
+            return -1;
+        }
+        free(resolved);
+
         const char *dd_coredump_filename = FILENAME_COREDUMP;
         g_autofree char *filename_with_extension = NULL;
 
