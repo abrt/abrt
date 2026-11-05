@@ -2,47 +2,51 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Languages add-on <noreply-addon-languages@weblate.org>, 2026.
+# Fernando Velo <seacat.linux@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-10-13 23:18+0000\n"
+"Last-Translator: Fernando Velo <seacat.linux@gmail.com>\n"
+"Language-Team: Spanish (Argentina) <https://translate.fedoraproject.org/"
+"projects/abrt/abrt/es_AR/>\n"
 "Language: es_AR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2026.10.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
-msgstr ""
+msgstr "Reporte de Problemas"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr ""
+msgstr "Ver e informar sobre fallos de la aplicación"
 
 #: ../src/applet/abrt-applet-application.c:157
 msgid "Be verbose"
-msgstr ""
+msgstr "Sé prolijo"
 
 #: ../src/applet/abrt-applet-application.c:167
 msgid "Applet which notifies user when new problems are detected by ABRT"
 msgstr ""
+"Miniaplicación que notifica al usuario cuando ABRT detecta nuevos problemas"
 
 #: ../src/applet/abrt-applet-application.c:534
 msgid "Oops!"
-msgstr ""
+msgstr "¡Ups!"
 
 #: ../src/applet/abrt-applet-application.c:573
 msgid "Report"
-msgstr ""
+msgstr "Informe"
 
 #: ../src/applet/abrt-applet-application.c:590
 msgid "Restart"
-msgstr ""
+msgstr "Reanudar"
 
 #: ../src/applet/abrt-applet-application.c:663
 #, c-format
@@ -50,6 +54,8 @@ msgid ""
 "We're sorry, it looks like %s crashed. The problem has been automatically "
 "reported."
 msgstr ""
+"Lo sentimos, parece que %s ha fallado. El problema se ha notificado "
+"automáticamente."
 
 #: ../src/applet/abrt-applet-application.c:668
 #, c-format
@@ -57,6 +63,8 @@ msgid ""
 "We’re sorry, it looks like %s crashed. The problem will be reported when the "
 "internet is available."
 msgstr ""
+"Lo sentimos, parece que %s ha fallado. El problema se notificará cuando haya "
+"conexión a Internet."
 
 #: ../src/applet/abrt-applet-application.c:674
 #: ../src/applet/abrt-applet-application.c:688
@@ -66,6 +74,8 @@ msgid ""
 "We're sorry, it looks like %s crashed. Please contact the developer if you "
 "want to report the issue."
 msgstr ""
+"Lo sentimos, parece que %s ha fallado. Por favor, contacta con el "
+"desarrollador si deseas informar del problema."
 
 #: ../src/applet/abrt-applet-application.c:682
 #, c-format
@@ -73,51 +83,59 @@ msgid ""
 "We're sorry, it looks like %s crashed. If you'd like to help resolve the "
 "issue, please send a report."
 msgstr ""
+"Lo sentimos, parece que %s ha fallado. Si deseas ayudar a resolver el "
+"problema, por favor envía un informe."
 
 #: ../src/applet/abrt-applet-application.c:701
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "has been automatically reported."
 msgstr ""
+"Lo sentimos, parece que ha ocurrido un problema en un componente. El "
+"problema se ha notificado automáticamente."
 
 #: ../src/applet/abrt-applet-application.c:705
 msgid ""
 "We're sorry, it looks like a problem occurred in a component. The problem "
 "will be reported when the internet is available."
 msgstr ""
+"Lo sentimos, parece que ha ocurrido un problema en un componente. El "
+"problema se notificará cuando haya conexión a Internet."
 
 #: ../src/applet/abrt-applet-application.c:710
 msgid ""
 "We're sorry, it looks like a problem occurred. If you'd like to help resolve "
 "the issue, please send a report."
 msgstr ""
+"Lo sentimos, parece que ha ocurrido un problema. Si desea ayudar a "
+"resolverlo, por favor envíe un informe."
 
 #. TODO: Terminate child's process?
 #: ../src/applet/abrt-applet-application.c:800 ../src/daemon/abrt-server.c:117
 #: ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr ""
+msgstr "No se puede leer desde el canal gio: '%s'"
 
 #: ../src/applet/abrt-applet-application.c:884
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr ""
+msgstr "No se puede establecer la codificación en el canal gio: %s"
 
 #: ../src/applet/abrt-applet-application.c:889
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr ""
+msgstr "No se puede activar el modo no bloqueante para el canal gio: %s"
 
 #: ../src/applet/abrt-applet-problem-info.c:259
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr ""
+msgstr "No se puede asumir la propiedad de '%s'"
 
 #: ../src/applet/abrt-applet-problem-info.c:269
 #, c-format
 msgid "Can't open directory for writing '%s'"
-msgstr ""
+msgstr "No se puede abrir el directorio '%s' para escritura"
 
 #: ../src/configuration-gui/abrt-config-widget.c:478
 msgid ""
@@ -125,26 +143,29 @@ msgid ""
 "linked to the value of the setting 'report-technical-problems' from the "
 "schema 'org.gnome.desktop.privacy'."
 msgstr ""
+"La opción de configuración anterior se ha trasladado a GSettings y el "
+"interruptor está vinculado al valor de la configuración 'report-technical-"
+"problems' del esquema 'org.gnome.desktop.privacy'."
 
 #: ../src/configuration-gui/abrt-config-widget.c:496
 msgid "The configuration option above can be configured in"
-msgstr ""
+msgstr "La opción de configuración anterior se puede configurar en"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr ""
+msgstr "Pregunta antes de robar el directorio"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
-msgstr ""
+msgstr "Enviar uReport automáticamente"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
-msgstr ""
+msgstr "Informe abreviado"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
-msgstr ""
+msgstr "Informe abreviado silencioso"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
@@ -155,6 +176,14 @@ msgid ""
 "With option 'Never' the stack trace will be always generated locally. With "
 "option 'Ask' ABRT will always ask the user."
 msgstr ""
+"El archivo coredump es necesario para generar el seguimiento de la pila "
+"(*stack trace*), una operación que consume tiempo y espacio. ABRT ofrece un "
+"servicio que genera dicho seguimiento a partir del *coredump*, pero es "
+"necesario cargar el archivo en dicho servicio. Con la opción 'Always' "
+"(Siempre), ABRT cargará el coredump automáticamente sin solicitar "
+"confirmación. Con la opción 'Never' (Nunca), el seguimiento de la pila se "
+"generará siempre de forma local. Con la opción 'Ask' (Preguntar), ABRT "
+"siempre solicitará la confirmación del usuario."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -163,6 +192,11 @@ msgid ""
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
 msgstr ""
+"ABRT almacena los datos de los problemas en directorios. Cuando ABRT "
+"necesita un directorio con permisos de escritura, este se traslada desde la "
+"ubicación del sistema a su directorio personal. Si esta opción está "
+"desactivada, ABRT moverá el directorio del problema sin solicitar "
+"confirmación."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
@@ -171,6 +205,11 @@ msgid ""
 "uReport is sent at beginning of reporting process. With this option enabled "
 "uReports are sent automatically immediately after problem detection."
 msgstr ""
+"uReport es una descripción breve y totalmente anónima de un problema. ABRT "
+"utiliza los uReports para la detección rápida y global de duplicados. En la "
+"configuración predeterminada, uReport se envía al inicio del proceso de "
+"notificación; con esta opción habilitada, los uReports se envían "
+"automáticamente justo después de detectarse el problema."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
@@ -178,26 +217,35 @@ msgid ""
 "in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
 msgstr ""
+"Con esta opción activada, el proceso de generación de informes que se inicia "
+"al hacer clic en el botón Informar en la burbuja de notificación de "
+"problemas se interrumpirá una vez que se envíe uReport. Siempre puede usar "
+"el navegador de problemas predeterminado para generar un informe completo."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
 msgstr ""
+" Con esta opción activada, ABRT nunca muestra notificaciones de problemas "
+"reportados. Solo surte efecto si la opción de informes abreviados está "
+"habilitada."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are detected."
 msgstr ""
+" Con esta opción activada, ABRT siempre creará un informe de error con "
+"acceso restringido si se detectan datos potencialmente confidenciales."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid "Request private ticket for sensitive information"
-msgstr ""
+msgstr "Solicitar un ticket privado para información sensible"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Notify incomplete problems"
-msgstr ""
+msgstr "Notificar problemas incompletos"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid ""
@@ -205,47 +253,50 @@ msgid ""
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
 msgstr ""
+"Se detectan problemas incompletos mientras el equipo se apaga o el usuario "
+"cierra la sesión. Para garantizar informes de problemas útiles, ABRT no "
+"permitirá enviar estos problemas."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid "Always"
-msgstr ""
+msgstr "Siempre"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:15
 msgid "Never"
-msgstr ""
+msgstr "Nunca"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:16
 msgid "Ask"
-msgstr ""
+msgstr "Preguntar"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
 msgid "Upload coredump for backtrace generation"
-msgstr ""
+msgstr "Subir coredump para generar el rastreo de pila"
 
 #: ../src/configuration-gui/system-config-abrt.c:66
 msgid "_Close"
-msgstr ""
+msgstr "_Cerrar"
 
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Defaults"
-msgstr ""
+msgstr "Valores predetermina_dos"
 
 #: ../src/configuration-gui/system-config-abrt.c:103
 #: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
-msgstr ""
+msgstr "Configuración de notificación de problemas"
 
 #: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
-msgstr ""
+msgstr "Acerca de la configuración del sistema ABRT"
 
 #: ../src/configuration-gui/main.c:105
 msgid "About"
-msgstr ""
+msgstr "Acerca de"
 
 #: ../src/configuration-gui/main.c:106
 msgid "Quit"
-msgstr ""
+msgstr "Abandonar"
 
 #: ../src/daemon/abrt-action-save-package-data.c:456
 msgid ""
@@ -253,6 +304,10 @@ msgid ""
 "\n"
 "Query package database and save package and component name"
 msgstr ""
+"& [-v] [-c CONFFILE] [-r CHROOT] -d DIR\n"
+"\n"
+"Consultar la base de datos de paquetes y guardar los nombres del paquete y "
+"del componente"
 
 #: ../src/daemon/abrt-action-save-package-data.c:469
 #: ../src/daemon/abrt-action-save-container-data.c:265
@@ -264,15 +319,15 @@ msgstr ""
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
 msgid "Problem directory"
-msgstr ""
+msgstr "Directorio de problemas"
 
 #: ../src/daemon/abrt-action-save-package-data.c:470
 msgid "Configuration file"
-msgstr ""
+msgstr "Archivo de configuración"
 
 #: ../src/daemon/abrt-action-save-package-data.c:471
 msgid "Use this directory as RPM root"
-msgstr ""
+msgstr "Utilice este directorio como raíz de RPM"
 
 #: ../src/daemon/abrt-action-save-container-data.c:254
 msgid ""
@@ -280,19 +335,22 @@ msgid ""
 "\n"
 "Save container metadata"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Guardar metadatos del contenedor"
 
 #: ../src/daemon/abrt-action-save-container-data.c:266
 msgid "Root directory for running container commands"
-msgstr ""
+msgstr "Directorio raíz para ejecutar comandos de contenedores"
 
 #: ../src/daemon/abrt-server.c:1100 ../src/dbus/abrt-dbus.c:1014
 #: ../src/daemon/abrtd.c:738
 msgid "& [options]"
-msgstr ""
+msgstr "& [opciones]"
 
 #: ../src/daemon/abrt-server.c:1111
 msgid "Use NUM as client uid"
-msgstr ""
+msgstr "Utilizar NUM como UID de cliente"
 
 #: ../src/daemon/abrt-server.c:1112 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:176 ../src/plugins/abrt-dump-oops.c:97
@@ -301,52 +359,54 @@ msgstr ""
 #: ../src/plugins/abrt-dump-journal-xorg.c:191
 #: ../src/plugins/abrt-dump-xorg.c:52
 msgid "Log to syslog"
-msgstr ""
+msgstr "Registrar en syslog"
 
 #: ../src/daemon/abrt-server.c:1113 ../src/daemon/abrtd.c:754
 msgid "Add program names to log"
-msgstr ""
+msgstr "Agregar nombres de programas al registro"
 
 #: ../src/dbus/abrt-dbus.c:135
 #, c-format
 msgid "'%s' is not a valid element name"
-msgstr ""
+msgstr "'%s' no es un nombre de elemento válido"
 
 #: ../src/dbus/abrt-dbus.c:187
 #, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr ""
+msgstr "'%s' no es un directorio de problemas válido"
 
 #: ../src/dbus/abrt-dbus.c:240 ../src/dbus/abrt-dbus.c:490
 msgid "Not Authorized"
-msgstr ""
+msgstr "No autorizado"
 
 #: ../src/dbus/abrt-dbus.c:253
 msgid "Can't open the problem"
-msgstr ""
+msgstr "No se puede abrir el problema"
 
 #: ../src/dbus/abrt-dbus.c:285
 #, c-format
 msgid "'%s' element can't be modified"
-msgstr ""
+msgstr "El elemento '%s' no se puede modificar"
 
 #: ../src/dbus/abrt-dbus.c:506
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
+"Error al cambiar el propietario del directorio. Consulte los registros del "
+"sistema para obtener más detalles."
 
 #: ../src/dbus/abrt-dbus.c:635
 #, c-format
 msgid "Can't get size of '%s'"
-msgstr ""
+msgstr "No se puede obtener el tamaño de '%s'"
 
 #: ../src/dbus/abrt-dbus.c:650
 msgid "No problem space left"
-msgstr ""
+msgstr "No queda espacio para problemas"
 
 #: ../src/dbus/abrt-dbus.c:685
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr ""
+msgstr "No se puede eliminar el elemento '%s' del directorio problemático '%s'"
 
 #: ../src/dbus/abrt-dbus.c:938 ../src/daemon/abrtd.c:720
 #, c-format
@@ -354,14 +414,16 @@ msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr ""
+"El nombre '%s' se ha perdido. Por favor, compruebe si algún otro servicio "
+"que posea ese nombre no está en ejecución.\n"
 
 #: ../src/dbus/abrt-dbus.c:1023 ../src/daemon/abrtd.c:753
 msgid "Exit after NUM seconds of inactivity"
-msgstr ""
+msgstr "Salir después de NUM segundos de inactividad"
 
 #: ../src/dbus/abrt-dbus.c:1041
 msgid "This program must be run as root."
-msgstr ""
+msgstr "Este programa debe ejecutarse como usuario root."
 
 #: ../src/daemon/abrtd.c:683
 msgid ""
@@ -371,35 +433,42 @@ msgid ""
 "problem. If you have time and want to help the developers in their effort to "
 "sort out this problem, please contact them directly."
 msgstr ""
+"Los datos del problema están incompletos. Esto suele ocurrir cuando se "
+"detecta un problema al apagar el equipo o al cerrar la sesión del usuario. "
+"Para poder proporcionar informes de problemas útiles, ABRT no permite enviar "
+"este informe. Si dispone de tiempo y desea ayudar a los desarrolladores a "
+"solucionar este problema, póngase en contacto con ellos directamente."
 
 #: ../src/daemon/abrtd.c:751
 msgid "Do not daemonize"
-msgstr ""
+msgstr "No demonizar"
 
 #: ../src/daemon/abrtd.c:752
 msgid "Log to syslog even with -d"
-msgstr ""
+msgstr "Registrar en syslog incluso con -d"
 
 #: ../src/daemon/abrt-handle-event.c:362
+#, fuzzy
 msgid "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
-msgstr ""
+msgstr "& [-v -i -n INCREMENT] -e|--event EVENT DIR..."
 
 #: ../src/daemon/abrt-handle-event.c:371
 msgid "Run EVENT on DIR"
-msgstr ""
+msgstr "Ejecutar EVENT en DIR"
 
 #: ../src/daemon/abrt-handle-event.c:372
 msgid "Communicate directly to the user"
-msgstr ""
+msgstr "Comunicarse directamente con el usuario"
 
 #: ../src/daemon/abrt-handle-event.c:373
 msgid "Increment the nice value by INCREMENT"
-msgstr ""
+msgstr "Incrementar el valor agradable en INCREMENT"
 
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
 msgstr ""
+"No hay trabajadores libres y el búfer está lleno. Se omite el archivo '%s'"
 
 #: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
@@ -412,85 +481,96 @@ msgid ""
 "If UPLOAD_DIRECTORY is not provided, uses a value of\n"
 "WatchCrashdumpArchiveDir option from abrt.conf"
 msgstr ""
+"& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
+"\n"
+"\n"
+"Supervisa UPLOAD_DIRECTORY y descomprime los archivos entrantes en "
+"DumpLocation\n"
+"especificado en abrt.conf\n"
+"\n"
+"Si no se proporciona UPLOAD_DIRECTORY, se utiliza un valor de\n"
+"la opción WatchCrashdumpArchiveDir de abrt.conf"
 
 #: ../src/daemon/abrt-upload-watch.c:281
 msgid "Daemonize"
-msgstr ""
+msgstr "Demonizar"
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr ""
+msgstr "Número de trabajadores simultáneos. El valor predeterminado es "
 
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
-msgstr ""
+msgstr "Tamaño máximo de caché en MiB. El valor predeterminado es "
 
 #: ../src/daemon/abrt-auto-reporting.c:198
 #: ../src/daemon/abrt-auto-reporting.c:206
+#, fuzzy
 msgid "& [ "
-msgstr ""
+msgstr "& [ "
 
 #: ../src/daemon/abrt-auto-reporting.c:233
 msgid "Turns the authentication off"
-msgstr ""
+msgstr "Desactiva la autenticación"
 
 #: ../src/daemon/abrt-auto-reporting.c:234
 msgid "Red Hat Support user name"
-msgstr ""
+msgstr "Nombre de usuario del soporte de Red Hat"
 
 #: ../src/daemon/abrt-auto-reporting.c:235
 msgid "Red Hat Support password, if not given, a prompt for it will be issued"
 msgstr ""
+"Contraseña de soporte de Red Hat, si no se proporciona, se le solicitará"
 
 #: ../src/daemon/abrt-auto-reporting.c:236
 msgid "uReport SSL certificate paths or certificate type"
-msgstr ""
+msgstr "Rutas de certificados SSL de uReport o tipo de certificado"
 
 #: ../src/daemon/abrt-auto-reporting.c:252
 msgid "You also need to specify --username for --password"
-msgstr ""
+msgstr "También debes especificar --username for --password"
 
 #: ../src/daemon/abrt-auto-reporting.c:258
 msgid "You can use either --username or --certificate"
-msgstr ""
+msgstr "Puedes usar --username o --certificate"
 
 #: ../src/daemon/abrt-auto-reporting.c:264
 msgid "You can use either --username or --anonymous"
-msgstr ""
+msgstr "Puedes usar --username o --anonymous"
 
 #: ../src/daemon/abrt-auto-reporting.c:270
 msgid "You can use either --anonymous or --certificate"
-msgstr ""
+msgstr "Puedes usar --anonymous o --certificate"
 
 #: ../src/daemon/abrt-auto-reporting.c:277
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "Cantidad de argumentos inválida"
 
 #: ../src/daemon/abrt-auto-reporting.c:296
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "Valor de opción desconocido: '%s'\n"
 
 #: ../src/daemon/abrt-auto-reporting.c:336
 msgid "Password:"
-msgstr ""
+msgstr "Contraseña:"
 
 #: ../src/daemon/abrt-auto-reporting.c:339
 msgid "Cannot continue without password\n"
-msgstr ""
+msgstr "No se puede continuar sin contraseña\n"
 
 #. Print only the part before ':' of a string like "username:password"
 #: ../src/daemon/abrt-auto-reporting.c:380
 msgid "HTTP Authenticated auto reporting"
-msgstr ""
+msgstr "Informes automáticos autenticados mediante HTTP"
 
 #: ../src/daemon/abrt-auto-reporting.c:382
 msgid "SSL Client Authenticated auto reporting"
-msgstr ""
+msgstr "Informes automáticos autenticados por cliente SSL"
 
 #: ../src/daemon/abrt-auto-reporting.c:384
 msgid "anonymous auto reporting"
-msgstr ""
+msgstr "Informe automático anónimo"
 
 #: ../src/daemon/abrt-handle-upload.in:130
 #, c-format
@@ -503,120 +583,128 @@ msgid ""
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
 msgstr ""
+"Uso: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
+"\n"
+"   -v             - Verboso\n"
+"   -d             - Eliminar archivo subido\n"
+"   ABRT_SPOOL_DIR - Directorio donde se descomprimen los archivos cargados "
+"válidos\n"
+"   UPLOAD_DIR     - Directorio donde se almacenan los archivos subidos\n"
+"   FILENAME       - Nombre del archivo comprimido subido\n"
 
 #: ../src/daemon/abrt-handle-upload.in:166
 #: ../src/daemon/abrt-handle-upload.in:169
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "No es un directorio: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:172
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
+msgstr "Saltando: '{0}' (comienza con barra inclinada)"
 
 #: ../src/daemon/abrt-handle-upload.in:175
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
+msgstr "Saltando: '{0}' (comienza con un punto)"
 
 #: ../src/daemon/abrt-handle-upload.in:178
 msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
+msgstr "Omitiendo: '{0}' (contiene ..)"
 
 #: ../src/daemon/abrt-handle-upload.in:181
 msgid "Skipping: '{0}' (contains space)"
-msgstr ""
+msgstr "Omitiendo: '{0}' (contiene espacio)"
 
 #: ../src/daemon/abrt-handle-upload.in:184
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "Omitiendo: '{0}' (contiene tabulación)"
 
 #: ../src/daemon/abrt-handle-upload.in:189
 msgid "Can't change directory to '{0}'"
-msgstr ""
+msgstr "No se puede cambiar de directorio a '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:200
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "Tipo de archivo desconocido: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:205
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "No se puede crear el directorio de trabajo en '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:216
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "No se puede mover '{0}' a '{1}'"
 
 #: ../src/daemon/abrt-handle-upload.in:221
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "No se puede copiar '{0}' a '{1}'"
 
 #: ../src/daemon/abrt-handle-upload.in:225
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "Error de verificación en '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:227
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "Desempaquetando '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:231
 msgid "Can't create '{0}' directory"
-msgstr ""
+msgstr "No se puede crear el directorio '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:235
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "No se puede desempaquetar '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:255
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' procesado correctamente"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:259
 msgid "Generating backtrace"
-msgstr ""
+msgstr "Genenrando rastreo inverso"
 
 #: ../src/lib/problem_api_dbus.c:42
 #, c-format
 msgid "Can't connect to system DBus: %s"
-msgstr ""
+msgstr "No se puede conectar con el sistema DBus: %s"
 
 #: ../src/lib/problem_api_dbus.c:68
 #, c-format
 msgid "Can't chown '%s': %s"
-msgstr ""
+msgstr "No se puede cambiar el propietario de '%s': %s"
 
 #: ../src/lib/problem_api_dbus.c:97
 #, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr ""
+msgstr "Error al eliminar el directorio problemático: %s"
 
 #: ../src/lib/problem_api_dbus.c:131
 #, c-format
 msgid "D-Bus GetInfo method call failed: %s"
-msgstr ""
+msgstr "La llamada al método GetInfo de D-Bus falló: %s"
 
 #: ../src/lib/problem_api_dbus.c:166
 msgid "Can't get problem data from abrt-dbus"
-msgstr ""
+msgstr "No se pueden obtener datos de problemas de abrt-dbus"
 
 #: ../src/lib/problem_api_dbus.c:193
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
-msgstr ""
+msgstr "No se puede obtener la lista de problemas de abrt-dbus: %s"
 
 #: ../src/lib/problem_api_dbus.c:230 ../src/lib/problem_api_dbus.c:315
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
-msgstr ""
+msgstr "No se pueden obtener datos de problemas de abrt-dbus: %s"
 
 #: ../src/lib/problem_api_dbus.c:274
 #, c-format
 msgid "Can't test whether the element exists over abrt-dbus: %s"
-msgstr ""
+msgstr "No se puede comprobar si el elemento existe a través de abrt-dbus: %s"
 
 #: ../src/lib/ignored_problems.c:233
 #, c-format
 msgid "Can't create temporary file '%s'"
-msgstr ""
+msgstr "No se puede crear el archivo temporal '%s'"
 
 #: ../src/lib/ignored_problems.c:250
 #, c-format
@@ -624,12 +712,16 @@ msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
 "problems '%s'"
 msgstr ""
+"No se puede escribir en '%s'. El problema '%s' no se eliminará de la lista "
+"de problemas ignorados '%s'"
 
 #. Something nefarious happened
 #: ../src/lib/ignored_problems.c:264
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
 msgstr ""
+"No se puede cambiar el nombre de '%s' a '%s'. Error al eliminar el problema "
+"'%s'"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:41
 msgid ""
@@ -638,6 +730,11 @@ msgid ""
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
 msgstr ""
+"& [opciones] -d DIR\n"
+"\n"
+"Analiza el rastreo de pila de C/C++, genera un hash de duplicación, una "
+"calificación del rastreo de pila,\n"
+"e identifica la función de bloqueo en el directorio del problema DIR"
 
 #.
 #. * The parser failed. Compute the duphash from the executable
@@ -647,11 +744,11 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-backtrace.c:92
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "El análisis del rastreo de pila falló para %s"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:152
 msgid "Crash thread not found"
-msgstr ""
+msgstr "No se encontró el hilo de fallo"
 
 #: ../src/plugins/abrt-action-analyze-c.c:155
 msgid ""
@@ -659,25 +756,28 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Calcula y guarda el UUID del coredump en el directorio del problema DIR"
 
 #: ../src/plugins/abrt-action-analyze-core.in:67
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "Analizando coredump '%s'"
 
 #: ../src/plugins/abrt-action-analyze-core.in:105
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "Id de compilación faltante: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:137
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr ""
+msgstr "Uso: %s [-v] [-o OUTFILE] -c COREFILE"
 
 #: ../src/plugins/abrt-action-analyze-core.in:159
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "COREFILE no está especificado"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
@@ -693,6 +793,11 @@ msgid ""
 "your computer. ABRT will not allow you to create a report in a bug tracking "
 "system but you can contact kernel maintainers via e-mail."
 msgstr ""
+"El rastreo inverso no contiene suficientes marcos de función relevantes para "
+"ser reportado. Es molesto, pero no necesariamente indica un problema con su "
+"computadora. ABRT no le permitirá crear un informe en un sistema de "
+"seguimiento de errores, pero puede contactar a los responsables del kernel "
+"por correo electrónico."
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:74
 msgid ""
@@ -700,11 +805,14 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Calcula y guarda UUID y DUPHASH para el directorio de problemas de xorg DIR"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:143
 #, c-format
 msgid "Module '%s' was loaded - won't report this crash"
-msgstr ""
+msgstr "El módulo '%s' se cargó; no se informará de este fallo"
 
 #: ../src/plugins/abrt-action-analyze-python.c:44
 msgid ""
@@ -712,71 +820,79 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Calcula y guarda el UUID y el DUPHASH de los volcados de memoria de Python"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:47
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
-msgstr ""
+msgstr "Us0: {0} [-v[v]] [--core=VMCORE]"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:74
 msgid "File {0} doesn't exist"
-msgstr ""
+msgstr "El archivo {0} no existe"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:77
 msgid "Extracting the oops text from core"
-msgstr ""
+msgstr "Extrayendo el texto ups desde el núcleo"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:82
 msgid ""
 "Can't process {0}:\n"
 "{1}"
 msgstr ""
+"No se puede procesar {0}:\n"
+"{1}"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:90
 msgid "Can't extract the oops message: '{0}'"
-msgstr ""
+msgstr "No se puede extraer el mensaje ups: '{0}'"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:93
 msgid "Oops text extracted successfully"
-msgstr ""
+msgstr "Texto ups extraído correctamente"
 
 #: ../src/plugins/abrt-action-check-oops-for-hw-error.in:100
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
 msgstr ""
+"El registro del kernel indica que se detectaron errores de hardware.\n"
+"Lo más probable es que no se trate de un problema de software.\n"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:73
 #: ../src/plugins/abrt-action-find-bodhi-update:106
 msgid "Problem directory error: {0}"
-msgstr ""
+msgstr "Error en el directorio del problema: {0}"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:92
 msgid "cannot open problem directory '{0}'"
-msgstr ""
+msgstr "No se puede abrir el directorio del problema '{0}'"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:121
 msgid "Using product '{0}' from /etc/os-release."
-msgstr ""
+msgstr "Utilizando el producto '{0}' de /etc/os-release."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:123
 msgid "Using product {0}."
-msgstr ""
+msgstr "Utilizando el producto {0}."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:125
 msgid "Using product version {0}."
-msgstr ""
+msgstr "Utilizando la versión del producto {0}."
 
 #: ../src/plugins/abrt-action-find-bodhi-update:137
 msgid "Duplicate bugzilla bug '#{0}' was found"
-msgstr ""
+msgstr "Se encontró un error duplicado en Bugzilla '#{0}'"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:139
 msgid "There is no bugzilla bug with 'abrt_hash:{0}'"
-msgstr ""
+msgstr "No existe ningún error en Bugzilla relacionado con 'abrt_hash:{0}'"
 
 #: ../src/plugins/abrt-action-find-bodhi-update:144
 msgid "Warning: abrt-bodhi do not support Product version 'Rawhide'"
 msgstr ""
+"Advertencia: abrt-bodhi no es compatible con la versión de producto 'Rawhide'"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
@@ -784,14 +900,18 @@ msgid ""
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
 msgstr ""
+"& [opciones] -d DIR\n"
+"\n"
+"Analiza coredump en el directorio del problema DIR, genera y guarda el "
+"rastreo inverso"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Additional debuginfo directories"
-msgstr ""
+msgstr "Directorios de debuginfo adicionales"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:57
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr ""
+msgstr "Finaliza el proceso de gdb si se ejecuta durante más de NUM segundos"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
@@ -799,7 +919,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr ""
+msgstr "Se genera y guarda el rastreo inverso, %u bytes"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:40
 msgid ""
