@@ -7,14 +7,15 @@
 # mihkel <turakas@gmail.com>, 2012
 # H A <contact+fedora@hen.ee>, 2022.
 # Priit Jõerüüt <jrtkbfdr@users.noreply.translate.fedoraproject.org>, 2026.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: crash-catcher@lists.fedoraproject.org\n"
 "POT-Creation-Date: 2020-01-23 15:47+0100\n"
-"PO-Revision-Date: 2026-07-29 07:17+0000\n"
-"Last-Translator: Priit Jõerüüt "
-"<jrtkbfdr@users.noreply.translate.fedoraproject.org>\n"
+"PO-Revision-Date: 2026-10-18 13:18+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Estonian <https://translate.fedoraproject.org/projects/abrt/"
 "abrt/et/>\n"
 "Language: et\n"
@@ -22,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.10.1\n"
 
 #: ../src/applet/org.freedesktop.problems.applet.desktop.in.h:1
 msgid "Problem Reporting"
@@ -230,15 +231,15 @@ msgstr ""
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid "Always"
-msgstr ""
+msgstr "Alati"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:15
 msgid "Never"
-msgstr ""
+msgstr "Mitte kunagi"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:16
 msgid "Ask"
-msgstr ""
+msgstr "Küsi"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:17
 msgid "Upload coredump for backtrace generation"
@@ -246,11 +247,11 @@ msgstr ""
 
 #: ../src/configuration-gui/system-config-abrt.c:66
 msgid "_Close"
-msgstr ""
+msgstr "Sul_ge"
 
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Defaults"
-msgstr ""
+msgstr "_Vaikimisi"
 
 #: ../src/configuration-gui/system-config-abrt.c:103
 #: ../src/configuration-gui/main.c:36
@@ -263,11 +264,11 @@ msgstr ""
 
 #: ../src/configuration-gui/main.c:105
 msgid "About"
-msgstr ""
+msgstr "Rakenduse teave"
 
 #: ../src/configuration-gui/main.c:106
 msgid "Quit"
-msgstr ""
+msgstr "Välju"
 
 #: ../src/daemon/abrt-action-save-package-data.c:456
 msgid ""
@@ -436,10 +437,8 @@ msgid ""
 msgstr ""
 
 #: ../src/daemon/abrt-upload-watch.c:281
-#, fuzzy
-#| msgid "Do not daemonize"
 msgid "Daemonize"
-msgstr "Deemoniks ei minda"
+msgstr "Muuda taustateenuseks"
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
@@ -488,7 +487,7 @@ msgstr ""
 
 #: ../src/daemon/abrt-auto-reporting.c:277
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "Vigane arv argumente"
 
 #: ../src/daemon/abrt-auto-reporting.c:296
 #, c-format
@@ -497,7 +496,7 @@ msgstr ""
 
 #: ../src/daemon/abrt-auto-reporting.c:336
 msgid "Password:"
-msgstr ""
+msgstr "Salasõna:"
 
 #: ../src/daemon/abrt-auto-reporting.c:339
 msgid "Cannot continue without password\n"
@@ -531,7 +530,7 @@ msgstr ""
 #: ../src/daemon/abrt-handle-upload.in:166
 #: ../src/daemon/abrt-handle-upload.in:169
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "See pole kaust: „{0}“"
 
 #: ../src/daemon/abrt-handle-upload.in:172
 msgid "Skipping: '{0}' (starts with slash)"
@@ -620,7 +619,7 @@ msgstr ""
 
 #: ../src/lib/problem_api_dbus.c:166
 msgid "Can't get problem data from abrt-dbus"
-msgstr ""
+msgstr "Probleemi andmete pärimine abrt-dbus'i kaudu ei õnnestunud"
 
 #: ../src/lib/problem_api_dbus.c:193
 #, c-format
@@ -863,7 +862,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:95
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Viga: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:61
 msgid "Can't open {0}: {1}"
@@ -1697,10 +1696,8 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1261
-#, fuzzy
-#| msgid "retrace server URL"
 msgid "retrace server URI"
-msgstr "taasjälituse serveri URL"
+msgstr "taasjälituse serveri URI"
 
 #: ../src/plugins/abrt-retrace-client.c:1263
 msgid "(debug) show received HTTP headers"
@@ -1816,10 +1813,8 @@ msgstr ""
 "infot, mis programmi krahhima pani, sealhulgas ka võimalikku isiklikku infot."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-#, fuzzy
-#| msgid "Retrace server URL"
 msgid "Retrace server URI"
-msgstr "Taasjälituse serveri URL"
+msgstr "Taasjälituse serveri URI"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Address of the retrace server"
@@ -2012,10 +2007,8 @@ msgid "built-in output format"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/__init__.py:79
-#, fuzzy
-#| msgid "Make the problem directory world readable"
 msgid "path to the problem directory, problem ID or wildcard"
-msgstr "Tee probleemide kataloog kõikidele loetavaks"
+msgstr "probleemi kaust, tunnus või metamärk"
 
 #: ../src/cli/abrtcli/cli/backtrace.py:35
 msgid "Problem has no backtrace"
@@ -2026,11 +2019,8 @@ msgid "Start retracing process?"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/gdb.py:25
-#, fuzzy
-#| msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgid "install debuginfo packages before launching GDB"
-msgstr ""
-"Laadi alla silumisinfo pakid ja genereeri tagasijälitus kasutades GDB-d"
+msgstr "enne GDB käivitamist paigalda debuginfo paketid"
 
 #: ../src/cli/abrtcli/cli/gdb.py:38
 msgid "The problem is not of a C/C++ type. Can't run GDB"
@@ -2086,10 +2076,8 @@ msgid "perform retracing locally"
 msgstr ""
 
 #: ../src/cli/abrtcli/cli/retrace.py:26
-#, fuzzy
-#| msgid "Send core dump to remote retrace server for analysis"
 msgid "submit core dump for remote retracing"
-msgstr "Saada tuuma tõmmis teise taasjälituse serverisse analüüsimiseks"
+msgstr "Saada tuuma tõmmis analüüsimiseks teises taasjälituse serveris"
 
 #: ../src/cli/abrtcli/cli/retrace.py:29
 msgid "force retracing"
